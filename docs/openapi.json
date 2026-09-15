@@ -1,0 +1,1414 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Consulte Help Desk — API v1",
+    "version": "0.1.0",
+    "description": "Contrato do primeiro incremento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
+  },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "Mesmo domínio da interface; adaptador Netlify."
+    }
+  ],
+  "paths": {
+    "/capabilities": {
+      "get": {
+        "operationId": "getCapabilities",
+        "summary": "Capacidades disponíveis; não representa prontidão de produção.",
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public-config": {
+      "get": {
+        "operationId": "getPublicConfig",
+        "summary": "Somente URL Auth e chave publicável.",
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integration-tokens": {
+      "post": {
+        "operationId": "exchangeIntegrationCredential",
+        "summary": "Troca server-to-server; não utilizar no navegador.",
+        "security": [
+          {
+            "integrationKey": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationToken"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "operationId": "getPrincipal",
+        "summary": "Identidade e vínculos atuais no workspace.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Principal"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contexts/resolve": {
+      "post": {
+        "operationId": "resolveContext",
+        "summary": "Resolve cobertura vigente ou ambiguidade.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resolution"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Context"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets": {
+      "get": {
+        "operationId": "listTickets",
+        "summary": "Lista chamados autorizados por cursor.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 700
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+              "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTicket",
+        "summary": "Cria chamado com revalidação transacional.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/Idempotency"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicket"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}": {
+      "get": {
+        "operationId": "getTicket",
+        "summary": "Consulta chamado e retorna ETag.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "ETag": {
+                "description": "Versão atual entre aspas.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/messages": {
+      "get": {
+        "operationId": "listMessages",
+        "summary": "Lista conversa pública.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Message"
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addMessage",
+        "summary": "Adiciona mensagem pública.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Idempotency"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/notes": {
+      "get": {
+        "operationId": "listNotes",
+        "summary": "Lista notas restritas à equipe.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Note"
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addNote",
+        "summary": "Adiciona nota interna, sem outbox externo.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Idempotency"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/transitions": {
+      "post": {
+        "operationId": "transitionTicket",
+        "summary": "Transição com versão esperada e motivo de reabertura.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Idempotency"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transition"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/timeline": {
+      "get": {
+        "operationId": "getTimeline",
+        "summary": "Histórico projetado conforme autorização.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Timeline"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Supabase access token humano ou hd_session_... M2M de curta duração."
+      },
+      "integrationKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "hd_key_... mantida exclusivamente no backend do consumidor."
+      }
+    },
+    "parameters": {
+      "Workspace": {
+        "name": "X-Workspace-Id",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+          "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+        },
+        "description": "Seletor validado contra vínculos vivos; não concede autorização."
+      },
+      "Idempotency": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{16,128}$"
+        }
+      },
+      "IfMatch": {
+        "name": "If-Match",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^\"[1-9][0-9]*\"$"
+        }
+      },
+      "TicketId": {
+        "name": "ticket_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+          "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+        }
+      }
+    },
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code",
+          "detail",
+          "request_id"
+        ]
+      },
+      "Context": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "product_instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "service_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        },
+        "required": [
+          "account_id",
+          "product_instance_id",
+          "service_code"
+        ]
+      },
+      "CreateTicket": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "product_instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "service_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ]
+          },
+          "coverage_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          }
+        },
+        "required": [
+          "account_id",
+          "product_instance_id",
+          "service_code",
+          "subject",
+          "description",
+          "priority"
+        ]
+      },
+      "Body": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "Transition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string",
+            "enum": [
+              "new",
+              "triage",
+              "open",
+              "waiting_customer",
+              "waiting_internal",
+              "waiting_third_party",
+              "resolved",
+              "closed",
+              "cancelled"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "to",
+          "reason"
+        ]
+      },
+      "Ticket": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "product_instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "service_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "received",
+              "in_progress",
+              "waiting_for_you",
+              "resolved",
+              "closed"
+            ]
+          },
+          "internal_status": {
+            "type": "string",
+            "enum": [
+              "new",
+              "triage",
+              "open",
+              "waiting_customer",
+              "waiting_internal",
+              "waiting_third_party",
+              "resolved",
+              "closed",
+              "cancelled"
+            ],
+            "description": "Somente equipe autorizada."
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "coverage_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "contract_version_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "account_id",
+          "product_instance_id",
+          "service_code",
+          "subject",
+          "description",
+          "status",
+          "priority",
+          "version",
+          "coverage_id",
+          "contract_version_id",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          },
+          "actor_type": {
+            "type": "string",
+            "enum": [
+              "human_agent",
+              "customer",
+              "integration"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "body",
+          "actor_type",
+          "created_at"
+        ]
+      },
+      "Note": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "body",
+          "created_at"
+        ]
+      },
+      "TicketPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ticket"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "Resolution": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "ambiguous",
+              "no_coverage"
+            ]
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "coverage_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                  "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+                },
+                "contract_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                  "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+                },
+                "contract_version_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                  "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+                },
+                "contract_version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "valid_until": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "coverage_id",
+                "contract_id",
+                "contract_version_id",
+                "contract_version",
+                "valid_until"
+              ]
+            }
+          }
+        },
+        "required": [
+          "status",
+          "candidates"
+        ]
+      },
+      "Capabilities": {
+        "type": "object",
+        "required": [
+          "api_version",
+          "release",
+          "capabilities"
+        ],
+        "properties": {
+          "api_version": {
+            "const": "v1"
+          },
+          "release": {
+            "type": "string"
+          },
+          "capabilities": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "Principal": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "workspace_id",
+          "grants",
+          "scopes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "kind": {
+            "enum": [
+              "human",
+              "integration"
+            ]
+          },
+          "workspace_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "workspace_role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "grants": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "product_instance_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+              "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+            }
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PublicConfig": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "supabase_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "publishable_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "supabase_url",
+          "publishable_key"
+        ]
+      },
+      "IntegrationToken": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "pattern": "^hd_session_"
+          },
+          "token_type": {
+            "const": "Bearer"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "workspace_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          }
+        },
+        "required": [
+          "access_token",
+          "token_type",
+          "expires_at",
+          "workspace_id"
+        ]
+      },
+      "Timeline": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "type",
+                "created_at",
+                "data"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+                  "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+                },
+                "type": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

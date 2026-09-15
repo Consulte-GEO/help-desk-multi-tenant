@@ -1,0 +1,29 @@
+{
+  "name": "@consulte-geo/helpdesk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16.0 <25"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "demo": "node --experimental-strip-types scripts/demo.ts",
+    "test:db": "node --experimental-strip-types --test supabase/tests/*.test.ts",
+    "check:contracts": "node --experimental-strip-types scripts/check-contracts.ts",
+    "build": "node scripts/build.mjs",
+    "dev": "netlify dev",
+    "verify": "npm test && npm run typecheck && npm run check:contracts && npm run check:secrets && npm run build",
+    "check:secrets": "node scripts/check-secrets.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.2.5",
+    "@types/node": "^22.15.30",
+    "@types/pg": "^8.15.4",
+    "typescript": "5.8.3"
+  }
+}

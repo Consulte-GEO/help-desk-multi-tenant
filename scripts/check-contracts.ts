@@ -1,0 +1,10 @@
+/** Structural guard, NOT a replacement for an official OpenAPI validator or live contract tests. */
+import {readFile} from 'node:fs/promises';import assert from 'node:assert/strict';
+const spec=JSON.parse(await readFile(new URL('../docs/openapi.json',import.meta.url),'utf8'));
+assert.equal(spec.openapi,'3.1.1');const operations=new Set<string>();
+function visit(value:unknown){if(!value||typeof value!=='object')return;if(Array.isArray(value)){value.forEach(visit);return;}const o=value as Record<string,unknown>;if(typeof o.$ref==='string'){assert.ok(o.$ref.startsWith('#/'));let target:unknown=spec;for(const key of o.$ref.slice(2).split('/')){target=(target as Record<string,unknown>)[key];assert.notEqual(target,undefined,'Unresolved reference '+o.$ref);}}Object.values(o).forEach(visit);}
+visit(spec);
+let count=0;for(const [path,methods]of Object.entries(spec.paths as Record<string,Record<string,{operationId:string;responses:Record<string,unknown>;parameters:unknown[]}>>)){for(const operation of Object.values(methods)){assert.ok(operation.operationId);assert.ok(!operations.has(operation.operationId));operations.add(operation.operationId);assert.ok(Object.keys(operation.responses).some(c=>/^2/.test(c)));if(path.includes('{ticket_id}'))assert.ok(JSON.stringify(operation.parameters).includes('TicketId'));count++;}}
+const fn=await readFile(new URL('../netlify/functions/api.mts',import.meta.url),'utf8');assert.ok(!/MemoryUnitOfWork|demo-agent|scripts\/demo/.test(fn));
+const migration=await readFile(new URL('../supabase/migrations/20260915000200_helpdesk_foundation.sql',import.meta.url),'utf8');assert.ok(!/create table public\./i.test(migration));assert.ok(migration.includes('force row level security'));assert.ok(migration.includes('deferrable initially deferred'));assert.ok(migration.includes("set search_path=''")&&migration.includes('nobypassrls'));
+console.log(`Structural checks passed: ${count} API operations, internal references, production/demo separation and migration sentinels. Real SQL/RLS and OpenAPI conformance remain separate gates.`);

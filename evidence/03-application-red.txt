@@ -1,0 +1,755 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:664) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: create stores snapshot, event, outbox and idempotency together
+not ok 1 - create stores snapshot, event, outbox and idempotency together
+  ---
+  duration_ms: 1.458129
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:13:51)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: same key and payload replays original resource
+not ok 2 - same key and payload replays original resource
+  ---
+  duration_ms: 0.199489
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:18:114)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: concurrent retries produce one logical ticket
+not ok 3 - concurrent retries produce one logical ticket
+  ---
+  duration_ms: 0.481913
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    file:///mnt/data/helpdesk-foundation/tests/application.test.ts:19:154
+    Function.from (<anonymous>)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:19:125)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: different payload with same key returns conflict
+not ok 4 - different payload with same key returns conflict
+  ---
+  duration_ms: 1.080903
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:20:105)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: idempotency key is scoped by principal
+not ok 5 - idempotency key is scoped by principal
+  ---
+  duration_ms: 0.281011
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:21:98)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no coverage rejects creation without fictitious SLA
+not ok 6 - no coverage rejects creation without fictitious SLA
+  ---
+  duration_ms: 1.987754
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'no_coverage'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'no_coverage'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:22:161)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:22:138)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ambiguous contracts require explicit selection
+not ok 7 - ambiguous contracts require explicit selection
+  ---
+  duration_ms: 0.550657
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'ambiguous_coverage'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'ambiguous_coverage'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:23:166)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:23:137)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: selected foreign coverage is not honored
+not ok 8 - selected foreign coverage is not honored
+  ---
+  duration_ms: 0.324978
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'coverage_ineligible'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'coverage_ineligible'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:24:112)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:24:83)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage is revalidated after earlier successful resolve
+not ok 9 - coverage is revalidated after earlier successful resolve
+  ---
+  duration_ms: 0.511988
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.resolve (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:200)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:25:130)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed outbox insert rolls back every prior write
+ok 10 - failed outbox insert rolls back every prior write
+  ---
+  duration_ms: 0.543536
+  type: 'test'
+  ...
+# Subtest: cross-account creation denied despite known coverage
+not ok 11 - cross-account creation denied despite known coverage
+  ---
+  duration_ms: 0.530958
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'resource_not_found'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'resource_not_found'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:27:124)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:27:95)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same-account different requester cannot fetch ticket
+not ok 12 - same-account different requester cannot fetch ticket
+  ---
+  duration_ms: 0.182223
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:28:117)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration cannot cross product boundary
+not ok 13 - integration cannot cross product boundary
+  ---
+  duration_ms: 0.521903
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'resource_not_found'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'resource_not_found'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:29:113)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:29:84)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: second product integrates without a new core field
+not ok 14 - second product integrates without a new core field
+  ---
+  duration_ms: 0.18708
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:30:231)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: snapshot survives later configuration change
+not ok 15 - snapshot survives later configuration change
+  ---
+  duration_ms: 0.160441
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:31:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:31:112)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public reply and internal note are separate resources
+not ok 16 - public reply and internal note are separate resources
+  ---
+  duration_ms: 0.164748
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:32:121)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration cannot add internal note even with notes scope
+not ok 17 - integration cannot add internal note even with notes scope
+  ---
+  duration_ms: 0.1402
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:33:123)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: optimistic transition rejects stale version
+not ok 18 - optimistic transition rejects stale version
+  ---
+  duration_ms: 0.201082
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:34:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:34:108)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: customer cannot transition to agent-only state
+not ok 19 - customer cannot transition to agent-only state
+  ---
+  duration_ms: 0.156925
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:35:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:35:111)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reopening needs an explicit reason
+not ok 20 - reopening needs an explicit reason
+  ---
+  duration_ms: 0.374833
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:36:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'reopen_reason_required'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'reopen_reason_required'
+  actual:
+  error: 'not implemented'
+  stack: |-
+    HelpdeskService.transition (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:779)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:36:152)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:36:123)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: thank-you message does not implicitly reopen a resolved ticket
+not ok 21 - thank-you message does not implicitly reopen a resolved ticket
+  ---
+  duration_ms: 0.182594
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.addMessage (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:445)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:37:165)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public timeline never contains internal-note events
+not ok 22 - public timeline never contains internal-note events
+  ---
+  duration_ms: 0.196686
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:38:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:38:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: cursor is bound to identity/filter context
+not ok 23 - cursor is bound to identity/filter context
+  ---
+  duration_ms: 0.177196
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:39:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:39:99)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: pagination is stable and does not repeat entries
+not ok 24 - pagination is stable and does not repeat entries
+  ---
+  duration_ms: 0.164787
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/application.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: 'not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    HelpdeskService.create (file:///mnt/data/helpdesk-foundation/src/application/helpdesk.ts:1:117)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/application.test.ts:40:105)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# (node:665) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+ok 25 - requester reads own ticket
+  ---
+  duration_ms: 1.377878
+  type: 'test'
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 26 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.149655
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 27 - account grant never grants another workspace
+  ---
+  duration_ms: 0.193
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 28 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.187141
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+ok 29 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.171047
+  type: 'test'
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 30 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.168253
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+ok 31 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.127101
+  type: 'test'
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 32 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.136785
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 33 - customer cannot write internal notes
+  ---
+  duration_ms: 0.365628
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+ok 34 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.427682
+  type: 'test'
+  ...
+# Subtest: integration cannot read another product instance
+ok 35 - integration cannot read another product instance
+  ---
+  duration_ms: 0.16691
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 36 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.082163
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+ok 37 - single eligible coverage resolves
+  ---
+  duration_ms: 0.167341
+  type: 'test'
+  ...
+# Subtest: multiple coverages are ambiguous
+ok 38 - multiple coverages are ambiguous
+  ---
+  duration_ms: 9.027332
+  type: 'test'
+  ...
+# Subtest: expired coverage cannot be chosen
+ok 39 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.141833
+  type: 'test'
+  ...
+# Subtest: suspended contract cannot be chosen
+ok 40 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.120581
+  type: 'test'
+  ...
+# Subtest: future contract is ineligible
+ok 41 - future contract is ineligible
+  ---
+  duration_ms: 0.151006
+  type: 'test'
+  ...
+# Subtest: draft contract cannot grant coverage
+ok 42 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.121923
+  type: 'test'
+  ...
+# Subtest: new ticket can enter triage
+ok 43 - new ticket can enter triage
+  ---
+  duration_ms: 0.131367
+  type: 'test'
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 44 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.089124
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+ok 45 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.078098
+  type: 'test'
+  ...
+# Subtest: closed is terminal in first release
+ok 46 - closed is terminal in first release
+  ---
+  duration_ms: 0.083536
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+ok 47 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.117466
+  type: 'test'
+  ...
+# Subtest: canonical hash ignores object property order
+ok 48 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.720722
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+ok 49 - canonical hash preserves array order
+  ---
+  duration_ms: 0.168613
+  type: 'test'
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+ok 50 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.324427
+  type: 'test'
+  ...
+# Subtest: business calendar skips weekend
+ok 51 - business calendar skips weekend
+  ---
+  duration_ms: 44.968702
+  type: 'test'
+  ...
+# Subtest: business calendar skips configured holiday
+ok 52 - business calendar skips configured holiday
+  ---
+  duration_ms: 31.755845
+  type: 'test'
+  ...
+# Subtest: business calendar preserves seconds
+ok 53 - business calendar preserves seconds
+  ---
+  duration_ms: 0.494863
+  type: 'test'
+  ...
+# Subtest: zero target returns exact start
+ok 54 - zero target returns exact start
+  ---
+  duration_ms: 0.168813
+  type: 'test'
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+ok 55 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.124857
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 32
+# fail 23
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 230.442708

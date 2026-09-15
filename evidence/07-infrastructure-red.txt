@@ -1,0 +1,657 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:939) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: create stores snapshot, event, outbox and idempotency together
+ok 1 - create stores snapshot, event, outbox and idempotency together
+  ---
+  duration_ms: 3.143853
+  type: 'test'
+  ...
+# Subtest: same key and payload replays original resource
+ok 2 - same key and payload replays original resource
+  ---
+  duration_ms: 0.609475
+  type: 'test'
+  ...
+# Subtest: concurrent retries produce one logical ticket
+ok 3 - concurrent retries produce one logical ticket
+  ---
+  duration_ms: 2.600446
+  type: 'test'
+  ...
+# Subtest: different payload with same key returns conflict
+ok 4 - different payload with same key returns conflict
+  ---
+  duration_ms: 1.052972
+  type: 'test'
+  ...
+# Subtest: idempotency key is scoped by principal
+ok 5 - idempotency key is scoped by principal
+  ---
+  duration_ms: 0.962576
+  type: 'test'
+  ...
+# Subtest: no coverage rejects creation without fictitious SLA
+ok 6 - no coverage rejects creation without fictitious SLA
+  ---
+  duration_ms: 0.303967
+  type: 'test'
+  ...
+# Subtest: ambiguous contracts require explicit selection
+ok 7 - ambiguous contracts require explicit selection
+  ---
+  duration_ms: 7.391865
+  type: 'test'
+  ...
+# Subtest: selected foreign coverage is not honored
+ok 8 - selected foreign coverage is not honored
+  ---
+  duration_ms: 0.427472
+  type: 'test'
+  ...
+# Subtest: coverage is revalidated after earlier successful resolve
+ok 9 - coverage is revalidated after earlier successful resolve
+  ---
+  duration_ms: 0.810298
+  type: 'test'
+  ...
+# Subtest: failed outbox insert rolls back every prior write
+ok 10 - failed outbox insert rolls back every prior write
+  ---
+  duration_ms: 0.862025
+  type: 'test'
+  ...
+# Subtest: cross-account creation denied despite known coverage
+ok 11 - cross-account creation denied despite known coverage
+  ---
+  duration_ms: 0.265399
+  type: 'test'
+  ...
+# Subtest: same-account different requester cannot fetch ticket
+ok 12 - same-account different requester cannot fetch ticket
+  ---
+  duration_ms: 0.722045
+  type: 'test'
+  ...
+# Subtest: integration cannot cross product boundary
+ok 13 - integration cannot cross product boundary
+  ---
+  duration_ms: 0.233951
+  type: 'test'
+  ...
+# Subtest: second product integrates without a new core field
+ok 14 - second product integrates without a new core field
+  ---
+  duration_ms: 0.378899
+  type: 'test'
+  ...
+# Subtest: snapshot survives later configuration change
+ok 15 - snapshot survives later configuration change
+  ---
+  duration_ms: 0.431278
+  type: 'test'
+  ...
+# Subtest: public reply and internal note are separate resources
+ok 16 - public reply and internal note are separate resources
+  ---
+  duration_ms: 1.47127
+  type: 'test'
+  ...
+# Subtest: integration cannot add internal note even with notes scope
+ok 17 - integration cannot add internal note even with notes scope
+  ---
+  duration_ms: 0.617537
+  type: 'test'
+  ...
+# Subtest: optimistic transition rejects stale version
+ok 18 - optimistic transition rejects stale version
+  ---
+  duration_ms: 0.804739
+  type: 'test'
+  ...
+# Subtest: customer cannot transition to agent-only state
+ok 19 - customer cannot transition to agent-only state
+  ---
+  duration_ms: 0.829075
+  type: 'test'
+  ...
+# Subtest: reopening needs an explicit reason
+ok 20 - reopening needs an explicit reason
+  ---
+  duration_ms: 0.31992
+  type: 'test'
+  ...
+# Subtest: thank-you message does not implicitly reopen a resolved ticket
+ok 21 - thank-you message does not implicitly reopen a resolved ticket
+  ---
+  duration_ms: 0.311198
+  type: 'test'
+  ...
+# Subtest: public timeline never contains internal-note events
+ok 22 - public timeline never contains internal-note events
+  ---
+  duration_ms: 0.654934
+  type: 'test'
+  ...
+# Subtest: cursor is bound to identity/filter context
+ok 23 - cursor is bound to identity/filter context
+  ---
+  duration_ms: 1.655588
+  type: 'test'
+  ...
+# Subtest: pagination is stable and does not repeat entries
+ok 24 - pagination is stable and does not repeat entries
+  ---
+  duration_ms: 1.099713
+  type: 'test'
+  ...
+# (node:940) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+ok 25 - requester reads own ticket
+  ---
+  duration_ms: 1.389537
+  type: 'test'
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 26 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.145308
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 27 - account grant never grants another workspace
+  ---
+  duration_ms: 0.209875
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 28 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.148853
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+ok 29 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.143405
+  type: 'test'
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 30 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.132109
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+ok 31 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.117377
+  type: 'test'
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 32 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.166991
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 33 - customer cannot write internal notes
+  ---
+  duration_ms: 0.356716
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+ok 34 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.38621
+  type: 'test'
+  ...
+# Subtest: integration cannot read another product instance
+ok 35 - integration cannot read another product instance
+  ---
+  duration_ms: 0.37936
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 36 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.107702
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+ok 37 - single eligible coverage resolves
+  ---
+  duration_ms: 0.212069
+  type: 'test'
+  ...
+# Subtest: multiple coverages are ambiguous
+ok 38 - multiple coverages are ambiguous
+  ---
+  duration_ms: 21.053288
+  type: 'test'
+  ...
+# Subtest: expired coverage cannot be chosen
+ok 39 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.217767
+  type: 'test'
+  ...
+# Subtest: suspended contract cannot be chosen
+ok 40 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.11938
+  type: 'test'
+  ...
+# Subtest: future contract is ineligible
+ok 41 - future contract is ineligible
+  ---
+  duration_ms: 0.1133
+  type: 'test'
+  ...
+# Subtest: draft contract cannot grant coverage
+ok 42 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.109585
+  type: 'test'
+  ...
+# Subtest: new ticket can enter triage
+ok 43 - new ticket can enter triage
+  ---
+  duration_ms: 0.145338
+  type: 'test'
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 44 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.078628
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+ok 45 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.077125
+  type: 'test'
+  ...
+# Subtest: closed is terminal in first release
+ok 46 - closed is terminal in first release
+  ---
+  duration_ms: 0.111498
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+ok 47 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.112899
+  type: 'test'
+  ...
+# Subtest: canonical hash ignores object property order
+ok 48 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.694833
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+ok 49 - canonical hash preserves array order
+  ---
+  duration_ms: 8.325367
+  type: 'test'
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+ok 50 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.313851
+  type: 'test'
+  ...
+# Subtest: business calendar skips weekend
+ok 51 - business calendar skips weekend
+  ---
+  duration_ms: 54.414816
+  type: 'test'
+  ...
+# Subtest: business calendar skips configured holiday
+ok 52 - business calendar skips configured holiday
+  ---
+  duration_ms: 37.189329
+  type: 'test'
+  ...
+# Subtest: business calendar preserves seconds
+ok 53 - business calendar preserves seconds
+  ---
+  duration_ms: 0.446942
+  type: 'test'
+  ...
+# Subtest: zero target returns exact start
+ok 54 - zero target returns exact start
+  ---
+  duration_ms: 0.274382
+  type: 'test'
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+ok 55 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.183726
+  type: 'test'
+  ...
+# (node:941) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: capabilities distinguish implemented from disabled features
+ok 56 - capabilities distinguish implemented from disabled features
+  ---
+  duration_ms: 23.460203
+  type: 'test'
+  ...
+# Subtest: missing authentication returns a safe problem document
+ok 57 - missing authentication returns a safe problem document
+  ---
+  duration_ms: 1.169477
+  type: 'test'
+  ...
+# Subtest: HTTP create and replay return same resource with ETag
+ok 58 - HTTP create and replay return same resource with ETag
+  ---
+  duration_ms: 5.820424
+  type: 'test'
+  ...
+# Subtest: customer DTO does not expose contract policy or internal state
+ok 59 - customer DTO does not expose contract policy or internal state
+  ---
+  duration_ms: 1.128536
+  type: 'test'
+  ...
+# Subtest: unknown properties are rejected instead of mass assignment
+ok 60 - unknown properties are rejected instead of mass assignment
+  ---
+  duration_ms: 1.252281
+  type: 'test'
+  ...
+# Subtest: invalid content type yields 415
+ok 61 - invalid content type yields 415
+  ---
+  duration_ms: 0.469546
+  type: 'test'
+  ...
+# Subtest: body limits also apply without Content-Length
+ok 62 - body limits also apply without Content-Length
+  ---
+  duration_ms: 1.08459
+  type: 'test'
+  ...
+# Subtest: malformed JSON returns 400 rather than stack trace
+ok 63 - malformed JSON returns 400 rather than stack trace
+  ---
+  duration_ms: 2.031261
+  type: 'test'
+  ...
+# Subtest: unknown route returns a problem instead of HTML or success
+ok 64 - unknown route returns a problem instead of HTML or success
+  ---
+  duration_ms: 0.906202
+  type: 'test'
+  ...
+# Subtest: If-Match is required for state changes
+ok 65 - If-Match is required for state changes
+  ---
+  duration_ms: 2.074106
+  type: 'test'
+  ...
+# Subtest: state change is version controlled with operator-only internal DTO
+ok 66 - state change is version controlled with operator-only internal DTO
+  ---
+  duration_ms: 2.9892
+  type: 'test'
+  ...
+# Subtest: note endpoint rejects a requester and never appears in messages
+ok 67 - note endpoint rejects a requester and never appears in messages
+  ---
+  duration_ms: 2.7095
+  type: 'test'
+  ...
+# Subtest: list validates page size and uses snake_case cursor
+ok 68 - list validates page size and uses snake_case cursor
+  ---
+  duration_ms: 1.881387
+  type: 'test'
+  ...
+# Subtest: customer timeline is projected without internal transition reasons
+ok 69 - customer timeline is projected without internal transition reasons
+  ---
+  duration_ms: 1.485692
+  type: 'test'
+  ...
+# Subtest: unexpected exceptions do not expose SQL or access tokens
+ok 70 - unexpected exceptions do not expose SQL or access tokens
+  ---
+  duration_ms: 0.387652
+  type: 'test'
+  ...
+# (node:972) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unit of work sets both identity selectors transaction-locally before use
+not ok 71 - unit of work sets both identity selectors transaction-locally before use
+  ---
+  duration_ms: 1.801326
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:4:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    PostgresUnitOfWork.run (file:///mnt/data/helpdesk-foundation/src/infrastructure/postgres.ts:3:155)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:4:143)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: failed domain operation rolls back and releases connection
+not ok 72 - failed domain operation rolls back and releases connection
+  ---
+  duration_ms: 1.053031
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - 'ROLLBACK'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'ROLLBACK'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:5:208)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed rollback destroys pooled connection
+not ok 73 - failed rollback destroys pooled connection
+  ---
+  duration_ms: 8.768872
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:6:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(f.released[0] instanceof Error)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:6:270)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: runtime refuses postgres and BYPASSRLS roles
+ok 74 - runtime refuses postgres and BYPASSRLS roles
+  ---
+  duration_ms: 0.310176
+  type: 'test'
+  ...
+# Subtest: runtime permits only restricted dedicated role
+not ok 75 - runtime permits only restricted dedicated role
+  ---
+  duration_ms: 0.132108
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    assertSafeDatabaseRole (file:///mnt/data/helpdesk-foundation/src/infrastructure/postgres.ts:2:81)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:8:184)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: SQL parameters carry attacker strings, never statement interpolation
+not ok 76 - SQL parameters carry attacker strings, never statement interpolation
+  ---
+  duration_ms: 0.175423
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:9:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    PostgresUnitOfWork.run (file:///mnt/data/helpdesk-foundation/src/infrastructure/postgres.ts:3:155)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:9:139)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: auth refuses absent bearer and missing workspace
+not ok 77 - auth refuses absent bearer and missing workspace
+  ---
+  duration_ms: 14.934766
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Autenticação/. Input:
+    
+    'Error: Not implemented'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Not implemented'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-foundation/src/infrastructure/authentication.ts:2:204)
+    file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:10:259
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:10:242)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:10:229)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: human identity is validated with Auth server then live domain grants
+not ok 78 - human identity is validated with Auth server then live domain grants
+  ---
+  duration_ms: 0.67863
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-foundation/src/infrastructure/authentication.ts:2:204)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:11:668)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid Supabase bearer is rejected before domain lookup
+ok 79 - invalid Supabase bearer is rejected before domain lookup
+  ---
+  duration_ms: 0.590197
+  type: 'test'
+  ...
+# Subtest: revoked membership is denied despite valid Supabase session
+ok 80 - revoked membership is denied despite valid Supabase session
+  ---
+  duration_ms: 0.490297
+  type: 'test'
+  ...
+# Subtest: integration session is hashed, resolved afresh and cannot become human
+not ok 81 - integration session is hashed, resolved afresh and cannot become human
+  ---
+  duration_ms: 0.382665
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-foundation/src/infrastructure/authentication.ts:2:204)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:14:549)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: long-lived integration credentials cannot be used as session bearer
+ok 82 - long-lived integration credentials cannot be used as session bearer
+  ---
+  duration_ms: 0.544598
+  type: 'test'
+  ...
+# Subtest: token exchange persists only hashes and returns distinct short token
+not ok 83 - token exchange persists only hashes and returns distinct short token
+  ---
+  duration_ms: 0.176175
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.exchangeToken (file:///mnt/data/helpdesk-foundation/src/infrastructure/authentication.ts:2:303)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/infrastructure.test.ts:16:421)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..83
+# tests 83
+# suites 0
+# pass 74
+# fail 9
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 380.84665

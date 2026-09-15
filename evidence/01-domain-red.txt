@@ -1,0 +1,608 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:581) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+not ok 1 - requester reads own ticket
+  ---
+  duration_ms: 2.552612
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:10:49)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 2 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.142054
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 3 - account grant never grants another workspace
+  ---
+  duration_ms: 0.132559
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 4 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.094942
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+not ok 5 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.218608
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:14:68)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 6 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.097376
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+not ok 7 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.143306
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:16:75)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 8 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.143615
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 9 - customer cannot write internal notes
+  ---
+  duration_ms: 0.230135
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+not ok 10 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.321043
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:19:68)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration cannot read another product instance
+ok 11 - integration cannot read another product instance
+  ---
+  duration_ms: 0.157396
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 12 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.07978
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+not ok 13 - single eligible coverage resolves
+  ---
+  duration_ms: 0.357196
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'resolved'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'resolved'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:23:56)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: multiple coverages are ambiguous
+not ok 14 - multiple coverages are ambiguous
+  ---
+  duration_ms: 0.150456
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'ambiguous'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'ambiguous'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:24:55)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: expired coverage cannot be chosen
+not ok 15 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.154071
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'no_coverage'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'no_coverage'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:25:56)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: suspended contract cannot be chosen
+not ok 16 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.193701
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'no_coverage'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'no_coverage'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:26:58)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: future contract is ineligible
+not ok 17 - future contract is ineligible
+  ---
+  duration_ms: 0.240762
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'no_coverage'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'no_coverage'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:27:52)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: draft contract cannot grant coverage
+not ok 18 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.190156
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'not_implemented'
+    - 'no_coverage'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'no_coverage'
+  actual: 'not_implemented'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:28:59)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: new ticket can enter triage
+not ok 19 - new ticket can enter triage
+  ---
+  duration_ms: 0.12633
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:30:47)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 20 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.062924
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+not ok 21 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.128783
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:32:66)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: closed is terminal in first release
+ok 22 - closed is terminal in first release
+  ---
+  duration_ms: 0.070636
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+not ok 23 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.112089
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:34:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    '' !== 'in_progress'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'in_progress'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:34:60)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: canonical hash ignores object property order
+ok 24 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.080991
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+not ok 25 - canonical hash preserves array order
+  ---
+  duration_ms: 0.125078
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: `Expected "actual" to be strictly unequal to: ''`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ''
+  actual: ''
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:37:56)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+not ok 26 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.247511
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:38:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:38:58)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: business calendar skips weekend
+not ok 27 - business calendar skips weekend
+  ---
+  duration_ms: 0.1261
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + ''
+    - '2026-09-21T12:30:00.000Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-09-21T12:30:00.000Z'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:40:51)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: business calendar skips configured holiday
+not ok 28 - business calendar skips configured holiday
+  ---
+  duration_ms: 0.195764
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:41:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + ''
+    - '2026-09-22T12:30:00.000Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-09-22T12:30:00.000Z'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:41:62)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: business calendar preserves seconds
+not ok 29 - business calendar preserves seconds
+  ---
+  duration_ms: 0.111427
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + ''
+    - '2026-09-15T12:01:30.000Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-09-15T12:01:30.000Z'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:42:55)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero target returns exact start
+not ok 30 - zero target returns exact start
+  ---
+  duration_ms: 0.094913
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + ''
+    - '2026-09-19T12:00:15.000Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-09-19T12:00:15.000Z'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:43:51)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+not ok 31 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.101402
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/domain.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/domain.test.ts:44:65)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 11
+# fail 20
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 131.625692

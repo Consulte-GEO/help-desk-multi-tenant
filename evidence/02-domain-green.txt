@@ -1,0 +1,202 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:624) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+ok 1 - requester reads own ticket
+  ---
+  duration_ms: 1.112691
+  type: 'test'
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 2 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.230957
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 3 - account grant never grants another workspace
+  ---
+  duration_ms: 0.297086
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 4 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.107461
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+ok 5 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.097746
+  type: 'test'
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 6 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.092058
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+ok 7 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.124057
+  type: 'test'
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 8 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.100851
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 9 - customer cannot write internal notes
+  ---
+  duration_ms: 0.247311
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+ok 10 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.369505
+  type: 'test'
+  ...
+# Subtest: integration cannot read another product instance
+ok 11 - integration cannot read another product instance
+  ---
+  duration_ms: 0.22632
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 12 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.083105
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+ok 13 - single eligible coverage resolves
+  ---
+  duration_ms: 0.356415
+  type: 'test'
+  ...
+# Subtest: multiple coverages are ambiguous
+ok 14 - multiple coverages are ambiguous
+  ---
+  duration_ms: 6.453369
+  type: 'test'
+  ...
+# Subtest: expired coverage cannot be chosen
+ok 15 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.100401
+  type: 'test'
+  ...
+# Subtest: suspended contract cannot be chosen
+ok 16 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.068983
+  type: 'test'
+  ...
+# Subtest: future contract is ineligible
+ok 17 - future contract is ineligible
+  ---
+  duration_ms: 0.062123
+  type: 'test'
+  ...
+# Subtest: draft contract cannot grant coverage
+ok 18 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.059219
+  type: 'test'
+  ...
+# Subtest: new ticket can enter triage
+ok 19 - new ticket can enter triage
+  ---
+  duration_ms: 0.078408
+  type: 'test'
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 20 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.043295
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+ok 21 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.040271
+  type: 'test'
+  ...
+# Subtest: closed is terminal in first release
+ok 22 - closed is terminal in first release
+  ---
+  duration_ms: 0.042404
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+ok 23 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.06046
+  type: 'test'
+  ...
+# Subtest: canonical hash ignores object property order
+ok 24 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.674743
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+ok 25 - canonical hash preserves array order
+  ---
+  duration_ms: 0.122043
+  type: 'test'
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+ok 26 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.183055
+  type: 'test'
+  ...
+# Subtest: business calendar skips weekend
+ok 27 - business calendar skips weekend
+  ---
+  duration_ms: 33.592039
+  type: 'test'
+  ...
+# Subtest: business calendar skips configured holiday
+ok 28 - business calendar skips configured holiday
+  ---
+  duration_ms: 29.733294
+  type: 'test'
+  ...
+# Subtest: business calendar preserves seconds
+ok 29 - business calendar preserves seconds
+  ---
+  duration_ms: 0.33309
+  type: 'test'
+  ...
+# Subtest: zero target returns exact start
+ok 30 - zero target returns exact start
+  ---
+  duration_ms: 0.203876
+  type: 'test'
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+ok 31 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.131968
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 204.087644

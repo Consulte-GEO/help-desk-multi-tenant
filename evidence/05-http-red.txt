@@ -1,0 +1,687 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:806) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: create stores snapshot, event, outbox and idempotency together
+ok 1 - create stores snapshot, event, outbox and idempotency together
+  ---
+  duration_ms: 4.080087
+  type: 'test'
+  ...
+# Subtest: same key and payload replays original resource
+ok 2 - same key and payload replays original resource
+  ---
+  duration_ms: 0.785589
+  type: 'test'
+  ...
+# Subtest: concurrent retries produce one logical ticket
+ok 3 - concurrent retries produce one logical ticket
+  ---
+  duration_ms: 3.934989
+  type: 'test'
+  ...
+# Subtest: different payload with same key returns conflict
+ok 4 - different payload with same key returns conflict
+  ---
+  duration_ms: 1.294103
+  type: 'test'
+  ...
+# Subtest: idempotency key is scoped by principal
+ok 5 - idempotency key is scoped by principal
+  ---
+  duration_ms: 0.896045
+  type: 'test'
+  ...
+# Subtest: no coverage rejects creation without fictitious SLA
+ok 6 - no coverage rejects creation without fictitious SLA
+  ---
+  duration_ms: 0.343475
+  type: 'test'
+  ...
+# Subtest: ambiguous contracts require explicit selection
+ok 7 - ambiguous contracts require explicit selection
+  ---
+  duration_ms: 10.076281
+  type: 'test'
+  ...
+# Subtest: selected foreign coverage is not honored
+ok 8 - selected foreign coverage is not honored
+  ---
+  duration_ms: 0.415454
+  type: 'test'
+  ...
+# Subtest: coverage is revalidated after earlier successful resolve
+ok 9 - coverage is revalidated after earlier successful resolve
+  ---
+  duration_ms: 0.891719
+  type: 'test'
+  ...
+# Subtest: failed outbox insert rolls back every prior write
+ok 10 - failed outbox insert rolls back every prior write
+  ---
+  duration_ms: 0.861433
+  type: 'test'
+  ...
+# Subtest: cross-account creation denied despite known coverage
+ok 11 - cross-account creation denied despite known coverage
+  ---
+  duration_ms: 0.375684
+  type: 'test'
+  ...
+# Subtest: same-account different requester cannot fetch ticket
+ok 12 - same-account different requester cannot fetch ticket
+  ---
+  duration_ms: 0.780382
+  type: 'test'
+  ...
+# Subtest: integration cannot cross product boundary
+ok 13 - integration cannot cross product boundary
+  ---
+  duration_ms: 0.287271
+  type: 'test'
+  ...
+# Subtest: second product integrates without a new core field
+ok 14 - second product integrates without a new core field
+  ---
+  duration_ms: 0.416976
+  type: 'test'
+  ...
+# Subtest: snapshot survives later configuration change
+ok 15 - snapshot survives later configuration change
+  ---
+  duration_ms: 0.465009
+  type: 'test'
+  ...
+# Subtest: public reply and internal note are separate resources
+ok 16 - public reply and internal note are separate resources
+  ---
+  duration_ms: 4.019856
+  type: 'test'
+  ...
+# Subtest: integration cannot add internal note even with notes scope
+ok 17 - integration cannot add internal note even with notes scope
+  ---
+  duration_ms: 0.511809
+  type: 'test'
+  ...
+# Subtest: optimistic transition rejects stale version
+ok 18 - optimistic transition rejects stale version
+  ---
+  duration_ms: 1.154023
+  type: 'test'
+  ...
+# Subtest: customer cannot transition to agent-only state
+ok 19 - customer cannot transition to agent-only state
+  ---
+  duration_ms: 0.715574
+  type: 'test'
+  ...
+# Subtest: reopening needs an explicit reason
+ok 20 - reopening needs an explicit reason
+  ---
+  duration_ms: 0.434933
+  type: 'test'
+  ...
+# Subtest: thank-you message does not implicitly reopen a resolved ticket
+ok 21 - thank-you message does not implicitly reopen a resolved ticket
+  ---
+  duration_ms: 0.504087
+  type: 'test'
+  ...
+# Subtest: public timeline never contains internal-note events
+ok 22 - public timeline never contains internal-note events
+  ---
+  duration_ms: 0.77885
+  type: 'test'
+  ...
+# Subtest: cursor is bound to identity/filter context
+ok 23 - cursor is bound to identity/filter context
+  ---
+  duration_ms: 2.265382
+  type: 'test'
+  ...
+# Subtest: pagination is stable and does not repeat entries
+ok 24 - pagination is stable and does not repeat entries
+  ---
+  duration_ms: 0.931248
+  type: 'test'
+  ...
+# (node:807) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+ok 25 - requester reads own ticket
+  ---
+  duration_ms: 1.335937
+  type: 'test'
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 26 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.15324
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 27 - account grant never grants another workspace
+  ---
+  duration_ms: 0.183115
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 28 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.147852
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+ok 29 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.155253
+  type: 'test'
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 30 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.137987
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+ok 31 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.138498
+  type: 'test'
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 32 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.138698
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 33 - customer cannot write internal notes
+  ---
+  duration_ms: 0.396836
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+ok 34 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.394503
+  type: 'test'
+  ...
+# Subtest: integration cannot read another product instance
+ok 35 - integration cannot read another product instance
+  ---
+  duration_ms: 0.205138
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 36 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.159239
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+ok 37 - single eligible coverage resolves
+  ---
+  duration_ms: 0.242925
+  type: 'test'
+  ...
+# Subtest: multiple coverages are ambiguous
+ok 38 - multiple coverages are ambiguous
+  ---
+  duration_ms: 9.089159
+  type: 'test'
+  ...
+# Subtest: expired coverage cannot be chosen
+ok 39 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.177707
+  type: 'test'
+  ...
+# Subtest: suspended contract cannot be chosen
+ok 40 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.109004
+  type: 'test'
+  ...
+# Subtest: future contract is ineligible
+ok 41 - future contract is ineligible
+  ---
+  duration_ms: 0.095784
+  type: 'test'
+  ...
+# Subtest: draft contract cannot grant coverage
+ok 42 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.142094
+  type: 'test'
+  ...
+# Subtest: new ticket can enter triage
+ok 43 - new ticket can enter triage
+  ---
+  duration_ms: 0.137056
+  type: 'test'
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 44 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.077377
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+ok 45 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.071207
+  type: 'test'
+  ...
+# Subtest: closed is terminal in first release
+ok 46 - closed is terminal in first release
+  ---
+  duration_ms: 0.077056
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+ok 47 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.101142
+  type: 'test'
+  ...
+# Subtest: canonical hash ignores object property order
+ok 48 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.721082
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+ok 49 - canonical hash preserves array order
+  ---
+  duration_ms: 0.165699
+  type: 'test'
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+ok 50 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.261653
+  type: 'test'
+  ...
+# Subtest: business calendar skips weekend
+ok 51 - business calendar skips weekend
+  ---
+  duration_ms: 52.042701
+  type: 'test'
+  ...
+# Subtest: business calendar skips configured holiday
+ok 52 - business calendar skips configured holiday
+  ---
+  duration_ms: 37.122981
+  type: 'test'
+  ...
+# Subtest: business calendar preserves seconds
+ok 53 - business calendar preserves seconds
+  ---
+  duration_ms: 0.441974
+  type: 'test'
+  ...
+# Subtest: zero target returns exact start
+ok 54 - zero target returns exact start
+  ---
+  duration_ms: 0.223897
+  type: 'test'
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+ok 55 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.205578
+  type: 'test'
+  ...
+# (node:808) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: capabilities distinguish implemented from disabled features
+not ok 56 - capabilities distinguish implemented from disabled features
+  ---
+  duration_ms: 27.051302
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:7:185)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: missing authentication returns a safe problem document
+not ok 57 - missing authentication returns a safe problem document
+  ---
+  duration_ms: 0.689395
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 401
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 401
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:8:175)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP create and replay return same resource with ETag
+not ok 58 - HTTP create and replay return same resource with ETag
+  ---
+  duration_ms: 0.847262
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:9:104)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: customer DTO does not expose contract policy or internal state
+not ok 59 - customer DTO does not expose contract policy or internal state
+  ---
+  duration_ms: 0.719821
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:10:113)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unknown properties are rejected instead of mass assignment
+not ok 60 - unknown properties are rejected instead of mass assignment
+  ---
+  duration_ms: 0.800912
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:11:206)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid content type yields 415
+not ok 61 - invalid content type yields 415
+  ---
+  duration_ms: 0.990627
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 415
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 415
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:12:163)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: body limits also apply without Content-Length
+not ok 62 - body limits also apply without Content-Length
+  ---
+  duration_ms: 0.859421
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 413
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 413
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:13:182)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed JSON returns 400 rather than stack trace
+not ok 63 - malformed JSON returns 400 rather than stack trace
+  ---
+  duration_ms: 0.477497
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:14:276)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unknown route returns a problem instead of HTML or success
+not ok 64 - unknown route returns a problem instead of HTML or success
+  ---
+  duration_ms: 1.21861
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 404
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 404
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:15:151)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: If-Match is required for state changes
+not ok 65 - If-Match is required for state changes
+  ---
+  duration_ms: 0.933071
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:16:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: state change is version controlled with operator-only internal DTO
+not ok 66 - state change is version controlled with operator-only internal DTO
+  ---
+  duration_ms: 0.541283
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:17:117)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note endpoint rejects a requester and never appears in messages
+not ok 67 - note endpoint rejects a requester and never appears in messages
+  ---
+  duration_ms: 0.454242
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:18:114)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: list validates page size and uses snake_case cursor
+not ok 68 - list validates page size and uses snake_case cursor
+  ---
+  duration_ms: 0.404267
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:19:94)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: customer timeline is projected without internal transition reasons
+not ok 69 - customer timeline is projected without internal transition reasons
+  ---
+  duration_ms: 0.429926
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    created (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:6:129)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:20:117)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unexpected exceptions do not expose SQL or access tokens
+not ok 70 - unexpected exceptions do not expose SQL or access tokens
+  ---
+  duration_ms: 0.395705
+  type: 'test'
+  location: '/mnt/data/helpdesk-foundation/tests/http.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    501 !== 500
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 500
+  actual: 501
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-foundation/tests/http.test.ts:21:286)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..70
+# tests 70
+# suites 0
+# pass 55
+# fail 15
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 253.403199

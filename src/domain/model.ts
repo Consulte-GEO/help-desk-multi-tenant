@@ -1,0 +1,10 @@
+export type Role='requester'|'account_manager'|'agent';
+export type Principal={id:string;kind:'human'|'integration';workspaceId:string;workspaceRole:'admin'|'agent'|null;grants:{accountId:string;role:Role}[];scopes:string[];productInstanceIds?:string[];connectionId?:string};
+export type Coverage={id:string;workspaceId:string;accountId:string;productInstanceId:string;serviceCode:string;contractId:string;contractVersionId:string;contractVersion:number;contractStatus:'active'|'suspended'|'terminated';enabled:boolean;published:boolean;validFrom:string;validUntil:string|null;policy:Record<string,unknown>};
+export const statuses=['new','triage','open','waiting_customer','waiting_internal','waiting_third_party','resolved','closed','cancelled'] as const;
+export type TicketStatus=typeof statuses[number];
+export type Ticket={id:string;workspaceId:string;accountId:string;productInstanceId:string;serviceCode:string;createdBy:string;subject:string;description:string;status:TicketStatus;priority:'low'|'normal'|'high'|'urgent';version:number;coverageId:string;contractVersionId:string;contractSnapshot:{contractId:string;version:number;policy:Record<string,unknown>};createdAt:string;updatedAt:string};
+export type PublicMessage={id:string;workspaceId:string;accountId:string;ticketId:string;actorId:string;actorType:'human_agent'|'customer'|'integration';body:string;createdAt:string};
+export type InternalNote={id:string;workspaceId:string;accountId:string;ticketId:string;actorId:string;body:string;createdAt:string};
+export type TicketEvent={id:string;workspaceId:string;accountId:string;ticketId:string;actorId:string;type:string;customerVisible:boolean;data:Record<string,unknown>;createdAt:string};
+export type OutboxEvent={id:string;workspaceId:string;accountId:string;ticketId:string;type:string;payload:Record<string,unknown>;createdAt:string;requestId:string};

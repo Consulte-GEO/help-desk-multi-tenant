@@ -1,0 +1,5 @@
+/** Heuristic source scan. Does not replace a professional secret/dependency scanner. */
+import {readdir,readFile} from 'node:fs/promises';import {fileURLToPath} from 'node:url';import path from 'node:path';
+const root=fileURLToPath(new URL('../',import.meta.url)),findings=[];
+async function scan(dir){for(const entry of await readdir(dir,{withFileTypes:true})){if(['.git','node_modules','dist','evidence','research'].includes(entry.name))continue;const file=path.join(dir,entry.name);if(entry.isDirectory()){await scan(file);continue;}if(!/\.(?:ts|mts|js|mjs|json|sql|ya?ml|toml|md)$/.test(file))continue;const body=await readFile(file,'utf8');const patterns=[/sb_secret_[A-Za-z0-9_-]{25,}/g,/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g,/gh[pousr]_[A-Za-z0-9]{30,}/g,/AKIA[0-9A-Z]{16}/g];for(const p of patterns)if(p.test(body))findings.push(path.relative(root,file));}}
+await scan(root);if(findings.length){console.error('Possible secrets: '+[...new Set(findings)].join(', '));process.exitCode=1;}else console.log('No recognizable high-entropy provider secrets/private-key blocks found by heuristic scan. This is NOT a complete security audit.');

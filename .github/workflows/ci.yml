@@ -1,0 +1,43 @@
+name: Help Desk quality gates
+on:
+  pull_request:
+  push:
+    branches: [main, 'work/**']
+permissions:
+  contents: read
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Replace npm install by npm ci after resolving and reviewing the first lockfile.
+      - run: npm install --ignore-scripts
+      - run: npm run verify
+      - run: npm audit --omit=dev --audit-level=high
+  postgres-rls:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: helpdesk_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: local_disposable_ci_password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d helpdesk_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      ALLOW_DATABASE_TESTS: '1'
+      HELPDESK_TEST_ADMIN_URL: postgresql://postgres:local_disposable_ci_password@127.0.0.1:5432/helpdesk_test
+      HELPDESK_TEST_APP_URL: postgresql://helpdesk_app:local_disposable_app_password@127.0.0.1:5432/helpdesk_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts
+      - run: npm run test:db

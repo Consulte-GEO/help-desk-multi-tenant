@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-15",
+  "remote_writes": [],
+  "local_tests": {
+    "passed": 90,
+    "failed": 0,
+    "skipped": 0
+  },
+  "postgres": {
+    "written_scenarios": 15,
+    "executed_scenarios": 0,
+    "state": "not_executed"
+  },
+  "browser": {
+    "state": "blocked_by_environment_policy",
+    "passed_checks": 0
+  },
+  "api": {
+    "paths": 11,
+    "operations": 14,
+    "formal_openapi_validation": false
+  },
+  "migrations": {
+    "files": 2,
+    "tables_proposed": 22,
+    "applied_remotely": false
+  },
+  "production_ready": false,
+  "toolchain_observed": {
+    "node": "22.16.0",
+    "npm": "10.9.2",
+    "typescript": "5.8.3"
+  },
+  "next_stage": "HD-101 dependencies and HD-102 PostgreSQL real isolation tests"
+}
