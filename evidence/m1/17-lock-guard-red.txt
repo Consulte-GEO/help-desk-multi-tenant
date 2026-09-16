@@ -1,0 +1,158 @@
+TAP version 13
+# (node:1920) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: lock metadata must correspond to manifest and include downloaded package integrity
+ok 1 - lock metadata must correspond to manifest and include downloaded package integrity
+  ---
+  duration_ms: 0.876537
+  type: 'test'
+  ...
+# Subtest: lock guard rejects oldVersion
+not ok 2 - lock guard rejects oldVersion
+  ---
+  duration_ms: 0.545279
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: lock guard rejects missingPackage
+not ok 3 - lock guard rejects missingPackage
+  ---
+  duration_ms: 0.114462
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lock guard rejects wrongRoot
+not ok 4 - lock guard rejects wrongRoot
+  ---
+  duration_ms: 0.120491
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lock guard rejects gitSource
+not ok 5 - lock guard rejects gitSource
+  ---
+  duration_ms: 0.113661
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lock guard rejects noIntegrity
+not ok 6 - lock guard rejects noIntegrity
+  ---
+  duration_ms: 0.132399
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lock guard rejects missingRoot
+not ok 7 - lock guard rejects missingRoot
+  ---
+  duration_ms: 0.154071
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lock guard rejects placeholder
+not ok 8 - lock guard rejects placeholder
+  ---
+  duration_ms: 0.104818
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:481'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/lockfile.test.ts:7:561)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 1
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 96.688483

@@ -1,0 +1,1024 @@
+
+> @consulte-geo/helpdesk@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+TAP version 13
+# (node:1740) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: create stores snapshot, event, outbox and idempotency together
+ok 1 - create stores snapshot, event, outbox and idempotency together
+  ---
+  duration_ms: 8.520807
+  type: 'test'
+  ...
+# Subtest: same key and payload replays original resource
+ok 2 - same key and payload replays original resource
+  ---
+  duration_ms: 0.622185
+  type: 'test'
+  ...
+# Subtest: concurrent retries produce one logical ticket
+ok 3 - concurrent retries produce one logical ticket
+  ---
+  duration_ms: 5.599666
+  type: 'test'
+  ...
+# Subtest: different payload with same key returns conflict
+ok 4 - different payload with same key returns conflict
+  ---
+  duration_ms: 0.956347
+  type: 'test'
+  ...
+# Subtest: idempotency key is scoped by principal
+ok 5 - idempotency key is scoped by principal
+  ---
+  duration_ms: 0.707243
+  type: 'test'
+  ...
+# Subtest: no coverage rejects creation without fictitious SLA
+ok 6 - no coverage rejects creation without fictitious SLA
+  ---
+  duration_ms: 0.23981
+  type: 'test'
+  ...
+# Subtest: ambiguous contracts require explicit selection
+ok 7 - ambiguous contracts require explicit selection
+  ---
+  duration_ms: 25.85848
+  type: 'test'
+  ...
+# Subtest: selected foreign coverage is not honored
+ok 8 - selected foreign coverage is not honored
+  ---
+  duration_ms: 0.422104
+  type: 'test'
+  ...
+# Subtest: coverage is revalidated after earlier successful resolve
+ok 9 - coverage is revalidated after earlier successful resolve
+  ---
+  duration_ms: 0.806242
+  type: 'test'
+  ...
+# Subtest: failed outbox insert rolls back every prior write
+ok 10 - failed outbox insert rolls back every prior write
+  ---
+  duration_ms: 0.800964
+  type: 'test'
+  ...
+# Subtest: cross-account creation denied despite known coverage
+ok 11 - cross-account creation denied despite known coverage
+  ---
+  duration_ms: 0.415044
+  type: 'test'
+  ...
+# Subtest: same-account different requester cannot fetch ticket
+ok 12 - same-account different requester cannot fetch ticket
+  ---
+  duration_ms: 0.51858
+  type: 'test'
+  ...
+# Subtest: integration cannot cross product boundary
+ok 13 - integration cannot cross product boundary
+  ---
+  duration_ms: 0.267702
+  type: 'test'
+  ...
+# Subtest: second product integrates without a new core field
+ok 14 - second product integrates without a new core field
+  ---
+  duration_ms: 0.417438
+  type: 'test'
+  ...
+# Subtest: snapshot survives later configuration change
+ok 15 - snapshot survives later configuration change
+  ---
+  duration_ms: 0.424568
+  type: 'test'
+  ...
+# Subtest: public reply and internal note are separate resources
+ok 16 - public reply and internal note are separate resources
+  ---
+  duration_ms: 2.500968
+  type: 'test'
+  ...
+# Subtest: integration cannot add internal note even with notes scope
+ok 17 - integration cannot add internal note even with notes scope
+  ---
+  duration_ms: 0.31926
+  type: 'test'
+  ...
+# Subtest: optimistic transition rejects stale version
+ok 18 - optimistic transition rejects stale version
+  ---
+  duration_ms: 0.815926
+  type: 'test'
+  ...
+# Subtest: customer cannot transition to agent-only state
+ok 19 - customer cannot transition to agent-only state
+  ---
+  duration_ms: 0.330917
+  type: 'test'
+  ...
+# Subtest: reopening needs an explicit reason
+ok 20 - reopening needs an explicit reason
+  ---
+  duration_ms: 0.309495
+  type: 'test'
+  ...
+# Subtest: thank-you message does not implicitly reopen a resolved ticket
+ok 21 - thank-you message does not implicitly reopen a resolved ticket
+  ---
+  duration_ms: 0.394313
+  type: 'test'
+  ...
+# Subtest: public timeline never contains internal-note events
+ok 22 - public timeline never contains internal-note events
+  ---
+  duration_ms: 1.402978
+  type: 'test'
+  ...
+# Subtest: cursor is bound to identity/filter context
+ok 23 - cursor is bound to identity/filter context
+  ---
+  duration_ms: 0.857769
+  type: 'test'
+  ...
+# Subtest: pagination is stable and does not repeat entries
+ok 24 - pagination is stable and does not repeat entries
+  ---
+  duration_ms: 0.534604
+  type: 'test'
+  ...
+# Subtest: memory adapter does not mix conversations when ticket IDs repeat across workspaces
+ok 25 - memory adapter does not mix conversations when ticket IDs repeat across workspaces
+  ---
+  duration_ms: 0.283036
+  type: 'test'
+  ...
+# (node:1741) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: legacy service read is bounded instead of returning an unlimited conversation
+ok 26 - legacy service read is bounded instead of returning an unlimited conversation
+  ---
+  duration_ms: 11.45753
+  type: 'test'
+  ...
+# Subtest: messages collection uses bounded cursor pages without missing or duplicating equal timestamps
+ok 27 - messages collection uses bounded cursor pages without missing or duplicating equal timestamps
+  ---
+  duration_ms: 53.471496
+  type: 'test'
+  ...
+# Subtest: notes collection uses bounded cursor pages without missing or duplicating equal timestamps
+ok 28 - notes collection uses bounded cursor pages without missing or duplicating equal timestamps
+  ---
+  duration_ms: 9.790334
+  type: 'test'
+  ...
+# Subtest: timeline collection uses bounded cursor pages without missing or duplicating equal timestamps
+ok 29 - timeline collection uses bounded cursor pages without missing or duplicating equal timestamps
+  ---
+  duration_ms: 11.583429
+  type: 'test'
+  ...
+# Subtest: public timeline filters internal events before computing next cursor
+ok 30 - public timeline filters internal events before computing next cursor
+  ---
+  duration_ms: 7.689747
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters limit=0
+ok 31 - rejects invalid conversation parameters limit=0
+  ---
+  duration_ms: 2.293558
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters limit=101
+ok 32 - rejects invalid conversation parameters limit=101
+  ---
+  duration_ms: 1.384632
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters limit=1.5
+ok 33 - rejects invalid conversation parameters limit=1.5
+  ---
+  duration_ms: 1.423169
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters limit=no
+ok 34 - rejects invalid conversation parameters limit=no
+  ---
+  duration_ms: 1.548507
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters limit=2&limit=3
+ok 35 - rejects invalid conversation parameters limit=2&limit=3
+  ---
+  duration_ms: 1.042918
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters offset=5
+ok 36 - rejects invalid conversation parameters offset=5
+  ---
+  duration_ms: 0.802175
+  type: 'test'
+  ...
+# Subtest: rejects invalid conversation parameters cursor=notjson
+ok 37 - rejects invalid conversation parameters cursor=notjson
+  ---
+  duration_ms: 1.377891
+  type: 'test'
+  ...
+# Subtest: cursor is bound to collection, principal, workspace and ticket
+ok 38 - cursor is bound to collection, principal, workspace and ticket
+  ---
+  duration_ms: 3.649946
+  type: 'test'
+  ...
+# Subtest: requester cannot page notes even when given an agent cursor
+ok 39 - requester cannot page notes even when given an agent cursor
+  ---
+  duration_ms: 4.198941
+  type: 'test'
+  ...
+# Subtest: collection defaults to latest 50 entries in descending order
+ok 40 - collection defaults to latest 50 entries in descending order
+  ---
+  duration_ms: 1.654346
+  type: 'test'
+  ...
+# (node:1742) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: late response from another ticket or profile is discarded and old notes are erased
+ok 41 - late response from another ticket or profile is discarded and old notes are erased
+  ---
+  duration_ms: 1.700585
+  type: 'test'
+  ...
+# Subtest: descending API pages are displayed chronologically and duplicate IDs are merged
+ok 42 - descending API pages are displayed chronologically and duplicate IDs are merged
+  ---
+  duration_ms: 9.290354
+  type: 'test'
+  ...
+# Subtest: message and note cursors remain separate and refreshed ticket invalidates in-flight pages
+ok 43 - message and note cursors remain separate and refreshed ticket invalidates in-flight pages
+  ---
+  duration_ms: 0.276736
+  type: 'test'
+  ...
+# (node:1773) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disposable database guard accepts only explicit opt-in and matching local endpoints
+ok 44 - disposable database guard accepts only explicit opt-in and matching local endpoints
+  ---
+  duration_ms: 1.142287
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects missingOptIn
+ok 45 - disposable database guard rejects missingOptIn
+  ---
+  duration_ms: 0.24595
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects remote
+ok 46 - disposable database guard rejects remote
+  ---
+  duration_ms: 0.121773
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects wrongDb
+ok 47 - disposable database guard rejects wrongDb
+  ---
+  duration_ms: 0.110947
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects queryOverride
+ok 48 - disposable database guard rejects queryOverride
+  ---
+  duration_ms: 0.21302
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects optionsOverride
+ok 49 - disposable database guard rejects optionsOverride
+  ---
+  duration_ms: 0.12609
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects fragment
+ok 50 - disposable database guard rejects fragment
+  ---
+  duration_ms: 0.138999
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects wrongProtocol
+ok 51 - disposable database guard rejects wrongProtocol
+  ---
+  duration_ms: 0.080501
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects differentPort
+ok 52 - disposable database guard rejects differentPort
+  ---
+  duration_ms: 0.296736
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects appAdmin
+ok 53 - disposable database guard rejects appAdmin
+  ---
+  duration_ms: 0.412891
+  type: 'test'
+  ...
+# Subtest: disposable database guard rejects noPassword
+ok 54 - disposable database guard rejects noPassword
+  ---
+  duration_ms: 0.834103
+  type: 'test'
+  ...
+# Subtest: guard errors never echo credentials
+ok 55 - guard errors never echo credentials
+  ---
+  duration_ms: 0.208944
+  type: 'test'
+  ...
+# (node:1784) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requester reads own ticket
+ok 56 - requester reads own ticket
+  ---
+  duration_ms: 0.922587
+  type: 'test'
+  ...
+# Subtest: same workspace does not grant sibling-account access
+ok 57 - same workspace does not grant sibling-account access
+  ---
+  duration_ms: 0.101393
+  type: 'test'
+  ...
+# Subtest: account grant never grants another workspace
+ok 58 - account grant never grants another workspace
+  ---
+  duration_ms: 0.127952
+  type: 'test'
+  ...
+# Subtest: requester cannot read another requester ticket
+ok 59 - requester cannot read another requester ticket
+  ---
+  duration_ms: 0.095433
+  type: 'test'
+  ...
+# Subtest: account manager reads other requester tickets
+ok 60 - account manager reads other requester tickets
+  ---
+  duration_ms: 0.096525
+  type: 'test'
+  ...
+# Subtest: agent needs an account grant, not only workspace membership
+ok 61 - agent needs an account grant, not only workspace membership
+  ---
+  duration_ms: 0.1125
+  type: 'test'
+  ...
+# Subtest: human workspace administrator can read its workspace
+ok 62 - human workspace administrator can read its workspace
+  ---
+  duration_ms: 0.079489
+  type: 'test'
+  ...
+# Subtest: forged integration administrator never becomes human operator
+ok 63 - forged integration administrator never becomes human operator
+  ---
+  duration_ms: 0.088303
+  type: 'test'
+  ...
+# Subtest: customer cannot write internal notes
+ok 64 - customer cannot write internal notes
+  ---
+  duration_ms: 3.630847
+  type: 'test'
+  ...
+# Subtest: account-scoped agent can write internal notes
+ok 65 - account-scoped agent can write internal notes
+  ---
+  duration_ms: 0.302655
+  type: 'test'
+  ...
+# Subtest: integration cannot read another product instance
+ok 66 - integration cannot read another product instance
+  ---
+  duration_ms: 0.140722
+  type: 'test'
+  ...
+# Subtest: missing read scope blocks ticket
+ok 67 - missing read scope blocks ticket
+  ---
+  duration_ms: 0.078689
+  type: 'test'
+  ...
+# Subtest: single eligible coverage resolves
+ok 68 - single eligible coverage resolves
+  ---
+  duration_ms: 0.204827
+  type: 'test'
+  ...
+# Subtest: multiple coverages are ambiguous
+ok 69 - multiple coverages are ambiguous
+  ---
+  duration_ms: 6.322372
+  type: 'test'
+  ...
+# Subtest: expired coverage cannot be chosen
+ok 70 - expired coverage cannot be chosen
+  ---
+  duration_ms: 0.094321
+  type: 'test'
+  ...
+# Subtest: suspended contract cannot be chosen
+ok 71 - suspended contract cannot be chosen
+  ---
+  duration_ms: 0.070756
+  type: 'test'
+  ...
+# Subtest: future contract is ineligible
+ok 72 - future contract is ineligible
+  ---
+  duration_ms: 0.063375
+  type: 'test'
+  ...
+# Subtest: draft contract cannot grant coverage
+ok 73 - draft contract cannot grant coverage
+  ---
+  duration_ms: 0.058968
+  type: 'test'
+  ...
+# Subtest: new ticket can enter triage
+ok 74 - new ticket can enter triage
+  ---
+  duration_ms: 0.081192
+  type: 'test'
+  ...
+# Subtest: customer cannot resolve own ticket
+ok 75 - customer cannot resolve own ticket
+  ---
+  duration_ms: 0.044096
+  type: 'test'
+  ...
+# Subtest: customer can explicitly reopen resolved ticket
+ok 76 - customer can explicitly reopen resolved ticket
+  ---
+  duration_ms: 0.039759
+  type: 'test'
+  ...
+# Subtest: closed is terminal in first release
+ok 77 - closed is terminal in first release
+  ---
+  duration_ms: 0.043135
+  type: 'test'
+  ...
+# Subtest: internal waiting projects as in progress
+ok 78 - internal waiting projects as in progress
+  ---
+  duration_ms: 0.060461
+  type: 'test'
+  ...
+# Subtest: canonical hash ignores object property order
+ok 79 - canonical hash ignores object property order
+  ---
+  duration_ms: 0.496776
+  type: 'test'
+  ...
+# Subtest: canonical hash preserves array order
+ok 80 - canonical hash preserves array order
+  ---
+  duration_ms: 0.118598
+  type: 'test'
+  ...
+# Subtest: ambiguous non-JSON values are rejected
+ok 81 - ambiguous non-JSON values are rejected
+  ---
+  duration_ms: 0.229264
+  type: 'test'
+  ...
+# Subtest: business calendar skips weekend
+ok 82 - business calendar skips weekend
+  ---
+  duration_ms: 29.629022
+  type: 'test'
+  ...
+# Subtest: business calendar skips configured holiday
+ok 83 - business calendar skips configured holiday
+  ---
+  duration_ms: 28.20392
+  type: 'test'
+  ...
+# Subtest: business calendar preserves seconds
+ok 84 - business calendar preserves seconds
+  ---
+  duration_ms: 0.369735
+  type: 'test'
+  ...
+# Subtest: zero target returns exact start
+ok 85 - zero target returns exact start
+  ---
+  duration_ms: 0.167812
+  type: 'test'
+  ...
+# Subtest: empty calendar fails instead of infinite loop
+ok 86 - empty calendar fails instead of infinite loop
+  ---
+  duration_ms: 0.114432
+  type: 'test'
+  ...
+# (node:1795) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: capabilities distinguish implemented from disabled features
+ok 87 - capabilities distinguish implemented from disabled features
+  ---
+  duration_ms: 28.781267
+  type: 'test'
+  ...
+# Subtest: missing authentication returns a safe problem document
+ok 88 - missing authentication returns a safe problem document
+  ---
+  duration_ms: 1.200454
+  type: 'test'
+  ...
+# Subtest: HTTP create and replay return same resource with ETag
+ok 89 - HTTP create and replay return same resource with ETag
+  ---
+  duration_ms: 7.411018
+  type: 'test'
+  ...
+# Subtest: customer DTO does not expose contract policy or internal state
+ok 90 - customer DTO does not expose contract policy or internal state
+  ---
+  duration_ms: 0.916838
+  type: 'test'
+  ...
+# Subtest: unknown properties are rejected instead of mass assignment
+ok 91 - unknown properties are rejected instead of mass assignment
+  ---
+  duration_ms: 0.955937
+  type: 'test'
+  ...
+# Subtest: invalid content type yields 415
+ok 92 - invalid content type yields 415
+  ---
+  duration_ms: 0.350707
+  type: 'test'
+  ...
+# Subtest: body limits also apply without Content-Length
+ok 93 - body limits also apply without Content-Length
+  ---
+  duration_ms: 0.958801
+  type: 'test'
+  ...
+# Subtest: malformed JSON returns 400 rather than stack trace
+ok 94 - malformed JSON returns 400 rather than stack trace
+  ---
+  duration_ms: 2.156321
+  type: 'test'
+  ...
+# Subtest: unknown route returns a problem instead of HTML or success
+ok 95 - unknown route returns a problem instead of HTML or success
+  ---
+  duration_ms: 0.623086
+  type: 'test'
+  ...
+# Subtest: If-Match is required for state changes
+ok 96 - If-Match is required for state changes
+  ---
+  duration_ms: 1.832975
+  type: 'test'
+  ...
+# Subtest: state change is version controlled with operator-only internal DTO
+ok 97 - state change is version controlled with operator-only internal DTO
+  ---
+  duration_ms: 1.997152
+  type: 'test'
+  ...
+# Subtest: note endpoint rejects a requester and never appears in messages
+ok 98 - note endpoint rejects a requester and never appears in messages
+  ---
+  duration_ms: 2.821621
+  type: 'test'
+  ...
+# Subtest: list validates page size and uses snake_case cursor
+ok 99 - list validates page size and uses snake_case cursor
+  ---
+  duration_ms: 1.402528
+  type: 'test'
+  ...
+# Subtest: customer timeline is projected without internal transition reasons
+ok 100 - customer timeline is projected without internal transition reasons
+  ---
+  duration_ms: 7.750889
+  type: 'test'
+  ...
+# Subtest: unexpected exceptions do not expose SQL or access tokens
+ok 101 - unexpected exceptions do not expose SQL or access tokens
+  ---
+  duration_ms: 0.497057
+  type: 'test'
+  ...
+# (node:1806) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unit of work sets both identity selectors transaction-locally before use
+ok 102 - unit of work sets both identity selectors transaction-locally before use
+  ---
+  duration_ms: 1.453655
+  type: 'test'
+  ...
+# Subtest: failed domain operation rolls back and releases connection
+ok 103 - failed domain operation rolls back and releases connection
+  ---
+  duration_ms: 0.451789
+  type: 'test'
+  ...
+# Subtest: failed rollback destroys pooled connection
+ok 104 - failed rollback destroys pooled connection
+  ---
+  duration_ms: 1.237109
+  type: 'test'
+  ...
+# Subtest: runtime refuses postgres and BYPASSRLS roles
+ok 105 - runtime refuses postgres and BYPASSRLS roles
+  ---
+  duration_ms: 0.418299
+  type: 'test'
+  ...
+# Subtest: runtime permits only restricted dedicated role
+ok 106 - runtime permits only restricted dedicated role
+  ---
+  duration_ms: 0.204837
+  type: 'test'
+  ...
+# Subtest: SQL parameters carry attacker strings, never statement interpolation
+ok 107 - SQL parameters carry attacker strings, never statement interpolation
+  ---
+  duration_ms: 0.253101
+  type: 'test'
+  ...
+# Subtest: auth refuses absent bearer and missing workspace
+ok 108 - auth refuses absent bearer and missing workspace
+  ---
+  duration_ms: 15.721338
+  type: 'test'
+  ...
+# Subtest: human identity is validated with Auth server then live domain grants
+ok 109 - human identity is validated with Auth server then live domain grants
+  ---
+  duration_ms: 2.285335
+  type: 'test'
+  ...
+# Subtest: invalid Supabase bearer is rejected before domain lookup
+ok 110 - invalid Supabase bearer is rejected before domain lookup
+  ---
+  duration_ms: 0.631108
+  type: 'test'
+  ...
+# Subtest: revoked membership is denied despite valid Supabase session
+ok 111 - revoked membership is denied despite valid Supabase session
+  ---
+  duration_ms: 0.855636
+  type: 'test'
+  ...
+# Subtest: integration session is hashed, resolved afresh and cannot become human
+ok 112 - integration session is hashed, resolved afresh and cannot become human
+  ---
+  duration_ms: 0.687483
+  type: 'test'
+  ...
+# Subtest: long-lived integration credentials cannot be used as session bearer
+ok 113 - long-lived integration credentials cannot be used as session bearer
+  ---
+  duration_ms: 0.301453
+  type: 'test'
+  ...
+# Subtest: token exchange persists only hashes and returns distinct short token
+ok 114 - token exchange persists only hashes and returns distinct short token
+  ---
+  duration_ms: 0.466531
+  type: 'test'
+  ...
+# Subtest: production remains closed until explicit release gate
+ok 115 - production remains closed until explicit release gate
+  ---
+  duration_ms: 0.189585
+  type: 'test'
+  ...
+# Subtest: production does not accept admin SQL credentials
+ok 116 - production does not accept admin SQL credentials
+  ---
+  duration_ms: 0.160401
+  type: 'test'
+  ...
+# Subtest: TLS cannot be disabled by a connection-string parameter
+ok 117 - TLS cannot be disabled by a connection-string parameter
+  ---
+  duration_ms: 0.122925
+  type: 'test'
+  ...
+# Subtest: production auth endpoint cannot redirect to an arbitrary host
+ok 118 - production auth endpoint cannot redirect to an arbitrary host
+  ---
+  duration_ms: 0.13966
+  type: 'test'
+  ...
+# Subtest: service and secret API keys are rejected as public configuration
+ok 119 - service and secret API keys are rejected as public configuration
+  ---
+  duration_ms: 0.137457
+  type: 'test'
+  ...
+# Subtest: runtime accepts dedicated Supavisor username with project suffix
+ok 120 - runtime accepts dedicated Supavisor username with project suffix
+  ---
+  duration_ms: 0.128453
+  type: 'test'
+  ...
+# (node:1817) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: M1 scopes are enforced by explicit restrictive DB policies
+ok 121 - M1 scopes are enforced by explicit restrictive DB policies
+  ---
+  duration_ms: 1.026282
+  type: 'test'
+  ...
+# Subtest: scope migration guards ticket transitions and message actor type at database boundary
+ok 122 - scope migration guards ticket transitions and message actor type at database boundary
+  ---
+  duration_ms: 0.388073
+  type: 'test'
+  ...
+# Subtest: bounded quota storage is private with RLS and stable key, not a row per request
+ok 123 - bounded quota storage is private with RLS and stable key, not a row per request
+  ---
+  duration_ms: 0.237156
+  type: 'test'
+  ...
+# Subtest: response expiration retains a tombstone instead of silently replaying or recreating
+ok 124 - response expiration retains a tombstone instead of silently replaying or recreating
+  ---
+  duration_ms: 0.216785
+  type: 'test'
+  ...
+# Subtest: maintenance is opt-in, bounded, does not delete tickets or outbox, and app has no execute grant
+ok 125 - maintenance is opt-in, bounded, does not delete tickets or outbox, and app has no execute grant
+  ---
+  duration_ms: 0.347452
+  type: 'test'
+  ...
+# Subtest: session quota serializes by connection and limits active sessions
+ok 126 - session quota serializes by connection and limits active sessions
+  ---
+  duration_ms: 0.149154
+  type: 'test'
+  ...
+# (node:1824) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creation replay reauthorizes the ticket even with a previously resolved principal
+ok 127 - creation replay reauthorizes the ticket even with a previously resolved principal
+  ---
+  duration_ms: 4.304709
+  type: 'test'
+  ...
+# Subtest: expired idempotency tombstone cannot replay its stored body or create a new ticket
+ok 128 - expired idempotency tombstone cannot replay its stored body or create a new ticket
+  ---
+  duration_ms: 0.519791
+  type: 'test'
+  ...
+# Subtest: database guard rejects create_role privilege
+ok 129 - database guard rejects create_role privilege
+  ---
+  duration_ms: 0.316206
+  type: 'test'
+  ...
+# Subtest: database guard rejects create_database privilege
+ok 130 - database guard rejects create_database privilege
+  ---
+  duration_ms: 0.154042
+  type: 'test'
+  ...
+# Subtest: database guard rejects replication privilege
+ok 131 - database guard rejects replication privilege
+  ---
+  duration_ms: 0.09344
+  type: 'test'
+  ...
+# Subtest: database guard rejects member_of_roles privilege
+ok 132 - database guard rejects member_of_roles privilege
+  ---
+  duration_ms: 0.077256
+  type: 'test'
+  ...
+# Subtest: database guard rejects owns_objects privilege
+ok 133 - database guard rejects owns_objects privilege
+  ---
+  duration_ms: 0.122835
+  type: 'test'
+  ...
+# Subtest: SET ROLE from an administrator is not a restricted authenticated connection
+ok 134 - SET ROLE from an administrator is not a restricted authenticated connection
+  ---
+  duration_ms: 0.119299
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override ?uselibpqcompat=true
+ok 135 - connection URL rejects ambiguous override ?uselibpqcompat=true
+  ---
+  duration_ms: 0.477648
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+ok 136 - connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+  ---
+  duration_ms: 0.325249
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override \#fragment
+ok 137 - connection URL rejects ambiguous override \#fragment
+  ---
+  duration_ms: 0.137787
+  type: 'test'
+  ...
+# Subtest: production requires a server-only rate-limit HMAC key
+ok 138 - production requires a server-only rate-limit HMAC key
+  ---
+  duration_ms: 0.195474
+  type: 'test'
+  ...
+# Subtest: schema compatibility rejects missing or mismatched database version
+ok 139 - schema compatibility rejects missing or mismatched database version
+  ---
+  duration_ms: 0.489296
+  type: 'test'
+  ...
+# Subtest: cache denied by database cannot return even metadata from the old response
+ok 140 - cache denied by database cannot return even metadata from the old response
+  ---
+  duration_ms: 0.596527
+  type: 'test'
+  ...
+# Subtest: PostgreSQL cache lookup uses resource-aware helper, not unrestricted saved responses
+ok 141 - PostgreSQL cache lookup uses resource-aware helper, not unrestricted saved responses
+  ---
+  duration_ms: 0.431378
+  type: 'test'
+  ...
+# (node:1839) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: accepts trusted client address 127.0.0.1
+ok 142 - accepts trusted client address 127.0.0.1
+  ---
+  duration_ms: 1.33046
+  type: 'test'
+  ...
+# Subtest: accepts trusted client address 2001:db8::1
+ok 143 - accepts trusted client address 2001:db8::1
+  ---
+  duration_ms: 2.997726
+  type: 'test'
+  ...
+# Subtest: accepts trusted client address ::ffff:192.0.2.1
+ok 144 - accepts trusted client address ::ffff:192.0.2.1
+  ---
+  duration_ms: 0.17297
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address undefined
+ok 145 - rejects absent or invalid trusted address undefined
+  ---
+  duration_ms: 0.706181
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address 
+ok 146 - rejects absent or invalid trusted address 
+  ---
+  duration_ms: 0.094663
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address 192.0.2.1, 198.51.100.1
+ok 147 - rejects absent or invalid trusted address 192.0.2.1, 198.51.100.1
+  ---
+  duration_ms: 0.102374
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address attacker.invalid
+ok 148 - rejects absent or invalid trusted address attacker.invalid
+  ---
+  duration_ms: 0.068753
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address not an ip
+ok 149 - rejects absent or invalid trusted address not an ip
+  ---
+  duration_ms: 0.06037
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address  192.0.2.1
+ok 150 - rejects absent or invalid trusted address  192.0.2.1
+  ---
+  duration_ms: 0.200722
+  type: 'test'
+  ...
+# Subtest: IPv6 alternative spellings and mapped IPv4 have a single quota identity
+ok 151 - IPv6 alternative spellings and mapped IPv4 have a single quota identity
+  ---
+  duration_ms: 0.398068
+  type: 'test'
+  ...
+# Subtest: quota keys are stable HMACs, separate by policy, without raw IP, token or principal
+ok 152 - quota keys are stable HMACs, separate by policy, without raw IP, token or principal
+  ---
+  duration_ms: 19.809082
+  type: 'test'
+  ...
+# Subtest: two replicas use same quota keys and rotating HMAC changes identities
+ok 153 - two replicas use same quota keys and rotating HMAC changes identities
+  ---
+  duration_ms: 0.763288
+  type: 'test'
+  ...
+# Subtest: workspace budget is shared but principal budget is not
+ok 154 - workspace budget is shared but principal budget is not
+  ---
+  duration_ms: 0.301423
+  type: 'test'
+  ...
+# Subtest: quota denied carries bounded retry duration
+ok 155 - quota denied carries bounded retry duration
+  ---
+  duration_ms: 0.295374
+  type: 'test'
+  ...
+# Subtest: malformed DB decision fails closed: null
+ok 156 - malformed DB decision fails closed: null
+  ---
+  duration_ms: 0.174181
+  type: 'test'
+  ...
+# Subtest: malformed DB decision fails closed: {}
+ok 157 - malformed DB decision fails closed: {}
+  ---
+  duration_ms: 0.268764
+  type: 'test'
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":"true"}
+ok 158 - malformed DB decision fails closed: {"allowed":"true"}
+  ---
+  duration_ms: 0.181783
+  type: 'test'
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":false,"retry_after":0}
+ok 159 - malformed DB decision fails closed: {"allowed":false,"retry_after":0}
+  ---
+  duration_ms: 0.175664
+  type: 'test'
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":false,"retry_after":99999}
+ok 160 - malformed DB decision fails closed: {"allowed":false,"retry_after":99999}
+  ---
+  duration_ms: 0.111598
+  type: 'test'
+  ...
+# Subtest: unavailable shared limiter never falls back to per-instance memory
+ok 161 - unavailable shared limiter never falls back to per-instance memory
+  ---
+  duration_ms: 0.311598
+  type: 'test'
+  ...
+# Subtest: forwarded headers cannot substitute trusted adapter metadata
+ok 162 - forwarded headers cannot substitute trusted adapter metadata
+  ---
+  duration_ms: 0.296055
+  type: 'test'
+  ...
+# Subtest: HTTP ingress quota runs before Auth and returns Retry-After without leaking DB errors
+ok 163 - HTTP ingress quota runs before Auth and returns Retry-After without leaking DB errors
+  ---
+  duration_ms: 2.66809
+  type: 'test'
+  ...
+# Subtest: public endpoints are subject to the same ingress quota
+ok 164 - public endpoints are subject to the same ingress quota
+  ---
+  duration_ms: 0.520653
+  type: 'test'
+  ...
+# Subtest: authenticated requests consume workspace budget only after validating identity
+ok 165 - authenticated requests consume workspace budget only after validating identity
+  ---
+  duration_ms: 1.628437
+  type: 'test'
+  ...
+1..165
+# tests 165
+# suites 0
+# pass 165
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 729.077971

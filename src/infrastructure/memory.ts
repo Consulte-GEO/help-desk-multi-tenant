@@ -1,8 +1,13 @@
+import type {PageWindow} from '../application/pagination.ts';
 import type {Principal,Coverage,Ticket,PublicMessage,InternalNote,TicketEvent,OutboxEvent} from '../domain/model.ts';
 import type {UnitOfWork,Store,StoredResult,SupportContext,Cursor} from '../application/ports.ts';
 import {canReadTicket} from '../domain/policy.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 export type MemoryState={coverages:Coverage[];tickets:Ticket[];messages:PublicMessage[];notes:InternalNote[];events:TicketEvent[];outbox:OutboxEvent[];idempotency:StoredResult[]};
+function windowRows<T extends {id:string;createdAt:string}>(rows:T[],window:PageWindow={limit:100,cursor:null}):T[]{
+ const c=window.cursor;return rows.filter(r=>!c||r.createdAt<c.at||(r.createdAt===c.at&&r.id<c.id))
+  .sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.id.localeCompare(a.id)).slice(0,window.limit);
+}
 /** Test/demo adapter only. Its mutex verifies application invariants, not PostgreSQL locking/RLS. */
 export class MemoryUnitOfWork implements UnitOfWork{
  private state:MemoryState;private tail:Promise<void>=Promise.resolve();failOutbox=false;
@@ -24,8 +29,8 @@ export class MemoryUnitOfWork implements UnitOfWork{
    getIdempotency:async(operation,key)=>next.idempotency.find(x=>x.principalId===p.id&&x.workspaceId===p.workspaceId&&x.operation===operation&&x.key===key)??null,
    saveIdempotency:async record=>{next.idempotency.push(structuredClone(record));},
    addMessage:async m=>{next.messages.push(structuredClone(m));},addNote:async n=>{next.notes.push(structuredClone(n));},
-   messages:async id=>next.messages.filter(m=>m.workspaceId===p.workspaceId&&m.ticketId===id),notes:async id=>next.notes.filter(n=>n.workspaceId===p.workspaceId&&n.ticketId===id),
-   addEvent:async e=>{next.events.push(structuredClone(e));},events:async(id,internal)=>next.events.filter(e=>e.workspaceId===p.workspaceId&&e.ticketId===id&&(internal||e.customerVisible)),
+   messages:async (id,window)=>windowRows(next.messages.filter(m=>m.workspaceId===p.workspaceId&&m.ticketId===id),window),notes:async (id,window)=>windowRows(next.notes.filter(n=>n.workspaceId===p.workspaceId&&n.ticketId===id),window),
+   addEvent:async e=>{next.events.push(structuredClone(e));},events:async(id,internal,window)=>windowRows(next.events.filter(e=>e.workspaceId===p.workspaceId&&e.ticketId===id&&(internal||e.customerVisible)),window),
    enqueue:async e=>{if(this.failOutbox)throw new Error('Injected outbox failure');next.outbox.push(structuredClone(e));}
   };
   try{const result=await work(store);this.state=next;return structuredClone(result);}finally{release();}

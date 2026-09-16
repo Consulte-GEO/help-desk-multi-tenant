@@ -1,0 +1,87 @@
+{
+  "timestamp_utc": "2026-09-16T00:27:47.767206+00:00",
+  "branch": "work/helpdesk-m1-v0.2.0",
+  "baseline": "aa9aa9ec359cdd954c2162252c224676d7679275",
+  "node": "v22.16.0",
+  "npm": "10.9.2",
+  "typescript": "Version 5.8.3",
+  "type_source": "Preinstalled global ts-node types, not a clean project npm install",
+  "node_types": "25.1.0",
+  "checks": [
+    {
+      "name": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "final-typecheck",
+      "command": [
+        "tsc",
+        "--noEmit",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "final-secret-scan",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "final-syntax",
+      "command": "node --check web/*.js and scripts/*.mjs (each file)",
+      "exit_code": 0
+    },
+    {
+      "name": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "final-release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "final-http-smoke",
+      "command": [
+        "node",
+        "scripts/smoke-local-http.mjs"
+      ],
+      "exit_code": 0,
+      "scope": "Loopback HTTP and memory demo, NOT PostgreSQL or Netlify"
+    }
+  ],
+  "known_blockers": [
+    "EAI_AGAIN registry.npmjs.org; no package-lock/npm ci/audit",
+    "Docker unavailable; 35 SQL scenarios not executed",
+    "Playwright net::ERR_BLOCKED_BY_ADMINISTRATOR",
+    "Supabase Auth/pooler and Netlify bundle/runtime not exercised"
+  ],
+  "remote_writes": false
+}

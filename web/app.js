@@ -1,3 +1,5 @@
+import {createConversationState} from './conversation-state.js';
+const conversation=createConversationState();
 const $=id=>document.getElementById(id);
 const s={token:'',workspace:'',me:null,tickets:[],ticket:null,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),messageKey:crypto.randomUUID(),drafts:{public:'',internal:''}};
 const labels={received:'Recebido',in_progress:'Em atendimento',waiting_for_you:'Aguardando você',resolved:'Resolvido',closed:'Encerrado',new:'Novo',triage:'Triagem',open:'Em atendimento',waiting_customer:'Aguardando cliente',waiting_internal:'Aguardando equipe',waiting_third_party:'Aguardando terceiro',cancelled:'Cancelado'};
@@ -6,18 +8,53 @@ const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
 function notice(text,error=false){$('notification').textContent=text;$('notification').classList.toggle('error',error);$('notification').hidden=false;clearTimeout(notice.timer);notice.timer=setTimeout(()=>$('notification').hidden=true,error?10000:5000);}
 function run(fn){return Promise.resolve().then(fn).catch(e=>{if(e.message!=='stale_session')notice(e.message??'Operação não concluída.',true);});}
-async function api(path,options={}){const epoch=s.epoch;const r=await fetch('/v1'+path,{...options,headers:{'content-type':'application/json',authorization:'Bearer '+s.token,'x-workspace-id':s.workspace,...options.headers}});let b;try{b=await r.json();}catch{throw Error('Resposta inesperada do servidor.');}if(epoch!==s.epoch)throw Error('stale_session');if(!r.ok)throw Error(b.detail??'Operação não concluída.');return b;}
+async function api(path,options={}){const epoch=s.epoch;const r=await fetch('/v1'+path,{...options,headers:{'content-type':'application/json',authorization:'Bearer '+s.token,'x-workspace-id':s.workspace,...options.headers}});let b;try{b=await r.json();}catch{throw Error('Resposta inesperada do servidor.');}if(epoch!==s.epoch)throw Error('stale_session');if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;throw Error((b.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));}return b;}
 const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempotency-key':key,...headers},body:JSON.stringify(body)});
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';s.drafts={public:'',internal:''};$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){conversation.reset('');$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';s.drafts={public:'',internal:''};$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list();}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 async function list(reset=true){const b=await api('/tickets?limit=25'+(!reset&&s.next?'&cursor='+encodeURIComponent(s.next):''));s.tickets=reset?b.items:[...s.tickets,...b.items.filter(n=>!s.tickets.some(t=>t.id===n.id))];s.next=b.next_cursor;render();if(!s.ticket&&s.tickets.length)await detail(s.tickets[0].id);}
 function render(){const q=$('search').value.trim().toLocaleLowerCase('pt-BR'),items=s.tickets.filter(t=>(t.subject+' '+t.description).toLocaleLowerCase('pt-BR').includes(q));$('ticket-list').replaceChildren();for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('aria-label','Abrir chamado: '+t.subject);const top=el('div','card-top'),bottom=el('div','card-bottom');top.append(el('span','',t.id.slice(0,8).toUpperCase()),el('span','',date(t.created_at)));bottom.append(badge(t.status),el('span','card-product',product(t.product_instance_id)));n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);}if(!items.length)$('ticket-list').append(el('p','list-empty',q?'Nenhum resultado na lista carregada.':'Nenhum chamado visível para este perfil.'));$('stat-total').textContent=s.tickets.length;$('stat-open').textContent=s.tickets.filter(t=>['received','in_progress'].includes(t.status)).length;$('stat-wait').textContent=s.tickets.filter(t=>t.status==='waiting_for_you').length;$('stat-done').textContent=s.tickets.filter(t=>t.status==='resolved').length;$('nav-count').textContent=s.tickets.length;$('list-count').textContent=items.length+' na lista';$('more').hidden=!s.next;}
-async function detail(id){const seq=++s.detail,t=await api('/tickets/'+id);const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages'),operator(t.account_id)?api('/tickets/'+id+'/notes'):Promise.resolve({items:[]})]);if(seq!==s.detail)return;if(s.ticket?.id!==t.id){$('message-body').value='';s.drafts={public:'',internal:''};mode('public');}s.ticket=t;$('empty-detail').hidden=true;$('ticket-detail').hidden=false;$('ticket-number').textContent='CHAMADO '+t.id.slice(0,8).toUpperCase()+' · VERSÃO '+t.version;$('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;$('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));$('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);$('messages').replaceChildren();for(const m of messages.items){const n=el('article','message');n.append(el('small','',(m.actor_type==='human_agent'?'Equipe de suporte':'Solicitante')+' · '+date(m.created_at)),el('p','',m.body));$('messages').append(n);}if(!messages.items.length)$('messages').append(el('p','fine','Ainda não há respostas nesta conversa.'));$('notes').replaceChildren();for(const m of notes.items){const n=el('article','message internal');n.append(el('small','','NOTA INTERNA · '+date(m.created_at)),el('p','',m.body));$('notes').append(n);}const agent=operator(t.account_id);$('notes-section').hidden=!agent;$('note-tab').hidden=!agent;if(!agent)mode('public');const allowed=agent?(moves[t.internal_status]??[]):t.status==='resolved'?['open','closed']:[];$('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));render();}
+function renderConversation(){
+ for(const kind of ['messages','notes']){
+  $(kind).replaceChildren();const items=conversation.items(kind);
+  for(const m of items){const n=el('article','message'+(kind==='notes'?' internal':''));
+   n.append(el('small','',(kind==='notes'?'NOTA INTERNA':m.actor_type==='human_agent'?'Equipe de suporte':'Solicitante')+' · '+date(m.created_at)),el('p','',m.body));$(kind).append(n);
+  }
+  if(kind==='messages'&&!items.length)$(kind).append(el('p','fine','Ainda não há respostas nesta conversa.'));
+  $('older-'+kind).hidden=!conversation.next(kind);
+ }
+}
+async function older(kind){
+ const cursor=conversation.next(kind),id=s.ticket?.id,seq=s.detail,generation=conversation.generation();
+ if(!cursor||!id)return;
+ const button=$('older-'+kind);button.disabled=true;
+ try{const page=await api('/tickets/'+id+'/'+kind+'?limit=50&cursor='+encodeURIComponent(cursor));
+  if(seq===s.detail&&id===s.ticket?.id&&conversation.accept(generation,kind,page))renderConversation();
+ }finally{button.disabled=false;}
+}
+async function detail(id){
+ const seq=++s.detail,t=await api('/tickets/'+id);
+ const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages?limit=50'),operator(t.account_id)?api('/tickets/'+id+'/notes?limit=50'):Promise.resolve({items:[],next_cursor:null})]);
+ if(seq!==s.detail)return;
+ if(s.ticket?.id!==t.id){$('message-body').value='';s.drafts={public:'',internal:''};mode('public');}
+ s.ticket=t;const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
+ conversation.accept(generation,'messages',messages);conversation.accept(generation,'notes',notes);
+ $('empty-detail').hidden=true;$('ticket-detail').hidden=false;
+ $('ticket-number').textContent='CHAMADO '+t.id.slice(0,8).toUpperCase()+' · VERSÃO '+t.version;
+ $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;
+ $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));
+ $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
+ renderConversation();const agent=operator(t.account_id);$('notes-section').hidden=!agent;$('note-tab').hidden=!agent;
+ if(!agent)mode('public');const allowed=agent?(moves[t.internal_status]??[]):t.status==='resolved'?['open','closed']:[];
+ $('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));render();
+}
+$('older-messages').onclick=()=>run(()=>older('messages'));
+$('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}
 function mode(value){if(value!==s.mode){s.drafts[s.mode]=$('message-body').value;$('message-body').value=s.drafts[value];}s.mode=value;$('message-form').classList.toggle('internal',value==='internal');for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===value);$('composer-label').textContent=value==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';$('visibility-help').textContent=value==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';$('send-message').textContent=value==='internal'?'Salvar nota':'Enviar resposta';}
 function fillContext(){const c=s.demo?.contexts.find(c=>c.key===$('demo-context').value);if(c){$('account-id').value=c.account_id;$('instance-id').value=c.product_instance_id;$('service-code').value=c.service_code;}}

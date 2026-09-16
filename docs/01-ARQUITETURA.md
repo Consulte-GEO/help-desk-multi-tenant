@@ -1,5 +1,7 @@
 # Help Desk independente — arquitetura consolidada
 
+> Atualização v0.2.0: a arquitetura deste documento é preservada. Controles implementados, parâmetros atuais e limites de validação estão em `06-M1-SEGURANCA-E-LIMITES.md` e `04-ESTADO-E-EVIDENCIAS.md`; estes prevalecem sobre descrições de estado da fundação. M1 não está encerrado.
+
 **Versão do documento:** 1.0 · **Incremento de código:** 0.1.0 · **Data:** 15/09/2026  
 **Situação:** arquitetura-alvo definida; primeira fundação implementada localmente; produção não liberada.
 

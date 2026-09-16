@@ -12,5 +12,5 @@ export async function readObject(req:Request,allowed:readonly string[]):Promise<
  return value as Record<string,unknown>;
 }
 export function text(input:Record<string,unknown>,key:string,min=1,max=200):string{const v=input[key];if(typeof v!=='string'||v.trim().length<min||v.length>max)throw new HelpdeskError(400,'invalid_input',`Campo ${key} inválido.`);return v;}
-export function identifier(value:unknown):string{if(typeof value!=='string'||! /^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(value))throw new HelpdeskError(400,'invalid_identifier','Identificador inválido.');return value;}
+export function identifier(value:unknown):string{if(typeof value!=='string'||! /^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(value))throw new HelpdeskError(400,'invalid_identifier','Identificador inválido.');return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)?value.toLowerCase():value;}
 export function ifMatch(req:Request):number{const value=req.headers.get('if-match');if(!value)throw new HelpdeskError(428,'precondition_required','Informe If-Match com a versão atual.');if(!/^"[1-9][0-9]*"$/.test(value))throw new HelpdeskError(400,'invalid_if_match','If-Match deve ser uma versão entre aspas.');const n=Number(value.slice(1,-1));if(!Number.isSafeInteger(n))throw new HelpdeskError(400,'invalid_if_match','Versão inválida.');return n;}

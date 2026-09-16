@@ -1,6 +1,6 @@
 # Instruções de continuidade — Help Desk
 
-Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md e docs/04-ESTADO-E-EVIDENCIAS.md antes de alterar o código.
+Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04-ESTADO-E-EVIDENCIAS.md e docs/06-M1-SEGURANCA-E-LIMITES.md antes de alterar o código.
 
 ## Fronteiras obrigatórias
 - Workspace, conta, produto/instância, contrato/versão e cobertura são conceitos distintos.
@@ -24,3 +24,6 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md e docs/
 
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
+
+## Estado v0.2.0
+M1 está em andamento: 35 testes SQL escritos não são 35 testes aprovados. O lock está ausente por falha DNS; não o fabricar. CI e publicação devem continuar bloqueados até npm ci/audit/SQL/runtime/browser reais. Preservar histórico de tickets; manutenção candidata só limpa dados técnicos.

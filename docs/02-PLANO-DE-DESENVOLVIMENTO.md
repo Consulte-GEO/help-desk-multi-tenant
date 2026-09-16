@@ -1,5 +1,8 @@
 # Plano de desenvolvimento e critérios de aceite
 
+> **Atualização v0.2.0 — M1 em andamento:** HD-101 tem guards/CI codificados, mas registry/lock/audit pendentes; HD-102 tem quatro migrations e 35 cenários SQL escritos, nenhum executado; HD-103 tem runtime reforçado, sem homologação no destino; HD-104 tem limites/lifecycle codificados e testes locais, sem carga/SQL real; HD-105 tem paginação/estado e HTTP local testados, navegador bloqueado. Ver documentos 04–06 para evidências atuais. A descrição de M0 abaixo permanece como registro da fundação.
+
+
 **Data:** 15/09/2026 · **Produto:** Help Desk independente · **Base de código:** 0.1.0  
 **Regra de acompanhamento:** codificado, testado localmente, homologado com serviços reais e publicado são estados distintos. Não há percentual global de conclusão estimado sem um backlog dimensionado pela equipe.
 
@@ -125,7 +128,7 @@ Dados de configuração que hoje só existem como fixtures ou via provisionament
 
 ## 6. M3 — Operação e processamento confiável
 
-Criar equipes, filas, atribuições e participantes com autorização distinta de roteamento. Acrescentar paginação estável de mensagens/histórico, busca por texto dentro do escopo, filtros combináveis e observações de atendimento. Acesso por participante deve ser explícito, revogável e restrito ao ticket; não pode promover alguém a gestor de conta.
+Criar equipes, filas, atribuições e participantes com autorização distinta de roteamento. A paginação de mensagens/histórico foi antecipada no código da v0.2.0 para limitar leituras no M1; ainda falta homologá-la com banco e navegador reais. Acrescentar busca por texto dentro do escopo, filtros combináveis e observações de atendimento. Acesso por participante deve ser explícito, revogável e restrito ao ticket; não pode promover alguém a gestor de conta.
 
 O dispatcher deve selecionar eventos pendentes com lock e lease, gerar entregas por destino e registrar tentativas. Falha de um provedor não deve impedir outras contas de serem atendidas. Usar limites de concorrência por workspace, backoff/jitter, circuit breaker por destino, DLQ e reprocessamento administrativo auditado. O worker terá papel de banco próprio e privilégios mínimos; não usar a chave de serviço do browser ou ampliar o papel HTTP.
 

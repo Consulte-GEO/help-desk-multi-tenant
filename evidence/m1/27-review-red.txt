@@ -1,0 +1,311 @@
+TAP version 13
+# (node:2600) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: UUID selectors are canonicalized without changing case-sensitive opaque identifiers
+not ok 1 - UUID selectors are canonicalized without changing case-sensitive opaque identifiers
+  ---
+  duration_ms: 1.427526
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE'
+    - 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee'
+  actual: 'AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:5:104)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: database transport failure 08006 is safe retryable unavailability
+not ok 2 - database transport failure 08006 is safe retryable unavailability
+  ---
+  duration_ms: 14.426612
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: database transport failure 53300 is safe retryable unavailability
+not ok 3 - database transport failure 53300 is safe retryable unavailability
+  ---
+  duration_ms: 0.312891
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure 57P01 is safe retryable unavailability
+not ok 4 - database transport failure 57P01 is safe retryable unavailability
+  ---
+  duration_ms: 0.529776
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure 57P02 is safe retryable unavailability
+not ok 5 - database transport failure 57P02 is safe retryable unavailability
+  ---
+  duration_ms: 0.241383
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure 57P03 is safe retryable unavailability
+not ok 6 - database transport failure 57P03 is safe retryable unavailability
+  ---
+  duration_ms: 0.343887
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure ECONNRESET is safe retryable unavailability
+not ok 7 - database transport failure ECONNRESET is safe retryable unavailability
+  ---
+  duration_ms: 0.30649
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure ECONNREFUSED is safe retryable unavailability
+not ok 8 - database transport failure ECONNREFUSED is safe retryable unavailability
+  ---
+  duration_ms: 0.320672
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database transport failure ETIMEDOUT is safe retryable unavailability
+not ok 9 - database transport failure ETIMEDOUT is safe retryable unavailability
+  ---
+  duration_ms: 0.618299
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:101'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:6:279)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: pool acquisition errors become safe unavailability instead of exposing infrastructure
+not ok 10 - pool acquisition errors become safe unavailability instead of exposing infrastructure
+  ---
+  duration_ms: 1.35055
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'database_unavailable',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'database_unavailable'
+    status: 503
+  actual:
+  error: 'sensitive infrastructure'
+  stack: |-
+    Object.connect (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:7:186)
+    PostgresUnitOfWork.run (file:///mnt/data/helpdesk-m1/src/infrastructure/postgres.ts:43:32)
+    assert.rejects.code (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:7:293)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:7:252)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:7:239)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: idle pooled connection errors are observed without secrets and logging failure cannot crash the callback
+not ok 11 - idle pooled connection errors are observed without secrets and logging failure cannot crash the callback
+  ---
+  duration_ms: 0.404458
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-review.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-review.test.ts:9:85)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 0
+# fail 11
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 141.221364

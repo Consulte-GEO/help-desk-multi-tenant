@@ -1,0 +1,144 @@
+TAP version 13
+# (node:2415) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creation replay reauthorizes the ticket even with a previously resolved principal
+ok 1 - creation replay reauthorizes the ticket even with a previously resolved principal
+  ---
+  duration_ms: 4.388786
+  type: 'test'
+  ...
+# Subtest: expired idempotency tombstone cannot replay its stored body or create a new ticket
+ok 2 - expired idempotency tombstone cannot replay its stored body or create a new ticket
+  ---
+  duration_ms: 0.954534
+  type: 'test'
+  ...
+# Subtest: database guard rejects create_role privilege
+ok 3 - database guard rejects create_role privilege
+  ---
+  duration_ms: 0.244277
+  type: 'test'
+  ...
+# Subtest: database guard rejects create_database privilege
+ok 4 - database guard rejects create_database privilege
+  ---
+  duration_ms: 0.162023
+  type: 'test'
+  ...
+# Subtest: database guard rejects replication privilege
+ok 5 - database guard rejects replication privilege
+  ---
+  duration_ms: 0.091307
+  type: 'test'
+  ...
+# Subtest: database guard rejects member_of_roles privilege
+ok 6 - database guard rejects member_of_roles privilege
+  ---
+  duration_ms: 0.124657
+  type: 'test'
+  ...
+# Subtest: database guard rejects owns_objects privilege
+ok 7 - database guard rejects owns_objects privilege
+  ---
+  duration_ms: 0.134021
+  type: 'test'
+  ...
+# Subtest: SET ROLE from an administrator is not a restricted authenticated connection
+ok 8 - SET ROLE from an administrator is not a restricted authenticated connection
+  ---
+  duration_ms: 0.140501
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override ?uselibpqcompat=true
+ok 9 - connection URL rejects ambiguous override ?uselibpqcompat=true
+  ---
+  duration_ms: 0.487272
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+ok 10 - connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+  ---
+  duration_ms: 0.406371
+  type: 'test'
+  ...
+# Subtest: connection URL rejects ambiguous override \#fragment
+ok 11 - connection URL rejects ambiguous override \#fragment
+  ---
+  duration_ms: 0.141673
+  type: 'test'
+  ...
+# Subtest: production requires a server-only rate-limit HMAC key
+ok 12 - production requires a server-only rate-limit HMAC key
+  ---
+  duration_ms: 0.157396
+  type: 'test'
+  ...
+# Subtest: schema compatibility rejects missing or mismatched database version
+ok 13 - schema compatibility rejects missing or mismatched database version
+  ---
+  duration_ms: 0.46557
+  type: 'test'
+  ...
+# Subtest: cache denied by database cannot return even metadata from the old response
+ok 14 - cache denied by database cannot return even metadata from the old response
+  ---
+  duration_ms: 0.547813
+  type: 'test'
+  ...
+# Subtest: PostgreSQL cache lookup uses resource-aware helper, not unrestricted saved responses
+ok 15 - PostgreSQL cache lookup uses resource-aware helper, not unrestricted saved responses
+  ---
+  duration_ms: 0.416346
+  type: 'test'
+  ...
+# Subtest: write-only scope cannot open a ticket without the read permission required by SQL
+not ok 16 - write-only scope cannot open a ticket without the read permission required by SQL
+  ---
+  duration_ms: 0.673051
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:77:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:79:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: runtime security readiness requires FORCE RLS and non-exposed private schemas
+not ok 17 - runtime security readiness requires FORCE RLS and non-exposed private schemas
+  ---
+  duration_ms: 0.563226
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:81:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:82:90)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 15
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 133.558803

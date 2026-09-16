@@ -24,7 +24,7 @@ schemas={
  'Principal':{'type':'object','required':['id','kind','workspace_id','grants','scopes'],'properties':{'id':identifier,'kind':{'enum':['human','integration']},'workspace_id':identifier,'workspace_role':{'type':['string','null']},'grants':{'type':'array','items':{'type':'object'}},'product_instance_ids':array(identifier),'scopes':array({'type':'string'})}},
  'PublicConfig':obj({'supabase_url':{'type':['string','null']},'publishable_key':{'type':['string','null']}}),
  'IntegrationToken':obj({'access_token':{'type':'string','pattern':'^hd_session_'},'token_type':{'const':'Bearer'},'expires_at':{'type':'string','format':'date-time'},'workspace_id':identifier}),
- 'Timeline':{'type':'object','required':['items'],'properties':{'items':{'type':'array','items':{'type':'object','required':['id','type','created_at','data'],'properties':{'id':identifier,'type':{'type':'string'},'created_at':{'type':'string','format':'date-time'},'data':{'type':'object'}}}}}}
+ 'Timeline':{'type':'object','required':['items','next_cursor'],'properties':{'next_cursor':{'type':['string','null']},'items':{'type':'array','items':{'type':'object','required':['id','type','created_at','data'],'properties':{'id':identifier,'type':{'type':'string'},'created_at':{'type':'string','format':'date-time'},'data':{'type':'object'}}}}}}
 }
 parameters={
  'Workspace':{'name':'X-Workspace-Id','in':'header','required':True,'schema':identifier,'description':'Seletor validado contra vínculos vivos; não concede autorização.'},
@@ -55,10 +55,21 @@ listing['parameters'] += [{'name':'limit','in':'query','schema':{'type':'integer
 route('/tickets','post','createTicket','Cria chamado com revalidação transacional.',ref('Ticket'),'CreateTicket',status=201,idem=True)
 route('/tickets/{ticket_id}','get','getTicket','Consulta chamado e retorna ETag.',ref('Ticket'))['responses']['200']['headers']={'ETag':{'description':'Versão atual entre aspas.','schema':{'type':'string'}}}
 for resource,name in [('messages','Message'),('notes','Note')]:
- route('/tickets/{ticket_id}/'+resource,'get','list'+resource.title(), 'Lista '+('conversa pública.' if resource=='messages' else 'notas restritas à equipe.'),obj({'items':array(ref(name))}))
+ route('/tickets/{ticket_id}/'+resource,'get','list'+resource.title(), 'Lista '+('conversa pública.' if resource=='messages' else 'notas restritas à equipe.'),obj({'items':array(ref(name)),'next_cursor':{'type':['string','null']}}))
  route('/tickets/{ticket_id}/'+resource,'post','add'+name, 'Adiciona '+('mensagem pública.' if resource=='messages' else 'nota interna, sem outbox externo.'),ref(name),'Body',status=201,idem=True)
 route('/tickets/{ticket_id}/transitions','post','transitionTicket','Transição com versão esperada e motivo de reabertura.',ref('Ticket'),'Transition',idem=True,match=True)
 route('/tickets/{ticket_id}/timeline','get','getTimeline','Histórico projetado conforme autorização.',ref('Timeline'))
-api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.1.0','description':'Contrato do primeiro incremento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
+# Explicit pagination and quota behavior; newest first, cursor scoped to resource and actor.
+for resource in ['messages','notes','timeline']:
+ paths['/tickets/{ticket_id}/'+resource]['get']['parameters'] += [
+  {'name':'limit','in':'query','schema':{'type':'integer','minimum':1,'maximum':100,'default':50}},
+  {'name':'cursor','in':'query','schema':{'type':'string','minLength':1,'maxLength':700}}]
+for methods in paths.values():
+ for op in methods.values():
+  op['responses']['429']={'description':'Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.',
+   'headers':{'Retry-After':{'schema':{'type':'integer','minimum':1,'maximum':60}}},
+   'content':{'application/problem+json':{'schema':ref('Problem')}}}
+parameters['Idempotency']['description']='Resposta por 7 dias; registro antirrepetição por 90 dias. Após expirar, HTTP 409; consulte o recurso antes de usar nova chave.'
+api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.2.0','description':'Contrato M1: paginação, limites e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
 (root/'docs/openapi.json').write_text(json.dumps(api,ensure_ascii=False,indent=2)+'\n')
 print(len(paths),'paths;',sum(len(v) for v in paths.values()),'operations')

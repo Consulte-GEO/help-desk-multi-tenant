@@ -1,0 +1,31 @@
+{
+  "mode": "read_only",
+  "remote_mutations": [],
+  "github": {
+    "repository": "Consulte-GEO/help-desk-multi-tenant",
+    "contents_result": "This repository is empty."
+  },
+  "supabase": {
+    "project_id": "xaelbntjnvztznnpcvtm",
+    "schemas_queried": [
+      "public",
+      "helpdesk_core",
+      "helpdesk_integration",
+      "helpdesk_audit",
+      "helpdesk_auth"
+    ],
+    "tables_returned": 0,
+    "advisor_observed_at": "2026-09-16T00:16:15.940Z",
+    "warnings": [
+      "anon_security_definer_function_executable: public.rls_auto_enable()",
+      "authenticated_security_definer_function_executable: public.rls_auto_enable()"
+    ],
+    "scope_limitation": "No comprehensive Auth/Storage/backup/schema/API-configuration audit."
+  },
+  "netlify": {
+    "site_id": "ee32e955-42e5-4417-bf4f-39cbef2366cc",
+    "name": "help-desk-multi-tenant",
+    "current_deploy": "6aa9cd6dab04ec2cdc23c0b4",
+    "state": "ready"
+  }
+}

@@ -1,46 +1,76 @@
-# Handoff para revisão e próxima implementação
+# Continuidade — v0.2.0 / encerramento do M1
 
-## Objetivo imediato
+## Estado de partida
 
-Revisar a fundação local v0.1.0, resolver dependências e provar persistência/autorização em PostgreSQL real antes de ampliar o produto. Não assumir que o código já está no GitHub ou no Netlify.
+Base anterior: `aa9aa9ec359cdd954c2162252c224676d7679275`. Branch de trabalho local: `work/helpdesk-m1-v0.2.0`. Esta entrega não fez push, merge, migrations remotas, deploy ou provisionamento de segredos. Antes de importar o pacote, reinspecionar os três ambientes informados pelo usuário; o GitHub estava vazio na leitura desta rodada.
 
-## Contexto que o revisor precisa
+Leia `04-ESTADO-E-EVIDENCIAS.md`, `06-M1-SEGURANCA-E-LIMITES.md` e o CHANGELOG. Não tratar o incremento como M1 homologado. Os testes SQL existem, mas não foram executados.
 
-Os dois relatórios defendem Help Desk independente. O segundo acrescenta workspace e separação física de notas. Esta entrega adota as duas fronteiras workspace/conta e preserva contrato/versionamento. Não existe código anterior recuperado do repositório: ele estava vazio no momento da inspeção. O Supabase tem alerta para a função pública rls_auto_enable; existe migration candidata para revogar execução pública, ainda não aplicada.
+## Sequência de trabalho
 
-Há núcleo e API testados localmente; driver/configuração/auth possuem testes com doubles. O banco real não foi executado, o navegador foi bloqueado e não existe publicação. A interface é inicial e usa JavaScript nativo; o domínio TypeScript é independente do transporte. Não houve cópia de código GeoLab nem de projetos OSS.
+### 1. Resolver HD-101 sem fabricar evidências
 
-## Ordem de trabalho recomendada
+Em ambiente com acesso autorizado ao registry:
 
-1. Conferir o estado atual do repositório e preservar mudanças concorrentes. Criar branch de revisão isolada ou usar o bundle local entregue.
-2. Ler os documentos, conferir todos os arquivos e executar testes locais. Revisar especialmente `src/application/helpdesk.ts`, `src/http/serialization.ts` e `src/infrastructure/postgres.ts`.
-3. Instalar dependências em ambiente autorizado, gerar lockfile, auditar, fixar toolchain e CI. Confirmar se o empacotador inclui a dependência pg usada pela importação dinâmica.
-4. Rodar `supabase/tests/rls.test.ts` em PostgreSQL 17 local descartável. Corrigir migrations/testes pelo resultado real, não por inspeção apenas. Não apontar esses testes ao Supabase remoto.
-5. Ampliar cenários de FK, escopo, escrita cruzada, contratos simultaneamente suspensos, idempotência e deadlocks; verificar o papel exato do pooler.
-6. Revisar helpers SECURITY DEFINER, owner BYPASSRLS, FORCE RLS, exposição de schema, grants herdados e data access com auth revogada. Autenticação de request não pode depender de claims editáveis.
-7. Executar e corrigir a interface em navegador. Testar mensagens grandes, formulários, perfis, drafts separados, estados 401/403/409/412/503 e reenvio após timeout.
-8. Implementar limites distribuídos e lifecycle de sessões/idempotência antes de piloto. Desenvolver administração e protocolo incorporado por usuário conforme M2/M6.
-9. Registrar evidências e somente então solicitar/aplicar o fluxo de publicação autorizado.
+```bash
+npm run deps:resolve
+npm run check:lock
+npm ci --ignore-scripts
+npm run verify
+npm audit --audit-level=high
+```
 
-## Pontos de revisão que não podem ser omitidos
+O primeiro comando resolve o lock real, instala e audita, parando em erro. Revisar o diff do lock e dependências diretas/transitivas antes de versionar. Corrigir versões inexistentes/incompatíveis ou alertas, caso surjam. Não afirmar que as versões candidatas deste pacote foram instaladas. Fixar também versões/digests da infraestrutura após a homologação, sem inventar digests de container. A checagem estrutural do lock não substitui npm ci, audit ou análise de supply chain.
 
-- `SELECT FOR SHARE` ocorre em helper autorizado limitado; confirmar bloqueios e corrida com suspensão em PostgreSQL real.
-- A constraint trigger de criação exige evento e outbox antes do commit. Conferir seu funcionamento e seus privilégios.
-- O login de aplicação não deve ter privilégios de configuração contratual nem acesso direto a credenciais.
-- Papéis/escopos e RLS têm responsabilidades complementares. Exercitar todos os caminhos reais, inclusive M2M revogado.
-- Mensagens/timeline ainda não têm paginação. Credenciais/sessões e idempotência não têm limpeza implementada.
-- Outbox não é entrega: worker, assinatura, ledger, backoff e DLQ ainda faltam.
-- A tabela de auditoria administrativa existe, mas o backoffice e sua emissão efetiva de eventos não estão implementados.
-- Snapshot de política e função de calendário não equivalem a SLA operacional.
-- `support-sessions` por usuário externo não existe; token de máquina nunca substitui a identidade de cada cliente.
-- Build estático não comprova Functions, Auth, Storage, RLS, backup ou prontidão de produção.
+### 2. Executar HD-102 em PostgreSQL 17 descartável
 
-## Reuso futuro de GeoLab/GEOCON/outros sistemas
+Com Docker local e dependências instaladas:
 
-Reaproveitar somente depois de inventariar o código atual. Bons candidatos: tokens de design, componentes acessíveis de formulário/tabela, convenções de erro e logging, ferramentas de teste e padrões de notificação. Extrair componentes puros; remover suposições de laboratório, tenant e banco antes de importar.
+```bash
+npm run test:db:local
+```
 
-Não copiar em bloco policies Supabase, helpers privilegiados, fluxo de permissões, MFA ou integrações de credenciais. Esses componentes são específicos das relações de confiança do sistema de origem. O novo banco tem fronteiras próprias. Prompts ou relatórios anteriores não são evidência de que um módulo está correto, publicado ou autorizado para reutilização.
+O script cria e remove apenas seu container rotulado, sem volumes nem dados reais. Alternativamente, usar as URLs locais explícitas exigidas por `scripts/database-target.ts` e `npm run test:db`. Não substituir os hosts locais pelo Supabase de produção. A suíte exige banco novo `helpdesk_test` e não possui DROP SCHEMA para apagar trabalho anterior.
 
-## Definição de entrega
+Executar as quatro migrations em ordem. São 35 cenários SQL, incluindo isolamento entre contas/workspaces, cache após revogação, scopes vivos, notas, identidade de autor, transições, FKs, idempotência concorrente, versão concorrente, rollback/contexto reutilizado, limite de sessões, rate limit compartilhado e manutenção restrita. Corrigir a causa de cada falha, acrescentar regressão e repetir em banco novo. Não remover asserts para obter resultado verde.
 
-O revisor deve informar por requisito: codificado, testes locais, testes reais, revisão de segurança e publicação. Relatar o commit base/resultado, arquivos alterados, comandos executados, falhas, pendências e efeito remoto. Não concluir com “tudo pronto” quando apenas a suite de memória passar.
+Os testes unitários dos adaptadores usam respostas controladas. Também é necessário exercitar `assertSafeDatabaseRole`, `assertSchemaCompatibility` e `assertDatabaseSecurity` com o runtime real. O guard do catálogo não substitui inspeção de policies/helpers/grants e owners.
+
+### 3. Fechar HD-103 no destino autorizado
+
+Após os passos anteriores, usar homologação aprovada e sem dados reais. Verificar Supabase Auth, schemas expostos, advisors, login restrito, pooler/TLS e `context.ip` recebido pelo Netlify. Empacotar e executar Functions com o driver pg instalado; o build estático não satisfaz esse passo. Executar expiração/revogação M2M e humana e medir quantidade de conexões, latência, 429/503 e reenvios. Nenhum segredo M2M ou do banco pode chegar ao browser.
+
+A migration 001 propõe remover a execução pública da função `public.rls_auto_enable()`. O alerta continua no ambiente remoto. Verificar seu papel real antes/depois da aplicação autorizada e consultar Advisors novamente; o pacote não a corrigiu remotamente.
+
+### 4. Fechar HD-104/HD-105
+
+Os controles de limite e paginação estão codificados e passaram nos testes locais. Ainda faltam concorrência SQL real, teste de abuso/capacidade e calibração dos limiares. Aprovar retenção técnica e identidade operacional para manutenção, sem apagar mensagens de atendimento. A rotina inicia em dry-run e não possui agendamento ativado.
+
+Para a demonstração local:
+
+```bash
+npm run demo
+# Em outro terminal, com a demonstração em execução:
+node scripts/smoke-local-http.mjs
+python tests/browser-smoke.py
+```
+
+O smoke HTTP usa fixtures em memória e não prova PostgreSQL nem Netlify. O navegador foi bloqueado nesta sessão; executar onde a política permita normalmente, sem contorná-la. Inspecionar desktop/mobile, foco, teclado, erros, drafts, paginação, troca rápida de identidade/ticket e respostas atrasadas. Acrescentar testes visuais para o botão de carregamento anterior. Nunca misturar nota interna em payload público.
+
+### 5. Decisão de avanço
+
+Atualizar a matriz HD-101–105 com resultados por commit. Só chamar M1 concluído depois das validações reais. M2 vem depois: bootstrap, usuários/vínculos, catálogo, contratos/coberturas e credenciais auditáveis. Não ampliar canais, IA ou dashboards para ocultar as lacunas de isolamento/persistência.
+
+## Revisão orientada aos arquivos
+
+| Área | Arquivos prioritários |
+|---|---|
+| Cache e reautorização | `src/application/helpdesk.ts`, `src/infrastructure/postgres.ts`, migrations 003/004 |
+| Runtime e conexão | `src/infrastructure/runtime.ts`, `postgres.ts`, `sql.ts`, `netlify/functions/api.mts` |
+| Rate limit | `src/infrastructure/rate-limit.ts`, migration 004, `tests/rate-limit.test.ts` |
+| Paginação | `src/application/pagination.ts`, `src/http/handler.ts`, adaptadores, `docs/openapi.json` |
+| Estado da conversa | `web/conversation-state.js`, `web/app.js`, testes de estado e páginas |
+| SQL verdadeiro | `supabase/tests/rls.test.ts`, `scripts/test-db-local.mjs`, `scripts/database-target.ts` |
+| Reprodutibilidade | `scripts/verify-lock.mjs`, `scripts/prepare-dependencies.mjs`, CI, `package.json` |
+
+Nenhuma revisão independente, pentest, carga, restore ou publicação foi concluída. O relatório separa evidências locais, tentativas bloqueadas e próximos testes necessários.

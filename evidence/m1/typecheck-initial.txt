@@ -1,0 +1,57 @@
+
+> @consulte-geo/helpdesk@0.1.0 typecheck
+> tsc --noEmit
+
+netlify/functions/api.mts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+scripts/check-contracts.ts(2,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/check-contracts.ts(2,62): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+scripts/demo.ts(2,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+scripts/demo.ts(2,63): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/demo.ts(2,110): error TS2307: Cannot find module 'node:url' or its corresponding type declarations.
+scripts/demo.ts(14,33): error TS7006: Parameter 'input' implicitly has an 'any' type.
+scripts/demo.ts(14,39): error TS7006: Parameter 'out' implicitly has an 'any' type.
+scripts/demo.ts(14,488): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+scripts/demo.ts(14,1242): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/demo.ts(15,194): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/demo.ts(15,233): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/helpdesk.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/application/helpdesk.ts(57,88): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/helpdesk.ts(61,60): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/domain/canonical.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/http/handler.ts(2,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/http/validation.ts(9,41): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/infrastructure/authentication.ts(1,27): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(2,20): error TS2307: Cannot find module 'node:net' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(28,12): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(2,33): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+supabase/tests/rls.test.ts(2,64): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+supabase/tests/rls.test.ts(2,116): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+supabase/tests/rls.test.ts(2,160): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+supabase/tests/rls.test.ts(3,4): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(5,24): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(5,76): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(14,114): error TS7006: Parameter 'x' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(33,152): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(36,184): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(37,194): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(38,425): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(39,338): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(40,255): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/application.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/application.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/domain.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/domain.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/http.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/http.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/infrastructure.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/infrastructure.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/infrastructure.test.ts(9,301): error TS18048: 'q' is possibly 'undefined'.
+tests/infrastructure.test.ts(9,328): error TS18048: 'q' is possibly 'undefined'.
+tests/m1-migration-contract.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1-migration-contract.test.ts(3,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1-migration-contract.test.ts(4,39): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/m1-regressions.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1-regressions.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/rate-limit.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/rate-limit.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.

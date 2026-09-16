@@ -1,5 +1,7 @@
 # Segurança, publicação e operação
 
+> Complemento vigente: `06-M1-SEGURANCA-E-LIMITES.md`. Nenhum controle SQL novo está homologado nesta rodada.
+
 ## Estado desta entrega
 
 Não houve push para o GitHub, merge, aplicação de migration, deploy Netlify/Edge Function, criação de branch Supabase, alteração de segredo ou mudança de MFA. O código foi desenvolvido em repositório local isolado. O projeto remoto permanece como estava na inspeção.
@@ -27,7 +29,7 @@ Referências de remediação:
 | Chamado sem intenção de notificação | Unidade transacional + trigger diferida candidata | Teste da constraint e implementação do worker. |
 | Sobrescrita entre agentes | If-Match e incremento de versão | Testes de fluxo no navegador e outras futuras mutações. |
 | Backend operando como administrador | Validação do papel no startup; não usa service_role | Revisão dos grants, donos e pooler no ambiente real. |
-| Abuso de credenciais/tokens e crescimento | Limite de corpo e escopos na aplicação | Rate limiting distribuído, quotas e limpeza ainda pendentes. |
+| Abuso de credenciais/tokens e crescimento | Rate limiter, quotas, lifecycle e limpeza restrita codificados na v0.2.0 | SQL real, teste de abuso/carga, calibração e operação da manutenção pendentes. |
 | SSRF/anexo malicioso | Funcionalidades ainda desativadas | Implementar pipeline completo antes de ativar. |
 | App/backend comprometido | Menor privilégio e dados segmentados | SQL parametrizado não substitui segurança do runtime, secrets e supply chain. |
 
@@ -47,7 +49,7 @@ RLS desta fundação protege a fronteira de dados; capacidades de cada operaçã
 
 ## Segredos e ambientes
 
-`HELPDESK_DATABASE_URL` e eventual `HELPDESK_DATABASE_CA` pertencem somente ao backend/Functions. A URL de banco deve usar o login restrito, não `postgres`. A aplicação rejeita parâmetros SSL na URL que possam sobrescrever a verificação configurada pelo driver. Configuração precisa ser conferida contra o connection string real fornecido pelo projeto/pooler.
+`HELPDESK_RATE_LIMIT_HMAC_KEY`, `HELPDESK_DATABASE_URL` e eventual `HELPDESK_DATABASE_CA` pertencem somente ao backend/Functions. A URL de banco deve usar o login restrito, não `postgres`. A aplicação rejeita parâmetros SSL na URL que possam sobrescrever a verificação configurada pelo driver. Configuração precisa ser conferida contra o connection string real fornecido pelo projeto/pooler.
 
 `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` podem ser retornados ao frontend; uma chave secret/service não pode ocupar esse campo. A validação inicial aceita apenas chave `sb_publishable_...` e host oficial do projeto. A CSP usa a URL do Help Desk; mudar de projeto exige atualizar a allowlist. Não colocar segredos em prefixos públicos, HTML, fixtures reais ou URLs de suporte.
 

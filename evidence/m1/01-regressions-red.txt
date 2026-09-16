@@ -1,0 +1,238 @@
+TAP version 13
+# (node:654) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creation replay reauthorizes the ticket even with a previously resolved principal
+not ok 1 - creation replay reauthorizes the ticket even with a previously resolved principal
+  ---
+  duration_ms: 4.535637
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'resource_not_found'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:21:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: expired idempotency tombstone cannot replay its stored body or create a new ticket
+not ok 2 - expired idempotency tombstone cannot replay its stored body or create a new ticket
+  ---
+  duration_ms: 0.546812
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'idempotency_expired'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:31:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database guard rejects create_role privilege
+not ok 3 - database guard rejects create_role privilege
+  ---
+  duration_ms: 0.268634
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:39:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database guard rejects create_database privilege
+not ok 4 - database guard rejects create_database privilege
+  ---
+  duration_ms: 0.270177
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:39:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database guard rejects replication privilege
+not ok 5 - database guard rejects replication privilege
+  ---
+  duration_ms: 0.120441
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:39:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database guard rejects member_of_roles privilege
+not ok 6 - database guard rejects member_of_roles privilege
+  ---
+  duration_ms: 0.09362
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:39:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database guard rejects owns_objects privilege
+not ok 7 - database guard rejects owns_objects privilege
+  ---
+  duration_ms: 0.156305
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:39:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: SET ROLE from an administrator is not a restricted authenticated connection
+not ok 8 - SET ROLE from an administrator is not a restricted authenticated connection
+  ---
+  duration_ms: 0.149635
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:42:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_role'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:43:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: connection URL rejects ambiguous override ?uselibpqcompat=true
+not ok 9 - connection URL rejects ambiguous override ?uselibpqcompat=true
+  ---
+  duration_ms: 0.740213
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:47:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:48:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+not ok 10 - connection URL rejects ambiguous override ?options=-c%20row_security%3Doff
+  ---
+  duration_ms: 0.423236
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:47:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:48:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: connection URL rejects ambiguous override \#fragment
+not ok 11 - connection URL rejects ambiguous override \#fragment
+  ---
+  duration_ms: 0.193531
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:47:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:48:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: production requires a server-only rate-limit HMAC key
+not ok 12 - production requires a server-only rate-limit HMAC key
+  ---
+  duration_ms: 0.193651
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:51:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_configuration_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/m1-regressions.test.ts:52:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 0
+# fail 12
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 124.739701

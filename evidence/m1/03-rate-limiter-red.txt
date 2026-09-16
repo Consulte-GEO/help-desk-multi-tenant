@@ -1,0 +1,473 @@
+TAP version 13
+# (node:816) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: accepts trusted client address 127.0.0.1
+ok 1 - accepts trusted client address 127.0.0.1
+  ---
+  duration_ms: 1.15824
+  type: 'test'
+  ...
+# Subtest: accepts trusted client address 2001:db8::1
+ok 2 - accepts trusted client address 2001:db8::1
+  ---
+  duration_ms: 0.112669
+  type: 'test'
+  ...
+# Subtest: accepts trusted client address ::ffff:192.0.2.1
+ok 3 - accepts trusted client address ::ffff:192.0.2.1
+  ---
+  duration_ms: 0.141303
+  type: 'test'
+  ...
+# Subtest: rejects absent or invalid trusted address undefined
+not ok 4 - rejects absent or invalid trusted address undefined
+  ---
+  duration_ms: 0.743287
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or invalid trusted address 
+not ok 5 - rejects absent or invalid trusted address 
+  ---
+  duration_ms: 0.188343
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or invalid trusted address 192.0.2.1, 198.51.100.1
+not ok 6 - rejects absent or invalid trusted address 192.0.2.1, 198.51.100.1
+  ---
+  duration_ms: 0.115213
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or invalid trusted address attacker.invalid
+not ok 7 - rejects absent or invalid trusted address attacker.invalid
+  ---
+  duration_ms: 0.187121
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or invalid trusted address not an ip
+not ok 8 - rejects absent or invalid trusted address not an ip
+  ---
+  duration_ms: 0.101562
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or invalid trusted address  192.0.2.1
+not ok 9 - rejects absent or invalid trusted address  192.0.2.1
+  ---
+  duration_ms: 0.371238
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:102'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:14:168)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: IPv6 alternative spellings and mapped IPv4 have a single quota identity
+not ok 10 - IPv6 alternative spellings and mapped IPv4 have a single quota identity
+  ---
+  duration_ms: 1.007304
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '2001:0DB8:0:0:0:0:0:1'
+    - '2001:db8::1'
+            ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2001:db8::1'
+  actual: '2001:0DB8:0:0:0:0:0:1'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:15:92)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: quota keys are stable HMACs, separate by policy, without raw IP, token or principal
+not ok 11 - quota keys are stable HMACs, separate by policy, without raw IP, token or principal
+  ---
+  duration_ms: 15.722732
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:18:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: two replicas use same quota keys and rotating HMAC changes identities
+not ok 12 - two replicas use same quota keys and rotating HMAC changes identities
+  ---
+  duration_ms: 0.764328
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: 'Expected "actual" not to be strictly deep-equal to: []'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  operator: 'notDeepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:22:404)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: workspace budget is shared but principal budget is not
+not ok 13 - workspace budget is shared but principal budget is not
+  ---
+  duration_ms: 0.281062
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'find')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:23:301)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: quota denied carries bounded retry duration
+not ok 14 - quota denied carries bounded retry duration
+  ---
+  duration_ms: 0.240872
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_exceeded'
+    status: 429
+    retryAfterSeconds: 41
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:24:62)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed DB decision fails closed: null
+not ok 15 - malformed DB decision fails closed: null
+  ---
+  duration_ms: 0.164388
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:113'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed DB decision fails closed: {}
+not ok 16 - malformed DB decision fails closed: {}
+  ---
+  duration_ms: 0.148533
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:113'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":"true"}
+not ok 17 - malformed DB decision fails closed: {"allowed":"true"}
+  ---
+  duration_ms: 0.101322
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:113'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":false,"retry_after":0}
+not ok 18 - malformed DB decision fails closed: {"allowed":false,"retry_after":0}
+  ---
+  duration_ms: 0.171828
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:113'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed DB decision fails closed: {"allowed":false,"retry_after":99999}
+not ok 19 - malformed DB decision fails closed: {"allowed":false,"retry_after":99999}
+  ---
+  duration_ms: 0.135594
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:113'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:25:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unavailable shared limiter never falls back to per-instance memory
+not ok 20 - unavailable shared limiter never falls back to per-instance memory
+  ---
+  duration_ms: 0.156885
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'rate_limit_unavailable'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:26:165)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: forwarded headers cannot substitute trusted adapter metadata
+not ok 21 - forwarded headers cannot substitute trusted adapter metadata
+  ---
+  duration_ms: 0.269055
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'trusted_client_ip_required'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:27:92)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP ingress quota runs before Auth and returns Retry-After without leaking DB errors
+not ok 22 - HTTP ingress quota runs before Auth and returns Retry-After without leaking DB errors
+  ---
+  duration_ms: 2.810094
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 429
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 429
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:28:433)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public endpoints are subject to the same ingress quota
+not ok 23 - public endpoints are subject to the same ingress quota
+  ---
+  duration_ms: 0.613662
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 429
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 429
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:29:297)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: authenticated requests consume workspace budget only after validating identity
+not ok 24 - authenticated requests consume workspace budget only after validating identity
+  ---
+  duration_ms: 0.826091
+  type: 'test'
+  location: '/mnt/data/helpdesk-m1/tests/rate-limit.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    -   'ip',
+        'auth',
+    -   'principal'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'ip'
+    1: 'auth'
+    2: 'principal'
+  actual:
+    0: 'auth'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-m1/tests/rate-limit.test.ts:30:458)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 3
+# fail 21
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 178.021623

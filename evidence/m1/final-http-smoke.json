@@ -1,0 +1,29 @@
+{
+  "scope": "Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.",
+  "checks": [
+    {
+      "check": "HTTP account isolation in local demo",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP advertises current version",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP create and idempotent replay",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP known ID from sibling account denied",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP pagination across 55 actual API-created messages",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP public/private conversation separation",
+      "result": "passed"
+    }
+  ]
+}

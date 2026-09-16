@@ -1,5 +1,7 @@
+import {pagination,page} from './pagination.ts';
+import type {PageOptions,Page} from './pagination.ts';
 import {randomUUID} from 'node:crypto';
-import type {Principal,Ticket,TicketStatus,PublicMessage,InternalNote} from '../domain/model.ts';
+import type {Principal,Ticket,TicketStatus,PublicMessage,InternalNote,TicketEvent} from '../domain/model.ts';
 import type {UnitOfWork,Store,SupportContext,CreateTicket,Cursor} from './ports.ts';
 import {resolveCoverage} from '../domain/contracts.ts';
 import {canAccessAccount,canUseProduct,canReadTicket,canReadInternalNote,canWriteInternalNote,hasScope,isOperator} from '../domain/policy.ts';
@@ -14,7 +16,7 @@ export class HelpdeskService{
  constructor(db:UnitOfWork,clock:()=>Date=()=>new Date()){this.db=db;this.clock=clock;}
  private now():string{return this.clock().toISOString();}
  private account(p:Principal,c:SupportContext,scope:string):void{
-  if(!hasScope(p,scope))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
+  if(!hasScope(p,scope)||(scope==='tickets:write'&&!hasScope(p,'tickets:read')))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(!canAccessAccount(p,p.workspaceId,c.accountId)||!canUseProduct(p,c.productInstanceId))deny();
  }
  private async accessible(s:Store,p:Principal,id:string,lock=false):Promise<Ticket>{const t=await s.getTicket(id,lock);if(!t||!canReadTicket(p,t))deny();return t;}
@@ -23,7 +25,7 @@ export class HelpdeskService{
   const hash=requestHash(payload);
   await s.lockIdempotency(operation,key);
   const prior=await s.getIdempotency(operation,key);
-  if(prior){if(prior.hash!==hash)throw new HelpdeskError(409,'idempotency_conflict','Chave já utilizada com outro conteúdo.');return {value:structuredClone(prior.result) as T,replayed:true};}
+  if(prior){if(prior.denied)deny();if(prior.expired)throw new HelpdeskError(409,'idempotency_expired','Chave expirada. Consulte o recurso antes de iniciar uma nova operação.');if(prior.hash!==hash)throw new HelpdeskError(409,'idempotency_conflict','Chave já utilizada com outro conteúdo.');return {value:structuredClone(prior.result) as T,replayed:true};}
   const value=await work();
   await s.saveIdempotency({principalId:p.id,workspaceId:p.workspaceId,operation,key,hash,result:structuredClone(value)});
   return {value,replayed:false};
@@ -42,7 +44,10 @@ export class HelpdeskService{
     if(!selected)throw new HelpdeskError(422,'coverage_ineligible','Cobertura não elegível para este contexto.');
     const ticket:Ticket={id:randomUUID(),workspaceId:p.workspaceId,accountId:input.accountId,productInstanceId:input.productInstanceId,serviceCode:input.serviceCode,createdBy:p.id,subject:input.subject,description:input.description,status:'new',priority:input.priority,version:1,coverageId:selected.id,contractVersionId:selected.contractVersionId,contractSnapshot:structuredClone({contractId:selected.contractId,version:selected.contractVersion,policy:selected.policy}),createdAt:at,updatedAt:at};
     await s.insertTicket(ticket);await this.event(s,p,ticket,'ticket.created',{version:1},true,requestId);return ticket;
-   });return {ticket:result.value,replayed:result.replayed};
+   });
+   // A cached result is not an authorization grant; RLS is consulted again on replay.
+   if(result.replayed)await this.accessible(s,p,result.value.id);
+   return {ticket:result.value,replayed:result.replayed};
   });
  }
  async get(p:Principal,id:string):Promise<Ticket>{return this.db.run(p,s=>this.accessible(s,p,id));}
@@ -62,9 +67,19 @@ export class HelpdeskService{
   const id=randomUUID(),createdAt=this.now();await s.addEvent({id,workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,type,customerVisible,data,createdAt});
   if(customerVisible)await s.enqueue({id,workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,type,requestId,createdAt,payload:{specversion:'1.0',id,source:`helpdesk/workspaces/${t.workspaceId}`,type:`com.helpdesk.${type}.v1`,subject:`tickets/${t.id}`,time:createdAt,datacontenttype:'application/json',data:{ticket_id:t.id,version:t.version}}});
  }
- async messages(p:Principal,id:string):Promise<PublicMessage[]>{return this.db.run(p,async s=>{await this.accessible(s,p,id);return s.messages(id);});}
- async notes(p:Principal,id:string):Promise<InternalNote[]>{return this.db.run(p,async s=>{const t=await this.accessible(s,p,id);if(!canReadInternalNote(p,t))throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');return s.notes(id);});}
- async timeline(p:Principal,id:string){return this.db.run(p,async s=>{const t=await this.accessible(s,p,id);return s.events(id,canReadInternalNote(p,t));});}
+ async conversation<K extends 'messages'|'notes'|'timeline'>(p:Principal,id:string,kind:K,options:PageOptions):Promise<Page<{messages:PublicMessage;notes:InternalNote;timeline:TicketEvent}[K]>>{
+  return this.db.run(p,async s=>{
+   const t=await this.accessible(s,p,id),internal=canReadInternalNote(p,t);
+   if(kind==='notes'&&!internal)throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
+   const {window,filter}=pagination(options,{version:1,kind,ticket:id,workspace:p.workspaceId,principal:p.id,internal});
+   const rows=kind==='messages'?await s.messages(id,window):kind==='notes'?await s.notes(id,window):await s.events(id,internal,window);
+   return page<PublicMessage|InternalNote|TicketEvent>(rows,options.limit,filter) as Page<{messages:PublicMessage;notes:InternalNote;timeline:TicketEvent}[K]>;
+  });
+ }
+ // Bounded compatibility for internal callers; HTTP clients receive a next_cursor.
+ async messages(p:Principal,id:string):Promise<PublicMessage[]>{return (await this.conversation(p,id,'messages',{limit:100})).items;}
+ async notes(p:Principal,id:string):Promise<InternalNote[]>{return (await this.conversation(p,id,'notes',{limit:100})).items;}
+ async timeline(p:Principal,id:string):Promise<TicketEvent[]>{return (await this.conversation(p,id,'timeline',{limit:100})).items;}
  async addMessage(p:Principal,id:string,body:string,key:string,requestId:string){requireText(body,1,12000,'Mensagem');if(!hasScope(p,'tickets:write'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');return this.db.run(p,async s=>{
   // Always authorize the resource before replaying its cached response.
   const t=await this.accessible(s,p,id,true);

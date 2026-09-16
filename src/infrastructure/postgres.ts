@@ -1,12 +1,51 @@
+import type {PageWindow} from '../application/pagination.ts';
 import type {SqlPool,SqlClient} from './sql.ts';import type {Principal,Ticket,Coverage,PublicMessage,InternalNote,TicketEvent} from '../domain/model.ts';import type {Store,UnitOfWork,SupportContext,Cursor,StoredResult} from '../application/ports.ts';import {HelpdeskError} from '../domain/errors.ts';
 export async function assertSafeDatabaseRole(pool:SqlPool):Promise<void>{
- const row=(await pool.query("select current_user as name,r.rolsuper as superuser,r.rolbypassrls as bypass_rls,exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where c.relowner=r.oid and n.nspname like 'helpdesk_%') as owns_tables from pg_roles r where r.rolname=current_user")).rows[0];
- if(!row||row.name!=='helpdesk_app'||row.superuser!==false||row.bypass_rls!==false||row.owns_tables!==false)throw new HelpdeskError(503,'unsafe_database_role','O backend exige um papel PostgreSQL restrito e sem propriedade das tabelas.');
+ const row=(await pool.query(`select current_user as name,session_user as login_name,
+ r.rolsuper as superuser,r.rolbypassrls as bypass_rls,r.rolcreaterole as create_role,
+ r.rolcreatedb as create_database,r.rolreplication as replication,
+ exists(select 1 from pg_auth_members m where m.member=r.oid) as member_of_roles,
+ exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace
+   where c.relowner=r.oid and n.nspname like 'helpdesk_%') as owns_tables,
+ (exists(select 1 from pg_namespace n where n.nspowner=r.oid and n.nspname like 'helpdesk_%')
+  or exists(select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+    where p.proowner=r.oid and n.nspname like 'helpdesk_%')) as owns_objects
+ from pg_roles r where r.rolname=current_user`)).rows[0];
+ const unsafe=['superuser','bypass_rls','create_role','create_database','replication','member_of_roles','owns_tables','owns_objects'];
+ if(!row||row.name!=='helpdesk_app'||row.login_name!=='helpdesk_app'||unsafe.some(k=>row[k]!==false))
+  throw new HelpdeskError(503,'unsafe_database_role','O backend exige conexão autenticada com papel restrito, sem propriedade ou privilégios administrativos.');
+}
+export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
+ let version:unknown;
+ try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
+ catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
+ if(version!=='0.2.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+}
+/** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
+export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
+ const row=(await pool.query(`with schemas as (
+  select * from pg_catalog.pg_namespace where nspname in ('helpdesk_core','helpdesk_auth','helpdesk_integration','helpdesk_audit')
+ ), tables as (select c.* from pg_catalog.pg_class c join schemas n on n.oid=c.relnamespace where c.relkind='r')
+ select (select count(*)::integer from tables) as table_count,
+ (select count(*)::integer from tables where not relrowsecurity or not relforcerowsecurity) as unsafe_tables,
+ exists(select 1 from schemas n cross join lateral pg_catalog.aclexplode(coalesce(n.nspacl,pg_catalog.acldefault('n',n.nspowner))) a where a.grantee=0) as public_schema_access,
+ exists(select 1 from schemas n cross join pg_catalog.pg_roles r where r.rolname in ('anon','authenticated','service_role')
+  and pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE')) as client_schema_access,
+ exists(select 1 from pg_catalog.pg_proc p join schemas n on n.oid=p.pronamespace
+  cross join lateral pg_catalog.aclexplode(coalesce(p.proacl,pg_catalog.acldefault('f',p.proowner))) a
+  where a.grantee=0 and a.privilege_type='EXECUTE') as public_helper_execute`)).rows[0];
+ if(!row||row.table_count!==23||row.unsafe_tables!==0||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false)
+  throw new HelpdeskError(503,'unsafe_database_policies','Estrutura ou proteções do banco não correspondem à versão homologável.');
+}
+export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{
+ pool.on?.('error',()=>{try{observe({component:'helpdesk.database',event:'idle_connection_error'});}catch{/* No raw connection errors or throwing telemetry callbacks. */}});
 }
 export class PostgresUnitOfWork implements UnitOfWork{
  readonly pool:SqlPool;constructor(pool:SqlPool){this.pool=pool;}
  async run<T>(p:Principal,work:(s:Store)=>Promise<T>):Promise<T>{
-  const client=await this.pool.connect();let broken:Error|undefined;
+  let client:SqlClient;
+  try{client=await this.pool.connect();}catch{throw new HelpdeskError(503,'database_unavailable','Conexão ao banco temporariamente indisponível.');}
+  let broken:Error|undefined;
   try{await client.query('BEGIN');await client.query("select set_config('app.workspace_id',$1,true),set_config('app.principal_id',$2,true),set_config('statement_timeout','8000',true),set_config('lock_timeout','2000',true),set_config('idle_in_transaction_session_timeout','10000',true)",[p.workspaceId,p.id]);const result=await work(new PostgresStore(client,p));await client.query('COMMIT');return result;}
   catch(error){try{await client.query('ROLLBACK');}catch{broken=new Error('Rollback failed; discard connection');}throw error;}
   finally{client.release(broken);}
@@ -27,13 +66,16 @@ class PostgresStore implements Store{
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt]);}
  async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');}
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}
- async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{const r=(await this.c.query('select request_hash,result from helpdesk_integration.api_idempotency_keys where workspace_id=$1 and principal_id=$2 and operation=$3 and key=$4',[this.p.workspaceId,this.p.id,operation,key])).rows[0];return r?{workspaceId:this.p.workspaceId,principalId:this.p.id,operation,key,hash:str(r,'request_hash'),result:r.result}:null;}
+ async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{
+  const value=(await this.c.query('select helpdesk_auth.lookup_idempotency($1,$2) as record',[operation,key])).rows[0]?.record as {hash?:string;result?:unknown;expired?:boolean;denied?:boolean}|null;
+  return value?{workspaceId:this.p.workspaceId,principalId:this.p.id,operation,key,hash:value.hash??'',result:value.result,expired:value.expired===true,denied:value.denied===true}:null;
+ }
  async saveIdempotency(r:StoredResult):Promise<void>{await this.insert('helpdesk_integration.api_idempotency_keys',['workspace_id','principal_id','operation','key','request_hash','result'],[r.workspaceId,r.principalId,r.operation,r.key,r.hash,JSON.stringify(r.result)]);}
  async addMessage(m:PublicMessage):Promise<void>{await this.insert('helpdesk_core.ticket_messages',['id','workspace_id','account_id','ticket_id','actor_id','actor_type','body','created_at'],[m.id,m.workspaceId,m.accountId,m.ticketId,m.actorId,m.actorType,m.body,m.createdAt]);}
  async addNote(n:InternalNote):Promise<void>{await this.insert('helpdesk_core.internal_notes',['id','workspace_id','account_id','ticket_id','actor_id','body','created_at'],[n.id,n.workspaceId,n.accountId,n.ticketId,n.actorId,n.body,n.createdAt]);}
- async messages(id:string):Promise<PublicMessage[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,actor_type,body,created_at from helpdesk_core.ticket_messages where workspace_id=$1 and ticket_id=$2 order by created_at,id',[this.p.workspaceId,id])).rows.map(message);}
- async notes(id:string):Promise<InternalNote[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,body,created_at from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 order by created_at,id',[this.p.workspaceId,id])).rows.map(note);}
+ async messages(id:string,w:PageWindow={limit:100,cursor:null}):Promise<PublicMessage[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,actor_type,body,created_at from helpdesk_core.ticket_messages where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5',[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(message);}
+ async notes(id:string,w:PageWindow={limit:100,cursor:null}):Promise<InternalNote[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,body,created_at from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5',[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(note);}
  async addEvent(e:TicketEvent):Promise<void>{await this.insert('helpdesk_core.ticket_events',['id','workspace_id','account_id','ticket_id','actor_id','type','customer_visible','data','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.actorId,e.type,e.customerVisible,JSON.stringify(e.data),e.createdAt]);}
- async events(id:string,includeInternal:boolean):Promise<TicketEvent[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,created_at from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2 and ($3::boolean or customer_visible) order by created_at,id',[this.p.workspaceId,id,includeInternal])).rows.map(r=>({id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),type:str(r,'type'),customerVisible:r.customer_visible===true,data:r.data as Record<string,unknown>,createdAt:iso(r.created_at)}));}
+ async events(id:string,includeInternal:boolean,w:PageWindow={limit:100,cursor:null}):Promise<TicketEvent[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,created_at from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2 and ($3::boolean or customer_visible) and ($4::timestamptz is null or (created_at,id)<($4::timestamptz,$5::uuid)) order by created_at desc,id desc limit $6',[this.p.workspaceId,id,includeInternal,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(r=>({id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),type:str(r,'type'),customerVisible:r.customer_visible===true,data:r.data as Record<string,unknown>,createdAt:iso(r.created_at)}));}
  async enqueue(e:Parameters<Store['enqueue']>[0]):Promise<void>{await this.insert('helpdesk_integration.outbox_events',['id','workspace_id','account_id','ticket_id','type','payload','request_id','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.type,JSON.stringify(e.payload),e.requestId,e.createdAt]);}
 }
