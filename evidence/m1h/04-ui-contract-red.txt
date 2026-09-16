@@ -1,0 +1,269 @@
+TAP version 13
+# (node:1894) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: historical cached ticket with no assignedTo remains unassigned
+not ok 1 - historical cached ticket with no assignedTo remains unassigned
+  ---
+  duration_ms: 2.109941
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'other'
+    - 'unassigned'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'unassigned'
+  actual: 'other'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:14:151)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: assignment observation uses normalized route, never a resource ID
+not ok 2 - assignment observation uses normalized route, never a resource ID
+  ---
+  duration_ms: 0.374065
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'unmatched'
+    - '/v1/tickets/{ticket_id}/assignments'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '/v1/tickets/{ticket_id}/assignments'
+  actual: 'unmatched'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:15:86)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: operator list accepts the closed assignment summary
+not ok 3 - operator list accepts the closed assignment summary
+  ---
+  duration_ms: 0.605054
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: 'Resposta da lista incompatível. Atualize a consulta antes de continuar.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    bad (file:///mnt/data/helpdesk-v0.9.0/web/ticket-list-state.js:6:22)
+    validateItem (file:///mnt/data/helpdesk-v0.9.0/web/ticket-list-state.js:26:74)
+    Object.accept (file:///mnt/data/helpdesk-v0.9.0/web/ticket-list-state.js:48:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:16:137)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: list rejects assignment extra atomically
+ok 4 - list rejects assignment extra atomically
+  ---
+  duration_ms: 0.558548
+  type: 'test'
+  ...
+# Subtest: list rejects assignment badstate atomically
+ok 5 - list rejects assignment badstate atomically
+  ---
+  duration_ms: 1.108429
+  type: 'test'
+  ...
+# Subtest: list rejects assignment badboolean atomically
+ok 6 - list rejects assignment badboolean atomically
+  ---
+  duration_ms: 0.184643
+  type: 'test'
+  ...
+# Subtest: list rejects assignment inconsistent atomically
+ok 7 - list rejects assignment inconsistent atomically
+  ---
+  duration_ms: 0.223305
+  type: 'test'
+  ...
+# Subtest: customer-shaped DTO cannot carry assignment
+ok 8 - customer-shaped DTO cannot carry assignment
+  ---
+  duration_ms: 0.277155
+  type: 'test'
+  ...
+# Subtest: internal timeline accepts and presents assignment event without principal ID
+not ok 9 - internal timeline accepts and presents assignment event without principal ID
+  ---
+  duration_ms: 1.174672
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: 'Histórico inválido. Atualize o chamado ou tente novamente.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    invalid (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:11:26)
+    validateEvent (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:22:9)
+    file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:38:37
+    Array.map (<anonymous>)
+    Object.accept (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:38:30)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:19:170)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: internal timeline presents release
+not ok 10 - internal timeline presents release
+  ---
+  duration_ms: 0.634489
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: 'Histórico inválido. Atualize o chamado ou tente novamente.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    invalid (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:11:26)
+    validateEvent (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:22:9)
+    eventPresentation (file:///mnt/data/helpdesk-v0.9.0/web/timeline-state.js:48:10)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:20:61)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: timeline denies assignment public
+ok 11 - timeline denies assignment public
+  ---
+  duration_ms: 0.229066
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment principal data
+ok 12 - timeline denies assignment principal data
+  ---
+  duration_ms: 0.103493
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment empty reason
+ok 13 - timeline denies assignment empty reason
+  ---
+  duration_ms: 0.092902
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment invalid action
+ok 14 - timeline denies assignment invalid action
+  ---
+  duration_ms: 0.151973
+  type: 'test'
+  ...
+# Subtest: assignment and reply drafts are independent during delayed request
+ok 15 - assignment and reply drafts are independent during delayed request
+  ---
+  duration_ms: 0.789337
+  type: 'test'
+  ...
+# Subtest: assignment completion cannot affect another ticket after A B A
+ok 16 - assignment completion cannot affect another ticket after A B A
+  ---
+  duration_ms: 0.235257
+  type: 'test'
+  ...
+# Subtest: assignment dedicated UPDATE keeps resource and version predicates
+ok 17 - assignment dedicated UPDATE keeps resource and version predicates
+  ---
+  duration_ms: 1.170946
+  type: 'test'
+  ...
+# Subtest: migration adds only nullable assignee and narrow UPDATE grant
+not ok 18 - migration adds only nullable assignee and narrow UPDATE grant
+  ---
+  duration_ms: 13.53184
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: 'Assignment migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:25:137
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:26:88)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: migration requires internal event on commit and disallows assignment outbox
+not ok 19 - migration requires internal event on commit and disallows assignment outbox
+  ---
+  duration_ms: 0.951749
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: 'Assignment migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:25:137
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:27:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment cache revalidates write and live operator
+not ok 20 - assignment cache revalidates write and live operator
+  ---
+  duration_ms: 0.825103
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: 'Assignment migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:25:137
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:28:79)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment trigger does not allow changing other fields or initial assignee
+not ok 21 - assignment trigger does not allow changing other fields or initial assignee
+  ---
+  duration_ms: 2.994763
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: 'Assignment migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'fail'
+  stack: |-
+    file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:25:137
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-ui-contract.test.ts:29:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 12
+# fail 9
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 172.213362

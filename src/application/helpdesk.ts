@@ -1,3 +1,4 @@
+import {assignmentChangeInput} from './ticket-assignment.ts';
 import {priorityChangeInput} from './ticket-priority.ts';
 import {ticketSearch} from './ticket-search.ts';
 import type {TicketListOptions} from './ticket-search.ts';
@@ -48,7 +49,7 @@ export class HelpdeskService{
     if(resolved.status==='ambiguous'&&!input.coverageId)throw new HelpdeskError(409,'ambiguous_coverage','Selecione uma cobertura contratual.');
     const selected=input.coverageId?resolved.candidates.find(x=>x.id===input.coverageId):resolved.candidates[0];
     if(!selected)throw new HelpdeskError(422,'coverage_ineligible','Cobertura não elegível para este contexto.');
-    const ticket:Ticket={id:randomUUID(),workspaceId:p.workspaceId,accountId:input.accountId,productInstanceId:input.productInstanceId,serviceCode:input.serviceCode,createdBy:p.id,subject:input.subject,description:input.description,status:'new',priority:input.priority,version:1,coverageId:selected.id,contractVersionId:selected.contractVersionId,contractSnapshot:structuredClone({contractId:selected.contractId,version:selected.contractVersion,policy:selected.policy}),createdAt:at,updatedAt:at};
+    const ticket:Ticket={id:randomUUID(),workspaceId:p.workspaceId,accountId:input.accountId,productInstanceId:input.productInstanceId,serviceCode:input.serviceCode,createdBy:p.id,assignedTo:null,subject:input.subject,description:input.description,status:'new',priority:input.priority,version:1,coverageId:selected.id,contractVersionId:selected.contractVersionId,contractSnapshot:structuredClone({contractId:selected.contractId,version:selected.contractVersion,policy:selected.policy}),createdAt:at,updatedAt:at};
     await s.insertTicket(ticket);await this.event(s,p,ticket,'ticket.created',{version:1},true,requestId);return ticket;
    });
    // A cached result is not an authorization grant; RLS is consulted again on replay.
@@ -113,6 +114,30 @@ export class HelpdeskService{
     const updated={...t,priority:input.priority,version:t.version+1,updatedAt:this.now()};
     await s.updatePriority(updated,t.version);
     await this.event(s,p,updated,'ticket.priority_changed',{from:t.priority,to:updated.priority,reason:input.reason,version:updated.version},true,requestId);
+    return updated;
+   });
+   return {ticket:result.value,replayed:result.replayed};
+  });
+ }
+ async changeAssignment(p:Principal,id:string,action:unknown,expectedVersion:unknown,reason:unknown,key:string,requestId:string){
+  const input=assignmentChangeInput(action,reason,expectedVersion);
+  if(!hasScope(p,'tickets:read')||!hasScope(p,'tickets:write'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
+  return this.db.run(p,async s=>{
+   const t=await this.accessible(s,p,id,true);
+   if(!isOperator(p,t.workspaceId,t.accountId))throw new HelpdeskError(403,'forbidden','Responsabilidade é restrita à equipe autorizada.');
+   const result=await this.idempotent(s,p,`assignments.change:${id}`,key,input,async()=>{
+    if(t.version!==input.expectedVersion)throw new HelpdeskError(412,'version_conflict','Chamado alterado por outra operação. Atualize os dados.');
+    if(t.status==='closed'||t.status==='cancelled')throw new HelpdeskError(409,'assignment_not_allowed','Chamado encerrado não permite mudar responsabilidade.');
+    if(input.action==='claim'&&t.assignedTo!==null&&t.assignedTo!==p.id)
+     throw new HelpdeskError(409,'assignment_conflict','Outro atendente já assumiu este chamado.');
+    if(input.action==='release'&&t.assignedTo!==null&&t.assignedTo!==p.id&&p.workspaceRole!=='admin')
+     throw new HelpdeskError(403,'assignment_release_forbidden','Somente o responsável ou administrador pode liberar o atendimento.');
+    const assignedTo=input.action==='claim'?p.id:null;
+    if(t.assignedTo===assignedTo)return t;
+    const updated={...t,assignedTo,version:t.version+1,updatedAt:this.now()};
+    await s.updateAssignment(updated,t.version);
+    // Internal operational event only: no customer event or external notification intent.
+    await this.event(s,p,updated,'ticket.assignment_changed',{action:input.action,from:t.assignedTo,to:assignedTo,reason:input.reason,version:updated.version},false,requestId);
     return updated;
    });
    return {ticket:result.value,replayed:result.replayed};

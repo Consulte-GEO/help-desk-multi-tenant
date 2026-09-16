@@ -1,0 +1,33 @@
+# Server-side/API example only. Replace variables through your authorized HTTP client.
+# No credentials are included. POST requires a currently authorized human operator, not M2M.
+GET {{baseUrl}}/v1/tickets/{{ticketId}}
+Authorization: Bearer {{humanAccessToken}}
+X-Workspace-Id: {{workspaceId}}
+
+### Claim self. Use the ETag from GET; never replace the key on an uncertain retry.
+POST {{baseUrl}}/v1/tickets/{{ticketId}}/assignments
+Authorization: Bearer {{humanAccessToken}}
+X-Workspace-Id: {{workspaceId}}
+Content-Type: application/json
+If-Match: {{ticketETag}}
+Idempotency-Key: {{stableClaimKey}}
+
+{"action":"claim","reason":"Assumindo a análise técnica da solicitação."}
+
+### Release. Owner or workspace admin, current ETag and a different key for this NEW operation.
+POST {{baseUrl}}/v1/tickets/{{ticketId}}/assignments
+Authorization: Bearer {{humanAccessToken}}
+X-Workspace-Id: {{workspaceId}}
+Content-Type: application/json
+If-Match: {{currentTicketETag}}
+Idempotency-Key: {{stableReleaseKey}}
+
+{"action":"release","reason":"Retornando o atendimento à triagem da equipe."}
+
+# 200: successful/no-op/original replay. GET for current state after a replay.
+# 403: not operator/scope missing or another owner cannot be released.
+# 404: ticket not accessible. Identifiers never authorize.
+# 409: occupied, terminal, or idempotency key conflict.
+# 412: stale version. Refresh then explicitly review before creating a NEW operation.
+# 428: missing If-Match. 503/network error: result may be uncertain; do not blindly re-key.
+# No emails/webhooks are sent for responsibility changes in v0.9.0.

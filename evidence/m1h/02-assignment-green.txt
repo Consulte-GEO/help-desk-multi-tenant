@@ -1,0 +1,240 @@
+TAP version 13
+# (node:1272) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: claim advances version and preserves contract, status and priority; event stays internal
+ok 1 - claim advances version and preserves contract, status and priority; event stays internal
+  ---
+  duration_ms: 6.916186
+  type: 'test'
+  ...
+# Subtest: release own assignment returns to unassigned and stores reason
+ok 2 - release own assignment returns to unassigned and stores reason
+  ---
+  duration_ms: 1.30863
+  type: 'test'
+  ...
+# Subtest: another operator cannot take or release an occupied ticket
+ok 3 - another operator cannot take or release an occupied ticket
+  ---
+  duration_ms: 2.040417
+  type: 'test'
+  ...
+# Subtest: administrator can release another operator but cannot take it directly
+ok 4 - administrator can release another operator but cannot take it directly
+  ---
+  duration_ms: 1.55874
+  type: 'test'
+  ...
+# Subtest: same owner claim and unassigned release are version-checked no-ops
+ok 5 - same owner claim and unassigned release are version-checked no-ops
+  ---
+  duration_ms: 1.309972
+  type: 'test'
+  ...
+# Subtest: identical concurrent claims have one mutation and one replay in memory
+ok 6 - identical concurrent claims have one mutation and one replay in memory
+  ---
+  duration_ms: 0.894427
+  type: 'test'
+  ...
+# Subtest: two operators racing same version have one winner
+ok 7 - two operators racing same version have one winner
+  ---
+  duration_ms: 1.064239
+  type: 'test'
+  ...
+# Subtest: replay is original result after release, without claiming again
+ok 8 - replay is original result after release, without claiming again
+  ---
+  duration_ms: 1.471509
+  type: 'test'
+  ...
+# Subtest: changed reason with same key conflicts
+ok 9 - changed reason with same key conflicts
+  ---
+  duration_ms: 1.162981
+  type: 'test'
+  ...
+# Subtest: stale version fails even for no-op
+ok 10 - stale version fails even for no-op
+  ---
+  duration_ms: 1.2171
+  type: 'test'
+  ...
+# Subtest: requester cannot change assignment
+ok 11 - requester cannot change assignment
+  ---
+  duration_ms: 0.596629
+  type: 'test'
+  ...
+# Subtest: manager cannot change assignment
+ok 12 - manager cannot change assignment
+  ---
+  duration_ms: 1.497637
+  type: 'test'
+  ...
+# Subtest: machine cannot change assignment
+ok 13 - machine cannot change assignment
+  ---
+  duration_ms: 0.298209
+  type: 'test'
+  ...
+# Subtest: no write cannot change assignment
+ok 14 - no write cannot change assignment
+  ---
+  duration_ms: 0.361025
+  type: 'test'
+  ...
+# Subtest: no read cannot change assignment
+ok 15 - no read cannot change assignment
+  ---
+  duration_ms: 0.285235
+  type: 'test'
+  ...
+# Subtest: workspace agent without account cannot change assignment
+ok 16 - workspace agent without account cannot change assignment
+  ---
+  duration_ms: 0.261502
+  type: 'test'
+  ...
+# Subtest: own assignment does not restore revoked access
+ok 17 - own assignment does not restore revoked access
+  ---
+  duration_ms: 0.922038
+  type: 'test'
+  ...
+# Subtest: former operator with account-manager access cannot replay assignment cache
+ok 18 - former operator with account-manager access cannot replay assignment cache
+  ---
+  duration_ms: 0.628988
+  type: 'test'
+  ...
+# Subtest: terminal closed blocks assignment
+ok 19 - terminal closed blocks assignment
+  ---
+  duration_ms: 0.415526
+  type: 'test'
+  ...
+# Subtest: terminal cancelled blocks assignment
+ok 20 - terminal cancelled blocks assignment
+  ---
+  duration_ms: 0.470155
+  type: 'test'
+  ...
+# Subtest: reject action "transfer"
+ok 21 - reject action "transfer"
+  ---
+  duration_ms: 0.273383
+  type: 'test'
+  ...
+# Subtest: reject action ""
+ok 22 - reject action ""
+  ---
+  duration_ms: 0.17925
+  type: 'test'
+  ...
+# Subtest: reject action null
+ok 23 - reject action null
+  ---
+  duration_ms: 0.169692
+  type: 'test'
+  ...
+# Subtest: reject action {}
+ok 24 - reject action {}
+  ---
+  duration_ms: 0.209656
+  type: 'test'
+  ...
+# Subtest: reject action "CLAIM"
+ok 25 - reject action "CLAIM"
+  ---
+  duration_ms: 0.166717
+  type: 'test'
+  ...
+# Subtest: reject bad reason 
+ok 26 - reject bad reason 
+  ---
+  duration_ms: 0.259729
+  type: 'test'
+  ...
+# Subtest: reject bad reason null
+ok 27 - reject bad reason null
+  ---
+  duration_ms: 0.245893
+  type: 'test'
+  ...
+# Subtest: reject bad reason \\n
+ok 28 - reject bad reason \\n
+  ---
+  duration_ms: 0.235584
+  type: 'test'
+  ...
+# Subtest: reject bad reason aaaaaaaa
+ok 29 - reject bad reason aaaaaaaa
+  ---
+  duration_ms: 0.208935
+  type: 'test'
+  ...
+# Subtest: precondition and idempotency are required
+ok 30 - precondition and idempotency are required
+  ---
+  duration_ms: 0.518706
+  type: 'test'
+  ...
+# Subtest: event failure rolls back assignment and cache
+ok 31 - event failure rolls back assignment and cache
+  ---
+  duration_ms: 0.732578
+  type: 'test'
+  ...
+# Subtest: only operator DTO has assignment summary; nobody receives principal ID
+ok 32 - only operator DTO has assignment summary; nobody receives principal ID
+  ---
+  duration_ms: 1.306653
+  type: 'test'
+  ...
+# Subtest: customer timeline never receives responsibility event or reason
+ok 33 - customer timeline never receives responsibility event or reason
+  ---
+  duration_ms: 1.4215
+  type: 'test'
+  ...
+# Subtest: POST assignment returns version and replay; customer is forbidden
+ok 34 - POST assignment returns version and replay; customer is forbidden
+  ---
+  duration_ms: 27.076396
+  type: 'test'
+  ...
+# Subtest: assignment HTTP rejects target principal
+ok 35 - assignment HTTP rejects target principal
+  ---
+  duration_ms: 1.232501
+  type: 'test'
+  ...
+# Subtest: assignment HTTP rejects missing version
+ok 36 - assignment HTTP rejects missing version
+  ---
+  duration_ms: 1.256058
+  type: 'test'
+  ...
+# Subtest: assignment HTTP rejects query selector
+ok 37 - assignment HTTP rejects query selector
+  ---
+  duration_ms: 0.61114
+  type: 'test'
+  ...
+# Subtest: assignment HTTP rejects missing key
+ok 38 - assignment HTTP rejects missing key
+  ---
+  duration_ms: 0.772625
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 277.961892

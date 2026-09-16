@@ -25,9 +25,7 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.8.0
-M1 aberto. 569 locais e 22 HTTP aprovados; 82 SQL e 22 browser escritos, não aprovados. API/schema candidato0.8.0, sete migrations, 23 tabelas, 17 operações. Sem publicação remota. Ler docs04/05/12 e histórico. Não reescrever migrations001–006; 007 candidata precisa de PostgreSQL real.
+## Estado v0.9.0
+M1 aberto. 635 locais/28 HTTP aprovados;100 SQL/25 browser escritos, não homologados. API/schema candidato0.9.0, oito migrations/23 tabelas/18 operações. Sem publicação ou inspeção remota nova. Ler docs04/05/13. Preservar migrations001–007;008 precisa de banco real/fresh+upgrade. Responsabilidade nunca concede acesso e não gera outbox. Retry mantém chave; não remover gates nem fabricar dependências/evidências.
 
-Prioridade: humano operador + read/write, reason interno obrigatório, If-Match/idempotência; mesmo valor não aumenta versão. Cliente não recebe reason. Outbox mínima, sem envio externo. Snapshot/SLA não mudam. Revalidar operador antes de cache e nos helpers de banco. Histórico não é auditoria global; UI com páginas/geração, não dados arbitrários.
-
-Preservar busca/catálogo/rascunhos/telemetria e invariantes do histórico nas versões anteriores. Não usar bloqueio de ambiente como motivo para ampliar módulos e chamar M1 concluído. SQL/browser escritos não são passagens locais. Reinspecionar destino antes de integração.
+Preservar as invariantes anteriores: prioridade somente operador humano/read/write, motivo interno obrigatório, If-Match/idempotência e no-op; cliente não recebe motivo. Outbox de prioridade mínima; snapshot/SLA não mudam. Revalidar operador no cache e no banco. Histórico não é auditoria global. Preservar busca/catálogo/rascunhos/telemetria. Não usar bloqueio de ambiente como justificativa para chamar M1 concluído. Reinspecionar destinos antes de integrar.

@@ -6,7 +6,7 @@ export const ROUTES=new Set([
  '/v1/capabilities','/v1/public-config','/v1/integration-tokens','/v1/integration-tokens/current',
  '/v1/me','/v1/support-contexts','/v1/contexts/resolve','/v1/tickets',
  '/v1/tickets/{ticket_id}','/v1/tickets/{ticket_id}/messages','/v1/tickets/{ticket_id}/notes',
- '/v1/tickets/{ticket_id}/timeline','/v1/tickets/{ticket_id}/transitions','unmatched'
+ '/v1/tickets/{ticket_id}/timeline','/v1/tickets/{ticket_id}/transitions','/v1/tickets/{ticket_id}/assignments','unmatched'
 ]);
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export function requestIdFor(request:Request):string {
@@ -16,7 +16,7 @@ export function requestIdFor(request:Request):string {
 }
 export function routeTemplate(path:string):string {
  if(ROUTES.has(path)&&!path.includes('{'))return path;
- const ticket=/^\/v1\/tickets\/[^/]+(?:\/(messages|notes|timeline|transitions))?$/.exec(path);
+ const ticket=/^\/v1\/tickets\/[^/]+(?:\/(messages|notes|timeline|transitions|assignments))?$/.exec(path);
  return ticket?'/v1/tickets/{ticket_id}'+(ticket[1]?'/'+ticket[1]:''):'unmatched';
 }
 export type HttpObservation=Readonly<{

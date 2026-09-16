@@ -10,7 +10,7 @@ async function call(path,who='laboratory',method='GET',body,key=randomUUID(),ext
 }
 function passed(name){checks.push({check:name,result:'passed'});}
 for(const [who,account] of [['laboratory',lab.account_id],['school',school.account_id]]){const r=await call('/tickets',who);assert.equal(r.response.status,200);assert.ok(r.body.items.every(t=>t.account_id===account));}passed('HTTP account isolation in local demo');
-assert.equal((await call('/capabilities')).body.release,'0.8.0');passed('HTTP advertises current version');
+assert.equal((await call('/capabilities')).body.release,'0.9.0');passed('HTTP advertises current version');
 const input={account_id:lab.account_id,product_instance_id:lab.product_instance_id,service_code:lab.service_code,subject:'M1 smoke via HTTP',description:'Loopback only; fictitious data.',priority:'normal'},key=randomUUID();
 const created=await call('/tickets','laboratory','POST',input,key);assert.equal(created.response.status,201);const id=created.body.id;
 const replay=await call('/tickets','laboratory','POST',input,key);assert.equal(replay.response.status,200);assert.equal(replay.body.id,id);passed('HTTP create and idempotent replay');
@@ -92,5 +92,28 @@ passed('HTTP paginated timeline and real presentation module keep internal reaso
 const current=(await call('/tickets/'+id,'agent')).body,noop=await call('/tickets/'+id,'agent','PATCH',{priority:current.priority,reason:'Reviewed unchanged'},randomUUID(),{'if-match':'"'+current.version+'"'});
 assert.equal(noop.response.status,200);assert.equal(noop.body.version,current.version);assert.equal((await call('/capabilities')).body.capabilities.ticket_priority_update,true);assert.equal((await call('/capabilities')).body.capabilities.ticket_timeline,true);
 passed('HTTP same-priority review is a no-op and capabilities announce only implemented operations');
+
+
+const assigneeStart=(await call('/tickets/'+id,'agent')).body,assignmentKey=randomUUID(),assignmentBody={action:'claim',reason:'PRIVATE ASSIGNMENT REASON'};
+assert.deepEqual(assigneeStart.assignment,{state:'unassigned',can_claim:true,can_release:false});
+const claimed=await call('/tickets/'+id+'/assignments','agent','POST',assignmentBody,assignmentKey,{'if-match':'"'+assigneeStart.version+'"'});
+assert.equal(claimed.response.status,200);assert.equal(claimed.body.version,assigneeStart.version+1);assert.deepEqual(claimed.body.assignment,{state:'mine',can_claim:false,can_release:true});assert.doesNotMatch(JSON.stringify(claimed.body),/agent-demo|assigned_to|assignedTo/);
+passed('HTTP operator claims responsibility with version increment and no principal identifier in DTO');
+const sameClaim=await call('/tickets/'+id+'/assignments','agent','POST',assignmentBody,assignmentKey,{'if-match':'"'+assigneeStart.version+'"'});assert.equal(sameClaim.response.headers.get('idempotency-replayed'),'true');assert.equal(sameClaim.body.version,claimed.body.version);
+const released=await call('/tickets/'+id+'/assignments','agent','POST',{action:'release',reason:'Returning for triage'},randomUUID(),{'if-match':'"'+claimed.body.version+'"'});assert.equal(released.response.status,200);assert.equal(released.body.assignment.state,'unassigned');
+const oldReplay=await call('/tickets/'+id+'/assignments','agent','POST',assignmentBody,assignmentKey,{'if-match':'"'+assigneeStart.version+'"'});assert.equal(oldReplay.body.assignment.state,'mine');assert.equal((await call('/tickets/'+id,'agent')).body.assignment.state,'unassigned');
+passed('HTTP claim replay and release preserve original responses without reassigning again');
+for(const who of ['laboratory','school'])assert.equal((await call('/tickets/'+id+'/assignments',who,'POST',assignmentBody,randomUUID(),{'if-match':'"'+released.body.version+'"'})).response.status,who==='laboratory'?403:404);
+assert.equal((await call('/tickets/'+id+'/assignments','agent','POST',{...assignmentBody,assigned_to:'someone'},randomUUID(),{'if-match':'"'+released.body.version+'"'})).response.status,400);
+passed('HTTP assignment denies customer, sibling account and arbitrary target injection');
+assert.equal((await call('/tickets/'+id+'/assignments','agent','POST',assignmentBody,randomUUID(),{'if-match':'"'+assigneeStart.version+'"'})).response.status,412);
+assert.equal((await call('/tickets/'+id+'/assignments','agent','POST',assignmentBody,randomUUID(),{'if-match':''})).response.status,428);
+passed('HTTP assignment requires current version and rejects stale updates');
+const staffHistory=(await call('/tickets/'+id+'/timeline?limit=50','agent')).body.items,privateAssignment=staffHistory.filter(e=>e.type==='ticket.assignment_changed');assert.equal(privateAssignment.length,2);for(const e of privateAssignment){assert.deepEqual(Object.keys(e.data).sort(),['action','reason','version']);assert.equal(eventPresentation(e,true).internal,true);}
+assert.doesNotMatch(JSON.stringify((await call('/tickets/'+id+'/timeline?limit=100')).body),/ticket.assignment_changed|PRIVATE ASSIGNMENT REASON|Returning for triage/);
+passed('HTTP assignment history stays private and projection excludes assignee identifiers');
+assert.equal('assignment' in (await call('/tickets/'+id)).body,false);assert.ok((await call('/tickets','laboratory')).body.items.every(t=>!('assignment' in t)));assert.equal((await call('/capabilities')).body.capabilities.ticket_self_assignment,true);
+const html=await (await fetch(base+'/')).text();for(const name of ['assignment-form','assignment-reason','claim-ticket','release-ticket','assignment-reload'])assert.ok(html.includes('id="'+name+'"'));
+passed('HTTP customer lists omit assignment and shipped interface contains explicit claim/release controls');
 
 console.log(JSON.stringify({scope:'Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.',checks},null,2));

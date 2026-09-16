@@ -10,3 +10,5 @@
 .priority-form h3{margin:0 0 6px}.priority-fields{display:grid;grid-template-columns:145px minmax(120px,1fr) auto;gap:10px;align-items:end}.priority-fields input,.priority-fields select{width:100%;min-width:0}
 .history-section{margin-top:24px;border-top:1px solid var(--border,#dce2ea);padding-top:16px}.history-section summary{font-weight:600;cursor:pointer}.history-list{list-style:none;padding:0;margin:14px 0}.history-event{border-left:3px solid var(--border,#dce2ea);padding:8px 12px;margin-bottom:10px;overflow-wrap:anywhere}.history-event h4{margin:4px 0;font-size:14px}.history-event p{margin:5px 0;font-size:13px;white-space:pre-wrap}.history-event small{color:var(--muted,#64748b)}.history-actions{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:700px){.priority-fields{grid-template-columns:1fr}.priority-fields button{justify-self:start}.history-actions button{max-width:100%}}
+
+.assignment-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.75rem}.assignment-actions button{white-space:normal}.priority-form #assignment-reason{width:100%;box-sizing:border-box}

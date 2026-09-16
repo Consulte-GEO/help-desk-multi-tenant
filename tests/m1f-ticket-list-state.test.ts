@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {ticketDto} from '../src/http/serialization.ts';import {principal,ticket} from './fixtures.ts';
 const load=async()=>{
- // @ts-ignore Native JS module is exercised directly; there is no simulated DOM.
+ // Native JS module is exercised directly; its declaration includes nullable operations.
  const module=await import('../web/ticket-list-state.js').catch(()=>null);
  assert.ok(module,'Estado da caixa de chamados ainda não implementado.');return module.createTicketListState();
 };
@@ -9,9 +9,9 @@ const item=(id='ticket-a')=>ticketDto(principal(),ticket({id}));
 const page=(ids:string[],next:string|null=null)=>({items:ids.map(id=>item(id)),next_cursor:next});
 test('requisição da lista inclui filtros e cursor no servidor',async()=>{
  const s=await load();s.reset({q:' relatório ',status:'in_progress',priority:'high'});
- const op=s.begin();const url=new URL(op.path,'https://hd.test');
+ const op=s.begin();assert.ok(op);const url=new URL(op.path,'https://hd.test');
  assert.equal(url.searchParams.get('q'),'relatório');assert.equal(url.searchParams.get('status'),'in_progress');assert.equal(url.searchParams.get('priority'),'high');assert.equal(url.searchParams.get('limit'),'25');
- s.accept(op,page(['a'],'next-a'));const more=s.begin();assert.equal(new URL(more.path,'https://hd.test').searchParams.get('cursor'),'next-a');
+ s.accept(op,page(['a'],'next-a'));const more=s.begin();assert.ok(more);assert.equal(new URL(more.path,'https://hd.test').searchParams.get('cursor'),'next-a');
 });
 test('resposta antiga não substitui resultado de filtro mais novo',async()=>{
  const s=await load();s.reset({q:'Antigo'});const old=s.begin();s.reset({q:'Novo'});const current=s.begin();
@@ -30,12 +30,12 @@ test('uma página pendente não pode disparar carregamento duplicado',async()=>{
 });
 test('erro preserva página já carregada e permite repetir o mesmo cursor',async()=>{
  const s=await load();s.accept(s.begin(),page(['a'],'cursor-a'));const op=s.begin();assert.equal(s.fail(op),true);
- assert.equal(s.status(),'error');assert.deepEqual(s.items().map((t:any)=>t.id),['a']);const retry=s.begin();assert.equal(retry.cursor,op.cursor);
+ assert.equal(s.status(),'error');assert.deepEqual(s.items().map((t:any)=>t.id),['a']);const retry=s.begin();assert.ok(retry);assert.ok(op);assert.equal(retry.cursor,op.cursor);
  s.accept(retry,page(['b']));assert.deepEqual(s.items().map((t:any)=>t.id),['a','b']);
 });
 test('estado não retém mutações externas nos itens ou filtros',async()=>{
  const s=await load();const filters={q:'Original'};s.reset(filters);filters.q='Changed';assert.equal(s.filters().q,'Original');
- const p=page(['a']);s.accept(s.begin(),p);p.items[0]!.subject='Changed';const copy=s.items();copy[0].subject='Mutated';assert.equal(s.items()[0].subject,'Falha de relatório');
+ const p=page(['a']);s.accept(s.begin(),p);p.items[0]!.subject='Changed';const copy=s.items();assert.ok(copy[0]);copy[0].subject='Mutated';const current=s.items()[0];assert.ok(current);assert.equal(current.subject,'Falha de relatório');
 });
 test('página duplicada ou cursor repetido não corrompe resultados aceitos',async()=>{
  const s=await load();s.accept(s.begin(),page(['a'],'cursor-a'));const op=s.begin();

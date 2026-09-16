@@ -1,0 +1,10 @@
+
+> @consulte-geo/helpdesk@0.9.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+tests/m1f-ticket-list-state.test.ts(12,39): error TS18047: 'op' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(14,78): error TS18047: 'more' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(33,123): error TS18047: 'retry' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(33,136): error TS18047: 'op' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(38,95): error TS2532: Object is possibly 'undefined'.
+tests/m1f-ticket-list-state.test.ts(38,134): error TS2532: Object is possibly 'undefined'.

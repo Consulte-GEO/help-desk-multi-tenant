@@ -1,6 +1,9 @@
 /** Closed diagnostic vocabulary. Unknown values are never logged verbatim. */
 export const ERROR_CODES=new Set([
  'ambiguous_coverage',
+ 'assignment_conflict',
+ 'assignment_not_allowed',
+ 'assignment_release_forbidden',
  'auth_unavailable',
  'backend_unavailable',
  'body_timeout',

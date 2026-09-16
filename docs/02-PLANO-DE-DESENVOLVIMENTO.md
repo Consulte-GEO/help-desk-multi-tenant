@@ -216,3 +216,6 @@ A caixa existente recebeu antecipação delimitada de **HD-302 (busca/paginaçã
 
 ## Incremento v0.8.0 — recorte de HD-301 e HD-105
 Prioridade auditável e histórico no ticket existente antecipados como capacidade isolada de operação. Não iniciar backoffice nem declarar M1 encerrado. Código e testes locais entregues; dados/rotina SQL dependem da migration007 e de PostgreSQL real. Evidências no documento04, contrato no12. Gate atualizado para 569 locais, 82 SQL e 44 HTTP/browser; só contagens reais permitem aprovação. Condições de instalação/Auth/runtime/capacidade/restauração não mudaram.
+
+## Incremento v0.9.0 — responsabilidade (recorte HD-301 / HD-105)
+Assumir/liberar com motivo, versão e idempotência; política de acesso preservada; histórico privado e nenhum evento externo. Não entrega atribuição arbitrária, equipes/filas ou M2. Migration008 candidata e 18 novos SQL. Evidências em docs04; contrato/limitações em13. Gates635 locais/100 SQL/53 HTTP+browser; M1 permanece aberto e nenhuma liberação remota ocorreu.

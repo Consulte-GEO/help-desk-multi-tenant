@@ -1,0 +1,1373 @@
+TAP version 13
+# (node:1223) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: claim advances version and preserves contract, status and priority; event stays internal
+not ok 1 - claim advances version and preserves contract, status and priority; event stays internal
+  ---
+  duration_ms: 3.083288
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:23:43)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: release own assignment returns to unassigned and stores reason
+not ok 2 - release own assignment returns to unassigned and stores reason
+  ---
+  duration_ms: 0.519526
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:29:114)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: another operator cannot take or release an occupied ticket
+not ok 3 - another operator cannot take or release an occupied ticket
+  ---
+  duration_ms: 0.360721
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:30:107)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: administrator can release another operator but cannot take it directly
+not ok 4 - administrator can release another operator but cannot take it directly
+  ---
+  duration_ms: 0.293886
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:31:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:31:119)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same owner claim and unassigned release are version-checked no-ops
+not ok 5 - same owner claim and unassigned release are version-checked no-ops
+  ---
+  duration_ms: 0.589515
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:32:126)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: identical concurrent claims have one mutation and one replay in memory
+not ok 6 - identical concurrent claims have one mutation and one replay in memory
+  ---
+  duration_ms: 0.894331
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:33:143)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: two operators racing same version have one winner
+not ok 7 - two operators racing same version have one winner
+  ---
+  duration_ms: 0.957339
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:34:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:34:176)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay is original result after release, without claiming again
+not ok 8 - replay is original result after release, without claiming again
+  ---
+  duration_ms: 0.286793
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:35:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:35:127)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: changed reason with same key conflicts
+not ok 9 - changed reason with same key conflicts
+  ---
+  duration_ms: 1.117286
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:36:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:36:87)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: stale version fails even for no-op
+not ok 10 - stale version fails even for no-op
+  ---
+  duration_ms: 0.726299
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:37:83)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: requester cannot change assignment
+not ok 11 - requester cannot change assignment
+  ---
+  duration_ms: 1.93796
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: manager cannot change assignment
+not ok 12 - manager cannot change assignment
+  ---
+  duration_ms: 0.55467
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: machine cannot change assignment
+not ok 13 - machine cannot change assignment
+  ---
+  duration_ms: 0.719497
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no write cannot change assignment
+not ok 14 - no write cannot change assignment
+  ---
+  duration_ms: 0.503865
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no read cannot change assignment
+not ok 15 - no read cannot change assignment
+  ---
+  duration_ms: 0.754671
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: workspace agent without account cannot change assignment
+not ok 16 - workspace agent without account cannot change assignment
+  ---
+  duration_ms: 0.318181
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:27'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:128)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:43:103)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: own assignment does not restore revoked access
+not ok 17 - own assignment does not restore revoked access
+  ---
+  duration_ms: 0.260965
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:44:95)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: former operator with account-manager access cannot replay assignment cache
+not ok 18 - former operator with account-manager access cannot replay assignment cache
+  ---
+  duration_ms: 0.254142
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:45:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:45:123)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: terminal closed blocks assignment
+not ok 19 - terminal closed blocks assignment
+  ---
+  duration_ms: 0.444025
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'assignment_not_allowed'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'assignment_not_allowed'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:176)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:164)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:151)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: terminal cancelled blocks assignment
+not ok 20 - terminal cancelled blocks assignment
+  ---
+  duration_ms: 0.374145
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'assignment_not_allowed'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'assignment_not_allowed'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:176)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:164)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:46:151)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject action "transfer"
+not ok 21 - reject action "transfer"
+  ---
+  duration_ms: 0.900613
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:157)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:145)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:132)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject action ""
+not ok 22 - reject action ""
+  ---
+  duration_ms: 0.311328
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:157)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:145)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:132)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject action null
+not ok 23 - reject action null
+  ---
+  duration_ms: 0.313943
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:157)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:145)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:132)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject action {}
+not ok 24 - reject action {}
+  ---
+  duration_ms: 0.332518
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:157)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:145)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:132)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject action "CLAIM"
+not ok 25 - reject action "CLAIM"
+  ---
+  duration_ms: 0.2904
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:157)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:145)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:47:132)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject bad reason 
+not ok 26 - reject bad reason 
+  ---
+  duration_ms: 0.579446
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:164)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:152)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:139)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject bad reason null
+not ok 27 - reject bad reason null
+  ---
+  duration_ms: 0.295368
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:164)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:152)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:139)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject bad reason \\n
+not ok 28 - reject bad reason \\n
+  ---
+  duration_ms: 0.292583
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:164)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:152)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:139)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject bad reason aaaaaaaa
+not ok 29 - reject bad reason aaaaaaaa
+  ---
+  duration_ms: 0.33357
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:164)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:152)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:48:139)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: precondition and idempotency are required
+not ok 30 - precondition and idempotency are required
+  ---
+  duration_ms: 0.51678
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:49:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'precondition_required'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'precondition_required'
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:49:109)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:49:97)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:49:84)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: event failure rolls back assignment and cache
+not ok 31 - event failure rolls back assignment and cache
+  ---
+  duration_ms: 0.749242
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /event unavailable/. Input:
+    
+    'AssertionError [ERR_ASSERTION]: Assignment command must exist\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      "+ 'undefined'\n" +
+      "- 'function'\n"
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:52:27
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:52:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:52:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: only operator DTO has assignment summary; nobody receives principal ID
+not ok 32 - only operator DTO has assignment summary; nobody receives principal ID
+  ---
+  duration_ms: 0.277516
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:54:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:54:136)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: customer timeline never receives responsibility event or reason
+not ok 33 - customer timeline never receives responsibility event or reason
+  ---
+  duration_ms: 1.578943
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:55:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Assignment command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    assign (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:18:62)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:55:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: POST assignment returns version and replay; customer is forbidden
+not ok 34 - POST assignment returns version and replay; customer is forbidden
+  ---
+  duration_ms: 27.436468
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    404 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 404
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:57:207)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment HTTP rejects target principal
+not ok 35 - assignment HTTP rejects target principal
+  ---
+  duration_ms: 0.917324
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    404 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 404
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:205)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment HTTP rejects missing version
+not ok 36 - assignment HTTP rejects missing version
+  ---
+  duration_ms: 1.17909
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    404 !== 428
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 428
+  actual: 404
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:205)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment HTTP rejects query selector
+not ok 37 - assignment HTTP rejects query selector
+  ---
+  duration_ms: 1.090445
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    404 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 404
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:205)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment HTTP rejects missing key
+not ok 38 - assignment HTTP rejects missing key
+  ---
+  duration_ms: 0.985361
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    404 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 404
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-assignment.test.ts:63:205)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 0
+# fail 38
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 299.539863

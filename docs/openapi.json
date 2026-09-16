@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -1051,6 +1051,192 @@
         "description": "Somente operador humano autorizado da conta com tickets:read e tickets:write. Não permite alterar conta, contrato, estado ou SLA. Cliente, gestor de conta e integração não são operadores. If-Match antigo: 412; ausência: 428; inválido: 400. Motivo interno de 1–2000 pontos de código após trim, sem controles. Encerrados/cancelados: 409. Mesma prioridade mantém versão e não cria evento, mas valida versão/permissão e registra resposta idempotente. Reenvio reautoriza operador e retorna a versão original; consulte GET para a versão atual. Erro após COMMIT pode significar resultado incerto: não reenviar automaticamente com chave nova."
       }
     },
+    "/tickets/{ticket_id}/assignments": {
+      "post": {
+        "operationId": "changeTicketAssignment",
+        "summary": "Assume para si ou libera responsabilidade, sem conceder acesso.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Idempotency"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Replayed": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true",
+                    "false"
+                  ]
+                },
+                "description": "Indica reprodução de resultado anterior."
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Versão desta resposta, não necessariamente a atual em replay."
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Não operador, scope ausente ou release de outro sem papel admin.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Ocupado, terminal ou conflito da chave.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Versão desatualizada.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "If-Match ausente.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Indisponível ou resultado incerto; não repetir com outra chave automaticamente.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 60
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentChange"
+              }
+            }
+          }
+        },
+        "description": "Somente operador humano autorizado da conta com tickets:read e tickets:write. Claim somente para si em chamado desocupado; um admin não pode tomar ocupado. Release pelo responsável ou admin do workspace. Sem transferência arbitrária, filas, recálculo de SLA ou evento externo. Encerrado/cancelado: 409. Versão antiga: 412. No-op também valida versão. Motivo somente no histórico interno; cliente e integração não recebem assignment. Reenvio idêntico devolve resultado original, com reautorização. GET obtém estado atual."
+      }
+    },
     "/tickets/{ticket_id}/messages": {
       "get": {
         "operationId": "listMessages",
@@ -1935,6 +2121,54 @@
           "body"
         ]
       },
+      "AssignmentChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "claim",
+              "release"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "Motivo interno obrigatório, sem caracteres de controle."
+          }
+        },
+        "required": [
+          "action",
+          "reason"
+        ]
+      },
+      "AssignmentSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "unassigned",
+              "mine",
+              "other"
+            ]
+          },
+          "can_claim": {
+            "type": "boolean"
+          },
+          "can_release": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "state",
+          "can_claim",
+          "can_release"
+        ]
+      },
       "PriorityChange": {
         "type": "object",
         "additionalProperties": false,
@@ -2046,6 +2280,10 @@
               "cancelled"
             ],
             "description": "Somente equipe autorizada."
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/AssignmentSummary",
+            "description": "Somente operador humano autorizado. Estado consultivo, não autorização; não contém principal ID."
           },
           "priority": {
             "type": "string",

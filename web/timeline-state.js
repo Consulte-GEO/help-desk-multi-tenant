@@ -17,6 +17,7 @@ function validateEvent(e,internal){
   case 'message.created':ok=internal?fields(d,['messageId','actorType'])&&identifier(d.messageId)&&['human_agent','customer','integration','automation','system'].includes(d.actorType):fields(d,[]);break;
   case 'note.created':ok=internal&&fields(d,['noteId'])&&identifier(d.noteId);break;
   case 'ticket.status_changed':ok=internal?fields(d,['from','to','reason'])&&known(internalStatuses,d.from)&&known(internalStatuses,d.to)&&text(d.reason):fields(d,['status'])&&known(statuses,d.status);break;
+  case 'ticket.assignment_changed':ok=internal&&fields(d,['action','reason','version'])&&['claim','release'].includes(d.action)&&positive(d.version)&&d.version>=2&&text(d.reason)&&d.reason.trim().length>0&&!/[\p{Cc}\p{Cs}]/u.test(d.reason);break;
   case 'ticket.priority_changed':ok=fields(d,internal?['from','to','version','reason']:['from','to','version'])&&known(priorities,d.from)&&known(priorities,d.to)&&positive(d.version)&&d.version>=2&&(!internal||text(d.reason));break;
  }
  if(!ok)invalid();return structuredClone(e);
@@ -51,6 +52,7 @@ export function eventPresentation(event,internal=false){
   case 'message.created':return {title:'Resposta pública registrada',description:'Consulte o conteúdo na conversa.',internal:false};
   case 'note.created':return {title:'Nota interna registrada',description:'Registro restrito à equipe. Consulte a área de notas.',internal:true};
   case 'ticket.status_changed':return internal?{title:'Situação atualizada',description:internalStatuses[d.from]+' → '+internalStatuses[d.to]+(d.reason?' · Motivo interno: '+d.reason:''),internal:!!d.reason}:{title:'Situação atualizada',description:statuses[d.status],internal:false};
+  case 'ticket.assignment_changed':return {title:d.action==='claim'?'Atendimento assumido':'Atendimento liberado',description:'Motivo interno: '+d.reason,internal:true};
   case 'ticket.priority_changed':return {title:'Prioridade alterada',description:priorities[d.from]+' → '+priorities[d.to]+(internal&&d.reason?' · Motivo interno: '+d.reason:''),internal:internal&&!!d.reason};
  }
  throw Error('Evento de histórico desconhecido.');

@@ -1,5 +1,15 @@
 # v0.8.0 — Prioridade auditável e histórico autorizado
 
+## 0.9.0 — responsabilidade pelo atendimento (não publicado)
+- POST assignments: self-claim e release próprio/admin com motivo interno, ETag e idempotência.
+- Disputa entre agentes, no-op e reenvio original; assigned_to não concede acesso.
+- DTO interno resume estado, histórico privado sem IDs na projeção e sem outbox.
+- Interface com controles, rascunho próprio e refresh explícito; lista/histórico reconhecem responsabilidade.
+- Migration008 candidata; cache e guards preservados. Oito migrations/23 tabelas; schema0.9.0.
+- Compatibilidade de snapshots antigos, validação fechada de evento e tipagem JS corrigidas.
+- 635 testes locais e28 HTTP; SQL100/browser25 escritos, ainda não aprovados. M1 aberto.
+
+
 - PATCH restrito, motivo interno, versão exata, replay reautorizado e no-op explícito.
 - Evento de prioridade público minimizado; motivo somente para operador; outbox sem razão.
 - Formulário de equipe e seção de histórico sob demanda, paginação e proteção de rascunhos/geração.

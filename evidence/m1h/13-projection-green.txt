@@ -1,0 +1,54 @@
+TAP version 13
+# (node:3437) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: assignment projection rejects malformed stored reason empty
+ok 1 - assignment projection rejects malformed stored reason empty
+  ---
+  duration_ms: 1.219502
+  type: 'test'
+  ...
+# Subtest: assignment projection rejects malformed stored reason controls
+ok 2 - assignment projection rejects malformed stored reason controls
+  ---
+  duration_ms: 0.284227
+  type: 'test'
+  ...
+# Subtest: assignment projection rejects malformed stored reason surrogate
+ok 3 - assignment projection rejects malformed stored reason surrogate
+  ---
+  duration_ms: 0.219608
+  type: 'test'
+  ...
+# Subtest: assignment projection rejects malformed stored reason large
+ok 4 - assignment projection rejects malformed stored reason large
+  ---
+  duration_ms: 0.911451
+  type: 'test'
+  ...
+# Subtest: assignment projection must not coerce an object action into a permitted string
+ok 5 - assignment projection must not coerce an object action into a permitted string
+  ---
+  duration_ms: 0.2209
+  type: 'test'
+  ...
+# Subtest: assignment projection forbids a mislabeled public event even for an operator
+ok 6 - assignment projection forbids a mislabeled public event even for an operator
+  ---
+  duration_ms: 0.147674
+  type: 'test'
+  ...
+# Subtest: assignment projection strips actor relationships and preserves supplementary Unicode
+ok 7 - assignment projection strips actor relationships and preserves supplementary Unicode
+  ---
+  duration_ms: 0.841911
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 149.43692

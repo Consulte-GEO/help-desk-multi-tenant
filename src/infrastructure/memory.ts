@@ -42,6 +42,7 @@ export class MemoryUnitOfWork implements UnitOfWork{
    insertTicket:async t=>{next.tickets.push(structuredClone(t));},
    updateTicket:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');next.tickets[i]=structuredClone(t);},
    updatePriority:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');next.tickets[i]={...next.tickets[i]!,priority:t.priority,version:t.version,updatedAt:t.updatedAt};},
+   updateAssignment:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');next.tickets[i]={...next.tickets[i]!,assignedTo:t.assignedTo,version:t.version,updatedAt:t.updatedAt};},
    lockIdempotency:async()=>{},
    getIdempotency:async(operation,key)=>next.idempotency.find(x=>x.principalId===p.id&&x.workspaceId===p.workspaceId&&x.operation===operation&&x.key===key)??null,
    saveIdempotency:async record=>{next.idempotency.push(structuredClone(record));},

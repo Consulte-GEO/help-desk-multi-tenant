@@ -1,0 +1,6 @@
+
+> @consulte-geo/helpdesk@0.9.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+tests/m1h-ui-contract.test.ts(6,37): error TS7016: Could not find a declaration file for module '../web/ticket-list-state.js'. '/mnt/data/helpdesk-v0.9.0/web/ticket-list-state.js' implicitly has an 'any' type.
+tests/m1h-ui-contract.test.ts(7,53): error TS7016: Could not find a declaration file for module '../web/timeline-state.js'. '/mnt/data/helpdesk-v0.9.0/web/timeline-state.js' implicitly has an 'any' type.

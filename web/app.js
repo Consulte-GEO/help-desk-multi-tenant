@@ -20,7 +20,7 @@ const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -36,6 +36,7 @@ function render(){
  const items=s.tickets,phase=inbox.status();$('ticket-list').replaceChildren();
  for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('aria-label','Abrir chamado: '+t.subject);
   const top=el('div','card-top'),bottom=el('div','card-bottom');top.append(el('span','',t.id.slice(0,8).toUpperCase()),el('span','',date(t.created_at)));
+  if(t.assignment)bottom.append(el('span','badge',t.assignment.state==='mine'?'Sob minha responsabilidade':t.assignment.state==='other'?'Com outro atendente':'Sem responsável'));
   bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id)));
   n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);
  }
@@ -77,7 +78,7 @@ async function older(kind){
 }
 async function detail(id){
  // Invalidate pending writes as soon as navigation starts, not after the GET returns.
- if(s.ticket?.id!==id){timeline.reset();$('history-section').open=false;renderTimeline();$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');$('ticket-detail').hidden=true;$('empty-detail').hidden=false;}
+ if(s.ticket?.id!==id){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');$('ticket-detail').hidden=true;$('empty-detail').hidden=false;}
  const seq=++s.detail,t=await api('/tickets/'+id);
  const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages?limit=50'),operator(t.account_id)&&s.me.scopes.includes('notes:read')?api('/tickets/'+id+'/notes?limit=50'):Promise.resolve({items:[],next_cursor:null})]);
  if(seq!==s.detail)return;
@@ -92,7 +93,7 @@ async function detail(id){
  renderConversation();const agent=operator(t.account_id);$('notes-section').hidden=!agent;$('note-tab').hidden=!agent;
  if(!agent)mode('public');const allowed=agent?(moves[t.internal_status]??[]):t.status==='resolved'?['open','closed']:[];
  $('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));
- renderPriority();timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),agent);renderTimeline();if($('history-section').open)await loadTimeline();render();
+ renderAssignment();renderPriority();timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),agent);renderTimeline();if($('history-section').open)await loadTimeline();render();
 }
 
 function renderTimeline(){
@@ -109,6 +110,45 @@ async function loadTimeline(){
 $('history-section').ontoggle=()=>{if($('history-section').open&&timeline.status()==='idle')run(loadTimeline);};
 $('history-more').onclick=()=>run(loadTimeline);$('history-retry').onclick=()=>run(loadTimeline);
 $('history-refresh').onclick=()=>run(async()=>{if(!s.ticket)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),operator(s.ticket.account_id));await loadTimeline();});
+function renderAssignment(){
+ const t=s.ticket,a=t?.assignment,visible=t&&operator(t.account_id)&&a;
+ $('assignment-form').hidden=!visible;if(!visible)return;
+ $('assignment-label').textContent=a.state==='mine'?'Responsável: você.':a.state==='other'?'Responsável: outro atendente. Em chamados não encerrados, um administrador pode liberar para nova atribuição.':'Este chamado está sem responsável.';
+ const busy=mutations.busy('assignment'),draft=mutations.draft('assignment');
+ if(draft){try{$('assignment-reason').value=JSON.parse(draft).reason;}catch{$('assignment-status').textContent='Rascunho inválido. Reabra o chamado.';}}
+ else $('assignment-reason').value='';
+ $('claim-ticket').disabled=busy||!a.can_claim;$('release-ticket').disabled=busy||!a.can_release;$('assignment-reload').disabled=busy;
+}
+function editAssignment(action,rebase=false){
+ if(!s.ticket)return;let previous=null;try{previous=JSON.parse(mutations.draft('assignment'));}catch{}
+ const selected=action??previous?.action??(s.ticket.assignment?.state==='mine'?'release':'claim');
+ const reason=$('assignment-reason').value;
+ // Keep an uncertain request byte-for-byte until its content changes or the user explicitly reloads.
+ const version=!rebase&&previous?.action===selected&&previous?.reason===reason?previous.version:s.ticket.version;
+ mutations.edit('assignment',JSON.stringify({action:selected,reason,version}));
+}
+$('assignment-reason').oninput=()=>editAssignment();
+$('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.value;if(!['claim','release'].includes(action))return;run(async()=>{
+ const t=s.ticket;if(!t||!operator(t.account_id))return;editAssignment(action);const op=mutations.begin('assignment');if(!op)return;
+ const d=JSON.parse(op.body);$('assignment-status').textContent='Confirmando responsabilidade com a versão '+d.version+'…';$('assignment-reload').hidden=true;renderAssignment();
+ try{
+  await post('/tickets/'+t.id+'/assignments',{action:d.action,reason:d.reason.trim()},op.key,{'if-match':'"'+d.version+'"'});
+  if(!mutations.finish(op,true).current)return;
+  $('assignment-status').textContent=d.action==='claim'?'Atendimento assumido. Registro somente no histórico interno.':'Atendimento liberado. Nenhuma permissão de acesso foi modificada.';
+  await detail(t.id);if(mutations.current(op))await list();
+ }catch(error){
+  if(mutations.finish(op,false).current||mutations.current(op)){
+   const conflict=error.status===412||error.code==='assignment_conflict'||error.code==='assignment_release_forbidden';
+   $('assignment-status').textContent=conflict?'Responsabilidade ou versão alterada. Atualize o chamado e revise antes de confirmar novamente.':(error.status===503||!Number.isInteger(error.status))?'Resultado ainda não confirmado. Não crie outra operação: repita sem alterar os campos ou atualize o chamado para verificar.':error.message;
+   $('assignment-reload').hidden=!conflict;
+  }
+ }finally{renderAssignment();}
+});};
+$('assignment-reload').onclick=()=>run(async()=>{
+ const id=s.ticket?.id,epoch=s.epoch;if(!id||mutations.busy('assignment'))return;
+ await detail(id);if(s.ticket?.id===id&&epoch===s.epoch){editAssignment(undefined,true);$('assignment-reload').hidden=true;$('assignment-status').textContent='Versão atualizada. Motivo preservado; revise a responsabilidade antes de confirmar.';renderAssignment();}
+});
+
 function renderPriority(){
  const t=s.ticket,allowed=t&&operator(t.account_id)&&s.me.scopes.includes('tickets:read')&&s.me.scopes.includes('tickets:write')&&!['closed','cancelled'].includes(t.internal_status);
  $('priority-form').hidden=!allowed;if(!allowed)return;

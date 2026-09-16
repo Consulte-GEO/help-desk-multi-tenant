@@ -1,0 +1,92 @@
+[
+  {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-tests.txt",
+    "timestamp_utc": "2026-09-16T22:54:12.689154+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "typecheck",
+      "--",
+      "--typeRoots",
+      "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-typecheck-environment.txt",
+    "timestamp_utc": "2026-09-16T22:54:15.470881+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "check:contracts"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-contracts.txt",
+    "timestamp_utc": "2026-09-16T22:54:15.753094+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "check:secrets"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-secrets.txt",
+    "timestamp_utc": "2026-09-16T22:54:15.945248+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-build.txt",
+    "timestamp_utc": "2026-09-16T22:54:16.104162+00:00"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "log": "evidence/m1h/final-diff-check.txt",
+    "timestamp_utc": "2026-09-16T22:54:16.111873+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "homologate:local"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "log": "evidence/m1h/final-homologation.txt",
+    "timestamp_utc": "2026-09-16T22:54:16.369804+00:00"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "verify:release"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "log": "evidence/m1h/final-release-gate.txt",
+    "timestamp_utc": "2026-09-16T22:54:16.639131+00:00"
+  }
+]

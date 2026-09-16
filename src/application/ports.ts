@@ -14,6 +14,7 @@ export interface Store{
   insertTicket(ticket:Ticket):Promise<void>;
   updateTicket(ticket:Ticket,expectedVersion:number):Promise<void>;
   updatePriority(ticket:Ticket,expectedVersion:number):Promise<void>;
+  updateAssignment(ticket:Ticket,expectedVersion:number):Promise<void>;
   lockIdempotency(operation:string,key:string):Promise<void>;
   getIdempotency(operation:string,key:string):Promise<StoredResult|null>;
   saveIdempotency(record:StoredResult):Promise<void>;

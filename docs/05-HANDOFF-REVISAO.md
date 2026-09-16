@@ -1,24 +1,24 @@
-# Continuidade — Help Desk v0.8.0
+# Continuidade — Help Desk v0.9.0
 
-Base `d05f6f6f430dd624a7c550f81d81d895e858c156`; branch local `work/helpdesk-v0.8.0`. Commit final no manifesto externo/bundle. Nenhuma publicação, migration remota ou mudança de dados, segredo ou MFA. GitHub retornou vazio nesta rodada; Supabase/Netlify não reinspecionados. Ler documentos 04/12, README, CHANGELOG e OpenAPI. Não presumir que os destinos continuam no mesmo estado antes de integrar.
+Base: `ce9a49e0e7616fc8a4a6425c478d6218499bd177`; branch `work/helpdesk-v0.9.0`. Commit final no manifesto/bundle. Sem escrita nem reinspeção remota nesta rodada. Reinspecionar destinos antes de integrar e preservar trabalho concorrente.
 
-## Próximos passos
-1. Resolver dependências (`npm run deps:resolve`) com acesso autorizado ao registry. Revisar lock real, origens, integridades, licenças/alertas. Repetir npm ci/verify/audit. Não usar lock sintético ou tipos globais como aprovação.
-2. Executar PostgreSQL 17 descartável: sete migrations, login restrito e **82 cenários escritos**. Testar fresh install e upgrade 001–006 → 007 com dados fictícios. Docker padrão; native só com instalação local autorizada e usuário não root. Nunca usar Supabase real como fallback.
-3. Revisar priority_event_shape/priority_outbox_shape, guard, trigger diferido, coluna UPDATE, RLS e helpers de idempotência. Confirmar rollback por evento/outbox ausente, concorrência, no-op, replay após revogação e ausência de motivo no payload público/externo. Testar schema_version e login de runtime. Sentinelas textuais não são execução SQL.
-4. Executar browser com **22 verificações escritas**, além dos **22 checks HTTP**. Conferir save, 412 real de outra sessão, rascunho durante requisição, troca de perfil/ticket, histórico tardio, paginação, foco/teclado/390px. O navegador desta sessão bloqueou em page.goto. Não contornar políticas do ambiente.
-5. Homologar Auth humano/M2M, pooler/TLS, IP, driver e Functions com `pg` instalado. Backend 0.8.0 exige schema 0.8.0; não publicar somente HTML ou manter schema 0.5.0.
-6. Executar homologate:local / check:homologation; revisar fingerprints/logs e contagens reais. Piso: 569 locais, 82 SQL, 44 HTTP/browser. Aprovação local não autoriza produção. Manter HELPDESK_RELEASE_APPROVED fechado até critérios de destino/operacionais e decisão explícita.
-7. Homologar carga/capacidade, restauração, retenção e revisão independente. M1 permanece aberto; backoffice/identidade administrativa M2 ainda não iniciado.
+## Execução prioritária
+1. Resolver dependências via `npm run deps:resolve`, revisar lock/árvore/origens/integridades/alertas; executar npm ci/verify/audit. Não substituir tipos locais por globais ou copiar lock sintético.
+2. PostgreSQL17 novo e descartável com login restrito: oito migrations/100 cenários. Docker padrão; native exige instalação autorizada e usuário não root. Nunca usar Supabase remoto como fallback nem apagar schema existente para passar.
+3. Além de fresh, homologar upgrade001–007→008 em banco separado com dados fictícios. Coluna assigned_to nasce null. Cache antigo sem campo deve continuar representando o snapshot original. Verificar concorrência, reenvio após release/revogação, schema0.9.0 e dados anteriores intactos.
+4. Revisar guard_ticket_assignment, require_assignment_event, assignment_event_shape, unique index, event_scope_insert e assignment_outbox_forbidden. Não conceder acesso por assigned_to; não exigir membership global de agente vinculado só à conta. Helpers privados não executáveis por clientes/app; funções de cache preservam scopes/lifecycle/quota.
+5. Rodar UI:28 HTTP+25 browser. Verificar assumir/liberar, conflito entre dois operadores, 412, refresh explícito, erro de rede incerto, rascunho durante request e A→B→A. Cliente não recebe assignment ou motivo/evento interno. Teclado, foco e mobile390px pendentes. Não contornar bloqueio do navegador.
+6. Homologar pg/driver/Auth/pooler/TLS/IP/Functions. Não publicar apenas HTML nem backend0.9 com schema0.8. Medir queries/timeouts e efeitos do trigger diferido sob concorrência.
+7. Executar homologate:local/check:homologation, revisar logs/fingerprint. Piso635 locais/100 SQL/53 UI; as contagens só valem se efetivamente passarem sem skips. Sucesso local não autoriza produção. Manter HELPDESK_RELEASE_APPROVED fechado até critérios operacionais/destino e decisão explícita.
 
 ## Revisão dirigida
-- `ticket-priority.ts`, `HelpdeskService.changePriority`, `PostgresStore.updatePriority` e serialização de evento.
-- Migration 007, sobretudo lookup_idempotency e limit_idempotency_records preservando lifecycle/quota anteriores.
-- `web/timeline-state.js`, `web/mutation-state.js` + declaração, `web/app.js`, formulário e seção de histórico.
-- `tests/m1g-*`, `supabase/tests/rls.test.ts`, browser e smoke-local-http.
-- Contrato OpenAPI/exemplo, capacidade e fronteira de erro.
+- `src/application/ticket-assignment.ts`, HelpdeskService.changeAssignment, updateAssignment nos dois adaptadores.
+- DTO/evento e lookup_idempotency após downgrade de agente.
+- Migration008 e 18 testes SQL novos; sete migrations anteriores inalteradas.
+- `web/app.js`, `ticket-list-state.js`, `timeline-state.js`, mutation-state e declarações.
+- `tests/m1h-*`, smokeHTTP, browser e OpenAPI/exemplo.
 
 ## Invariantes
-Motivo só para operador; não em DTO cliente, ticketDto ou outbox. Mesmo valor não aumenta versão. Reenvio é resposta original, não leitura atual. Campo de prioridade não altera SLA/contrato. ETag e cursor não concedem acesso. Uma falha após commit é resultado incerto. Não abrir endpoint de notas ou histórico global para facilitar a interface. Histórico não é WORM/admin audit nem prova de notificação enviada.
+Claim somente para si em desocupado; admin libera mas não toma. Release próprio/admin com motivo. Encerrado/cancelado não muda. Nenhuma mudança de estado/contrato/prioridade/fila/SLA. Responsabilidade não participa de canReadTicket. Histórico/IDs internos não saem ao cliente; resumo do operador não inclui IDs alheios. Não produz outbox. Retry mesma chave devolve versão original; GET é o estado atual. Erro pós-COMMIT é incerto, não “não gravou”.
 
-Os testes locais incluem fixtures/controladores em memória e doubles PostgreSQL. Não somar aos 82 SQL ou 22 browser não aprovados. Não houve revisão independente, pentest, carga ou restore. O ZIP não autoriza publicação.
+635 testes locais incluem doubles/estado puro. SQL100 e browser25 não foram aprovados; nenhum pentest/carga/restore/revisão independente. M1 continua aberto; M2/backoffice não iniciado. Atribuição é recorte de HD-301, não módulo completo de filas/equipes.

@@ -1,0 +1,138 @@
+TAP version 13
+# (node:1930) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: historical cached ticket with no assignedTo remains unassigned
+ok 1 - historical cached ticket with no assignedTo remains unassigned
+  ---
+  duration_ms: 1.504497
+  type: 'test'
+  ...
+# Subtest: assignment observation uses normalized route, never a resource ID
+ok 2 - assignment observation uses normalized route, never a resource ID
+  ---
+  duration_ms: 0.245998
+  type: 'test'
+  ...
+# Subtest: operator list accepts the closed assignment summary
+ok 3 - operator list accepts the closed assignment summary
+  ---
+  duration_ms: 1.363966
+  type: 'test'
+  ...
+# Subtest: list rejects assignment extra atomically
+ok 4 - list rejects assignment extra atomically
+  ---
+  duration_ms: 0.46238
+  type: 'test'
+  ...
+# Subtest: list rejects assignment badstate atomically
+ok 5 - list rejects assignment badstate atomically
+  ---
+  duration_ms: 0.332228
+  type: 'test'
+  ...
+# Subtest: list rejects assignment badboolean atomically
+ok 6 - list rejects assignment badboolean atomically
+  ---
+  duration_ms: 0.23105
+  type: 'test'
+  ...
+# Subtest: list rejects assignment inconsistent atomically
+ok 7 - list rejects assignment inconsistent atomically
+  ---
+  duration_ms: 0.259643
+  type: 'test'
+  ...
+# Subtest: customer-shaped DTO cannot carry assignment
+ok 8 - customer-shaped DTO cannot carry assignment
+  ---
+  duration_ms: 0.233725
+  type: 'test'
+  ...
+# Subtest: internal timeline accepts and presents assignment event without principal ID
+ok 9 - internal timeline accepts and presents assignment event without principal ID
+  ---
+  duration_ms: 1.442181
+  type: 'test'
+  ...
+# Subtest: internal timeline presents release
+ok 10 - internal timeline presents release
+  ---
+  duration_ms: 0.502413
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment public
+ok 11 - timeline denies assignment public
+  ---
+  duration_ms: 0.340714
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment principal data
+ok 12 - timeline denies assignment principal data
+  ---
+  duration_ms: 0.109403
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment empty reason
+ok 13 - timeline denies assignment empty reason
+  ---
+  duration_ms: 0.090348
+  type: 'test'
+  ...
+# Subtest: timeline denies assignment invalid action
+ok 14 - timeline denies assignment invalid action
+  ---
+  duration_ms: 0.092281
+  type: 'test'
+  ...
+# Subtest: assignment and reply drafts are independent during delayed request
+ok 15 - assignment and reply drafts are independent during delayed request
+  ---
+  duration_ms: 0.729897
+  type: 'test'
+  ...
+# Subtest: assignment completion cannot affect another ticket after A B A
+ok 16 - assignment completion cannot affect another ticket after A B A
+  ---
+  duration_ms: 0.260033
+  type: 'test'
+  ...
+# Subtest: assignment dedicated UPDATE keeps resource and version predicates
+ok 17 - assignment dedicated UPDATE keeps resource and version predicates
+  ---
+  duration_ms: 1.160928
+  type: 'test'
+  ...
+# Subtest: migration adds only nullable assignee and narrow UPDATE grant
+ok 18 - migration adds only nullable assignee and narrow UPDATE grant
+  ---
+  duration_ms: 11.940938
+  type: 'test'
+  ...
+# Subtest: migration requires internal event on commit and disallows assignment outbox
+ok 19 - migration requires internal event on commit and disallows assignment outbox
+  ---
+  duration_ms: 2.597229
+  type: 'test'
+  ...
+# Subtest: assignment cache revalidates write and live operator
+ok 20 - assignment cache revalidates write and live operator
+  ---
+  duration_ms: 1.297302
+  type: 'test'
+  ...
+# Subtest: assignment trigger does not allow changing other fields or initial assignee
+ok 21 - assignment trigger does not allow changing other fields or initial assignee
+  ---
+  duration_ms: 1.275882
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 198.641614

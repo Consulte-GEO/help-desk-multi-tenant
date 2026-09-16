@@ -24,7 +24,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.8.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!=='0.9.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 /** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
@@ -52,10 +52,10 @@ export class PostgresUnitOfWork implements UnitOfWork{
  }
 }
 type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const iso=(v:unknown)=>new Date(v as string|Date).toISOString();
-function ticket(r:Row):Ticket{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at)};}
+function ticket(r:Row):Ticket{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),assignedTo:r.assigned_to==null?null:str(r,'assigned_to'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at)};}
 function message(r:Row):PublicMessage{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),actorType:r.actor_type as PublicMessage['actorType'],body:str(r,'body'),createdAt:iso(r.created_at)};}
 function note(r:Row):InternalNote{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),body:str(r,'body'),createdAt:iso(r.created_at)};}
-const ticketColumns='id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,created_at,updated_at';
+const ticketColumns='id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,created_at,updated_at,assigned_to';
 class PostgresStore implements Store{
  readonly c:SqlClient;readonly p:Principal;constructor(c:SqlClient,p:Principal){this.c=c;this.p=p;}
  // Table and column names in this helper are developer-owned constants, never request values.
@@ -79,7 +79,11 @@ class PostgresStore implements Store{
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
     filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null])).rows.map(ticket);
  }
- async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt]);}
+ async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt,t.assignedTo]);}
+ async updateAssignment(t:Ticket,expectedVersion:number):Promise<void>{
+  const r=await this.c.query('update helpdesk_core.tickets set assigned_to=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.assignedTo,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
+  if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');
+ }
  async updatePriority(t:Ticket,expectedVersion:number):Promise<void>{
   const r=await this.c.query('update helpdesk_core.tickets set priority=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.priority,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
   if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');

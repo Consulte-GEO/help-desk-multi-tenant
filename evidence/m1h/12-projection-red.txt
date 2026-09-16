@@ -1,0 +1,122 @@
+TAP version 13
+# (node:3409) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: assignment projection rejects malformed stored reason empty
+not ok 1 - assignment projection rejects malformed stored reason empty
+  ---
+  duration_ms: 1.463937
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:123'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:202)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: assignment projection rejects malformed stored reason controls
+not ok 2 - assignment projection rejects malformed stored reason controls
+  ---
+  duration_ms: 0.167134
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:123'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:202)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: assignment projection rejects malformed stored reason surrogate
+not ok 3 - assignment projection rejects malformed stored reason surrogate
+  ---
+  duration_ms: 0.138335
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:123'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:202)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment projection rejects malformed stored reason large
+not ok 4 - assignment projection rejects malformed stored reason large
+  ---
+  duration_ms: 0.148623
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:123'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:5:202)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment projection must not coerce an object action into a permitted string
+not ok 5 - assignment projection must not coerce an object action into a permitted string
+  ---
+  duration_ms: 0.245557
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:6:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.9.0/tests/m1h-event-validation.test.ts:6:99)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment projection forbids a mislabeled public event even for an operator
+ok 6 - assignment projection forbids a mislabeled public event even for an operator
+  ---
+  duration_ms: 0.192187
+  type: 'test'
+  ...
+# Subtest: assignment projection strips actor relationships and preserves supplementary Unicode
+ok 7 - assignment projection strips actor relationships and preserves supplementary Unicode
+  ---
+  duration_ms: 0.80061
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 2
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 163.648481
