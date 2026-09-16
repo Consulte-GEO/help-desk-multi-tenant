@@ -1,0 +1,23 @@
+# Exemplo. Preencher localmente; não registrar tokens/segredos em repositório.
+# Somente humano operador autorizado; NÃO M2M.
+GET {{base}}/v1/tickets/{{ticket_id}}
+Authorization: Bearer {{human_access_token}}
+X-Workspace-Id: {{workspace_id}}
+
+### Alterar prioridade com o ETag retornado acima
+PATCH {{base}}/v1/tickets/{{ticket_id}}
+Authorization: Bearer {{human_access_token}}
+X-Workspace-Id: {{workspace_id}}
+Content-Type: application/json
+If-Match: "{{version}}"
+Idempotency-Key: {{stable_key}}
+
+{"priority":"high","reason":"Reclassificação analisada pela equipe"}
+
+### Histórico autorizado; reason só para operador
+GET {{base}}/v1/tickets/{{ticket_id}}/timeline?limit=50
+Authorization: Bearer {{human_access_token}}
+X-Workspace-Id: {{workspace_id}}
+
+# Em erro de confirmação, repetir exatamente versão/body/chave; não gerar nova chave automaticamente.
+# Em 412, GET de novo, revisar contexto e só então confirmar como nova operação.

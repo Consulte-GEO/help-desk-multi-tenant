@@ -1,5 +1,6 @@
 """Run against `npm run demo`; tests only the loopback, in-memory UI."""
-import json, os, shutil
+import json, os, shutil, uuid
+from urllib.parse import quote
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 ROOT=Path(__file__).resolve().parents[1]
@@ -16,6 +17,84 @@ with sync_playwright() as p:
     expect(page.locator('#ticket-title')).to_have_text('Relatório de ensaio não foi concluído')
     expect(page.locator('#note-tab')).to_be_visible()
     record('Agent sees two authorized accounts and internal note control')
+    # All data remains local. These assertions need an authorized browser; no bypass flags are added.
+    expect(page.locator('#priority-form')).to_be_visible()
+    page.locator('#message-body').fill('Rascunho público preservado pela prioridade.')
+    page.locator('#ticket-priority').select_option('urgent')
+    page.locator('#priority-reason').fill('Justificativa restrita ao atendimento.')
+    page.locator('#save-priority').click()
+    expect(page.locator('#ticket-tags')).to_contain_text('Urgente')
+    expect(page.locator('#message-body')).to_have_value('Rascunho público preservado pela prioridade.')
+    page.locator('#history-section summary').click()
+    expect(page.locator('#history-list')).to_contain_text('Prioridade alterada')
+    expect(page.locator('#history-list')).to_contain_text('Justificativa restrita ao atendimento.')
+    record('Operator changes priority with private reason and keeps the public message draft')
+    # A second real API call advances the version while the first tab still holds the old one.
+    cfg=page.request.get('http://127.0.0.1:4317/demo-config').json()
+    actor=next(x for x in cfg['profiles'] if x['key']=='agent')
+    headers={'authorization':'Bearer '+actor['token'],'x-workspace-id':actor['workspace_id'],'content-type':'application/json'}
+    found=page.request.get('http://127.0.0.1:4317/v1/tickets?q='+quote('Relatório de ensaio'),headers=headers).json()['items'][0]
+    external=page.request.patch('http://127.0.0.1:4317/v1/tickets/'+found['id'],headers={**headers,'if-match':'"'+str(found['version'])+'"','idempotency-key':str(uuid.uuid4())},data={'priority':'normal','reason':'Alteração de outra sessão.'})
+    assert external.status==200
+    page.locator('#ticket-priority').select_option('high')
+    page.locator('#priority-reason').fill('Motivo preservado após conflito.')
+    page.locator('#save-priority').click()
+    expect(page.locator('#priority-status')).to_contain_text('Outro atendimento modificou')
+    expect(page.locator('#priority-reload')).to_be_visible()
+    expect(page.locator('#priority-reason')).to_have_value('Motivo preservado após conflito.')
+    page.locator('#priority-reload').click()
+    expect(page.locator('#priority-status')).to_contain_text('Versão atualizada')
+    page.locator('#save-priority').click()
+    expect(page.locator('#ticket-tags')).to_contain_text('Alta')
+    expect(page.locator('#priority-reason')).to_have_value('')
+    record('Real 412 conflict requires explicit refresh and preserves the internal reason')
+    held_priority=[]
+    def hold_priority(route):
+        if route.request.method=='PATCH': held_priority.append(route)
+        else: route.continue_()
+    page.route('**/v1/tickets/*',hold_priority)
+    page.locator('#ticket-priority').select_option('urgent')
+    page.locator('#priority-reason').fill('Motivo enviado primeiro.')
+    with page.expect_request(lambda r: r.method=='PATCH'):
+        page.locator('#save-priority').click()
+    page.wait_for_timeout(50)
+    assert held_priority
+    page.locator('#ticket-priority').select_option('low')
+    page.locator('#priority-reason').fill('Novo rascunho de prioridade.')
+    held_priority.pop(0).continue_()
+    expect(page.locator('#ticket-tags')).to_contain_text('Urgente')
+    expect(page.locator('#priority-reason')).to_have_value('Novo rascunho de prioridade.')
+    expect(page.locator('#ticket-priority')).to_have_value('low')
+    page.unroute('**/v1/tickets/*',hold_priority)
+    record('Late priority acknowledgement does not erase edits made during the save')
+    page.locator('#profile').select_option('laboratory')
+    expect(page.locator('#stat-total')).to_have_text('1')
+    expect(page.locator('#priority-form')).not_to_be_visible()
+    page.locator('#history-section summary').click()
+    expect(page.locator('#history-list')).to_contain_text('Prioridade alterada')
+    expect(page.locator('#history-list')).not_to_contain_text('Motivo enviado primeiro.')
+    expect(page.locator('#history-list')).not_to_contain_text('Nota interna registrada')
+    record('Client history displays priority but neither internal justification nor notes')
+    page.locator('#profile').select_option('agent')
+    expect(page.locator('#stat-total')).to_have_text('2')
+    held_history=[]
+    def hold_history(route): held_history.append(route)
+    page.route('**/v1/tickets/*/timeline?*',hold_history)
+    with page.expect_request(lambda r: '/timeline?' in r.url):
+        page.locator('#history-section summary').click()
+    page.wait_for_timeout(50)
+    assert held_history
+    page.unroute('**/v1/tickets/*/timeline?*',hold_history)
+    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+    expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
+    page.locator('#history-section summary').click()
+    expect(page.locator('#history-list')).to_contain_text('Chamado aberto')
+    held_history.pop(0).continue_()
+    page.wait_for_load_state('networkidle')
+    expect(page.locator('#history-list')).not_to_contain_text('Prioridade alterada')
+    page.get_by_role('button',name='Abrir chamado: Relatório de ensaio não foi concluído',exact=True).click()
+    expect(page.locator('#ticket-title')).to_have_text('Relatório de ensaio não foi concluído')
+    record('Late history cannot replace events belonging to another selected ticket')
     # Server-side filters must not change the selected detail or discard a draft.
     page.locator('#message-body').fill('Rascunho preservado enquanto a lista é filtrada.')
     page.locator('#search').fill('boletins')

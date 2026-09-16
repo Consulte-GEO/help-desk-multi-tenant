@@ -1,0 +1,66 @@
+TAP version 13
+# (node:2925) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: priority grant is column-specific; no broad UPDATE/table ownership grant
+ok 1 - priority grant is column-specific; no broad UPDATE/table ownership grant
+  ---
+  duration_ms: 4.381567
+  type: 'test'
+  ...
+# Subtest: priority event and outbox invariant is checked on commit
+ok 2 - priority event and outbox invariant is checked on commit
+  ---
+  duration_ms: 1.089711
+  type: 'test'
+  ...
+# Subtest: priority event shape rejects hidden extra fields and supports public projection
+ok 3 - priority event shape rejects hidden extra fields and supports public projection
+  ---
+  duration_ms: 1.30308
+  type: 'test'
+  ...
+# Subtest: idempotency binding and cached priority reads revalidate the operator
+ok 4 - idempotency binding and cached priority reads revalidate the operator
+  ---
+  duration_ms: 0.606407
+  type: 'test'
+  ...
+# Subtest: trigger helpers keep private paths and schema changes for a real reason
+ok 5 - trigger helpers keep private paths and schema changes for a real reason
+  ---
+  duration_ms: 0.623032
+  type: 'test'
+  ...
+# Subtest: dedicated SQL update changes only priority/version/time with a composite resource predicate
+ok 6 - dedicated SQL update changes only priority/version/time with a composite resource predicate
+  ---
+  duration_ms: 1.29632
+  type: 'test'
+  ...
+# Subtest: priority optimistic update with zero affected rows returns 412
+ok 7 - priority optimistic update with zero affected rows returns 412
+  ---
+  duration_ms: 0.560879
+  type: 'test'
+  ...
+# Subtest: runtime rejects pre-priority schema and accepts 0.8.0 candidate
+ok 8 - runtime rejects pre-priority schema and accepts 0.8.0 candidate
+  ---
+  duration_ms: 0.211166
+  type: 'test'
+  ...
+# Subtest: SQL JSON extraction is grouped before JSON key subtraction
+ok 9 - SQL JSON extraction is grouped before JSON key subtraction
+  ---
+  duration_ms: 2.632308
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 117.041436

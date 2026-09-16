@@ -1,3 +1,5 @@
+import {createTimelineState,eventPresentation} from './timeline-state.js';
+const timeline=createTimelineState();
 import {createTicketListState} from './ticket-list-state.js';
 const inbox=createTicketListState();
 import {createConversationState} from './conversation-state.js';
@@ -12,13 +14,13 @@ const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
 function notice(text,error=false){$('notification').textContent=text;$('notification').classList.toggle('error',error);$('notification').hidden=false;clearTimeout(notice.timer);notice.timer=setTimeout(()=>$('notification').hidden=true,error?10000:5000);}
 function run(fn){return Promise.resolve().then(fn).catch(e=>{if(e.message!=='stale_session')notice(e.message??'Operação não concluída.',true);});}
-async function api(path,options={}){const epoch=s.epoch;const r=await fetch('/v1'+path,{...options,headers:{'content-type':'application/json',authorization:'Bearer '+s.token,'x-workspace-id':s.workspace,...options.headers}});let b;try{b=await r.json();}catch{throw Error('Resposta inesperada do servidor.');}if(epoch!==s.epoch)throw Error('stale_session');if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;throw Error((b.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));}return b;}
+async function api(path,options={}){const epoch=s.epoch;const r=await fetch('/v1'+path,{...options,headers:{'content-type':'application/json',authorization:'Bearer '+s.token,'x-workspace-id':s.workspace,...options.headers}});let b;try{b=await r.json();}catch{throw Error('Resposta inesperada do servidor.');}if(epoch!==s.epoch)throw Error('stale_session');if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;const error=Error((b.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));error.status=r.status;error.code=b.code;throw error;}return b;}
 const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempotency-key':key,...headers},body:JSON.stringify(body)});
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -75,9 +77,9 @@ async function older(kind){
 }
 async function detail(id){
  // Invalidate pending writes as soon as navigation starts, not after the GET returns.
- if(s.ticket?.id!==id){s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');$('ticket-detail').hidden=true;$('empty-detail').hidden=false;}
+ if(s.ticket?.id!==id){timeline.reset();$('history-section').open=false;renderTimeline();$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');$('ticket-detail').hidden=true;$('empty-detail').hidden=false;}
  const seq=++s.detail,t=await api('/tickets/'+id);
- const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages?limit=50'),operator(t.account_id)?api('/tickets/'+id+'/notes?limit=50'):Promise.resolve({items:[],next_cursor:null})]);
+ const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages?limit=50'),operator(t.account_id)&&s.me.scopes.includes('notes:read')?api('/tickets/'+id+'/notes?limit=50'):Promise.resolve({items:[],next_cursor:null})]);
  if(seq!==s.detail)return;
  mutations.select(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]));
  s.ticket=t;renderComposer();const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
@@ -89,8 +91,51 @@ async function detail(id){
  $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
  renderConversation();const agent=operator(t.account_id);$('notes-section').hidden=!agent;$('note-tab').hidden=!agent;
  if(!agent)mode('public');const allowed=agent?(moves[t.internal_status]??[]):t.status==='resolved'?['open','closed']:[];
- $('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));render();
+ $('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));
+ renderPriority();timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),agent);renderTimeline();if($('history-section').open)await loadTimeline();render();
 }
+
+function renderTimeline(){
+ const phase=timeline.status(),rows=timeline.items();$('history-list').replaceChildren();
+ for(const item of rows){const view=eventPresentation(item,operator(s.ticket?.account_id));const node=el('li','history-event'+(view.internal?' internal':''));node.append(el('small','',date(item.created_at)),el('h4','',view.title),el('p','',view.description));if(view.internal)node.append(el('span','badge','Restrito à equipe'));$('history-list').append(node);}
+ $('history-status').textContent=phase==='loading'?'Consultando o histórico…':phase==='error'?'Não foi possível carregar o histórico. Eventos já carregados foram preservados.':phase==='capped'?'Limite de 500 eventos nesta tela. A lista não representa o total do histórico.':phase==='ready'?(rows.length?rows.length+' evento(s) carregado(s).':'Nenhum evento autorizado disponível.'):'Abra esta seção para consultar o histórico.';
+ $('history-more').hidden=!timeline.next()||phase==='capped'||phase==='error';$('history-more').disabled=phase==='loading';$('history-retry').hidden=phase!=='error';$('history-refresh').disabled=phase==='loading'||!s.ticket;
+}
+async function loadTimeline(){
+ const id=s.ticket?.id,op=timeline.begin();if(!id||!op)return;renderTimeline();
+ try{const page=await api('/tickets/'+id+'/timeline?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(timeline.accept(op,page))renderTimeline();}
+ catch(error){if(timeline.fail(op))renderTimeline();}
+}
+$('history-section').ontoggle=()=>{if($('history-section').open&&timeline.status()==='idle')run(loadTimeline);};
+$('history-more').onclick=()=>run(loadTimeline);$('history-retry').onclick=()=>run(loadTimeline);
+$('history-refresh').onclick=()=>run(async()=>{if(!s.ticket)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),operator(s.ticket.account_id));await loadTimeline();});
+function renderPriority(){
+ const t=s.ticket,allowed=t&&operator(t.account_id)&&s.me.scopes.includes('tickets:read')&&s.me.scopes.includes('tickets:write')&&!['closed','cancelled'].includes(t.internal_status);
+ $('priority-form').hidden=!allowed;if(!allowed)return;
+ const draft=mutations.draft('priority');
+ if(draft){try{const d=JSON.parse(draft);$('ticket-priority').value=d.priority;$('priority-reason').value=d.reason;}catch{$('priority-status').textContent='Rascunho de prioridade inválido. Reabra o chamado.';}}
+ else{$('ticket-priority').value=t.priority;$('priority-reason').value='';}
+ $('save-priority').disabled=mutations.busy('priority');
+}
+function editPriority(){if(!s.ticket)return;mutations.edit('priority',JSON.stringify({priority:$('ticket-priority').value,reason:$('priority-reason').value,version:s.ticket.version}));}
+$('ticket-priority').onchange=editPriority;$('priority-reason').oninput=editPriority;
+$('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
+ const t=s.ticket;if(!t||!operator(t.account_id))return;editPriority();const op=mutations.begin('priority');if(!op)return;
+ const draft=JSON.parse(op.body);$('priority-status').textContent='Salvando com a versão '+draft.version+'…';$('priority-reload').hidden=true;renderPriority();
+ try{
+  await api('/tickets/'+t.id,{method:'PATCH',headers:{'idempotency-key':op.key,'if-match':'"'+draft.version+'"'},body:JSON.stringify({priority:draft.priority,reason:draft.reason})});
+  if(!mutations.finish(op,true).current)return;
+  $('priority-status').textContent=draft.priority===t.priority?'A prioridade já era a selecionada. Nenhuma alteração foi registrada.':'Prioridade salva. Motivo registrado somente no histórico interno.';
+  await detail(t.id);if(mutations.current(op))await list();
+ }catch(error){
+  if(mutations.finish(op,false).current||mutations.current(op)){
+   $('priority-status').textContent=error.status===412?'Outro atendimento modificou este chamado. Atualize a versão, revise a prioridade e confirme novamente.':(error.status===503||!Number.isInteger(error.status))?'Não foi possível confirmar a gravação. Repita sem alterar os campos para reutilizar a mesma chave ou atualize o chamado antes de decidir.':error.message;
+   $('priority-reload').hidden=error.status!==412;
+  }
+ }finally{renderPriority();}
+});};
+$('priority-reload').onclick=()=>run(async()=>{const id=s.ticket?.id,epoch=s.epoch;if(!id)return;await detail(id);if(s.ticket?.id===id&&s.epoch===epoch){$('priority-reload').hidden=true;$('priority-status').textContent='Versão atualizada. Revise a prioridade e o motivo antes de confirmar novamente.';}});
+
 $('older-messages').onclick=()=>run(()=>older('messages'));
 $('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}

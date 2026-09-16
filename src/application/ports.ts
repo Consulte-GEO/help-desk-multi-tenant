@@ -13,6 +13,7 @@ export interface Store{
   listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters?:TicketSearchFilters):Promise<Ticket[]>;
   insertTicket(ticket:Ticket):Promise<void>;
   updateTicket(ticket:Ticket,expectedVersion:number):Promise<void>;
+  updatePriority(ticket:Ticket,expectedVersion:number):Promise<void>;
   lockIdempotency(operation:string,key:string):Promise<void>;
   getIdempotency(operation:string,key:string):Promise<StoredResult|null>;
   saveIdempotency(record:StoredResult):Promise<void>;

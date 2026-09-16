@@ -1,0 +1,1713 @@
+TAP version 13
+# (node:1152) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: priority changes atomically and preserves status, identity and contract snapshot
+not ok 1 - priority changes atomically and preserves status, identity and contract snapshot
+  ---
+  duration_ms: 1.970784
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:22:21)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: workspace administrator can change an authorized account priority
+not ok 2 - workspace administrator can change an authorized account priority
+  ---
+  duration_ms: 0.28819
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:29:128)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: requester cannot change priority
+not ok 3 - requester cannot change priority
+  ---
+  duration_ms: 1.218781
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: account manager cannot change priority
+not ok 4 - account manager cannot change priority
+  ---
+  duration_ms: 0.424013
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration cannot change priority
+not ok 5 - integration cannot change priority
+  ---
+  duration_ms: 0.513767
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: agent without write cannot change priority
+not ok 6 - agent without write cannot change priority
+  ---
+  duration_ms: 0.525685
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: agent without read cannot change priority
+not ok 7 - agent without read cannot change priority
+  ---
+  duration_ms: 0.399757
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unassigned workspace agent cannot change priority
+not ok 8 - unassigned workspace agent cannot change priority
+  ---
+  duration_ms: 0.230635
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:28'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'forbidden'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'forbidden'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:127)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:115)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:35:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: out-of-scope priority target is not disclosed other[{"accountId":"account-a","role":"agent"}]
+not ok 9 - out-of-scope priority target is not disclosed other[{"accountId":"account-a","role":"agent"}]
+  ---
+  duration_ms: 0.581458
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:111'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'resource_not_found'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'resource_not_found'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:263)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:251)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:238)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: out-of-scope priority target is not disclosed workspace-a[{"accountId":"other","role":"agent"}]
+not ok 10 - out-of-scope priority target is not disclosed workspace-a[{"accountId":"other","role":"agent"}]
+  ---
+  duration_ms: 0.459336
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:111'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'resource_not_found'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'resource_not_found'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:263)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:251)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:36:238)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority replay produces one event and one outbox even after further changes
+not ok 11 - priority replay produces one event and one outbox even after further changes
+  ---
+  duration_ms: 0.2811
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:38:43)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay cannot disclose internal result after operator role is removed
+not ok 12 - replay cannot disclose internal result after operator role is removed
+  ---
+  duration_ms: 0.248421
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:42:118)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same idempotency key with another reason is rejected
+not ok 13 - same idempotency key with another reason is rejected
+  ---
+  duration_ms: 0.179378
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:43:101)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: concurrent priority changes from same version have a single winner
+not ok 14 - concurrent priority changes from same version have a single winner
+  ---
+  duration_ms: 0.303494
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:46:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: concurrent identical requests replay exactly once in memory
+not ok 15 - concurrent identical requests replay exactly once in memory
+  ---
+  duration_ms: 0.235813
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:48:138)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: outbox failure rolls back priority, event and idempotency
+not ok 16 - outbox failure rolls back priority, event and idempotency
+  ---
+  duration_ms: 0.4215
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:49:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Injected outbox/. Input:
+    
+    'AssertionError [ERR_ASSERTION]: Priority command must exist\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      "+ 'undefined'\n" +
+      "- 'function'\n"
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:49:147
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:49:135)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:49:122)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same priority is a version-checked no-op without audit noise
+not ok 17 - same priority is a version-checked no-op without audit noise
+  ---
+  duration_ms: 0.185036
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:50:120)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no-op does not bypass stale If-Match
+not ok 18 - no-op does not bypass stale If-Match
+  ---
+  duration_ms: 0.313418
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:51:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'version_conflict'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'version_conflict'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:51:123)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:51:111)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:51:98)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: terminal closed ticket priority is immutable
+not ok 19 - terminal closed ticket priority is immutable
+  ---
+  duration_ms: 0.318836
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'priority_change_not_allowed'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'priority_change_not_allowed'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:184)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:172)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:159)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: terminal cancelled ticket priority is immutable
+not ok 20 - terminal cancelled ticket priority is immutable
+  ---
+  duration_ms: 0.221831
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:53'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'priority_change_not_allowed'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'priority_change_not_allowed'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:184)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:172)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:52:159)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid priority rejected ""
+not ok 21 - invalid priority rejected ""
+  ---
+  duration_ms: 0.248751
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:50'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:165)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid priority rejected null
+not ok 22 - invalid priority rejected null
+  ---
+  duration_ms: 0.337545
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:50'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:165)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid priority rejected 5
+not ok 23 - invalid priority rejected 5
+  ---
+  duration_ms: 0.459086
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:50'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:165)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid priority rejected "critical"
+not ok 24 - invalid priority rejected "critical"
+  ---
+  duration_ms: 0.212227
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:50'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:165)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid priority rejected "HIGH"
+not ok 25 - invalid priority rejected "HIGH"
+  ---
+  duration_ms: 0.28104
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:50'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:165)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:53:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected ""
+not ok 26 - invalid internal reason rejected ""
+  ---
+  duration_ms: 0.38818
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected "   "
+not ok 27 - invalid internal reason rejected "   "
+  ---
+  duration_ms: 0.193208
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected null
+not ok 28 - invalid internal reason rejected null
+  ---
+  duration_ms: 0.19406
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+not ok 29 - invalid internal reason rejected "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ---
+  duration_ms: 0.250203
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected "internal\\u0000reason"
+not ok 30 - invalid internal reason rejected "internal\\u0000reason"
+  ---
+  duration_ms: 0.229012
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected "line\\nreason"
+not ok 31 - invalid internal reason rejected "line\\nreason"
+  ---
+  duration_ms: 0.303513
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid internal reason rejected "bad\\ud800"
+not ok 32 - invalid internal reason rejected "bad\\ud800"
+  ---
+  duration_ms: 0.238136
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:104'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ERR_ASSERTION'
+    -   code: 'invalid_input'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  actual:
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    assert.rejects.code (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:238)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:226)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:54:213)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated 0
+not ok 33 - priority expected version validated 0
+  ---
+  duration_ms: 1.030489
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated -1
+not ok 34 - priority expected version validated -1
+  ---
+  duration_ms: 0.144065
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated 1.1
+not ok 35 - priority expected version validated 1.1
+  ---
+  duration_ms: 0.112719
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated NaN
+not ok 36 - priority expected version validated NaN
+  ---
+  duration_ms: 0.103515
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated 1
+not ok 37 - priority expected version validated 1
+  ---
+  duration_ms: 0.103715
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority expected version validated undefined
+not ok 38 - priority expected version validated undefined
+  ---
+  duration_ms: 0.142142
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:49'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:55:199)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority reason whitespace is canonical for idempotency
+not ok 39 - priority reason whitespace is canonical for idempotency
+  ---
+  duration_ms: 0.2211
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:56:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Priority command must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    change (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:16:60)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:56:112)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: timeline public projection discloses priorities but never reason or actor
+not ok 40 - timeline public projection discloses priorities but never reason or actor
+  ---
+  duration_ms: 0.567978
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+        created_at: '2026-09-15T12:00:00.000Z',
+    +   data: {},
+    -   data: {
+    -     from: 'normal',
+    -     to: 'high',
+    -     version: 2
+    -   },
+        id: 'event-a',
+        type: 'ticket.priority_changed'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    id: 'event-a'
+    type: 'ticket.priority_changed'
+    created_at: '2026-09-15T12:00:00.000Z'
+    data:
+      from: 'normal'
+      to: 'high'
+      version: 2
+  actual:
+    id: 'event-a'
+    type: 'ticket.priority_changed'
+    created_at: '2026-09-15T12:00:00.000Z'
+    data:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:59:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH accepts only priority/reason, returns ETag and deduplicates
+not ok 41 - PATCH accepts only priority/reason, returns ETag and deduplicates
+  ---
+  duration_ms: 15.741685
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:65:38)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects mass assignment
+not ok 42 - PATCH rejects mass assignment
+  ---
+  duration_ms: 0.683201
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects missing precondition
+not ok 43 - PATCH rejects missing precondition
+  ---
+  duration_ms: 0.462922
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 428
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 428
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects weak ETag
+not ok 44 - PATCH rejects weak ETag
+  ---
+  duration_ms: 0.521709
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 428
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 428
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects missing key
+not ok 45 - PATCH rejects missing key
+  ---
+  duration_ms: 0.685133
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects query selector
+not ok 46 - PATCH rejects query selector
+  ---
+  duration_ms: 0.382792
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PATCH rejects empty reason
+not ok 47 - PATCH rejects empty reason
+  ---
+  duration_ms: 0.363142
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:75:61'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    405 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 405
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-priority.test.ts:76:349)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 0
+# fail 47
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 186.269969

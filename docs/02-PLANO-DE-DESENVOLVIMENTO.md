@@ -212,3 +212,7 @@ HD-105 recebeu catálogo autorizado e abertura guiada. Leitura sobre entidades e
 A caixa existente recebeu antecipação delimitada de **HD-302 (busca/paginação originalmente em M3)**, combinada com HD-105. A decisão de antecipar não reclassifica os gates de M1 como aprovados nem declara M2/M3 completos. Escopo: busca literal por assunto/UUID, filtros públicos/status/prioridade antes da paginação, cursor escopado e estado seguro da lista. Nenhum cadastro administrativo, participante, fila ou entrega externa incluídos.
 
 486 testes locais e 17 checks HTTP aprovados. Oito SQL e três browser acrescentados: 68/17 escritos, zero aprovados nos ambientes reais. API 0.7.0/schema 0.5.0, seis migrations preservadas. HD-101/102/103 permanecem prioritários: dependências reais, PostgreSQL, driver/Auth/Functions. Busca requer EXPLAIN, carga e UX real. Estado atual nos documentos 04/05/11; números das seções históricas permanecem associados às versões indicadas.
+
+
+## Incremento v0.8.0 — recorte de HD-301 e HD-105
+Prioridade auditável e histórico no ticket existente antecipados como capacidade isolada de operação. Não iniciar backoffice nem declarar M1 encerrado. Código e testes locais entregues; dados/rotina SQL dependem da migration007 e de PostgreSQL real. Evidências no documento04, contrato no12. Gate atualizado para 569 locais, 82 SQL e 44 HTTP/browser; só contagens reais permitem aprovação. Condições de instalação/Auth/runtime/capacidade/restauração não mudaram.

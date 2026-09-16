@@ -36,6 +36,7 @@ export const ERROR_CODES=new Set([
  'no_coverage',
  'not_found',
  'precondition_required',
+ 'priority_change_not_allowed',
  'rate_limit_configuration_required',
  'rate_limit_unavailable',
  'rate_limit_exceeded',

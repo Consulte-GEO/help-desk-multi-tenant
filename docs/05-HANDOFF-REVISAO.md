@@ -1,35 +1,24 @@
-# Continuidade — Help Desk v0.7.0
+# Continuidade — Help Desk v0.8.0
 
-Base v0.6.0 `a6eb2c69ce3ea9b49eaab881ed236da43a725662`; branch local `work/helpdesk-m1-v0.7.0`. Commit final no manifesto/bundle. Sem escrita remota; somente leitura GitHub, que retornou vazio. Reinspecionar os três destinos antes de integrar; não presumir ausência de trabalho concorrente.
+Base `d05f6f6f430dd624a7c550f81d81d895e858c156`; branch local `work/helpdesk-v0.8.0`. Commit final no manifesto externo/bundle. Nenhuma publicação, migration remota ou mudança de dados, segredo ou MFA. GitHub retornou vazio nesta rodada; Supabase/Netlify não reinspecionados. Ler documentos 04/12, README, CHANGELOG e OpenAPI. Não presumir que os destinos continuam no mesmo estado antes de integrar.
 
-Leia README, documentos 04/11, CHANGELOG e a atualização do plano. **486 testes locais e 17 checks HTTP de memória não encerram M1.** Esta entrega antecipa parte delimitada HD-302 do M3; M2/backoffice não foi implementado e os gates anteriores não mudaram.
+## Próximos passos
+1. Resolver dependências (`npm run deps:resolve`) com acesso autorizado ao registry. Revisar lock real, origens, integridades, licenças/alertas. Repetir npm ci/verify/audit. Não usar lock sintético ou tipos globais como aprovação.
+2. Executar PostgreSQL 17 descartável: sete migrations, login restrito e **82 cenários escritos**. Testar fresh install e upgrade 001–006 → 007 com dados fictícios. Docker padrão; native só com instalação local autorizada e usuário não root. Nunca usar Supabase real como fallback.
+3. Revisar priority_event_shape/priority_outbox_shape, guard, trigger diferido, coluna UPDATE, RLS e helpers de idempotência. Confirmar rollback por evento/outbox ausente, concorrência, no-op, replay após revogação e ausência de motivo no payload público/externo. Testar schema_version e login de runtime. Sentinelas textuais não são execução SQL.
+4. Executar browser com **22 verificações escritas**, além dos **22 checks HTTP**. Conferir save, 412 real de outra sessão, rascunho durante requisição, troca de perfil/ticket, histórico tardio, paginação, foco/teclado/390px. O navegador desta sessão bloqueou em page.goto. Não contornar políticas do ambiente.
+5. Homologar Auth humano/M2M, pooler/TLS, IP, driver e Functions com `pg` instalado. Backend 0.8.0 exige schema 0.8.0; não publicar somente HTML ou manter schema 0.5.0.
+6. Executar homologate:local / check:homologation; revisar fingerprints/logs e contagens reais. Piso: 569 locais, 82 SQL, 44 HTTP/browser. Aprovação local não autoriza produção. Manter HELPDESK_RELEASE_APPROVED fechado até critérios de destino/operacionais e decisão explícita.
+7. Homologar carga/capacidade, restauração, retenção e revisão independente. M1 permanece aberto; backoffice/identidade administrativa M2 ainda não iniciado.
 
-## Sequência de continuidade
-
-1. Resolver dependências: `npm run deps:resolve`; revisar lock real, árvore, origens, integridades e alertas. Repetir npm ci, verify e audit. Não criar lock sintético nem substituir tipos locais pelos globais no CI.
-2. Executar PostgreSQL 17 descartável com seis migrations e login restrito: `npm run test:db:local`. Docker padrão, native somente com binários instalados e usuário não root. São **68 cenários SQL**, nenhum aprovado nesta entrega. Não usar Supabase remoto como fallback nem apagar schemas para tornar o teste verde.
-3. Testar especificamente q/filtros com RLS real e dados autorizados/não autorizados, revogação entre páginas, parâmetros literais, equivalência Latin-1 e cursor. Verificar EXPLAIN/custo de substring e concorrência com mudança de estado. Sem medidas reais, não introduzir índice ou alterar limite/timeout como promessa de escala.
-4. Executar `npm run test:ui:local`: **17 checks HTTP + 17 browser**. Os três novos browser verificam filtros combinados, limpar e resposta atrasada. Validar 390px/desktop, teclado/foco, mensagens de erro/vazio, 500 itens, retry, perfil, paginação e rascunhos. Não contornar bloqueio de política do navegador.
-5. Homologar driver/Functions/Auth/pooler/TLS/IP e schema esperado **0.5.0**. Não gerar migration só para igualar a versão API **0.7.0**. Confirmar redação de query strings em logs de ingresso, pois a busca usa GET; os logs fechados da aplicação não bastam para garantir isso no provedor.
-6. Executar `npm run homologate:local`, depois `npm run check:homologation`; revisar logs/fingerprint/contagens reais. Gate exige pelo menos 486 testes locais, 68 SQL e 34 checks HTTP/browser sem skips. Sucesso local não aprova produção ou destino; manter HELPDESK_RELEASE_APPROVED fechado.
-7. Homologar capacidade, restauração, retenção, revisão independente e decisões operacionais. Só então avaliar encerramento M1 e início M2. Não ampliar escopo sem registrar a decisão.
-
-## Arquivos de revisão
-
-| Área | Arquivos |
-|---|---|
-| Validação/normalização/semântica | src/application/ticket-search.ts |
-| Autorização/paginação | helpdesk.ts, pagination.ts, ports.ts, handler.ts |
-| SQL candidato e memória | src/infrastructure/postgres.ts, memory.ts |
-| Estado seguro da lista | web/ticket-list-state.js, app.js |
-| Interface/contagens | web/index.html, styles.css |
-| Contrato/capabilities | docs/openapi.json, scripts/generate-openapi.py, handler.ts |
-| Testes locais | tests/m1f-*.test.ts |
-| Testes reais escritos | supabase/tests/rls.test.ts, tests/browser-smoke.py |
-| Evidências/revisão | evidence/m1f/, evidence/homologation/latest.json |
+## Revisão dirigida
+- `ticket-priority.ts`, `HelpdeskService.changePriority`, `PostgresStore.updatePriority` e serialização de evento.
+- Migration 007, sobretudo lookup_idempotency e limit_idempotency_records preservando lifecycle/quota anteriores.
+- `web/timeline-state.js`, `web/mutation-state.js` + declaração, `web/app.js`, formulário e seção de histórico.
+- `tests/m1g-*`, `supabase/tests/rls.test.ts`, browser e smoke-local-http.
+- Contrato OpenAPI/exemplo, capacidade e fronteira de erro.
 
 ## Invariantes
+Motivo só para operador; não em DTO cliente, ticketDto ou outbox. Mesmo valor não aumenta versão. Reenvio é resposta original, não leitura atual. Campo de prioridade não altera SLA/contrato. ETag e cursor não concedem acesso. Uma falha após commit é resultado incerto. Não abrir endpoint de notas ou histórico global para facilitar a interface. Histórico não é WORM/admin audit nem prova de notificação enviada.
 
-Assunto/ID completo, não descrição ou conversa. `%`/`_`/aspas literais, equivalência de caixa somente ASCII/Latin-1, acentos significativos. Não trocar por LIKE/FTS sem especificar semântica e testar. Conta e cursor não autorizam. Filtros antes de LIMIT, RLS preservada, nenhum SECURITY DEFINER novo. Coleção viva sem garantia de snapshot. Contagens somente carregadas, não total do workspace. Limite500 da UI, não da API. Troca de consulta preserva detalhe/rascunho; troca de sessão limpa tudo. Querys antigas não substituem novas, páginas inválidas não se aplicam parcialmente.
-
-Não somar SQL/browser escritos às aprovações locais. Nenhum review externo/pentest/carga/restore concluído. O ZIP inclui documentação e evidências; não publicar apenas HTML como sistema pronto.
+Os testes locais incluem fixtures/controladores em memória e doubles PostgreSQL. Não somar aos 82 SQL ou 22 browser não aprovados. Não houve revisão independente, pentest, carga ou restore. O ZIP não autoriza publicação.

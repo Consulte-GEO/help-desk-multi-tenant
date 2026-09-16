@@ -6,9 +6,9 @@ export const steps = Object.freeze([
  {id:'lock',requires:[],command:['node','scripts/verify-lock.mjs'],timeout:60_000,minTests:0},
  {id:'install',requires:['lock'],command:['npm','ci','--ignore-scripts'],timeout:600_000,minTests:0},
  {id:'audit',requires:['install'],command:['npm','audit','--audit-level=high'],timeout:300_000,minTests:0},
- {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:486},
- {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:68},
- {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:34}
+ {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:569},
+ {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:82},
+ {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:44}
 ]);
 const hash = text => createHash('sha256').update(text).digest('hex');
 export function testCounts(output) {

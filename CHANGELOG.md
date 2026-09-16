@@ -1,3 +1,12 @@
+# v0.8.0 — Prioridade auditável e histórico autorizado
+
+- PATCH restrito, motivo interno, versão exata, replay reautorizado e no-op explícito.
+- Evento de prioridade público minimizado; motivo somente para operador; outbox sem razão.
+- Formulário de equipe e seção de histórico sob demanda, paginação e proteção de rascunhos/geração.
+- Migration007 candidata e schema0.8.0, sem novas tabelas nem alteração das seis anteriores.
+- 569 locais/22 HTTP aprovados; 82 SQL/22 browser escritos não aprovados. Sem publicação.
+- Ampliação delimitada HD-301/105; M1/M2/M3 não encerrados.
+
 # v0.7.0 — busca no servidor e caixa de chamados
 
 - GET /v1/tickets aceita q/situação pública/prioridade, combinados antes de LIMIT; consulta parametrizada sem novos grants, helpers ou tabelas.

@@ -1,0 +1,294 @@
+TAP version 13
+# (node:1210) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: priority changes atomically and preserves status, identity and contract snapshot
+ok 1 - priority changes atomically and preserves status, identity and contract snapshot
+  ---
+  duration_ms: 3.847967
+  type: 'test'
+  ...
+# Subtest: workspace administrator can change an authorized account priority
+ok 2 - workspace administrator can change an authorized account priority
+  ---
+  duration_ms: 0.346558
+  type: 'test'
+  ...
+# Subtest: requester cannot change priority
+ok 3 - requester cannot change priority
+  ---
+  duration_ms: 0.586415
+  type: 'test'
+  ...
+# Subtest: account manager cannot change priority
+ok 4 - account manager cannot change priority
+  ---
+  duration_ms: 0.22764
+  type: 'test'
+  ...
+# Subtest: integration cannot change priority
+ok 5 - integration cannot change priority
+  ---
+  duration_ms: 0.166209
+  type: 'test'
+  ...
+# Subtest: agent without write cannot change priority
+ok 6 - agent without write cannot change priority
+  ---
+  duration_ms: 0.231065
+  type: 'test'
+  ...
+# Subtest: agent without read cannot change priority
+ok 7 - agent without read cannot change priority
+  ---
+  duration_ms: 0.134171
+  type: 'test'
+  ...
+# Subtest: unassigned workspace agent cannot change priority
+ok 8 - unassigned workspace agent cannot change priority
+  ---
+  duration_ms: 0.202793
+  type: 'test'
+  ...
+# Subtest: out-of-scope priority target is not disclosed other[{"accountId":"account-a","role":"agent"}]
+ok 9 - out-of-scope priority target is not disclosed other[{"accountId":"account-a","role":"agent"}]
+  ---
+  duration_ms: 0.429331
+  type: 'test'
+  ...
+# Subtest: out-of-scope priority target is not disclosed workspace-a[{"accountId":"other","role":"agent"}]
+ok 10 - out-of-scope priority target is not disclosed workspace-a[{"accountId":"other","role":"agent"}]
+  ---
+  duration_ms: 0.38801
+  type: 'test'
+  ...
+# Subtest: priority replay produces one event and one outbox even after further changes
+ok 11 - priority replay produces one event and one outbox even after further changes
+  ---
+  duration_ms: 1.160383
+  type: 'test'
+  ...
+# Subtest: replay cannot disclose internal result after operator role is removed
+ok 12 - replay cannot disclose internal result after operator role is removed
+  ---
+  duration_ms: 0.508379
+  type: 'test'
+  ...
+# Subtest: same idempotency key with another reason is rejected
+ok 13 - same idempotency key with another reason is rejected
+  ---
+  duration_ms: 0.408781
+  type: 'test'
+  ...
+# Subtest: concurrent priority changes from same version have a single winner
+ok 14 - concurrent priority changes from same version have a single winner
+  ---
+  duration_ms: 0.559286
+  type: 'test'
+  ...
+# Subtest: concurrent identical requests replay exactly once in memory
+ok 15 - concurrent identical requests replay exactly once in memory
+  ---
+  duration_ms: 0.371034
+  type: 'test'
+  ...
+# Subtest: outbox failure rolls back priority, event and idempotency
+ok 16 - outbox failure rolls back priority, event and idempotency
+  ---
+  duration_ms: 0.359577
+  type: 'test'
+  ...
+# Subtest: same priority is a version-checked no-op without audit noise
+ok 17 - same priority is a version-checked no-op without audit noise
+  ---
+  duration_ms: 0.402801
+  type: 'test'
+  ...
+# Subtest: no-op does not bypass stale If-Match
+ok 18 - no-op does not bypass stale If-Match
+  ---
+  duration_ms: 0.223835
+  type: 'test'
+  ...
+# Subtest: terminal closed ticket priority is immutable
+ok 19 - terminal closed ticket priority is immutable
+  ---
+  duration_ms: 0.217485
+  type: 'test'
+  ...
+# Subtest: terminal cancelled ticket priority is immutable
+ok 20 - terminal cancelled ticket priority is immutable
+  ---
+  duration_ms: 0.300338
+  type: 'test'
+  ...
+# Subtest: invalid priority rejected ""
+ok 21 - invalid priority rejected ""
+  ---
+  duration_ms: 0.166859
+  type: 'test'
+  ...
+# Subtest: invalid priority rejected null
+ok 22 - invalid priority rejected null
+  ---
+  duration_ms: 0.094551
+  type: 'test'
+  ...
+# Subtest: invalid priority rejected 5
+ok 23 - invalid priority rejected 5
+  ---
+  duration_ms: 0.088903
+  type: 'test'
+  ...
+# Subtest: invalid priority rejected "critical"
+ok 24 - invalid priority rejected "critical"
+  ---
+  duration_ms: 0.0803
+  type: 'test'
+  ...
+# Subtest: invalid priority rejected "HIGH"
+ok 25 - invalid priority rejected "HIGH"
+  ---
+  duration_ms: 0.877901
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected ""
+ok 26 - invalid internal reason rejected ""
+  ---
+  duration_ms: 0.14748
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected "   "
+ok 27 - invalid internal reason rejected "   "
+  ---
+  duration_ms: 0.081783
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected null
+ok 28 - invalid internal reason rejected null
+  ---
+  duration_ms: 0.070765
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ok 29 - invalid internal reason rejected "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ---
+  duration_ms: 0.126018
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected "internal\\u0000reason"
+ok 30 - invalid internal reason rejected "internal\\u0000reason"
+  ---
+  duration_ms: 0.195151
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected "line\\nreason"
+ok 31 - invalid internal reason rejected "line\\nreason"
+  ---
+  duration_ms: 0.109453
+  type: 'test'
+  ...
+# Subtest: invalid internal reason rejected "bad\\ud800"
+ok 32 - invalid internal reason rejected "bad\\ud800"
+  ---
+  duration_ms: 0.130585
+  type: 'test'
+  ...
+# Subtest: priority expected version validated 0
+ok 33 - priority expected version validated 0
+  ---
+  duration_ms: 0.148352
+  type: 'test'
+  ...
+# Subtest: priority expected version validated -1
+ok 34 - priority expected version validated -1
+  ---
+  duration_ms: 0.07361
+  type: 'test'
+  ...
+# Subtest: priority expected version validated 1.1
+ok 35 - priority expected version validated 1.1
+  ---
+  duration_ms: 0.063826
+  type: 'test'
+  ...
+# Subtest: priority expected version validated NaN
+ok 36 - priority expected version validated NaN
+  ---
+  duration_ms: 0.061411
+  type: 'test'
+  ...
+# Subtest: priority expected version validated 1
+ok 37 - priority expected version validated 1
+  ---
+  duration_ms: 0.105508
+  type: 'test'
+  ...
+# Subtest: priority expected version validated undefined
+ok 38 - priority expected version validated undefined
+  ---
+  duration_ms: 0.151336
+  type: 'test'
+  ...
+# Subtest: priority reason whitespace is canonical for idempotency
+ok 39 - priority reason whitespace is canonical for idempotency
+  ---
+  duration_ms: 0.350113
+  type: 'test'
+  ...
+# Subtest: timeline public projection discloses priorities but never reason or actor
+ok 40 - timeline public projection discloses priorities but never reason or actor
+  ---
+  duration_ms: 0.179188
+  type: 'test'
+  ...
+# Subtest: PATCH accepts only priority/reason, returns ETag and deduplicates
+ok 41 - PATCH accepts only priority/reason, returns ETag and deduplicates
+  ---
+  duration_ms: 20.900756
+  type: 'test'
+  ...
+# Subtest: PATCH rejects mass assignment
+ok 42 - PATCH rejects mass assignment
+  ---
+  duration_ms: 1.013144
+  type: 'test'
+  ...
+# Subtest: PATCH rejects missing precondition
+ok 43 - PATCH rejects missing precondition
+  ---
+  duration_ms: 0.469691
+  type: 'test'
+  ...
+# Subtest: PATCH rejects weak ETag
+ok 44 - PATCH rejects weak ETag
+  ---
+  duration_ms: 1.086062
+  type: 'test'
+  ...
+# Subtest: PATCH rejects missing key
+ok 45 - PATCH rejects missing key
+  ---
+  duration_ms: 0.835378
+  type: 'test'
+  ...
+# Subtest: PATCH rejects query selector
+ok 46 - PATCH rejects query selector
+  ---
+  duration_ms: 0.293409
+  type: 'test'
+  ...
+# Subtest: PATCH rejects empty reason
+ok 47 - PATCH rejects empty reason
+  ---
+  duration_ms: 0.628809
+  type: 'test'
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 225.631428

@@ -1,0 +1,486 @@
+TAP version 13
+# (node:1236) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: timeline starts idle and requires a selected owner
+not ok 1 - timeline starts idle and requires a selected owner
+  ---
+  duration_ms: 1.924071
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:8:97)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: history loads newest-first and appends validated older pages
+not ok 2 - history loads newest-first and appends validated older pages
+  ---
+  duration_ms: 0.996157
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:9:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:9:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: duplicate click cannot request the same history page concurrently
+not ok 3 - duplicate click cannot request the same history page concurrently
+  ---
+  duration_ms: 0.297336
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:10:112)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: old history does not enter a new ticket or an A-B-A generation
+not ok 4 - old history does not enter a new ticket or an A-B-A generation
+  ---
+  duration_ms: 0.282705
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:11:109)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failure preserves older accepted events and enables retry
+not ok 5 - failure preserves older accepted events and enables retry
+  ---
+  duration_ms: 0.406931
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:12:104)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public client cannot accept an internal-note history entry
+not ok 6 - public client cannot accept an internal-note history entry
+  ---
+  duration_ms: 0.27334
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:13:105)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public priority event cannot carry internal reason or arbitrary fields
+not ok 7 - public priority event cannot carry internal reason or arbitrary fields
+  ---
+  duration_ms: 0.311478
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:14:117)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: operator can render priority explanation but never raw JSON/identity fields
+not ok 8 - operator can render priority explanation but never raw JSON/identity fields
+  ---
+  duration_ms: 0.411628
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:15:140)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects unknown envelope field atomically
+not ok 9 - history rejects unknown envelope field atomically
+  ---
+  duration_ms: 0.619311
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects unknown event field atomically
+not ok 10 - history rejects unknown event field atomically
+  ---
+  duration_ms: 0.500582
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects unknown type atomically
+not ok 11 - history rejects unknown type atomically
+  ---
+  duration_ms: 0.260642
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects invalid time atomically
+not ok 12 - history rejects invalid time atomically
+  ---
+  duration_ms: 0.262925
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects duplicate event atomically
+not ok 13 - history rejects duplicate event atomically
+  ---
+  duration_ms: 0.19938
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects bad order atomically
+not ok 14 - history rejects bad order atomically
+  ---
+  duration_ms: 0.176966
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects unknown public data atomically
+not ok 15 - history rejects unknown public data atomically
+  ---
+  duration_ms: 0.172689
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects empty page with cursor atomically
+not ok 16 - history rejects empty page with cursor atomically
+  ---
+  duration_ms: 0.418089
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects empty cursor atomically
+not ok 17 - history rejects empty cursor atomically
+  ---
+  duration_ms: 0.360502
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects overlong cursor atomically
+not ok 18 - history rejects overlong cursor atomically
+  ---
+  duration_ms: 0.261183
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history rejects too many events atomically
+not ok 19 - history rejects too many events atomically
+  ---
+  duration_ms: 0.368624
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:25'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:28:107)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reject repeated cursor and cross-page repeated events without partial merge
+not ok 20 - reject repeated cursor and cross-page repeated events without partial merge
+  ---
+  duration_ms: 0.935997
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:29:122)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history snapshot cannot be mutated by UI callers
+not ok 21 - history snapshot cannot be mutated by UI callers
+  ---
+  duration_ms: 0.285499
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:30:95)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: history stops at 500 visible events, not a claim of total audit count
+not ok 22 - history stops at 500 visible events, not a claim of total audit count
+  ---
+  duration_ms: 0.254252
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:31:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:31:116)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public status history uses only the public status label
+not ok 23 - public status history uses only the public status label
+  ---
+  duration_ms: 0.213301
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:32:100)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: operator note history records existence without note body
+not ok 24 - operator note history records existence without note body
+  ---
+  duration_ms: 0.246821
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: 'Timeline state module must exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    timeline (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:5:79)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-timeline-state.test.ts:33:102)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority request snapshot preserves new edits and the public reply draft
+ok 25 - priority request snapshot preserves new edits and the public reply draft
+  ---
+  duration_ms: 0.822155
+  type: 'test'
+  ...
+# Subtest: uncertain priority retry preserves expected version, content and idempotency key
+ok 26 - uncertain priority retry preserves expected version, content and idempotency key
+  ---
+  duration_ms: 0.117747
+  type: 'test'
+  ...
+# Subtest: late priority acknowledgement does not clear another ticket form
+ok 27 - late priority acknowledgement does not clear another ticket form
+  ---
+  duration_ms: 1.500625
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 3
+# fail 24
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 131.134384

@@ -4,3 +4,9 @@
 
 /* Query controls remain usable on narrow screens; counts are not global totals. */
 .ticket-filters{padding:0 18px 12px}.ticket-filters .fine{margin:7px 0 10px}.filter-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.filter-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.filter-hint{margin:0;padding:0 18px 9px}.card-bottom{flex-wrap:wrap}.ticket-filters input{min-width:0}.ticket-filters select{min-width:0}.ticket-filters button{white-space:normal}@media(max-width:420px){.filter-actions button{flex:1}.ticket-filters{padding-inline:12px}.filter-hint{padding-inline:12px}}
+
+/* Priority audit and lazy history remain independent from message drafts. */
+.priority-form{padding:16px;margin:16px 0;background:var(--surface,#f7f8fa);border:1px solid var(--border,#dce2ea);border-radius:10px}
+.priority-form h3{margin:0 0 6px}.priority-fields{display:grid;grid-template-columns:145px minmax(120px,1fr) auto;gap:10px;align-items:end}.priority-fields input,.priority-fields select{width:100%;min-width:0}
+.history-section{margin-top:24px;border-top:1px solid var(--border,#dce2ea);padding-top:16px}.history-section summary{font-weight:600;cursor:pointer}.history-list{list-style:none;padding:0;margin:14px 0}.history-event{border-left:3px solid var(--border,#dce2ea);padding:8px 12px;margin-bottom:10px;overflow-wrap:anywhere}.history-event h4{margin:4px 0;font-size:14px}.history-event p{margin:5px 0;font-size:13px;white-space:pre-wrap}.history-event small{color:var(--muted,#64748b)}.history-actions{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:700px){.priority-fields{grid-template-columns:1fr}.priority-fields button{justify-self:start}.history-actions button{max-width:100%}}

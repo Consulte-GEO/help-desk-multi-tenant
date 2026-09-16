@@ -1,0 +1,137 @@
+TAP version 13
+# (node:1335) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: priority grant is column-specific; no broad UPDATE/table ownership grant
+not ok 1 - priority grant is column-specific; no broad UPDATE/table ownership grant
+  ---
+  duration_ms: 3.661367
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:9:1'
+  failureType: 'testCodeFailure'
+  error: 'New priority migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    sql (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:8:86)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:9:99)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: priority event and outbox invariant is checked on commit
+not ok 2 - priority event and outbox invariant is checked on commit
+  ---
+  duration_ms: 1.231366
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: 'New priority migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    sql (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:8:86)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:10:83)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority event shape rejects hidden extra fields and supports public projection
+not ok 3 - priority event shape rejects hidden extra fields and supports public projection
+  ---
+  duration_ms: 1.830013
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: 'New priority migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    sql (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:8:86)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:11:106)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: idempotency binding and cached priority reads revalidate the operator
+not ok 4 - idempotency binding and cached priority reads revalidate the operator
+  ---
+  duration_ms: 0.786672
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: 'New priority migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    sql (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:8:86)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:12:96)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: trigger helpers keep private paths and schema changes for a real reason
+not ok 5 - trigger helpers keep private paths and schema changes for a real reason
+  ---
+  duration_ms: 0.572717
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: 'New priority migration required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    sql (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:8:86)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:13:98)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: dedicated SQL update changes only priority/version/time with a composite resource predicate
+ok 6 - dedicated SQL update changes only priority/version/time with a composite resource predicate
+  ---
+  duration_ms: 1.178755
+  type: 'test'
+  ...
+# Subtest: priority optimistic update with zero affected rows returns 412
+ok 7 - priority optimistic update with zero affected rows returns 412
+  ---
+  duration_ms: 0.487128
+  type: 'test'
+  ...
+# Subtest: runtime rejects pre-priority schema and accepts 0.8.0 candidate
+not ok 8 - runtime rejects pre-priority schema and accepts 0.8.0 candidate
+  ---
+  duration_ms: 0.243959
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'schema_version_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/v080/tests/m1g-sql-contract.test.ts:22:224)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 2
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 114.144435

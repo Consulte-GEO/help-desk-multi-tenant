@@ -24,7 +24,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.5.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!=='0.8.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 /** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
@@ -80,6 +80,10 @@ class PostgresStore implements Store{
     filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null])).rows.map(ticket);
  }
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt]);}
+ async updatePriority(t:Ticket,expectedVersion:number):Promise<void>{
+  const r=await this.c.query('update helpdesk_core.tickets set priority=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.priority,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
+  if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');
+ }
  async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');}
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}
  async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{

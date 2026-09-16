@@ -1,3 +1,4 @@
+import {priorityChangeInput} from './ticket-priority.ts';
 import {ticketSearch} from './ticket-search.ts';
 import type {TicketListOptions} from './ticket-search.ts';
 import {discoverSupportContexts} from './support-catalog.ts';
@@ -96,6 +97,27 @@ export class HelpdeskService{
   const t=await this.accessible(s,p,id,true);if(!canWriteInternalNote(p,t))throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
   const result=await this.idempotent(s,p,`notes.create:${id}`,key,{body},async()=>{const note:InternalNote={id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,body,createdAt:this.now()};await s.addNote(note);await this.event(s,p,t,'note.created',{noteId:note.id},false,requestId);return note;});return {note:result.value,replayed:result.replayed};
  });}
+ /** Operator-only priority classification; the contract snapshot and SLA are not recalculated. */
+ async changePriority(p:Principal,id:string,priority:unknown,expectedVersion:unknown,reason:unknown,key:string,requestId:string){
+  if(!hasScope(p,'tickets:read')||!hasScope(p,'tickets:write'))
+   throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
+  const input=priorityChangeInput(priority,reason,expectedVersion);
+  return this.db.run(p,async s=>{
+   const t=await this.accessible(s,p,id,true);
+   // Check before reading the replay cache: a former operator must not replay a privileged command.
+   if(!isOperator(p,t.workspaceId,t.accountId))throw new HelpdeskError(403,'forbidden','Somente a equipe autorizada pode alterar a prioridade.');
+   const result=await this.idempotent(s,p,`priority.change:${id}`,key,input,async()=>{
+    if(t.version!==input.expectedVersion)throw new HelpdeskError(412,'version_conflict','Chamado alterado por outra operação. Atualize os dados.');
+    if(t.status==='closed'||t.status==='cancelled')throw new HelpdeskError(409,'priority_change_not_allowed','A prioridade de um chamado encerrado não pode ser alterada.');
+    if(t.priority===input.priority)return t;
+    const updated={...t,priority:input.priority,version:t.version+1,updatedAt:this.now()};
+    await s.updatePriority(updated,t.version);
+    await this.event(s,p,updated,'ticket.priority_changed',{from:t.priority,to:updated.priority,reason:input.reason,version:updated.version},true,requestId);
+    return updated;
+   });
+   return {ticket:result.value,replayed:result.replayed};
+  });
+ }
  async transition(p:Principal,id:string,to:TicketStatus,expectedVersion:number,reason:string,key:string,requestId:string){
   if(!hasScope(p,'tickets:write'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(!Number.isSafeInteger(expectedVersion)||expectedVersion<1)throw new HelpdeskError(428,'precondition_required','Informe a versão atual em If-Match.');

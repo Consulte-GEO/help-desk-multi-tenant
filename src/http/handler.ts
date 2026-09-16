@@ -8,7 +8,7 @@ const problemCodes=new WeakMap<Response,string>();
 export const diagnosticProblemCode=(response:Response):string|undefined=>problemCodes.get(response);
 import type {HelpdeskService} from '../application/helpdesk.ts';import type {Principal,Ticket} from '../domain/model.ts';import {statuses} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';import {readObject,text,identifier,ifMatch} from './validation.ts';import {ticketDto,messageDto,noteDto,eventDto} from './serialization.ts';
-export const capabilities={api_version:'v1',release:RELEASE,capabilities:{tickets:true,ticket_search:true,contract_resolution:true,support_catalog:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
+export const capabilities={api_version:'v1',release:RELEASE,capabilities:{tickets:true,ticket_search:true,ticket_priority_update:true,ticket_timeline:true,contract_resolution:true,support_catalog:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
 export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;revokeSession?:(token:string)=>Promise<void>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:HttpObserver};
 export function jsonResponse(data:unknown,status=200,extra:Record<string,string>={}):Response{return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer',...extra}});}
 export function problemResponse(error:unknown,requestId:string):Response{const e=error instanceof HelpdeskError?error:null;let status=e?.status??500,code=e?.code??'internal_error',detail=e?.message??'Não foi possível concluir a operação.';
@@ -78,6 +78,12 @@ async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Re
  const match=/^\/v1\/tickets\/([^/]+)(?:\/(messages|notes|transitions|timeline))?$/.exec(path);
  if(match){const id=identifier(match[1]),action=match[2];
   if(!action&&method==='GET'){const ticket=await d.service.get(p,id);return jsonResponse(ticketDto(p,ticket),200,{etag:`"${ticket.version}"`});}
+  if(!action&&method==='PATCH'){
+   if(url.search)throw new HelpdeskError(400,'unknown_parameter','Esta operação não aceita parâmetros de consulta.');
+   const expected=ifMatch(req),b=await readObject(req,['priority','reason']);
+   const result=await d.service.changePriority(p,id,b.priority,expected,b.reason,key,requestId);
+   return jsonResponse(ticketDto(p,result.ticket),200,{etag:`"${result.ticket.version}"`,'idempotency-replayed':String(result.replayed)});
+  }
   if((action==='messages'||action==='notes'||action==='timeline')&&method==='GET'){
    if([...url.searchParams.keys()].some(k=>!['limit','cursor'].includes(k)||url.searchParams.getAll(k).length!==1))
     throw new HelpdeskError(400,'unknown_parameter','Parâmetro de consulta não permitido ou duplicado.');
