@@ -1,0 +1,73 @@
+{
+  "scope": "Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.",
+  "checks": [
+    {
+      "check": "HTTP account isolation in local demo",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP advertises current version",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP create and idempotent replay",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP known ID from sibling account denied",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP pagination across 55 actual API-created messages",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP public/private conversation separation",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP serves all JavaScript modules including mutation guard",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP rejects duplicate parameters and empty selectors",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP rejects compressed bodies rather than silently decoding unsupported input",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP self-revocation rejects human tokens and does not fake a missing M2M backend",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP authorized catalog supplies names without sibling account or private data",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP catalog pagination keeps two contexts distinct and creates no tickets",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP catalog denies forbidden filters and a cursor from another actor",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP server search reaches a ticket beyond the first 25 without preloading pages",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP combines literal query, public status and priority before pagination",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP filtered pagination has 30 distinct results and rejects cursor reuse with another query",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP search preserves account/private-note isolation and advertises the implemented capability",
+      "result": "passed"
+    }
+  ]
+}

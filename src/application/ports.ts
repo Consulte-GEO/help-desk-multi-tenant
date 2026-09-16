@@ -1,3 +1,4 @@
+import type {TicketSearchFilters} from './ticket-search.ts';
 import type {CatalogWindow,SupportCatalogEntry} from './support-catalog.ts';
 import type {PageWindow} from './pagination.ts';
 import type {Principal,Coverage,Ticket,PublicMessage,InternalNote,TicketEvent,OutboxEvent} from '../domain/model.ts';
@@ -9,7 +10,7 @@ export interface Store{
   supportContexts(window:CatalogWindow,at:string):Promise<SupportCatalogEntry[]>;
   coverages(context:SupportContext):Promise<Coverage[]>;
   getTicket(id:string,lock?:boolean):Promise<Ticket|null>;
-  listTickets(limit:number,cursor:Cursor|null,accountId?:string):Promise<Ticket[]>;
+  listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters?:TicketSearchFilters):Promise<Ticket[]>;
   insertTicket(ticket:Ticket):Promise<void>;
   updateTicket(ticket:Ticket,expectedVersion:number):Promise<void>;
   lockIdempotency(operation:string,key:string):Promise<void>;

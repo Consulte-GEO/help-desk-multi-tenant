@@ -1,73 +1,61 @@
-# Help Desk v0.6.0 — Estado e evidências | M1e
+# Help Desk v0.7.0 — Estado e evidências
 
-**Entrega local, sem publicação. M1 não encerrado.** Base v0.5.0 `cc13eb6a57aba4c6436324c24b3a3b88d55fbadd`; branch `work/helpdesk-m1-v0.6.0`. Verificações em 16/09/2026; logs em UTC. O commit final consta no manifesto externo e no bundle, evitando identificador circular no próprio commit.
+**Entrega local, não publicada. M1 permanece aberto.** Base v0.6.0 `a6eb2c69ce3ea9b49eaab881ed236da43a725662`; branch `work/helpdesk-m1-v0.7.0`. Verificações em 16/09/2026, logs UTC. Commit final no manifesto externo e bundle.
 
-## 1. Resultados executados
+## Resultados executados
 
-| Verificação | Resultado / alcance | Evidência |
+| Verificação | Resultado e alcance | Evidência |
 |---|---|---|
-| Base recuperada | 407 testes passaram antes das alterações | `evidence/m1e/00-baseline-tests.txt` |
-| Suíte local final | **451 aprovados; 0 falhas, cancelados, ignorados ou TODO. 44 novos.** | `evidence/m1e/final-tests.txt` |
-| Novos testes HTTP/CLI | **Cinco aprovados, JÁ INCLUÍDOS nos 451**. HTTP real de loopback, identidades fictícias e CLI local | `evidence/m1e/final-new-http-cli.txt` |
-| Smoke HTTP anterior | **13 verificações aprovadas**, com dados fictícios em memória | `evidence/m1e/final-ui-http-browser.txt` |
-| Exemplo de diagnóstico | Quatro respostas locais (200/403/429/503) produziram quatro registros; resumo aceitou os quatro | `loopback-observations-checks.json`, `loopback-observations.jsonl`, `loopback-observations-summary.json`, dentro de `evidence/m1e/` |
-| TypeScript do ambiente | Saída 0 com compilador/tipos globais, NÃO instalação limpa | `evidence/m1e/final-typecheck-environment.txt` |
-| OpenAPI estrutural | 16 operações / 13 caminhos | `evidence/m1e/final-contracts.txt` |
-| Build estático | Saída 0, NÃO bundle Netlify Functions | `evidence/m1e/final-build.txt` |
-| Sintaxe JS/MJS/Python | Verificação sintática dos arquivos atuais | `evidence/m1e/final-syntax.json` |
-| Scanner heurístico | Sem padrão reconhecido de segredo; NÃO auditoria completa | `evidence/m1e/final-secrets.txt` |
-| Integridade SQL | Seis migrations byte a byte iguais à v0.5.0 | `evidence/m1e/final-migration-integrity.json` |
-| `npm run verify` padrão | **Falhou, saída 2** por tipos/dependências locais ausentes | `evidence/m1e/final-verify-manifest.txt` |
-| Homologação/publicação | **Recusadas**; lock falhou e etapas dependentes ficaram bloqueadas | `evidence/homologation/latest.json`, `evidence/m1e/final-homologation*.txt`, `final-release-gate.txt` |
+| Suíte local Node | **486 aprovados; 0 falhas, cancelados ou ignorados** — 35 novos sobre os 451 reproduzidos na base | evidence/m1f/final-tests.txt |
+| HTTP loopback | **17 checks aprovados**, dados fictícios em memória | evidence/m1f/09-ui-attempt.txt; final-http-smoke.json |
+| TypeScript com ferramentas globais | Aprovado com compilador/tipos existentes no ambiente; não equivale a npm ci do manifesto | evidence/m1f/final-typecheck-environment.txt |
+| OpenAPI estrutural | 16 operações/13 caminhos, referências e sentinelas | evidence/m1f/final-contracts.txt |
+| Sintaxe JS/MJS e AST Python | Aprovada para os arquivos listados | evidence/m1f/final-syntax.json |
+| Build | Frontend estático aprovado, não bundle das Functions | evidence/m1f/final-build.txt |
+| Scanner de segredos | Nenhum padrão reconhecido pelo scanner; não é auditoria integral | evidence/m1f/final-secrets.txt |
+| Integridade migrations | Seis anteriores iguais por bytes/hashes; nenhuma nova | evidence/m1f/migration-integrity.json |
+| Verificação padrão npm run verify | **Falhou (2)** por ausência de dependências/tipos locais; os testes Node anteriores à checagem passaram | evidence/m1f/final-verify-manifest.txt |
+| Homologação agregada e gate | **Não aprovados**; lock ausente bloqueia etapas dependentes | evidence/m1f/final-homologation.txt; final-release-gate.txt |
 
-As quatro chamadas do exemplo não constituem volume real do serviço e não são teste de carga. Os cinco novos testes HTTP/CLI não devem ser somados outra vez aos 451. Tampouco devem ser somados os 60 casos SQL escritos como se tivessem passado.
+Comando de typecheck adicional: `npm run typecheck -- --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types`. Ferramentas: Node 22.16.0, TypeScript 5.8.3; tipos Node globais diferem dos declarados. Não omitir a falha do comando padrão ao apresentar esse resultado.
 
-Comandos, horários e códigos de saída: `evidence/m1e/final-verification.json`. Ambiente: Node 22.16.0, npm 10.9.2, TypeScript global 5.8.3, tipos Node globais 25.1.0. O manifesto fixa tipos 22.15.30 ainda não instalados. A aprovação com tipos globais não substitui npm ci/verify/audit.
+O smoke comprova API local, não PostgreSQL/Netlify/Auth. Quatro checks novos: busca de chamado fora da primeira página, filtros AND, paginação filtrada/cursores, isolamento/validação/capability. Os 35 testes novos locais incluem doubles do driver e estado puro da UI; não são 35 testes de banco ou navegador.
 
-## 2. Código entregue
+## Código e compatibilidade
 
-Diagnóstico HTTP fechado, código de erro permitido, rota normalizada, correlação UUID, duração monotônica e fases `http`/`bootstrap`/`dispatch`; fábrica hospedada compartilhada com recuperação após erro; sink best-effort que não muda resposta/transação; CLI offline com leitura limitada e contagens/histograma sem IDs; executor local PostgreSQL 17 nativo explicitamente selecionado, ambiente isolado, senhas temporárias/SCRAM, ownership e limpeza confirmada; cancelamento de subprocessos próprios.
+Busca autorizada no servidor por assunto/ID completo, filtros de situação pública e prioridade antes da paginação, SQL parametrizado, cursores vinculados aos filtros, equivalência ASCII/Latin-1 determinística e acentos significativos. Descrição/notas/mensagens não participam da busca textual. Interface aplica/limpa filtros, mantém rascunho/detalhe, limita itens na tela, informa contagens carregadas e rejeita páginas/respostas antigas ou malformadas.
 
-A API/interface é 0.6.0, mas o schema continua **0.5.0**. Sem tabela, endpoint público, migration, policy ou grant novo. O caminho Docker foi preservado em `scripts/test-db-docker.mjs`; a entrada escolhe o engine explicitamente e não faz fallback.
+**API/interface 0.7.0 / schema esperado 0.5.0.** Seis migrations preservadas, 23 tabelas candidatas, 16 operações. Consulta não cria grants/helpers privilegiados novos. Nenhuma migration, conta, segredo, MFA ou configuração de dados real alterados.
 
-## 3. Regressões e revisão
+Enquadramento: parte delimitada de **HD-302 (busca, originalmente M3)** antecipada na caixa existente + evolução HD-105. Isso não reclassifica o M1 como concluído nem inicia/entrega o backoffice M2 ou o M3 inteiro. Prioridade de homologação continua HD-101/102/103.
 
-| Grupo | Evidência de falha antes / durante o desenvolvimento | Resultado após correção |
-|---|---|---|
-| Diagnóstico HTTP e host | 15 regressões falharam na fase inicial | Grupo ampliado a 17, todos aprovados |
-| Resumo offline | Oito regressões iniciais; depois um caso de coerção de objeto malformado reproduzido | Nove aprovados |
-| Runner nativo e processos | Dez testes inicialmente falharam; erro novo de sombreamento de variável no cancelamento foi identificado e corrigido | Grupo ampliado a 13, aprovados com doubles PostgreSQL |
-| Revisão de códigos/tempos | Limitador real era classificado como desconhecido; duração fora da janela produzia evento rejeitável | Duas regressões passaram após correção |
-| HTTP real + CLI | Cinco integrações de loopback/CLI com a implementação | Cinco aprovadas |
+## Regressões e revisão
 
-Logs red/green e erros intermediários foram preservados em `evidence/m1e/01`–`20`. Não ocultam que houve falhas durante o desenvolvimento. A checagem de tipos também encontrou nulabilidade no cálculo do histograma, corrigida antes da execução final. A revisão foi local; não houve revisor independente, pentest ou teste de capacidade.
+- Base: 451 passaram antes das alterações (`00-baseline-tests.txt`).
+- Busca: 13 falhas/3 passagens na base; 16 passagens após implementação (`01/02`).
+- Estado da lista: 12 falhas por módulo ausente; 12 passagens após implementação (`03/04`).
+- Adaptador/validação/observação: sete testes adicionais aprovados (`06`).
+- Revisão local do diff, UX, SQL candidato, autorização e semântica em `evidence/m1f/local-review.md`. Não houve revisor independente, subagente, pentest ou carga.
+- Um assert de vazio na suíte browser foi ajustado na revisão para o elemento que apresenta a mensagem. O browser bloqueou antes das asserções; não foi chamado de regressão DOM comprovada.
 
-O ciclo nativo foi validado com comandos simulados, além de diretórios e subprocessos Node reais. Casos cobertos: configuração inválida/root/Windows, ambientes contaminados, versão incompatível, ausência de driver, falha de criação/parada, marcador alterado, substituição de diretório por symlink, cancelamento e engine desconhecido. **Não comprova initdb, pg_ctl, SQL, RLS, grants, locks ou limpeza de um servidor PostgreSQL real.**
+## Bloqueado / não executado
 
-## 4. Bloqueios atuais
+**Registry:** `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`. Sem lockfile real, npm ci, audit ou dependências homologadas. Não foram usados proxies alternativos nem alterações de política (`10-dependencies-attempt.txt`).
 
-**Dependências:** tentativa real `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`. Sem lockfile, instalação limpa ou audit. Não houve proxy alternativo nem alteração de política de rede. Não foi usada uma versão sintética de lock como evidência.
+**PostgreSQL:** runner padrão recusou Docker ausente; não houve fallback remoto (`11-db-attempt.txt`). **68 cenários SQL escritos, zero executados**, oito novos. Runner nativo anterior preservado; não foi usado para contornar a exigência de usuário não root/binários locais. RLS, FKs, helpers, locks e desempenho reais ainda não comprovados.
 
-**PostgreSQL Docker:** comando indisponível/falhou antes da conexão. **Nativo:** recusou na etapa `configuration`, processo com UID 0, sem cluster criado (`cleanup: not_created`). Não há binários/driver disponíveis para homologação; não foram instalados pelo runner. Permanecem **60 casos SQL escritos, zero executados**, e seis migrations não homologadas em servidor real. O Supabase remoto não foi usado como alternativa.
+**Navegador:** `test:ui:local` executou 17 checks HTTP e encontrou `ERR_BLOCKED_BY_ADMINISTRATOR` no `page.goto`. **17 checks browser escritos, zero aprovados nesta sessão**. Interface codificada e estado puro testado, sem certificação visual, responsividade, acessibilidade ou E2E browser.
 
-**Navegador:** 13 checks HTTP passaram antes de `Page.goto` falhar com `ERR_BLOCKED_BY_ADMINISTRATOR` no Playwright. **14 checks browser escritos, zero aprovados nesta execução.** Não há validação visual/mobile/acessibilidade/DOM. Nenhuma política foi contornada.
+**Destino e operação:** Auth/pooler/TLS, IP confiável, Functions com pg instalado, limites/carga, redação de logs do provedor, restauração e revisão operacional pendentes. Busca substring sem benchmark nem índice novo; não prometer latência ou escala.
 
-**Runtime/observabilidade real:** Supabase Auth, pooler/TLS, bundle/execução Netlify Functions e diagnósticos dentro do provedor não homologados. Sem exportador/retentor externo, alertas, OpenTelemetry completo, garantia de captura, análise de custo de logs ou tráfego real. Os eventos do exemplo são locais e sintéticos.
+Contagens e códigos de saída em `evidence/m1f/final-verification.json`. Um exit 1 esperado no gate significa **publicação recusada**, não subsistema aprovado. O relatório agregado permanece bloqueado e não assinado; não é atestação independente.
 
-**Operação:** carga, limites calibrados, residência/retenção/RPO/RTO aprovados, restauração e revisão independente continuam pendentes. Não há novo avanço administrativo M2.
+## Ambientes remotos
 
-## 5. Matriz M1
+Uma consulta GitHub via conector retornou “This repository is empty.” no repositório indicado. Registro em `evidence/m1f/remote-readonly.json`. **Supabase e Netlify não foram reinspecionados nesta rodada**; os metadados históricos não são confirmação atual.
 
-| Item | Avanço nesta entrega | Ainda aberto |
-|---|---|---|
-| HD-101 dependências/CI | Versão/contrato e contagem mínima coerentes | Lock real, npm ci/audit e CI real |
-| HD-102 persistência | Alternativa nativa explícita para ambientes sem Docker | Executar os 60 casos e seis migrations em PostgreSQL 17 real; fresh install/upgrade e correção de achados |
-| HD-103 runtime | Falhas de inicialização/despacho correlacionadas e fábrica compartilhada | Auth, pooler, Functions e coleta de logs no destino |
-| HD-104 diagnóstico/limites | Logs controlados e resumo offline | Capacidade, custo/volume, retenção, alertas e monitoramento operacional |
-| HD-105 interface | Funcionalidades anteriores preservadas; transporte HTTP revisto | Browser/DOM/acessibilidade e ligação ao backend homologado |
+Nenhuma escrita remota: sem push/PR/merge/deploy/migration, alteração de segredo/MFA, dados ou infraestrutura cobrada. Antes de integrar, reinspecionar todos os destinos e preservar eventuais alterações concorrentes.
 
-## 6. Efeito nos ambientes
+## Próximo passo
 
-Nenhum push, PR, merge, deploy, migration remota, alteração de dados, segredo, usuário ou MFA. Não houve reinspeção remota nesta rodada; observações antigas sobre GitHub/Supabase/Netlify continuam históricas. O pacote contém código e evidências locais para revisão, não autorização de produção.
-
-O teste de recuperação do bundle, executado após o commit, é incluído no ZIP em `evidence/recovered-bundle-tests.txt`; seu resultado e o hash do commit são registrados no manifesto do pacote.
+Dependências reais → PostgreSQL 17 descartável/68 cenários → plano/desempenho da busca com RLS → Auth/pooler/Functions → 17 checks browser/UX → capacidade/restore/revisão e gates. Não ampliar módulos para apresentar como resolvidas essas lacunas. Backoffice, intakes, participantes/filas, SLA operacional, anexos, worker/webhooks/e-mail e suporte incorporado permanecem fora desta entrega.

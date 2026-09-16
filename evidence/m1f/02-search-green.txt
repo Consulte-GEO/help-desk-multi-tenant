@@ -1,0 +1,108 @@
+TAP version 13
+# (node:1121) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: busca no servidor alcança chamado anterior à primeira página de 25
+ok 1 - busca no servidor alcança chamado anterior à primeira página de 25
+  ---
+  duration_ms: 3.430277
+  type: 'test'
+  ...
+# Subtest: HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+ok 2 - HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+  ---
+  duration_ms: 17.682768
+  type: 'test'
+  ...
+# Subtest: busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+ok 3 - busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+  ---
+  duration_ms: 1.467264
+  type: 'test'
+  ...
+# Subtest: não pesquisa descrição, mensagem nem nota interna
+ok 4 - não pesquisa descrição, mensagem nem nota interna
+  ---
+  duration_ms: 1.259224
+  type: 'test'
+  ...
+# Subtest: UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+ok 5 - UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+  ---
+  duration_ms: 0.388551
+  type: 'test'
+  ...
+# Subtest: status público reúne estados internos equivalentes sem expor classificação privada
+ok 6 - status público reúne estados internos equivalentes sem expor classificação privada
+  ---
+  duration_ms: 7.206788
+  type: 'test'
+  ...
+# Subtest: filtros de prioridade/status/assunto são combinados por AND
+ok 7 - filtros de prioridade/status/assunto são combinados por AND
+  ---
+  duration_ms: 0.315349
+  type: 'test'
+  ...
+# Subtest: busca não permite inferir títulos de outra conta, workspace ou solicitante
+ok 8 - busca não permite inferir títulos de outra conta, workspace ou solicitante
+  ---
+  duration_ms: 0.230423
+  type: 'test'
+  ...
+# Subtest: integração não pesquisa produto fora do binding autorizado
+ok 9 - integração não pesquisa produto fora do binding autorizado
+  ---
+  duration_ms: 0.491355
+  type: 'test'
+  ...
+# Subtest: ausência de tickets:read não é compensada pela busca
+ok 10 - ausência de tickets:read não é compensada pela busca
+  ---
+  duration_ms: 0.949891
+  type: 'test'
+  ...
+# Subtest: cursor vincula consulta, status e prioridade; não transfere autorização
+ok 11 - cursor vincula consulta, status e prioridade; não transfere autorização
+  ---
+  duration_ms: 1.617951
+  type: 'test'
+  ...
+# Subtest: cursor anterior sem novos filtros continua utilizável
+ok 12 - cursor anterior sem novos filtros continua utilizável
+  ---
+  duration_ms: 1.756526
+  type: 'test'
+  ...
+# Subtest: requisição com filtro inválido é recusada antes da consulta
+ok 13 - requisição com filtro inválido é recusada antes da consulta
+  ---
+  duration_ms: 0.949321
+  type: 'test'
+  ...
+# Subtest: HTTP recusa filtro duplicado, desconhecido e seletor interno
+ok 14 - HTTP recusa filtro duplicado, desconhecido e seletor interno
+  ---
+  duration_ms: 2.54841
+  type: 'test'
+  ...
+# Subtest: string parecida com injeção não expande os resultados
+ok 15 - string parecida com injeção não expande os resultados
+  ---
+  duration_ms: 0.611883
+  type: 'test'
+  ...
+# Subtest: paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+ok 16 - paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+  ---
+  duration_ms: 2.271954
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 209.777743

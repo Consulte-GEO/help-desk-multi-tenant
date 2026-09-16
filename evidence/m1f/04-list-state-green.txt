@@ -1,0 +1,84 @@
+TAP version 13
+# (node:1188) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requisição da lista inclui filtros e cursor no servidor
+ok 1 - requisição da lista inclui filtros e cursor no servidor
+  ---
+  duration_ms: 9.425878
+  type: 'test'
+  ...
+# Subtest: resposta antiga não substitui resultado de filtro mais novo
+ok 2 - resposta antiga não substitui resultado de filtro mais novo
+  ---
+  duration_ms: 1.094959
+  type: 'test'
+  ...
+# Subtest: resposta antiga da página seguinte não entra após atualizar lista
+ok 3 - resposta antiga da página seguinte não entra após atualizar lista
+  ---
+  duration_ms: 0.476098
+  type: 'test'
+  ...
+# Subtest: mudança de sessão elimina itens e invalida conclusões antigas
+ok 4 - mudança de sessão elimina itens e invalida conclusões antigas
+  ---
+  duration_ms: 0.379315
+  type: 'test'
+  ...
+# Subtest: uma página pendente não pode disparar carregamento duplicado
+ok 5 - uma página pendente não pode disparar carregamento duplicado
+  ---
+  duration_ms: 0.262696
+  type: 'test'
+  ...
+# Subtest: erro preserva página já carregada e permite repetir o mesmo cursor
+ok 6 - erro preserva página já carregada e permite repetir o mesmo cursor
+  ---
+  duration_ms: 0.330607
+  type: 'test'
+  ...
+# Subtest: estado não retém mutações externas nos itens ou filtros
+ok 7 - estado não retém mutações externas nos itens ou filtros
+  ---
+  duration_ms: 0.342444
+  type: 'test'
+  ...
+# Subtest: página duplicada ou cursor repetido não corrompe resultados aceitos
+ok 8 - página duplicada ou cursor repetido não corrompe resultados aceitos
+  ---
+  duration_ms: 0.474474
+  type: 'test'
+  ...
+# Subtest: payload com metadados privados ou formato inesperado é rejeitado
+ok 9 - payload com metadados privados ou formato inesperado é rejeitado
+  ---
+  duration_ms: 1.202063
+  type: 'test'
+  ...
+# Subtest: filtros inválidos não apagam a lista atual
+ok 10 - filtros inválidos não apagam a lista atual
+  ---
+  duration_ms: 0.529217
+  type: 'test'
+  ...
+# Subtest: paginação em memória é limitada e informa necessidade de refinar filtros
+ok 11 - paginação em memória é limitada e informa necessidade de refinar filtros
+  ---
+  duration_ms: 6.665196
+  type: 'test'
+  ...
+# Subtest: resultado vazio não é confundido com carregamento ou erro
+ok 12 - resultado vazio não é confundido com carregamento ou erro
+  ---
+  duration_ms: 0.300162
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 151.462655

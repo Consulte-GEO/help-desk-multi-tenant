@@ -206,3 +206,9 @@ Continuidade de M1: 274 testes locais e nove verificações HTTP de memória apr
 ## Atualização de execução — v0.5.0 (16/09/2026)
 
 HD-105 recebeu catálogo autorizado e abertura guiada. Leitura sobre entidades existentes, não CRUD M2. Aplicação/HTTP/estado local: 407 testes; smoke de memória: 13 checks. Migration 006 e 60 cenários SQL aguardam PostgreSQL real; 14 browser aguardam execução autorizada. HD-101–104 continuam com as condições de homologação anteriores. Não considerar incremento de testes locais como fechamento M1. Detalhes e evidências atuais em documentos 04/05/09; demais números históricos deste plano referem-se às respectivas versões.
+
+## Atualização de execução — v0.7.0 (16/09/2026)
+
+A caixa existente recebeu antecipação delimitada de **HD-302 (busca/paginação originalmente em M3)**, combinada com HD-105. A decisão de antecipar não reclassifica os gates de M1 como aprovados nem declara M2/M3 completos. Escopo: busca literal por assunto/UUID, filtros públicos/status/prioridade antes da paginação, cursor escopado e estado seguro da lista. Nenhum cadastro administrativo, participante, fila ou entrega externa incluídos.
+
+486 testes locais e 17 checks HTTP aprovados. Oito SQL e três browser acrescentados: 68/17 escritos, zero aprovados nos ambientes reais. API 0.7.0/schema 0.5.0, seis migrations preservadas. HD-101/102/103 permanecem prioritários: dependências reais, PostgreSQL, driver/Auth/Functions. Busca requer EXPLAIN, carga e UX real. Estado atual nos documentos 04/05/11; números das seções históricas permanecem associados às versões indicadas.

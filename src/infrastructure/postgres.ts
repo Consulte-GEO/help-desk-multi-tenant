@@ -1,3 +1,5 @@
+import {SEARCH_UPPER,SEARCH_LOWER,statusesForSearch} from '../application/ticket-search.ts';
+import type {TicketSearchFilters} from '../application/ticket-search.ts';
 import type {CatalogWindow,SupportCatalogEntry} from '../application/support-catalog.ts';
 import {runTransaction} from './transaction.ts';
 export {withControlTransactions} from './transaction.ts';
@@ -65,7 +67,18 @@ class PostgresStore implements Store{
  }
  async coverages(context:SupportContext):Promise<Coverage[]>{const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
  async getTicket(id:string,lock=false):Promise<Ticket|null>{const r=(await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
- async listTickets(limit:number,cursor:Cursor|null,accountId?:string):Promise<Ticket[]>{return (await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and ($2::uuid is null or account_id=$2) and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5`,[this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit])).rows.map(ticket);}
+ async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
+  // No interpolation of search text, no private-note/message joins. RLS stays in effect.
+  return (await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets
+   where workspace_id=$1 and ($2::uuid is null or account_id=$2)
+    and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
+    and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)
+    and ($9::text[] is null or status=any($9::text[]))
+    and ($10::text is null or priority=$10)
+   order by created_at desc,id desc limit $5`,
+   [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
+    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null])).rows.map(ticket);
+ }
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt]);}
  async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');}
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}

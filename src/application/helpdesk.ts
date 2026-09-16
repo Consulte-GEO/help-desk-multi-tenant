@@ -1,3 +1,5 @@
+import {ticketSearch} from './ticket-search.ts';
+import type {TicketListOptions} from './ticket-search.ts';
 import {discoverSupportContexts} from './support-catalog.ts';
 import type {CatalogOptions,CatalogPage} from './support-catalog.ts';
 import {pagination,page} from './pagination.ts';
@@ -54,12 +56,14 @@ export class HelpdeskService{
   });
  }
  async get(p:Principal,id:string):Promise<Ticket>{return this.db.run(p,s=>this.accessible(s,p,id));}
- async list(p:Principal,options:{limit:number;cursor?:string;accountId?:string}):Promise<{items:Ticket[];nextCursor:string|null}>{
+ async list(p:Principal,options:TicketListOptions):Promise<{items:Ticket[];nextCursor:string|null}>{
   if(!hasScope(p,'tickets:read'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(options.accountId!==undefined&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
-  const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null});
+  const filters=ticketSearch(options);
+  // Retain pre-0.7 cursors when no new filters are supplied. Filters never grant access.
+  const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null,...(Object.keys(filters).length?{search:filters}:{})});
   return this.db.run(p,async s=>{
-   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId)).filter(t=>canReadTicket(p,t));
+   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId,filters)).filter(t=>canReadTicket(p,t));
    return page(rows,options.limit,filter);
   });
  }

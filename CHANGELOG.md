@@ -1,3 +1,15 @@
+# v0.7.0 — busca no servidor e caixa de chamados
+
+- GET /v1/tickets aceita q/situação pública/prioridade, combinados antes de LIMIT; consulta parametrizada sem novos grants, helpers ou tabelas.
+- Busca literal por assunto/identificador completo, equivalência ASCII/Latin-1, acentos significativos. Não pesquisa descrição, mensagens ou notas; substitui o filtro local limitado à página carregada.
+- Cursores incluem filtros normalizados, mantendo compatibilidade do contexto sem filtros.
+- Interface com aplicar/limpar, estado por sessão/consulta, descarte de respostas antigas, retry, contagens carregadas e limite de 500 na tela; preserva detalhe/rascunho.
+- Capability ticket_search, OpenAPI atualizada (16 operações/13 caminhos), novo asset copiado e servido na demonstração.
+- 486 testes locais aprovados (35 novos) e 17 checks HTTP; 68 casos SQL/17 browser escritos mas não aprovados.
+- API 0.7.0/schema 0.5.0; seis migrations preservadas. Sem publicação. M1 aberto; parte HD-302 antecipada, não M2/M3 completos.
+
+---
+
 # v0.6.0 — diagnóstico HTTP seguro e PostgreSQL nativo
 
 - Projeção fechada de logs: rota/código/fase/duração/release/correlação, sem dados de atendimento ou credenciais.

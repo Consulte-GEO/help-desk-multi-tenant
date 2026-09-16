@@ -1,0 +1,171 @@
+{
+  "generated_at": "2026-09-16T18:39:51.681853+00:00",
+  "scope": "local-development-not-production",
+  "base_commit": "a6eb2c69ce3ea9b49eaab881ed236da43a725662",
+  "checks": [
+    {
+      "name": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "started_at": "2026-09-16T18:39:38.349225+00:00",
+      "exit_code": 0,
+      "test_counts": {
+        "tests": 486,
+        "pass": 486,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "evidence/m1f/final-tests.txt"
+    },
+    {
+      "name": "final-typecheck-environment",
+      "command": [
+        "npm",
+        "run",
+        "typecheck",
+        "--",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "started_at": "2026-09-16T18:39:41.893196+00:00",
+      "exit_code": 0,
+      "test_counts": {},
+      "log": "evidence/m1f/final-typecheck-environment.txt"
+    },
+    {
+      "name": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "started_at": "2026-09-16T18:39:43.990800+00:00",
+      "exit_code": 0,
+      "test_counts": {},
+      "log": "evidence/m1f/final-contracts.txt"
+    },
+    {
+      "name": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "started_at": "2026-09-16T18:39:44.235989+00:00",
+      "exit_code": 0,
+      "test_counts": {},
+      "log": "evidence/m1f/final-secrets.txt"
+    },
+    {
+      "name": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started_at": "2026-09-16T18:39:44.487574+00:00",
+      "exit_code": 0,
+      "test_counts": {},
+      "log": "evidence/m1f/final-build.txt"
+    },
+    {
+      "name": "final-verify-manifest",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "started_at": "2026-09-16T18:39:44.723542+00:00",
+      "exit_code": 2,
+      "test_counts": {
+        "tests": 486,
+        "pass": 486,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "evidence/m1f/final-verify-manifest.txt"
+    },
+    {
+      "name": "final-homologation",
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "started_at": "2026-09-16T18:39:50.579562+00:00",
+      "exit_code": 1,
+      "test_counts": {},
+      "log": "evidence/m1f/final-homologation.txt"
+    },
+    {
+      "name": "final-homologation-check",
+      "command": [
+        "npm",
+        "run",
+        "check:homologation"
+      ],
+      "started_at": "2026-09-16T18:39:50.839285+00:00",
+      "exit_code": 1,
+      "test_counts": {},
+      "log": "evidence/m1f/final-homologation-check.txt"
+    },
+    {
+      "name": "final-release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "started_at": "2026-09-16T18:39:51.068433+00:00",
+      "exit_code": 1,
+      "test_counts": {},
+      "log": "evidence/m1f/final-release-gate.txt"
+    }
+  ],
+  "sql_written": 68,
+  "sql_executed": 0,
+  "browser_written": 17,
+  "browser_passed": 0,
+  "six_migrations_preserved": true,
+  "remote_writes": false,
+  "independent_review": false,
+  "http_smoke": {
+    "passed": 17,
+    "failed": 0,
+    "storage": "in-memory-only",
+    "log": "evidence/m1f/final-http-smoke.json"
+  },
+  "attempts": [
+    {
+      "command": "npm run deps:resolve",
+      "exit_code": 1,
+      "status": "failed",
+      "cause": "EAI_AGAIN registry.npmjs.org",
+      "log": "evidence/m1f/10-dependencies-attempt.txt"
+    },
+    {
+      "command": "npm run test:db:local",
+      "exit_code": 1,
+      "status": "blocked",
+      "cause": "Docker command unavailable",
+      "log": "evidence/m1f/11-db-attempt.txt"
+    },
+    {
+      "command": "npm run test:ui:local",
+      "exit_code": 1,
+      "status": "not_approved",
+      "http_passed": 17,
+      "browser_passed": 0,
+      "cause": "ERR_BLOCKED_BY_ADMINISTRATOR",
+      "log": "evidence/m1f/09-ui-attempt.txt"
+    }
+  ],
+  "candidate_schema": "0.5.0",
+  "api_release": "0.7.0"
+}

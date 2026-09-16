@@ -292,3 +292,53 @@ test('M1d discovery does not create tickets, events or outbox side effects',asyn
  const counts="select (select count(*) from helpdesk_core.tickets) as tickets,(select count(*) from helpdesk_core.ticket_events) as events,(select count(*) from helpdesk_integration.outbox_events) as outbox";
  const before=(await admin.query(counts)).rows;await service.supportContexts(alice,{limit:50});assert.deepEqual((await admin.query(counts)).rows,before);
 });
+
+// v0.7: real PostgreSQL tests, NOT executed by npm test or replaced with memory fixtures.
+test('SQL busca filtra antes do limite e encontra chamado antigo entre 31 criações',async()=>{
+ const marker=await service.create(alice,{...input,subject:'M1F agulha remota'},'m1f-sql-old-marker','db-test');
+ for(let i=0;i<30;i++)await service.create(alice,{...input,subject:'M1F recentes '+i},'m1f-sql-recent-'+String(i).padStart(3,'0'),'db-test');
+ const first=await service.list(alice,{limit:25,q:'M1F'});assert.equal(first.items.length,25);assert.ok(!first.items.some(t=>t.id===marker.ticket.id));
+ const match=await service.list(alice,{limit:25,q:'M1F agulha'});assert.deepEqual(match.items.map(t=>t.id),[marker.ticket.id]);
+ let cursor:string|undefined;const ids:string[]=[];do{const r=await service.list(alice,{limit:7,q:'M1F recentes',...(cursor?{cursor}:{})});ids.push(...r.items.map(t=>t.id));cursor=r.nextCursor??undefined;}while(cursor);
+ assert.equal(ids.length,30);assert.equal(new Set(ids).size,30);
+});
+test('SQL busca mantém autorização de conta/workspace mesmo conhecendo UUID',async()=>{
+ const t=await service.create(alice,{...input,subject:'M1F isolamento busca'},'m1f-sql-isolation-key','db-test');
+ for(const actor of [bob,outsider])assert.deepEqual(await service.list(actor,{limit:25,q:t.ticket.id}),{items:[],nextCursor:null});
+ assert.equal((await service.list(alice,{limit:25,q:t.ticket.id.toUpperCase()})).items[0]?.id,t.ticket.id);
+});
+test('SQL busca não encontra nota interna, mensagem ou descrição',async()=>{
+ const t=await service.create(alice,{...input,subject:'M1F conteúdo não indexado',description:'M1FONLYBODY-7391'},'m1f-sql-body-exclusion','db-test');
+ await service.addNote(agent,t.ticket.id,'M1FONLYNOTE-7391','m1f-sql-note-exclusion','db-test');
+ await service.addMessage(alice,t.ticket.id,'M1FONLYMESSAGE-7391','m1f-sql-message-exclusion','db-test');
+ for(const q of ['M1FONLYBODY-7391','M1FONLYNOTE-7391','M1FONLYMESSAGE-7391'])assert.equal((await service.list(alice,{limit:25,q})).items.length,0);
+});
+test('SQL busca perde acesso imediatamente na próxima consulta após revogação',async()=>{
+ const t=await service.create(alice,{...input,subject:'M1F revogação real'},'m1f-sql-live-revocation','db-test');
+ await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);
+ try{assert.deepEqual(await service.list(alice,{limit:25,q:t.ticket.id}),{items:[],nextCursor:null});}
+ finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}
+});
+test('SQL filtros públicos agregam espera interna sem expor seletor privado',async()=>{
+ const t=await service.create(alice,{...input,subject:'M1F estado agregado'},'m1f-sql-state-filter','db-test');
+ await service.transition(agent,t.ticket.id,'open',1,'Análise','m1f-sql-open-state','db-test');
+ await service.transition(agent,t.ticket.id,'waiting_internal',2,'Aguardar equipe','m1f-sql-waiting-state','db-test');
+ assert.equal((await service.list(alice,{limit:25,q:'M1F estado agregado',status:'in_progress'})).items[0]?.id,t.ticket.id);
+ assert.equal((await service.list(alice,{limit:25,q:'M1F estado agregado',status:'waiting_for_you'})).items.length,0);
+});
+test('SQL trata curingas e aspas literalmente sem ampliar escopo',async()=>{
+ const t=await service.create(alice,{...input,subject:"M1F literal 100%_ ' OR TRUE --"},'m1f-sql-literal-query','db-test');
+ assert.equal((await service.list(alice,{limit:25,q:"100%_ ' OR TRUE --"})).items[0]?.id,t.ticket.id);
+ assert.equal((await service.list(alice,{limit:25,q:'100__'})).items.length,0);
+});
+test('SQL e memória concordam na busca latina sem depender da locale do banco',async()=>{
+ const t=await service.create(alice,{...input,subject:'M1F RELATÓRIO ÇÃO ÄÖÜ'},'m1f-sql-latin-case','db-test');
+ assert.equal((await service.list(alice,{limit:25,q:'m1f relatório ção äöü'})).items[0]?.id,t.ticket.id);
+ assert.equal((await service.list(alice,{limit:25,q:'m1f relatorio cao aou'})).items.length,0);
+});
+test('SQL prioridade e assunto são aplicados em conjunto no escopo da integração',async()=>{
+ const t=await service.create(machine,{...input,subject:'M1F máquina busca',priority:'urgent'},'m1f-sql-machine-filter','db-test');
+ assert.equal((await service.list(machine,{limit:25,q:'M1F máquina',priority:'urgent',status:'received'})).items[0]?.id,t.ticket.id);
+ assert.equal((await service.list(alice,{limit:25,q:'M1F máquina',priority:'urgent'})).items.length,0);
+ assert.equal((await service.list(machine,{limit:25,q:'M1F máquina',priority:'normal'})).items.length,0);
+});

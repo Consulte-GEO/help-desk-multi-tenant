@@ -1,61 +1,49 @@
-# Consulte Help Desk — v0.6.0 / observabilidade HTTP e PostgreSQL nativo
+# Consulte Help Desk — v0.7.0 / busca autorizada e caixa de chamados
 
-Help Desk independente, multiproduto e multicontrato. Workspace, conta, produto/instância, contrato/versão e cobertura permanecem distintos.
+Help Desk independente, multiproduto e multicontrato. Workspace, conta, produto/instância, contrato/versão e cobertura continuam conceitos separados.
 
-**Entrega local, não publicada. M1 ainda aberto.** Nesta rodada: **451 testes locais aprovados**, incluindo cinco testes de HTTP real em loopback/CLI offline; **13 verificações adicionais do smoke HTTP existente** aprovadas com dados fictícios em memória. Nenhum teste PostgreSQL ou browser foi aprovado nesta sessão.
+**Incremento local, não publicado. M1 aberto.** 486 testes locais e 17 checks HTTP de loopback aprovados; SQL, navegador e runtime remoto não homologados. A busca antecipa parte delimitada HD-302 planejada em M3, sem declarar M1/M2/M3 concluídos.
 
-## Executar localmente
+## Novidades
+
+Busca por assunto ou UUID completo no servidor, inclusive fora da primeira página. Situação pública e prioridade combináveis; API aplica filtros antes de limitar. Termo literal, equivalência de caixa ASCII/Latin-1 e acentos significativos. Não pesquisa descrição, respostas ou notas internas. Sem novos privilégios ou tabelas.
+
+Interface com Aplicar/Enter, Limpar filtros, retry e contagens de itens **carregados**. Respostas atrasadas de outra consulta/sessão não substituem a atual; rascunho e detalhe não são apagados ao filtrar. Páginas malformadas/duplicadas são rejeitadas. Teto de 500 itens na tela pede refinamento, sem restringir o total paginável da API.
+
+```http
+GET /v1/tickets?q=Relat%C3%B3rio&status=in_progress&priority=high&limit=25
+```
+
+A requisição exige identidade e workspace autorizados. Nova capability `ticket_search`; continuam 16 operações/13 caminhos. Cursor é navegação, não autorização. Consultas são vivas, não snapshot.
+
+## Executar demonstração
 
 ```bash
 npm test
 npm run demo
 ```
 
-Node utilizado: 22.16.0. A demonstração escuta somente em `http://127.0.0.1:4317`, utiliza dados fictícios em memória, não acessa Supabase nem envia e-mail/webhook. Não é fallback do runtime de produção. `npm run test:ui:local` inicia/encerra suas próprias demonstrações para HTTP + navegador e recusa usar um servidor já existente. O HTTP passou; a navegação continua bloqueada neste ambiente.
+Node utilizado: 22.16.0. Demo escuta somente em `http://127.0.0.1:4317`, dados fictícios em memória, sem Supabase ou envio externo. `npm run test:ui:local` inicia/encerra suas próprias demonstrações; não reaproveita servidor desconhecido. Os 17 checks HTTP passaram; o browser bloqueou na navegação, antes dos 17 checks escritos.
 
-## Novidades
-
-A API emite diagnóstico JSON de resultado, rota normalizada, código permitido, fase, duração e UUID de correlação, sem conteúdo de chamados, notas, credenciais, IP ou identificadores de clientes/recursos. Falhas de inicialização também são correlacionadas. Falha do observador não muda o resultado da operação. Isso não é armazenamento durável, auditoria regulatória nem OpenTelemetry completo.
-
-Para sumarizar logs autorizados offline:
-
-```bash
-npm run --silent logs:summary -- observacoes.jsonl > resumo.json
-# Exemplo com quatro eventos gerados por HTTP local, NÃO produção:
-npm run --silent logs:summary -- evidence/m1e/loopback-observations.jsonl
-```
-
-O resumo contém contagens e histograma por rota/método; não guarda request IDs nem expõe métricas entre clientes. Não fornece percentis exatos. Arquivo limitado a 256 MiB e linha a 16 KiB.
-
-Para a suíte SQL, Docker continua padrão. Agora há alternativa explícita com PostgreSQL 17 previamente instalado, dependências locais e usuário não root:
-
-```bash
-export HELPDESK_TEST_DB_ENGINE=native
-export HELPDESK_TEST_PG_BIN=/usr/lib/postgresql/17/bin
-npm run test:db:local
-```
-
-O diretório acima é exemplo. O runner cria apenas seu cluster temporário em loopback, usa SCRAM, gera segredos temporários, verifica propriedade antes de limpar e preserva dados se não confirmar a parada. Não instala binários, não usa sudo, não muda políticas e não tenta outro servidor silenciosamente. **Os testes do lifecycle utilizam doubles PostgreSQL; nenhum servidor real foi iniciado nesta entrega.**
-
-## Instalação e homologação completa
+## Homologação necessária
 
 ```bash
 npm run deps:resolve
-# Revisar lock real, origens, integridades, versões e alertas.
+# Revisar lock real, árvore, origens e alertas.
 npm run homologate:local
 npm run check:homologation
 ```
 
-O registry novamente falhou com `EAI_AGAIN`; não há lockfile, npm ci ou audit aprovado. `npm run verify` falha por dependências/tipos locais ausentes. A checagem com ferramentas globais passou, mas não substitui a instalação real. O executor agregado mantém etapas não executadas bloqueadas; `verify:release` não passou.
+Registry retornou EAI_AGAIN; não há lock, npm ci/audit aprovados. `npm run verify` falhou por dependências/tipos locais ausentes. Typecheck com ferramentas globais passou, mas não substitui instalação. Gate agregado/publicação bloqueados. `npm run build` produz somente assets estáticos, não bundle/execução das Functions.
 
-`npm run build` gera somente assets estáticos, não o bundle/execução das Netlify Functions. Não habilitar `HELPDESK_RELEASE_APPROVED` para ocultar ausência de homologação. Ainda são necessários os **60 cenários PostgreSQL**, **14 checks browser**, Auth/pooler/TLS, Functions, carga, restauração e revisão operacional. Não utilizar dados de clientes reais.
+Executar **68 cenários PostgreSQL** em banco descartável; Docker é padrão. Runner nativo anterior exige PostgreSQL 17 previamente instalado e usuário não root, selecionado explicitamente por HELPDESK_TEST_DB_ENGINE=native e HELPDESK_TEST_PG_BIN absoluto. Nenhuma instalação/fallback remoto/política alterada. Zero SQL executado nesta rodada. Ainda faltam browser, Auth/pooler/TLS/Functions, EXPLAIN/capacidade, restauração e revisão independente.
 
-## Compatibilidade
+Observabilidade da v0.6.0 preservada; resumo offline: `npm run --silent logs:summary -- observacoes.jsonl`. Logs da aplicação não incluem q/filtros; validar redação de query strings no ingresso/proxy do destino. Não registrar segredos na busca.
 
-**API/interface: 0.6.0. Schema candidato esperado: 0.5.0.** As seis migrations foram preservadas byte a byte; mesmas 23 tabelas candidatas e 16 operações HTTP em 13 caminhos. Não há migration nova porque esta entrega não muda o banco. O catálogo autorizado e a abertura guiada da v0.5.0, as garantias transacionais e as sessões M2M anteriores foram preservados.
+## Compatibilidade e documentos
 
-## Documentação e continuidade
+**API/interface 0.7.0; schema esperado 0.5.0.** Seis migrations preservadas byte a byte, 23 tabelas candidatas. Nenhuma migration nova. Busca é extensão opcional da API; o antigo filtro local de descrição deixou de existir. Semântica detalhada no documento 11.
 
-[Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [Segurança/publicação](docs/03-SEGURANCA-E-PUBLICACAO.md) · [Estado e evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Observabilidade e runner nativo](docs/10-M1E-OBSERVABILIDADE-E-POSTGRES-NATIVO.md) · [OpenAPI](docs/openapi.json) · [Changelog](CHANGELOG.md).
+[Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Busca e caixa](docs/11-M1F-BUSCA-E-CAIXA.md) · [OpenAPI](docs/openapi.json) · [Changelog](CHANGELOG.md).
 
-Sem push, merge, deploy, migrations remotas, dados/segredos/MFA alterados ou nova inspeção remota. Destinos informados: GitHub `Consulte-GEO/help-desk-multi-tenant`, Supabase `xaelbntjnvztznnpcvtm`, Netlify `help-desk-multi-tenant`. Reinspecionar antes de integrar e preservar trabalho concorrente. M2 administrativo, intakes, participantes/filas, SLA operacional, anexos, worker/notificações/webhooks e suporte incorporado continuam não implementados.
+Sem push/merge/deploy/migrations/segredos/MFA/dados alterados. GitHub foi lido e retornou vazio; Supabase/Netlify não reinspecionados. Preservar alterações concorrentes e reinspecionar antes de integrar. Backoffice M2, intakes, participantes/filas, SLA operacional, anexos, worker/e-mail/webhooks e suporte incorporado continuam fora desta entrega. Não utilizar dados reais de clientes antes da liberação explícita e homologação completa.

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -555,6 +555,44 @@
               "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
               "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
             }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120
+            },
+            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Apenas assunto ou UUID completo."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "received",
+                "in_progress",
+                "waiting_for_you",
+                "resolved",
+                "closed"
+              ]
+            },
+            "description": "Situação pública. Não aceita seletores de estados internos."
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "low",
+                "normal",
+                "high",
+                "urgent"
+              ]
+            }
           }
         ],
         "responses": {
@@ -564,6 +602,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TicketPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
                 }
               }
             }
@@ -597,7 +642,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Busca literal em assunto ou UUID completo, com dobra de caixa ASCII/Latin-1 determinística e acentos significativos. Não pesquisa descrição, mensagens nem notas. Filtros combinam por AND e são aplicados antes do LIMIT no escopo autorizado. Não é busca full-text, ranking ou totalização. Cursor vinculado a ator, workspace, conta e filtros; alterações de filtros exigem reinício. Páginas são vivas, não snapshot. Cursor anterior sem novos filtros permanece compatível. Campos explicitamente vazios são inválidos; omita filtros não utilizados."
       },
       "post": {
         "operationId": "createTicket",

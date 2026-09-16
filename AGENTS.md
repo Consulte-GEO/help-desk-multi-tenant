@@ -25,11 +25,13 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.6.0
-M1 em andamento, sem publicação. 451 testes locais (incluindo cinco HTTP loopback/CLI) e 13 checks HTTP de demonstração aprovados. 60 casos SQL e 14 checks browser continuam escritos, não aprovados. API 0.6.0 / schema 0.5.0; seis migrations preservadas, 23 tabelas, 16 operações HTTP. Não criar migration somente para alinhar versão visual.
+## Estado v0.7.0
+M1 em andamento, sem publicação. 486 testes locais e 17 checks HTTP de demonstração aprovados. 68 casos SQL e 17 checks browser continuam escritos, não aprovados. API 0.7.0 / schema 0.5.0; seis migrations preservadas, 23 tabelas, 16 operações HTTP. Não criar migration somente para alinhar versão visual.
 
 Diagnósticos usam lista fechada em src/observability, com request_id para correlação, nunca como autorização ou dimensão agregada. Não registrar IP, query, tokens, corpo, nomes, UUIDs de recursos ou exceções brutas. O resumo offline conta registros, não requisições únicas; não inventar percentis exatos. Observer é best-effort e não substitui auditoria/outbox.
 
 PostgreSQL nativo: engine explicitamente native, binários instalados em HELPDESK_TEST_PG_BIN e usuário não root. Nenhum downloader/fallback remoto. Só limpar cluster próprio após confirmação; se ownership/parada falhar, preservar e retornar falha. Tests com comandos controlados não comprovam PostgreSQL real. O caminho Docker anterior permanece padrão.
 
-Ler documentos 04, 05 e 10; 06–09 e docs/history preservam o histórico. O catálogo continua consultivo, não CRUD M2 nem autorização permanente. Criar sempre revalida. Manter gates fechados até dependências e ambiente real aprovados.
+Ler documentos 04, 05 e 11; 06–09 e docs/history preservam o histórico. O catálogo continua consultivo, não CRUD M2 nem autorização permanente. Criar sempre revalida. Manter gates fechados até dependências e ambiente real aprovados.
+
+Busca q/situação pública/prioridade precede LIMIT no servidor. Assunto/ID completo apenas, sem notas/mensagens/descrição no predicado; equivalência ASCII/Latin-1 e acentos significativos. Não mudar para LIKE/FTS sem especificar semântica. Cursor vinculado aos filtros, autorização a cada consulta. Logs não registram q; homologar também ingresso/proxy. Estado da lista guarda geração e valida páginas integralmente; preservar rascunho ao filtrar, limpar por sessão. Contagens apenas carregadas; teto de 500 é da interface, não do total da API. Parte HD-302 antecipada sem fechar M1 nem entregar M2/M3.

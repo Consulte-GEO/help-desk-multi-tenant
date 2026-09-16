@@ -1,0 +1,240 @@
+TAP version 13
+# (node:1162) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: requisição da lista inclui filtros e cursor no servidor
+not ok 1 - requisição da lista inclui filtros e cursor no servidor
+  ---
+  duration_ms: 2.237007
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:11:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: resposta antiga não substitui resultado de filtro mais novo
+not ok 2 - resposta antiga não substitui resultado de filtro mais novo
+  ---
+  duration_ms: 0.580371
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:17:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: resposta antiga da página seguinte não entra após atualizar lista
+not ok 3 - resposta antiga da página seguinte não entra após atualizar lista
+  ---
+  duration_ms: 0.389386
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:21:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: mudança de sessão elimina itens e invalida conclusões antigas
+not ok 4 - mudança de sessão elimina itens e invalida conclusões antigas
+  ---
+  duration_ms: 0.357664
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:25:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: uma página pendente não pode disparar carregamento duplicado
+not ok 5 - uma página pendente não pode disparar carregamento duplicado
+  ---
+  duration_ms: 0.594755
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:29:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: erro preserva página já carregada e permite repetir o mesmo cursor
+not ok 6 - erro preserva página já carregada e permite repetir o mesmo cursor
+  ---
+  duration_ms: 0.374588
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:31:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:32:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: estado não retém mutações externas nos itens ou filtros
+not ok 7 - estado não retém mutações externas nos itens ou filtros
+  ---
+  duration_ms: 0.316049
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:36:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:37:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: página duplicada ou cursor repetido não corrompe resultados aceitos
+not ok 8 - página duplicada ou cursor repetido não corrompe resultados aceitos
+  ---
+  duration_ms: 0.284822
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:41:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: payload com metadados privados ou formato inesperado é rejeitado
+not ok 9 - payload com metadados privados ou formato inesperado é rejeitado
+  ---
+  duration_ms: 1.002234
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:45:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:47:34)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: filtros inválidos não apagam a lista atual
+not ok 10 - filtros inválidos não apagam a lista atual
+  ---
+  duration_ms: 0.655023
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:49:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:50:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: paginação em memória é limitada e informa necessidade de refinar filtros
+not ok 11 - paginação em memória é limitada e informa necessidade de refinar filtros
+  ---
+  duration_ms: 0.430222
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:53:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:54:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: resultado vazio não é confundido com carregamento ou erro
+not ok 12 - resultado vazio não é confundido com carregamento ou erro
+  ---
+  duration_ms: 0.419947
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:59:1'
+  failureType: 'testCodeFailure'
+  error: 'Estado da caixa de chamados ainda não implementado.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    load (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:6:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-list-state.test.ts:60:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 0
+# fail 12
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 163.017949

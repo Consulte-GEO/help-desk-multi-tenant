@@ -1,0 +1,510 @@
+TAP version 13
+# (node:1085) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: busca no servidor alcança chamado anterior à primeira página de 25
+not ok 1 - busca no servidor alcança chamado anterior à primeira página de 25
+  ---
+  duration_ms: 12.792151
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    +   '00000000-0000-4000-8000-000000000001',
+    +   '00000000-0000-4000-8000-000000000002',
+    +   '00000000-0000-4000-8000-000000000003',
+    +   '00000000-0000-4000-8000-000000000004',
+    +   '00000000-0000-4000-8000-000000000005',
+    +   '00000000-0000-4000-8000-000000000006',
+    +   '00000000-0000-4000-8000-000000000007',
+    +   '00000000-0000-4000-8000-000000000008',
+    +   '00000000-0000-4000-8000-000000000009',
+    +   '00000000-0000-4000-8000-000000000010',
+    +   '00000000-0000-4000-8000-000000000011',
+    +   '00000000-0000-4000-8000-000000000012',
+    +   '00000000-0000-4000-8000-000000000013',
+    +   '00000000-0000-4000-8000-000000000014',
+    +   '00000000-0000-4000-8000-000000000015',
+    +   '00000000-0000-4000-8000-000000000016',
+    +   '00000000-0000-4000-8000-000000000017',
+    +   '00000000-0000-4000-8000-000000000018',
+    +   '00000000-0000-4000-8000-000000000019',
+    +   '00000000-0000-4000-8000-000000000020',
+    +   '00000000-0000-4000-8000-000000000021',
+    +   '00000000-0000-4000-8000-000000000022',
+    +   '00000000-0000-4000-8000-000000000023',
+    +   '00000000-0000-4000-8000-000000000024',
+    +   '00000000-0000-4000-8000-000000000025'
+    -   '00000000-0000-4000-8000-000000000065'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: '00000000-0000-4000-8000-000000000065'
+  actual:
+    0: '00000000-0000-4000-8000-000000000001'
+    1: '00000000-0000-4000-8000-000000000002'
+    2: '00000000-0000-4000-8000-000000000003'
+    3: '00000000-0000-4000-8000-000000000004'
+    4: '00000000-0000-4000-8000-000000000005'
+    5: '00000000-0000-4000-8000-000000000006'
+    6: '00000000-0000-4000-8000-000000000007'
+    7: '00000000-0000-4000-8000-000000000008'
+    8: '00000000-0000-4000-8000-000000000009'
+    9: '00000000-0000-4000-8000-000000000010'
+    10: '00000000-0000-4000-8000-000000000011'
+    11: '00000000-0000-4000-8000-000000000012'
+    12: '00000000-0000-4000-8000-000000000013'
+    13: '00000000-0000-4000-8000-000000000014'
+    14: '00000000-0000-4000-8000-000000000015'
+    15: '00000000-0000-4000-8000-000000000016'
+    16: '00000000-0000-4000-8000-000000000017'
+    17: '00000000-0000-4000-8000-000000000018'
+    18: '00000000-0000-4000-8000-000000000019'
+    19: '00000000-0000-4000-8000-000000000020'
+    20: '00000000-0000-4000-8000-000000000021'
+    21: '00000000-0000-4000-8000-000000000022'
+    22: '00000000-0000-4000-8000-000000000023'
+    23: '00000000-0000-4000-8000-000000000024'
+    24: '00000000-0000-4000-8000-000000000025'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:19:47)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+not ok 2 - HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+  ---
+  duration_ms: 32.965451
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    400 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 400
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:22:68)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+not ok 3 - busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+  ---
+  duration_ms: 0.540977
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'ticket-a',
+    +   '00000000-0000-4000-8000-000000000002'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'ticket-a'
+  actual:
+    0: 'ticket-a'
+    1: '00000000-0000-4000-8000-000000000002'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:29:53)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: não pesquisa descrição, mensagem nem nota interna
+not ok 4 - não pesquisa descrição, mensagem nem nota interna
+  ---
+  duration_ms: 2.501687
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:37:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+not ok 5 - UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+  ---
+  duration_ms: 0.492442
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:43:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: status público reúne estados internos equivalentes sem expor classificação privada
+not ok 6 - status público reúne estados internos equivalentes sem expor classificação privada
+  ---
+  duration_ms: 0.687958
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:45:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    +   'cancelled',
+    +   'closed',
+        'new',
+    +   'open',
+    +   'resolved',
+        'triage',
+    +   'waiting_customer',
+    +   'waiting_internal',
+    +   'waiting_third_party'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'new'
+    1: 'triage'
+  actual:
+    0: 'cancelled'
+    1: 'closed'
+    2: 'new'
+    3: 'open'
+    4: 'resolved'
+    5: 'triage'
+    6: 'waiting_customer'
+    7: 'waiting_internal'
+    8: 'waiting_third_party'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:49:58)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: filtros de prioridade/status/assunto são combinados por AND
+not ok 7 - filtros de prioridade/status/assunto são combinados por AND
+  ---
+  duration_ms: 0.51591
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:52:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'ticket-a',
+    +   '00000000-0000-4000-8000-000000000003',
+    +   '00000000-0000-4000-8000-000000000002'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'ticket-a'
+  actual:
+    0: 'ticket-a'
+    1: '00000000-0000-4000-8000-000000000003'
+    2: '00000000-0000-4000-8000-000000000002'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:54:101)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: busca não permite inferir títulos de outra conta, workspace ou solicitante
+not ok 8 - busca não permite inferir títulos de outra conta, workspace ou solicitante
+  ---
+  duration_ms: 1.266418
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:56:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+    +   items: [
+    +     {
+    +       accountId: 'account-a',
+    +       contractSnapshot: {
+    +         contractId: 'contract-a',
+    +         policy: {
+    +           label: 'Padrão'
+    +         },
+    +         version: 1
+    +       },
+    +       contractVersionId: 'version-a',
+    +       coverageId: 'coverage-a',
+    +       createdAt: '2026-09-15T12:00:00.000Z',
+    +       createdBy: 'person-a',
+    +       description: 'Detalhes do pedido',
+    +       id: 'ticket-a',
+    +       priority: 'normal',
+    +       productInstanceId: 'geolab-production',
+    +       serviceCode: 'SUPPORT',
+    +       status: 'new',
+    +       subject: 'Visível',
+    +       updatedAt: '2026-09-15T12:00:00.000Z',
+    +       version: 1,
+    +       workspaceId: 'workspace-a'
+    +     }
+    +   ],
+    -   items: [],
+        nextCursor: null
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    items:
+    nextCursor: ~
+  actual:
+    items:
+      0:
+        id: 'ticket-a'
+        workspaceId: 'workspace-a'
+        accountId: 'account-a'
+        productInstanceId: 'geolab-production'
+        serviceCode: 'SUPPORT'
+        createdBy: 'person-a'
+        subject: 'Visível'
+        description: 'Detalhes do pedido'
+        status: 'new'
+        priority: 'normal'
+        version: 1
+        coverageId: 'coverage-a'
+        contractVersionId: 'version-a'
+        contractSnapshot:
+          contractId: 'contract-a'
+          version: 1
+          policy:
+            label: 'Padrão'
+        createdAt: '2026-09-15T12:00:00.000Z'
+        updatedAt: '2026-09-15T12:00:00.000Z'
+    nextCursor: ~
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:58:66)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integração não pesquisa produto fora do binding autorizado
+not ok 9 - integração não pesquisa produto fora do binding autorizado
+  ---
+  duration_ms: 0.847045
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:60:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+    +   items: [
+    +     {
+    +       accountId: 'account-a',
+    +       contractSnapshot: {
+    +         contractId: 'contract-a',
+    +         policy: {
+    +           label: 'Padrão'
+    +         },
+    +         version: 1
+    +       },
+    +       contractVersionId: 'version-a',
+    +       coverageId: 'coverage-a',
+    +       createdAt: '2026-09-15T12:00:00.000Z',
+    +       createdBy: 'machine',
+    +       description: 'Detalhes do pedido',
+    +       id: 'ticket-a',
+    +       priority: 'normal',
+    +       productInstanceId: 'geolab-production',
+    +       serviceCode: 'SUPPORT',
+    +       status: 'new',
+    +       subject: 'Permitido',
+    +       updatedAt: '2026-09-15T12:00:00.000Z',
+    +       version: 1,
+    +       workspaceId: 'workspace-a'
+    +     }
+    +   ],
+    -   items: [],
+        nextCursor: null
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    items:
+    nextCursor: ~
+  actual:
+    items:
+      0:
+        id: 'ticket-a'
+        workspaceId: 'workspace-a'
+        accountId: 'account-a'
+        productInstanceId: 'geolab-production'
+        serviceCode: 'SUPPORT'
+        createdBy: 'machine'
+        subject: 'Permitido'
+        description: 'Detalhes do pedido'
+        status: 'new'
+        priority: 'normal'
+        version: 1
+        coverageId: 'coverage-a'
+        contractVersionId: 'version-a'
+        contractSnapshot:
+          contractId: 'contract-a'
+          version: 1
+          policy:
+            label: 'Padrão'
+        createdAt: '2026-09-15T12:00:00.000Z'
+        updatedAt: '2026-09-15T12:00:00.000Z'
+    nextCursor: ~
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:63:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ausência de tickets:read não é compensada pela busca
+ok 10 - ausência de tickets:read não é compensada pela busca
+  ---
+  duration_ms: 1.084802
+  type: 'test'
+  ...
+# Subtest: cursor vincula consulta, status e prioridade; não transfere autorização
+not ok 11 - cursor vincula consulta, status e prioridade; não transfere autorização
+  ---
+  duration_ms: 1.672778
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:68:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_cursor'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:72:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: cursor anterior sem novos filtros continua utilizável
+ok 12 - cursor anterior sem novos filtros continua utilizável
+  ---
+  duration_ms: 1.085045
+  type: 'test'
+  ...
+# Subtest: requisição com filtro inválido é recusada antes da consulta
+not ok 13 - requisição com filtro inválido é recusada antes da consulta
+  ---
+  duration_ms: 1.657929
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:80:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_input'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:83:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP recusa filtro duplicado, desconhecido e seletor interno
+ok 14 - HTTP recusa filtro duplicado, desconhecido e seletor interno
+  ---
+  duration_ms: 2.268527
+  type: 'test'
+  ...
+# Subtest: string parecida com injeção não expande os resultados
+not ok 15 - string parecida com injeção não expande os resultados
+  ---
+  duration_ms: 0.865537
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:90:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    25 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 25
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:91:35)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+not ok 16 - paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+  ---
+  duration_ms: 3.934601
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:93:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    65 !== 33
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 33
+  actual: 65
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/m1f-ticket-search.test.ts:97:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 3
+# fail 13
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 274.846184

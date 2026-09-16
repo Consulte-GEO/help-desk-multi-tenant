@@ -1,3 +1,5 @@
+import {createTicketListState} from './ticket-list-state.js';
+const inbox=createTicketListState();
 import {createConversationState} from './conversation-state.js';
 import {createMutationState} from './mutation-state.js';
 import {createSupportCatalogState} from './support-catalog-state.js';
@@ -16,11 +18,43 @@ const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
-async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list();}
+function clearSession(){inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
-async function list(reset=true){const b=await api('/tickets?limit=25'+(!reset&&s.next?'&cursor='+encodeURIComponent(s.next):''));s.tickets=reset?b.items:[...s.tickets,...b.items.filter(n=>!s.tickets.some(t=>t.id===n.id))];s.next=b.next_cursor;render();if(!s.ticket&&s.tickets.length)await detail(s.tickets[0].id);}
-function render(){const q=$('search').value.trim().toLocaleLowerCase('pt-BR'),items=s.tickets.filter(t=>(t.subject+' '+t.description).toLocaleLowerCase('pt-BR').includes(q));$('ticket-list').replaceChildren();for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('aria-label','Abrir chamado: '+t.subject);const top=el('div','card-top'),bottom=el('div','card-bottom');top.append(el('span','',t.id.slice(0,8).toUpperCase()),el('span','',date(t.created_at)));bottom.append(badge(t.status),el('span','card-product',product(t.product_instance_id)));n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);}if(!items.length)$('ticket-list').append(el('p','list-empty',q?'Nenhum resultado na lista carregada.':'Nenhum chamado visível para este perfil.'));$('stat-total').textContent=s.tickets.length;$('stat-open').textContent=s.tickets.filter(t=>['received','in_progress'].includes(t.status)).length;$('stat-wait').textContent=s.tickets.filter(t=>t.status==='waiting_for_you').length;$('stat-done').textContent=s.tickets.filter(t=>t.status==='resolved').length;$('nav-count').textContent=s.tickets.length;$('list-count').textContent=items.length+' na lista';$('more').hidden=!s.next;}
+function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
+async function list(reset=true,selectFirst=false){
+ if(reset)inbox.restart();const op=inbox.begin();if(!op)return;
+ const detailGeneration=s.detail;syncInbox();
+ try{const b=await api(op.path);if(!inbox.accept(op,b))return;syncInbox();}
+ catch(error){if(inbox.fail(op)){syncInbox();throw error;}return;}
+ // Detail failures belong to the detail request, not a page whose state has already completed.
+ if(selectFirst&&detailGeneration===s.detail&&!s.ticket&&s.tickets.length)await detail(s.tickets[0].id);
+}
+function render(){
+ const items=s.tickets,phase=inbox.status();$('ticket-list').replaceChildren();
+ for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('aria-label','Abrir chamado: '+t.subject);
+  const top=el('div','card-top'),bottom=el('div','card-bottom');top.append(el('span','',t.id.slice(0,8).toUpperCase()),el('span','',date(t.created_at)));
+  bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id)));
+  n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);
+ }
+ if(!items.length)$('ticket-list').append(el('p','list-empty',phase==='loading'?'Consultando chamados autorizados…':phase==='error'?'Não foi possível carregar os chamados. Tente novamente.':phase==='idle'?'Aplique a consulta para carregar chamados.':'Nenhum chamado encontrado para os filtros aplicados e suas permissões.'));
+ $('stat-total').textContent=items.length;$('stat-open').textContent=items.filter(t=>['received','in_progress'].includes(t.status)).length;
+ $('stat-wait').textContent=items.filter(t=>t.status==='waiting_for_you').length;$('stat-done').textContent=items.filter(t=>t.status==='resolved').length;
+ $('nav-count').textContent=items.length;$('list-count').textContent=items.length+' carregado(s)'+(s.next?' · há mais resultados':'');
+ $('more').hidden=!s.next||inbox.capped()||phase==='error';$('more').disabled=inbox.busy();$('list-retry').hidden=phase!=='error';
+ $('ticket-list').setAttribute('aria-busy',String(inbox.busy()));
+ const applied=inbox.filters(),names=[];if(applied.q)names.push('Busca por assunto/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);
+ $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+'. Contagens referem-se somente aos itens carregados.';
+ $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
+}
+function applyFilters(){
+ const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value;
+ if(q)filters.q=q;if(status)filters.status=status;if(priority)filters.priority=priority;
+ inbox.reset(filters);return list(false);
+}
+$('ticket-filters').onsubmit=e=>{e.preventDefault();run(applyFilters);};
+$('clear-filters').onclick=()=>{ $('ticket-filters').reset();run(applyFilters); };
+$('list-retry').onclick=()=>run(()=>list(false));
 function renderConversation(){
  for(const kind of ['messages','notes']){
   $(kind).replaceChildren();const items=conversation.items(kind);
@@ -135,6 +169,6 @@ $('transition').onclick=()=>run(async()=>{
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
-$('search').oninput=render;$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));$('logout').onclick=()=>{clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';};
+$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));$('logout').onclick=()=>{clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';};
 $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{if(!s.config?.supabase_url||!s.config?.publishable_key)throw Error('Ambiente ainda não configurado para login.');const r=await fetch(s.config.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:s.config.publishable_key,'content-type':'application/json'},body:JSON.stringify({email:$('email').value,password:$('password').value})}),b=await r.json();$('password').value='';if(!r.ok||!b.access_token)throw Error('Não foi possível autenticar. Verifique suas credenciais.');clearSession();s.token=b.access_token;s.workspace=$('workspace').value.trim();await login();});};
 async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok)s.config=await r.json();}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
