@@ -1,0 +1,220 @@
+TAP version 13
+# (node:2198) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: M2M exchange rejects private SQL result: missing_workspace
+ok 1 - M2M exchange rejects private SQL result: missing_workspace
+  ---
+  duration_ms: 6.676047
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: bad_workspace
+ok 2 - M2M exchange rejects private SQL result: bad_workspace
+  ---
+  duration_ms: 0.243585
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: alias_instead_of_uuid
+ok 3 - M2M exchange rejects private SQL result: alias_instead_of_uuid
+  ---
+  duration_ms: 0.209053
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: missing_expiry
+ok 4 - M2M exchange rejects private SQL result: missing_expiry
+  ---
+  duration_ms: 0.14737
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: expired
+ok 5 - M2M exchange rejects private SQL result: expired
+  ---
+  duration_ms: 0.315302
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: zero_lifetime
+ok 6 - M2M exchange rejects private SQL result: zero_lifetime
+  ---
+  duration_ms: 0.171407
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: oversized_lifetime
+ok 7 - M2M exchange rejects private SQL result: oversized_lifetime
+  ---
+  duration_ms: 0.115673
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: ambiguous_date
+ok 8 - M2M exchange rejects private SQL result: ambiguous_date
+  ---
+  duration_ms: 0.115753
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: invalid_date
+ok 9 - M2M exchange rejects private SQL result: invalid_date
+  ---
+  duration_ms: 0.477936
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: array
+ok 10 - M2M exchange rejects private SQL result: array
+  ---
+  duration_ms: 0.392328
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: primitive
+ok 11 - M2M exchange rejects private SQL result: primitive
+  ---
+  duration_ms: 0.25348
+  type: 'test'
+  ...
+# Subtest: valid short session is projected canonically and does not expose extra private fields
+ok 12 - valid short session is projected canonically and does not expose extra private fields
+  ---
+  duration_ms: 0.377265
+  type: 'test'
+  ...
+# Subtest: revoked credentials still return 401 rather than a malformed-result error
+ok 13 - revoked credentials still return 401 rather than a malformed-result error
+  ---
+  duration_ms: 0.145879
+  type: 'test'
+  ...
+# Subtest: self-revocation sends only the session digest, never a bearer or another selector
+ok 14 - self-revocation sends only the session digest, never a bearer or another selector
+  ---
+  duration_ms: 0.515853
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_key_aaaaa
+ok 15 - self-revocation rejects unsupported bearer hd_key_aaaaa
+  ---
+  duration_ms: 0.20036
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer user.jwt
+ok 16 - self-revocation rejects unsupported bearer user.jwt
+  ---
+  duration_ms: 0.077255
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_x
+ok 17 - self-revocation rejects unsupported bearer hd_session_x
+  ---
+  duration_ms: 0.059019
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer 
+ok 18 - self-revocation rejects unsupported bearer 
+  ---
+  duration_ms: 0.068412
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_b
+ok 19 - self-revocation rejects unsupported bearer hd_session_b
+  ---
+  duration_ms: 0.056274
+  type: 'test'
+  ...
+# Subtest: self-revocation does not report completion for an incompatible private response
+ok 20 - self-revocation does not report completion for an incompatible private response
+  ---
+  duration_ms: 0.116715
+  type: 'test'
+  ...
+# Subtest: DELETE current session returns empty 204 on repeated revocation without workspace or grants
+ok 21 - DELETE current session returns empty 204 on repeated revocation without workspace or grants
+  ---
+  duration_ms: 15.902404
+  type: 'test'
+  ...
+# Subtest: self-revocation remains behind the trusted-IP ingress limiter
+ok 22 - self-revocation remains behind the trusted-IP ingress limiter
+  ---
+  duration_ms: 1.186999
+  type: 'test'
+  ...
+# Subtest: missing revocation backend is not silently reported as a successful logout
+ok 23 - missing revocation backend is not silently reported as a successful logout
+  ---
+  duration_ms: 1.216463
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a selector in query ?token=other
+ok 24 - self-revocation rejects a selector in query ?token=other
+  ---
+  duration_ms: 0.396183
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a selector in query ?workspace_id=other
+ok 25 - self-revocation rejects a selector in query ?workspace_id=other
+  ---
+  duration_ms: 0.333049
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a body requesting another session
+ok 26 - self-revocation rejects a body requesting another session
+  ---
+  duration_ms: 0.375433
+  type: 'test'
+  ...
+# Subtest: session expiry is checked after the database wait, not before it
+ok 27 - session expiry is checked after the database wait, not before it
+  ---
+  duration_ms: 0.23985
+  type: 'test'
+  ...
+# Subtest: DELETE current rejects a human bearer before querying the revocation adapter
+ok 28 - DELETE current rejects a human bearer before querying the revocation adapter
+  ---
+  duration_ms: 0.632078
+  type: 'test'
+  ...
+# Subtest: self-revocation database outage is not reported as logout and does not leak details
+ok 29 - self-revocation database outage is not reported as logout and does not leak details
+  ---
+  duration_ms: 0.819368
+  type: 'test'
+  ...
+# Subtest: self-revocation route does not accept POST as an implicit mutation alias
+ok 30 - self-revocation route does not accept POST as an implicit mutation alias
+  ---
+  duration_ms: 0.582092
+  type: 'test'
+  ...
+# Subtest: capability negotiation disables session termination when its adapter is absent
+not ok 31 - capability negotiation disables session termination when its adapter is absent
+  ---
+  duration_ms: 0.965347
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:110:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:112:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: capability negotiation advertises session termination only with the adapter
+ok 32 - capability negotiation advertises session termination only with the adapter
+  ---
+  duration_ms: 0.368682
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 31
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 179.144621

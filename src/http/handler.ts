@@ -1,9 +1,11 @@
 import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-limit.ts';
+import {requireEmptyBody} from './empty-body.ts';
+import {SHORT_SESSION_PATTERN} from '../infrastructure/session-lifecycle.ts';
 import {randomUUID} from 'node:crypto';
 import type {HelpdeskService} from '../application/helpdesk.ts';import type {Principal,Ticket} from '../domain/model.ts';import {statuses} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';import {readObject,text,identifier,ifMatch} from './validation.ts';import {ticketDto,messageDto,noteDto,eventDto} from './serialization.ts';
-export const capabilities={api_version:'v1',release:'0.3.0',capabilities:{tickets:true,contract_resolution:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
-export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:(event:{request_id:string;method:string;status:number;duration_ms:number})=>void};
+export const capabilities={api_version:'v1',release:'0.4.0',capabilities:{tickets:true,contract_resolution:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
+export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;revokeSession?:(token:string)=>Promise<void>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:(event:{request_id:string;method:string;status:number;duration_ms:number})=>void};
 export function jsonResponse(data:unknown,status=200,extra:Record<string,string>={}):Response{return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer',...extra}});}
 export function problemResponse(error:unknown,requestId:string):Response{const e=error instanceof HelpdeskError?error:null;let status=e?.status??500,code=e?.code??'internal_error',detail=e?.message??'Não foi possível concluir a operação.';
  const pgcode=(error as {code?:string})?.code;if(!e&&['22P02','22007','22008'].includes(pgcode??'')){status=400;code='invalid_input';detail='Identificador ou data inválidos.';}
@@ -24,12 +26,22 @@ export function createHttpHandler(deps:HttpDependencies){return async(req:Reques
 };}
 async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Response>{
  const url=new URL(req.url),path=url.pathname.replace(/\/$/,''),method=req.method;
- if(path==='/v1/capabilities'&&method==='GET')return jsonResponse(capabilities);
+ if(path==='/v1/capabilities'&&method==='GET')return jsonResponse({...capabilities,capabilities:{...capabilities.capabilities,integration_session_revocation:typeof d.revokeSession==='function'}});
  if(path==='/v1/public-config'&&method==='GET')return jsonResponse({supabase_url:d.publicConfig?.supabaseUrl??null,publishable_key:d.publicConfig?.publishableKey??null});
  if(path==='/v1/integration-tokens'&&method==='POST'){
   if(!d.exchangeToken)throw new HelpdeskError(503,'feature_not_configured','Autenticação de integrações não configurada neste ambiente.');
   const match=/^Bearer (hd_key_[A-Za-z0-9_-]{43,128})$/.exec(req.headers.get('authorization')??'');if(!match)throw new HelpdeskError(401,'unauthorized','Credencial de integração inválida.');
   return jsonResponse(await d.exchangeToken(match[1]!),201);
+ }
+ if(path==='/v1/integration-tokens/current'){
+  if(method!=='DELETE')throw new HelpdeskError(405,'method_not_allowed','Método não permitido para este recurso.');
+  if(url.search)throw new HelpdeskError(400,'invalid_input','Envie somente o bearer da sessão atual, sem corpo ou seletores.');
+  const token=/^Bearer ([^\s]+)$/.exec(req.headers.get('authorization')??'')?.[1];
+  if(!token||!SHORT_SESSION_PATTERN.test(token))throw new HelpdeskError(401,'unauthorized','Sessão de integração inválida.');
+  if(!d.revokeSession)throw new HelpdeskError(503,'feature_not_configured','Encerramento de sessão não configurado neste ambiente.');
+  await requireEmptyBody(req);
+  await d.revokeSession(token);
+  return new Response(null,{status:204,headers:{'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer'}});
  }
  const p=await d.authenticate(req);await d.rateLimiter?.afterAuthentication(p);const key=req.headers.get('idempotency-key')??'';
  if(path==='/v1/me'&&method==='GET')return jsonResponse({id:p.id,kind:p.kind,workspace_id:p.workspaceId,workspace_role:p.workspaceRole,grants:p.grants.map(g=>({account_id:g.accountId,role:g.role})),product_instance_ids:p.productInstanceIds??[],scopes:p.scopes});

@@ -1,0 +1,4 @@
+tests/m1c-transaction.test.ts(23,18): error TS2345: Argument of type '(sql: string) => void' is not assignable to parameter of type '(sql: string) => Reply | undefined'.
+  Type 'void' is not assignable to type 'Reply | undefined'.
+tests/m1c-transaction.test.ts(58,85): error TS2345: Argument of type '(sql: string) => void' is not assignable to parameter of type '(sql: string) => Reply | undefined'.
+  Type 'void' is not assignable to type 'Reply | undefined'.

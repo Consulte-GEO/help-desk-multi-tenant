@@ -1,3 +1,4 @@
+import {withControlTransactions} from './transaction.ts';
 import {createPostgresRateLimiter} from './rate-limit.ts';
 import type {SqlPool} from './sql.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole,assertSchemaCompatibility,assertDatabaseSecurity,observePoolErrors} from './postgres.ts';import {createAuthentication} from './authentication.ts';import {HelpdeskService} from '../application/helpdesk.ts';import {createHttpHandler} from '../http/handler.ts';import {HelpdeskError} from '../domain/errors.ts';
 export type RuntimeConfig={databaseUrl?:string;supabaseUrl?:string;publishableKey?:string;databaseCa?:string;releaseApproved?:string;rateLimitHmacKey?:string};
@@ -16,7 +17,7 @@ export async function createProductionRuntime(input:RuntimeConfig){
  const c=validateRuntimeConfig(input);const driverName='pg';
  // The dynamic boundary permits dependency-free domain tests. Deployment must install and test pg.
  const driver=await import(driverName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
- const pool=new driver.Pool({connectionString:c.databaseUrl,max:1,connectionTimeoutMillis:5000,idleTimeoutMillis:30000,application_name:'helpdesk-api',ssl:{rejectUnauthorized:true,...(c.databaseCa?{ca:c.databaseCa}:{})}});
+ const pool=withControlTransactions(new driver.Pool({connectionString:c.databaseUrl,max:1,connectionTimeoutMillis:5000,idleTimeoutMillis:30000,application_name:'helpdesk-api',ssl:{rejectUnauthorized:true,...(c.databaseCa?{ca:c.databaseCa}:{})}}));
  observePoolErrors(pool,event=>console.warn(JSON.stringify(event)));
  try{await assertSafeDatabaseRole(pool);await assertSchemaCompatibility(pool);await assertDatabaseSecurity(pool);const auth=createAuthentication(pool,c);return createHttpHandler({service:new HelpdeskService(new PostgresUnitOfWork(pool)),rateLimiter:createPostgresRateLimiter(pool,c.rateLimitHmacKey),...auth,publicConfig:{supabaseUrl:c.supabaseUrl,publishableKey:c.publishableKey},observe:event=>console.info(JSON.stringify({component:'helpdesk.http',...event}))});}
  catch(error){await pool.end().catch(()=>{});throw error;}

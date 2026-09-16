@@ -9,7 +9,7 @@ async function call(path,who='laboratory',method='GET',body,key=randomUUID()){
 }
 function passed(name){checks.push({check:name,result:'passed'});}
 for(const [who,account] of [['laboratory',lab.account_id],['school',school.account_id]]){const r=await call('/tickets',who);assert.equal(r.response.status,200);assert.ok(r.body.items.every(t=>t.account_id===account));}passed('HTTP account isolation in local demo');
-assert.equal((await call('/capabilities')).body.release,'0.3.0');passed('HTTP advertises current version');
+assert.equal((await call('/capabilities')).body.release,'0.4.0');passed('HTTP advertises current version');
 const input={account_id:lab.account_id,product_instance_id:lab.product_instance_id,service_code:lab.service_code,subject:'M1 smoke via HTTP',description:'Loopback only; fictitious data.',priority:'normal'},key=randomUUID();
 const created=await call('/tickets','laboratory','POST',input,key);assert.equal(created.response.status,201);const id=created.body.id;
 const replay=await call('/tickets','laboratory','POST',input,key);assert.equal(replay.response.status,200);assert.equal(replay.body.id,id);passed('HTTP create and idempotent replay');
@@ -25,5 +25,12 @@ for(const asset of ['/app.js','/conversation-state.js','/mutation-state.js']){co
 assert.equal((await call('/tickets?limit=1&limit=100')).response.status,400);assert.equal((await call('/tickets?cursor=')).response.status,400);assert.equal((await call('/tickets?account_id=')).response.status,400);passed('HTTP rejects duplicate parameters and empty selectors');
 const profile=configuration.profiles.find(p=>p.key==='laboratory');
 const encoded=await fetch(base+'/v1/tickets',{method:'POST',headers:{authorization:'Bearer '+profile.token,'x-workspace-id':profile.workspace_id,'content-type':'application/json','content-encoding':'gzip','idempotency-key':randomUUID()},body:'{}'});assert.equal(encoded.status,415);passed('HTTP rejects compressed bodies rather than silently decoding unsupported input');
+
+const humanLogout=await fetch(base+'/v1/integration-tokens/current',{method:'DELETE',headers:{authorization:'Bearer '+profile.token}});
+assert.equal(humanLogout.status,401);
+const noM2M=await fetch(base+'/v1/integration-tokens/current',{method:'DELETE',headers:{authorization:'Bearer hd_session_'+'z'.repeat(43)}});
+assert.equal(noM2M.status,503);assert.equal((await noM2M.json()).code,'feature_not_configured');
+assert.equal((await call('/me')).response.status,200);
+passed('HTTP self-revocation rejects human tokens and does not fake a missing M2M backend');
 
 console.log(JSON.stringify({scope:'Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.',checks},null,2));

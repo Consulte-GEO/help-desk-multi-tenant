@@ -1,0 +1,583 @@
+TAP version 13
+# (node:1399) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: M2M exchange rejects private SQL result: missing_workspace
+not ok 1 - M2M exchange rejects private SQL result: missing_workspace
+  ---
+  duration_ms: 2.859737
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: M2M exchange rejects private SQL result: bad_workspace
+not ok 2 - M2M exchange rejects private SQL result: bad_workspace
+  ---
+  duration_ms: 0.282444
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: alias_instead_of_uuid
+not ok 3 - M2M exchange rejects private SQL result: alias_instead_of_uuid
+  ---
+  duration_ms: 1.115732
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: missing_expiry
+not ok 4 - M2M exchange rejects private SQL result: missing_expiry
+  ---
+  duration_ms: 0.341041
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: expired
+not ok 5 - M2M exchange rejects private SQL result: expired
+  ---
+  duration_ms: 0.589454
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: zero_lifetime
+not ok 6 - M2M exchange rejects private SQL result: zero_lifetime
+  ---
+  duration_ms: 0.204236
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: oversized_lifetime
+not ok 7 - M2M exchange rejects private SQL result: oversized_lifetime
+  ---
+  duration_ms: 0.138037
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: ambiguous_date
+not ok 8 - M2M exchange rejects private SQL result: ambiguous_date
+  ---
+  duration_ms: 0.147611
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: invalid_date
+not ok 9 - M2M exchange rejects private SQL result: invalid_date
+  ---
+  duration_ms: 0.730666
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: array
+not ok 10 - M2M exchange rejects private SQL result: array
+  ---
+  duration_ms: 0.457376
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M exchange rejects private SQL result: primitive
+not ok 11 - M2M exchange rejects private SQL result: primitive
+  ---
+  duration_ms: 0.226941
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:32:4'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_session_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:33:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: valid short session is projected canonically and does not expose extra private fields
+not ok 12 - valid short session is projected canonically and does not expose extra private fields
+  ---
+  duration_ms: 0.647
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:35:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '2026-09-16T12:10:00+00:00'
+    - '2026-09-16T12:10:00.000Z'
+                          ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-09-16T12:10:00.000Z'
+  actual: '2026-09-16T12:10:00+00:00'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:38:53)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: revoked credentials still return 401 rather than a malformed-result error
+ok 13 - revoked credentials still return 401 rather than a malformed-result error
+  ---
+  duration_ms: 0.527481
+  type: 'test'
+  ...
+# Subtest: self-revocation sends only the session digest, never a bearer or another selector
+not ok 14 - self-revocation sends only the session digest, never a bearer or another selector
+  ---
+  duration_ms: 0.325117
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:51:39)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_key_aaaaa
+not ok 15 - self-revocation rejects unsupported bearer hd_key_aaaaa
+  ---
+  duration_ms: 0.237305
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:55:70'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:58)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: self-revocation rejects unsupported bearer user.jwt
+not ok 16 - self-revocation rejects unsupported bearer user.jwt
+  ---
+  duration_ms: 0.123245
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:55:70'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:58)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_x
+not ok 17 - self-revocation rejects unsupported bearer hd_session_x
+  ---
+  duration_ms: 0.116084
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:55:70'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:58)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: self-revocation rejects unsupported bearer 
+not ok 18 - self-revocation rejects unsupported bearer 
+  ---
+  duration_ms: 0.163675
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:55:70'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:58)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_b
+not ok 19 - self-revocation rejects unsupported bearer hd_session_b
+  ---
+  duration_ms: 0.156755
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:55:70'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:58)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:56:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: self-revocation does not report completion for an incompatible private response
+not ok 20 - self-revocation does not report completion for an incompatible private response
+  ---
+  duration_ms: 0.219809
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:58:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    short sessions must support explicit self-revocation
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    revoker (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:47:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:59:27)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:59:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: DELETE current session returns empty 204 on repeated revocation without workspace or grants
+not ok 21 - DELETE current session returns empty 204 on repeated revocation without workspace or grants
+  ---
+  duration_ms: 17.65296
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:64:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 204
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 204
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:68:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: self-revocation remains behind the trusted-IP ingress limiter
+ok 22 - self-revocation remains behind the trusted-IP ingress limiter
+  ---
+  duration_ms: 0.625608
+  type: 'test'
+  ...
+# Subtest: missing revocation backend is not silently reported as a successful logout
+not ok 23 - missing revocation backend is not silently reported as a successful logout
+  ---
+  duration_ms: 0.56705
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:77:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:79:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: self-revocation rejects a selector in query ?token=other
+not ok 24 - self-revocation rejects a selector in query ?token=other
+  ---
+  duration_ms: 0.434471
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:81:60'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:83:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: self-revocation rejects a selector in query ?workspace_id=other
+not ok 25 - self-revocation rejects a selector in query ?workspace_id=other
+  ---
+  duration_ms: 0.427231
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:81:60'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:83:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: self-revocation rejects a body requesting another session
+not ok 26 - self-revocation rejects a body requesting another session
+  ---
+  duration_ms: 0.546389
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:85:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    500 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 500
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:87:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 2
+# fail 24
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 177.639011

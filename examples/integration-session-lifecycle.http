@@ -1,0 +1,20 @@
+# Uso exclusivamente server-to-server. Não colocar chaves reais neste arquivo versionado.
+# apiBase deve apontar para homologação AUTORIZADA; nenhum destino real é presumido.
+# Defina apiBase, integrationKey e shortSession em variáveis privadas do seu cliente HTTP.
+
+### 1. Trocar a credencial longa por uma sessão curta
+POST {{apiBase}}/v1/integration-tokens
+Authorization: Bearer {{integrationKey}}
+
+# 201: access_token, token_type, workspace_id, expires_at.
+# Não registrar a resposta/token. Só guardar a sessão em memória no backend consumidor.
+
+### 2. Encerrar SOMENTE a sessão curta apresentada
+DELETE {{apiBase}}/v1/integration-tokens/current
+Authorization: Bearer {{shortSession}}
+
+# 204 + corpo vazio + Cache-Control: no-store.
+# Não enviar body, query, ID de outra sessão ou X-Workspace-Id.
+# Repetir a mesma sessão já encerrada também retorna 204.
+# 503 não confirma encerramento. Repetir com a MESMA sessão é seguro; não usar credencial longa.
+# Outras sessões e a credencial permanecem ativas. Não cancela trabalho já autorizado/em andamento.

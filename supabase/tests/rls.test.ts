@@ -130,3 +130,86 @@ test('technical cleanup defaults to simulation and never deletes tickets or pend
  assert.equal((await admin.query('select count(*) as n from helpdesk_core.tickets')).rows[0]?.n,beforeTickets);assert.equal((await admin.query('select count(*) as n from helpdesk_integration.outbox_events')).rows[0]?.n,beforeOutbox);
  assert.equal((await admin.query('select 1 from helpdesk_auth.rate_limit_buckets where bucket_key=$1',[key])).rows.length,0);
 });
+
+// M1c: definitions for real PostgreSQL, NOT executed by the in-memory npm test suite.
+import {runTransaction,withControlTransactions} from '../../src/infrastructure/transaction.ts';
+async function lifecycleFixture(workspace=1,account=101,instance=401){
+ const principalId=randomUUID(),connectionId=randomUUID(),credentialId=randomUUID();
+ const key='hd_key_'+secretHash(randomUUID());
+ await admin.query("insert into helpdesk_auth.principals(id,kind) values($1,'integration')",[principalId]);
+ await admin.query('insert into helpdesk_auth.integration_connections(workspace_id,id,product_instance_id,principal_id) values($1,$2,$3,$4)',[id(workspace),connectionId,id(instance),principalId]);
+ await admin.query('insert into helpdesk_auth.source_scope_bindings(workspace_id,connection_id,account_id,external_account_ref) values($1,$2,$3,$4)',[id(workspace),connectionId,id(account),randomUUID()]);
+ await admin.query('insert into helpdesk_auth.integration_credentials(id,workspace_id,connection_id,key_hash) values($1,$2,$3,$4)',[credentialId,id(workspace),connectionId,secretHash(key)]);
+ const auth=createAuthentication(withControlTransactions(app),{supabaseUrl:'https://example.supabase.co',publishableKey:'sb_publishable_test'});
+ const request=(token:string)=>new Request('https://hd.test/v1/me',{headers:{authorization:'Bearer '+token,'x-workspace-id':id(workspace)}});
+ return {auth,key,credentialId,connectionId,principalId,request};
+}
+test('M1c actual PostgreSQL COMMIT after a swallowed SQL error is not business success',async()=>{
+ const messageId=randomUUID();
+ await assert.rejects(()=>runTransaction(app,agent,async client=>{
+  await client.query("insert into helpdesk_core.ticket_messages(workspace_id,account_id,ticket_id,id,actor_id,actor_type,body,created_at) values($1,$2,$3,$4,$5,'human_agent','Uncommitted probe',now())",[id(1),id(101),ticketId,messageId,agent.id]);
+  // Deliberately swallow a server-side statement failure to reproduce an aborted transaction.
+  try{await client.query('select 1/0');}catch(error){assert.equal((error as {code:string}).code,'22012');}
+  return {mustNotReturn:true};
+ }),{status:503,code:'transaction_outcome_unknown'});
+ assert.equal((await admin.query('select id from helpdesk_core.ticket_messages where id=$1',[messageId])).rows.length,0);
+});
+test('M1c control statements see the real server timeouts and empty identity selectors',async()=>{
+ const result=await withControlTransactions(app).query("select current_setting('statement_timeout') as statement,current_setting('lock_timeout') as lock,current_setting('idle_in_transaction_session_timeout') as idle,current_setting('transaction_timeout') as transaction,current_setting('app.workspace_id') as workspace,current_setting('app.principal_id') as actor");
+ assert.deepEqual(result.rows[0],{statement:'8s',lock:'2s',idle:'10s',transaction:'15s',workspace:'',actor:''});
+});
+test('M1c control failure resets timeouts and context on the same single-connection pool',async()=>{
+ const moduleName='pg',driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
+ const one=new driver.Pool({connectionString:appUrl,max:1});
+ try{
+  const read="select current_setting('transaction_timeout') as timeout,nullif(current_setting('app.principal_id',true),'') as actor,nullif(current_setting('app.workspace_id',true),'') as workspace";
+  const baseline=await one.query(read);
+  await assert.rejects(()=>withControlTransactions(one).query('select 1/0'),{code:'22012'});
+  assert.deepEqual((await one.query(read)).rows,baseline.rows);
+ }finally{await one.end();}
+});
+test('M1c self-revocation denies the revoked bearer and preserves its peer and credential',async()=>{
+ const f=await lifecycleFixture(),first=await f.auth.exchangeToken(f.key),peer=await f.auth.exchangeToken(f.key);
+ await f.auth.revokeSession(first.access_token);
+ await assert.rejects(()=>f.auth.authenticate(f.request(first.access_token)),{status:403});
+ assert.equal((await f.auth.authenticate(f.request(peer.access_token))).id,f.principalId);
+ assert.equal((await admin.query('select revoked_at from helpdesk_auth.integration_credentials where id=$1',[f.credentialId])).rows[0]?.revoked_at,null);
+ assert.ok((await f.auth.exchangeToken(f.key)).access_token);
+});
+test('M1c terminating workspace A session cannot terminate workspace B session',async()=>{
+ const a=await lifecycleFixture(),b=await lifecycleFixture(2,201,402),sa=await a.auth.exchangeToken(a.key),sb=await b.auth.exchangeToken(b.key);
+ await a.auth.revokeSession(sa.access_token);
+ assert.equal((await b.auth.authenticate(b.request(sb.access_token))).workspaceId,id(2));
+ assert.equal((await admin.query('select token_hash from helpdesk_auth.integration_sessions where token_hash=$1',[secretHash(sb.access_token)])).rows.length,1);
+});
+test('M1c repeated and nonexistent session digests receive the same SQL acknowledgement',async()=>{
+ const f=await lifecycleFixture(),session=await f.auth.exchangeToken(f.key),hash=secretHash(session.access_token);
+ const results=[];for(const value of [hash,hash,secretHash(randomUUID())])results.push((await withControlTransactions(app).query('select helpdesk_auth.revoke_session($1) as result',[value])).rows[0]?.result);
+ assert.deepEqual(results,[true,true,true]);
+});
+test('M1c an expired session can be terminated even after connection access is disabled',async()=>{
+ const f=await lifecycleFixture(),session=await f.auth.exchangeToken(f.key);
+ await admin.query("update helpdesk_auth.integration_sessions set expires_at=now()-interval '1 second' where token_hash=$1",[secretHash(session.access_token)]);
+ await admin.query('update helpdesk_auth.integration_connections set active=false where id=$1',[f.connectionId]);
+ await f.auth.revokeSession(session.access_token);
+ assert.equal((await admin.query('select token_hash from helpdesk_auth.integration_sessions where token_hash=$1',[secretHash(session.access_token)])).rows.length,0);
+});
+test('M1c the runtime role cannot delete session-table rows directly',async()=>{
+ await assert.rejects(()=>app.query('delete from helpdesk_auth.integration_sessions where token_hash=$1',[secretHash(randomUUID())]),{code:'42501'});
+});
+test('M1c the revocation helper is private, search-path hardened and excluded from maintenance',async()=>{
+ const result=await admin.query("select p.prosecdef,p.proconfig,has_function_privilege('helpdesk_app',p.oid,'EXECUTE') as app,has_function_privilege('helpdesk_maintenance',p.oid,'EXECUTE') as maintenance from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='helpdesk_auth' and p.proname='revoke_session'");
+ assert.equal(result.rows.length,1);const row=result.rows[0]!;
+ assert.equal(row.prosecdef,true);assert.equal(row.app,true);assert.equal(row.maintenance,false);
+ assert.ok((row.proconfig as string[]).some(value=>value==='search_path=""'||value==='search_path='));
+ await assertSchemaCompatibility(withControlTransactions(app));
+});
+test('M1c the revocation helper rejects malformed hashes without accepting another selector',async()=>{
+ for(const hash of [null,'','short','A'.repeat(64),'x'.repeat(200)])await assert.rejects(()=>withControlTransactions(app).query('select helpdesk_auth.revoke_session($1)',[hash]),{code:'22023'});
+});
+test('M1c concurrent termination is idempotent and does not affect peer sessions',async()=>{
+ const f=await lifecycleFixture(),session=await f.auth.exchangeToken(f.key),peer=await f.auth.exchangeToken(f.key);
+ await Promise.all(Array.from({length:8},()=>f.auth.revokeSession(session.access_token)));
+ await assert.rejects(()=>f.auth.authenticate(f.request(session.access_token)),{status:403});
+ assert.equal((await f.auth.authenticate(f.request(peer.access_token))).kind,'integration');
+});

@@ -1,0 +1,51 @@
+TAP version 13
+# (node:1817) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: OpenAPI documents only-current-session DELETE with empty 204 and distinct short bearer
+not ok 1 - OpenAPI documents only-current-session DELETE with empty 204 and distinct short bearer
+  ---
+  duration_ms: 3.499445
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-contract.test.ts:6:1'
+  failureType: 'testCodeFailure'
+  error: 'self-revocation contract required'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-contract.test.ts:9:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: candidate self-revocation migration grants only a fixed private digest helper
+not ok 2 - candidate self-revocation migration grants only a fixed private digest helper
+  ---
+  duration_ms: 3.007377
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-contract.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /function helpdesk_auth\.revoke_session\(p_session_hash text\)/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-contract.test.ts:17:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 122.662439

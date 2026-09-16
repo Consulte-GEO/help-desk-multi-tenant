@@ -56,8 +56,8 @@ test('production requires a server-only rate-limit HMAC key',()=>{
 test('schema compatibility rejects missing or mismatched database version',async()=>{
  const {assertSchemaCompatibility}=await import('../src/infrastructure/postgres.ts');
  assert.equal(typeof assertSchemaCompatibility,'function');
- for(const value of [undefined,'0.1.0','999.0.0'])await assert.rejects(()=>assertSchemaCompatibility(poolFor({version:value})),{code:'schema_version_mismatch'});
- await assertSchemaCompatibility(poolFor({version:'0.2.0'}));
+ for(const value of [undefined,'0.1.0','0.2.0','999.0.0'])await assert.rejects(()=>assertSchemaCompatibility(poolFor({version:value})),{code:'schema_version_mismatch'});
+ await assertSchemaCompatibility(poolFor({version:'0.4.0'}));
 });
 
 test('cache denied by database cannot return even metadata from the old response',async()=>{
@@ -68,7 +68,7 @@ test('cache denied by database cannot return even metadata from the old response
 });
 test('PostgreSQL cache lookup uses resource-aware helper, not unrestricted saved responses',async()=>{
  const {PostgresUnitOfWork}=await import('../src/infrastructure/postgres.ts');const calls:string[]=[];
- const query=async(sql:string)=>{calls.push(sql);return {rows:sql.includes('lookup_idempotency')?[{record:{denied:true}}]:[],rowCount:0};};
+ const query=async(sql:string)=>{calls.push(sql);return {command:sql.split(' ')[0]?.toUpperCase(),rows:sql.includes('lookup_idempotency')?[{record:{denied:true}}]:[],rowCount:0};};
  const pool:SqlPool={query,connect:async()=>({query,release(){}}),end:async()=>{}};
  const record=await new PostgresUnitOfWork(pool).run(principal(),s=>s.getIdempotency('tickets.create',key));
  assert.equal(record?.denied,true);assert.ok(calls.some(sql=>sql.includes('helpdesk_auth.lookup_idempotency')));

@@ -1,0 +1,78 @@
+TAP version 13
+# (node:1126) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: domain result is not successful when COMMIT command is ROLLBACK
+ok 1 - domain result is not successful when COMMIT command is ROLLBACK
+  ---
+  duration_ms: 1.577785
+  type: 'test'
+  ...
+# Subtest: domain result is not successful when COMMIT command is SELECT
+ok 2 - domain result is not successful when COMMIT command is SELECT
+  ---
+  duration_ms: 0.188833
+  type: 'test'
+  ...
+# Subtest: domain result is not successful when COMMIT command is undefined
+ok 3 - domain result is not successful when COMMIT command is undefined
+  ---
+  duration_ms: 0.259138
+  type: 'test'
+  ...
+# Subtest: lost commit acknowledgement discards the connection even if rollback later succeeds
+ok 4 - lost commit acknowledgement discards the connection even if rollback later succeeds
+  ---
+  duration_ms: 1.046358
+  type: 'test'
+  ...
+# Subtest: a rollback tag is required before reusing a connection after callback failure
+ok 5 - a rollback tag is required before reusing a connection after callback failure
+  ---
+  duration_ms: 0.225327
+  type: 'test'
+  ...
+# Subtest: confirmed commit returns its value, once, after the commit is received
+ok 6 - confirmed commit returns its value, once, after the commit is received
+  ---
+  duration_ms: 0.487811
+  type: 'test'
+  ...
+# Subtest: confirmed rollback preserves the original failure and never commits
+ok 7 - confirmed rollback preserves the original failure and never commits
+  ---
+  duration_ms: 0.20667
+  type: 'test'
+  ...
+# Subtest: control query uses the same connection and empties both context selectors locally
+ok 8 - control query uses the same connection and empties both context selectors locally
+  ---
+  duration_ms: 0.246149
+  type: 'test'
+  ...
+# Subtest: control query timeout rolls back and returns the database failure for safe HTTP mapping
+ok 9 - control query timeout rolls back and returns the database failure for safe HTTP mapping
+  ---
+  duration_ms: 0.416554
+  type: 'test'
+  ...
+# Subtest: wrapping control queries does not start nested domain transactions
+ok 10 - wrapping control queries does not start nested domain transactions
+  ---
+  duration_ms: 0.71427
+  type: 'test'
+  ...
+# Subtest: failed control query connection acquisition does not run business work
+ok 11 - failed control query connection acquisition does not run business work
+  ---
+  duration_ms: 0.298778
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 115.701753

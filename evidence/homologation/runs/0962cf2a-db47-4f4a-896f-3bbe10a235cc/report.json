@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "scope": "local-m1",
+  "platform_approved": false,
+  "source_sha256": "02c17b634a25e68359447dea972343a16c173e322ec4f688b9815f530a70fe29",
+  "started_at": "2026-09-16T11:52:06.438Z",
+  "completed_at": "2026-09-16T11:52:06.471Z",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "failed",
+      "reason": "command_or_assertions_failed",
+      "exit_code": 1,
+      "signal": null,
+      "artifact": "runs/0962cf2a-db47-4f4a-896f-3bbe10a235cc/lock.log",
+      "sha256": "a25b371ca1c0c416f8132e50bc49eb9e369cf1f4095f5ff18deb0d993b8815a1",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    },
+    {
+      "id": "postgres",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    },
+    {
+      "id": "interface",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    }
+  ]
+}

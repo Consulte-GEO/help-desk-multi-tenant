@@ -1,3 +1,17 @@
+# v0.4.0 — M1c, transações e sessões M2M (local; não publicado)
+
+- Corrige sucesso falso sem command tag COMMIT e descarte após confirmação incerta; não adiciona retry automático.
+- Control queries passam a transações na mesma conexão, contextos vazios e timeouts PostgreSQL 17.
+- Valida UUID/expiração da troca M2M e só projeta o contrato público.
+- Adiciona DELETE /v1/integration-tokens/current, revogação da própria sessão por digest; não afeta pares/credencial/conexão.
+- Corrige stream vazio em DELETE sem aceitar payload; leitura limitada e erros seguros.
+- Capacidade de revogação depende de adaptador configurado; demo não simula sucesso M2M.
+- Migration 005 e schema 0.4.0; quatro migrations anteriores preservadas; 23 tabelas.
+- 325 testes locais (51 novos); 46 SQL escritos, não executados; 10 HTTP aprovados. Browser/runtime reais e dependências reproduzíveis pendentes.
+- API aditiva: 15 operações / 12 paths. Tickets/conversas preservam os shapes anteriores.
+
+---
+
 # Changelog
 
 ## 0.3.0 — Continuidade M1, sem publicação

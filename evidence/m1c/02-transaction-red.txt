@@ -1,0 +1,259 @@
+TAP version 13
+# (node:1090) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: domain result is not successful when COMMIT command is ROLLBACK
+not ok 1 - domain result is not successful when COMMIT command is ROLLBACK
+  ---
+  duration_ms: 1.493228
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:16:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:18:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: domain result is not successful when COMMIT command is SELECT
+not ok 2 - domain result is not successful when COMMIT command is SELECT
+  ---
+  duration_ms: 0.175593
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:16:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:18:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: domain result is not successful when COMMIT command is undefined
+not ok 3 - domain result is not successful when COMMIT command is undefined
+  ---
+  duration_ms: 0.128763
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:16:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:18:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lost commit acknowledgement discards the connection even if rollback later succeeds
+not ok 4 - lost commit acknowledgement discards the connection even if rollback later succeeds
+  ---
+  duration_ms: 1.265877
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'ECONNRESET'
+    -   code: 'transaction_outcome_unknown',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'transaction_outcome_unknown'
+  actual:
+  error: 'password at internal-host'
+  stack: |-
+    file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:23:62
+    Object.query (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:11:35)
+    PostgresUnitOfWork.run (file:///mnt/data/helpdesk-v0.4.0/src/infrastructure/postgres.ts:49:375)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:25:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:25:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a rollback tag is required before reusing a connection after callback failure
+not ok 5 - a rollback tag is required before reusing a connection after callback failure
+  ---
+  duration_ms: 5.658341
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(h.releases[0] instanceof Error)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:32:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: confirmed commit returns its value, once, after the commit is received
+ok 6 - confirmed commit returns its value, once, after the commit is received
+  ---
+  duration_ms: 0.493459
+  type: 'test'
+  ...
+# Subtest: confirmed rollback preserves the original failure and never commits
+ok 7 - confirmed rollback preserves the original failure and never commits
+  ---
+  duration_ms: 0.285518
+  type: 'test'
+  ...
+# Subtest: control query uses the same connection and empties both context selectors locally
+not ok 8 - control query uses the same connection and empties both context selectors locally
+  ---
+  duration_ms: 0.399148
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    control SQL queries require a bounded same-connection transaction
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    control (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:45:9)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:50:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: control query timeout rolls back and returns the database failure for safe HTTP mapping
+not ok 9 - control query timeout rolls back and returns the database failure for safe HTTP mapping
+  ---
+  duration_ms: 0.468152
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    control SQL queries require a bounded same-connection transaction
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    control (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:45:9)
+    file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:59:27
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:59:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: wrapping control queries does not start nested domain transactions
+not ok 10 - wrapping control queries does not start nested domain transactions
+  ---
+  duration_ms: 0.383094
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    control SQL queries require a bounded same-connection transaction
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    control (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:45:9)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:63:58)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed control query connection acquisition does not run business work
+not ok 11 - failed control query connection acquisition does not run business work
+  ---
+  duration_ms: 0.367832
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:66:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    control SQL queries require a bounded same-connection transaction
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    control (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:45:9)
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:68:27)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-transaction.test.ts:68:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 2
+# fail 9
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 128.521045

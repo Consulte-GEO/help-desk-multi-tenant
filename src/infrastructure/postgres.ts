@@ -1,3 +1,5 @@
+import {runTransaction} from './transaction.ts';
+export {withControlTransactions} from './transaction.ts';
 import type {PageWindow} from '../application/pagination.ts';
 import type {SqlPool,SqlClient} from './sql.ts';import type {Principal,Ticket,Coverage,PublicMessage,InternalNote,TicketEvent} from '../domain/model.ts';import type {Store,UnitOfWork,SupportContext,Cursor,StoredResult} from '../application/ports.ts';import {HelpdeskError} from '../domain/errors.ts';
 export async function assertSafeDatabaseRole(pool:SqlPool):Promise<void>{
@@ -19,7 +21,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.2.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!=='0.4.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 /** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
@@ -43,12 +45,7 @@ export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;
 export class PostgresUnitOfWork implements UnitOfWork{
  readonly pool:SqlPool;constructor(pool:SqlPool){this.pool=pool;}
  async run<T>(p:Principal,work:(s:Store)=>Promise<T>):Promise<T>{
-  let client:SqlClient;
-  try{client=await this.pool.connect();}catch{throw new HelpdeskError(503,'database_unavailable','Conexão ao banco temporariamente indisponível.');}
-  let broken:Error|undefined;
-  try{await client.query('BEGIN');await client.query("select set_config('app.workspace_id',$1,true),set_config('app.principal_id',$2,true),set_config('statement_timeout','8000',true),set_config('lock_timeout','2000',true),set_config('idle_in_transaction_session_timeout','10000',true)",[p.workspaceId,p.id]);const result=await work(new PostgresStore(client,p));await client.query('COMMIT');return result;}
-  catch(error){try{await client.query('ROLLBACK');}catch{broken=new Error('Rollback failed; discard connection');}throw error;}
-  finally{client.release(broken);}
+  return runTransaction(this.pool,p,client=>work(new PostgresStore(client,p)));
  }
 }
 type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const iso=(v:unknown)=>new Date(v as string|Date).toISOString();

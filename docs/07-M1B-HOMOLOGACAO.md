@@ -1,3 +1,5 @@
+> Histórico da v0.3.0. Para a versão atual e os novos pisos de teste, leia `08-M1C-TRANSACOES-E-SESSOES.md` e `04-ESTADO-E-EVIDENCIAS.md`.
+
 # M1b — Verificação local, limites e prontidão
 
 ## API 0.3.0, schema 0.2.0

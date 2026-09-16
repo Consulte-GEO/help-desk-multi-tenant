@@ -23,7 +23,7 @@ schemas={
  'Capabilities':{'type':'object','required':['api_version','release','capabilities'],'properties':{'api_version':{'const':'v1'},'release':{'type':'string'},'capabilities':{'type':'object','additionalProperties':{'type':'boolean'}}}},
  'Principal':{'type':'object','required':['id','kind','workspace_id','grants','scopes'],'properties':{'id':identifier,'kind':{'enum':['human','integration']},'workspace_id':identifier,'workspace_role':{'type':['string','null']},'grants':{'type':'array','items':{'type':'object'}},'product_instance_ids':array(identifier),'scopes':array({'type':'string'})}},
  'PublicConfig':obj({'supabase_url':{'type':['string','null']},'publishable_key':{'type':['string','null']}}),
- 'IntegrationToken':obj({'access_token':{'type':'string','pattern':'^hd_session_'},'token_type':{'const':'Bearer'},'expires_at':{'type':'string','format':'date-time'},'workspace_id':identifier}),
+ 'IntegrationToken':obj({'access_token':{'type':'string','pattern':'^hd_session_[A-Za-z0-9_-]{43}$'},'token_type':{'const':'Bearer'},'expires_at':{'type':'string','format':'date-time'},'workspace_id':identifier}),
  'Timeline':{'type':'object','required':['items','next_cursor'],'properties':{'next_cursor':{'type':['string','null']},'items':{'type':'array','items':{'type':'object','required':['id','type','created_at','data'],'properties':{'id':identifier,'type':{'type':'string'},'created_at':{'type':'string','format':'date-time'},'data':{'type':'object'}}}}}}
 }
 parameters={
@@ -52,6 +52,12 @@ def route(path,method,operation,summary,output,body=None,status=200,idem=False,m
 route('/capabilities','get','getCapabilities','Capacidades disponíveis; não representa prontidão de produção.',ref('Capabilities'),public=True)
 route('/public-config','get','getPublicConfig','Somente URL Auth e chave publicável.',ref('PublicConfig'),public=True)
 route('/integration-tokens','post','exchangeIntegrationCredential','Troca server-to-server; não utilizar no navegador.',ref('IntegrationToken'),status=201,token=True)
+revoke=route('/integration-tokens/current','delete','revokeCurrentIntegrationSession','Encerra somente a sessão M2M curta apresentada. Não revoga a credencial nem outras sessões.',{},status=204,public=True)
+revoke['security']=[{'integrationSession':[]}]
+revoke['description']='Server-to-server. Sem body, query ou X-Workspace-Id. A mesma resposta 204 é retornada para sessão inexistente ou já encerrada; não consulta vínculos ativos. Limite de entrada continua aplicado. Chamadas já em andamento não são canceladas retroativamente.'
+revoke['responses']['204']={'description':'Sessão apresentada encerrada ou já ausente. Corpo vazio.','headers':{'Cache-Control':{'schema':{'const':'no-store'}}}}
+for code,description in [('400','Corpo ou seletor de consulta não permitido.'),('401','Bearer não corresponde a sessão M2M curta.'),('408','Stream de corpo não encerrou em cinco segundos.'),('503','Encerramento indisponível ou confirmação transacional incerta; não considerar logout concluído.')]:
+ revoke['responses'][code]={'description':description,'content':{'application/problem+json':{'schema':ref('Problem')}}}
 route('/me','get','getPrincipal','Identidade e vínculos atuais no workspace.',ref('Principal'))
 route('/contexts/resolve','post','resolveContext','Resolve cobertura vigente ou ambiguidade.',ref('Resolution'),'Context')
 listing=route('/tickets','get','listTickets','Lista chamados autorizados por cursor; parâmetros duplicados ou seletores explicitamente vazios são recusados.',ref('TicketPage'))
@@ -74,6 +80,6 @@ for methods in paths.values():
    'headers':{'Retry-After':{'schema':{'type':'integer','minimum':1,'maximum':60}}},
    'content':{'application/problem+json':{'schema':ref('Problem')}}}
 parameters['Idempotency']['description']='Resposta por 7 dias; registro antirrepetição por 90 dias. Após expirar, HTTP 409; consulte o recurso antes de usar nova chave.'
-api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.3.0','description':'Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
+api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.4.0','description':'Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'integrationSession':{'type':'http','scheme':'bearer','description':'Somente hd_session_ seguido de 43 caracteres base64url. Nunca login humano ou hd_key_.'},'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
 (root/'docs/openapi.json').write_text(json.dumps(api,ensure_ascii=False,indent=2)+'\n')
 print(len(paths),'paths;',sum(len(v) for v in paths.values()),'operations')

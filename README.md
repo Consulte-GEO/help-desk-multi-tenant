@@ -1,8 +1,8 @@
-# Consulte Help Desk — v0.3.0 / continuidade do M1
+# Consulte Help Desk — v0.4.0 / transações e sessões M2M
 
 Help Desk independente, multiproduto e multicontrato. Workspace, conta, produto/instância, contrato/versão e cobertura permanecem distintos.
 
-**Entrega local, sem publicação e sem encerramento do M1.** Há **274 testes locais aprovados** e **nove verificações HTTP em demonstração de memória**. PostgreSQL, dependências reproduzíveis, runtime remoto e navegador continuam sem homologação.
+**Entrega local, sem publicação e sem encerramento do M1.** Há **325 testes locais aprovados** e **dez verificações HTTP em demonstração de memória**. PostgreSQL, dependências reproduzíveis, runtime remoto e navegador continuam sem homologação.
 
 ## Executar o núcleo e a demonstração
 
@@ -38,19 +38,21 @@ npm run check:homologation
 
 A tentativa real de dependências retornou `EAI_AGAIN registry.npmjs.org`; **não há lockfile nesta entrega**. `npm run verify` falhou por tipos locais não instalados. A checagem com compilador/tipos globais passou, mas não substitui instalação limpa.
 
-O executor de homologação exige lock, npm ci, audit, verify, PostgreSQL descartável e HTTP/browser. Os 35 cenários SQL existem, mas não executaram por ausência de Docker/servidor. Não usar o projeto Supabase remoto para substituir esses testes. O novo gate verifica fontes/logs e não aceita etapas ausentes, skips ou resultados antigos de outro código.
+O executor de homologação exige lock, npm ci, audit, verify, PostgreSQL descartável e HTTP/browser. Os 46 cenários SQL existem, mas não executaram por ausência de Docker/servidor. Não usar o projeto Supabase remoto para substituir esses testes. O novo gate verifica fontes/logs e não aceita etapas ausentes, skips ou resultados antigos de outro código.
 
 `npm run build` gera apenas assets estáticos. `npm run verify:release` **não passou** e agora exige também evidência de homologação local. Isso ainda não substitui bundle de Functions nem aprovação real de Auth/pooler/TLS/RLS e do destino. Não ligar `HELPDESK_RELEASE_APPROVED` para remover o bloqueio.
 
 ## Correções desta versão
 
-Vigência contratual revalidada com horário após espera; validação de identidade/scopes humanos e M2M; entrada HTTP com prazo/bytes/UTF-8 controlados; parâmetros ambíguos recusados; snapshots de envios que preservam rascunhos novos e descartam respostas de outro contexto; executor local com evidência por etapa.
+Confirmação explícita de transações, descarte de conexões incertas, timeouts transacionais também nas consultas de controle, validação do resultado de troca M2M, encerramento apenas da sessão curta apresentada e suporte a stream HTTP vazio sem aceitar payload. Não há retry automático de mutações com resultado incerto.
 
-**API/interface: 0.3.0. Schema esperado: 0.2.0.** As quatro migrations da v0.2.0 permanecem inalteradas. Nenhuma migration adicional é necessária apenas por esse incremento de aplicação. Sua aplicação e teste reais continuam pendentes.
+**API/interface e schema candidato: 0.4.0.** Nova migration 005 adiciona função privada de revogação de sessão. As quatro migrations anteriores foram preservadas. Há 23 tabelas candidatas; nada foi aplicado no Supabase remoto.
+
+`DELETE /v1/integration-tokens/current` exige bearer M2M curto, sem body/query. Encerra só aquela sessão e retorna 204 vazio; não revoga a credencial nem outras sessões. Falha de confirmação é 503, nunca um logout fictício. O demo não configura M2M e anuncia essa capacidade como false.
 
 ## Documentação
 
-[Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [Segurança/publicação](docs/03-SEGURANCA-E-PUBLICACAO.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Limites e retenção](docs/06-M1-SEGURANCA-E-LIMITES.md) · [Homologação M1b](docs/07-M1B-HOMOLOGACAO.md) · [OpenAPI](docs/openapi.json) · [Changelog](CHANGELOG.md).
+[Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [Segurança/publicação](docs/03-SEGURANCA-E-PUBLICACAO.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Limites e retenção](docs/06-M1-SEGURANCA-E-LIMITES.md) · [Homologação M1b](docs/07-M1B-HOMOLOGACAO.md) · [Transações/sessões M1c](docs/08-M1C-TRANSACOES-E-SESSOES.md) · [OpenAPI](docs/openapi.json) · [Changelog](CHANGELOG.md).
 
 Destino informado: Supabase `xaelbntjnvztznnpcvtm`; GitHub `Consulte-GEO/help-desk-multi-tenant`; Netlify `help-desk-multi-tenant`. Não houve escrita nem nova inspeção remota nesta rodada. Nenhum segredo real foi provisionado. Os avisos remotos registrados anteriormente são históricos, não uma nova leitura.
 

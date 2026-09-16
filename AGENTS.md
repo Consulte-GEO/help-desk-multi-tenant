@@ -25,5 +25,5 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.2.0
-M1 está em andamento: 35 testes SQL escritos não são 35 testes aprovados. O lock está ausente por falha DNS; não o fabricar. CI e publicação devem continuar bloqueados até npm ci/audit/SQL/runtime/browser reais. Preservar histórico de tickets; manutenção candidata só limpa dados técnicos.
+## Estado v0.4.0
+M1 está em andamento. 325 testes locais aprovados não são homologação do banco: 46 casos SQL escritos continuam sem execução. Sem lock real por DNS; não o fabricar. Cinco migrations, schema esperado 0.4.0 e tabela de sessão privada. Não repetir mutações automaticamente após confirmação incerta. DELETE da sessão atual não revoga credenciais nem pares. Respeitar o capability false da demonstração sem backend M2M. Documentos 04, 05 e 08 descrevem o estado atual; 07 preserva o histórico M1b.

@@ -1,0 +1,401 @@
+TAP version 13
+# (node:3094) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: no-body check rejects content even when content-length claims zero
+not ok 1 - no-body check rejects content even when content-length claims zero
+  ---
+  duration_ms: 29.554005
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:4:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   status: 400
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 400
+  actual:
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    validate (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:2:139)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:5:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:5:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: no-body check bounds a stream which never finishes and cancels it
+not ok 2 - no-body check bounds a stream which never finishes and cancels it
+  ---
+  duration_ms: 1.600919
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   status: 408
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 408
+  actual:
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    validate (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:2:139)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:9:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:9:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no-body check redacts a failed transport stream
+not ok 3 - no-body check redacts a failed transport stream
+  ---
+  duration_ms: 1.051826
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    undefined !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  operator: 'strictEqual'
+  stack: |-
+    Object.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:13:72)
+    expectedException (node:assert:499:17)
+    expectsError (node:assert:622:3)
+    Function.rejects (node:assert:687:3)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:13:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no-body check rejects declared nonempty length before calling revocation
+not ok 4 - no-body check rejects declared nonempty length before calling revocation
+  ---
+  duration_ms: 1.00065
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   status: 400
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 400
+  actual:
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  stack: |-
+    validate (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:2:139)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:17:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:17:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: no-body check tolerates a zero-byte chunk followed by EOF
+not ok 5 - no-body check tolerates a zero-byte chunk followed by EOF
+  ---
+  duration_ms: 1.124786
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    validate (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:2:139)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-empty-body.test.ts:21:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# (node:3095) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: M2M exchange rejects private SQL result: missing_workspace
+ok 6 - M2M exchange rejects private SQL result: missing_workspace
+  ---
+  duration_ms: 4.184201
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: bad_workspace
+ok 7 - M2M exchange rejects private SQL result: bad_workspace
+  ---
+  duration_ms: 0.40673
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: alias_instead_of_uuid
+ok 8 - M2M exchange rejects private SQL result: alias_instead_of_uuid
+  ---
+  duration_ms: 0.329153
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: missing_expiry
+ok 9 - M2M exchange rejects private SQL result: missing_expiry
+  ---
+  duration_ms: 0.211257
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: expired
+ok 10 - M2M exchange rejects private SQL result: expired
+  ---
+  duration_ms: 0.480119
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: zero_lifetime
+ok 11 - M2M exchange rejects private SQL result: zero_lifetime
+  ---
+  duration_ms: 0.272489
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: oversized_lifetime
+ok 12 - M2M exchange rejects private SQL result: oversized_lifetime
+  ---
+  duration_ms: 0.250004
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: ambiguous_date
+ok 13 - M2M exchange rejects private SQL result: ambiguous_date
+  ---
+  duration_ms: 0.248232
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: invalid_date
+ok 14 - M2M exchange rejects private SQL result: invalid_date
+  ---
+  duration_ms: 0.644025
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: array
+ok 15 - M2M exchange rejects private SQL result: array
+  ---
+  duration_ms: 0.605127
+  type: 'test'
+  ...
+# Subtest: M2M exchange rejects private SQL result: primitive
+ok 16 - M2M exchange rejects private SQL result: primitive
+  ---
+  duration_ms: 0.317076
+  type: 'test'
+  ...
+# Subtest: valid short session is projected canonically and does not expose extra private fields
+ok 17 - valid short session is projected canonically and does not expose extra private fields
+  ---
+  duration_ms: 0.545217
+  type: 'test'
+  ...
+# Subtest: revoked credentials still return 401 rather than a malformed-result error
+ok 18 - revoked credentials still return 401 rather than a malformed-result error
+  ---
+  duration_ms: 0.240711
+  type: 'test'
+  ...
+# Subtest: self-revocation sends only the session digest, never a bearer or another selector
+ok 19 - self-revocation sends only the session digest, never a bearer or another selector
+  ---
+  duration_ms: 0.693208
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_key_aaaaa
+ok 20 - self-revocation rejects unsupported bearer hd_key_aaaaa
+  ---
+  duration_ms: 0.319098
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer user.jwt
+ok 21 - self-revocation rejects unsupported bearer user.jwt
+  ---
+  duration_ms: 0.155072
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_x
+ok 22 - self-revocation rejects unsupported bearer hd_session_x
+  ---
+  duration_ms: 0.121572
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer 
+ok 23 - self-revocation rejects unsupported bearer 
+  ---
+  duration_ms: 0.142023
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects unsupported bearer hd_session_b
+ok 24 - self-revocation rejects unsupported bearer hd_session_b
+  ---
+  duration_ms: 0.125148
+  type: 'test'
+  ...
+# Subtest: self-revocation does not report completion for an incompatible private response
+ok 25 - self-revocation does not report completion for an incompatible private response
+  ---
+  duration_ms: 0.211537
+  type: 'test'
+  ...
+# Subtest: DELETE current session returns empty 204 on repeated revocation without workspace or grants
+ok 26 - DELETE current session returns empty 204 on repeated revocation without workspace or grants
+  ---
+  duration_ms: 27.849915
+  type: 'test'
+  ...
+# Subtest: self-revocation remains behind the trusted-IP ingress limiter
+ok 27 - self-revocation remains behind the trusted-IP ingress limiter
+  ---
+  duration_ms: 1.239968
+  type: 'test'
+  ...
+# Subtest: missing revocation backend is not silently reported as a successful logout
+ok 28 - missing revocation backend is not silently reported as a successful logout
+  ---
+  duration_ms: 1.34762
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a selector in query ?token=other
+ok 29 - self-revocation rejects a selector in query ?token=other
+  ---
+  duration_ms: 0.429554
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a selector in query ?workspace_id=other
+ok 30 - self-revocation rejects a selector in query ?workspace_id=other
+  ---
+  duration_ms: 0.364737
+  type: 'test'
+  ...
+# Subtest: self-revocation rejects a body requesting another session
+ok 31 - self-revocation rejects a body requesting another session
+  ---
+  duration_ms: 0.70007
+  type: 'test'
+  ...
+# Subtest: session expiry is checked after the database wait, not before it
+ok 32 - session expiry is checked after the database wait, not before it
+  ---
+  duration_ms: 0.250515
+  type: 'test'
+  ...
+# Subtest: DELETE current rejects a human bearer before querying the revocation adapter
+ok 33 - DELETE current rejects a human bearer before querying the revocation adapter
+  ---
+  duration_ms: 0.306799
+  type: 'test'
+  ...
+# Subtest: self-revocation database outage is not reported as logout and does not leak details
+ok 34 - self-revocation database outage is not reported as logout and does not leak details
+  ---
+  duration_ms: 0.866038
+  type: 'test'
+  ...
+# Subtest: self-revocation route does not accept POST as an implicit mutation alias
+ok 35 - self-revocation route does not accept POST as an implicit mutation alias
+  ---
+  duration_ms: 0.592267
+  type: 'test'
+  ...
+# Subtest: capability negotiation disables session termination when its adapter is absent
+ok 36 - capability negotiation disables session termination when its adapter is absent
+  ---
+  duration_ms: 0.367291
+  type: 'test'
+  ...
+# Subtest: capability negotiation advertises session termination only with the adapter
+ok 37 - capability negotiation advertises session termination only with the adapter
+  ---
+  duration_ms: 0.457296
+  type: 'test'
+  ...
+# Subtest: empty transport stream is accepted as no body for self-revocation
+not ok 38 - empty transport stream is accepted as no body for self-revocation
+  ---
+  duration_ms: 1.492677
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:119:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    400 !== 204
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 204
+  actual: 400
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.4.0/tests/m1c-sessions.test.ts:123:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 32
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 222.356909
