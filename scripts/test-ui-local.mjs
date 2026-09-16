@@ -1,0 +1,30 @@
+/** Owns a fresh loopback demo for each suite; refuses to attach to an existing server. */
+import {spawn} from 'node:child_process';import {fileURLToPath} from 'node:url';
+import {runCommand,stopOwned} from './local-process.mjs';
+const root=fileURLToPath(new URL('../',import.meta.url));
+async function freshDemo(work){
+ const child=spawn(process.execPath,['--experimental-strip-types','scripts/demo.ts'],{cwd:root,stdio:['ignore','pipe','pipe'],detached:process.platform!=='win32'});
+ let timer,ended=false,ready=false,output='';const closed=new Promise(resolve=>child.once('close',()=>{ended=true;resolve();}));
+ try{
+  await new Promise((resolve,reject)=>{
+   const fail=()=>{if(!ready)reject(Error('Não foi possível iniciar uma demonstração própria em loopback. Nenhum servidor existente será reutilizado.'));};
+   child.once('error',fail);child.once('close',fail);child.stderr.on('data',()=>{});
+   child.stdout.on('data',chunk=>{output=(output+chunk.toString()).slice(-4096);if(output.includes('Demonstração LOCAL: http://127.0.0.1:4317')){ready=true;clearTimeout(timer);resolve();}});
+   timer=setTimeout(()=>reject(Error('Demonstração local não iniciou dentro do limite de execução.')),10_000);
+  });
+  return await work();
+ }finally{
+  clearTimeout(timer);if(!ended){stopOwned(child);const forced=setTimeout(()=>stopOwned(child,'SIGKILL'),1000);await closed;clearTimeout(forced);}
+ }
+}
+try{
+ let count=0;
+ for(const suite of [{name:'HTTP em memória',command:[process.execPath,'scripts/smoke-local-http.mjs']},{name:'Navegador em memória',command:['python','tests/browser-smoke.py']}]){
+  const result=await freshDemo(()=>runCommand({command:suite.command,cwd:root,timeoutMs:120_000}));
+  if(result.exit_code!==0||result.signal){console.error(result.output);throw Error(suite.name+': não aprovado.');}
+  const json=JSON.parse(result.stdout),checks=Array.isArray(json)?json:json.checks;
+  if(!Array.isArray(checks)||!checks.length||checks.some(c=>c.result!=='passed'))throw Error('Asserções da interface ausentes/incompletas.');
+  count+=checks.length;console.log(suite.name+': '+checks.length+' verificações aprovadas.');
+ }
+ console.log(`# tests ${count}\n# pass ${count}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0`);
+}catch(error){console.error(error.message);process.exitCode=1;}

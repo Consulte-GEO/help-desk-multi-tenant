@@ -1,0 +1,96 @@
+TAP version 13
+# (node:1340) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed request retains payload and idempotency key for an exact retry
+ok 1 - failed request retains payload and idempotency key for an exact retry
+  ---
+  duration_ms: 9.020275
+  type: 'test'
+  ...
+# Subtest: successful send clears only the unchanged submitted draft
+ok 2 - successful send clears only the unchanged submitted draft
+  ---
+  duration_ms: 0.827789
+  type: 'test'
+  ...
+# Subtest: new typing while a send is pending is not erased by its response
+ok 3 - new typing while a send is pending is not erased by its response
+  ---
+  duration_ms: 0.268625
+  type: 'test'
+  ...
+# Subtest: switching ticket invalidates late completion and preserves destination draft
+ok 4 - switching ticket invalidates late completion and preserves destination draft
+  ---
+  duration_ms: 0.203044
+  type: 'test'
+  ...
+# Subtest: same ticket ID under a different session cannot reuse old request
+ok 5 - same ticket ID under a different session cannot reuse old request
+  ---
+  duration_ms: 0.230407
+  type: 'test'
+  ...
+# Subtest: returning to a ticket does not reactivate its stale operation
+ok 6 - returning to a ticket does not reactivate its stale operation
+  ---
+  duration_ms: 0.182819
+  type: 'test'
+  ...
+# Subtest: public and private drafts and pending requests are independent
+ok 7 - public and private drafts and pending requests are independent
+  ---
+  duration_ms: 0.22548
+  type: 'test'
+  ...
+# Subtest: duplicate submit during an active request does not create another operation
+ok 8 - duplicate submit during an active request does not create another operation
+  ---
+  duration_ms: 0.248675
+  type: 'test'
+  ...
+# Subtest: completion can be applied only once
+ok 9 - completion can be applied only once
+  ---
+  duration_ms: 0.445902
+  type: 'test'
+  ...
+# Subtest: refresh of the same ticket preserves unsent draft and its retry key
+ok 10 - refresh of the same ticket preserves unsent draft and its retry key
+  ---
+  duration_ms: 0.560383
+  type: 'test'
+  ...
+# Subtest: changed payload rotates key, identical input does not
+ok 11 - changed payload rotates key, identical input does not
+  ---
+  duration_ms: 0.292501
+  type: 'test'
+  ...
+# Subtest: editing away and back still protects the newer draft revision
+ok 12 - editing away and back still protects the newer draft revision
+  ---
+  duration_ms: 0.161255
+  type: 'test'
+  ...
+# Subtest: empty identity cannot submit even when a draft exists
+ok 13 - empty identity cannot submit even when a draft exists
+  ---
+  duration_ms: 0.115196
+  type: 'test'
+  ...
+# Subtest: snapshot cannot be externally rewritten to change the submitted body
+ok 14 - snapshot cannot be externally rewritten to change the submitted body
+  ---
+  duration_ms: 0.616332
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 167.443375

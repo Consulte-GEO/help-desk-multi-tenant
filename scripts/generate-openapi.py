@@ -42,7 +42,11 @@ def route(path,method,operation,summary,output,body=None,status=200,idem=False,m
   op['parameters'].append(param('Idempotency'));op['responses']['200']=response(output,'Resposta original reproduzida, ou operação concluída.')
   for code in ['200',str(status)]:op['responses'][code]['headers']={'Idempotency-Replayed':{'schema':{'type':'string','enum':['true','false']},'description':'Indica reprodução de resultado anterior.'}}
  if match:op['parameters'].append(param('IfMatch'))
- if body:op['requestBody']={'required':True,'content':{'application/json':{'schema':ref(body)}}}
+ if body:
+  op['requestBody']={'required':True,'description':'Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.', 'content':{'application/json':{'schema':ref(body)}}}
+  for code,description in [('400','JSON, UTF-8, campos ou comprimento inválidos.'),('408','Prazo de recebimento do corpo excedido.'),('413','Corpo acima de 64 KiB.'),('415','Content-Type ou compressão não suportados.')]:
+   op['responses'][code]={'description':description,'content':{'application/problem+json':{'schema':ref('Problem')}}}
+
  paths.setdefault(path,{})[method]=op
  return op
 route('/capabilities','get','getCapabilities','Capacidades disponíveis; não representa prontidão de produção.',ref('Capabilities'),public=True)
@@ -50,8 +54,8 @@ route('/public-config','get','getPublicConfig','Somente URL Auth e chave public�
 route('/integration-tokens','post','exchangeIntegrationCredential','Troca server-to-server; não utilizar no navegador.',ref('IntegrationToken'),status=201,token=True)
 route('/me','get','getPrincipal','Identidade e vínculos atuais no workspace.',ref('Principal'))
 route('/contexts/resolve','post','resolveContext','Resolve cobertura vigente ou ambiguidade.',ref('Resolution'),'Context')
-listing=route('/tickets','get','listTickets','Lista chamados autorizados por cursor.',ref('TicketPage'))
-listing['parameters'] += [{'name':'limit','in':'query','schema':{'type':'integer','minimum':1,'maximum':100,'default':25}},{'name':'cursor','in':'query','schema':{'type':'string','maxLength':700}},{'name':'account_id','in':'query','schema':identifier}]
+listing=route('/tickets','get','listTickets','Lista chamados autorizados por cursor; parâmetros duplicados ou seletores explicitamente vazios são recusados.',ref('TicketPage'))
+listing['parameters'] += [{'name':'limit','in':'query','schema':{'type':'integer','minimum':1,'maximum':100,'default':25}},{'name':'cursor','in':'query','schema':{'type':'string','minLength':1,'maxLength':700}},{'name':'account_id','in':'query','schema':identifier}]
 route('/tickets','post','createTicket','Cria chamado com revalidação transacional.',ref('Ticket'),'CreateTicket',status=201,idem=True)
 route('/tickets/{ticket_id}','get','getTicket','Consulta chamado e retorna ETag.',ref('Ticket'))['responses']['200']['headers']={'ETag':{'description':'Versão atual entre aspas.','schema':{'type':'string'}}}
 for resource,name in [('messages','Message'),('notes','Note')]:
@@ -70,6 +74,6 @@ for methods in paths.values():
    'headers':{'Retry-After':{'schema':{'type':'integer','minimum':1,'maximum':60}}},
    'content':{'application/problem+json':{'schema':ref('Problem')}}}
 parameters['Idempotency']['description']='Resposta por 7 dias; registro antirrepetição por 90 dias. Após expirar, HTTP 409; consulte o recurso antes de usar nova chave.'
-api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.2.0','description':'Contrato M1: paginação, limites e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
+api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.3.0','description':'Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
 (root/'docs/openapi.json').write_text(json.dumps(api,ensure_ascii=False,indent=2)+'\n')
 print(len(paths),'paths;',sum(len(v) for v in paths.values()),'operations')

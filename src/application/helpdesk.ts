@@ -2,7 +2,7 @@ import {pagination,page} from './pagination.ts';
 import type {PageOptions,Page} from './pagination.ts';
 import {randomUUID} from 'node:crypto';
 import type {Principal,Ticket,TicketStatus,PublicMessage,InternalNote,TicketEvent} from '../domain/model.ts';
-import type {UnitOfWork,Store,SupportContext,CreateTicket,Cursor} from './ports.ts';
+import type {UnitOfWork,Store,SupportContext,CreateTicket} from './ports.ts';
 import {resolveCoverage} from '../domain/contracts.ts';
 import {canAccessAccount,canUseProduct,canReadTicket,canReadInternalNote,canWriteInternalNote,hasScope,isOperator} from '../domain/policy.ts';
 import {canTransition} from '../domain/workflow.ts';
@@ -37,7 +37,7 @@ export class HelpdeskService{
   return this.db.run(p,async s=>{
    const result=await this.idempotent(s,p,'tickets.create',key,input,async()=>{
     // Contract/coverage is queried inside the same transaction; pg adapter locks source rows.
-    const at=this.now();const resolved=resolveCoverage((await s.coverages(input)).filter(x=>x.workspaceId===p.workspaceId&&x.accountId===input.accountId&&x.productInstanceId===input.productInstanceId&&x.serviceCode===input.serviceCode),at);
+    const locked=await s.coverages(input);const at=this.now();const resolved=resolveCoverage(locked.filter(x=>x.workspaceId===p.workspaceId&&x.accountId===input.accountId&&x.productInstanceId===input.productInstanceId&&x.serviceCode===input.serviceCode),at);
     if(resolved.status==='no_coverage')throw new HelpdeskError(422,'no_coverage','Nenhuma cobertura vigente.');
     if(resolved.status==='ambiguous'&&!input.coverageId)throw new HelpdeskError(409,'ambiguous_coverage','Selecione uma cobertura contratual.');
     const selected=input.coverageId?resolved.candidates.find(x=>x.id===input.coverageId):resolved.candidates[0];
@@ -53,14 +53,11 @@ export class HelpdeskService{
  async get(p:Principal,id:string):Promise<Ticket>{return this.db.run(p,s=>this.accessible(s,p,id));}
  async list(p:Principal,options:{limit:number;cursor?:string;accountId?:string}):Promise<{items:Ticket[];nextCursor:string|null}>{
   if(!hasScope(p,'tickets:read'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
-  if(!Number.isInteger(options.limit)||options.limit<1||options.limit>100)throw new HelpdeskError(400,'invalid_input','Limite entre 1 e 100.');
-  if(options.accountId&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
-  const filter=requestHash({workspace:p.workspaceId,principal:p.id,account:options.accountId??null});let cursor:Cursor|null=null;
-  if(options.cursor){try{if(options.cursor.length>700)throw Error();const c=JSON.parse(Buffer.from(options.cursor,'base64url').toString());if(typeof c.id!=='string'||c.id.length>100||typeof c.at!=='string'||!Number.isFinite(Date.parse(c.at))||c.filter!==filter)throw Error();cursor=c;}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
+  if(options.accountId!==undefined&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
+  const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null});
   return this.db.run(p,async s=>{
-   const all=(await s.listTickets(options.limit+1,cursor,options.accountId)).filter(t=>canReadTicket(p,t));
-   const items=all.slice(0,options.limit);const last=items.at(-1);
-   return {items,nextCursor:all.length>options.limit&&last?Buffer.from(JSON.stringify({id:last.id,at:last.createdAt,filter})).toString('base64url'):null};
+   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId)).filter(t=>canReadTicket(p,t));
+   return page(rows,options.limit,filter);
   });
  }
  private async event(s:Store,p:Principal,t:Ticket,type:string,data:Record<string,unknown>,customerVisible:boolean,requestId:string):Promise<void>{

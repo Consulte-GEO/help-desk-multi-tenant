@@ -1,0 +1,362 @@
+TAP version 13
+# (node:1304) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed request retains payload and idempotency key for an exact retry
+not ok 1 - failed request retains payload and idempotency key for an exact retry
+  ---
+  duration_ms: 2.473918
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:7:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:8:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: successful send clears only the unchanged submitted draft
+not ok 2 - successful send clears only the unchanged submitted draft
+  ---
+  duration_ms: 0.717519
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:12:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: new typing while a send is pending is not erased by its response
+not ok 3 - new typing while a send is pending is not erased by its response
+  ---
+  duration_ms: 0.469713
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:16:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: switching ticket invalidates late completion and preserves destination draft
+not ok 4 - switching ticket invalidates late completion and preserves destination draft
+  ---
+  duration_ms: 0.48314
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:20:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same ticket ID under a different session cannot reuse old request
+not ok 5 - same ticket ID under a different session cannot reuse old request
+  ---
+  duration_ms: 0.455462
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:24:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: returning to a ticket does not reactivate its stale operation
+not ok 6 - returning to a ticket does not reactivate its stale operation
+  ---
+  duration_ms: 0.690748
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:28:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public and private drafts and pending requests are independent
+not ok 7 - public and private drafts and pending requests are independent
+  ---
+  duration_ms: 0.59476
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:31:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: duplicate submit during an active request does not create another operation
+not ok 8 - duplicate submit during an active request does not create another operation
+  ---
+  duration_ms: 0.685098
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:34:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:35:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: completion can be applied only once
+not ok 9 - completion can be applied only once
+  ---
+  duration_ms: 0.979703
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:38:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: refresh of the same ticket preserves unsent draft and its retry key
+not ok 10 - refresh of the same ticket preserves unsent draft and its retry key
+  ---
+  duration_ms: 0.842504
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:41:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: changed payload rotates key, identical input does not
+not ok 11 - changed payload rotates key, identical input does not
+  ---
+  duration_ms: 0.592882
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:44:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: editing away and back still protects the newer draft revision
+not ok 12 - editing away and back still protects the newer draft revision
+  ---
+  duration_ms: 0.499074
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:49:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: empty identity cannot submit even when a draft exists
+not ok 13 - empty identity cannot submit even when a draft exists
+  ---
+  duration_ms: 0.308749
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:51:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:52:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: snapshot cannot be externally rewritten to change the submitted body
+not ok 14 - snapshot cannot be externally rewritten to change the submitted body
+  ---
+  duration_ms: 0.409172
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:54:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Mutation guard must be implemented
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:4:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-mutation-state.test.ts:55:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 0
+# fail 14
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 164.481617

@@ -1,0 +1,174 @@
+TAP version 13
+# (node:1105) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: malformed successful Auth response fails safely: broken
+ok 1 - malformed successful Auth response fails safely: broken
+  ---
+  duration_ms: 20.772737
+  type: 'test'
+  ...
+# Subtest: malformed successful Auth response fails safely: null
+ok 2 - malformed successful Auth response fails safely: null
+  ---
+  duration_ms: 0.727213
+  type: 'test'
+  ...
+# Subtest: malformed successful Auth response fails safely: array
+ok 3 - malformed successful Auth response fails safely: array
+  ---
+  duration_ms: 0.521878
+  type: 'test'
+  ...
+# Subtest: malformed successful Auth response fails safely: missing id
+ok 4 - malformed successful Auth response fails safely: missing id
+  ---
+  duration_ms: 0.574493
+  type: 'test'
+  ...
+# Subtest: malformed successful Auth response fails safely: invalid id
+ok 5 - malformed successful Auth response fails safely: invalid id
+  ---
+  duration_ms: 0.889154
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: missing id
+ok 6 - malformed domain principal rejected: missing id
+  ---
+  duration_ms: 0.993929
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: bad id
+ok 7 - malformed domain principal rejected: bad id
+  ---
+  duration_ms: 0.491802
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: kind
+ok 8 - malformed domain principal rejected: kind
+  ---
+  duration_ms: 0.414732
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: role
+ok 9 - malformed domain principal rejected: role
+  ---
+  duration_ms: 1.819186
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: grant account
+ok 10 - malformed domain principal rejected: grant account
+  ---
+  duration_ms: 1.179423
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: grant role
+ok 11 - malformed domain principal rejected: grant role
+  ---
+  duration_ms: 0.43011
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: duplicate grant
+ok 12 - malformed domain principal rejected: duplicate grant
+  ---
+  duration_ms: 0.377762
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: null grant
+ok 13 - malformed domain principal rejected: null grant
+  ---
+  duration_ms: 0.333333
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: nonstring scope
+ok 14 - malformed domain principal rejected: nonstring scope
+  ---
+  duration_ms: 0.301432
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: unknown scope
+ok 15 - malformed domain principal rejected: unknown scope
+  ---
+  duration_ms: 0.318812
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: duplicate scope
+ok 16 - malformed domain principal rejected: duplicate scope
+  ---
+  duration_ms: 1.36893
+  type: 'test'
+  ...
+# Subtest: malformed domain principal rejected: human with connection
+ok 17 - malformed domain principal rejected: human with connection
+  ---
+  duration_ms: 0.277381
+  type: 'test'
+  ...
+# Subtest: human token cannot resolve as integration
+ok 18 - human token cannot resolve as integration
+  ---
+  duration_ms: 0.349871
+  type: 'test'
+  ...
+# Subtest: M2M session cannot resolve as human operator
+ok 19 - M2M session cannot resolve as human operator
+  ---
+  duration_ms: 0.562524
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: workspace role
+ok 20 - integration structure cannot gain human capabilities: workspace role
+  ---
+  duration_ms: 0.425915
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: agent account
+ok 21 - integration structure cannot gain human capabilities: agent account
+  ---
+  duration_ms: 0.194134
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: notes scope
+ok 22 - integration structure cannot gain human capabilities: notes scope
+  ---
+  duration_ms: 0.162245
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: missing connection
+ok 23 - integration structure cannot gain human capabilities: missing connection
+  ---
+  duration_ms: 0.146606
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: missing product
+ok 24 - integration structure cannot gain human capabilities: missing product
+  ---
+  duration_ms: 0.138082
+  type: 'test'
+  ...
+# Subtest: integration structure cannot gain human capabilities: multiple products
+ok 25 - integration structure cannot gain human capabilities: multiple products
+  ---
+  duration_ms: 0.237847
+  type: 'test'
+  ...
+# Subtest: valid principal output is detached from mutable SQL response
+ok 26 - valid principal output is detached from mutable SQL response
+  ---
+  duration_ms: 0.290351
+  type: 'test'
+  ...
+# Subtest: unrecognized fields from principal helper are never projected into authentication context
+ok 27 - unrecognized fields from principal helper are never projected into authentication context
+  ---
+  duration_ms: 0.310464
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 198.525581

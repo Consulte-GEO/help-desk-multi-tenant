@@ -1,0 +1,42 @@
+TAP version 13
+# (node:1765) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: local process captures stdout/stderr and actual exit status
+ok 1 - local process captures stdout/stderr and actual exit status
+  ---
+  duration_ms: 50.796627
+  type: 'test'
+  ...
+# Subtest: local process timeout is a failed result, never exit-zero success
+ok 2 - local process timeout is a failed result, never exit-zero success
+  ---
+  duration_ms: 44.281558
+  type: 'test'
+  ...
+# Subtest: bounded process output fails instead of silently truncating successful evidence
+ok 3 - bounded process output fails instead of silently truncating successful evidence
+  ---
+  duration_ms: 31.143488
+  type: 'test'
+  ...
+# Subtest: unavailable executable is an explicit failure
+ok 4 - unavailable executable is an explicit failure
+  ---
+  duration_ms: 5.345368
+  type: 'test'
+  ...
+# Subtest: normal local subprocess is not marked failed or skipped
+ok 5 - normal local subprocess is not marked failed or skipped
+  ---
+  duration_ms: 52.075974
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 319.031469

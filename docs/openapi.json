@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.2.0",
-    "description": "Contrato M1: paginação, limites e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
+    "version": "0.3.0",
+    "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
     {
@@ -255,6 +255,46 @@
               }
             }
           },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -277,6 +317,7 @@
         },
         "requestBody": {
           "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -290,7 +331,7 @@
     "/tickets": {
       "get": {
         "operationId": "listTickets",
-        "summary": "Lista chamados autorizados por cursor.",
+        "summary": "Lista chamados autorizados por cursor; parâmetros duplicados ou seletores explicitamente vazios são recusados.",
         "security": [
           {
             "bearerAuth": []
@@ -315,6 +356,7 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "minLength": 1,
               "maxLength": 700
             }
           },
@@ -441,6 +483,46 @@
               }
             }
           },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -463,6 +545,7 @@
         },
         "requestBody": {
           "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -712,6 +795,46 @@
               }
             }
           },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -734,6 +857,7 @@
         },
         "requestBody": {
           "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -915,6 +1039,46 @@
               }
             }
           },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -937,6 +1101,7 @@
         },
         "requestBody": {
           "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1003,6 +1168,46 @@
               }
             }
           },
+          "400": {
+            "description": "JSON, UTF-8, campos ou comprimento inválidos.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -1025,6 +1230,7 @@
         },
         "requestBody": {
           "required": true,
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {

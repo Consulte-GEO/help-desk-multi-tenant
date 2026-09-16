@@ -1,6 +1,6 @@
 {
   "name": "@consulte-geo/helpdesk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -19,7 +19,10 @@
     "check:lock": "node scripts/verify-lock.mjs",
     "deps:resolve": "node scripts/prepare-dependencies.mjs --resolve",
     "test:db:local": "node scripts/test-db-local.mjs",
-    "verify:release": "npm run check:lock && npm run verify && npm audit --audit-level=high"
+    "verify:release": "npm run check:lock && npm run check:homologation && npm run verify && npm audit --audit-level=high",
+    "homologate:local": "node scripts/homologate-local.mjs",
+    "check:homologation": "node scripts/check-homologation.mjs",
+    "test:ui:local": "node scripts/test-ui-local.mjs"
   },
   "dependencies": {
     "pg": "8.16.3"

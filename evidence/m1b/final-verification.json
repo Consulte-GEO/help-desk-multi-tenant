@@ -1,0 +1,151 @@
+{
+  "at": "2026-09-16T10:54:58.616Z",
+  "node": "v22.16.0",
+  "npm": "10.9.2",
+  "scope": "Local executed checks only; expected failure does not mean the subsystem is approved.",
+  "results": [
+    {
+      "name": "tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 0,
+      "log": "evidence/m1b/final-tests.txt"
+    },
+    {
+      "name": "typecheck-environment",
+      "command": [
+        "tsc",
+        "--noEmit",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 0,
+      "log": "evidence/m1b/final-typecheck-environment.txt"
+    },
+    {
+      "name": "contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 0,
+      "log": "evidence/m1b/final-contracts.txt"
+    },
+    {
+      "name": "secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 0,
+      "log": "evidence/m1b/final-secrets.txt"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 0,
+      "log": "evidence/m1b/final-build.txt"
+    },
+    {
+      "name": "verify-manifest",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exit_code": 2,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 2,
+      "log": "evidence/m1b/final-verify-manifest.txt"
+    },
+    {
+      "name": "ui-http-browser",
+      "command": [
+        "npm",
+        "run",
+        "test:ui:local"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 1,
+      "log": "evidence/m1b/final-ui-http-browser.txt"
+    },
+    {
+      "name": "postgres",
+      "command": [
+        "npm",
+        "run",
+        "test:db:local"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 1,
+      "log": "evidence/m1b/final-postgres.txt"
+    },
+    {
+      "name": "homologation",
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 1,
+      "log": "evidence/m1b/final-homologation.txt"
+    },
+    {
+      "name": "homologation-gate",
+      "command": [
+        "npm",
+        "run",
+        "check:homologation"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 1,
+      "log": "evidence/m1b/final-homologation-gate.txt"
+    },
+    {
+      "name": "release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "exit_code": 1,
+      "signal": null,
+      "reason": null,
+      "expected_exit": 1,
+      "log": "evidence/m1b/final-release-gate.txt"
+    }
+  ]
+}

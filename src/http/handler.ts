@@ -2,7 +2,7 @@ import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-lim
 import {randomUUID} from 'node:crypto';
 import type {HelpdeskService} from '../application/helpdesk.ts';import type {Principal,Ticket} from '../domain/model.ts';import {statuses} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';import {readObject,text,identifier,ifMatch} from './validation.ts';import {ticketDto,messageDto,noteDto,eventDto} from './serialization.ts';
-export const capabilities={api_version:'v1',release:'0.2.0',capabilities:{tickets:true,contract_resolution:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
+export const capabilities={api_version:'v1',release:'0.3.0',capabilities:{tickets:true,contract_resolution:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
 export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:(event:{request_id:string;method:string;status:number;duration_ms:number})=>void};
 export function jsonResponse(data:unknown,status=200,extra:Record<string,string>={}):Response{return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer',...extra}});}
 export function problemResponse(error:unknown,requestId:string):Response{const e=error instanceof HelpdeskError?error:null;let status=e?.status??500,code=e?.code??'internal_error',detail=e?.message??'Não foi possível concluir a operação.';
@@ -38,8 +38,8 @@ async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Re
   return jsonResponse({status:result.status,candidates:result.candidates.map(c=>({coverage_id:c.id,contract_id:c.contractId,contract_version_id:c.contractVersionId,contract_version:c.contractVersion,valid_until:c.validUntil}))});
  }
  if(path==='/v1/tickets'&&method==='GET'){
-  if([...url.searchParams.keys()].some(x=>!['limit','cursor','account_id'].includes(x)))throw new HelpdeskError(400,'unknown_parameter','Parâmetro de consulta não permitido.');
-  const accountId=url.searchParams.get('account_id');const result=await d.service.list(p,{limit:Number(url.searchParams.get('limit')??25),...(url.searchParams.has('cursor')?{cursor:url.searchParams.get('cursor')!}:{}),...(accountId?{accountId:identifier(accountId)}:{})});
+  if([...url.searchParams.keys()].some(x=>!['limit','cursor','account_id'].includes(x)||url.searchParams.getAll(x).length!==1))throw new HelpdeskError(400,'unknown_parameter','Parâmetro de consulta não permitido.');
+  const accountId=url.searchParams.get('account_id');const result=await d.service.list(p,{limit:Number(url.searchParams.get('limit')??25),...(url.searchParams.has('cursor')?{cursor:url.searchParams.get('cursor')!}:{}),...(accountId!==null?{accountId:identifier(accountId)}:{})});
   return jsonResponse({items:result.items.map(t=>ticketDto(p,t)),next_cursor:result.nextCursor});
  }
  if(path==='/v1/tickets'&&method==='POST'){

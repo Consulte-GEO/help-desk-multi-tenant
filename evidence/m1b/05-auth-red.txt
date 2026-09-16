@@ -1,0 +1,594 @@
+TAP version 13
+# (node:1061) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: malformed successful Auth response fails safely: broken
+not ok 1 - malformed successful Auth response fails safely: broken
+  ---
+  duration_ms: 26.064907
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:12:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'auth_unavailable',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  actual:
+  error: "Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  name: 'SyntaxError'
+  stack: |-
+    JSON.parse (<anonymous>)
+    parseJSONFromBytes (node:internal/deps/undici/undici:5738:19)
+    successSteps (node:internal/deps/undici/undici:5719:27)
+    fullyReadBody (node:internal/deps/undici/undici:4609:9)
+    async consumeBody (node:internal/deps/undici/undici:5728:7)
+    async Object.authenticate (file:///mnt/data/helpdesk-v0.3.0/src/infrastructure/authentication.ts:12:15)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: malformed successful Auth response fails safely: null
+not ok 2 - malformed successful Auth response fails safely: null
+  ---
+  duration_ms: 2.053166
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:12:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'auth_unavailable',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  actual:
+  error: "Cannot read properties of null (reading 'id')"
+  name: 'TypeError'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-v0.3.0/src/infrastructure/authentication.ts:12:67)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed successful Auth response fails safely: array
+not ok 3 - malformed successful Auth response fails safely: array
+  ---
+  duration_ms: 1.40263
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:12:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'unauthorized',
+    +   status: 401
+    -   code: 'auth_unavailable',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  actual:
+  error: 'Identidade inválida.'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-v0.3.0/src/infrastructure/authentication.ts:12:87)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed successful Auth response fails safely: missing id
+not ok 4 - malformed successful Auth response fails safely: missing id
+  ---
+  duration_ms: 1.649969
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:12:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'unauthorized',
+    +   status: 401
+    -   code: 'auth_unavailable',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  actual:
+  error: 'Identidade inválida.'
+  stack: |-
+    Object.authenticate (file:///mnt/data/helpdesk-v0.3.0/src/infrastructure/authentication.ts:12:87)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed successful Auth response fails safely: invalid id
+not ok 5 - malformed successful Auth response fails safely: invalid id
+  ---
+  duration_ms: 1.002842
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:12:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:14:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: missing id
+not ok 6 - malformed domain principal rejected: missing id
+  ---
+  duration_ms: 0.84573
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: bad id
+not ok 7 - malformed domain principal rejected: bad id
+  ---
+  duration_ms: 1.018868
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: kind
+not ok 8 - malformed domain principal rejected: kind
+  ---
+  duration_ms: 0.599753
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: role
+not ok 9 - malformed domain principal rejected: role
+  ---
+  duration_ms: 2.1248
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: grant account
+not ok 10 - malformed domain principal rejected: grant account
+  ---
+  duration_ms: 1.15724
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: grant role
+not ok 11 - malformed domain principal rejected: grant role
+  ---
+  duration_ms: 1.575417
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: duplicate grant
+not ok 12 - malformed domain principal rejected: duplicate grant
+  ---
+  duration_ms: 0.387656
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: null grant
+not ok 13 - malformed domain principal rejected: null grant
+  ---
+  duration_ms: 0.36993
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: nonstring scope
+not ok 14 - malformed domain principal rejected: nonstring scope
+  ---
+  duration_ms: 0.499398
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: unknown scope
+not ok 15 - malformed domain principal rejected: unknown scope
+  ---
+  duration_ms: 0.6336
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: duplicate scope
+not ok 16 - malformed domain principal rejected: duplicate scope
+  ---
+  duration_ms: 2.076207
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed domain principal rejected: human with connection
+not ok 17 - malformed domain principal rejected: human with connection
+  ---
+  duration_ms: 0.434817
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:25:72)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: human token cannot resolve as integration
+not ok 18 - human token cannot resolve as integration
+  ---
+  duration_ms: 0.394936
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:26:60)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M2M session cannot resolve as human operator
+not ok 19 - M2M session cannot resolve as human operator
+  ---
+  duration_ms: 0.640588
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:27:63)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: workspace role
+not ok 20 - integration structure cannot gain human capabilities: workspace role
+  ---
+  duration_ms: 0.425799
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: agent account
+not ok 21 - integration structure cannot gain human capabilities: agent account
+  ---
+  duration_ms: 0.232849
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: notes scope
+not ok 22 - integration structure cannot gain human capabilities: notes scope
+  ---
+  duration_ms: 0.215326
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: missing connection
+not ok 23 - integration structure cannot gain human capabilities: missing connection
+  ---
+  duration_ms: 0.16649
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: missing product
+not ok 24 - integration structure cannot gain human capabilities: missing product
+  ---
+  duration_ms: 0.283538
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration structure cannot gain human capabilities: multiple products
+not ok 25 - integration structure cannot gain human capabilities: multiple products
+  ---
+  duration_ms: 0.165056
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:12'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_principal'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:35:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: valid principal output is detached from mutable SQL response
+not ok 26 - valid principal output is detached from mutable SQL response
+  ---
+  duration_ms: 0.842927
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:36:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'agent'
+    - 'requester'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'requester'
+  actual: 'agent'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:38:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unrecognized fields from principal helper are never projected into authentication context
+not ok 27 - unrecognized fields from principal helper are never projected into authentication context
+  ---
+  duration_ms: 0.413116
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'PRIVATE-EXTRA'
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual: 'PRIVATE-EXTRA'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-auth.test.ts:41:109)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 0
+# fail 27
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 230.822399

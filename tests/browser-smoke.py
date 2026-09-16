@@ -45,6 +45,38 @@ with sync_playwright() as p:
     page.get_by_role('button',name='Salvar nota',exact=True).click()
     expect(page.locator('#notes')).to_contain_text('Nota restrita do teste de navegador.')
     record('Agent saves internal note separately from public conversation')
+    # Hold a real request before it reaches the in-memory API. No sleep-based server stub.
+    pending=[]
+    def hold_message(route):
+        if route.request.method == 'POST': pending.append(route)
+        else: route.continue_()
+    page.route('**/v1/tickets/*/messages', hold_message)
+    page.locator('[data-mode="public"]').click()
+    page.locator('#message-body').fill('Mensagem enviada antes do próximo rascunho.')
+    with page.expect_request(lambda r: r.method == 'POST' and r.url.endswith('/messages')):
+        page.get_by_role('button',name='Enviar resposta',exact=True).click()
+    page.wait_for_timeout(50)
+    assert pending, 'Held message request not observed'
+    page.locator('#message-body').fill('Este rascunho novo não pode desaparecer.')
+    pending.pop(0).continue_()
+    expect(page.locator('#messages')).to_contain_text('Mensagem enviada antes do próximo rascunho.')
+    expect(page.locator('#message-body')).to_have_value('Este rascunho novo não pode desaparecer.')
+    record('Late completion preserves a newer draft in the same conversation')
+    page.locator('#message-body').fill('Mensagem do chamado anterior.')
+    with page.expect_request(lambda r: r.method == 'POST' and r.url.endswith('/messages')):
+        page.get_by_role('button',name='Enviar resposta',exact=True).click()
+    page.wait_for_timeout(50)
+    assert pending, 'Second held request not observed'
+    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+    expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
+    page.locator('#message-body').fill('Rascunho exclusivo da escola.')
+    pending.pop(0).continue_()
+    page.wait_for_load_state('networkidle')
+    expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
+    expect(page.locator('#message-body')).to_have_value('Rascunho exclusivo da escola.')
+    expect(page.locator('#messages')).not_to_contain_text('Mensagem do chamado anterior.')
+    page.unroute('**/v1/tickets/*/messages', hold_message)
+    record('Late completion cannot navigate back or erase another ticket draft')
     page.locator('#profile').select_option('school')
     expect(page.locator('#stat-total')).to_have_text('1')
     expect(page.locator('#ticket-list')).to_contain_text('boletins')

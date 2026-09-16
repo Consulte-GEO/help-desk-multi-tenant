@@ -1,3 +1,4 @@
+import {validatePrincipal} from './principal-validation.ts';
 import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';import type {Principal} from '../domain/model.ts';import {HelpdeskError} from '../domain/errors.ts';import {secretHash} from '../domain/canonical.ts';import {identifier} from '../http/validation.ts';
 export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;publishableKey:string},fetcher:typeof fetch=fetch){
  async function authenticate(request:Request):Promise<Principal>{
@@ -9,13 +10,13 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
    let result:Response;try{result=await fetcher(`${config.supabaseUrl}/auth/v1/user`,{headers:{authorization:`Bearer ${token}`,apikey:config.publishableKey},signal:AbortSignal.timeout(5000),redirect:'error'});}catch{throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');}
    if(result.status>=500||result.status===429)throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');
    if(!result.ok)throw new HelpdeskError(401,'unauthorized','Sessão inválida ou expirada.');
-   const user=await result.json() as {id?:unknown};if(typeof user.id!=='string')throw new HelpdeskError(401,'unauthorized','Identidade inválida.');
-   value=(await pool.query('select helpdesk_auth.resolve_human($1,$2) as principal',[user.id,workspace])).rows[0]?.principal;
+   let userId:string;
+   try{const user:unknown=await result.json();if(!user||typeof user!=='object'||Array.isArray(user))throw Error();userId=identifier((user as {id:unknown}).id);}
+   catch{throw new HelpdeskError(503,'auth_unavailable','Resposta inválida do serviço de identidade. Acesso não concedido.');}
+   value=(await pool.query('select helpdesk_auth.resolve_human($1,$2) as principal',[userId,workspace])).rows[0]?.principal;
   }
   if(!value||typeof value!=='object')throw new HelpdeskError(403,'membership_required','Acesso não autorizado ao workspace.');
-  const p=value as Principal;if(p.workspaceId!==workspace||!Array.isArray(p.grants)||!Array.isArray(p.scopes))throw new HelpdeskError(403,'invalid_principal','Contexto de acesso inválido.');
-  // Role and account bindings originate exclusively from private database functions.
-  return p;
+  return validatePrincipal(value,workspace,token.startsWith('hd_session_')?'integration':'human');
  }
  async function exchangeToken(key:string){
   if(!/^hd_key_[A-Za-z0-9_-]{43,128}$/.test(key))throw new HelpdeskError(401,'unauthorized','Credencial inválida.');

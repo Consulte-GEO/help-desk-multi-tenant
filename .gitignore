@@ -7,3 +7,6 @@ dist/
 coverage/
 *.log
 .local/
+
+# Only reviewed homologation logs accompany their checksummed reports.
+!evidence/homologation/runs/*/*.log

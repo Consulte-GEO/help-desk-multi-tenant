@@ -1,60 +1,57 @@
-# Consulte Help Desk — v0.2.0 / avanço do M1
+# Consulte Help Desk — v0.3.0 / continuidade do M1
 
-Help Desk independente, multiproduto e multicontrato. Workspace, conta, produto/instância, contrato/versão e cobertura continuam sendo conceitos distintos.
+Help Desk independente, multiproduto e multicontrato. Workspace, conta, produto/instância, contrato/versão e cobertura permanecem distintos.
 
-**Esta entrega não encerra o M1 e não está publicada ou liberada para produção.** Há 186 testes locais aprovados e seis verificações HTTP em demonstração de memória. Os 35 cenários PostgreSQL foram escritos, mas não executados. Registry, Docker e navegador apresentaram bloqueios documentados. Não aplicar migrations no Supabase remoto para experimentar.
+**Entrega local, sem publicação e sem encerramento do M1.** Há **274 testes locais aprovados** e **nove verificações HTTP em demonstração de memória**. PostgreSQL, dependências reproduzíveis, runtime remoto e navegador continuam sem homologação.
 
-## Executar localmente
+## Executar o núcleo e a demonstração
 
-Com Node 22.16 compatível com `package.json`:
+Com Node compatível com `package.json` (ambiente usado: Node 22.16.0):
 
 ```bash
 npm test
 npm run demo
 ```
 
-A demonstração usa `http://127.0.0.1:4317`, com perfis e contas fictícios, sem Supabase, driver externo, e-mail ou webhook. Dados desaparecem ao reiniciar. Esse servidor não é runtime de produção e nunca é fallback de falha do banco. A validação visual ainda não foi aprovada.
-
-Em outro terminal, com a demo ativa:
+A demonstração escuta apenas em `http://127.0.0.1:4317`, usa dados fictícios em memória, não acessa Supabase e não envia e-mail/webhook. Não é fallback do runtime de produção. Em outro terminal:
 
 ```bash
 node scripts/smoke-local-http.mjs
 ```
 
-## Instalação reproduzível e SQL verdadeiro
+Para iniciar demonstrações frescas automaticamente e executar HTTP + browser:
 
-Em ambiente com acesso autorizado ao registry:
+```bash
+npm run test:ui:local
+```
+
+Esse último comando exige porta livre, Python/Playwright/Chromium autorizados e falha se o navegador não puder executar. Nesta sessão, o HTTP passou e a navegação foi bloqueada; a interface não está visualmente homologada.
+
+## Instalação e homologação local completa
 
 ```bash
 npm run deps:resolve
-npm run check:lock
-npm ci --ignore-scripts
-npm run verify
-npm audit --audit-level=high
-# Com Docker local, depois de instalar as dependências:
-npm run test:db:local
+# Revisar lock, origens, integridades, versões e audit antes de prosseguir.
+npm run homologate:local
+npm run check:homologation
 ```
 
-O lockfile **não existe nesta entrega**: a resolução falhou por DNS. Não foi fabricada integridade de pacotes. O CI exige lock e `npm ci`, sem fallback para `npm install`. O script PostgreSQL cria apenas um container local descartável, exige banco dedicado e recusa targets remotos. Os testes e migrations ainda podem revelar erros quando executados realmente.
+A tentativa real de dependências retornou `EAI_AGAIN registry.npmjs.org`; **não há lockfile nesta entrega**. `npm run verify` falhou por tipos locais não instalados. A checagem com compilador/tipos globais passou, mas não substitui instalação limpa.
 
-`npm run build` copia assets para `dist`; não empacota Netlify Functions. `npm run verify:release` bloqueia corretamente enquanto não houver lock e verificações aprovadas. `.env.example` contém nomes e exemplos não funcionais. Não ligar `HELPDESK_RELEASE_APPROVED` apenas para remover o 503.
+O executor de homologação exige lock, npm ci, audit, verify, PostgreSQL descartável e HTTP/browser. Os 35 cenários SQL existem, mas não executaram por ausência de Docker/servidor. Não usar o projeto Supabase remoto para substituir esses testes. O novo gate verifica fontes/logs e não aceita etapas ausentes, skips ou resultados antigos de outro código.
 
-## Mudanças principais
+`npm run build` gera apenas assets estáticos. `npm run verify:release` **não passou** e agora exige também evidência de homologação local. Isso ainda não substitui bundle de Functions nem aprovação real de Auth/pooler/TLS/RLS e do destino. Não ligar `HELPDESK_RELEASE_APPROVED` para remover o bloqueio.
 
-Cache idempotente reautorizado, scopes e transições protegidos em SQL candidato, conexão restrita/TLS e guard de schema, rate limiting compartilhado preparado, quotas de sessões/reenvios, manutenção de dados técnicos separada do histórico, paginação de conversa e estado de interface resistente a respostas atrasadas.
+## Correções desta versão
 
-A API agora pagina mensagens/notas/timeline com padrão 50, máximo 100 e `next_cursor`, em ordem decrescente de data/ID. Consumidores da pré-versão anterior precisam adaptar a leitura ilimitada. Nenhum consumidor real foi alterado neste pacote.
+Vigência contratual revalidada com horário após espera; validação de identidade/scopes humanos e M2M; entrada HTTP com prazo/bytes/UTF-8 controlados; parâmetros ambíguos recusados; snapshots de envios que preservam rascunhos novos e descartam respostas de outro contexto; executor local com evidência por etapa.
+
+**API/interface: 0.3.0. Schema esperado: 0.2.0.** As quatro migrations da v0.2.0 permanecem inalteradas. Nenhuma migration adicional é necessária apenas por esse incremento de aplicação. Sua aplicação e teste reais continuam pendentes.
 
 ## Documentação
 
-- [Arquitetura consolidada](docs/01-ARQUITETURA.md)
-- [Roadmap e estado dos marcos](docs/02-PLANO-DE-DESENVOLVIMENTO.md)
-- [Segurança/publicação](docs/03-SEGURANCA-E-PUBLICACAO.md)
-- [Evidências e limitações desta rodada](docs/04-ESTADO-E-EVIDENCIAS.md)
-- [Handoff para fechar M1](docs/05-HANDOFF-REVISAO.md)
-- [Controles, limites e retenção técnica](docs/06-M1-SEGURANCA-E-LIMITES.md)
-- [OpenAPI](docs/openapi.json) e [alterações de versão](CHANGELOG.md)
+[Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [Segurança/publicação](docs/03-SEGURANCA-E-PUBLICACAO.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Limites e retenção](docs/06-M1-SEGURANCA-E-LIMITES.md) · [Homologação M1b](docs/07-M1B-HOMOLOGACAO.md) · [OpenAPI](docs/openapi.json) · [Changelog](CHANGELOG.md).
 
-Destino informado: Supabase `xaelbntjnvztznnpcvtm`; GitHub `Consulte-GEO/help-desk-multi-tenant`; Netlify `help-desk-multi-tenant`, site `ee32e955-42e5-4417-bf4f-39cbef2366cc`. Nada foi enviado ou aplicado a esses destinos nesta rodada.
+Destino informado: Supabase `xaelbntjnvztznnpcvtm`; GitHub `Consulte-GEO/help-desk-multi-tenant`; Netlify `help-desk-multi-tenant`. Não houve escrita nem nova inspeção remota nesta rodada. Nenhum segredo real foi provisionado. Os avisos remotos registrados anteriormente são históricos, não uma nova leitura.
 
-O pacote não contém código importado do GeoLab ou dos helpdesks open source da pesquisa. Não há auditoria jurídica das dependências. Administração, intakes, filas/participantes, SLA operacional, anexos, dispatcher/e-mails/webhooks e sessão incorporada por pessoa continuam fora da implementação entregue.
+Administração de usuários/contratos, intakes, participantes/filas, SLA operacional, anexos, dispatcher/e-mails/webhooks e sessões incorporadas continuam fora da implementação. M2 permanece posterior à homologação efetiva do M1.

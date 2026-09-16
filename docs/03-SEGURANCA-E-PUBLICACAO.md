@@ -1,14 +1,14 @@
 # Segurança, publicação e operação
 
-> Complemento vigente: `06-M1-SEGURANCA-E-LIMITES.md`. Nenhum controle SQL novo está homologado nesta rodada.
+> Complementos vigentes: `06-M1-SEGURANCA-E-LIMITES.md` e `07-M1B-HOMOLOGACAO.md`. Na v0.3.0 as migrations permanecem inalteradas e ainda não foram homologadas em banco real.
 
 ## Estado desta entrega
 
-Não houve push para o GitHub, merge, aplicação de migration, deploy Netlify/Edge Function, criação de branch Supabase, alteração de segredo ou mudança de MFA. O código foi desenvolvido em repositório local isolado. O projeto remoto permanece como estava na inspeção.
+Não houve push para o GitHub, merge, aplicação de migration, deploy Netlify/Edge Function, criação de branch Supabase, alteração de segredo ou mudança de MFA. O código foi desenvolvido em repositório local isolado. Não houve nova inspeção remota na v0.3.0; as observações abaixo são históricas. O pacote não afirma que ações de outras pessoas não tenham alterado o projeto.
 
 A configuração `HELPDESK_RELEASE_APPROVED=false` é deliberada. Não utilizar o site com dados reais apenas porque a interface pode ser construída. A demonstração `npm run demo` escuta somente em loopback e armazena fixtures em memória; ela nunca é fallback do runtime de produção.
 
-## Alertas remotos constatados
+## Alertas remotos constatados nas inspeções anteriores
 
 O Security Advisor do projeto `xaelbntjnvztznnpcvtm` retornou dois avisos para `public.rls_auto_enable()`: execução como SECURITY DEFINER por `anon` e por `authenticated`. Não foi obtido o corpo da função nesta inspeção. A migration `20260915000100_restrict_existing_definer.sql` propõe revogar EXECUTE de PUBLIC/anon/authenticated, preservando corpo, função e eventuais usos internos. Ela verifica a existência do objeto antes de agir. Deve ser aplicada pelo fluxo de migrations autorizado e seguida de nova consulta ao Advisor e teste do recurso ao qual a função pertence.
 

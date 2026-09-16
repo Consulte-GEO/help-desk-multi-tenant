@@ -1,0 +1,172 @@
+TAP version 13
+# (node:2309) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: release evidence requires successful lock
+ok 1 - release evidence requires successful lock
+  ---
+  duration_ms: 37.063033
+  type: 'test'
+  ...
+# Subtest: release evidence requires successful install
+ok 2 - release evidence requires successful install
+  ---
+  duration_ms: 0.541906
+  type: 'test'
+  ...
+# Subtest: release evidence requires successful audit
+ok 3 - release evidence requires successful audit
+  ---
+  duration_ms: 3.725213
+  type: 'test'
+  ...
+# Subtest: release evidence requires successful application
+ok 4 - release evidence requires successful application
+  ---
+  duration_ms: 0.624732
+  type: 'test'
+  ...
+# Subtest: release evidence requires successful postgres
+ok 5 - release evidence requires successful postgres
+  ---
+  duration_ms: 1.948674
+  type: 'test'
+  ...
+# Subtest: release evidence requires successful interface
+ok 6 - release evidence requires successful interface
+  ---
+  duration_ms: 0.331334
+  type: 'test'
+  ...
+# Subtest: successful unit fixtures describe local M1 only, never platform production approval
+ok 7 - successful unit fixtures describe local M1 only, never platform production approval
+  ---
+  duration_ms: 0.526589
+  type: 'test'
+  ...
+# Subtest: failure does not execute steps depending on the failed prerequisite
+ok 8 - failure does not execute steps depending on the failed prerequisite
+  ---
+  duration_ms: 0.868342
+  type: 'test'
+  ...
+# Subtest: exit zero without actual PostgreSQL test counts cannot be accepted
+ok 9 - exit zero without actual PostgreSQL test counts cannot be accepted
+  ---
+  duration_ms: 0.768179
+  type: 'test'
+  ...
+# Subtest: skipped database tests cannot appear as passed homologation
+ok 10 - skipped database tests cannot appear as passed homologation
+  ---
+  duration_ms: 0.58728
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects differentSource
+ok 11 - evidence guard rejects differentSource
+  ---
+  duration_ms: 1.045591
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects missing
+ok 12 - evidence guard rejects missing
+  ---
+  duration_ms: 0.381452
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects duplicate
+ok 13 - evidence guard rejects duplicate
+  ---
+  duration_ms: 0.219137
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects nonzero
+ok 14 - evidence guard rejects nonzero
+  ---
+  duration_ms: 0.229201
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects signalled
+ok 15 - evidence guard rejects signalled
+  ---
+  duration_ms: 0.312938
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects noTests
+ok 16 - evidence guard rejects noTests
+  ---
+  duration_ms: 0.634165
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects old
+ok 17 - evidence guard rejects old
+  ---
+  duration_ms: 0.409795
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects future
+ok 18 - evidence guard rejects future
+  ---
+  duration_ms: 0.501617
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects wrongScope
+ok 19 - evidence guard rejects wrongScope
+  ---
+  duration_ms: 0.86655
+  type: 'test'
+  ...
+# Subtest: evidence guard rejects pathEscape
+ok 20 - evidence guard rejects pathEscape
+  ---
+  duration_ms: 0.412788
+  type: 'test'
+  ...
+# Subtest: failed executor is recorded without copying a private exception into report
+ok 21 - failed executor is recorded without copying a private exception into report
+  ---
+  duration_ms: 0.58791
+  type: 'test'
+  ...
+# Subtest: fingerprint includes code and test changes but not generated evidence
+ok 22 - fingerprint includes code and test changes but not generated evidence
+  ---
+  duration_ms: 84.557314
+  type: 'test'
+  ...
+# Subtest: fingerprint refuses symlinked source trees
+ok 23 - fingerprint refuses symlinked source trees
+  ---
+  duration_ms: 8.533683
+  type: 'test'
+  ...
+# Subtest: log digest mismatch rejects evidence even when report claims all stages passed
+ok 24 - log digest mismatch rejects evidence even when report claims all stages passed
+  ---
+  duration_ms: 11.084193
+  type: 'test'
+  ...
+# Subtest: source changing during a run is never accepted after a later checkout restores the digest
+not ok 25 - source changing during a run is never accepted after a later checkout restores the digest
+  ---
+  duration_ms: 0.981531
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.3.0/tests/m1b-homologation.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.3.0/tests/m1b-homologation.test.ts:49:80)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 24
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 483.039953

@@ -196,3 +196,8 @@ Depois da operação humana estável, priorizar respostas salvas/macros, base de
 | OPS-003/004/005 | Restore e runbooks | Procedimentos definidos; ensaios não realizados. |
 
 **Nenhuma linha “codificado” autoriza publicação automática.** A próxima ação recomendada é HD-101/102: dependências reproduzíveis e execução da suíte real PostgreSQL, antes de ampliar funcionalidades.
+
+
+## Atualização v0.3.0 — 16/09/2026
+
+Continuidade de M1: 274 testes locais e nove verificações HTTP de memória aprovados. Correções de vigência após espera, identidade, entrada HTTP e estado de mutações; novo gate com evidência por etapa. M1 ainda aberto: dependências limpas, 35 testes SQL, Auth/pooler/Functions, browser e capacidade. M2 não iniciado. Estado detalhado e limitações em `04-ESTADO-E-EVIDENCIAS.md`; executor em `07-M1B-HOMOLOGACAO.md`.
