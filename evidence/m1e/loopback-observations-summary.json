@@ -1,0 +1,292 @@
+{
+  "schema": 1,
+  "scope": "operator-offline",
+  "counting": "log_records_not_unique_requests",
+  "accepted": 4,
+  "ignored_lines": 0,
+  "rejected_lines": 0,
+  "window": {
+    "first": "2026-09-16T17:45:32.871Z",
+    "last": "2026-09-16T17:45:32.883Z"
+  },
+  "routes": [
+    {
+      "route": "/v1/capabilities",
+      "method": "GET",
+      "count": 1,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "phases": {
+        "http": 1
+      },
+      "latency": {
+        "observed": 1,
+        "mean_ms": 1.651,
+        "min_ms": 1.651,
+        "max_ms": 1.651,
+        "histogram": [
+          {
+            "upper_bound_ms": 10,
+            "count": 1
+          },
+          {
+            "upper_bound_ms": 50,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 100,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 250,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 1000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 2500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 5000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 15000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 30000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 60000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": null,
+            "count": 0
+          }
+        ]
+      }
+    },
+    {
+      "route": "/v1/me",
+      "method": "GET",
+      "count": 1,
+      "statuses": {
+        "503": 1
+      },
+      "errors": {
+        "release_gate_closed": 1
+      },
+      "phases": {
+        "bootstrap": 1
+      },
+      "latency": {
+        "observed": 1,
+        "mean_ms": 0.262,
+        "min_ms": 0.262,
+        "max_ms": 0.262,
+        "histogram": [
+          {
+            "upper_bound_ms": 10,
+            "count": 1
+          },
+          {
+            "upper_bound_ms": 50,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 100,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 250,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 1000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 2500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 5000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 15000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 30000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 60000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": null,
+            "count": 0
+          }
+        ]
+      }
+    },
+    {
+      "route": "/v1/tickets",
+      "method": "GET",
+      "count": 1,
+      "statuses": {
+        "429": 1
+      },
+      "errors": {
+        "rate_limit_exceeded": 1
+      },
+      "phases": {
+        "http": 1
+      },
+      "latency": {
+        "observed": 1,
+        "mean_ms": 0.231,
+        "min_ms": 0.231,
+        "max_ms": 0.231,
+        "histogram": [
+          {
+            "upper_bound_ms": 10,
+            "count": 1
+          },
+          {
+            "upper_bound_ms": 50,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 100,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 250,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 1000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 2500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 5000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 15000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 30000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 60000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": null,
+            "count": 0
+          }
+        ]
+      }
+    },
+    {
+      "route": "/v1/tickets/{ticket_id}/notes",
+      "method": "GET",
+      "count": 1,
+      "statuses": {
+        "403": 1
+      },
+      "errors": {
+        "forbidden": 1
+      },
+      "phases": {
+        "http": 1
+      },
+      "latency": {
+        "observed": 1,
+        "mean_ms": 0.383,
+        "min_ms": 0.383,
+        "max_ms": 0.383,
+        "histogram": [
+          {
+            "upper_bound_ms": 10,
+            "count": 1
+          },
+          {
+            "upper_bound_ms": 50,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 100,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 250,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 1000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 2500,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 5000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 15000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 30000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": 60000,
+            "count": 0
+          },
+          {
+            "upper_bound_ms": null,
+            "count": 0
+          }
+        ]
+      }
+    }
+  ]
+}

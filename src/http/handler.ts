@@ -1,11 +1,15 @@
 import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-limit.ts';
 import {requireEmptyBody} from './empty-body.ts';
 import {SHORT_SESSION_PATTERN} from '../infrastructure/session-lifecycle.ts';
-import {randomUUID} from 'node:crypto';
+import {RELEASE} from '../version.ts';
+import {httpObservation,notifyObserver,requestIdFor} from '../observability/http.ts';
+import type {HttpObserver} from '../observability/http.ts';
+const problemCodes=new WeakMap<Response,string>();
+export const diagnosticProblemCode=(response:Response):string|undefined=>problemCodes.get(response);
 import type {HelpdeskService} from '../application/helpdesk.ts';import type {Principal,Ticket} from '../domain/model.ts';import {statuses} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';import {readObject,text,identifier,ifMatch} from './validation.ts';import {ticketDto,messageDto,noteDto,eventDto} from './serialization.ts';
-export const capabilities={api_version:'v1',release:'0.5.0',capabilities:{tickets:true,contract_resolution:true,support_catalog:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
-export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;revokeSession?:(token:string)=>Promise<void>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:(event:{request_id:string;method:string;status:number;duration_ms:number})=>void};
+export const capabilities={api_version:'v1',release:RELEASE,capabilities:{tickets:true,contract_resolution:true,support_catalog:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
+export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;revokeSession?:(token:string)=>Promise<void>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:HttpObserver};
 export function jsonResponse(data:unknown,status=200,extra:Record<string,string>={}):Response{return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer',...extra}});}
 export function problemResponse(error:unknown,requestId:string):Response{const e=error instanceof HelpdeskError?error:null;let status=e?.status??500,code=e?.code??'internal_error',detail=e?.message??'Não foi possível concluir a operação.';
  const pgcode=(error as {code?:string})?.code;if(!e&&['22P02','22007','22008'].includes(pgcode??'')){status=400;code='invalid_input';detail='Identificador ou data inválidos.';}
@@ -15,13 +19,14 @@ export function problemResponse(error:unknown,requestId:string):Response{const e
  if(!e&&pgcode==='PHD03'){status=409;code='coverage_configuration_limit';detail='Configuração de coberturas excedeu o limite suportado. Contate a administração.';}
  if(!e&&pgcode==='42501'){status=403;code='forbidden';detail='Operação não autorizada.';}
  const retry=(error as {retryAfterSeconds?:number})?.retryAfterSeconds;
- return jsonResponse({type:'about:blank',title:status>=500?'Serviço indisponível':'Requisição não concluída',status,code,detail,request_id:requestId},status,{'content-type':'application/problem+json; charset=utf-8','x-request-id':requestId,...(status===503?{'retry-after':'2'}:status===429?{'retry-after':String(Number.isInteger(retry)&&Number(retry)>=1&&Number(retry)<=60?retry:60)}:{})});
+ const response=jsonResponse({type:'about:blank',title:status>=500?'Serviço indisponível':'Requisição não concluída',status,code,detail,request_id:requestId},status,{'content-type':'application/problem+json; charset=utf-8','x-request-id':requestId,...(status===503?{'retry-after':'2'}:status===429?{'retry-after':String(Number.isInteger(retry)&&Number(retry)>=1&&Number(retry)<=60?retry:60)}:{})});
+ problemCodes.set(response,code);return response;
 }
 export function createHttpHandler(deps:HttpDependencies){return async(req:Request,context:TrustedRequestContext={}):Promise<Response>=>{
- const supplied=req.headers.get('x-request-id');const requestId=supplied&&/^[0-9a-f-]{36}$/i.test(supplied)?supplied:randomUUID();const started=Date.now();let response:Response;
+ const requestId=requestIdFor(req);const started=performance.now();let response:Response;
  try{await deps.rateLimiter?.beforeAuthentication(req,context);response=await route(req,requestId,deps);}catch(error){response=problemResponse(error,requestId);}
  response.headers.set('x-request-id',requestId);
- try{deps.observe?.({request_id:requestId,method:req.method,status:response.status,duration_ms:Date.now()-started});}catch{/* Telemetry failure must not change transaction outcome. */}
+ notifyObserver(deps.observe,httpObservation({request:req,requestId,status:response.status,errorCode:diagnosticProblemCode(response),phase:'http',started,finished:performance.now()}));
  return response;
 };}
 async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Response>{

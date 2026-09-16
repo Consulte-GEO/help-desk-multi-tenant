@@ -1,0 +1,6 @@
+
+> @consulte-geo/helpdesk@0.6.0 test:db:native
+> node scripts/test-db-native.mjs
+
+{"component":"helpdesk.test.native","engine":"native","postgres_version":null,"stage":"configuration","exit_code":1,"cleanup":"not_created","reason":"native_configuration_unavailable"}
+PostgreSQL nativo NÃO homologado. Exige pg instalado, binários PostgreSQL 17 em HELPDESK_TEST_PG_BIN e usuário não root (Linux/macOS/WSL). Nenhum fallback remoto foi usado.

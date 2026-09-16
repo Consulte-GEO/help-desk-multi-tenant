@@ -1,0 +1,90 @@
+TAP version 13
+# (node:2606) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: native configuration rejects relative/missing binary path, root, Windows and mixed engine
+ok 1 - native configuration rejects relative/missing binary path, root, Windows and mixed engine
+  ---
+  duration_ms: 8.899371
+  type: 'test'
+  ...
+# Subtest: native environment cannot inherit production, PG service overrides or Node preload hooks
+ok 2 - native environment cannot inherit production, PG service overrides or Node preload hooks
+  ---
+  duration_ms: 0.776846
+  type: 'test'
+  ...
+# Subtest: native lifecycle creates its own SCRAM cluster, runs guarded suite and cleans only owned directory
+ok 3 - native lifecycle creates its own SCRAM cluster, runs guarded suite and cleans only owned directory
+  ---
+  duration_ms: 15.154133
+  type: 'test'
+  ...
+# Subtest: failed database assertions are not converted to successful execution and still clean the cluster
+ok 4 - failed database assertions are not converted to successful execution and still clean the cluster
+  ---
+  duration_ms: 7.180331
+  type: 'test'
+  ...
+# Subtest: database creation failure never starts suite; own server is still stopped
+ok 5 - database creation failure never starts suite; own server is still stopped
+  ---
+  duration_ms: 6.76047
+  type: 'test'
+  ...
+# Subtest: failed shutdown preserves data directory and fails even after successful tests
+ok 6 - failed shutdown preserves data directory and fails even after successful tests
+  ---
+  duration_ms: 4.019695
+  type: 'test'
+  ...
+# Subtest: altered ownership marker prevents both automatic stop and directory deletion
+ok 7 - altered ownership marker prevents both automatic stop and directory deletion
+  ---
+  duration_ms: 9.384791
+  type: 'test'
+  ...
+# Subtest: missing driver or non-17 binaries fail before initdb, never download or use a remote target
+ok 8 - missing driver or non-17 binaries fail before initdb, never download or use a remote target
+  ---
+  duration_ms: 2.402076
+  type: 'test'
+  ...
+# Subtest: abort signal terminates only its owned child promptly, without waiting for the normal timeout
+ok 9 - abort signal terminates only its owned child promptly, without waiting for the normal timeout
+  ---
+  duration_ms: 46.544762
+  type: 'test'
+  ...
+# Subtest: pre-aborted command does not start a child process
+ok 10 - pre-aborted command does not start a child process
+  ---
+  duration_ms: 0.599854
+  type: 'test'
+  ...
+# Subtest: symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files
+ok 11 - symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files
+  ---
+  duration_ms: 6.82908
+  type: 'test'
+  ...
+# Subtest: aborted test stage still stops only its own cluster with non-aborted cleanup commands
+ok 12 - aborted test stage still stops only its own cluster with non-aborted cleanup commands
+  ---
+  duration_ms: 6.999486
+  type: 'test'
+  ...
+# Subtest: unknown engine cannot silently fall back to Docker, native PostgreSQL or a remote database
+ok 13 - unknown engine cannot silently fall back to Docker, native PostgreSQL or a remote database
+  ---
+  duration_ms: 29.694407
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 264.945254

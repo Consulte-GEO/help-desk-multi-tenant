@@ -1,0 +1,202 @@
+{
+  "scope": "local-development-not-production",
+  "checks": [
+    {
+      "name": "final-dependencies",
+      "command": [
+        "npm",
+        "run",
+        "deps:resolve"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:46:56.055481+00:00",
+      "completed_at": "2026-09-16T17:47:06.510224+00:00",
+      "log": "evidence/m1e/final-dependencies.txt"
+    },
+    {
+      "name": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:06.510353+00:00",
+      "completed_at": "2026-09-16T17:47:09.104672+00:00",
+      "log": "evidence/m1e/final-tests.txt"
+    },
+    {
+      "name": "final-typecheck-environment",
+      "command": [
+        "tsc",
+        "--noEmit",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:09.104891+00:00",
+      "completed_at": "2026-09-16T17:47:10.784928+00:00",
+      "log": "evidence/m1e/final-typecheck-environment.txt"
+    },
+    {
+      "name": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:10.785128+00:00",
+      "completed_at": "2026-09-16T17:47:10.966168+00:00",
+      "log": "evidence/m1e/final-contracts.txt"
+    },
+    {
+      "name": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:10.966365+00:00",
+      "completed_at": "2026-09-16T17:47:11.121033+00:00",
+      "log": "evidence/m1e/final-secrets.txt"
+    },
+    {
+      "name": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:11.121229+00:00",
+      "completed_at": "2026-09-16T17:47:11.242495+00:00",
+      "log": "evidence/m1e/final-build.txt"
+    },
+    {
+      "name": "final-verify-manifest",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exit_code": 2,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:11.242745+00:00",
+      "completed_at": "2026-09-16T17:47:15.349018+00:00",
+      "log": "evidence/m1e/final-verify-manifest.txt"
+    },
+    {
+      "name": "final-postgres-docker",
+      "command": [
+        "npm",
+        "run",
+        "test:db:local"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:15.349286+00:00",
+      "completed_at": "2026-09-16T17:47:15.501097+00:00",
+      "log": "evidence/m1e/final-postgres-docker.txt"
+    },
+    {
+      "name": "final-postgres-native",
+      "command": [
+        "npm",
+        "run",
+        "test:db:native"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:15.501299+00:00",
+      "completed_at": "2026-09-16T17:47:15.631431+00:00",
+      "log": "evidence/m1e/final-postgres-native.txt"
+    },
+    {
+      "name": "final-ui-http-browser",
+      "command": [
+        "npm",
+        "run",
+        "test:ui:local"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:15.631687+00:00",
+      "completed_at": "2026-09-16T17:47:17.868789+00:00",
+      "log": "evidence/m1e/final-ui-http-browser.txt"
+    },
+    {
+      "name": "final-homologation",
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:17.869260+00:00",
+      "completed_at": "2026-09-16T17:47:18.099291+00:00",
+      "log": "evidence/m1e/final-homologation.txt"
+    },
+    {
+      "name": "final-homologation-check",
+      "command": [
+        "npm",
+        "run",
+        "check:homologation"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:18.099576+00:00",
+      "completed_at": "2026-09-16T17:47:18.273508+00:00",
+      "log": "evidence/m1e/final-homologation-check.txt"
+    },
+    {
+      "name": "final-release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:18.273755+00:00",
+      "completed_at": "2026-09-16T17:47:18.487760+00:00",
+      "log": "evidence/m1e/final-release-gate.txt"
+    },
+    {
+      "name": "final-new-http-cli",
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "tests/m1e-http-summary.test.ts"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:18.487976+00:00",
+      "completed_at": "2026-09-16T17:47:19.002422+00:00",
+      "log": "evidence/m1e/final-new-http-cli.txt"
+    },
+    {
+      "name": "final-log-summary",
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "scripts/summarize-http-logs.ts",
+        "evidence/m1e/loopback-observations.jsonl"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "started_at": "2026-09-16T17:47:19.002821+00:00",
+      "completed_at": "2026-09-16T17:47:19.105249+00:00",
+      "log": "evidence/m1e/final-log-summary.txt"
+    }
+  ]
+}

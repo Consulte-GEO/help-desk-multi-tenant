@@ -1,0 +1,260 @@
+TAP version 13
+# (node:1464) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: native configuration rejects relative/missing binary path, root, Windows and mixed engine
+not ok 1 - native configuration rejects relative/missing binary path, root, Windows and mixed engine
+  ---
+  duration_ms: 2.552638
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:16:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: native environment cannot inherit production, PG service overrides or Node preload hooks
+not ok 2 - native environment cannot inherit production, PG service overrides or Node preload hooks
+  ---
+  duration_ms: 0.51715
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:19:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: native lifecycle creates its own SCRAM cluster, runs guarded suite and cleans only owned directory
+not ok 3 - native lifecycle creates its own SCRAM cluster, runs guarded suite and cleans only owned directory
+  ---
+  duration_ms: 0.4577
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:23:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed database assertions are not converted to successful execution and still clean the cluster
+not ok 4 - failed database assertions are not converted to successful execution and still clean the cluster
+  ---
+  duration_ms: 0.416008
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:33:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database creation failure never starts suite; own server is still stopped
+not ok 5 - database creation failure never starts suite; own server is still stopped
+  ---
+  duration_ms: 0.404419
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:35:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:36:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed shutdown preserves data directory and fails even after successful tests
+not ok 6 - failed shutdown preserves data directory and fails even after successful tests
+  ---
+  duration_ms: 0.411791
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:38:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:39:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: altered ownership marker prevents both automatic stop and directory deletion
+not ok 7 - altered ownership marker prevents both automatic stop and directory deletion
+  ---
+  duration_ms: 1.179638
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:41:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:42:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: missing driver or non-17 binaries fail before initdb, never download or use a remote target
+not ok 8 - missing driver or non-17 binaries fail before initdb, never download or use a remote target
+  ---
+  duration_ms: 0.388024
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    native (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:3:119)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:45:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: abort signal terminates only its owned child promptly, without waiting for the normal timeout
+not ok 9 - abort signal terminates only its owned child promptly, without waiting for the normal timeout
+  ---
+  duration_ms: 1517.768029
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'timeout'
+    - 'aborted'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'aborted'
+  actual: 'timeout'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:49:338)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: pre-aborted command does not start a child process
+not ok 10 - pre-aborted command does not start a child process
+  ---
+  duration_ms: 27.871977
+  type: 'test'
+  location: '/mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:51:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    null !== 'aborted'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'aborted'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v060/repo/tests/m1e-native-postgres.test.ts:52:264)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 0
+# fail 10
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1669.606937

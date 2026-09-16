@@ -1,0 +1,102 @@
+[
+  {
+    "file": "scripts/build.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/check-homologation.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/check-secrets.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/generate-openapi.py",
+    "tool": "Python ast.parse",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/homologate-local.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/homologation-core.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/local-process.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/native-postgres.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/prepare-dependencies.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/smoke-local-http.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-docker.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-local.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-native.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-ui-local.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verify-lock.mjs",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/app.js",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/conversation-state.js",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/mutation-state.js",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/support-catalog-state.js",
+    "tool": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "tests/browser-smoke.py",
+    "tool": "Python ast.parse",
+    "exit_code": 0
+  }
+]

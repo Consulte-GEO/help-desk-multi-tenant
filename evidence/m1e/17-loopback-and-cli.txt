@@ -1,0 +1,42 @@
+TAP version 13
+# (node:2522) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: loopback response and diagnostic share a normalized request ID, without request secrets
+ok 1 - loopback response and diagnostic share a normalized request ID, without request secrets
+  ---
+  duration_ms: 27.752416
+  type: 'test'
+  ...
+# Subtest: loopback reports a real ingress refusal with its safe code and Retry-After
+ok 2 - loopback reports a real ingress refusal with its safe code and Retry-After
+  ---
+  duration_ms: 10.192117
+  type: 'test'
+  ...
+# Subtest: loopback startup failure has one safe diagnostic correlated to problem response
+ok 3 - loopback startup failure has one safe diagnostic correlated to problem response
+  ---
+  duration_ms: 4.316764
+  type: 'test'
+  ...
+# Subtest: offline CLI summarizes actual loopback observations without retaining their identifiers
+ok 4 - offline CLI summarizes actual loopback observations without retaining their identifiers
+  ---
+  duration_ms: 120.656711
+  type: 'test'
+  ...
+# Subtest: offline CLI rejects missing or directory input without exposing the input path
+ok 5 - offline CLI rejects missing or directory input without exposing the input path
+  ---
+  duration_ms: 208.610226
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 514.019815

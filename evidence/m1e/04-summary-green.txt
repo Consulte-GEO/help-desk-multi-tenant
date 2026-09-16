@@ -1,0 +1,60 @@
+TAP version 13
+# (node:1093) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: summary aggregates per route/method, with histogram and no raw request identifiers
+ok 1 - summary aggregates per route/method, with histogram and no raw request identifiers
+  ---
+  duration_ms: 25.370196
+  type: 'test'
+  ...
+# Subtest: unknown log components are ignored but malformed HTTP observations are rejected
+ok 2 - unknown log components are ignored but malformed HTTP observations are rejected
+  ---
+  duration_ms: 0.449857
+  type: 'test'
+  ...
+# Subtest: records with extra private fields are rejected instead of copied or silently approved
+ok 3 - records with extra private fields are rejected instead of copied or silently approved
+  ---
+  duration_ms: 0.527174
+  type: 'test'
+  ...
+# Subtest: invalid severity, phase, status class, time, code and timings cannot pollute aggregates
+ok 4 - invalid severity, phase, status class, time, code and timings cannot pollute aggregates
+  ---
+  duration_ms: 0.859975
+  type: 'test'
+  ...
+# Subtest: missing valid duration never becomes a zero-latency measurement
+ok 5 - missing valid duration never becomes a zero-latency measurement
+  ---
+  duration_ms: 0.276306
+  type: 'test'
+  ...
+# Subtest: finite route aggregation does not grow with request IDs
+ok 6 - finite route aggregation does not grow with request IDs
+  ---
+  duration_ms: 24.730243
+  type: 'test'
+  ...
+# Subtest: bounded line parser discards overlong records once and resumes on the next line
+ok 7 - bounded line parser discards overlong records once and resumes on the next line
+  ---
+  duration_ms: 1.538837
+  type: 'test'
+  ...
+# Subtest: stream parser accepts split Unicode and rejects malformed UTF-8 without retaining raw bytes
+ok 8 - stream parser accepts split Unicode and rejects malformed UTF-8 without retaining raw bytes
+  ---
+  duration_ms: 0.73089
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 187.059051

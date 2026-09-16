@@ -1,3 +1,17 @@
+# v0.6.0 — diagnóstico HTTP seguro e PostgreSQL nativo
+
+- Projeção fechada de logs: rota/código/fase/duração/release/correlação, sem dados de atendimento ou credenciais.
+- Identificador de correlação inválido (inclusive somente hífens) é substituído; UUID aceito é normalizado.
+- Fábrica de runtime compartilhada, diagnóstico de bootstrap/dispatch e recuperação após inicialização rejeitada; sem duplicar sucesso HTTP.
+- Observer síncrono/assíncrono falho não modifica resposta. `rate_limit_exceeded` real e `Retry-After` preservados.
+- CLI offline com contagens/histogramas limitados; rejeita metadados extras e objetos malformados sem coerção perigosa. Sem percentis exatos ou armazenamento de IDs.
+- Executor nativo PostgreSQL 17 explícito, com cluster temporário/SCRAM/loopback, ambiente isolado, cleanup comprovado ou preservação. Sem instalador ou fallback; Docker padrão preservado.
+- Cancelamento de subprocessos próprios por AbortSignal, sem procurar PID pela porta.
+- 451 testes locais, 44 novos; cinco testes HTTP/CLI estão incluídos nesse total. 13 checks HTTP antigos passaram novamente. SQL e browser continuam não homologados.
+- API/interface 0.6.0; schema 0.5.0; nenhuma migration nova, seis anteriores intactas. Não publicado, M1 aberto.
+
+---
+
 # v0.4.0 — M1c, transações e sessões M2M (local; não publicado)
 
 ## 0.5.0 — 2026-09-16

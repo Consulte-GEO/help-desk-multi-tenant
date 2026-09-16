@@ -1,0 +1,26 @@
+{
+  "scope": "local-http-with-synthetic-identities",
+  "not_production_telemetry": true,
+  "checks": [
+    {
+      "name": "capabilities",
+      "result": "passed",
+      "status": 200
+    },
+    {
+      "name": "forbidden resource",
+      "result": "passed",
+      "status": 403
+    },
+    {
+      "name": "ingress rate limit",
+      "result": "passed",
+      "status": 429
+    },
+    {
+      "name": "bootstrap error",
+      "result": "passed",
+      "status": 503
+    }
+  ]
+}
