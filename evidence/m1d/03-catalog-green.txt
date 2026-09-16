@@ -1,0 +1,204 @@
+TAP version 13
+# (node:989) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized requester discovers its account/product/service without typing identifiers
+ok 1 - authorized requester discovers its account/product/service without typing identifiers
+  ---
+  duration_ms: 3.517532
+  type: 'test'
+  ...
+# Subtest: catalogue omits sibling accounts and workspaces with identical context identifiers
+ok 2 - catalogue omits sibling accounts and workspaces with identical context identifiers
+  ---
+  duration_ms: 6.587821
+  type: 'test'
+  ...
+# Subtest: workspace agent without account grant does not discover every customer
+ok 3 - workspace agent without account grant does not discover every customer
+  ---
+  duration_ms: 0.289993
+  type: 'test'
+  ...
+# Subtest: human workspace administrator discovers eligible accounts in own workspace
+ok 4 - human workspace administrator discovers eligible accounts in own workspace
+  ---
+  duration_ms: 0.812005
+  type: 'test'
+  ...
+# Subtest: integration catalogue obeys connection product allowlist even with a known account
+ok 5 - integration catalogue obeys connection product allowlist even with a known account
+  ---
+  duration_ms: 0.295932
+  type: 'test'
+  ...
+# Subtest: integration never acquires workspace administrator bypass through catalogue
+ok 6 - integration never acquires workspace administrator bypass through catalogue
+  ---
+  duration_ms: 0.256409
+  type: 'test'
+  ...
+# Subtest: contexts:resolve is required before querying the store
+ok 7 - contexts:resolve is required before querying the store
+  ---
+  duration_ms: 0.499988
+  type: 'test'
+  ...
+# Subtest: an unauthorized account selector is rejected without existence lookup
+ok 8 - an unauthorized account selector is rejected without existence lookup
+  ---
+  duration_ms: 0.187258
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"enabled":false}
+ok 9 - ineligible coverage does not create a catalogue option: {"enabled":false}
+  ---
+  duration_ms: 0.389672
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"published":false}
+ok 10 - ineligible coverage does not create a catalogue option: {"published":false}
+  ---
+  duration_ms: 0.450328
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+ok 11 - ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+  ---
+  duration_ms: 0.331058
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+ok 12 - ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+  ---
+  duration_ms: 0.204998
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+ok 13 - ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+  ---
+  duration_ms: 0.186377
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+ok 14 - ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+  ---
+  duration_ms: 0.124329
+  type: 'test'
+  ...
+# Subtest: multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+ok 15 - multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+  ---
+  duration_ms: 0.423376
+  type: 'test'
+  ...
+# Subtest: catalogue selection never replaces contract revalidation on creation
+ok 16 - catalogue selection never replaces contract revalidation on creation
+  ---
+  duration_ms: 0.706868
+  type: 'test'
+  ...
+# Subtest: composite pagination is stable across identical services on different accounts and instances
+ok 17 - composite pagination is stable across identical services on different accounts and instances
+  ---
+  duration_ms: 1.512583
+  type: 'test'
+  ...
+# Subtest: cursor is bound to actor, workspace, and account filter
+ok 18 - cursor is bound to actor, workspace, and account filter
+  ---
+  duration_ms: 0.518768
+  type: 'test'
+  ...
+# Subtest: revocation between catalogue pages does not reveal previously eligible rows
+ok 19 - revocation between catalogue pages does not reveal previously eligible rows
+  ---
+  duration_ms: 0.333292
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 0
+ok 20 - catalogue refuses invalid limit 0
+  ---
+  duration_ms: 0.168509
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 101
+ok 21 - catalogue refuses invalid limit 101
+  ---
+  duration_ms: 0.09998
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit -1
+ok 22 - catalogue refuses invalid limit -1
+  ---
+  duration_ms: 0.157161
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 1.5
+ok 23 - catalogue refuses invalid limit 1.5
+  ---
+  duration_ms: 0.146894
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit NaN
+ok 24 - catalogue refuses invalid limit NaN
+  ---
+  duration_ms: 0.098808
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit Infinity
+ok 25 - catalogue refuses invalid limit Infinity
+  ---
+  duration_ms: 0.090735
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected 
+ok 26 - malformed catalogue cursor is rejected 
+  ---
+  duration_ms: 0.263381
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected %%%
+ok 27 - malformed catalogue cursor is rejected %%%
+  ---
+  duration_ms: 0.1255
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+ok 28 - malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+  ---
+  duration_ms: 0.103134
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+ok 29 - malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+  ---
+  duration_ms: 0.134255
+  type: 'test'
+  ...
+# Subtest: malformed or cross-workspace adapter data is rejected instead of serialized
+ok 30 - malformed or cross-workspace adapter data is rejected instead of serialized
+  ---
+  duration_ms: 0.270642
+  type: 'test'
+  ...
+# Subtest: private adapter extras cannot enter the catalogue projection
+ok 31 - private adapter extras cannot enter the catalogue projection
+  ---
+  duration_ms: 0.25115
+  type: 'test'
+  ...
+# Subtest: names and service codes remain text, including non-ASCII and HTML-like content
+ok 32 - names and service codes remain text, including non-ASCII and HTML-like content
+  ---
+  duration_ms: 0.252913
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 146.301575

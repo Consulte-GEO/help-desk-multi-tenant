@@ -4,7 +4,7 @@ import {SHORT_SESSION_PATTERN} from '../infrastructure/session-lifecycle.ts';
 import {randomUUID} from 'node:crypto';
 import type {HelpdeskService} from '../application/helpdesk.ts';import type {Principal,Ticket} from '../domain/model.ts';import {statuses} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';import {readObject,text,identifier,ifMatch} from './validation.ts';import {ticketDto,messageDto,noteDto,eventDto} from './serialization.ts';
-export const capabilities={api_version:'v1',release:'0.4.0',capabilities:{tickets:true,contract_resolution:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
+export const capabilities={api_version:'v1',release:'0.5.0',capabilities:{tickets:true,contract_resolution:true,support_catalog:true,public_messages:true,internal_notes:true,optimistic_concurrency:true,idempotency:true,conversation_pagination:true,integration_session_revocation:true,attachments:false,webhook_delivery:false,sla_clocks:false,support_sessions:false,contract_admin:false,email:false}};
 export type HttpDependencies={rateLimiter?:RateLimiter;service:HelpdeskService;authenticate:(request:Request)=>Promise<Principal>;exchangeToken?:(key:string)=>Promise<unknown>;revokeSession?:(token:string)=>Promise<void>;publicConfig?:{supabaseUrl:string;publishableKey:string};observe?:(event:{request_id:string;method:string;status:number;duration_ms:number})=>void};
 export function jsonResponse(data:unknown,status=200,extra:Record<string,string>={}):Response{return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer',...extra}});}
 export function problemResponse(error:unknown,requestId:string):Response{const e=error instanceof HelpdeskError?error:null;let status=e?.status??500,code=e?.code??'internal_error',detail=e?.message??'Não foi possível concluir a operação.';
@@ -45,6 +45,17 @@ async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Re
  }
  const p=await d.authenticate(req);await d.rateLimiter?.afterAuthentication(p);const key=req.headers.get('idempotency-key')??'';
  if(path==='/v1/me'&&method==='GET')return jsonResponse({id:p.id,kind:p.kind,workspace_id:p.workspaceId,workspace_role:p.workspaceRole,grants:p.grants.map(g=>({account_id:g.accountId,role:g.role})),product_instance_ids:p.productInstanceIds??[],scopes:p.scopes});
+ if(path==='/v1/support-contexts'){
+  if(method!=='GET'){const r=problemResponse(new HelpdeskError(405,'method_not_allowed','Catálogo disponível somente para consulta.'),requestId);r.headers.set('allow','GET');return r;}
+  if([...url.searchParams.keys()].some(k=>!['limit','cursor','account_id'].includes(k)||url.searchParams.getAll(k).length!==1))
+   throw new HelpdeskError(400,'unknown_parameter','Parâmetro de consulta não permitido ou duplicado.');
+  const result=await d.service.supportContexts(p,{limit:Number(url.searchParams.get('limit')??50),
+   ...(url.searchParams.has('cursor')?{cursor:url.searchParams.get('cursor')!}:{}),
+   ...(url.searchParams.has('account_id')?{accountId:identifier(url.searchParams.get('account_id'))}:{})});
+  return jsonResponse({items:result.items.map(c=>({account_id:c.accountId,account_name:c.accountName,
+   product_instance_id:c.productInstanceId,product_name:c.productName,environment:c.environment,
+   service_code:c.serviceCode,service_name:c.serviceName})),next_cursor:result.nextCursor});
+ }
  if(path==='/v1/contexts/resolve'&&method==='POST'){
   const b=await readObject(req,['account_id','product_instance_id','service_code']);const result=await d.service.resolve(p,{accountId:identifier(b.account_id),productInstanceId:identifier(b.product_instance_id),serviceCode:text(b,'service_code',1,80)});
   return jsonResponse({status:result.status,candidates:result.candidates.map(c=>({coverage_id:c.id,contract_id:c.contractId,contract_version_id:c.contractVersionId,contract_version:c.contractVersion,valid_until:c.validUntil}))});

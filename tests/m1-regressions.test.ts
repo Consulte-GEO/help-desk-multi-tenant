@@ -57,7 +57,7 @@ test('schema compatibility rejects missing or mismatched database version',async
  const {assertSchemaCompatibility}=await import('../src/infrastructure/postgres.ts');
  assert.equal(typeof assertSchemaCompatibility,'function');
  for(const value of [undefined,'0.1.0','0.2.0','999.0.0'])await assert.rejects(()=>assertSchemaCompatibility(poolFor({version:value})),{code:'schema_version_mismatch'});
- await assertSchemaCompatibility(poolFor({version:'0.4.0'}));
+ await assertSchemaCompatibility(poolFor({version:'0.5.0'}));
 });
 
 test('cache denied by database cannot return even metadata from the old response',async()=>{

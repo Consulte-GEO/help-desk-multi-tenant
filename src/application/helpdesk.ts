@@ -1,3 +1,5 @@
+import {discoverSupportContexts} from './support-catalog.ts';
+import type {CatalogOptions,CatalogPage} from './support-catalog.ts';
 import {pagination,page} from './pagination.ts';
 import type {PageOptions,Page} from './pagination.ts';
 import {randomUUID} from 'node:crypto';
@@ -14,6 +16,7 @@ function requireText(value:string,min:number,max:number,label:string):void{
 export class HelpdeskService{
  readonly db:UnitOfWork;readonly clock:()=>Date;
  constructor(db:UnitOfWork,clock:()=>Date=()=>new Date()){this.db=db;this.clock=clock;}
+ supportContexts(p:Principal,options:CatalogOptions):Promise<CatalogPage>{return discoverSupportContexts(this.db,this.clock,p,options);}
  private now():string{return this.clock().toISOString();}
  private account(p:Principal,c:SupportContext,scope:string):void{
   if(!hasScope(p,scope)||(scope==='tickets:write'&&!hasScope(p,'tickets:read')))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');

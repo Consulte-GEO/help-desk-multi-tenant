@@ -1,65 +1,70 @@
-# Help Desk v0.4.0 — Estado e evidências do M1c
+# Help Desk v0.5.0 — Catálogo autorizado e abertura guiada
 
-**Incremento entregue localmente. M1 permanece aberto; produção não aprovada.** Base: v0.3.0, commit `011bec31f0d2ef5622c9b4f401edc9fc753a65e5`. Branch local `work/helpdesk-m1-v0.4.0`. O commit final está no manifesto externo e no bundle da entrega.
+**Entrega local. M1 continua aberto; produção não aprovada.** Base v0.4.0: `a51f721f329fa2a4e3029820c00793da1196b82e`. Branch: `work/helpdesk-m1-v0.5.0`. Execução em 16/09/2026; logs usam UTC. O commit final consta no manifesto externo e no bundle Git.
 
-## Resultados e alcance
+## Resultado verificável
 
-| Verificação | Resultado | Evidência |
+| Verificação | Resultado e alcance | Evidência |
 |---|---|---|
-| Suíte local de aplicação/HTTP/estado/adaptadores controlados | **325 aprovados, zero falhas/ignorados/cancelados**; 51 além dos 274 de base | `evidence/m1c/final-tests.txt` |
-| HTTP real de loopback | **10 verificações aprovadas**, com dados somente em memória | `evidence/m1c/final-ui-attempt.txt` e `final-http-smoke.json` |
-| TypeScript com compilador/tipos globais do ambiente | Aprovado nesse ambiente; não equivale às dependências locais instaladas | `evidence/m1c/final-typecheck-environment.txt` |
-| OpenAPI estrutural | 15 operações / 12 paths | `evidence/m1c/final-contracts.txt` |
-| Sintaxe JS/MJS e AST dos scripts Python | Verificada | `evidence/m1c/final-syntax.txt` |
-| Build | Somente frontend estático aprovado; não é bundle de Functions | `evidence/m1c/final-build.txt` |
-| Scanner heurístico de segredos | Nenhum padrão reconhecido; não é pentest/auditoria integral | `evidence/m1c/final-secrets.txt` |
-| `npm run verify` padrão | **Falhou**: tipos/dependências locais não instalados | `evidence/m1c/final-verify-manifest.txt` |
-| Homologação agregada e publicação | **Bloqueadas** por lock ausente; demais etapas dependentes não foram aprovadas | `evidence/homologation/latest.json`, `evidence/m1c/final-release-gate.txt` |
+| Base recuperada | 325 testes aprovados antes de alterar | `evidence/m1d/00-baseline-tests.txt` |
+| Suíte local final | **407 aprovados; zero falhas, cancelados, ignorados ou TODO**. 82 novos | `evidence/m1d/final-tests.txt` |
+| HTTP de loopback | **13 verificações aprovadas** com dados fictícios em memória | `evidence/m1d/final-http-smoke.json` |
+| TypeScript do ambiente | Saída 0 com compilador e tipos globais | `evidence/m1d/final-typecheck-environment.txt` |
+| Contrato estrutural | **16 operações / 13 caminhos**; referências verificadas | `evidence/m1d/final-contracts.txt` |
+| Sintaxe JS/MJS e AST Python | Verificadas | `evidence/m1d/final-syntax.json` |
+| Build estático | Saída 0; não empacota Functions | `evidence/m1d/final-build.txt` |
+| Scanner heurístico | Nenhum padrão reconhecido; não substitui auditoria | `evidence/m1d/final-secrets.txt` |
+| Cinco migrations anteriores | Preservadas byte a byte | `evidence/m1d/final-migration-integrity.json` |
+| Verificação padrão `npm run verify` | **Falhou, saída 2**, por dependências/tipos locais ausentes | `evidence/m1d/final-verify-manifest.txt` |
+| Homologação agregada/publicação | **Não aprovadas**. Lock falha, etapas dependentes bloqueadas | `evidence/homologation/latest.json`, logs `final-homologation*` e `final-release-gate.txt` |
 
-A base foi reproduzida antes das alterações: 274 testes aprovados (`00-baseline-tests.txt`). Os testes de PostgreSQL e Auth externos da suíte local usam respostas controladas. Somar 325 testes locais aos 46 SQL escritos como se ambos tivessem passado seria incorreto.
+O typecheck aprovado usou TypeScript 5.8.3 e tipos Node 25.1.0 globais; o manifesto declara tipos Node 22.15.30, ainda não instalados. Não equivale a `npm ci` nem aprovação de dependências. Versões, comandos e códigos de saída: `evidence/m1d/final-verification.json`.
 
-## Código desenvolvido
+## Desenvolvimento entregue
 
-Executor transacional com confirmação de command tags, descarte de conexões incertas e ausência de retry automático; envelope de controle na mesma conexão com timeouts locais; validação do retorno de troca M2M; DELETE da própria sessão curta; função privada candidata de revogação por hash; capacidade condicionada ao adaptador; validação de stream vazio; contrato e exemplo server-to-server.
+Novo GET `/v1/support-contexts`, com scope existente `contexts:resolve`. Descobre opções por conta, instância do produto e serviço, com nomes de apresentação e ambiente. A aplicação filtra autorização; o helper privado candidato aplica também vínculos/scopes/produto e vigência. Páginas têm limite padrão 50, máximo 100, cursor composto vinculado ao ator/workspace/filtro. Retorno sem políticas, notas internas, credenciais, IDs de contratos ou contagem global de clientes.
 
-API/interface 0.4.0, schema candidato 0.4.0. Cinco migrations no pacote; as quatro anteriores não foram modificadas. Nenhuma tabela nova, mantendo 23 tabelas candidatas. Não houve migração remota nem mudança de Auth/MFA.
+Uma tupla com duas coberturas continua sendo uma opção, não duas opções idênticas. A resolução contratual permanece separada e pode retornar `ambiguous`. Criação revalida cobertura e autorização, inclusive após suspensão posterior à descoberta. Catálogo é consultivo, não reserva, snapshot ou autorização permanente.
 
-## Falhas reproduzidas e correções
+O formulário usa nomes obtidos pela mesma API na demonstração e no adaptador de produção. Não solicita UUIDs manuais e não usa `demo-config` para decidir opções de criação. Há carregamento, vazio, erro/tentativa novamente, carregamento de páginas e seleção explícita. Só uma opção na lista completa é selecionada automaticamente. A seleção de cobertura ambígua possui opção inicial vazia, sem escolher silenciosamente o primeiro contrato.
 
-| Grupo | Reprodução anterior | Resultado após correção |
+O estado puro de interface invalida resultados antigos por operação/geração, após fechar formulário ou trocar perfil. Descarta opções duplicadas, cursor repetido e respostas malformadas; preserva a seleção explícita ao carregar outras páginas. Nomes são projetados como texto e metadados extras não são armazenados no estado. A ligação com DOM está codificada, mas ainda não homologada em navegador.
+
+API/interface e schema candidato: **0.5.0**. A migration 006 adiciona helper privado, índice de descoberta e atualiza a versão de schema. Seis migrations e as mesmas 23 tabelas candidatas. Nenhuma migration executada remotamente ou localmente com servidor real nesta rodada.
+
+## Evidências de regressão
+
+| Grupo | Antes | Depois |
 |---|---|---|
-| Confirmação transacional / controle | 9 falhas em 11 testes | 11 aprovados |
-| Sessões M2M / novo endpoint | 24 falhas em 26 testes | 26 aprovados; depois ampliados na revisão |
-| Contrato/migration (sentinelas estruturais) | 2 falhas | 2 aprovados; não validam execução SQL |
-| Capacidade sem backend | 1 falha | Recusa anúncio de capacidade não configurada |
-| Stream vazio | HTTP devolvia 400 para requisição sem conteúdo; 6 regressões falhavam | Testes corrigidos e HTTP passou antes do bloqueio do navegador |
+| Aplicação/catálogo | 32 testes falhavam por ausência do recurso | 32 passaram; posteriormente ampliados para 38 |
+| HTTP/adaptador/SQL estrutural | 17 falhas em 20 testes | 20 passaram; não é execução SQL |
+| Estado puro da abertura | 24 falhas por ausência do módulo | 24 passaram |
+| Revisão de metadados | Dois casos de controle Unicode falhavam | Corrigidos; 38 testes de aplicação passaram |
 
-Os logs red/green em `evidence/m1c/02–17` preservam esses resultados. Fakes antigos de SQL foram atualizados para incluir os command tags reais esperados do driver; o fixture de troca M2M passou a usar UUID e relógio determinístico. Nenhuma expectativa de negação de acesso foi removida.
+Logs red/green: `02`–`12` em `evidence/m1d/`. Houve revisão local do diff, fronteiras, nomes, ordenação, cursores e formulário. **Não houve revisor independente, pentest ou avaliação de carga.**
 
-Revisão local, não independente. Foram revisados o diff, o contrato, os fluxos de erro e os efeitos da função candidata. O comportamento de PostgreSQL real continua a ser verificado, não presumido.
+## Bloqueios reais
 
-## Bloqueios atuais
+**Dependências:** `npm run deps:resolve` falhou com `EAI_AGAIN registry.npmjs.org`. Sem lockfile, instalação limpa ou audit concluído. A alternativa de pacotes de sistema também não resolveu DNS; o exit 0 de apt com warnings não comprova atualização. Nenhuma política de rede foi contornada.
 
-**Dependências:** tentativa real `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org` (`18-dependencies-attempt.txt`). Sem lockfile, npm ci/audit ou revisão real da árvore instalada. Os tipos globais usados no typecheck não são os tipos fixados no manifesto.
+**PostgreSQL:** Docker/servidor local indisponíveis. `npm run test:db:local` recusou antes da conexão. Há **60 cenários SQL escritos (14 novos), zero executados**. Incluem descoberta por conta/workspace, revogação de vínculo/scope, suspensão, deduplicação, cursor composto/Unicode, grants e ausência de mutação de tickets/eventos/outbox. Asserções em arquivos não são prova de RLS, grants, índices, sintaxe PL/pgSQL, planos ou desempenho reais. O Supabase remoto não foi usado como alternativa.
 
-**PostgreSQL:** Docker e servidor local ausentes; `test:db:local` recusou antes da conexão. **46 casos SQL escritos; zero executados.** Não foi usado o Supabase remoto como fallback e nenhum download de servidor foi concluído.
+**Navegador:** `test:ui:local` concluiu 13 checks HTTP e depois Playwright retornou `ERR_BLOCKED_BY_ADMINISTRATOR` em `page.goto`, antes das asserções de navegador. Há **14 checks browser escritos (três novos), zero aprovados nesta rodada**. Não há aprovação visual, mobile, acessibilidade ou integração DOM; testes de estado puro não a substituem.
 
-**Navegador:** o executor conseguiu realizar os 10 checks HTTP; depois Playwright bloqueou em `page.goto` com `ERR_BLOCKED_BY_ADMINISTRATOR`, antes das asserções do navegador. 11 verificações browser escritas, zero aprovadas nesta sessão. Nenhuma certificação visual/mobile/acessível.
+**Destino:** Supabase Auth, pooler/TLS, Netlify Functions, autorização do runtime real, carga, restauração e decisões operacionais ainda pendentes. A descoberta faz joins e checagens privadas; latência/índices precisam de medição. Uma requisição GET pode consumir contadores técnicos de rate limiting, embora o catálogo não crie/edite chamados, eventos ou contratos.
 
-**Runtime e operação:** Auth real, pooler/TLS, SQL/RLS/grants/locks/timeouts reais, bundle/execução Netlify Functions, carga, restore, pentest e revisão independente pendentes. Os novos timeouts aumentam round trips e exigem medição real antes de liberação.
+## Matriz de avanço
 
-## Matriz do M1
-
-| Item | Avanço | Saída ainda necessária |
+| Item | Avanço | Ainda necessário |
 |---|---|---|
-| HD-101 reprodutibilidade | Verificações e relatório atualizados | Registry, lock revisado, npm ci/audit e CI reais |
-| HD-102 persistência | Confirmação transacional; 11 cenários SQL adicionais | Executar 46 casos em PostgreSQL 17 e corrigir achados |
-| HD-103 runtime/identidade | Retorno M2M validado, self-revocation, controle transacional | Auth/pooler/Functions/revogação reais e impacto de latência |
-| HD-104 limites | Timeouts server-side por transação/statement | Concorrência, carga/abuso e calibração |
-| HD-105 interface | Stream HTTP vazio corrigido; 10 checks HTTP | Navegador e UI ligados ao backend homologado |
+| HD-101 dependências/CI | Gates atualizados às novas contagens | Registry, lock revisado, npm ci, auditoria e CI real |
+| HD-102 persistência | Helper/índice privados e 14 cenários adicionais | Executar 60 casos, instalação limpa e upgrade 0.4→0.5 em PostgreSQL 17 |
+| HD-103 runtime | API de descoberta conectada ao adaptador existente | Auth, TLS/pooler, bundle/execução Functions e exposição de schemas |
+| HD-104 limites | Página até 100, metadados limitados e guard de resposta | Plano de consulta, abuso/carga e calibração |
+| HD-105 interface | Abertura guiada e estado testado; HTTP aprovado | Navegador real, mobile, teclado, acessibilidade e falhas de rede |
 
-## Efeitos externos
+## Ambientes e limites de escopo
 
-**Nenhum push, PR, merge, deploy, migration remota, mudança de segredo, usuário ou MFA.** Não houve nova inspeção remota nesta rodada; estado antigo do GitHub/Supabase/Netlify não é apresentado como estado atual.
+**Sem push, PR, merge, deploy, migrations remotas, alteração de dados, segredo, usuário ou MFA.** Não houve nova inspeção remota. O pacote foi elaborado a partir do bundle anterior; observações antigas de GitHub/Supabase/Netlify não são uma confirmação atual.
 
-M2 não foi iniciado. Administração, intakes, anexos, SLA, filas/participantes, e-mails/webhooks/worker e suporte incorporado continuam fora desta implementação. Encerrar a própria sessão M2M não equivale ao módulo administrativo de credenciais.
+Esta entrega é evolução do fluxo de abertura do HD-105. **Não é o backoffice M2:** não cria usuários, contas, produtos, serviços, contratos ou credenciais administrativas. Configuração real permanece dependente do provisionamento aprovado. Intakes, participantes/filas, SLA operacional, anexos, notificações/worker/webhooks e suporte incorporado não foram implementados aqui.

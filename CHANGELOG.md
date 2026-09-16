@@ -1,5 +1,14 @@
 # v0.4.0 — M1c, transações e sessões M2M (local; não publicado)
 
+## 0.5.0 — 2026-09-16
+
+- Descoberta GET `/v1/support-contexts`: conta/instância/serviço autorizados, nomes públicos, paginação composta, scope existente e validação de projeção.
+- Formulário guiado substitui UUIDs manuais; seleção única condicionada à lista completa, opções múltiplas explícitas, erro/retry, paginação e estado isolado por geração.
+- Contextos deduplicados não escolhem contratos; resolução mantém ambiguidade, e criação revalida cobertura/suspensão. Seleção inicial de cobertura ambígua vazia.
+- Helper SQL e índice privados na migration 006; schema candidato 0.5.0, cinco migrations anteriores preservadas, sem novas tabelas ou execução remota.
+- 407 testes locais e 13 checks HTTP aprovados. 60 cenários PostgreSQL/14 browser escritos, ainda não homologados. OpenAPI 16 operações/13 caminhos.
+- M1 permanece aberto. Lock/instalação/audit, banco, runtime, navegador e gates de produção não aprovados. Sem push, deploy, segredo/MFA ou alterações remotas.
+
 - Corrige sucesso falso sem command tag COMMIT e descarte após confirmação incerta; não adiciona retry automático.
 - Control queries passam a transações na mesma conexão, contextos vazios e timeouts PostgreSQL 17.
 - Valida UUID/expiração da troca M2M e só projeta o contrato público.

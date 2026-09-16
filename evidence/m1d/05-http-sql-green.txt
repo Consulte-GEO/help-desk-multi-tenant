@@ -1,0 +1,328 @@
+TAP version 13
+# (node:1075) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalogue HTTP contract is a no-store public projection, not a serialized domain model
+ok 1 - catalogue HTTP contract is a no-store public projection, not a serialized domain model
+  ---
+  duration_ms: 22.334501
+  type: 'test'
+  ...
+# Subtest: catalogue requires an authenticated identity
+ok 2 - catalogue requires an authenticated identity
+  ---
+  duration_ms: 0.726089
+  type: 'test'
+  ...
+# Subtest: catalogue capability is available independently of administrative CRUD
+ok 3 - catalogue capability is available independently of administrative CRUD
+  ---
+  duration_ms: 0.480987
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?limit=0
+ok 4 - catalogue rejects ambiguous or malformed selector ?limit=0
+  ---
+  duration_ms: 0.445666
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?limit=101
+ok 5 - catalogue rejects ambiguous or malformed selector ?limit=101
+  ---
+  duration_ms: 0.636206
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?limit=NaN
+ok 6 - catalogue rejects ambiguous or malformed selector ?limit=NaN
+  ---
+  duration_ms: 0.397174
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?limit=1&limit=2
+ok 7 - catalogue rejects ambiguous or malformed selector ?limit=1&limit=2
+  ---
+  duration_ms: 0.325659
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?account_id=
+ok 8 - catalogue rejects ambiguous or malformed selector ?account_id=
+  ---
+  duration_ms: 0.324668
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?account_id=account-a&account_id=account-a
+ok 9 - catalogue rejects ambiguous or malformed selector ?account_id=account-a&account_id=account-a
+  ---
+  duration_ms: 0.827247
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?cursor=
+ok 10 - catalogue rejects ambiguous or malformed selector ?cursor=
+  ---
+  duration_ms: 0.817213
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?cursor=%25%25%25
+ok 11 - catalogue rejects ambiguous or malformed selector ?cursor=%25%25%25
+  ---
+  duration_ms: 0.898081
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?workspace_id=secret
+ok 12 - catalogue rejects ambiguous or malformed selector ?workspace_id=secret
+  ---
+  duration_ms: 0.260674
+  type: 'test'
+  ...
+# Subtest: catalogue rejects ambiguous or malformed selector ?offset=0
+ok 13 - catalogue rejects ambiguous or malformed selector ?offset=0
+  ---
+  duration_ms: 0.300542
+  type: 'test'
+  ...
+# Subtest: catalogue rejects an unauthorized known account without metadata
+ok 14 - catalogue rejects an unauthorized known account without metadata
+  ---
+  duration_ms: 0.568807
+  type: 'test'
+  ...
+# Subtest: catalogue is read-only: POST
+ok 15 - catalogue is read-only: POST
+  ---
+  duration_ms: 0.239613
+  type: 'test'
+  ...
+# Subtest: catalogue is read-only: DELETE
+ok 16 - catalogue is read-only: DELETE
+  ---
+  duration_ms: 0.199113
+  type: 'test'
+  ...
+# Subtest: catalogue is read-only: PATCH
+ok 17 - catalogue is read-only: PATCH
+  ---
+  duration_ms: 0.161087
+  type: 'test'
+  ...
+# Subtest: discovery performs no ticket, idempotency, audit or outbox writes
+ok 18 - discovery performs no ticket, idempotency, audit or outbox writes
+  ---
+  duration_ms: 0.536659
+  type: 'test'
+  ...
+# (node:1076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalogue adapter passes selectors as SQL parameters on the transaction client
+ok 19 - catalogue adapter passes selectors as SQL parameters on the transaction client
+  ---
+  duration_ms: 6.046616
+  type: 'test'
+  ...
+# Subtest: candidate catalogue migration retains explicit private scope/account/product checks
+ok 20 - candidate catalogue migration retains explicit private scope/account/product checks
+  ---
+  duration_ms: 8.589338
+  type: 'test'
+  ...
+# (node:1077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized requester discovers its account/product/service without typing identifiers
+ok 21 - authorized requester discovers its account/product/service without typing identifiers
+  ---
+  duration_ms: 3.550163
+  type: 'test'
+  ...
+# Subtest: catalogue omits sibling accounts and workspaces with identical context identifiers
+ok 22 - catalogue omits sibling accounts and workspaces with identical context identifiers
+  ---
+  duration_ms: 6.640841
+  type: 'test'
+  ...
+# Subtest: workspace agent without account grant does not discover every customer
+ok 23 - workspace agent without account grant does not discover every customer
+  ---
+  duration_ms: 0.318489
+  type: 'test'
+  ...
+# Subtest: human workspace administrator discovers eligible accounts in own workspace
+ok 24 - human workspace administrator discovers eligible accounts in own workspace
+  ---
+  duration_ms: 1.059178
+  type: 'test'
+  ...
+# Subtest: integration catalogue obeys connection product allowlist even with a known account
+ok 25 - integration catalogue obeys connection product allowlist even with a known account
+  ---
+  duration_ms: 0.672629
+  type: 'test'
+  ...
+# Subtest: integration never acquires workspace administrator bypass through catalogue
+ok 26 - integration never acquires workspace administrator bypass through catalogue
+  ---
+  duration_ms: 0.393809
+  type: 'test'
+  ...
+# Subtest: contexts:resolve is required before querying the store
+ok 27 - contexts:resolve is required before querying the store
+  ---
+  duration_ms: 0.491703
+  type: 'test'
+  ...
+# Subtest: an unauthorized account selector is rejected without existence lookup
+ok 28 - an unauthorized account selector is rejected without existence lookup
+  ---
+  duration_ms: 1.234616
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"enabled":false}
+ok 29 - ineligible coverage does not create a catalogue option: {"enabled":false}
+  ---
+  duration_ms: 0.616066
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"published":false}
+ok 30 - ineligible coverage does not create a catalogue option: {"published":false}
+  ---
+  duration_ms: 0.562307
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+ok 31 - ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+  ---
+  duration_ms: 0.520966
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+ok 32 - ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+  ---
+  duration_ms: 0.186495
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+ok 33 - ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+  ---
+  duration_ms: 0.223368
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+ok 34 - ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+  ---
+  duration_ms: 0.130022
+  type: 'test'
+  ...
+# Subtest: multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+ok 35 - multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+  ---
+  duration_ms: 0.452746
+  type: 'test'
+  ...
+# Subtest: catalogue selection never replaces contract revalidation on creation
+ok 36 - catalogue selection never replaces contract revalidation on creation
+  ---
+  duration_ms: 0.704416
+  type: 'test'
+  ...
+# Subtest: composite pagination is stable across identical services on different accounts and instances
+ok 37 - composite pagination is stable across identical services on different accounts and instances
+  ---
+  duration_ms: 1.583971
+  type: 'test'
+  ...
+# Subtest: cursor is bound to actor, workspace, and account filter
+ok 38 - cursor is bound to actor, workspace, and account filter
+  ---
+  duration_ms: 0.582306
+  type: 'test'
+  ...
+# Subtest: revocation between catalogue pages does not reveal previously eligible rows
+ok 39 - revocation between catalogue pages does not reveal previously eligible rows
+  ---
+  duration_ms: 0.318328
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 0
+ok 40 - catalogue refuses invalid limit 0
+  ---
+  duration_ms: 0.170821
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 101
+ok 41 - catalogue refuses invalid limit 101
+  ---
+  duration_ms: 0.102561
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit -1
+ok 42 - catalogue refuses invalid limit -1
+  ---
+  duration_ms: 0.159515
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 1.5
+ok 43 - catalogue refuses invalid limit 1.5
+  ---
+  duration_ms: 0.165453
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit NaN
+ok 44 - catalogue refuses invalid limit NaN
+  ---
+  duration_ms: 0.098504
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit Infinity
+ok 45 - catalogue refuses invalid limit Infinity
+  ---
+  duration_ms: 0.091344
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected 
+ok 46 - malformed catalogue cursor is rejected 
+  ---
+  duration_ms: 0.328964
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected %%%
+ok 47 - malformed catalogue cursor is rejected %%%
+  ---
+  duration_ms: 0.135579
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+ok 48 - malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+  ---
+  duration_ms: 0.104664
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+ok 49 - malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+  ---
+  duration_ms: 0.189659
+  type: 'test'
+  ...
+# Subtest: malformed or cross-workspace adapter data is rejected instead of serialized
+ok 50 - malformed or cross-workspace adapter data is rejected instead of serialized
+  ---
+  duration_ms: 0.281654
+  type: 'test'
+  ...
+# Subtest: private adapter extras cannot enter the catalogue projection
+ok 51 - private adapter extras cannot enter the catalogue projection
+  ---
+  duration_ms: 0.200495
+  type: 'test'
+  ...
+# Subtest: names and service codes remain text, including non-ASCII and HTML-like content
+ok 52 - names and service codes remain text, including non-ASCII and HTML-like content
+  ---
+  duration_ms: 0.788009
+  type: 'test'
+  ...
+1..52
+# tests 52
+# suites 0
+# pass 52
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249.151468

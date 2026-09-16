@@ -1,0 +1,657 @@
+TAP version 13
+# (node:953) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized requester discovers its account/product/service without typing identifiers
+not ok 1 - authorized requester discovers its account/product/service without typing identifiers
+  ---
+  duration_ms: 1.666757
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:16:48)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: catalogue omits sibling accounts and workspaces with identical context identifiers
+not ok 2 - catalogue omits sibling accounts and workspaces with identical context identifiers
+  ---
+  duration_ms: 0.34029
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:21:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: workspace agent without account grant does not discover every customer
+not ok 3 - workspace agent without account grant does not discover every customer
+  ---
+  duration_ms: 0.283887
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:24:58)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: human workspace administrator discovers eligible accounts in own workspace
+not ok 4 - human workspace administrator discovers eligible accounts in own workspace
+  ---
+  duration_ms: 0.237008
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:27:54)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration catalogue obeys connection product allowlist even with a known account
+not ok 5 - integration catalogue obeys connection product allowlist even with a known account
+  ---
+  duration_ms: 0.31332
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:31:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integration never acquires workspace administrator bypass through catalogue
+not ok 6 - integration never acquires workspace administrator bypass through catalogue
+  ---
+  duration_ms: 0.280852
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:35:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: contexts:resolve is required before querying the store
+not ok 7 - contexts:resolve is required before querying the store
+  ---
+  duration_ms: 0.377895
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: '(intermediate value).supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:39:51)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:39:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: an unauthorized account selector is rejected without existence lookup
+not ok 8 - an unauthorized account selector is rejected without existence lookup
+  ---
+  duration_ms: 0.255525
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:41:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.status (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:42:59)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:42:39)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"enabled":false}
+not ok 9 - ineligible coverage does not create a catalogue option: {"enabled":false}
+  ---
+  duration_ms: 0.546793
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"published":false}
+not ok 10 - ineligible coverage does not create a catalogue option: {"published":false}
+  ---
+  duration_ms: 0.659979
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+not ok 11 - ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+  ---
+  duration_ms: 0.271599
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+not ok 12 - ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+  ---
+  duration_ms: 0.159645
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+not ok 13 - ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+  ---
+  duration_ms: 0.138243
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+not ok 14 - ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+  ---
+  duration_ms: 0.147767
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:45:2'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:46:88)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+not ok 15 - multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+  ---
+  duration_ms: 0.257618
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:49:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:51:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue selection never replaces contract revalidation on creation
+not ok 16 - catalogue selection never replaces contract revalidation on creation
+  ---
+  duration_ms: 0.225011
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:54:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:55:57)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: composite pagination is stable across identical services on different accounts and instances
+not ok 17 - composite pagination is stable across identical services on different accounts and instances
+  ---
+  duration_ms: 0.404183
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:59:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:64:27)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: cursor is bound to actor, workspace, and account filter
+not ok 18 - cursor is bound to actor, workspace, and account filter
+  ---
+  duration_ms: 0.307932
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:67:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:69:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: revocation between catalogue pages does not reveal previously eligible rows
+not ok 19 - revocation between catalogue pages does not reveal previously eligible rows
+  ---
+  duration_ms: 0.214695
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:73:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:75:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit 0
+not ok 20 - catalogue refuses invalid limit 0
+  ---
+  duration_ms: 0.192773
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit 101
+not ok 21 - catalogue refuses invalid limit 101
+  ---
+  duration_ms: 0.146566
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit -1
+not ok 22 - catalogue refuses invalid limit -1
+  ---
+  duration_ms: 0.136641
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit 1.5
+not ok 23 - catalogue refuses invalid limit 1.5
+  ---
+  duration_ms: 0.169559
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit NaN
+not ok 24 - catalogue refuses invalid limit NaN
+  ---
+  duration_ms: 0.120727
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalogue refuses invalid limit Infinity
+not ok 25 - catalogue refuses invalid limit Infinity
+  ---
+  duration_ms: 0.166655
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:48'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:161)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:78:141)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed catalogue cursor is rejected 
+not ok 26 - malformed catalogue cursor is rejected 
+  ---
+  duration_ms: 0.2586
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:110'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:243)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:223)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed catalogue cursor is rejected %%%
+not ok 27 - malformed catalogue cursor is rejected %%%
+  ---
+  duration_ms: 0.143972
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:110'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:243)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:223)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+not ok 28 - malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+  ---
+  duration_ms: 0.180745
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:110'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:243)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:223)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+not ok 29 - malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+  ---
+  duration_ms: 0.152354
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:110'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:243)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:79:223)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed or cross-workspace adapter data is rejected instead of serialized
+not ok 30 - malformed or cross-workspace adapter data is rejected instead of serialized
+  ---
+  duration_ms: 0.189648
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:80:1'
+  failureType: 'testCodeFailure'
+  error: '(intermediate value).supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    assert.rejects.code (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:82:51)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:82:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: private adapter extras cannot enter the catalogue projection
+not ok 31 - private adapter extras cannot enter the catalogue projection
+  ---
+  duration_ms: 0.182138
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:84:1'
+  failureType: 'testCodeFailure'
+  error: '(intermediate value).supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:86:50)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: names and service codes remain text, including non-ASCII and HTML-like content
+not ok 32 - names and service codes remain text, including non-ASCII and HTML-like content
+  ---
+  duration_ms: 0.207856
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:88:1'
+  failureType: 'testCodeFailure'
+  error: 'service.supportContexts is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog.test.ts:90:34)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 0
+# fail 32
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 145.514748

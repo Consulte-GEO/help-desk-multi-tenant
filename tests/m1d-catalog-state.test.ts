@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+async function fresh() {
+ const path='../web/support-catalog-state.js';const m=await import(path).catch(()=>null);
+ assert.equal(typeof m?.createSupportCatalogState,'function','Guided opening state must exist');return m.createSupportCatalogState();
+}
+const item=(account='a')=>({account_id:account,account_name:'Conta '+account,product_instance_id:'system-prod',product_name:'Sistema',environment:'production',service_code:'SUPPORT',service_name:'Suporte'});
+const page=(items:any[],next_cursor:string|null=null)=>({items,next_cursor});
+const key=(v:any)=>JSON.stringify([v.account_id,v.product_instance_id,v.service_code]);
+test('catalog UI selects the sole final option without manual UUIDs',async()=>{const s=await fresh();const op=s.begin();assert.equal(s.status(),'loading');assert.equal(s.canSubmit(),false);assert.equal(s.accept(op,page([item()])),true);assert.deepEqual(s.selection(),item());assert.equal(s.status(),'ready');assert.equal(s.canSubmit(),true);});
+test('catalog UI never silently chooses among multiple options',async()=>{const s=await fresh();s.accept(s.begin(),page([item(),item('b')]));assert.equal(s.selection(),null);assert.equal(s.canSubmit(),false);assert.equal(s.select(key(item('b'))),true);assert.equal(s.canSubmit(),true);});
+test('catalog UI does not auto-select one row while another page exists',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));assert.equal(s.selection(),null);assert.equal(s.next(),'cursor-2');});
+test('catalog UI preserves explicit choice across further pages',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));s.select(key(item()));const op=s.begin();assert.equal(op.cursor,'cursor-2');assert.equal(s.canSubmit(),false);s.accept(op,page([item('b')]));assert.equal(s.selection().account_id,'a');assert.equal(s.choices().length,2);});
+test('catalog UI empty result does not fabricate an eligible service',async()=>{const s=await fresh();s.accept(s.begin(),page([]));assert.equal(s.status(),'empty');assert.equal(s.canSubmit(),false);assert.equal(s.begin(),null);});
+test('catalog UI rejects selection not present in authorized choices',async()=>{const s=await fresh();s.accept(s.begin(),page([item()]));assert.equal(s.select(key(item('foreign'))),false);assert.equal(s.selection(),null);});
+test('catalog UI reset clears metadata and discards a late response',async()=>{const s=await fresh();const op=s.begin();s.reset();assert.equal(s.accept(op,page([item()])),false);assert.equal(s.choices().length,0);assert.equal(s.status(),'idle');});
+test('catalog UI late failure cannot erase a newer session catalog',async()=>{const s=await fresh();const old=s.begin();s.reset();s.accept(s.begin(),page([item('new')]));assert.equal(s.fail(old),false);assert.equal(s.selection().account_id,'new');});
+test('catalog UI disallows concurrent loads and duplicate completion',async()=>{const s=await fresh();const op=s.begin();assert.equal(s.begin(),null);s.accept(op,page([item()]));assert.equal(s.accept(op,page([item('other')])),false);assert.equal(s.selection().account_id,'a');});
+test('catalog UI failure supports retry of the same page only',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));const op=s.begin();assert.equal(s.fail(op),true);assert.equal(s.status(),'error');assert.equal(s.canSubmit(),false);assert.equal(s.begin().cursor,'cursor-2');});
+test('catalog UI returned copies cannot mutate the private selection',async()=>{const s=await fresh();s.accept(s.begin(),page([item()]));s.choices()[0].account_name='altered';s.selection().account_name='altered';assert.equal(s.selection().account_name,'Conta a');});
+test('catalog UI projects labels as plain strings and strips private extras',async()=>{const s=await fresh();const value={...item(),account_name:'<img src=x onerror=alert(1)>',internal_notes:'secret'};s.accept(s.begin(),page([value]));assert.equal(s.selection().account_name,value.account_name);assert.equal(s.selection().internal_notes,undefined);});
+for(const [name,value] of Object.entries({notArray:{items:{},next_cursor:null},missingCursor:{items:[item()]},invalidName:page([{...item(),account_name:''}]),badEnvironment:page([{...item(),environment:'arbitrary'}]),overlongPage:page(Array.from({length:101},(_,i)=>item(String(i)))),duplicate:page([item(),item()]),emptyContinued:page([],'cursor-2'),invalidCursor:page([item()],'#not-a-cursor')})) {
+ test('catalog UI refuses invalid response '+name,async()=>{const s=await fresh();assert.equal(s.accept(s.begin(),value),false);assert.equal(s.status(),'error');assert.equal(s.canSubmit(),false);assert.equal(s.choices().length,0);});
+}
+test('catalog UI rejects duplicate options across pages atomically',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));assert.equal(s.accept(s.begin(),page([item('b'),item()])),false);assert.equal(s.choices().length,1);});
+test('catalog UI rejects repeated cursor instead of an endless load loop',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));assert.equal(s.accept(s.begin(),page([item('b')],'cursor-2')),false);assert.equal(s.choices().length,1);});
+test('catalog UI a loading operation cannot be forged from its fields',async()=>{const s=await fresh();const op=s.begin();assert.equal(s.accept({...op},page([item()])),false);assert.equal(s.status(),'loading');});
+test('catalog UI selection survives retry without selecting another account',async()=>{const s=await fresh();s.accept(s.begin(),page([item()],'cursor-2'));s.select(key(item()));s.fail(s.begin());s.accept(s.begin(),page([item('b')]));assert.equal(s.selection().account_id,'a');assert.equal(s.canSubmit(),true);});

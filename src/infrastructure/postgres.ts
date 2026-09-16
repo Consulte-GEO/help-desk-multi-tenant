@@ -1,3 +1,4 @@
+import type {CatalogWindow,SupportCatalogEntry} from '../application/support-catalog.ts';
 import {runTransaction} from './transaction.ts';
 export {withControlTransactions} from './transaction.ts';
 import type {PageWindow} from '../application/pagination.ts';
@@ -21,7 +22,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.4.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!=='0.5.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 /** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
@@ -57,6 +58,11 @@ class PostgresStore implements Store{
  readonly c:SqlClient;readonly p:Principal;constructor(c:SqlClient,p:Principal){this.c=c;this.p=p;}
  // Table and column names in this helper are developer-owned constants, never request values.
  private async insert(table:string,columns:string[],values:unknown[]):Promise<void>{await this.c.query(`insert into ${table} (${columns.join(',')}) values (${values.map((_,i)=>'$'+(i+1)).join(',')})`,values);}
+ async supportContexts(window:CatalogWindow,_at:string):Promise<SupportCatalogEntry[]>{
+  const rows=(await this.c.query('select item from helpdesk_auth.support_contexts($1,$2,$3,$4,$5,$6) as result(item)',
+   [this.p.workspaceId,window.accountId??null,window.after?.accountId??null,window.after?.productInstanceId??null,window.after?.serviceCode??null,window.limit])).rows;
+  return rows.map(r=>r.item as SupportCatalogEntry);
+ }
  async coverages(context:SupportContext):Promise<Coverage[]>{const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
  async getTicket(id:string,lock=false):Promise<Ticket|null>{const r=(await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
  async listTickets(limit:number,cursor:Cursor|null,accountId?:string):Promise<Ticket[]>{return (await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and ($2::uuid is null or account_id=$2) and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5`,[this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit])).rows.map(ticket);}

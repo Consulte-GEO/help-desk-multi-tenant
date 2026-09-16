@@ -1,0 +1,34 @@
+# SERVER-TO-SERVER example; placeholders only, not real credentials.
+# The browser uses its human identity, never the consumer's long-lived M2M key.
+@baseUrl = https://helpdesk.example.invalid
+@session = REPLACE_WITH_SHORT_SESSION
+@workspace = 00000000-0000-4000-8000-000000000001
+
+### Discover accounts, product instances and services authorized for the current principal.
+# Requires contexts:resolve. Returns zero, one or several options; no automatic contract choice.
+GET {{baseUrl}}/v1/support-contexts?limit=50
+Authorization: Bearer {{session}}
+X-Workspace-Id: {{workspace}}
+
+### Next page: URL-encode the exact next_cursor, with the same identity/workspace/filter.
+# Do not reuse cursor across identities. Discovery is live, not a snapshot/reservation.
+GET {{baseUrl}}/v1/support-contexts?limit=50&cursor=REPLACE_WITH_URL_ENCODED_CURSOR
+Authorization: Bearer {{session}}
+X-Workspace-Id: {{workspace}}
+
+### Resolve a chosen option; below are synthetic example identifiers, not existing resources.
+POST {{baseUrl}}/v1/contexts/resolve
+Authorization: Bearer {{session}}
+X-Workspace-Id: {{workspace}}
+Content-Type: application/json
+
+{
+  "account_id": "00000000-0000-4000-8000-000000000101",
+  "product_instance_id": "00000000-0000-4000-8000-000000000401",
+  "service_code": "SUPPORT"
+}
+
+# On ambiguous: show candidates and require explicit coverage_id at creation.
+# On no_coverage: do not invent a contract. Intakes are not implemented yet.
+# POST /v1/tickets revalidates scope/coverage again and requires Idempotency-Key.
+# Selecting or retaining an option does not override a later suspension/revocation.

@@ -213,3 +213,82 @@ test('M1c concurrent termination is idempotent and does not affect peer sessions
  await assert.rejects(()=>f.auth.authenticate(f.request(session.access_token)),{status:403});
  assert.equal((await f.auth.authenticate(f.request(peer.access_token))).kind,'integration');
 });
+
+// M1d: written database scenarios, run ONLY in a fresh local PostgreSQL 17.
+const catalogSQL='select item from helpdesk_auth.support_contexts($1,$2,$3,$4,$5,$6) as result(item)';
+const catalogArgs=(workspace=1):unknown[]=>[id(workspace),null,null,null,null,51];
+test('M1d real catalog returns only authorized account labels in each workspace',async()=>{
+ for(const [actor,account,workspace] of [[alice,101,1],[bob,102,1],[outsider,201,2]] as const){
+  const page=await service.supportContexts(actor,{limit:50});assert.equal(page.items.length,1);
+  assert.deepEqual(page.items[0],{workspaceId:id(workspace),accountId:id(account),accountName:'Account '+account,productInstanceId:id(400+workspace),productName:'Product',environment:'staging',serviceCode:'SUPPORT',serviceName:'Support'});
+ }
+});
+test('M1d forbidden account filters are denied in both service and private helper',async()=>{
+ await assert.rejects(()=>service.supportContexts(alice,{limit:50,accountId:id(102)}),{status:404});
+ await assert.rejects(()=>sqlAs(alice,catalogSQL,[id(1),id(102),null,null,null,51]),{code:'42501'});
+});
+test('M1d a selected foreign workspace cannot override the transaction workspace',async()=>{
+ await assert.rejects(()=>sqlAs(alice,catalogSQL,catalogArgs(2)),{code:'42501'});
+ await assert.rejects(()=>sqlAs(alice,catalogSQL,[null,null,null,null,null,51]),{code:'42501'});
+});
+test('M1d revoking a live account grant clears catalog despite a cached principal',async()=>{
+ await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);
+ try{assert.equal((await service.supportContexts(alice,{limit:50})).items.length,0);}
+ finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}
+});
+test('M1d machine discovery respects its live account binding and product instance',async()=>{
+ const page=await service.supportContexts(machine,{limit:100});assert.equal(page.items.length,1);assert.equal(page.items[0]?.accountId,id(101));assert.equal(page.items[0]?.productInstanceId,id(401));
+ await admin.query('update helpdesk_auth.source_scope_bindings set active=false where connection_id=$1',[id(802)]);
+ try{assert.equal((await service.supportContexts(machine,{limit:100})).items.length,0);}
+ finally{await admin.query('update helpdesk_auth.source_scope_bindings set active=true where connection_id=$1',[id(802)]);}
+});
+test('M1d removing contexts scope denies SQL discovery even with old principal scopes',async()=>{
+ await admin.query("update helpdesk_auth.integration_connections set scopes=array['tickets:read'] where id=$1",[id(802)]);
+ try{await assert.rejects(()=>sqlAs(machine,catalogSQL,catalogArgs()),{code:'42501'});}
+ finally{await admin.query('update helpdesk_auth.integration_connections set scopes=$1 where id=$2',[machine.scopes,id(802)]);}
+});
+test('M1d disabled coverage disappears from real catalog',async()=>{
+ await admin.query('update helpdesk_core.coverages set enabled=false where id=$1',[id(701)]);
+ try{assert.equal((await service.supportContexts(alice,{limit:50})).items.length,0);}
+ finally{await admin.query('update helpdesk_core.coverages set enabled=true where id=$1',[id(701)]);}
+});
+test('M1d suspension after catalog selection still blocks the actual creation',async()=>{
+ assert.equal((await service.supportContexts(alice,{limit:50})).items.length,1);
+ await admin.query("update helpdesk_core.support_contracts set status='suspended' where id=$1",[id(501)]);
+ try{assert.equal((await service.supportContexts(alice,{limit:50})).items.length,0);await assert.rejects(()=>service.create(alice,input,'m1d-selected-then-suspended','db-test'),{status:422});}
+ finally{await admin.query("update helpdesk_core.support_contracts set status='active' where id=$1",[id(501)]);}
+});
+test('M1d duplicate eligible coverages remain one option but resolution stays ambiguous',async()=>{
+ const duplicate=randomUUID();await admin.query('insert into helpdesk_core.coverages(workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,id) select workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,$1 from helpdesk_core.coverages where id=$2',[duplicate,id(701)]);
+ try{assert.equal((await service.supportContexts(alice,{limit:50})).items.length,1);assert.equal((await service.resolve(alice,input)).status,'ambiguous');}
+ finally{await admin.query('delete from helpdesk_core.coverages where id=$1',[duplicate]);}
+});
+test('M1d real composite cursor follows UTF-8 C order without duplicates',async()=>{
+ const codes=['AA','ZETA','ÁUDIO'],coverageIds:string[]=[];
+ try{
+  for(const code of codes){await admin.query('insert into helpdesk_core.services(workspace_id,product_id,code,name) values($1,$2,$3,$4)',[id(1),id(301),code,'Service '+code]);const cid=randomUUID();coverageIds.push(cid);await admin.query('insert into helpdesk_core.coverages(workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,id) values($1,$2,$3,$4,$5,$6,$7)',[id(1),id(101),id(301),id(401),code,id(601),cid]);}
+  const seen:string[]=[];let cursor:string|undefined;
+  do{const page=await service.supportContexts(alice,{limit:1,...(cursor?{cursor}:{})});seen.push(...page.items.map(c=>c.serviceCode));cursor=page.nextCursor??undefined;assert.ok(seen.length<=4);}while(cursor);
+  assert.deepEqual(seen,[...codes,'SUPPORT'].sort((a,b)=>Buffer.compare(Buffer.from(a),Buffer.from(b))));
+ }finally{await admin.query('delete from helpdesk_core.coverages where id=any($1::uuid[])',[coverageIds]);await admin.query('delete from helpdesk_core.services where workspace_id=$1 and product_id=$2 and code=any($3::text[])',[id(1),id(301),codes]);}
+});
+test('M1d private catalog rejects partial cursor tuples and invalid page bounds',async()=>{
+ for(const args of [[id(1),null,id(101),null,null,51],[id(1),null,null,null,null,0],[id(1),null,null,null,null,102],[id(1),null,null,null,null,null]])await assert.rejects(()=>sqlAs(alice,catalogSQL,args),{code:'22023'});
+});
+test('M1d catalog helper is private and gives no new direct catalogue table grants',async()=>{
+ const signature='helpdesk_auth.support_contexts(uuid,uuid,uuid,uuid,text,integer)';
+ const r=await admin.query("select p.prosecdef,p.proconfig,has_function_privilege('helpdesk_app',p.oid,'EXECUTE') as app,has_function_privilege('helpdesk_maintenance',p.oid,'EXECUTE') as maintenance from pg_proc p where p.oid=$1::regprocedure",[signature]);
+ assert.equal(r.rows[0]?.prosecdef,true);assert.equal(r.rows[0]?.app,true);assert.equal(r.rows[0]?.maintenance,false);
+ assert.ok((r.rows[0]?.proconfig as string[]).some(v=>v==='search_path=""'||v==='search_path='));
+ const grants=await admin.query("select grantee from pg_proc p cross join lateral aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where p.oid=$1::regprocedure and a.grantee=0 and a.privilege_type='EXECUTE'",[signature]);assert.equal(grants.rows.length,0);
+ await assert.rejects(()=>sqlAs(alice,'select * from helpdesk_core.products'),{code:'42501'});
+});
+test('M1d catalog truncates Unicode labels by characters, not UTF-16 units',async()=>{
+ await admin.query('update helpdesk_core.accounts set name=$1 where id=$2',['😀'.repeat(180),id(101)]);
+ try{const page=await service.supportContexts(alice,{limit:50});assert.equal(page.items[0]?.accountName,'😀'.repeat(160));}
+ finally{await admin.query("update helpdesk_core.accounts set name='Account 101' where id=$1",[id(101)]);}
+});
+test('M1d discovery does not create tickets, events or outbox side effects',async()=>{
+ const counts="select (select count(*) from helpdesk_core.tickets) as tickets,(select count(*) from helpdesk_core.ticket_events) as events,(select count(*) from helpdesk_integration.outbox_events) as outbox";
+ const before=(await admin.query(counts)).rows;await service.supportContexts(alice,{limit:50});assert.deepEqual((await admin.query(counts)).rows,before);
+});

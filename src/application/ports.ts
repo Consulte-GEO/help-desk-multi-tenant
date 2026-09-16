@@ -1,3 +1,4 @@
+import type {CatalogWindow,SupportCatalogEntry} from './support-catalog.ts';
 import type {PageWindow} from './pagination.ts';
 import type {Principal,Coverage,Ticket,PublicMessage,InternalNote,TicketEvent,OutboxEvent} from '../domain/model.ts';
 export type SupportContext={accountId:string;productInstanceId:string;serviceCode:string};
@@ -5,6 +6,7 @@ export type CreateTicket=SupportContext&{subject:string;description:string;prior
 export type StoredResult={principalId:string;workspaceId:string;operation:string;key:string;hash:string;result:unknown;expired?:boolean;denied?:boolean};
 export type Cursor={id:string;at:string;filter:string};
 export interface Store{
+  supportContexts(window:CatalogWindow,at:string):Promise<SupportCatalogEntry[]>;
   coverages(context:SupportContext):Promise<Coverage[]>;
   getTicket(id:string,lock?:boolean):Promise<Ticket|null>;
   listTickets(limit:number,cursor:Cursor|null,accountId?:string):Promise<Ticket[]>;

@@ -201,3 +201,8 @@ Depois da operação humana estável, priorizar respostas salvas/macros, base de
 ## Atualização v0.3.0 — 16/09/2026
 
 Continuidade de M1: 274 testes locais e nove verificações HTTP de memória aprovados. Correções de vigência após espera, identidade, entrada HTTP e estado de mutações; novo gate com evidência por etapa. M1 ainda aberto: dependências limpas, 35 testes SQL, Auth/pooler/Functions, browser e capacidade. M2 não iniciado. Estado detalhado e limitações em `04-ESTADO-E-EVIDENCIAS.md`; executor em `07-M1B-HOMOLOGACAO.md`.
+
+
+## Atualização de execução — v0.5.0 (16/09/2026)
+
+HD-105 recebeu catálogo autorizado e abertura guiada. Leitura sobre entidades existentes, não CRUD M2. Aplicação/HTTP/estado local: 407 testes; smoke de memória: 13 checks. Migration 006 e 60 cenários SQL aguardam PostgreSQL real; 14 browser aguardam execução autorizada. HD-101–104 continuam com as condições de homologação anteriores. Não considerar incremento de testes locais como fechamento M1. Detalhes e evidências atuais em documentos 04/05/09; demais números históricos deste plano referem-se às respectivas versões.

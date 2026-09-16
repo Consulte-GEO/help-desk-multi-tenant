@@ -1,0 +1,240 @@
+TAP version 13
+# (node:1918) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized requester discovers its account/product/service without typing identifiers
+ok 1 - authorized requester discovers its account/product/service without typing identifiers
+  ---
+  duration_ms: 4.708846
+  type: 'test'
+  ...
+# Subtest: catalogue omits sibling accounts and workspaces with identical context identifiers
+ok 2 - catalogue omits sibling accounts and workspaces with identical context identifiers
+  ---
+  duration_ms: 7.969545
+  type: 'test'
+  ...
+# Subtest: workspace agent without account grant does not discover every customer
+ok 3 - workspace agent without account grant does not discover every customer
+  ---
+  duration_ms: 0.293862
+  type: 'test'
+  ...
+# Subtest: human workspace administrator discovers eligible accounts in own workspace
+ok 4 - human workspace administrator discovers eligible accounts in own workspace
+  ---
+  duration_ms: 0.221666
+  type: 'test'
+  ...
+# Subtest: integration catalogue obeys connection product allowlist even with a known account
+ok 5 - integration catalogue obeys connection product allowlist even with a known account
+  ---
+  duration_ms: 2.031995
+  type: 'test'
+  ...
+# Subtest: integration never acquires workspace administrator bypass through catalogue
+ok 6 - integration never acquires workspace administrator bypass through catalogue
+  ---
+  duration_ms: 0.287973
+  type: 'test'
+  ...
+# Subtest: contexts:resolve is required before querying the store
+ok 7 - contexts:resolve is required before querying the store
+  ---
+  duration_ms: 0.486244
+  type: 'test'
+  ...
+# Subtest: an unauthorized account selector is rejected without existence lookup
+ok 8 - an unauthorized account selector is rejected without existence lookup
+  ---
+  duration_ms: 0.216978
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"enabled":false}
+ok 9 - ineligible coverage does not create a catalogue option: {"enabled":false}
+  ---
+  duration_ms: 0.473606
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"published":false}
+ok 10 - ineligible coverage does not create a catalogue option: {"published":false}
+  ---
+  duration_ms: 0.49694
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+ok 11 - ineligible coverage does not create a catalogue option: {"contractStatus":"suspended"}
+  ---
+  duration_ms: 0.343134
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+ok 12 - ineligible coverage does not create a catalogue option: {"contractStatus":"terminated"}
+  ---
+  duration_ms: 0.176569
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+ok 13 - ineligible coverage does not create a catalogue option: {"validUntil":"2026-09-16T12:00:00.000Z"}
+  ---
+  duration_ms: 0.21046
+  type: 'test'
+  ...
+# Subtest: ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+ok 14 - ineligible coverage does not create a catalogue option: {"validFrom":"2026-09-17T00:00:00Z"}
+  ---
+  duration_ms: 0.145784
+  type: 'test'
+  ...
+# Subtest: multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+ok 15 - multiple valid contracts produce one option and preserve explicit ambiguity at resolve
+  ---
+  duration_ms: 0.54473
+  type: 'test'
+  ...
+# Subtest: catalogue selection never replaces contract revalidation on creation
+ok 16 - catalogue selection never replaces contract revalidation on creation
+  ---
+  duration_ms: 0.869568
+  type: 'test'
+  ...
+# Subtest: composite pagination is stable across identical services on different accounts and instances
+ok 17 - composite pagination is stable across identical services on different accounts and instances
+  ---
+  duration_ms: 1.566391
+  type: 'test'
+  ...
+# Subtest: cursor is bound to actor, workspace, and account filter
+ok 18 - cursor is bound to actor, workspace, and account filter
+  ---
+  duration_ms: 0.515787
+  type: 'test'
+  ...
+# Subtest: revocation between catalogue pages does not reveal previously eligible rows
+ok 19 - revocation between catalogue pages does not reveal previously eligible rows
+  ---
+  duration_ms: 0.337285
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 0
+ok 20 - catalogue refuses invalid limit 0
+  ---
+  duration_ms: 0.167586
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 101
+ok 21 - catalogue refuses invalid limit 101
+  ---
+  duration_ms: 0.151552
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit -1
+ok 22 - catalogue refuses invalid limit -1
+  ---
+  duration_ms: 0.243107
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit 1.5
+ok 23 - catalogue refuses invalid limit 1.5
+  ---
+  duration_ms: 0.116211
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit NaN
+ok 24 - catalogue refuses invalid limit NaN
+  ---
+  duration_ms: 0.13673
+  type: 'test'
+  ...
+# Subtest: catalogue refuses invalid limit Infinity
+ok 25 - catalogue refuses invalid limit Infinity
+  ---
+  duration_ms: 0.101289
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected 
+ok 26 - malformed catalogue cursor is rejected 
+  ---
+  duration_ms: 0.236087
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected %%%
+ok 27 - malformed catalogue cursor is rejected %%%
+  ---
+  duration_ms: 0.12316
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+ok 28 - malformed catalogue cursor is rejected aaaaaaaaaaaaaaaaaaaa
+  ---
+  duration_ms: 0.104544
+  type: 'test'
+  ...
+# Subtest: malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+ok 29 - malformed catalogue cursor is rejected eyJzY29wZSI6ImludmVu
+  ---
+  duration_ms: 0.129971
+  type: 'test'
+  ...
+# Subtest: malformed or cross-workspace adapter data is rejected instead of serialized
+ok 30 - malformed or cross-workspace adapter data is rejected instead of serialized
+  ---
+  duration_ms: 0.31326
+  type: 'test'
+  ...
+# Subtest: private adapter extras cannot enter the catalogue projection
+ok 31 - private adapter extras cannot enter the catalogue projection
+  ---
+  duration_ms: 0.291148
+  type: 'test'
+  ...
+# Subtest: names and service codes remain text, including non-ASCII and HTML-like content
+ok 32 - names and service codes remain text, including non-ASCII and HTML-like content
+  ---
+  duration_ms: 0.208316
+  type: 'test'
+  ...
+# Subtest: catalogue rejects control characters consistently with guided UI {"accountName":"Conta\\nA"}
+ok 33 - catalogue rejects control characters consistently with guided UI {"accountName":"Conta\\nA"}
+  ---
+  duration_ms: 0.218692
+  type: 'test'
+  ...
+# Subtest: catalogue rejects control characters consistently with guided UI {"serviceCode":"SUPPORT"}
+ok 34 - catalogue rejects control characters consistently with guided UI {"serviceCode":"SUPPORT"}
+  ---
+  duration_ms: 0.119606
+  type: 'test'
+  ...
+# Subtest: catalogue accepts names of 160 Unicode characters even above 160 UTF-16 units
+ok 35 - catalogue accepts names of 160 Unicode characters even above 160 UTF-16 units
+  ---
+  duration_ms: 0.333019
+  type: 'test'
+  ...
+# Subtest: catalogue refuses adapter ordering or page-bound violation duplicate
+ok 36 - catalogue refuses adapter ordering or page-bound violation duplicate
+  ---
+  duration_ms: 0.202056
+  type: 'test'
+  ...
+# Subtest: catalogue refuses adapter ordering or page-bound violation wrongOrder
+ok 37 - catalogue refuses adapter ordering or page-bound violation wrongOrder
+  ---
+  duration_ms: 0.111573
+  type: 'test'
+  ...
+# Subtest: catalogue refuses adapter ordering or page-bound violation oversized
+ok 38 - catalogue refuses adapter ordering or page-bound violation oversized
+  ---
+  duration_ms: 0.090142
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 177.382165

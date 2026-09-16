@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -312,6 +312,99 @@
             }
           }
         }
+      }
+    },
+    "/support-contexts": {
+      "get": {
+        "operationId": "listSupportContexts",
+        "summary": "Contas, sistemas e serviços elegíveis para o ator atual.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1600
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+              "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportContextPage"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 60
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "description": "Requer contexts:resolve. Opções agrupadas por conta, instância e serviço; apenas coberturas habilitadas, publicadas, ativas e vigentes. Não expõe políticas ou IDs contratuais. É uma descoberta consultiva, não uma reserva nem garantia de criação. Resolve/create revalidam. Cursor por identificadores, vinculado a ator/workspace/filtro, sem snapshot entre páginas. Atualizar a lista após mudanças de vínculo/cobertura."
       }
     },
     "/contexts/resolve": {
@@ -2058,6 +2151,83 @@
             }
           }
         }
+      },
+      "SupportContextOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "product_instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "service_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "account_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "product_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "development",
+              "staging",
+              "production"
+            ]
+          },
+          "service_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "account_id",
+          "product_instance_id",
+          "service_code",
+          "account_name",
+          "product_name",
+          "environment",
+          "service_name"
+        ]
+      },
+      "SupportContextPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportContextOption"
+            },
+            "maxItems": 100
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1600
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
       }
     }
   }

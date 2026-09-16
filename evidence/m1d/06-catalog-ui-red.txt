@@ -1,0 +1,612 @@
+TAP version 13
+# (node:1173) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog UI selects the sole final option without manual UUIDs
+not ok 1 - catalog UI selects the sole final option without manual UUIDs
+  ---
+  duration_ms: 2.869978
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:10:88)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: catalog UI never silently chooses among multiple options
+not ok 2 - catalog UI never silently chooses among multiple options
+  ---
+  duration_ms: 0.484232
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:11:83)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI does not auto-select one row while another page exists
+not ok 3 - catalog UI does not auto-select one row while another page exists
+  ---
+  duration_ms: 0.82326
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:12:92)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI preserves explicit choice across further pages
+not ok 4 - catalog UI preserves explicit choice across further pages
+  ---
+  duration_ms: 1.178362
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:13:84)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI empty result does not fabricate an eligible service
+not ok 5 - catalog UI empty result does not fabricate an eligible service
+  ---
+  duration_ms: 1.261894
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:14:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI rejects selection not present in authorized choices
+not ok 6 - catalog UI rejects selection not present in authorized choices
+  ---
+  duration_ms: 0.661391
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:15:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI reset clears metadata and discards a late response
+not ok 7 - catalog UI reset clears metadata and discards a late response
+  ---
+  duration_ms: 0.375201
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:16:88)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI late failure cannot erase a newer session catalog
+not ok 8 - catalog UI late failure cannot erase a newer session catalog
+  ---
+  duration_ms: 0.325588
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:17:87)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI disallows concurrent loads and duplicate completion
+not ok 9 - catalog UI disallows concurrent loads and duplicate completion
+  ---
+  duration_ms: 0.647271
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:18:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI failure supports retry of the same page only
+not ok 10 - catalog UI failure supports retry of the same page only
+  ---
+  duration_ms: 1.659178
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:19:82)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI returned copies cannot mutate the private selection
+not ok 11 - catalog UI returned copies cannot mutate the private selection
+  ---
+  duration_ms: 0.353149
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:20:89)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI projects labels as plain strings and strips private extras
+not ok 12 - catalog UI projects labels as plain strings and strips private extras
+  ---
+  duration_ms: 0.453897
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:21:96)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response notArray
+not ok 13 - catalog UI refuses invalid response notArray
+  ---
+  duration_ms: 0.257699
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response missingCursor
+not ok 14 - catalog UI refuses invalid response missingCursor
+  ---
+  duration_ms: 0.194837
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response invalidName
+not ok 15 - catalog UI refuses invalid response invalidName
+  ---
+  duration_ms: 0.242647
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response badEnvironment
+not ok 16 - catalog UI refuses invalid response badEnvironment
+  ---
+  duration_ms: 0.607873
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response overlongPage
+not ok 17 - catalog UI refuses invalid response overlongPage
+  ---
+  duration_ms: 0.36056
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response duplicate
+not ok 18 - catalog UI refuses invalid response duplicate
+  ---
+  duration_ms: 0.28604
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response emptyContinued
+not ok 19 - catalog UI refuses invalid response emptyContinued
+  ---
+  duration_ms: 0.397434
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI refuses invalid response invalidCursor
+not ok 20 - catalog UI refuses invalid response invalidCursor
+  ---
+  duration_ms: 0.322454
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:23:69)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI rejects duplicate options across pages atomically
+not ok 21 - catalog UI rejects duplicate options across pages atomically
+  ---
+  duration_ms: 0.376253
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:25:87)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI rejects repeated cursor instead of an endless load loop
+not ok 22 - catalog UI rejects repeated cursor instead of an endless load loop
+  ---
+  duration_ms: 1.45626
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:26:93)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI a loading operation cannot be forged from its fields
+not ok 23 - catalog UI a loading operation cannot be forged from its fields
+  ---
+  duration_ms: 0.391656
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:27:90)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: catalog UI selection survives retry without selecting another account
+not ok 24 - catalog UI selection survives retry without selecting another account
+  ---
+  duration_ms: 0.371806
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Guided opening state must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    fresh (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:5:9)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.5.0/tests/m1d-catalog-state.test.ts:28:96)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 0
+# fail 24
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 143.290925

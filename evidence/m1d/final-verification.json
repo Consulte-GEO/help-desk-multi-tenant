@@ -1,0 +1,151 @@
+{
+  "scope": "Local tests only; NOT PostgreSQL/browser/remote runtime approval",
+  "versions": {
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "typescript_environment": "Version 5.8.3",
+    "node_types_environment": "25.1.0"
+  },
+  "checks": [
+    {
+      "name": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "started_at": "2026-09-16T16:25:12.351514+00:00",
+      "ended_at": "2026-09-16T16:25:14.402747+00:00",
+      "exit_code": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "name": "final-typecheck-environment",
+      "command": [
+        "tsc",
+        "--noEmit",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "started_at": "2026-09-16T16:25:14.402789+00:00",
+      "ended_at": "2026-09-16T16:25:15.849194+00:00",
+      "exit_code": 0,
+      "log": "final-typecheck-environment.txt"
+    },
+    {
+      "name": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "started_at": "2026-09-16T16:25:15.849245+00:00",
+      "ended_at": "2026-09-16T16:25:16.042160+00:00",
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "name": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "started_at": "2026-09-16T16:25:16.042237+00:00",
+      "ended_at": "2026-09-16T16:25:16.184543+00:00",
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "name": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started_at": "2026-09-16T16:25:16.184586+00:00",
+      "ended_at": "2026-09-16T16:25:16.310603+00:00",
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "name": "final-verify-manifest",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "started_at": "2026-09-16T16:25:16.310648+00:00",
+      "ended_at": "2026-09-16T16:25:19.591333+00:00",
+      "exit_code": 2,
+      "log": "final-verify-manifest.txt"
+    },
+    {
+      "name": "final-ui-attempt",
+      "command": [
+        "npm",
+        "run",
+        "test:ui:local"
+      ],
+      "started_at": "2026-09-16T16:25:19.591431+00:00",
+      "ended_at": "2026-09-16T16:25:21.529389+00:00",
+      "exit_code": 1,
+      "log": "final-ui-attempt.txt"
+    },
+    {
+      "name": "final-homologation",
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "started_at": "2026-09-16T16:25:21.529456+00:00",
+      "ended_at": "2026-09-16T16:25:21.719453+00:00",
+      "exit_code": 1,
+      "log": "final-homologation.txt"
+    },
+    {
+      "name": "final-homologation-gate",
+      "command": [
+        "npm",
+        "run",
+        "check:homologation"
+      ],
+      "started_at": "2026-09-16T16:25:21.719497+00:00",
+      "ended_at": "2026-09-16T16:25:21.860291+00:00",
+      "exit_code": 1,
+      "log": "final-homologation-gate.txt"
+    },
+    {
+      "name": "final-release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "started_at": "2026-09-16T16:25:21.860336+00:00",
+      "ended_at": "2026-09-16T16:25:22.069059+00:00",
+      "exit_code": 1,
+      "log": "final-release-gate.txt"
+    },
+    {
+      "name": "final-diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-09-16T16:25:22.069134+00:00",
+      "ended_at": "2026-09-16T16:25:22.074288+00:00",
+      "exit_code": 0,
+      "log": "final-diff-check.txt"
+    }
+  ],
+  "syntax_passed": true,
+  "old_migrations_unchanged": true,
+  "sql_cases_written": 60,
+  "sql_cases_executed": 0,
+  "browser_cases_written": 14,
+  "browser_cases_passed": 0,
+  "remote_writes": false,
+  "remote_inspection": false
+}

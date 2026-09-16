@@ -1,8 +1,9 @@
 import {createConversationState} from './conversation-state.js';
 import {createMutationState} from './mutation-state.js';
-const conversation=createConversationState(),mutations=createMutationState();
+import {createSupportCatalogState} from './support-catalog-state.js';
+const conversation=createConversationState(),mutations=createMutationState(),catalog=createSupportCatalogState();
 const $=id=>document.getElementById(id);
-const s={token:'',workspace:'',me:null,tickets:[],ticket:null,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID()};
+const s={token:'',workspace:'',me:null,tickets:[],ticket:null,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),createPending:null};
 const labels={received:'Recebido',in_progress:'Em atendimento',waiting_for_you:'Aguardando você',resolved:'Resolvido',closed:'Encerrado',new:'Novo',triage:'Triagem',open:'Em atendimento',waiting_customer:'Aguardando cliente',waiting_internal:'Aguardando equipe',waiting_third_party:'Aguardando terceiro',cancelled:'Cancelado'};
 const moves={new:['triage','open','cancelled'],triage:['open','waiting_customer','cancelled'],open:['waiting_customer','waiting_internal','waiting_third_party','resolved','cancelled'],waiting_customer:['open','resolved','cancelled'],waiting_internal:['open','resolved','cancelled'],waiting_third_party:['open','resolved','cancelled'],resolved:['open','closed'],closed:[],cancelled:[]};
 const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
@@ -15,7 +16,7 @@ const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list();}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 async function list(reset=true){const b=await api('/tickets?limit=25'+(!reset&&s.next?'&cursor='+encodeURIComponent(s.next):''));s.tickets=reset?b.items:[...s.tickets,...b.items.filter(n=>!s.tickets.some(t=>t.id===n.id))];s.next=b.next_cursor;render();if(!s.ticket&&s.tickets.length)await detail(s.tickets[0].id);}
@@ -61,29 +62,50 @@ $('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}
 function renderComposer(){$('message-body').value=mutations.draft(s.mode);$('send-message').disabled=mutations.busy(s.mode)||!s.ticket;$('transition').disabled=mutations.busy('transition')||!s.ticket;}
 function mode(value){s.mode=value;renderComposer();$('message-form').classList.toggle('internal',value==='internal');for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===value);$('composer-label').textContent=value==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';$('visibility-help').textContent=value==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';$('send-message').textContent=value==='internal'?'Salvar nota':'Enviar resposta';}
-function fillContext(){const c=s.demo?.contexts.find(c=>c.key===$('demo-context').value);if(c){$('account-id').value=c.account_id;$('instance-id').value=c.product_instance_id;$('service-code').value=c.service_code;}}
-function startCreate(){s.createKey=crypto.randomUUID();$('create-form').reset();$('coverage-label').hidden=true;$('coverage-choice').replaceChildren();$('manual-context').hidden=!!s.demo;$('demo-context-label').hidden=!s.demo;if(s.demo){$('demo-context').replaceChildren(...s.demo.contexts.filter(c=>s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===c.account_id)).map(c=>option(c.key,c.label)));fillContext();}else $('account-id').value=s.me.grants[0]?.account_id??'';$('create-dialog').showModal();$('subject').focus();}
-$('create-form').addEventListener('input',e=>{s.createKey=crypto.randomUUID();if(e.target.id!=='coverage-choice')$('coverage-label').hidden=true;});$('demo-context').onchange=fillContext;
+const contextKey=v=>JSON.stringify([v.account_id,v.product_instance_id,v.service_code]);
+const environmentLabels={production:'Produção',staging:'Homologação',development:'Desenvolvimento'};
+function resetOpening(){catalog.reset();s.createPending=null;s.createKey=crypto.randomUUID();$('create-form').reset();$('context-choice').replaceChildren(option('','Selecione uma opção'));$('coverage-choice').replaceChildren();$('coverage-label').hidden=true;renderCatalog();}
+function renderCatalog(){
+ const status=catalog.status(),choices=catalog.choices(),selected=catalog.selectedKey();
+ $('context-choice').replaceChildren(option('',status==='loading'&&!choices.length?'Carregando opções autorizadas…':'Selecione uma opção'),...choices.map(c=>option(contextKey(c),c.account_name+' · '+c.product_name+' ('+environmentLabels[c.environment]+') · '+c.service_name)));
+ $('context-choice').value=selected;$('context-choice').disabled=status==='loading'||status==='error'||!choices.length;
+ $('context-more').hidden=!catalog.next()||status==='error';$('context-more').disabled=status==='loading'||!!s.createPending;
+ $('context-retry').hidden=status!=='error';$('context-retry').disabled=!!s.createPending;
+ $('context-status').textContent=status==='loading'?'Consultando as opções autorizadas…':status==='error'?'Não foi possível carregar as opções. Tente novamente. As opções são obtidas exclusivamente pela API.':status==='empty'?'Nenhuma opção com cobertura vigente está disponível para este perfil. Solicite à equipe de suporte a revisão dos vínculos e contratos.':status==='ready'?choices.length+' opção(ões) carregada(s). '+(catalog.next()?'Há mais opções disponíveis. ':choices.length===1?'A única opção disponível foi selecionada. ':'Escolha explicitamente a conta e o sistema. ')+'O contrato será revalidado antes de salvar.':'Abra o formulário para consultar as opções disponíveis.';
+ $('submit-create').disabled=!catalog.canSubmit()||!!s.createPending;
+}
+async function loadCatalog(){
+ const op=catalog.begin();if(!op)return;renderCatalog();
+ try{const page=await api('/support-contexts?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(!catalog.current(op))return;catalog.accept(op,page);renderCatalog();}
+ catch(error){if(catalog.fail(op))renderCatalog();}
+}
+async function startCreate(){resetOpening();$('create-dialog').showModal();$('subject').focus();await loadCatalog();}
+$('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
+$('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);
+$('create-form').addEventListener('input',e=>{s.createKey=crypto.randomUUID();if(e.target.id!=='coverage-choice')$('coverage-label').hidden=true;});
 $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- const button=$('submit-create');if(button.disabled)return;button.disabled=true;
- const key=s.createKey,epoch=s.epoch,unchanged=()=>epoch===s.epoch&&key===s.createKey&&$('create-dialog').open;
- const context={account_id:$('account-id').value.trim(),product_instance_id:$('instance-id').value.trim(),service_code:$('service-code').value.trim()};
+ const choice=catalog.selection();if(!catalog.canSubmit()||!choice||s.createPending)return;
+ const pending=Object.freeze({key:s.createKey,epoch:s.epoch});s.createPending=pending;renderCatalog();
+ const key=pending.key,epoch=pending.epoch,unchanged=()=>s.createPending===pending&&epoch===s.epoch&&key===s.createKey&&$('create-dialog').open;
+ // A selection is a selector, not permission: resolve and create both revalidate on the server.
+ const context={account_id:choice.account_id,product_instance_id:choice.product_instance_id,service_code:choice.service_code};
  const payload={...context,subject:$('subject').value.trim(),description:$('description').value.trim(),priority:$('priority').value};
  const selected=$('coverage-choice').value,hasSelection=!$('coverage-label').hidden;
  try{
   const r=await post('/contexts/resolve',context,key);
   if(!unchanged())return;
-  if(r.status==='no_coverage')throw Error('Nenhuma cobertura vigente para este contexto.');
+  if(r.status==='no_coverage')throw Error('Nenhuma cobertura vigente para este contexto. Feche e reabra o formulário para atualizar as opções.');
   if(r.status==='ambiguous'&&(!hasSelection||!r.candidates.some(c=>c.coverage_id===selected))){
-   $('coverage-choice').replaceChildren(...r.candidates.map(c=>option(c.coverage_id,'Contrato '+c.contract_id.slice(0,12)+' · versão '+c.contract_version)));
-   $('coverage-label').hidden=false;notice('Selecione uma das coberturas elegíveis e confirme.');return;
+   const placeholder=option('','Selecione a cobertura');placeholder.disabled=true;
+   $('coverage-choice').replaceChildren(placeholder,...r.candidates.map(c=>option(c.coverage_id,'Contrato '+c.contract_id.slice(0,12)+' · versão '+c.contract_version)));
+   $('coverage-choice').value='';$('coverage-label').hidden=false;notice('Selecione uma das coberturas elegíveis e confirme.');return;
   }
   const t=await post('/tickets',{...payload,...(r.status==='ambiguous'?{coverage_id:selected}:{})},key);
   if(!unchanged())return;
   $('create-dialog').close();await list();
   if(epoch!==s.epoch)return;await detail(t.id);
   if(epoch===s.epoch&&s.ticket?.id===t.id)notice('Chamado aberto. Contrato e histórico preservados.');
- }catch(error){if(unchanged())throw error;}finally{button.disabled=false;}
+ }catch(error){if(unchanged())throw error;}finally{if(s.createPending===pending){s.createPending=null;renderCatalog();}}
 });};
 $('message-body').oninput=()=>mutations.edit(s.mode,$('message-body').value);
 $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
@@ -113,6 +135,6 @@ $('transition').onclick=()=>run(async()=>{
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
-$('search').oninput=render;$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=startCreate;$('create-dialog').addEventListener('close',()=>{s.createKey=crypto.randomUUID();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));$('logout').onclick=()=>{clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';};
+$('search').oninput=render;$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));$('logout').onclick=()=>{clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';};
 $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{if(!s.config?.supabase_url||!s.config?.publishable_key)throw Error('Ambiente ainda não configurado para login.');const r=await fetch(s.config.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:s.config.publishable_key,'content-type':'application/json'},body:JSON.stringify({email:$('email').value,password:$('password').value})}),b=await r.json();$('password').value='';if(!r.ok||!b.access_token)throw Error('Não foi possível autenticar. Verifique suas credenciais.');clearSession();s.token=b.access_token;s.workspace=$('workspace').value.trim();await login();});};
 async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok)s.config=await r.json();}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);

@@ -1,0 +1,156 @@
+TAP version 13
+# (node:1199) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog UI selects the sole final option without manual UUIDs
+ok 1 - catalog UI selects the sole final option without manual UUIDs
+  ---
+  duration_ms: 8.542086
+  type: 'test'
+  ...
+# Subtest: catalog UI never silently chooses among multiple options
+ok 2 - catalog UI never silently chooses among multiple options
+  ---
+  duration_ms: 0.474597
+  type: 'test'
+  ...
+# Subtest: catalog UI does not auto-select one row while another page exists
+ok 3 - catalog UI does not auto-select one row while another page exists
+  ---
+  duration_ms: 1.439926
+  type: 'test'
+  ...
+# Subtest: catalog UI preserves explicit choice across further pages
+ok 4 - catalog UI preserves explicit choice across further pages
+  ---
+  duration_ms: 0.369203
+  type: 'test'
+  ...
+# Subtest: catalog UI empty result does not fabricate an eligible service
+ok 5 - catalog UI empty result does not fabricate an eligible service
+  ---
+  duration_ms: 0.160395
+  type: 'test'
+  ...
+# Subtest: catalog UI rejects selection not present in authorized choices
+ok 6 - catalog UI rejects selection not present in authorized choices
+  ---
+  duration_ms: 0.233122
+  type: 'test'
+  ...
+# Subtest: catalog UI reset clears metadata and discards a late response
+ok 7 - catalog UI reset clears metadata and discards a late response
+  ---
+  duration_ms: 0.194516
+  type: 'test'
+  ...
+# Subtest: catalog UI late failure cannot erase a newer session catalog
+ok 8 - catalog UI late failure cannot erase a newer session catalog
+  ---
+  duration_ms: 0.268415
+  type: 'test'
+  ...
+# Subtest: catalog UI disallows concurrent loads and duplicate completion
+ok 9 - catalog UI disallows concurrent loads and duplicate completion
+  ---
+  duration_ms: 0.776871
+  type: 'test'
+  ...
+# Subtest: catalog UI failure supports retry of the same page only
+ok 10 - catalog UI failure supports retry of the same page only
+  ---
+  duration_ms: 0.479795
+  type: 'test'
+  ...
+# Subtest: catalog UI returned copies cannot mutate the private selection
+ok 11 - catalog UI returned copies cannot mutate the private selection
+  ---
+  duration_ms: 0.216558
+  type: 'test'
+  ...
+# Subtest: catalog UI projects labels as plain strings and strips private extras
+ok 12 - catalog UI projects labels as plain strings and strips private extras
+  ---
+  duration_ms: 0.215346
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response notArray
+ok 13 - catalog UI refuses invalid response notArray
+  ---
+  duration_ms: 0.140226
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response missingCursor
+ok 14 - catalog UI refuses invalid response missingCursor
+  ---
+  duration_ms: 0.079778
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response invalidName
+ok 15 - catalog UI refuses invalid response invalidName
+  ---
+  duration_ms: 0.084604
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response badEnvironment
+ok 16 - catalog UI refuses invalid response badEnvironment
+  ---
+  duration_ms: 0.913302
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response overlongPage
+ok 17 - catalog UI refuses invalid response overlongPage
+  ---
+  duration_ms: 0.106577
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response duplicate
+ok 18 - catalog UI refuses invalid response duplicate
+  ---
+  duration_ms: 0.140797
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response emptyContinued
+ok 19 - catalog UI refuses invalid response emptyContinued
+  ---
+  duration_ms: 0.091314
+  type: 'test'
+  ...
+# Subtest: catalog UI refuses invalid response invalidCursor
+ok 20 - catalog UI refuses invalid response invalidCursor
+  ---
+  duration_ms: 0.065667
+  type: 'test'
+  ...
+# Subtest: catalog UI rejects duplicate options across pages atomically
+ok 21 - catalog UI rejects duplicate options across pages atomically
+  ---
+  duration_ms: 0.141658
+  type: 'test'
+  ...
+# Subtest: catalog UI rejects repeated cursor instead of an endless load loop
+ok 22 - catalog UI rejects repeated cursor instead of an endless load loop
+  ---
+  duration_ms: 0.192122
+  type: 'test'
+  ...
+# Subtest: catalog UI a loading operation cannot be forged from its fields
+ok 23 - catalog UI a loading operation cannot be forged from its fields
+  ---
+  duration_ms: 0.104633
+  type: 'test'
+  ...
+# Subtest: catalog UI selection survives retry without selecting another account
+ok 24 - catalog UI selection survives retry without selecting another account
+  ---
+  duration_ms: 0.1973
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 125.758364
