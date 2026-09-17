@@ -80,7 +80,7 @@ test('write-only scope cannot open a ticket without the read permission required
 });
 test('runtime security readiness requires FORCE RLS and non-exposed private schemas',async()=>{
  const {assertDatabaseSecurity}=await import('../src/infrastructure/postgres.ts');assert.equal(typeof assertDatabaseSecurity,'function');
- const good={table_count:23,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false};
+ const good={table_count:23,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true};
  await assertDatabaseSecurity(poolFor(good));
  for(const change of [{table_count:22},{unsafe_tables:1},{public_schema_access:true},{client_schema_access:true},{public_helper_execute:true}])
   await assert.rejects(()=>assertDatabaseSecurity(poolFor({...good,...change})),{code:'unsafe_database_policies'});

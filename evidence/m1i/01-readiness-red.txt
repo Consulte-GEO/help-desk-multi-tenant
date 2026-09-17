@@ -1,0 +1,285 @@
+TAP version 13
+# (node:1256) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: readiness accepts a fully compatible catalogue report
+ok 1 - readiness accepts a fully compatible catalogue report
+  ---
+  duration_ms: 4.503046
+  type: 'test'
+  ...
+# Subtest: readiness rejects schema CREATE or missing USAGE
+not ok 2 - readiness rejects schema CREATE or missing USAGE
+  ---
+  duration_ms: 1.608047
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects wrong table with unchanged count
+not ok 3 - readiness rejects wrong table with unchanged count
+  ---
+  duration_ms: 0.226815
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects credential SELECT or blanket UPDATE
+not ok 4 - readiness rejects credential SELECT or blanket UPDATE
+  ---
+  duration_ms: 0.273836
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects column-only credential SELECT or context UPDATE
+not ok 5 - readiness rejects column-only credential SELECT or context UPDATE
+  ---
+  duration_ms: 0.245579
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects latent client table/function access
+not ok 6 - readiness rejects latent client table/function access
+  ---
+  duration_ms: 0.20023
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects missing helper or unexpected overload
+not ok 7 - readiness rejects missing helper or unexpected overload
+  ---
+  duration_ms: 0.211252
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects maintenance helper executable by app
+not ok 8 - readiness rejects maintenance helper executable by app
+  ---
+  duration_ms: 0.161288
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects unsafe definer search_path or owner
+not ok 9 - readiness rejects unsafe definer search_path or owner
+  ---
+  duration_ms: 0.704425
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects disabled or replaced deferred invariant
+not ok 10 - readiness rejects disabled or replaced deferred invariant
+  ---
+  duration_ms: 1.167448
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects missing or unvalidated constraint
+not ok 11 - readiness rejects missing or unvalidated constraint
+  ---
+  duration_ms: 0.43183
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects missing/invalid uniqueness index
+not ok 12 - readiness rejects missing/invalid uniqueness index
+  ---
+  duration_ms: 0.175634
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness rejects RLS off or replication mode wrong
+not ok 13 - readiness rejects RLS off or replication mode wrong
+  ---
+  duration_ms: 0.15702
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:19:55'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:20:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: incomplete catalogue reports cannot silently default to safe
+not ok 14 - incomplete catalogue reports cannot silently default to safe
+  ---
+  duration_ms: 0.284635
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:23:100)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: NULL and textual booleans are not approvals
+not ok 15 - NULL and textual booleans are not approvals
+  ---
+  duration_ms: 0.239352
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'unsafe_database_policies'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:26:47)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed readiness response never embeds catalogue identifiers
+not ok 16 - failed readiness response never embeds catalogue identifiers
+  ---
+  duration_ms: 0.26958
+  type: 'test'
+  location: '/mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:28:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk_work/repo/tests/m1i-readiness.test.ts:29:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 1
+# fail 15
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 579.766097

@@ -1,0 +1,126 @@
+TAP version 13
+# (node:2001) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: migration loader is available before any driver import
+ok 1 - migration loader is available before any driver import
+  ---
+  duration_ms: 18.9419
+  type: 'test'
+  ...
+# Subtest: verified bytes and reviewed order are returned for execution
+ok 2 - verified bytes and reviewed order are returned for execution
+  ---
+  duration_ms: 19.430891
+  type: 'test'
+  ...
+# Subtest: migration loader rejects edited
+ok 3 - migration loader rejects edited
+  ---
+  duration_ms: 7.956608
+  type: 'test'
+  ...
+# Subtest: migration loader rejects missing
+ok 4 - migration loader rejects missing
+  ---
+  duration_ms: 6.019341
+  type: 'test'
+  ...
+# Subtest: migration loader rejects extra
+ok 5 - migration loader rejects extra
+  ---
+  duration_ms: 4.067572
+  type: 'test'
+  ...
+# Subtest: migration loader rejects renamed
+ok 6 - migration loader rejects renamed
+  ---
+  duration_ms: 9.480831
+  type: 'test'
+  ...
+# Subtest: migration loader rejects symbolic-file
+ok 7 - migration loader rejects symbolic-file
+  ---
+  duration_ms: 5.768625
+  type: 'test'
+  ...
+# Subtest: migration loader rejects symbolic-directory
+ok 8 - migration loader rejects symbolic-directory
+  ---
+  duration_ms: 8.825259
+  type: 'test'
+  ...
+# Subtest: migration loader rejects non-file
+ok 9 - migration loader rejects non-file
+  ---
+  duration_ms: 5.840554
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects empty
+ok 10 - migration manifest rejects empty
+  ---
+  duration_ms: 5.249311
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects duplicate
+ok 11 - migration manifest rejects duplicate
+  ---
+  duration_ms: 12.081875
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects traversal
+ok 12 - migration manifest rejects traversal
+  ---
+  duration_ms: 9.479539
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects invalid-hash
+ok 13 - migration manifest rejects invalid-hash
+  ---
+  duration_ms: 5.301809
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects unknown-field
+ok 14 - migration manifest rejects unknown-field
+  ---
+  duration_ms: 8.262738
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects unsorted
+ok 15 - migration manifest rejects unsorted
+  ---
+  duration_ms: 4.598683
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects bad-schema
+ok 16 - migration manifest rejects bad-schema
+  ---
+  duration_ms: 6.065231
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects null
+ok 17 - migration manifest rejects null
+  ---
+  duration_ms: 6.13879
+  type: 'test'
+  ...
+# Subtest: a changed file on disk does not replace the bytes already verified
+ok 18 - a changed file on disk does not replace the bytes already verified
+  ---
+  duration_ms: 6.033225
+  type: 'test'
+  ...
+# Subtest: actual project bundle is eight unchanged candidate migrations, not DB execution
+ok 19 - actual project bundle is eight unchanged candidate migrations, not DB execution
+  ---
+  duration_ms: 12.742212
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 786.35829

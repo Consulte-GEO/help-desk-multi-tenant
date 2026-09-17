@@ -1,0 +1,8 @@
+
+> @consulte-geo/helpdesk@0.9.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+supabase/tests/upgrade.test.ts(78,19): error TS2349: This expression is not callable.
+  Type '{ contractId: string; version: number; policy: { marker: string; }; }' has no call signatures.
+supabase/tests/upgrade.test.ts(80,18): error TS2349: This expression is not callable.
+  Type '{ contractId: string; version: number; policy: { marker: string; }; }' has no call signatures.

@@ -1,0 +1,162 @@
+TAP version 13
+# (node:2169) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: migration loader is available before any driver import
+ok 1 - migration loader is available before any driver import
+  ---
+  duration_ms: 23.280245
+  type: 'test'
+  ...
+# Subtest: verified bytes and reviewed order are returned for execution
+ok 2 - verified bytes and reviewed order are returned for execution
+  ---
+  duration_ms: 30.855599
+  type: 'test'
+  ...
+# Subtest: migration loader rejects edited
+ok 3 - migration loader rejects edited
+  ---
+  duration_ms: 9.014536
+  type: 'test'
+  ...
+# Subtest: migration loader rejects missing
+ok 4 - migration loader rejects missing
+  ---
+  duration_ms: 7.358471
+  type: 'test'
+  ...
+# Subtest: migration loader rejects extra
+ok 5 - migration loader rejects extra
+  ---
+  duration_ms: 5.471224
+  type: 'test'
+  ...
+# Subtest: migration loader rejects renamed
+ok 6 - migration loader rejects renamed
+  ---
+  duration_ms: 13.598689
+  type: 'test'
+  ...
+# Subtest: migration loader rejects symbolic-file
+ok 7 - migration loader rejects symbolic-file
+  ---
+  duration_ms: 8.661004
+  type: 'test'
+  ...
+# Subtest: migration loader rejects symbolic-directory
+ok 8 - migration loader rejects symbolic-directory
+  ---
+  duration_ms: 4.360919
+  type: 'test'
+  ...
+# Subtest: migration loader rejects non-file
+ok 9 - migration loader rejects non-file
+  ---
+  duration_ms: 3.769003
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects empty
+ok 10 - migration manifest rejects empty
+  ---
+  duration_ms: 4.635251
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects duplicate
+ok 11 - migration manifest rejects duplicate
+  ---
+  duration_ms: 15.492901
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects traversal
+ok 12 - migration manifest rejects traversal
+  ---
+  duration_ms: 7.357362
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects invalid-hash
+ok 13 - migration manifest rejects invalid-hash
+  ---
+  duration_ms: 6.09861
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects unknown-field
+ok 14 - migration manifest rejects unknown-field
+  ---
+  duration_ms: 3.843892
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects unsorted
+ok 15 - migration manifest rejects unsorted
+  ---
+  duration_ms: 3.623925
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects bad-schema
+ok 16 - migration manifest rejects bad-schema
+  ---
+  duration_ms: 5.091754
+  type: 'test'
+  ...
+# Subtest: migration manifest rejects null
+ok 17 - migration manifest rejects null
+  ---
+  duration_ms: 3.556567
+  type: 'test'
+  ...
+# Subtest: a changed file on disk does not replace the bytes already verified
+ok 18 - a changed file on disk does not replace the bytes already verified
+  ---
+  duration_ms: 5.97768
+  type: 'test'
+  ...
+# Subtest: actual project bundle is eight unchanged candidate migrations, not DB execution
+ok 19 - actual project bundle is eight unchanged candidate migrations, not DB execution
+  ---
+  duration_ms: 7.985675
+  type: 'test'
+  ...
+# Subtest: migration bytes reject manifest-symlink
+ok 20 - migration bytes reject manifest-symlink
+  ---
+  duration_ms: 3.781236
+  type: 'test'
+  ...
+# Subtest: migration bytes reject supabase-symlink
+ok 21 - migration bytes reject supabase-symlink
+  ---
+  duration_ms: 2.833446
+  type: 'test'
+  ...
+# Subtest: migration bytes reject oversized-manifest
+ok 22 - migration bytes reject oversized-manifest
+  ---
+  duration_ms: 2.858096
+  type: 'test'
+  ...
+# Subtest: migration bytes reject oversized-sql
+ok 23 - migration bytes reject oversized-sql
+  ---
+  duration_ms: 14.213423
+  type: 'test'
+  ...
+# Subtest: migration bytes reject invalid-utf8
+ok 24 - migration bytes reject invalid-utf8
+  ---
+  duration_ms: 4.3066
+  type: 'test'
+  ...
+# Subtest: migration bytes reject empty-sql
+ok 25 - migration bytes reject empty-sql
+  ---
+  duration_ms: 3.390342
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 725.009529

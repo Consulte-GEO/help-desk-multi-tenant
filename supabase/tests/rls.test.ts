@@ -1,7 +1,9 @@
 /** Destructive fixture SETUP is allowed ONLY on an explicitly opted-in fresh local test database. */
-import test,{before,after} from 'node:test';import assert from 'node:assert/strict';import {readFile,readdir} from 'node:fs/promises';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
+import test,{before,after} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
+import {loadMigrationBundle} from '../../scripts/migration-files.ts';
 const {adminUrl,appUrl}=validateDatabaseTestTargets(process.env);
+const migrationBundle=await loadMigrationBundle(process.cwd());
 const id=(n:number)=>'00000000-0000-4000-8000-'+n.toString().padStart(12,'0');
 let admin:SqlPool,app:SqlPool,service:HelpdeskService,ticketId:string;
 const p=(who:number,account:number,role:'requester'|'agent'='requester',workspace=1):Principal=>({id:id(who),workspaceId:id(workspace),kind:'human',workspaceRole:null,grants:[{accountId:id(account),role}],scopes:['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']});
@@ -11,7 +13,7 @@ async function sqlAs(person:Principal,sql:string,values:unknown[]=[]){const c=aw
 before(async()=>{const moduleName='pg';const driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};admin=new driver.Pool({connectionString:adminUrl,max:2});
  const version=Number((await admin.query("select current_setting('server_version_num') as version")).rows[0]?.version);if(version<170000||version>=180000)throw Error('This suite requires PostgreSQL 17.');
  const existing=await admin.query("select 1 from pg_namespace where nspname like 'helpdesk_%'");if(existing.rows.length)throw Error('Use a FRESH helpdesk_test database. This test never drops existing schemas.');
- const migrations=new URL('../migrations/',import.meta.url);for(const file of (await readdir(migrations)).filter(x=>x.endsWith('.sql')).sort())await admin.query(await readFile(new URL(file,migrations),'utf8'));
+ for(const migration of migrationBundle.migrations)await admin.query(migration.sql);
  const password=decodeURIComponent(new URL(appUrl).password);const command=(await admin.query("select format('alter role helpdesk_app login password %L',$1) as command",[password])).rows[0]!.command;await admin.query(String(command));
  await admin.query(`insert into helpdesk_core.workspaces(id,name) values($1,'Workspace A'),($2,'Workspace B')`,[id(1),id(2)]);
  for(const who of [11,12,13,14])await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[id(who),id(1000+who)]);
@@ -400,3 +402,45 @@ test('SQL terminal and combined status-assignment updates are refused',async()=>
 test('SQL internal assignment cannot enter outbox',async()=>{const t=await assignmentTicket('outbox');await assert.rejects(()=>sqlAs(agent,"insert into helpdesk_integration.outbox_events(workspace_id,account_id,ticket_id,id,type,payload,request_id,created_at) values($1,$2,$3,$4,'ticket.assignment_changed','{}','test',now())",[t.workspaceId,t.accountId,t.id,randomUUID()]),{code:'23514'});});
 test('SQL assignment event requires exact shape and private visibility',async()=>{const t=await assignmentTicket('shape');for(const [visible,data] of [[true,{action:'claim',from:null,to:agent.id,reason:'Motivo',version:2}],[false,{action:'claim',from:null,to:agent.id,version:2}],[false,{action:'claim',from:null,to:agent.id,reason:'Motivo',version:2,debug:'private'}]] as const)await assert.rejects(()=>sqlAs(agent,'insert into helpdesk_core.ticket_events(workspace_id,account_id,ticket_id,id,actor_id,type,customer_visible,data,created_at) values($1,$2,$3,$4,$5,\'ticket.assignment_changed\',$6,$7,now())',[t.workspaceId,t.accountId,t.id,randomUUID(),agent.id,visible,JSON.stringify(data)]),{code:'23514'});});
 test('SQL assignment grants remain narrow and trigger functions inaccessible',async()=>{const r=await admin.query("select has_column_privilege('helpdesk_app','helpdesk_core.tickets','assigned_to','UPDATE') as assignment,has_table_privilege('helpdesk_app','helpdesk_core.tickets','UPDATE') as broad,has_function_privilege('helpdesk_app','helpdesk_core.guard_ticket_assignment()','EXECUTE') as guard,has_function_privilege('helpdesk_app','helpdesk_core.require_assignment_event()','EXECUTE') as trigger");assert.deepEqual(r.rows[0],{assignment:true,broad:false,guard:false,trigger:false});});
+
+// Metadata drift tests require actual PostgreSQL, run serially and restore each intentional change.
+// They are NOT counted as locally approved when the database prerequisite is absent.
+async function rejectsDrift(change:string,restore:string){
+ await assertDatabaseSecurity(app);
+ try{await admin.query(change);await assert.rejects(()=>assertDatabaseSecurity(app),{code:'unsafe_database_policies'});}
+ finally{await admin.query(restore);}
+ await assertDatabaseSecurity(app);
+}
+test('startup refuses extra table-level credential access',()=>rejectsDrift(
+ 'grant select on helpdesk_auth.integration_credentials to helpdesk_app',
+ 'revoke select on helpdesk_auth.integration_credentials from helpdesk_app'));
+test('startup refuses extra credential-column access without a table grant',()=>rejectsDrift(
+ 'grant select(key_hash) on helpdesk_auth.integration_credentials to helpdesk_app',
+ 'revoke select(key_hash) on helpdesk_auth.integration_credentials from helpdesk_app'));
+test('startup refuses extra update permission on ticket identity',()=>rejectsDrift(
+ 'grant update(account_id) on helpdesk_core.tickets to helpdesk_app',
+ 'revoke update(account_id) on helpdesk_core.tickets from helpdesk_app'));
+test('startup refuses grant option while ordinary SELECT remains required',()=>rejectsDrift(
+ 'grant select on helpdesk_core.tickets to helpdesk_app with grant option',
+ 'revoke grant option for select on helpdesk_core.tickets from helpdesk_app'));
+test('startup refuses disabled deferred creation invariant',()=>rejectsDrift(
+ 'alter table helpdesk_core.tickets disable trigger ticket_initial_outbox',
+ 'alter table helpdesk_core.tickets enable trigger ticket_initial_outbox'));
+test('startup refuses disabled deferred assignment invariant',()=>rejectsDrift(
+ 'alter table helpdesk_core.tickets disable trigger ticket_assignment_event',
+ 'alter table helpdesk_core.tickets enable trigger ticket_assignment_event'));
+test('startup refuses an additional permissive policy',()=>rejectsDrift(
+ 'create policy m1i_unexpected_policy on helpdesk_core.tickets for select to helpdesk_app using(true)',
+ 'drop policy m1i_unexpected_policy on helpdesk_core.tickets'));
+test('startup refuses exposing the maintenance function to the HTTP role',()=>rejectsDrift(
+ 'grant execute on function helpdesk_auth.maintain_ephemeral(boolean,integer) to helpdesk_app',
+ 'revoke execute on function helpdesk_auth.maintain_ephemeral(boolean,integer) from helpdesk_app'));
+test('startup refuses a private helper search_path change',()=>rejectsDrift(
+ 'alter function helpdesk_auth.resolve_human(uuid,uuid) set search_path=public',
+ "alter function helpdesk_auth.resolve_human(uuid,uuid) set search_path=''"));
+test('startup refuses missing required public-conversation SELECT',()=>rejectsDrift(
+ 'revoke select on helpdesk_core.ticket_messages from helpdesk_app',
+ 'grant select on helpdesk_core.ticket_messages to helpdesk_app'));
+test('startup refuses app CREATE inside a private schema',()=>rejectsDrift(
+ 'grant create on schema helpdesk_auth to helpdesk_app',
+ 'revoke create on schema helpdesk_auth from helpdesk_app'));

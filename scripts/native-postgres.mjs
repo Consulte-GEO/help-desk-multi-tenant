@@ -62,7 +62,7 @@ export async function runNativeTests({env=process.env,platform=process.platform,
   // Random credentials + an owned cluster prevent attaching to an unrelated service after a port race.
   await must([join(bin,'psql'),'-X','--no-password','-v','ON_ERROR_STOP=1','-h','127.0.0.1','-p',String(port),'-U','postgres','-d','postgres','-c','CREATE DATABASE helpdesk_test;'],{env:{...childEnv,PGPASSWORD:adminSecret}});
   const endpoint=`@127.0.0.1:${port}/helpdesk_test`;result.stage='tests';
-  const suite=await call([process.execPath,'--experimental-strip-types','--test','supabase/tests/rls.test.ts'],{
+  const suite=await call([process.execPath,'--experimental-strip-types','--test','--test-concurrency=1','supabase/tests/rls.test.ts','supabase/tests/upgrade.test.ts'],{
    timeoutMs:300_000,env:{...childEnv,ALLOW_DATABASE_TESTS:'1',HELPDESK_TEST_ADMIN_URL:'postgresql://postgres:'+adminSecret+endpoint,HELPDESK_TEST_APP_URL:'postgresql://helpdesk_app:'+appSecret+endpoint}
   });
   result.output=scrub(suite.output);result.exit_code=ok(suite)?0:1;result.reason=ok(suite)?null:'test_command_failed';

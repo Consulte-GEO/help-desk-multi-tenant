@@ -51,4 +51,5 @@ jobs:
           node-version: '22'
       - run: npm run check:lock
       - run: npm ci --ignore-scripts
+      - run: npm run check:migrations
       - run: npm run test:db

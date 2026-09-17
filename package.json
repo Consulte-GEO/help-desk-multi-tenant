@@ -1,6 +1,6 @@
 {
   "name": "@consulte-geo/helpdesk",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,11 +10,11 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "demo": "node --experimental-strip-types scripts/demo.ts",
-    "test:db": "node --experimental-strip-types --test supabase/tests/*.test.ts",
+    "test:db": "node --experimental-strip-types --test --test-concurrency=1 supabase/tests/*.test.ts",
     "check:contracts": "node --experimental-strip-types scripts/check-contracts.ts",
     "build": "node scripts/build.mjs",
     "dev": "netlify dev",
-    "verify": "npm test && npm run typecheck && npm run check:contracts && npm run check:secrets && npm run build",
+    "verify": "npm run check:migrations && npm test && npm run typecheck && npm run check:contracts && npm run check:secrets && npm run build",
     "check:secrets": "node scripts/check-secrets.mjs",
     "check:lock": "node scripts/verify-lock.mjs",
     "deps:resolve": "node scripts/prepare-dependencies.mjs --resolve",
@@ -24,7 +24,8 @@
     "check:homologation": "node scripts/check-homologation.mjs",
     "test:ui:local": "node scripts/test-ui-local.mjs",
     "logs:summary": "node --experimental-strip-types scripts/summarize-http-logs.ts",
-    "test:db:native": "node scripts/test-db-native.mjs"
+    "test:db:native": "node scripts/test-db-native.mjs",
+    "check:migrations": "node --experimental-strip-types scripts/check-migrations.ts"
   },
   "dependencies": {
     "pg": "8.16.3"

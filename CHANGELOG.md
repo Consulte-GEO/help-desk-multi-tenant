@@ -1,3 +1,14 @@
+# 0.10.0 — prontidão e integridade do banco (não publicado)
+
+- Guard de catálogo ampliado: permissões efetivas por tabela/coluna/função, inventário, policies, triggers diferidos, constraints e índices. Sem leitura de dados de atendimento e sem auto-repair.
+- Manifesto SHA-256 das oito migrations e loader limitado/estrito; mesmos bytes verificados são usados nas suítes SQL.
+- Upgrade 001–007→008 escrito em banco local separado, preservação de fixtures/contrato/cache/privacidade e atribuição após atualização.
+- Onze cenários SQL de drift e oito de upgrade; execução serial dos arquivos nos runners e CI.
+- API/interface 0.10.0; schema permanece 0.9.0. Nenhuma migration nova ou endpoint adicional.
+- M1 permanece aberto; código preparado para homologação, não autorização de publicação.
+
+---
+
 # v0.8.0 — Prioridade auditável e histórico autorizado
 
 ## 0.9.0 — responsabilidade pelo atendimento (não publicado)

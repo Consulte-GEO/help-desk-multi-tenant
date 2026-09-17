@@ -1,24 +1,25 @@
-# Continuidade — Help Desk v0.9.0
+# Continuidade — Help Desk v0.10.0
 
-Base: `ce9a49e0e7616fc8a4a6425c478d6218499bd177`; branch `work/helpdesk-v0.9.0`. Commit final no manifesto/bundle. Sem escrita nem reinspeção remota nesta rodada. Reinspecionar destinos antes de integrar e preservar trabalho concorrente.
+Base `fbed9dccfaaf6c388d1ddc24673cfdc6f8afc55e`; branch `work/helpdesk-v0.10.0`. Sem escrita remota. Ler README, documentos 04/14, CHANGELOG e `supabase/migrations.manifest.json`. O último GitHub consultado retornou vazio; antes de integrar, reinspecionar destinos e preservar alterações concorrentes.
 
-## Execução prioritária
-1. Resolver dependências via `npm run deps:resolve`, revisar lock/árvore/origens/integridades/alertas; executar npm ci/verify/audit. Não substituir tipos locais por globais ou copiar lock sintético.
-2. PostgreSQL17 novo e descartável com login restrito: oito migrations/100 cenários. Docker padrão; native exige instalação autorizada e usuário não root. Nunca usar Supabase remoto como fallback nem apagar schema existente para passar.
-3. Além de fresh, homologar upgrade001–007→008 em banco separado com dados fictícios. Coluna assigned_to nasce null. Cache antigo sem campo deve continuar representando o snapshot original. Verificar concorrência, reenvio após release/revogação, schema0.9.0 e dados anteriores intactos.
-4. Revisar guard_ticket_assignment, require_assignment_event, assignment_event_shape, unique index, event_scope_insert e assignment_outbox_forbidden. Não conceder acesso por assigned_to; não exigir membership global de agente vinculado só à conta. Helpers privados não executáveis por clientes/app; funções de cache preservam scopes/lifecycle/quota.
-5. Rodar UI:28 HTTP+25 browser. Verificar assumir/liberar, conflito entre dois operadores, 412, refresh explícito, erro de rede incerto, rascunho durante request e A→B→A. Cliente não recebe assignment ou motivo/evento interno. Teclado, foco e mobile390px pendentes. Não contornar bloqueio do navegador.
-6. Homologar pg/driver/Auth/pooler/TLS/IP/Functions. Não publicar apenas HTML nem backend0.9 com schema0.8. Medir queries/timeouts e efeitos do trigger diferido sob concorrência.
-7. Executar homologate:local/check:homologation, revisar logs/fingerprint. Piso635 locais/100 SQL/53 UI; as contagens só valem se efetivamente passarem sem skips. Sucesso local não autoriza produção. Manter HELPDESK_RELEASE_APPROVED fechado até critérios operacionais/destino e decisão explícita.
+## Prioridade
+1. Executar `npm run deps:resolve` com registry autorizado. Revisar lock, versões, integridades, licenças e alertas. Repetir npm ci, verify e audit. Não fabricar lock nem substituir a dependência declarada pelos tipos globais.
+2. `npm run check:migrations`: oito arquivos intactos, schema candidato 0.9.0. Divergência não deve ser corrigida regenerando o manifesto indiscriminadamente. Revisar o diff e a procedência.
+3. Executar `npm run test:db:local` com PostgreSQL17 descartável. Docker padrão; native exige binários locais autorizados e usuário não root. Os runners agora executam rls.test.ts e upgrade.test.ts serialmente. **119 cenários escritos, não aprovados.**
+4. Revisar o ensaio de upgrade em banco separado `helpdesk_upgrade_test`, nunca em schema já populado para fazer passar. O teste não apaga um banco preexistente. Confirmar preservação exata dos snapshots, mensagens, notas, outbox e cache, assigned_to null e atribuição posterior. Não confundir isso com restauração de backup.
+5. Revisar `DATABASE_SECURITY_QUERY` e o contrato com PostgreSQL real: tipos/assinaturas, search_path, owner, privilégios efetivos por coluna e grant option, triggers diferidos, policies e constraints. Os 11 testes de drift devem recusar e restaurar cada alteração. Não remover asserts para aprovar uma configuração inesperada.
+6. Homologar driver/pooler/TLS/Auth/Functions e medir custo/latência do boot. Guard é pontual, não compara corpos de funções ou expressões. Manter revisão de migrations/RLS e avaliação de `public.rls_auto_enable()` separadas. Não adicionar auto-repair ao boot.
+7. `npm run test:ui:local`: 28 HTTP + 25 browser, sendo browser ainda bloqueado nesta entrega. Não contornar políticas locais. Confirmar fluxos anteriores, rascunhos, duas sessões concorrentes, foco e mobile.
+8. Rodar homologate:local e check:homologation; revisar relatórios/logs/fingerprint. Mínimos 679 locais/119 SQL/53 UI; números escritos não são aprovações. Resolver critérios operacionais/destino e aprovação explícita antes de HELPDESK_RELEASE_APPROVED.
 
-## Revisão dirigida
-- `src/application/ticket-assignment.ts`, HelpdeskService.changeAssignment, updateAssignment nos dois adaptadores.
-- DTO/evento e lookup_idempotency após downgrade de agente.
-- Migration008 e 18 testes SQL novos; sete migrations anteriores inalteradas.
-- `web/app.js`, `ticket-list-state.js`, `timeline-state.js`, mutation-state e declarações.
-- `tests/m1h-*`, smokeHTTP, browser e OpenAPI/exemplo.
+## Arquivos prioritários
+- `src/infrastructure/database-security.ts` e `database-security-contract.ts`: consulta somente de catálogo e inventário do desenvolvedor; 13 indicadores obrigatórios.
+- `scripts/migration-files.ts`, `check-migrations.ts`, manifesto: limites, links, hashing e mesmos bytes usados para SQL.
+- `supabase/tests/upgrade.test.ts`: configuração local, banco novo separado, SQL de fixture antigo sem assigned_to, comparação, replay e privacidade.
+- `supabase/tests/rls.test.ts`: loader antes do driver e cenários reais de desvios com restauração em finally.
+- Runners Docker/native, package scripts, CI e pisos do gate.
 
 ## Invariantes
-Claim somente para si em desocupado; admin libera mas não toma. Release próprio/admin com motivo. Encerrado/cancelado não muda. Nenhuma mudança de estado/contrato/prioridade/fila/SLA. Responsabilidade não participa de canReadTicket. Histórico/IDs internos não saem ao cliente; resumo do operador não inclui IDs alheios. Não produz outbox. Retry mesma chave devolve versão original; GET é o estado atual. Erro pós-COMMIT é incerto, não “não gravou”.
+API/interface 0.10.0, schema0.9.0. Não criar migration cosmética. Sem nova permissão/endpoint/dado remoto. Contrato/hash são revisáveis, não assinados; não certificam SQL ou semântica. Readiness não lê valores de credenciais e não impede um administrador de alterar permissões depois do boot. Responsibility continua sem conceder acesso, eventos internos não saem ao cliente e replay continua devolvendo o snapshot original.
 
-635 testes locais incluem doubles/estado puro. SQL100 e browser25 não foram aprovados; nenhum pentest/carga/restore/revisão independente. M1 continua aberto; M2/backoffice não iniciado. Atribuição é recorte de HD-301, não módulo completo de filas/equipes.
+679 testes locais usam também doubles; 119 SQL/25 browser não aprovados. Houve revisão local, não revisão independente/pentest/carga/restore. O pacote e o commit não autorizam publicação.

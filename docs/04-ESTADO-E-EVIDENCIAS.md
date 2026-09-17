@@ -1,44 +1,51 @@
-# Help Desk v0.9.0 — Estado e evidências
+# Help Desk v0.10.0 — Estado e evidências
 
-**Entrega local; M1 aberto; não publicada.** Base v0.8.0: `ce9a49e0e7616fc8a4a6425c478d6218499bd177`. Branch `work/helpdesk-v0.9.0`. Commit final no manifesto externo/bundle. Logs em UTC, 16/09/2026.
+**Entrega local, não publicada. M1 permanece aberto.** Base v0.9.0: `fbed9dccfaaf6c388d1ddc24673cfdc6f8afc55e`. Branch `work/helpdesk-v0.10.0`. Commit final no manifesto da entrega e no bundle. Os logs usam UTC de 17/09/2026; as verificações ocorreram em 16/09/2026 no fuso America/Sao_Paulo.
 
-## Implementação
-Assumir para si ou liberar responsabilidade de um chamado; liberação administrativa de outro, nunca tomada silenciosa. Motivo privado, versão, idempotência, disputa entre agentes e no-op. Responsabilidade não concede acesso. Histórico interno sem evento externo; DTO da equipe não expõe principalID. Interface com motivo separado, retry estável e atualização explícita de conflitos. Projeções antigas/novas validadas.
+## O que foi implementado
+Contrato de metadados de segurança para inicialização, ampliando a checagem anterior sem alterar os privilégios do banco. Manifesto de integridade das oito migrations e loader limitado/estrito, com os mesmos bytes utilizados na execução SQL. Integração dessa verificação no verify, CI e suítes SQL. Novo ensaio de upgrade 001–007→008 em banco descartável separado e 11 cenários de desvio das proteções do banco. Nenhum módulo de atendimento adicional nesta rodada.
 
-API/interface/schema candidato0.9.0. Oito migrations, 23 tabelas, 18 operações/14 caminhos. Migration008 adiciona coluna nullable, guards, evento, narrow grant e extensão do cache. Sete anteriores intactas por bytes/hash. Nenhuma função ou migration executada remotamente.
+API/interface **0.10.0**; schema candidato **0.9.0**; oito migrations intactas, 23 tabelas, 18 operações/14 caminhos. Novo código de consulta a catálogo ainda não foi executado pelo PostgreSQL.
 
-## Resultados
-| Verificação | Resultado | Evidência |
+## Resultados executados
+Todos os caminhos abaixo são relativos ao repositório.
+
+| Verificação | Resultado / alcance | Evidência |
 |---|---|---|
-| Base | 569 passagens antes de alterações | m1h/00-baseline-tests.txt |
-| Local final | **635 passagens, zero falhas/cancelados/skips**, 66 novas | m1h/final-tests.txt |
-| HTTP loopback | **28 checks**, dados fictícios em memória | m1h/11-ui-attempt.txt; final-http-smoke.json |
-| Tipagem suplementar | Passou com tipos/compilador globais | m1h/final-typecheck-environment.txt |
-| OpenAPI estrutural | 18 operações/14 caminhos | m1h/final-contracts.txt |
-| Sintaxe/IDs HTML | JS/Python válidos; IDs literais resolvem, sem duplicados | m1h/static-checks.json |
-| Build | Assets somente, não Functions | m1h/final-build.txt |
-| Scanner heurístico | Nenhum padrão reconhecido; não auditoria integral | m1h/final-secrets.txt |
-| Migrations001–007 | Mesmos bytes/hashes da base | m1h/migration-integrity.json |
-| npm run verify padrão | **Falhou (2)**, dependências/tipos locais ausentes | m1h/16-manifest-verify-attempt.txt |
-| Homologação agregada/publicação | **Recusadas**, lock ausente bloqueia etapas | m1h/final-homologation.txt; final-release-gate.txt |
+| Base v0.9.0 | 635 testes aprovados antes das alterações | `evidence/m1i/00-baseline-tests.txt` |
+| Suíte local final | **679 aprovados; zero falhas, cancelados ou ignorados** — 44 novos | `evidence/m1i/final-tests.txt` |
+| HTTP real de loopback | **28 checks aprovados**, domínio em memória e dados sintéticos | `evidence/m1i/13-ui-attempt.txt` |
+| Integridade das migrations | Oito arquivos e schema0.9.0 verificados; nenhuma execução SQL | `evidence/m1i/final-migrations.txt`, `migration-integrity.json` |
+| TypeScript suplementar | Aprovado com ferramentas globais do ambiente | `evidence/m1i/final-typecheck-environment.txt` |
+| OpenAPI estrutural | 18 operações/14 caminhos | `evidence/m1i/final-contracts.txt` |
+| Sintaxe | 22 arquivos JS/MJS/Python verificados | `evidence/m1i/final-syntax.json` |
+| Build | Apenas assets estáticos; aprovado | `evidence/m1i/final-build.txt` |
+| Scanner heurístico | Nenhum padrão reconhecido; não é auditoria completa | `evidence/m1i/final-secrets.txt` |
+| Verificação padrão do manifesto | **Falhou com saída 2**, após 679 testes aprovados, por tipos/dependências locais ausentes | `evidence/m1i/final-verify-manifest.txt` |
+| Homologação agregada/publicação | **Não aprovadas** por lock ausente | `evidence/m1i/final-homologation.txt`, `final-release-gate.txt`, `evidence/homologation/latest.json` |
 
-Caminhos acima relativos à pasta evidence. A suíte usa memória, estado puro e doubles do driver além de asserções estruturais. Nenhuma contagem local deve ser somada a SQL/browser escritos. A corrida entre agentes foi executada em memória com serialização local; locks/disputa em instâncias distintas dependem dos testes PostgreSQL pendentes.
-
-A tipagem suplementar usou `--typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types`. Não é npm ci dos tipos fixados no manifesto. Não omitir a falha do comando padrão.
+Os 679 testes locais incluem domínio, HTTP, estado puro, orquestração com respostas controladas do driver e integridade de arquivos. Os novos testes de prontidão simulam os resultados de catálogo; **não comprovam que o SQL de inspeção executa ou detecta os desvios em um banco real**. Os 28 HTTP utilizam a demonstração em memória, não Supabase ou Netlify.
 
 ## Regressões e revisão
-Comando:38 falhas→38 passagens. UI/contrato:9 falhas/12 passagens→21 passagens. Projeção de evento:5 falhas/2 passagens→7 passagens. Logs red/green em m1h/01–05 e12–13.
+- Prontidão: 15 recusas ausentes reproduzidas na base em 16 testes; correção ampliada até 19 testes locais novos. Inclui resposta incompleta, booleanos inválidos, privilégios por coluna, helpers e triggers.
+- Loader: 19 falhas antes de implementação; 19 aprovações depois. Revisão ampliou para 25 com links, limites de tamanho, UTF-8 e arquivo vazio. Nenhum arquivo candidato alterado para fazer os testes passarem.
+- TypeScript detectou uma variável de fixture com nome igual ao helper de snapshot do upgrade; renomeada antes da rechecagem. Também foram adicionados parênteses explícitos na ordenação JSON do snapshot. Isso não é prova de execução SQL.
+- Uma execução agrupada de verificação foi interrompida pelo limite da ferramenta. O log parcial foi preservado e não aprovado. Na repetição isolada, cinco testes HTTP passaram e o verify padrão concluiu os 679 testes, falhando depois pelos tipos locais ausentes. Não foi identificada nem alegada correção de um bug funcional a partir dessa interrupção.
+- Revisão local do diff e das fontes oficiais dos metadados. **Não houve revisor independente, subagente, pentest, carga ou restore.**
 
-Revisão identificou snapshot antigo sem assignedTo, aceitação de razão malformada/coerção de action na projeção e fixtures de versão/tipos desatualizados. Corrigidos com regressões. Declarações JS agora expõem operações nullable; testes antigos receberam asserts explícitos, não remoção de expectativas. Detalhes em m1h/local-review.md.
+Logs: `01-readiness-red.txt`, `02-readiness-green.txt`, `05-migrations-red.txt`, `06-migrations-green.txt`, `09-migrations-final.txt`, `14-aggregate-interrupted-verify.txt` e `15-isolated-http-review.txt`. Comandos e saídas consolidados em `final-verification.json`.
 
-## Não homologado
-**Dependências:** nova tentativa EAI_AGAIN registry.npmjs.org, sem lockfile, npm ci ou audit. Registro m1h/14-dependencies-attempt.txt.
+## O que ainda não foi comprovado
+**Dependências:** `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`. Sem package-lock real, npm ci, audit ou árvore revisada. Não foi usado registry alternativo nem contornada a política de rede. A checagem global é suplementar; tipos Node globais diferem dos declarados.
 
-**PostgreSQL:** Docker/servidor ausentes; runner recusou antes de conectar. **100 casos escritos, zero executados**, 18 novos. Sem parser SQL/servidor instalado; sentinelas não validam sintaxe/semântica do PL/pgSQL. Grants, RLS, FK, triggers, locks, no-op, reautorização e upgrade continuam candidatos. m1h/15-database-attempt.txt.
+**PostgreSQL:** `test:db:local` recusou por Docker indisponível, antes de conectar. **119 cenários escritos, zero executados:** 111 na suíte principal (100 anteriores + 11 novos) e oito de upgrade. O schema real, os grants/RLS/constraints, a consulta de catálogo, a execução serial e o upgrade ainda precisam de homologação. Não foi usado Supabase remoto como alternativa.
 
-**Browser:** **25 checks escritos, zero aprovados**, três novos. HTTP28 passou, depois ERR_BLOCKED_BY_ADMINISTRATOR em page.goto. Sem certificação visual/teclado/390px ou E2E DOM. m1h/11-ui-attempt.txt.
+**Navegador:** após 28 checks HTTP, o Playwright encontrou `ERR_BLOCKED_BY_ADMINISTRATOR` em page.goto. Permanecem **25 checks de navegador escritos, zero aprovados** nesta execução. Nenhuma alteração funcional de interface, apenas a indicação da versão.
 
-**Destino/operacional:** Auth/pooler/TLS/IP/Functions, capacidade, restore e revisão independente pendentes. Não houve inspeção remota nesta rodada. Nenhum push/PR/merge/deploy/migration, dado/segredo/MFA alterado.
+**Destino e operação:** Auth, pooler/TLS, IP confiável, empacotamento/execução de Functions, latência/capacidade da nova consulta, restore, coleta de logs e revisão operacional pendentes. A checagem de catálogo é pontual, não inspeção contínua ou prova de semântica de policies/functions.
 
-## Continuidade
-Revisar árvore real de dependências → instalar/testar PostgreSQL17 fresh+upgrade001–007→008 → runtime/Auth/Functions → browser25 → capacidade/restauração/revisão. Gate atualizado:635 locais/100 SQL/53 HTTP+browser. A recusa esperada do gate não é aprovação de subsistema. M2, filas, participantes, SLA, anexos, worker e suporte incorporado não foram entregues.
+## Efeitos remotos
+GitHub retornou repositório vazio em uma consulta somente leitura nesta rodada. Supabase e Netlify **não foram reinspecionados**. Sem push, PR, merge, deploy, migration remota, alteração de dados, segredo, MFA ou infraestrutura cobrada.
+
+## Próxima execução
+Resolver dependências → verificar manifesto → PostgreSQL17 novo/119 cenários e upgrade → corrigir achados reais → Auth/pooler/Functions → navegador → capacidade/restore/revisão. O gate local exige 679/119/53 (locais/SQL/HTTP+browser) efetivamente aprovados, mas mesmo esse resultado não autoriza publicação nem encerra critérios do destino. O M2/backoffice permanece não iniciado.

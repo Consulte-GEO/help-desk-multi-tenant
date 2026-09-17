@@ -1,0 +1,128 @@
+[
+  {
+    "command": "npm test",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-tests.txt",
+    "counts_if_present": {
+      "tests": 679,
+      "pass": 679,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "mtime_utc": "2026-09-17T02:08:13.695634+00:00"
+  },
+  {
+    "command": "npm run check:migrations",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-migrations.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:08:14.575640+00:00"
+  },
+  {
+    "command": "npm run typecheck -- --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-typecheck-environment.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:08:15.023642+00:00"
+  },
+  {
+    "command": "npm run check:contracts",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-contracts.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:08:20.247673+00:00"
+  },
+  {
+    "command": "npm run check:secrets",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-secrets.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:08:21.055678+00:00"
+  },
+  {
+    "command": "npm run build",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/final-build.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:08:21.599681+00:00"
+  },
+  {
+    "command": "npm run verify",
+    "exit_code": 2,
+    "evidence": "evidence/m1i/final-verify-manifest.txt",
+    "counts_if_present": {
+      "tests": 679,
+      "pass": 679,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "mtime_utc": "2026-09-17T02:09:47.356195+00:00"
+  },
+  {
+    "command": "npm run homologate:local",
+    "exit_code": 1,
+    "evidence": "evidence/m1i/final-homologation.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:10:24.012413+00:00"
+  },
+  {
+    "command": "npm run verify:release",
+    "exit_code": 1,
+    "evidence": "evidence/m1i/final-release-gate.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:10:25.064419+00:00"
+  },
+  {
+    "command": "npm run deps:resolve",
+    "exit_code": 1,
+    "evidence": "evidence/m1i/11-dependencies-attempt.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:05:10.982532+00:00"
+  },
+  {
+    "command": "npm run test:db:local",
+    "exit_code": 1,
+    "evidence": "evidence/m1i/12-postgres-attempt.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:05:25.242620+00:00"
+  },
+  {
+    "command": "npm run test:ui:local",
+    "exit_code": 1,
+    "evidence": "evidence/m1i/13-ui-attempt.txt",
+    "counts_if_present": {},
+    "mtime_utc": "2026-09-17T02:05:32.254658+00:00"
+  },
+  {
+    "command": "node --experimental-strip-types --test tests/m1e-http-summary.test.ts",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/15-isolated-http-review.txt",
+    "counts_if_present": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "mtime_utc": "2026-09-17T02:09:28.140082+00:00"
+  },
+  {
+    "command": "python /mnt/data/helpdesk_work/verify_m1i.py",
+    "exit_code": null,
+    "interrupted": true,
+    "reason": "container tool execution limit",
+    "evidence": "evidence/m1i/14-aggregate-interrupted-verify.txt",
+    "approval": false
+  },
+  {
+    "command": "git diff --check -- . ':(exclude)evidence'",
+    "exit_code": 0,
+    "evidence": "evidence/m1i/source-whitespace-check.txt",
+    "note": "Raw TAP logs retain original trailing spaces; they were not rewritten."
+  }
+]

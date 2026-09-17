@@ -22,7 +22,7 @@ try{
  const binding=info.NetworkSettings.Ports['5432/tcp'].find(p=>p.HostIp==='127.0.0.1');
  if(!binding||!/^\d+$/.test(binding.HostPort))throw Error('Loopback port binding not verified.');
  const at='@127.0.0.1:'+binding.HostPort+'/helpdesk_test';
- const child=spawn(process.execPath,['--experimental-strip-types','--test','supabase/tests/rls.test.ts'],{stdio:'inherit',env:{...process.env,ALLOW_DATABASE_TESTS:'1',HELPDESK_TEST_ADMIN_URL:'postgresql://postgres:'+adminPassword+at,HELPDESK_TEST_APP_URL:'postgresql://helpdesk_app:'+appPassword+at}});
+ const child=spawn(process.execPath,['--experimental-strip-types','--test','--test-concurrency=1','supabase/tests/rls.test.ts','supabase/tests/upgrade.test.ts'],{stdio:'inherit',env:{...process.env,ALLOW_DATABASE_TESTS:'1',HELPDESK_TEST_ADMIN_URL:'postgresql://postgres:'+adminPassword+at,HELPDESK_TEST_APP_URL:'postgresql://helpdesk_app:'+appPassword+at}});
  const code=await new Promise((resolve,reject)=>{child.once('error',reject);child.once('exit',code=>resolve(code??1));});process.exitCode=code;
 }catch(error){console.error(error.message);process.exitCode=1;}
 finally{

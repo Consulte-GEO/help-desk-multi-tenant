@@ -26,22 +26,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
  if(version!=='0.9.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
-/** Startup guard for accidental exposure/disabled RLS; not a proof of policy semantics. */
-export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
- const row=(await pool.query(`with schemas as (
-  select * from pg_catalog.pg_namespace where nspname in ('helpdesk_core','helpdesk_auth','helpdesk_integration','helpdesk_audit')
- ), tables as (select c.* from pg_catalog.pg_class c join schemas n on n.oid=c.relnamespace where c.relkind='r')
- select (select count(*)::integer from tables) as table_count,
- (select count(*)::integer from tables where not relrowsecurity or not relforcerowsecurity) as unsafe_tables,
- exists(select 1 from schemas n cross join lateral pg_catalog.aclexplode(coalesce(n.nspacl,pg_catalog.acldefault('n',n.nspowner))) a where a.grantee=0) as public_schema_access,
- exists(select 1 from schemas n cross join pg_catalog.pg_roles r where r.rolname in ('anon','authenticated','service_role')
-  and pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE')) as client_schema_access,
- exists(select 1 from pg_catalog.pg_proc p join schemas n on n.oid=p.pronamespace
-  cross join lateral pg_catalog.aclexplode(coalesce(p.proacl,pg_catalog.acldefault('f',p.proowner))) a
-  where a.grantee=0 and a.privilege_type='EXECUTE') as public_helper_execute`)).rows[0];
- if(!row||row.table_count!==23||row.unsafe_tables!==0||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false)
-  throw new HelpdeskError(503,'unsafe_database_policies','Estrutura ou proteções do banco não correspondem à versão homologável.');
-}
+export {assertDatabaseSecurity} from './database-security.ts';
 export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{
  pool.on?.('error',()=>{try{observe({component:'helpdesk.database',event:'idle_connection_error'});}catch{/* No raw connection errors or throwing telemetry callbacks. */}});
 }
