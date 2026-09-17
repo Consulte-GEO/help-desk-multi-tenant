@@ -1,3 +1,12 @@
+# v0.19.0 — vigência e integridade contratual (local, não publicada)
+
+- Reutiliza um parser explícito de instantes com microssegundos na resolução de contratos e no comparador de criação dos recibos históricos, sem mudar seu conteúdo ou a gramática dos cursores.
+- Recusa coleção contratual incompatível antes de resolver/criar: contexto, campos, flags, versão, período, política JSON, duplicatas e limite de100. Erro seguro503, não ausência de contrato ou seleção parcial.
+- Mantém relógio após espera/validação, início inclusivo/fim exclusivo, seleção explícita em ambiguidade e replay após expiração sem nova escrita.
+- Memória filtra autorização antes de interpretar períodos do catálogo, evitando falha causada por dados inválidos de outro workspace.
+-38 novos testes locais (1.040 total), incluindo3HTTP;5 testes PostgreSQL escritos (201 total), ainda não executados. Sem nova suíte DOM, migration, dependência ou endpoint.
+- API/interface0.19.0; schema0.18.0,11 migrations preservadas. M1/produção permanecem não aprovados.
+
 # v0.18.0 — notas-only e confirmação das gravações (local, não publicada)
 
 - Corrige addNote pedindo SELECT FOR UPDATE e exigindo tickets:write indevidamente; mantém autorização de recurso/nota e bloqueios dos demais comandos.

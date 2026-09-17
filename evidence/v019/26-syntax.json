@@ -1,0 +1,132 @@
+[
+  {
+    "file": "shared/instant.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/app.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/conversation-state.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/human-auth.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/human-session.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/mutation-state.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/session-fetch.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/support-catalog-state.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/ticket-actions.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/ticket-list-state.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "web/timeline-state.js",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/build.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/check-homologation.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/check-secrets.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/generate-openapi.py",
+    "check": "Python AST",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/homologate-local.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/homologation-core.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/local-process.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/native-postgres.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/prepare-dependencies.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/smoke-local-http.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-docker.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-local.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-db-native.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/test-ui-local.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verify-lock.mjs",
+    "check": "node --check",
+    "exit_code": 0
+  }
+]

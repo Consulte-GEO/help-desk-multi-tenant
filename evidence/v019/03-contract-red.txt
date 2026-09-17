@@ -1,0 +1,771 @@
+TAP version 13
+# (node:2046) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: future start within this millisecond must not grant coverage
+not ok 1 - future start within this millisecond must not grant coverage
+  ---
+  duration_ms: 1.622235
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'resolved'
+    - 'no_coverage'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'no_coverage'
+  actual: 'resolved'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:21:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: expiry later in this millisecond keeps coverage eligible until the exact exclusive boundary
+not ok 2 - expiry later in this millisecond keeps coverage eligible until the exact exclusive boundary
+  ---
+  duration_ms: 0.240045
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'no_coverage'
+    - 'resolved'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'resolved'
+  actual: 'no_coverage'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:25:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: a one-microsecond contractual interval is neither empty nor rounded
+not ok 3 - a one-microsecond contractual interval is neither empty nor rounded
+  ---
+  duration_ms: 0.165084
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'no_coverage'
+    - 'resolved'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'resolved'
+  actual: 'no_coverage'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:32:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: explicit non-UTC offset and fractional digits keep exact entitlement boundaries
+not ok 4 - explicit non-UTC offset and fractional digits keep exact entitlement boundaries
+  ---
+  duration_ms: 0.144032
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:35:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'no_coverage'
+    - 'resolved'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'resolved'
+  actual: 'no_coverage'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:38:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same-day equivalent representations preserve boundaries without rewriting candidates
+ok 5 - same-day equivalent representations preserve boundaries without rewriting candidates
+  ---
+  duration_ms: 0.816144
+  type: 'test'
+  ...
+# Subtest: an impossible comparison clock is rejected rather than rolled into March
+not ok 6 - an impossible comparison clock is rejected rather than rolled into March
+  ---
+  duration_ms: 0.236049
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:46:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:47:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a date without explicit timezone cannot decide contractual eligibility
+not ok 7 - a date without explicit timezone cannot decide contractual eligibility
+  ---
+  duration_ms: 0.48749
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:49:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:50:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: submillisecond future contract cannot create a ticket, event, outbox or receipt
+not ok 8 - submillisecond future contract cannot create a ticket, event, outbox or receipt
+  ---
+  duration_ms: 3.031214
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:52:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'no_coverage'
+    status: 422
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:54:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: nonempty invalid coverage result is not no_coverage or a selectable candidate
+not ok 9 - nonempty invalid coverage result is not no_coverage or a selectable candidate
+  ---
+  duration_ms: 1.323424
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: "Cannot read properties of null (reading 'filter')"
+  name: 'TypeError'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:43:152
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:61:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:61:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible workspaceId before creating any resource (workspace-other)
+not ok 10 - coverage boundary refuses incompatible workspaceId before creating any resource (workspace-other)
+  ---
+  duration_ms: 0.899418
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible accountId before creating any resource (account-other)
+not ok 11 - coverage boundary refuses incompatible accountId before creating any resource (account-other)
+  ---
+  duration_ms: 0.550172
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible productInstanceId before creating any resource (school-other)
+not ok 12 - coverage boundary refuses incompatible productInstanceId before creating any resource (school-other)
+  ---
+  duration_ms: 0.60268
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible serviceCode before creating any resource (OTHER)
+not ok 13 - coverage boundary refuses incompatible serviceCode before creating any resource (OTHER)
+  ---
+  duration_ms: 0.407201
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible id before creating any resource ()
+not ok 14 - coverage boundary refuses incompatible id before creating any resource ()
+  ---
+  duration_ms: 0.518455
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible contractId before creating any resource (null)
+not ok 15 - coverage boundary refuses incompatible contractId before creating any resource (null)
+  ---
+  duration_ms: 0.329457
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersionId before creating any resource (17)
+not ok 16 - coverage boundary refuses incompatible contractVersionId before creating any resource (17)
+  ---
+  duration_ms: 0.674666
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersion before creating any resource (0)
+not ok 17 - coverage boundary refuses incompatible contractVersion before creating any resource (0)
+  ---
+  duration_ms: 0.539717
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersion before creating any resource (1)
+not ok 18 - coverage boundary refuses incompatible contractVersion before creating any resource (1)
+  ---
+  duration_ms: 0.425017
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible contractStatus before creating any resource (ACTIVE)
+not ok 19 - coverage boundary refuses incompatible contractStatus before creating any resource (ACTIVE)
+  ---
+  duration_ms: 0.291991
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible validFrom before creating any resource (2026-02-30T00:00:00Z)
+not ok 20 - coverage boundary refuses incompatible validFrom before creating any resource (2026-02-30T00:00:00Z)
+  ---
+  duration_ms: 0.299552
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible validFrom before creating any resource (2026-01-01T00:00:00)
+not ok 21 - coverage boundary refuses incompatible validFrom before creating any resource (2026-01-01T00:00:00)
+  ---
+  duration_ms: 0.597142
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2027-02-30T00:00:00Z)
+not ok 22 - coverage boundary refuses incompatible validUntil before creating any resource (2027-02-30T00:00:00Z)
+  ---
+  duration_ms: 0.432879
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2025-01-01T00:00:00Z)
+not ok 23 - coverage boundary refuses incompatible validUntil before creating any resource (2025-01-01T00:00:00Z)
+  ---
+  duration_ms: 0.311309
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2026-01-01T00:00:00Z)
+not ok 24 - coverage boundary refuses incompatible validUntil before creating any resource (2026-01-01T00:00:00Z)
+  ---
+  duration_ms: 0.313623
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'no_coverage',
+    +   status: 422
+    -   code: 'invalid_coverage_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  actual:
+  error: 'Nenhuma cobertura vigente.'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:51:46
+    async HelpdeskService.idempotent (file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:39:15)
+    async file:///mnt/data/helpdesk-v019/src/application/helpdesk.ts:48:17
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource (null)
+not ok 25 - coverage boundary refuses incompatible policy before creating any resource (null)
+  ---
+  duration_ms: 0.54183
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource ([object Object])
+not ok 26 - coverage boundary refuses incompatible policy before creating any resource ([object Object])
+  ---
+  duration_ms: 0.291991
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource ([object Object])
+not ok 27 - coverage boundary refuses incompatible policy before creating any resource ([object Object])
+  ---
+  duration_ms: 1.523558
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:73:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:75:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: duplicate coverage identifiers and oversized configuration are rejected as a whole
+not ok 28 - duplicate coverage identifiers and oversized configuration are rejected as a whole
+  ---
+  duration_ms: 7.112767
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:79:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+    status: 503
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:82:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a malformed second row cannot be ignored when an eligible selected row exists
+not ok 29 - a malformed second row cannot be ignored when an eligible selected row exists
+  ---
+  duration_ms: 0.685152
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:85:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_coverage_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v019/tests/v019-contract-boundaries.test.ts:87:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: valid empty, disabled, suspended and multiple contexts remain distinct from corruption
+ok 30 - valid empty, disabled, suspended and multiple contexts remain distinct from corruption
+  ---
+  duration_ms: 0.567006
+  type: 'test'
+  ...
+# Subtest: authorized replay after contract expiry does not resolve current entitlement or duplicate creation
+ok 31 - authorized replay after contract expiry does not resolve current entitlement or duplicate creation
+  ---
+  duration_ms: 1.759977
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 3
+# fail 28
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 171.871704

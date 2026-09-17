@@ -1,0 +1,48 @@
+TAP version 13
+# (node:3067) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: offset parser uses exact fractions and does not depend on local timezone
+ok 1 - offset parser uses exact fractions and does not depend on local timezone
+  ---
+  duration_ms: 1.525813
+  type: 'test'
+  ...
+# Subtest: offset parser rejects rollovers, implicit timezone and unsupported submicrosecond precision
+ok 2 - offset parser rejects rollovers, implicit timezone and unsupported submicrosecond precision
+  ---
+  duration_ms: 0.209838
+  type: 'test'
+  ...
+# Subtest: empty and reversed periods are invalid data, not a purchasable entitlement
+ok 3 - empty and reversed periods are invalid data, not a purchasable entitlement
+  ---
+  duration_ms: 0.341473
+  type: 'test'
+  ...
+# Subtest: malformed foreign coverage does not poison the authorized memory catalog
+not ok 4 - malformed foreign coverage does not poison the authorized memory catalog
+  ---
+  duration_ms: 5.666573
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-instant-inputs.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: 'Vigência inválida.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    file:///mnt/data/helpdesk-v019/src/domain/contracts.ts:13:71
+    Array.filter (<anonymous>)
+    resolveCoverage (file:///mnt/data/helpdesk-v019/src/domain/contracts.ts:11:29)
+    Object.supportContexts (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:32:20)
+    file:///mnt/data/helpdesk-v019/src/application/support-catalog.ts:59:28
+    MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v019/src/infrastructure/memory.ts:57:26)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 210.229219

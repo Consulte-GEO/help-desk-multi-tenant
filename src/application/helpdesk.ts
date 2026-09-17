@@ -1,3 +1,4 @@
+import {validateCoverageResult} from './coverage-result.ts';
 import {validateReplayEnvelope,validateTicketReplayShape,validateCreatedReplay,validateChangedReplay,validateMessageReplay} from './replay-result.ts';
 import {isPersistableText} from '../domain/input-values.ts';
 import {validateConversationResult} from './conversation-result.ts';
@@ -40,14 +41,14 @@ export class HelpdeskService{
   await s.saveIdempotency({principalId:p.id,workspaceId:p.workspaceId,operation,key,hash,result:structuredClone(value)});
   return {value,replayed:false};
  }
- async resolve(p:Principal,c:SupportContext){this.account(p,c,'contexts:resolve');return this.db.run(p,async s=>resolveCoverage((await s.coverages(c)).filter(x=>x.workspaceId===p.workspaceId&&x.accountId===c.accountId&&x.productInstanceId===c.productInstanceId&&x.serviceCode===c.serviceCode),this.now()));}
+ async resolve(p:Principal,c:SupportContext){this.account(p,c,'contexts:resolve');return this.db.run(p,async s=>resolveCoverage(validateCoverageResult(await s.coverages(c),p,c),this.now()));}
  async create(p:Principal,input:CreateTicket,key:string,requestId:string):Promise<{ticket:Ticket;replayed:boolean}>{
   this.account(p,input,'tickets:write');requireText(input.subject,3,200,'Assunto');requireText(input.description,1,12000,'Descrição');
   if(!['low','normal','high','urgent'].includes(input.priority))throw new HelpdeskError(400,'invalid_input','Prioridade inválida.');
   return this.db.run(p,async s=>{
    const result=await this.idempotent(s,p,'tickets.create',key,input,async()=>{
     // Contract/coverage is queried inside the same transaction; pg adapter locks source rows.
-    const locked=await s.coverages(input);const at=this.now();const resolved=resolveCoverage(locked.filter(x=>x.workspaceId===p.workspaceId&&x.accountId===input.accountId&&x.productInstanceId===input.productInstanceId&&x.serviceCode===input.serviceCode),at);
+    const locked=validateCoverageResult(await s.coverages(input),p,input);const at=this.now();const resolved=resolveCoverage(locked,at);
     if(resolved.status==='no_coverage')throw new HelpdeskError(422,'no_coverage','Nenhuma cobertura vigente.');
     if(resolved.status==='ambiguous'&&!input.coverageId)throw new HelpdeskError(409,'ambiguous_coverage','Selecione uma cobertura contratual.');
     const selected=input.coverageId?resolved.candidates.find(x=>x.id===input.coverageId):resolved.candidates[0];

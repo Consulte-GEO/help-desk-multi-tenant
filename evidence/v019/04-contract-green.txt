@@ -1,0 +1,198 @@
+TAP version 13
+# (node:2086) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: future start within this millisecond must not grant coverage
+ok 1 - future start within this millisecond must not grant coverage
+  ---
+  duration_ms: 1.491542
+  type: 'test'
+  ...
+# Subtest: expiry later in this millisecond keeps coverage eligible until the exact exclusive boundary
+ok 2 - expiry later in this millisecond keeps coverage eligible until the exact exclusive boundary
+  ---
+  duration_ms: 0.281225
+  type: 'test'
+  ...
+# Subtest: a one-microsecond contractual interval is neither empty nor rounded
+ok 3 - a one-microsecond contractual interval is neither empty nor rounded
+  ---
+  duration_ms: 0.14287
+  type: 'test'
+  ...
+# Subtest: explicit non-UTC offset and fractional digits keep exact entitlement boundaries
+ok 4 - explicit non-UTC offset and fractional digits keep exact entitlement boundaries
+  ---
+  duration_ms: 0.198092
+  type: 'test'
+  ...
+# Subtest: same-day equivalent representations preserve boundaries without rewriting candidates
+ok 5 - same-day equivalent representations preserve boundaries without rewriting candidates
+  ---
+  duration_ms: 0.703077
+  type: 'test'
+  ...
+# Subtest: an impossible comparison clock is rejected rather than rolled into March
+ok 6 - an impossible comparison clock is rejected rather than rolled into March
+  ---
+  duration_ms: 0.263289
+  type: 'test'
+  ...
+# Subtest: a date without explicit timezone cannot decide contractual eligibility
+ok 7 - a date without explicit timezone cannot decide contractual eligibility
+  ---
+  duration_ms: 0.107688
+  type: 'test'
+  ...
+# Subtest: submillisecond future contract cannot create a ticket, event, outbox or receipt
+ok 8 - submillisecond future contract cannot create a ticket, event, outbox or receipt
+  ---
+  duration_ms: 2.553588
+  type: 'test'
+  ...
+# Subtest: nonempty invalid coverage result is not no_coverage or a selectable candidate
+ok 9 - nonempty invalid coverage result is not no_coverage or a selectable candidate
+  ---
+  duration_ms: 0.88788
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible workspaceId before creating any resource (workspace-other)
+ok 10 - coverage boundary refuses incompatible workspaceId before creating any resource (workspace-other)
+  ---
+  duration_ms: 0.693404
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible accountId before creating any resource (account-other)
+ok 11 - coverage boundary refuses incompatible accountId before creating any resource (account-other)
+  ---
+  duration_ms: 0.312641
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible productInstanceId before creating any resource (school-other)
+ok 12 - coverage boundary refuses incompatible productInstanceId before creating any resource (school-other)
+  ---
+  duration_ms: 0.400792
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible serviceCode before creating any resource (OTHER)
+ok 13 - coverage boundary refuses incompatible serviceCode before creating any resource (OTHER)
+  ---
+  duration_ms: 0.312251
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible id before creating any resource ()
+ok 14 - coverage boundary refuses incompatible id before creating any resource ()
+  ---
+  duration_ms: 0.344339
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible contractId before creating any resource (null)
+ok 15 - coverage boundary refuses incompatible contractId before creating any resource (null)
+  ---
+  duration_ms: 0.25067
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersionId before creating any resource (17)
+ok 16 - coverage boundary refuses incompatible contractVersionId before creating any resource (17)
+  ---
+  duration_ms: 0.186555
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersion before creating any resource (0)
+ok 17 - coverage boundary refuses incompatible contractVersion before creating any resource (0)
+  ---
+  duration_ms: 0.418498
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible contractVersion before creating any resource (1)
+ok 18 - coverage boundary refuses incompatible contractVersion before creating any resource (1)
+  ---
+  duration_ms: 0.22365
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible contractStatus before creating any resource (ACTIVE)
+ok 19 - coverage boundary refuses incompatible contractStatus before creating any resource (ACTIVE)
+  ---
+  duration_ms: 0.273083
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible validFrom before creating any resource (2026-02-30T00:00:00Z)
+ok 20 - coverage boundary refuses incompatible validFrom before creating any resource (2026-02-30T00:00:00Z)
+  ---
+  duration_ms: 0.215598
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible validFrom before creating any resource (2026-01-01T00:00:00)
+ok 21 - coverage boundary refuses incompatible validFrom before creating any resource (2026-01-01T00:00:00)
+  ---
+  duration_ms: 0.192434
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2027-02-30T00:00:00Z)
+ok 22 - coverage boundary refuses incompatible validUntil before creating any resource (2027-02-30T00:00:00Z)
+  ---
+  duration_ms: 0.195769
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2025-01-01T00:00:00Z)
+ok 23 - coverage boundary refuses incompatible validUntil before creating any resource (2025-01-01T00:00:00Z)
+  ---
+  duration_ms: 0.201758
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible validUntil before creating any resource (2026-01-01T00:00:00Z)
+ok 24 - coverage boundary refuses incompatible validUntil before creating any resource (2026-01-01T00:00:00Z)
+  ---
+  duration_ms: 0.265051
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource (null)
+ok 25 - coverage boundary refuses incompatible policy before creating any resource (null)
+  ---
+  duration_ms: 0.225633
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource ([object Object])
+ok 26 - coverage boundary refuses incompatible policy before creating any resource ([object Object])
+  ---
+  duration_ms: 0.242518
+  type: 'test'
+  ...
+# Subtest: coverage boundary refuses incompatible policy before creating any resource ([object Object])
+ok 27 - coverage boundary refuses incompatible policy before creating any resource ([object Object])
+  ---
+  duration_ms: 0.282728
+  type: 'test'
+  ...
+# Subtest: duplicate coverage identifiers and oversized configuration are rejected as a whole
+ok 28 - duplicate coverage identifiers and oversized configuration are rejected as a whole
+  ---
+  duration_ms: 1.080775
+  type: 'test'
+  ...
+# Subtest: a malformed second row cannot be ignored when an eligible selected row exists
+ok 29 - a malformed second row cannot be ignored when an eligible selected row exists
+  ---
+  duration_ms: 0.386841
+  type: 'test'
+  ...
+# Subtest: valid empty, disabled, suspended and multiple contexts remain distinct from corruption
+ok 30 - valid empty, disabled, suspended and multiple contexts remain distinct from corruption
+  ---
+  duration_ms: 0.733713
+  type: 'test'
+  ...
+# Subtest: authorized replay after contract expiry does not resolve current entitlement or duplicate creation
+ok 31 - authorized replay after contract expiry does not resolve current entitlement or duplicate creation
+  ---
+  duration_ms: 1.844702
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 227.325539

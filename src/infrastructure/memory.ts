@@ -29,7 +29,10 @@ export class MemoryUnitOfWork implements UnitOfWork{
   const store:Store={
    supportContexts:async(window,at)=>{
     if(!hasScope(p,'contexts:resolve'))return [];
-    const eligible=resolveCoverage(next.coverages,at).candidates;
+    // Exclude other tenants before interpreting contract data, just like the SQL helper.
+    const eligible=resolveCoverage(next.coverages.filter(c=>c.workspaceId===p.workspaceId
+      &&canAccessAccount(p,c.workspaceId,c.accountId)&&canUseProduct(p,c.productInstanceId)
+      &&(window.accountId===undefined||c.accountId===window.accountId)),at).candidates;
     const seen=new Set<string>();
     return next.supportContexts.filter(c=>{
      if(c.workspaceId!==p.workspaceId||!canAccessAccount(p,c.workspaceId,c.accountId)||!canUseProduct(p,c.productInstanceId)

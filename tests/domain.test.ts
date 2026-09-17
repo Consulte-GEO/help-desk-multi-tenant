@@ -24,7 +24,7 @@ test('single eligible coverage resolves', () => assert.equal(resolveCoverage([co
 test('multiple coverages are ambiguous', () => assert.equal(resolveCoverage([coverage(),coverage({id:'coverage-b'})], '2026-09-15T12:00:00Z').status,'ambiguous'));
 test('expired coverage cannot be chosen', () => assert.equal(resolveCoverage([coverage({validUntil:'2026-09-15T12:00:00Z'})], '2026-09-15T12:00:00Z').status,'no_coverage'));
 test('suspended contract cannot be chosen', () => assert.equal(resolveCoverage([coverage({contractStatus:'suspended'})], '2026-09-15T12:00:00Z').status,'no_coverage'));
-test('future contract is ineligible', () => assert.equal(resolveCoverage([coverage({validFrom:'2027-01-01T00:00:00Z'})], '2026-09-15T12:00:00Z').status,'no_coverage'));
+test('future contract is ineligible', () => assert.equal(resolveCoverage([coverage({validFrom:'2027-01-01T00:00:00Z',validUntil:'2028-01-01T00:00:00Z'})], '2026-09-15T12:00:00Z').status,'no_coverage'));
 test('draft contract cannot grant coverage', () => assert.equal(resolveCoverage([coverage({published:false})], '2026-09-15T12:00:00Z').status,'no_coverage'));
 
 test('new ticket can enter triage',()=>assert.equal(canTransition('new','triage','agent'),true));

@@ -1,18 +1,18 @@
-# Consulte Help Desk — v0.18.0 / notas e confirmação de escritas
+# Consulte Help Desk — v0.19.0 / vigência e integridade contratual
 
 Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
 
 ## Esta entrega
 
-Correção da nota-only: o comando de nota não solicita UPDATE no pai; a migration 011 ajusta o bloqueio interno da conversa para NO KEY UPDATE. Confirmação explícita de comando/uma linha em todos os INSERTs e UPDATEs do adaptador, incluindo recibos idempotentes. UPDATE válido com zero linhas mantém conflito412; confirmação incompatível gera503 e rollback antes de COMMIT.
+A resolução de cobertura compara o início inclusivo e o fim exclusivo sem perder microssegundos. O retorno do adaptador é validado integralmente antes de escolher contrato ou criar chamado; configuração inválida é erro controlado, não ausência de cobertura. Reenvios autorizados preservam a resposta histórica, mesmo após o vencimento contratual.
 
-**1002 testes locais aprovados (20 novos) e 35 checks HTTP de memória.** 196 SQL e36 browser escritos, não homologados. Sem lock real/npm ci/audit. Typecheck global é suplementar. Os três testes novos de socket/driver controlado estão incluídos nos1002, não são testes de PostgreSQL.
+**1.040 testes locais aprovados (38 novos) e 35 checks HTTP da demonstração.** Os três novos testes de socket estão incluídos nos 1.040. Há 201 SQL e 36 browser escritos, ainda sem homologação real. Não há lockfile, npm ci/audit concluídos ou aprovação do runtime. Typecheck global é suplementar.
 
 ## Documentação
 
-[Notas e gravações](docs/22-NOTAS-E-CONFIRMACAO-DE-ESCRITAS.md) · [Precisão temporal](docs/21-PAGINACAO-E-PRECISAO-TEMPORAL.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Efeitos transacionais](docs/20-EFEITOS-TRANSACIONAIS.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
+[Vigência e coberturas](docs/23-VIGENCIA-E-INTEGRIDADE-CONTRATUAL.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Notas e gravações](docs/22-NOTAS-E-CONFIRMACAO-DE-ESCRITAS.md) · [Precisão temporal](docs/21-PAGINACAO-E-PRECISAO-TEMPORAL.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
 
-M1 e R14-04/05/06 continuam sem homologação PostgreSQL. Outbox não significa entrega externa. Cursores antigos de três dígitos seguem aceitos, mas precisão já perdida não pode ser reconstruída: reiniciar as coleções no rollout.
+M1 e R14-04/05/06 continuam sem homologação PostgreSQL. Comparação exata não melhora a resolução do relógio do servidor e não garante sincronização entre API e banco. Nenhum contrato, snapshot, recibo ou migration foi reescrito.
 
 ## Plano de provisionamento sem executar SQL
 
@@ -48,6 +48,6 @@ npm run check:homologation
 
 Os runners recusam infraestrutura ausente; não trocam para Supabase remoto ou aprovam etapas por mocks. Não usar o login postgres/service_role no runtime. Frontend estático não é bundle de Functions.
 
-**API/interface/schema0.18.0; onze migrations/25 tabelas/18 operações.** As dez migrations anteriores preservadas; nenhuma dependência ou endpoint novo. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
+**API/interface0.19.0; schema esperado0.18.0; onze migrations/25 tabelas/18 operações.** Todas as onze migrations anteriores preservadas; nenhuma dependência ou endpoint novo. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
 
 Sessão humana permanece somente em memória; reload exige novo login. Logout solicita escopo local e não invalida imediatamente um JWT já emitido. MFA/SSO/CAPTCHA, administração, anexos, clocks de SLA, dispatcher/entregas e dois conectores reais continuam pendentes.

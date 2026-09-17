@@ -1,0 +1,77 @@
+{
+  "version": "0.19.0",
+  "base_commit": "3ecd5abb185cf04333c00b6f5349b5563a5779d4",
+  "generated_at": "2026-09-17T19:11:41.636627+00:00",
+  "local_tests": {
+    "exit_code": 0,
+    "tests": 1040,
+    "pass": 1040,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "evidence": "28-final-tests.txt"
+  },
+  "http_smoke": {
+    "passed": 35,
+    "persistence": "memory",
+    "evidence": "17-ui-attempt.txt"
+  },
+  "new_http": {
+    "passed": 3,
+    "included_in_local_tests": true,
+    "evidence": "11-contract-http-reviewed.txt"
+  },
+  "sql": {
+    "written": 201,
+    "main": 185,
+    "upgrade": 16,
+    "executed": 0,
+    "runner_exit_code": 1,
+    "evidence": "25-db-final-attempt.txt"
+  },
+  "browser": {
+    "written": 36,
+    "approved": 0,
+    "runner_exit_code": 1,
+    "reason": "ERR_BLOCKED_BY_ADMINISTRATOR"
+  },
+  "install": {
+    "exit_code": 1,
+    "reason": "EAI_AGAIN registry.npmjs.org",
+    "evidence": "01-dependencies.txt"
+  },
+  "verify_standard": {
+    "exit_code": 2,
+    "reason": "local dependencies and Node types absent",
+    "evidence": "20-verify-standard.txt"
+  },
+  "supplemental_typecheck": {
+    "exit_code": 0,
+    "substitutes_npm_ci": false,
+    "evidence": "31-final-typecheck-supplemental.txt"
+  },
+  "contracts": {
+    "exit_code": 0,
+    "operations": 18,
+    "paths": 14,
+    "structural_only": true
+  },
+  "migrations": {
+    "count": 11,
+    "changed": 0,
+    "schema": "0.18.0"
+  },
+  "build": {
+    "exit_code": 0,
+    "scope": "static frontend only"
+  },
+  "homologation": {
+    "approved": false,
+    "release_approved": false
+  },
+  "remote": {
+    "read": false,
+    "write": false
+  }
+}

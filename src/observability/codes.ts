@@ -22,6 +22,7 @@ export const ERROR_CODES=new Set([
  'invalid_auth_configuration',
  'invalid_body',
  'invalid_catalog_result',
+ 'invalid_coverage_result',
  'invalid_database_result',
  'invalid_database_write_result',
  'invalid_conversation_result',

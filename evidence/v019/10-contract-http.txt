@@ -1,0 +1,46 @@
+TAP version 13
+# node:internal/modules/typescript:62
+#         throw new ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX(error.message);
+#               ^
+# SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]:   x TypeScript parameter property is not supported in strip-only mode
+#     ,-[15:1]
+#  12 | 
+#  13 | const context={account_id:'account-a',product_instance_id:'geolab-production',service_code:'SUPPORT'};
+#  14 | const body={...context,subject:'V019 contractual HTTP fixture',description:'Synthetic request body',priority:'normal'};
+#  15 | class ExactDate extends Date{constructor(readonly exact:string){super(exact);}override toISOString(){return this.exact;}}
+#     :                                                   ^^^^^^^^^^^^
+#  16 | async function fixture(initial:Coverage[],instant='2026-09-17T12:00:00.123000Z'){
+#  17 |  const db=new MemoryUnitOfWork({coverages:[coverage()]});let source:unknown=initial,now=instant,calls=0;
+#  18 |  const uow:UnitOfWork={run:(p,work)=>db.run(p,s=>work({...s,coverages:async()=>{calls++;return source as Coverage[];}}))};
+#     `----
+#     at parseTypeScript (node:internal/modules/typescript:62:15)
+#     at processTypeScriptCode (node:internal/modules/typescript:116:42)
+#     at stripTypeScriptModuleTypes (node:internal/modules/typescript:150:10)
+#     at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:471:16)
+#     at \#translate (node:internal/modules/esm/loader:534:12)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:581:27)
+#     at async ModuleJob._link (node:internal/modules/esm/module_job:116:19) {
+#   code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+# }
+# Node.js v22.16.0
+# Subtest: tests/v019-contract-http.test.ts
+not ok 1 - tests/v019-contract-http.test.ts
+  ---
+  duration_ms: 92.302733
+  type: 'test'
+  location: '/mnt/data/helpdesk-v019/tests/v019-contract-http.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 98.634004

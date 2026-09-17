@@ -28,3 +28,24 @@ export function canonicalInstant(value) {
  if(!isCanonicalInstant(value))throw new TypeError('Invalid canonical instant');
  return value.length===27&&value.slice(23,26)==='000'?value.slice(0,23)+'Z':value;
 }
+
+/** Exact Gregorian instant with an explicit numeric offset (or Z), 0–6 fractional digits.
+ * Used for contractual periods and legacy persisted ISO strings, not cursor grammar.
+ * Returns undefined instead of applying Date rollover, local timezone or precision loss.
+ */
+export function zonedInstantMicros(value) {
+ if(typeof value!=='string'||value.length>32)return undefined;
+ const match=/^((?!0000)\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+ if(!match)return undefined;
+ const fraction=(match[2]??'').padEnd(6,'0');
+ const local=match[1]+'.'+fraction+'Z';
+ if(!isCanonicalInstant(local))return undefined;
+ const zone=match[3];let offset=0;
+ if(zone!=='Z'){
+  const hours=Number(zone.slice(1,3)),minutes=Number(zone.slice(4,6));
+  if(hours>23||minutes>59)return undefined;
+  offset=(hours*60+minutes)*(zone[0]==='-'?-1:1);
+ }
+ // Epoch milliseconds for four-digit years are exactly representable as an integer.
+ return BigInt(Date.parse(local.slice(0,23)+'Z'))*1000n+BigInt(fraction.slice(3))-BigInt(offset)*60000000n;
+}

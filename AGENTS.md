@@ -25,7 +25,12 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado atual v0.18.0
+## Estado atual v0.19.0
+API/interface0.19.0; schema esperado0.18.0. Onze migrations intactas,25 tabelas,18 operações. Ler docs04/05/23. Comparar vigência [início,fim) com fuso explícito e microssegundos exatos; não normalizar calendários impossíveis. Validação integral da coleção privada antes de seleção/criação: resultado inválido é503, não no_coverage/primeira gravação. Reenvio autorizado mantém snapshot original, sem consultar novamente elegibilidade. O relógio continua sendo do servidor; precisão do comparador não é alta resolução do relógio.
+
+1.040 testes locais/35HTTP passaram.201SQL/36browser escritos, não homologados. Registry falhou por DNS; sem lock real/npm ci/audit. M1 aberto e M2 não iniciado. Nenhuma reinspeção ou escrita remota nesta rodada. Preservar todos os locks, scopes, notas-only, efeitos e command tags anteriores. Histórico abaixo não é estado atual.
+
+## Registro histórico v0.18.0
 API/interface/schema candidato0.18.0. Onze migrations,25 tabelas,18 operações. Nota-only não pede UPDATE na consulta inicial; o trigger privado serializa o pai com NO KEY UPDATE. Não resolver isso ampliando grants/notes-read nem tirando os locks de outros comandos. DML exige confirmação de uma linha; UPDATE0 mantém412. Nada de INSERT RETURNING para notas, sucesso por resposta ausente ou retry automático de mutação. Leia docs22. Os dez arquivos SQL anteriores permanecem intactos.
 
 1002 testes locais/35HTTP passaram.196 SQL/36browser escritos, não homologados. Sem lock real/npm ci/audit; typecheck global não é instalação. M1 aberto, M2 não iniciado. Nenhuma escrita ou leitura remota nesta rodada. Conferir destinos antes de integrar. Histórico abaixo preservado para rastreabilidade.

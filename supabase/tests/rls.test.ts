@@ -869,3 +869,49 @@ test('v018 replacement conversation hook retains private execution and empty sea
  assert.ok((r.rows[0]!.proconfig as string[]).some(x=>x==='search_path=""'));
  assert.match(String(r.rows[0]!.definition),/for no key update/i);
 });
+
+// v0.19: Written PostgreSQL tests. npm test does not run this file.
+// Only resolution uses the injected clock; these cases do not pretend that DB now() is overridden.
+async function contractBoundaryFixture(validFrom:string,validUntil:string|null){
+ const f=await precisionFixture(),contractId=randomUUID(),versionId=randomUUID(),coverageId=randomUUID();
+ const serviceCode='V019-'+randomUUID();
+ await admin.query('insert into helpdesk_core.services(workspace_id,product_id,code,name) values($1,$2,$3,$4)',[id(1),id(301),serviceCode,'V019 boundary fixture']);
+ await admin.query('insert into helpdesk_core.support_contracts(workspace_id,id,name) values($1,$2,$3)',[id(1),contractId,'V019 synthetic contract']);
+ await admin.query('insert into helpdesk_core.contract_versions(workspace_id,contract_id,id,version,published,valid_from,valid_until,policy) values($1,$2,$3,1,true,$4,$5,$6)',[id(1),contractId,versionId,validFrom,validUntil,JSON.stringify({label:'Contratual sintético'})]);
+ await admin.query('insert into helpdesk_core.coverages(workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,id) values($1,$2,$3,$4,$5,$6,$7)',[id(1),input.accountId,id(301),input.productInstanceId,serviceCode,versionId,coverageId]);
+ return {...f,coverageId,context:{accountId:input.accountId,productInstanceId:input.productInstanceId,serviceCode}};
+}
+test('SQL019 locked coverage preserves a future microsecond start rather than granting early eligibility',async()=>{
+ const f=await contractBoundaryFixture('2030-01-01T12:00:00.123456Z',null);
+ f.set('2030-01-01T12:00:00.123000Z');
+ assert.equal((await f.precise.resolve(f.actor,f.context)).status,'no_coverage');
+ f.set('2030-01-01T12:00:00.123456Z');
+ const result=await f.precise.resolve(f.actor,f.context);assert.equal(result.status,'resolved');assert.equal(result.candidates[0]?.id,f.coverageId);
+});
+test('SQL019 expiry after the clock within the same millisecond remains eligible',async()=>{
+ const f=await contractBoundaryFixture('2030-01-01T12:00:00Z','2030-01-01T12:00:00.123456Z');
+ const standardClock=new HelpdeskService(new PostgresUnitOfWork(app),()=>new Date('2030-01-01T12:00:00.123Z'));
+ assert.equal((await standardClock.resolve(f.actor,f.context)).status,'resolved');
+ f.set('2030-01-01T12:00:00.123456Z');assert.equal((await f.precise.resolve(f.actor,f.context)).status,'no_coverage');
+});
+test('SQL019 a single-microsecond interval has inclusive start and exclusive end after JSONB transport',async()=>{
+ const f=await contractBoundaryFixture('2030-01-01T12:00:00.123456Z','2030-01-01T12:00:00.123457Z');
+ for(const [at,status] of [['2030-01-01T12:00:00.123455Z','no_coverage'],['2030-01-01T12:00:00.123456Z','resolved'],['2030-01-01T12:00:00.123457Z','no_coverage']]){
+  f.set(at!);assert.equal((await f.precise.resolve(f.actor,f.context)).status,status);
+ }
+});
+test('SQL019 non-UTC PostgreSQL session output is compared without truncation or source mutation',async()=>{
+ const f=await contractBoundaryFixture('2030-01-01T12:00:00.123456Z',null);
+ const moduleName='pg';const driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
+ const timezonePool=new driver.Pool({connectionString:appUrl,max:1,options:'-c timezone=Asia/Kathmandu'});
+ try{
+  assert.equal((await timezonePool.query('show TimeZone')).rows[0]?.TimeZone,'Asia/Kathmandu');
+  const api=new HelpdeskService(new PostgresUnitOfWork(timezonePool),()=>new PrecisionClockDate('2030-01-01T12:00:00.123456Z'));
+  const result=await api.resolve(f.actor,f.context);assert.equal(result.status,'resolved');
+  assert.equal(result.candidates[0]?.validFrom,'2030-01-01T17:45:00.123456+05:45');
+ }finally{await timezonePool.end();}
+});
+test('SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result',async()=>{
+ const f=await contractBoundaryFixture('infinity',null);
+ await assert.rejects(()=>f.precise.resolve(f.actor,f.context),{code:'invalid_coverage_result',status:503});
+});
