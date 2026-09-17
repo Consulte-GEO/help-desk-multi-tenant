@@ -1,0 +1,138 @@
+TAP version 13
+# (node:1420) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: human login is memory-only and public state never contains tokens/password/user metadata
+ok 1 - human login is memory-only and public state never contains tokens/password/user metadata
+  ---
+  duration_ms: 1.424822
+  type: 'test'
+  ...
+# Subtest: fresh token causes no refresh and concurrent near-expiry requests share exactly one rotation
+ok 2 - fresh token causes no refresh and concurrent near-expiry requests share exactly one rotation
+  ---
+  duration_ms: 0.418685
+  type: 'test'
+  ...
+# Subtest: next rotation uses newly returned refresh token, not the consumed one
+ok 3 - next rotation uses newly returned refresh token, not the consumed one
+  ---
+  duration_ms: 1.480253
+  type: 'test'
+  ...
+# Subtest: temporary refresh failure pauses requests and explicit retry resumes without changing identity generation
+ok 4 - temporary refresh failure pauses requests and explicit retry resumes without changing identity generation
+  ---
+  duration_ms: 0.834916
+  type: 'test'
+  ...
+# Subtest: invalid refresh clears the local identity and cannot keep using old token
+ok 5 - invalid refresh clears the local identity and cannot keep using old token
+  ---
+  duration_ms: 0.358998
+  type: 'test'
+  ...
+# Subtest: identity substitution during refresh never installs the returned token
+ok 6 - identity substitution during refresh never installs the returned token
+  ---
+  duration_ms: 0.211971
+  type: 'test'
+  ...
+# Subtest: signout clears local state before network confirms, and never emits refresh tokens
+ok 7 - signout clears local state before network confirms, and never emits refresh tokens
+  ---
+  duration_ms: 0.241244
+  type: 'test'
+  ...
+# Subtest: failed remote logout is explicitly unconfirmed with local state still cleared
+ok 8 - failed remote logout is explicitly unconfirmed with local state still cleared
+  ---
+  duration_ms: 0.16304
+  type: 'test'
+  ...
+# Subtest: logout when no identity was started does not contact provider
+ok 9 - logout when no identity was started does not contact provider
+  ---
+  duration_ms: 0.303405
+  type: 'test'
+  ...
+# Subtest: double click at login is rejected instead of starting two provider sessions
+ok 10 - double click at login is rejected instead of starting two provider sessions
+  ---
+  duration_ms: 0.479154
+  type: 'test'
+  ...
+# Subtest: cancelled login cannot resurrect identity; its late provider session is signed out
+ok 11 - cancelled login cannot resurrect identity; its late provider session is signed out
+  ---
+  duration_ms: 0.348612
+  type: 'test'
+  ...
+# Subtest: logout during refresh waits for latest rotated token without restoring cleared state
+ok 12 - logout during refresh waits for latest rotated token without restoring cleared state
+  ---
+  duration_ms: 0.453316
+  type: 'test'
+  ...
+# Subtest: new login survives completion and failure of previous logout/refresh
+ok 13 - new login survives completion and failure of previous logout/refresh
+  ---
+  duration_ms: 0.256987
+  type: 'test'
+  ...
+# Subtest: 401 for current access token clears identity; stale token refusal after refresh does not
+ok 14 - 401 for current access token clears identity; stale token refusal after refresh does not
+  ---
+  duration_ms: 0.216738
+  type: 'test'
+  ...
+# Subtest: workspace is captured before login and invalid selector is rejected before network
+ok 15 - workspace is captured before login and invalid selector is rejected before network
+  ---
+  duration_ms: 0.166765
+  type: 'test'
+  ...
+# Subtest: observer failure does not change auth outcome or leak a rejection
+ok 16 - observer failure does not change auth outcome or leak a rejection
+  ---
+  duration_ms: 0.182708
+  type: 'test'
+  ...
+# Subtest: API wrapper never repeats a submitted mutation after 401 or 503
+ok 17 - API wrapper never repeats a submitted mutation after 401 or 503
+  ---
+  duration_ms: 16.635112
+  type: 'test'
+  ...
+# Subtest: API wrapper refreshes before sending once, and callers cannot override auth/workspace headers
+ok 18 - API wrapper refreshes before sending once, and callers cannot override auth/workspace headers
+  ---
+  duration_ms: 0.704584
+  type: 'test'
+  ...
+# Subtest: API wrapper sends nothing while refresh is paused
+ok 19 - API wrapper sends nothing while refresh is paused
+  ---
+  duration_ms: 0.314131
+  type: 'test'
+  ...
+# Subtest: API response from an ended identity cannot be handed to the new identity
+ok 20 - API response from an ended identity cannot be handed to the new identity
+  ---
+  duration_ms: 0.438754
+  type: 'test'
+  ...
+# Subtest: absolute/protocol-relative/escaping API destinations are denied before credentials are obtained
+ok 21 - absolute/protocol-relative/escaping API destinations are denied before credentials are obtained
+  ---
+  duration_ms: 0.707759
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 150.975144

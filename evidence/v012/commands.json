@@ -1,0 +1,58 @@
+[
+  {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exit_code": 0,
+    "log": "final-tests.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "check:migrations"
+    ],
+    "exit_code": 0,
+    "log": "final-migrations.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "typecheck",
+      "--",
+      "--typeRoots",
+      "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+    ],
+    "exit_code": 0,
+    "log": "final-typecheck-environment.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "check:contracts"
+    ],
+    "exit_code": 0,
+    "log": "final-contracts.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "check:secrets"
+    ],
+    "exit_code": 0,
+    "log": "final-secrets.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "final-build.txt"
+  }
+]

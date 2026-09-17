@@ -25,9 +25,11 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.11.0
-M1 aberto. 710 locais/32 HTTP aprovados;125 SQL/27 browser escritos, não homologados. API0.11.0/schema0.9.0; oito migrations/23 tabelas/18 operações. Ler docs04/05/15. Reinspeção remota feita somente leitura; não pressupor estado futuro nem autorização de escrita.
+## Estado v0.12.0
+M1 aberto.753 locais/32 HTTP aprovados;125 SQL/32 browser escritos, não homologados. API 0.12/schema 0.9; oito migrations/23 tabelas/18 operações. Ler documentos 04, 05 e 16 e revisão histórica 15. Apenas GitHub foi reinspecionado nesta rodada; ausência antiga de trabalho remoto não autoriza sobrescrita.
 
-Preservar UUIDs nos limites persistidos/Auth e aliases somente no domínio/demo. NUL/surrogates isolados são recusados, não removidos silenciosamente. Validar parent e escopo de cada linha de conversa antes de serializar. Filtros assignment somente operador por conta, antes de paginação; não concedem acesso. Principal HelpDesk não é obrigatoriamente igual ao usuário Auth.
+Preservar UUIDs nos limites persistidos/Auth e aliases somente no domínio/demo. Rejeitar NUL/surrogate, não substituir. Conferir parent e filhos nas conversas. Responsabilidade não concede acesso, filtros apenas operador por conta; motivos/eventos internos não saem ao cliente. Cache é snapshot original reautorizado; repetir resposta não é leitura atual.
 
-Prioridade/atribuição são internas à equipe, com motivos restritos e controle de versão/idempotência. Responsabilidade não produz outbox e não entra na política de leitura. Cache devolve resposta original reautorizada. Preservar busca/catálogo/rascunhos/telemetria. Não alterar as oito migrations anteriores, seus hashes, gates ou fixtures para fabricar homologação.
+Sessão humana só em memória, rotação única compartilhada e sob demanda. Não repetir mutações após401/503; recusa pré-dispatch é distinta de confirmação perdida. Logout local limpa a UI e pede scope local ao provedor, não garante invalidar JWT copiado antes de exp. Não promover metadata do JWT para autorização, nem desativar MFA/CAPTCHA para fazer passar testes. Sessões M2M não foram substituídas. Os testes de Auth são sintéticos e não comprovam o provedor real.
+
+Não alterar migrations/hashes, gates ou fixtures para fabricar aprovação. A contagem de testes não substitui execução real, capacidade/restore ou revisão independente.

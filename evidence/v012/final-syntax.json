@@ -1,0 +1,31 @@
+{
+  "node_check_passed": [
+    "web/conversation-state.js",
+    "web/human-auth.js",
+    "web/ticket-list-state.js",
+    "web/session-fetch.js",
+    "web/support-catalog-state.js",
+    "web/human-session.js",
+    "web/timeline-state.js",
+    "web/mutation-state.js",
+    "web/app.js",
+    "scripts/homologate-local.mjs",
+    "scripts/native-postgres.mjs",
+    "scripts/build.mjs",
+    "scripts/homologation-core.mjs",
+    "scripts/check-homologation.mjs",
+    "scripts/smoke-local-http.mjs",
+    "scripts/local-process.mjs",
+    "scripts/test-db-docker.mjs",
+    "scripts/test-db-native.mjs",
+    "scripts/test-db-local.mjs",
+    "scripts/prepare-dependencies.mjs",
+    "scripts/verify-lock.mjs",
+    "scripts/test-ui-local.mjs",
+    "scripts/check-secrets.mjs"
+  ],
+  "python_ast_passed": [
+    "tests/browser-smoke.py",
+    "tests/browser-human-session.py"
+  ]
+}

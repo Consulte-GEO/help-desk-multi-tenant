@@ -1,3 +1,7 @@
+import {createHumanAuthTransport} from './human-auth.js';
+import {createHumanSession} from './human-session.js';
+import {createSessionFetch} from './session-fetch.js';
+let humanSession=null,humanFetch=null,loginAttempt=0,lastHumanPhase='signed_out';
 import {createTimelineState,eventPresentation} from './timeline-state.js';
 const timeline=createTimelineState();
 import {createTicketListState} from './ticket-list-state.js';
@@ -13,14 +17,27 @@ const moves={new:['triage','open','cancelled'],triage:['open','waiting_customer'
 const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
 function notice(text,error=false){$('notification').textContent=text;$('notification').classList.toggle('error',error);$('notification').hidden=false;clearTimeout(notice.timer);notice.timer=setTimeout(()=>$('notification').hidden=true,error?10000:5000);}
-function run(fn){return Promise.resolve().then(fn).catch(e=>{if(e.message!=='stale_session')notice(e.message??'Operação não concluída.',true);});}
-async function api(path,options={}){const epoch=s.epoch;const r=await fetch('/v1'+path,{...options,headers:{'content-type':'application/json',authorization:'Bearer '+s.token,'x-workspace-id':s.workspace,...options.headers}});let b;try{b=await r.json();}catch{throw Error('Resposta inesperada do servidor.');}if(epoch!==s.epoch)throw Error('stale_session');if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;const error=Error((b.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));error.status=r.status;error.code=b.code;throw error;}return b;}
+function run(fn){return Promise.resolve().then(fn).catch(e=>{if(e.message!=='stale_session'&&e.code!=='stale_session')notice(e.message??'Operação não concluída.',true);});}
+async function api(path,options={}){
+ const epoch=s.epoch;
+ try{
+  const headers={'content-type':'application/json',...options.headers};
+  const r=s.demo
+   ?await fetch('/v1'+path,{...options,headers:{...headers,authorization:'Bearer '+s.token,'x-workspace-id':s.workspace},cache:'no-store',redirect:'error',referrerPolicy:'no-referrer'})
+   :humanFetch?await humanFetch(path,{...options,headers}):(()=>{throw Error('Autenticação indisponível.');})();
+  if(epoch!==s.epoch)throw Error('stale_session');
+  let b;try{b=r.status===204?null:await r.json();}catch{throw Error('Resposta inesperada do servidor.');}
+  if(epoch!==s.epoch)throw Error('stale_session');
+  if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;const error=Error((b?.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));error.status=r.status;error.code=b?.code;throw error;}
+  return b;
+ }catch(error){if(epoch!==s.epoch)throw Error('stale_session');throw error;}
+}
 const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempotency-key':key,...headers},body:JSON.stringify(body)});
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.me=null;$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -139,7 +156,7 @@ $('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.v
  }catch(error){
   if(mutations.finish(op,false).current||mutations.current(op)){
    const conflict=error.status===412||error.code==='assignment_conflict'||error.code==='assignment_release_forbidden';
-   $('assignment-status').textContent=conflict?'Responsabilidade ou versão alterada. Atualize o chamado e revise antes de confirmar novamente.':(error.status===503||!Number.isInteger(error.status))?'Resultado ainda não confirmado. Não crie outra operação: repita sem alterar os campos ou atualize o chamado para verificar.':error.message;
+   $('assignment-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':conflict?'Responsabilidade ou versão alterada. Atualize o chamado e revise antes de confirmar novamente.':(error.status===503||!Number.isInteger(error.status))?'Resultado ainda não confirmado. Não crie outra operação: repita sem alterar os campos ou atualize o chamado para verificar.':error.message;
    $('assignment-reload').hidden=!conflict;
   }
  }finally{renderAssignment();}
@@ -169,7 +186,7 @@ $('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   await detail(t.id);if(mutations.current(op))await list();
  }catch(error){
   if(mutations.finish(op,false).current||mutations.current(op)){
-   $('priority-status').textContent=error.status===412?'Outro atendimento modificou este chamado. Atualize a versão, revise a prioridade e confirme novamente.':(error.status===503||!Number.isInteger(error.status))?'Não foi possível confirmar a gravação. Repita sem alterar os campos para reutilizar a mesma chave ou atualize o chamado antes de decidir.':error.message;
+   $('priority-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':error.status===412?'Outro atendimento modificou este chamado. Atualize a versão, revise a prioridade e confirme novamente.':(error.status===503||!Number.isInteger(error.status))?'Não foi possível confirmar a gravação. Repita sem alterar os campos para reutilizar a mesma chave ou atualize o chamado antes de decidir.':error.message;
    $('priority-reload').hidden=error.status!==412;
   }
  }finally{renderPriority();}
@@ -254,6 +271,57 @@ $('transition').onclick=()=>run(async()=>{
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
-$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));$('logout').onclick=()=>{clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';};
-$('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{if(!s.config?.supabase_url||!s.config?.publishable_key)throw Error('Ambiente ainda não configurado para login.');const r=await fetch(s.config.supabase_url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:s.config.publishable_key,'content-type':'application/json'},body:JSON.stringify({email:$('email').value,password:$('password').value})}),b=await r.json();$('password').value='';if(!r.ok||!b.access_token)throw Error('Não foi possível autenticar. Verifique suas credenciais.');clearSession();s.token=b.access_token;s.workspace=$('workspace').value.trim();await login();});};
-async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok)s.config=await r.json();}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
+$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));async function leaveHumanSession(){
+ loginAttempt++;
+ if(s.demo||!humanSession){clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';return;}
+ const out=humanSession.signOut(),epoch=s.epoch;
+ $('login-status').textContent='Dados locais removidos. Confirmando saída da sessão atual no provedor…';
+ const result=await out;
+ if(epoch!==s.epoch||humanSession.state().phase!=='signed_out')return;
+ $('login-status').textContent=result==='confirmed'
+  ?'Sessão atual encerrada no provedor. Outras sessões não foram solicitadas para encerramento.'
+  :result==='not_requested'?'Nenhuma sessão humana ativa neste navegador.'
+  :'Dados locais removidos, mas a saída no provedor NÃO foi confirmada. Tokens já emitidos podem continuar válidos até expirar.';
+}
+$('logout').onclick=()=>run(leaveHumanSession);
+$('cancel-login').onclick=()=>run(leaveHumanSession);
+function humanChanged(value){
+ const previous=lastHumanPhase;lastHumanPhase=value.phase;
+ $('submit-login').disabled=value.phase==='signing_in';$('cancel-login').hidden=value.phase!=='signing_in';
+ $('session-banner').hidden=!['paused','refreshing'].includes(value.phase);
+ $('retry-session').hidden=value.phase!=='paused';$('retry-session').disabled=value.phase==='refreshing';
+ $('session-status').textContent=value.phase==='paused'
+  ?'Não foi possível renovar a sessão. Novas requisições estão pausadas; o rascunho permanece somente nesta tela. Tente renovar ou saia.'
+  :'Renovando a sessão antes de enviar novas requisições…';
+ if(value.phase==='signed_out'&&previous!=='signed_out'){
+  clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';
+  $('login-status').textContent='Sessão local encerrada. Entre novamente para continuar.';
+ }
+}
+$('retry-session').onclick=()=>run(async()=>{
+ if(!humanSession)return;const epoch=s.epoch;
+ await humanSession.resume();
+ if(epoch===s.epoch)notice('Sessão renovada. Nenhuma gravação foi repetida; revise e confirme a operação desejada.');
+});
+$('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
+ if(s.demo||!humanSession)throw Error('Ambiente ainda não configurado para login.');
+ if(humanSession.state().phase!=='signed_out')return;
+ const fields={email:$('email').value,password:$('password').value,workspace:$('workspace').value.trim()};
+ const attempt=++loginAttempt;clearSession();$('password').value='';$('login-status').textContent='Validando identidade e acesso ao workspace…';
+ const pending=humanSession.signIn(fields),generation=humanSession.state().generation;
+ try{
+  await pending;if(attempt!==loginAttempt||generation!==humanSession.state().generation)return;
+  s.workspace=humanSession.state().workspace;await login();
+  if(attempt===loginAttempt)$('login-status').textContent='';
+ }catch(error){
+  if(attempt!==loginAttempt||error.code==='stale_session'||error.message==='stale_session')return;
+  // A valid provider identity without a successful /me is not a Help Desk login.
+  if(!s.me&&humanSession.state().generation===generation&&humanSession.state().phase!=='signed_out'){
+   const result=await humanSession.signOut();
+   if(attempt!==loginAttempt||humanSession.state().phase!=='signed_out')return;
+   $('login-status').textContent=error.message+(result==='unconfirmed'?' Saída no provedor não confirmada.':'');
+  }else if(!s.me){$('login-status').textContent=error.message;}
+  else notice(error.message,true);
+ }
+});};
+async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged});humanFetch=createSessionFetch(humanSession);}}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);

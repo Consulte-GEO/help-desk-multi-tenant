@@ -1,28 +1,28 @@
-# Continuidade — Help Desk v0.11.0
+# Continuidade — Help Desk v0.12.0
 
-Base `7acc0e13cba1ee4ee439de35eae4e8413cecc695`. Branch `work/helpdesk-v0.11.0`. Commit de entrega no manifesto/bundle. Leia README, AGENTS, documentos04/15 e plano atualizado. Fontes originais preservadas; histórico local não corresponde ao site publicado.
+Base `667dfde53fcc38481800935b8b865c178aad8237`. Branch local `work/helpdesk-v0.12.0`. Commit final no bundle/manifesto. Leia README, AGENTS, documentos 04 e 16 e plano. Não pressupor repositório vazio ou aprovação de escrita na próxima sessão.
 
-## Próxima execução prioritária
+## Sequência
 
-1. Reinspecionar GitHub/Supabase/Netlify antes de integrar. Última leitura: repo vazio; schemas consultados/ledger vazios; deploy manual antigo. Não presumir ausência de trabalho concorrente nem autorização de publicação.
-2. Resolver dependências em registry autorizado: `npm run deps:resolve`; revisar lock/árvore/integridades/origens/licenças/alertas. Executar `npm ci --ignore-scripts`, `npm run verify`, `npm audit --audit-level=high`. Não fabricar lock nem substituir tipos locais por globais no CI.
-3. `npm run check:migrations`:8 arquivos preservados/schema0.9.0. Não recalcular hashes para ocultar alteração. Executar `npm run test:db:local` com PostgreSQL17 descartável e papel restrito.125 casos:117 principais+8 upgrade. Docker padrão/native só instalado e não root. Sem banco remoto como fallback.
-4. Confirmar fresh/upgrade001–007→008, catálogo/grants/RLS/triggers, cache reautorizado, quotas e COMMIT/ROLLBACK reais. Exercitar novo filtro mine/unassigned antes de LIMIT, perfis mistos, revogação entre páginas, SQL parametrizado e consulta inválida sem SELECT do recurso. As duas fixtures antigas agora usam colunas explícitas.
-5. Homologar Auth humano/M2M e tradução auth_user_id→principal.id; os IDs não precisam ser iguais. Workspace/principal/grants persistidos devem ser UUIDs. Aliases só no domínio/demo. Confirmar login/logout/expiração/refresh, pooler/TLS, IP confiável e driver/Functions reais. A UI atual não implementa revogação humana no provedor.
-6. Executar `npm run test:ui:local`:32 HTTP+27 browser. Conferir filtros em perfil operador/cliente/misto, paginação, saída/retorno, drafts e respostas atrasadas, prioridade/atribuição/histórico, teclado/foco/mobile390px. Não contornar restrições de navegador/rede.
-7. Executar `npm run homologate:local` e `npm run check:homologation`. Piso710/125/59 refere-se a aprovações efetivas sem skips, não contagem de testes escritos. Relatório local não aprova runtime, capacidade, backup/restore ou publicação. Definir decisões operacionais aplicáveis e manter HELPDESK_RELEASE_APPROVED fechado até aprovação explícita.
-8. Concluído o marco, iniciar M2: bootstrap, convites/vínculos e administração de catálogo/contratos/versionamento com auditoria. Depois integrar dispatcher/ledger/notifications, SLA/filas, anexos e consumidores reais conforme dependências. Não usar mais features como substituto dos testes de banco.
+1. Reinspecionar destinos antes de integrar; somente GitHub foi lido nesta rodada. Nenhum deploy/migration/Auth/MFA/segredo alterado.
+2. Resolver dependências (`npm run deps:resolve`), revisar lock real/árvore/alertas, repetir npm ci/verify/audit. Não substituir por tipos globais/locks sintéticos.
+3. Verificar oito migrations e executar125 casos PostgreSQL 17 descartável (inclui upgrade) com papel restrito. Docker padrão/native somente instalação autorizada não root. Sem banco remoto como fallback e sem apagar banco existente para fazer passar.
+4. Homologar o novo ciclo humano usando usuários de teste: senha→`/me`→lista/criação; expiração→uma rotação; duas chamadas simultâneas; refresh inválido/timeout; pausa e retry explícito; logout confirmado/sem rede; cancelar login/renovação; novo login antes de resposta antiga. Confirmar IDs Auth e principal distintos e autorização revogada após refresh. Não confiar em role de JWT metadata.
+5. **Definir e testar janela de revogação humana.** O pedido ao provedor é local. Access JWT já emitido pode continuar válido até expirar; o backend não ganhou denylist/check auth.sessions. Não publicar promessa de revogação instantânea. Política MFA/CAPTCHA/SSO e demais fluxos não foi implementada/alterada neste incremento; resolver exigências sem desativar proteções.
+6. Rodar `npm run test:ui:local`:32 HTTP+27 browser antigos+5 browser com provedor sintético. O último usa fetch/API controlados, não comprova provedor real/CORS. Revisar pausa, senha limpa, cancelamento, draft, perda de foco, navegação, refresh com token curto, erro antes/depois de dispatch, logout e 390 px. Não contornar bloqueio do navegador.
+7. Homologar driver/pooler/TLS/IP/Functions e Auth/CSP/CORS reais. API 0.12/schema 0.9: não criar migration cosmética. Não liberar só o HTML como backend pronto.
+8. Rodar homologate:local/check:homologation com evidências e fingerprints. Mínimos753 locais/125 SQL/64 UI, sem skips; aprovação local não é produção. Manter HELPDESK_RELEASE_APPROVED fechado até decisões de destino/capacidade/restore e aprovação explícita. M2 só depois do marco.
 
-## Revisão dirigida
+## Arquivos de revisão
 
-- `src/domain/input-values.ts`, `authentication.ts` e `principal-validation.ts`: strict UUID e texto persistível; principal distinto de Auth ID.
-- `src/application/conversation-result.ts` e `HelpdeskService.accessible/conversation`: autorizar pai e conferir todos os filhos antes de serializar. Falha503 não parcial. Isso não substitui RLS.
-- `ticket-search.ts`, listTickets em memória/Postgres e handler: assignment por operador em cada conta; antes de LIMIT; cursor inclui filtros. Sem IDs de outros agentes.
-- `web/ticket-list-state.js`, app.js/index.html e OpenAPI: limpeza na mudança de identidade e rascunho preservado; no-runtime schema0.9.0.
-- `tests/review-boundaries.test.ts`, `review-assignment-filter.test.ts`, SQL/browser/smoke e evidências review-v011.
+- `web/human-auth.js`/`.d.ts`: paths fixos, chave publicável, limites de leitura/deadline, expiração e projeção.
+- `web/human-session.js`/`.d.ts`: geração, pending single-flight, pausa, cancelamento e saída pendente sem ressurreição.
+- `web/session-fetch.js`/`.d.ts`: mesmo domínio, headers não substituíveis, resultado antigo ignorado, nenhuma repetição automática de mutações.
+- `web/app.js`/index/styles: formulário/senha, banner persistente, limpeza imediata e mensagem de saída não confirmada. Tokens não persistidos; reload exige login.
+- `tests/human-*.test.ts`, `tests/browser-human-session.py`, runner UI, assetcheck HTTP e gates.
 
-## Invariantes e limites
+## Invariantes
 
-API0.11.0/schema0.9.0,8 migrations/23 tabelas/18 operações. Nenhuma nova permissão de banco. Ownership nunca concede acesso; mine/unassigned somente consulta em conta de operador, não fila completa. Unassigned é nulo, não dono inativo. Cache mantém resposta original. Notas e eventos de atribuição são internos. Rejeitar NUL/surrogate, não substituir. ETag/cursor/UUID não autorizam.
+Refresh é autenticação, não autorização. Identidade não é recuperada de metadados confiados pelo cliente. `requestSent=false` só antes de enviar; perda da resposta depois do envio continua incerta. Mesma key/payload mantêm idempotência; uma renovação não submete novamente o formulário. Logout não apaga servidor nem cancela requisição já em andamento. Password/refresh não aparecem no estado público ou nos logs. A UI limpa dados de identidades anteriores; não existe persistência em storage/cookie, SSO, novo MFA, backoffice, logout global ou comunicação entre abas.
 
-710 testes locais incluem mocks do driver; SQL125/browser27 não aprovados. M1 aberto; administração, anexos, SLA operacional, entregas e conectores permanecem ausentes. Sem revisor independente/pentest/carga/restore. ZIP/bundle não autorizam push/deploy/migration ou alteração de segredo/MFA.
+753 testes locais incluem mocks/resolução SQL controlada;125 SQL e 32 browser não aprovados. Sem revisão independente, pentest, carga ou restore. Documento16 registra fontes oficiais e limites. O pacote não autoriza publicação.

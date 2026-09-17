@@ -1,0 +1,166 @@
+TAP version 13
+# (node:2413) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: human login is memory-only and public state never contains tokens/password/user metadata
+ok 1 - human login is memory-only and public state never contains tokens/password/user metadata
+  ---
+  duration_ms: 1.983328
+  type: 'test'
+  ...
+# Subtest: fresh token causes no refresh and concurrent near-expiry requests share exactly one rotation
+ok 2 - fresh token causes no refresh and concurrent near-expiry requests share exactly one rotation
+  ---
+  duration_ms: 0.525473
+  type: 'test'
+  ...
+# Subtest: next rotation uses newly returned refresh token, not the consumed one
+ok 3 - next rotation uses newly returned refresh token, not the consumed one
+  ---
+  duration_ms: 1.908358
+  type: 'test'
+  ...
+# Subtest: temporary refresh failure pauses requests and explicit retry resumes without changing identity generation
+ok 4 - temporary refresh failure pauses requests and explicit retry resumes without changing identity generation
+  ---
+  duration_ms: 0.989526
+  type: 'test'
+  ...
+# Subtest: invalid refresh clears the local identity and cannot keep using old token
+ok 5 - invalid refresh clears the local identity and cannot keep using old token
+  ---
+  duration_ms: 0.46887
+  type: 'test'
+  ...
+# Subtest: identity substitution during refresh never installs the returned token
+ok 6 - identity substitution during refresh never installs the returned token
+  ---
+  duration_ms: 0.29887
+  type: 'test'
+  ...
+# Subtest: signout clears local state before network confirms, and never emits refresh tokens
+ok 7 - signout clears local state before network confirms, and never emits refresh tokens
+  ---
+  duration_ms: 0.405807
+  type: 'test'
+  ...
+# Subtest: failed remote logout is explicitly unconfirmed with local state still cleared
+ok 8 - failed remote logout is explicitly unconfirmed with local state still cleared
+  ---
+  duration_ms: 0.239222
+  type: 'test'
+  ...
+# Subtest: logout when no identity was started does not contact provider
+ok 9 - logout when no identity was started does not contact provider
+  ---
+  duration_ms: 0.423864
+  type: 'test'
+  ...
+# Subtest: double click at login is rejected instead of starting two provider sessions
+ok 10 - double click at login is rejected instead of starting two provider sessions
+  ---
+  duration_ms: 0.601725
+  type: 'test'
+  ...
+# Subtest: cancelled login cannot resurrect identity; its late provider session is signed out
+ok 11 - cancelled login cannot resurrect identity; its late provider session is signed out
+  ---
+  duration_ms: 0.477893
+  type: 'test'
+  ...
+# Subtest: logout during refresh waits for latest rotated token without restoring cleared state
+ok 12 - logout during refresh waits for latest rotated token without restoring cleared state
+  ---
+  duration_ms: 0.439236
+  type: 'test'
+  ...
+# Subtest: new login survives completion and failure of previous logout/refresh
+ok 13 - new login survives completion and failure of previous logout/refresh
+  ---
+  duration_ms: 0.41438
+  type: 'test'
+  ...
+# Subtest: 401 for current access token clears identity; stale token refusal after refresh does not
+ok 14 - 401 for current access token clears identity; stale token refusal after refresh does not
+  ---
+  duration_ms: 0.255095
+  type: 'test'
+  ...
+# Subtest: workspace is captured before login and invalid selector is rejected before network
+ok 15 - workspace is captured before login and invalid selector is rejected before network
+  ---
+  duration_ms: 0.240924
+  type: 'test'
+  ...
+# Subtest: observer failure does not change auth outcome or leak a rejection
+ok 16 - observer failure does not change auth outcome or leak a rejection
+  ---
+  duration_ms: 0.315985
+  type: 'test'
+  ...
+# Subtest: API wrapper never repeats a submitted mutation after 401 or 503
+ok 17 - API wrapper never repeats a submitted mutation after 401 or 503
+  ---
+  duration_ms: 18.921292
+  type: 'test'
+  ...
+# Subtest: API wrapper refreshes before sending once, and callers cannot override auth/workspace headers
+ok 18 - API wrapper refreshes before sending once, and callers cannot override auth/workspace headers
+  ---
+  duration_ms: 0.519705
+  type: 'test'
+  ...
+# Subtest: API wrapper sends nothing while refresh is paused
+ok 19 - API wrapper sends nothing while refresh is paused
+  ---
+  duration_ms: 0.383374
+  type: 'test'
+  ...
+# Subtest: API response from an ended identity cannot be handed to the new identity
+ok 20 - API response from an ended identity cannot be handed to the new identity
+  ---
+  duration_ms: 0.368732
+  type: 'test'
+  ...
+# Subtest: absolute/protocol-relative/escaping API destinations are denied before credentials are obtained
+ok 21 - absolute/protocol-relative/escaping API destinations are denied before credentials are obtained
+  ---
+  duration_ms: 0.479696
+  type: 'test'
+  ...
+# Subtest: auth refusal before business dispatch is marked unsent, unlike a network failure after dispatch
+ok 22 - auth refusal before business dispatch is marked unsent, unlike a network failure after dispatch
+  ---
+  duration_ms: 0.568066
+  type: 'test'
+  ...
+# Subtest: short valid access lifetimes do not rotate on every request immediately after login
+not ok 23 - short valid access lifetimes do not rotate on every request immediately after login
+  ---
+  duration_ms: 1.030637
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/human-session.test.ts:87:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/human-session.test.ts:89:67)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 22
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 156.125714

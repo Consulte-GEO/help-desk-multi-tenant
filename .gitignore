@@ -10,3 +10,7 @@ coverage/
 
 # Only reviewed homologation logs accompany their checksummed reports.
 !evidence/homologation/runs/*/*.log
+
+# Local Python parser/browser runner cache
+__pycache__/
+*.pyc

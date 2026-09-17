@@ -12,3 +12,6 @@
 @media(max-width:700px){.priority-fields{grid-template-columns:1fr}.priority-fields button{justify-self:start}.history-actions button{max-width:100%}}
 
 .assignment-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.75rem}.assignment-actions button{white-space:normal}.priority-form #assignment-reason{width:100%;box-sizing:border-box}
+
+/* Authentication pauses do not erase the draft for the current identity. */
+.session-banner{padding:12px 22px;border-bottom:1px solid var(--line);background:#fff;display:flex;gap:16px;align-items:center;justify-content:space-between}.session-banner[hidden]{display:none}.session-banner p{margin:0;line-height:1.5}.session-banner button{flex-shrink:0}@media(max-width:600px){.session-banner{flex-direction:column;align-items:stretch;padding:12px}}

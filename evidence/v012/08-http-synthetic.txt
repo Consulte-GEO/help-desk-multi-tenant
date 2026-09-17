@@ -1,0 +1,42 @@
+TAP version 13
+# (node:2286) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: HTTP synthetic provider -> backend Auth mapping -> ticket creation; rotated identity never inherits JWT metadata role
+ok 1 - HTTP synthetic provider -> backend Auth mapping -> ticket creation; rotated identity never inherits JWT metadata role
+  ---
+  duration_ms: 69.523444
+  type: 'test'
+  ...
+# Subtest: HTTP revoked live membership stays forbidden after refresh, without silently replaying a POST
+ok 2 - HTTP revoked live membership stays forbidden after refresh, without silently replaying a POST
+  ---
+  duration_ms: 15.388816
+  type: 'test'
+  ...
+# Subtest: HTTP transient refresh failure sends no business mutation; explicit resume then same key creates once
+ok 3 - HTTP transient refresh failure sends no business mutation; explicit resume then same key creates once
+  ---
+  duration_ms: 14.152227
+  type: 'test'
+  ...
+# Subtest: HTTP local logout clears client and rotates no more, but does not claim immediate access JWT invalidation
+ok 4 - HTTP local logout clears client and rotates no more, but does not claim immediate access JWT invalidation
+  ---
+  duration_ms: 11.403093
+  type: 'test'
+  ...
+# Subtest: HTTP failed logout never claims provider confirmation and does not keep usable browser state
+ok 5 - HTTP failed logout never claims provider confirmation and does not keep usable browser state
+  ---
+  duration_ms: 6.436117
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 272.680847

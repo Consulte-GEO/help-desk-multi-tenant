@@ -1,0 +1,149 @@
+{
+  "release": "0.12.0",
+  "schema_candidate": "0.9.0",
+  "at_utc": "2026-09-17T11:42:24.795604+00:00",
+  "tests": {
+    "tests": 753,
+    "pass": 753,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "new_local_tests": 43,
+  "http_smoke_passed": 32,
+  "synthetic_http_tests_included_in_local": 5,
+  "postgres_scenarios_written": 125,
+  "postgres_scenarios_executed": 0,
+  "browser_checks_written": 32,
+  "browser_checks_passed": 0,
+  "remote_writes": false,
+  "platform_approved": false,
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check:migrations"
+      ],
+      "exit_code": 0,
+      "log": "final-migrations.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "typecheck",
+        "--",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0,
+      "log": "final-typecheck-environment.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "deps:resolve"
+      ],
+      "exit_code": 1,
+      "log": "final-dependencies.txt",
+      "status": "blocked_registry"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:db:local"
+      ],
+      "exit_code": 1,
+      "log": "final-database.txt",
+      "status": "blocked_no_docker"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:ui:local"
+      ],
+      "exit_code": 1,
+      "log": "final-ui.txt",
+      "status": "32_http_passed_browser_blocked"
+    },
+    {
+      "command": [
+        "python",
+        "tests/browser-human-session.py"
+      ],
+      "exit_code": 1,
+      "log": "final-human-browser.txt",
+      "status": "browser_blocked"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exit_code": 2,
+      "log": "final-verify.txt",
+      "status": "tests_passed_types_unavailable"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "exit_code": 1,
+      "log": "final-homologation.txt",
+      "status": "not_approved"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "exit_code": 1,
+      "log": "final-release.txt",
+      "status": "not_approved"
+    }
+  ]
+}

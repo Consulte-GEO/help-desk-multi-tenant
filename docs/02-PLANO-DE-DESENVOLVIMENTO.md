@@ -221,3 +221,10 @@ Prioridade auditável e histórico no ticket existente antecipados como capacida
 
 ## Incremento v0.9.0 — responsabilidade (recorte HD-301 / HD-105)
 Assumir/liberar com motivo, versão e idempotência; política de acesso preservada; histórico privado e nenhum evento externo. Não entrega atribuição arbitrária, equipes/filas ou M2. Migration008 candidata e 18 novos SQL. Evidências em docs04; contrato/limitações em13. Gates635 locais/100 SQL/53 HTTP+browser; M1 permanece aberto e nenhuma liberação remota ocorreu.
+
+
+## Incremento v0.12.0 — HD-103/HD-105: sessão humana
+
+Lacuna da revisão v0.11 abordada: refresh sob demanda, rotação compartilhada, pausa/retry explícito, saída local no provedor e geração de sessão para descartar respostas atrasadas. Memória apenas; não cria cadastro/convite/MFA/SSO nem concede acesso por metadata. A janela de validade de JWT após logout é limitação explícita no documento16.
+
+753 locais/32HTTP aprovados.125SQL inalterados e32browser escritos(27+5), ainda não homologados. Gate753/125/64; M1 e HD-101/102 permanecem abertos. API0.12/schema0.9, sem migration. Não considerar esse código aprovação de Auth remoto; antes de M2 continuam necessárias dependências reproduzíveis, banco/upgrade, runtime, navegador e critérios operacionais.

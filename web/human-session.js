@@ -1,0 +1,56 @@
+/** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
+import {HumanAuthError,workspaceId} from './human-auth.js';
+export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
+ let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0;
+ const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null});
+ const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
+ function clear(){generation++;phase='signed_out';workspace=null;session=null;pending=null;refreshAt=0;notify();}
+ function install(value){session=value;refreshAt=value.expiresAt-Math.min(60000,Math.floor((value.expiresAt-now())/2));}
+ function proof(){return Object.freeze({accessToken:session.accessToken,workspace,generation});}
+ const current=p=>!!session&&p?.generation===generation&&p?.workspace===workspace;
+ function usable(value){return value&&typeof value.accessToken==='string'&&typeof value.refreshToken==='string'&&typeof value.userId==='string'&&Number.isFinite(value.expiresAt)&&value.expiresAt>now()+1000;}
+ async function signIn(fields){
+  if(phase!=='signed_out')throw new HumanAuthError('login_in_progress');
+  const selected=workspaceId(fields.workspace),email=fields.email,password=fields.password;
+  generation++;const id=generation;phase='signing_in';workspace=selected;notify();
+  const op={id,raw:Promise.resolve().then(()=>transport.signIn(email,password)),result:null};pending=op;
+  try{const value=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');install(value);phase='active';notify();}
+  catch(error){if(id!==generation)throw new HumanAuthError('stale_session');clear();throw error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');}
+  finally{if(pending===op)pending=null;}
+ }
+ function rotate(){
+  if(pending?.id===generation&&phase==='refreshing')return pending.result;
+  const old=session,id=generation;phase='refreshing';
+  const op={id,raw:Promise.resolve().then(()=>transport.refresh(old.refreshToken)),result:null};pending=op;
+  op.result=(async()=>{
+   try{const value=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');
+    if(!usable(value)||value.userId!==old.userId){clear();throw new HumanAuthError('session_rejected');}
+    install(value);phase='active';notify();return proof();
+   }catch(error){
+    if(id!==generation)throw new HumanAuthError('stale_session');
+    if(error instanceof HumanAuthError&&['session_rejected','auth_response_invalid'].includes(error.code))clear();
+    else{phase='paused';notify();}
+    throw error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');
+   }finally{if(pending===op)pending=null;}
+  })();notify();return op.result;
+ }
+ async function authorization(){
+  if(!session)throw new HumanAuthError('session_rejected');
+  if(phase==='paused')throw new HumanAuthError('session_paused');
+  if(phase==='refreshing')return pending.result;
+  if(now()>=refreshAt)return rotate();
+  return proof();
+ }
+ async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='refreshing')return pending.result;return rotate();}
+ async function signOut(){
+  const old=session,wait=pending;clear();
+  // Await an already-issued login/rotation so the newest returned token is revoked, never installed.
+  // Transport has a deadline. The UI is cleared synchronously before this await.
+  let target=old?.accessToken;
+  if(wait){try{const value=await wait.raw;if(usable(value))target=value.accessToken;}catch{}}
+  if(!target)return wait?'unconfirmed':'not_requested';
+  try{await transport.signOut(target);return 'confirmed';}catch{return 'unconfirmed';}
+ }
+ function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;clear();return true;}
+ return Object.freeze({state,signIn,authorization,resume,signOut,reject,current});
+}

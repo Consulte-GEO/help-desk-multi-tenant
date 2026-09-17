@@ -1,0 +1,124 @@
+TAP version 13
+# (node:1446) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: transport accepts only project HTTPS origin and publishable key
+ok 1 - transport accepts only project HTTPS origin and publishable key
+  ---
+  duration_ms: 1.323585
+  type: 'test'
+  ...
+# Subtest: password, refresh, local logout use only dedicated routes; no credentials in URL
+ok 2 - password, refresh, local logout use only dedicated routes; no credentials in URL
+  ---
+  duration_ms: 20.543827
+  type: 'test'
+  ...
+# Subtest: invalid credentials are rejected before network; valid unicode password preserved
+ok 3 - invalid credentials are rejected before network; valid unicode password preserved
+  ---
+  duration_ms: 0.696022
+  type: 'test'
+  ...
+# Subtest: malformed/privileged/incomplete provider responses never become a session
+ok 4 - malformed/privileged/incomplete provider responses never become a session
+  ---
+  duration_ms: 4.501384
+  type: 'test'
+  ...
+# Subtest: network time is subtracted from token lifetime; body metadata cannot extend expiry
+ok 5 - network time is subtracted from token lifetime; body metadata cannot extend expiry
+  ---
+  duration_ms: 0.383594
+  type: 'test'
+  ...
+# Subtest: error responses and thrown diagnostics do not leak raw provider details
+ok 6 - error responses and thrown diagnostics do not leak raw provider details
+  ---
+  duration_ms: 0.999258
+  type: 'test'
+  ...
+# Subtest: invalid refresh is distinguishable from temporary service or rate limit failure
+ok 7 - invalid refresh is distinguishable from temporary service or rate limit failure
+  ---
+  duration_ms: 1.065506
+  type: 'test'
+  ...
+# Subtest: logout confirms only exact HTTP204 and leaves other sessions scope untouched
+ok 8 - logout confirms only exact HTTP204 and leaves other sessions scope untouched
+  ---
+  duration_ms: 0.640131
+  type: 'test'
+  ...
+# Subtest: unexpected content-type, utf8 and JSON fail safely
+ok 9 - unexpected content-type, utf8 and JSON fail safely
+  ---
+  duration_ms: 1.515116
+  type: 'test'
+  ...
+# Subtest: decoded body cap is enforced even without trustworthy Content-Length
+ok 10 - decoded body cap is enforced even without trustworthy Content-Length
+  ---
+  duration_ms: 3.219651
+  type: 'test'
+  ...
+# Subtest: uncompressed response length mismatch is rejected
+ok 11 - uncompressed response length mismatch is rejected
+  ---
+  duration_ms: 0.325138
+  type: 'test'
+  ...
+# Subtest: browser-decoded gzip does not compare compressed Content-Length with decoded bytes
+not ok 12 - browser-decoded gzip does not compare compressed Content-Length with decoded bytes
+  ---
+  duration_ms: 0.331156
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/human-auth-transport.test.ts:50:1'
+  failureType: 'testCodeFailure'
+  error: 'O serviço de identidade retornou uma sessão incompatível. Acesso não concedido.'
+  code: 'auth_response_invalid'
+  name: 'HumanAuthError'
+  stack: |-
+    jsonBody (file:///mnt/data/helpdesk-work/web/human-auth.js:42:49)
+    async file:///mnt/data/helpdesk-work/web/human-auth.js:63:23
+    async request (file:///mnt/data/helpdesk-work/web/human-auth.js:55:14)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/human-auth-transport.test.ts:51:156)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: auth request deadline covers a stalled fetch and aborts it
+ok 13 - auth request deadline covers a stalled fetch and aborts it
+  ---
+  duration_ms: 20.107216
+  type: 'test'
+  ...
+# Subtest: response body stalled after headers is cancelled when deadline expires
+not ok 14 - response body stalled after headers is cancelled when deadline expires
+  ---
+  duration_ms: 27.313489
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/human-auth-transport.test.ts:56:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/human-auth-transport.test.ts:58:252)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 12
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 192.642222

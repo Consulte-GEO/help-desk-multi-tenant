@@ -1,0 +1,11 @@
+
+> @consulte-geo/helpdesk@0.11.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+tests/human-auth-transport.test.ts(45,186): error TS2345: Argument of type '{ 'content-length'?: undefined; } | { 'content-length': string; }' is not assignable to parameter of type 'Record<string, string> | undefined'.
+  Type '{ 'content-length'?: undefined; }' is not assignable to type 'Record<string, string>'.
+    Property ''content-length'' is incompatible with index signature.
+      Type 'undefined' is not assignable to type 'string'.
+tests/human-session-http.test.ts(47,180): error TS2341: Property 'state' is private and only accessible within class 'MemoryUnitOfWork'.
+tests/human-session-http.test.ts(51,277): error TS2341: Property 'state' is private and only accessible within class 'MemoryUnitOfWork'.
+tests/human-session-http.test.ts(55,208): error TS2341: Property 'state' is private and only accessible within class 'MemoryUnitOfWork'.

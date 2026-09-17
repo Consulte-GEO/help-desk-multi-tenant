@@ -130,3 +130,7 @@ O plano não assume que basta fechar M1 para o produto estar pronto: o caminho o
 ## 9. Compatibilidade da entrega
 
 API/interface **0.11.0**, schema exigido **0.9.0**, oito migrations preservadas, 23 tabelas candidatas, 18 operações em 14 caminhos. O novo filtro é opcional; consultas sem ele preservam o contexto anterior de cursor. Validação de IDs/texto ficou mais estrita nos limites descritos, de forma intencional. Nenhuma credencial, conta, segredo, dado ou configuração de MFA remoto foi alterado.
+
+
+## Nota posterior — v0.12.0
+A análise acima é a fotografia da v0.11. A lacuna de refresh e pedido de logout humano recebeu código e testes locais no incremento0.12; ver documento16. Não reclassifica Auth real/MFA/SSO, banco, navegador ou M1 como homologados. Estados atualizados em04/05.

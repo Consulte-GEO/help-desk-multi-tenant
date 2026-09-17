@@ -1,3 +1,15 @@
+# 0.12.0 — sessão humana e renovação sob demanda (não publicado)
+
+- Transporte por senha/refresh/logout local com origem e chave publicável validadas, JSON/UTF-8/deadline/limite de64KiB e expiração limitada.
+- Estado apenas em memória, rotação single-flight com margem adaptativa, pausa/retry explícito e proteção de gerações em login/refresh/saída.
+- Saída limpa UI imediatamente e distingue confirmação do provedor; não promete invalidar imediatamente JWT já emitido.
+- Fronteira API envia uma vez, preserva key/payload e diferencia recusa pré-dispatch de erro incerto depois do envio.
+- Integração com formulário/banners/cancelamento, senha limpa, drafts preservados na pausa e removidos na saída.
+- 43 novos testes locais incluindo5HTTP com provedor sintético;5 novos testes DOM escritos.753 locais/32HTTP aprovados,125SQL/32browser pendentes.
+- API/interface0.12/schema0.9. Oito migrations preservadas, nenhuma nova dependência/API/alteração remota. M1 ainda aberto.
+
+---
+
 # 0.11.0 — revisão consolidada e filtros de responsabilidade (não publicado)
 
 - UUIDs estritos nos limites Auth/principal e seletores PostgreSQL; principal local e usuário Supabase continuam distintos.
