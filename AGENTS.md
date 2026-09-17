@@ -25,6 +25,11 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
+## Estado atual v0.18.0
+API/interface/schema candidato0.18.0. Onze migrations,25 tabelas,18 operações. Nota-only não pede UPDATE na consulta inicial; o trigger privado serializa o pai com NO KEY UPDATE. Não resolver isso ampliando grants/notes-read nem tirando os locks de outros comandos. DML exige confirmação de uma linha; UPDATE0 mantém412. Nada de INSERT RETURNING para notas, sucesso por resposta ausente ou retry automático de mutação. Leia docs22. Os dez arquivos SQL anteriores permanecem intactos.
+
+1002 testes locais/35HTTP passaram.196 SQL/36browser escritos, não homologados. Sem lock real/npm ci/audit; typecheck global não é instalação. M1 aberto, M2 não iniciado. Nenhuma escrita ou leitura remota nesta rodada. Conferir destinos antes de integrar. Histórico abaixo preservado para rastreabilidade.
+
 ## Estado v0.17.0
 M1 aberto.982 locais/35HTTP de memória aprovados;187SQL/36browser escritos, não aprovados. API0.17/schema0.16;10 migrations intactas/25tabelas/18operações. Ler docs04/05/21. Sem inspeção ou escrita remota.
 

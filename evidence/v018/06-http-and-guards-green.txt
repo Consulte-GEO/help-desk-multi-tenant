@@ -1,0 +1,136 @@
+TAP version 13
+# (node:3064) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: HTTP note-only operator can create/replay a receipt but cannot read notes or write public messages
+ok 1 - HTTP note-only operator can create/replay a receipt but cannot read notes or write public messages
+  ---
+  duration_ms: 295.691846
+  type: 'test'
+  ...
+# Subtest: HTTP zero-row cache INSERT rolls back the note before COMMIT; explicit retry creates once
+ok 2 - HTTP zero-row cache INSERT rolls back the note before COMMIT; explicit retry creates once
+  ---
+  duration_ms: 30.138254
+  type: 'test'
+  ...
+# Subtest: HTTP invalid acknowledgement at the first INSERT cannot reach the event, cache or COMMIT
+ok 3 - HTTP invalid acknowledgement at the first INSERT cannot reach the event, cache or COMMIT
+  ---
+  duration_ms: 17.092541
+  type: 'test'
+  ...
+# (node:3065) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: note-only operator creates and replays without requesting the ticket UPDATE policy
+ok 4 - note-only operator creates and replays without requesting the ticket UPDATE policy
+  ---
+  duration_ms: 93.403147
+  type: 'test'
+  ...
+# Subtest: operator with broad scopes uses the same non-updating note path
+ok 5 - operator with broad scopes uses the same non-updating note path
+  ---
+  duration_ms: 9.724328
+  type: 'test'
+  ...
+# Subtest: note write still denies read-only, requester and missing ticket-read identities before insertion
+ok 6 - note write still denies read-only, requester and missing ticket-read identities before insertion
+  ---
+  duration_ms: 2.041339
+  type: 'test'
+  ...
+# Subtest: revoking note write prevents replay without granting collection read
+ok 7 - revoking note write prevents replay without granting collection read
+  ---
+  duration_ms: 11.010386
+  type: 'test'
+  ...
+# Subtest: new migration narrows the internal conversation lock without changing application grants
+ok 8 - new migration narrows the internal conversation lock without changing application grants
+  ---
+  duration_ms: 196.124109
+  type: 'test'
+  ...
+# (node:3066) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: INSERT ticket requires a one-row INSERT acknowledgement before commit
+ok 9 - INSERT ticket requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 23.895532
+  type: 'test'
+  ...
+# Subtest: INSERT message requires a one-row INSERT acknowledgement before commit
+ok 10 - INSERT message requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 1.527204
+  type: 'test'
+  ...
+# Subtest: INSERT note requires a one-row INSERT acknowledgement before commit
+ok 11 - INSERT note requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 1.183105
+  type: 'test'
+  ...
+# Subtest: INSERT event requires a one-row INSERT acknowledgement before commit
+ok 12 - INSERT event requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 1.420211
+  type: 'test'
+  ...
+# Subtest: INSERT outbox requires a one-row INSERT acknowledgement before commit
+ok 13 - INSERT outbox requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 2.392009
+  type: 'test'
+  ...
+# Subtest: INSERT replay requires a one-row INSERT acknowledgement before commit
+ok 14 - INSERT replay requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 4.89919
+  type: 'test'
+  ...
+# Subtest: UPDATE status rejects malformed command/count/returned-row acknowledgements
+ok 15 - UPDATE status rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 1.446231
+  type: 'test'
+  ...
+# Subtest: UPDATE priority rejects malformed command/count/returned-row acknowledgements
+ok 16 - UPDATE priority rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 3.419338
+  type: 'test'
+  ...
+# Subtest: UPDATE assignment rejects malformed command/count/returned-row acknowledgements
+ok 17 - UPDATE assignment rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 3.759356
+  type: 'test'
+  ...
+# Subtest: a valid zero-row UPDATE remains a 412 conflict, not malformed protocol
+ok 18 - a valid zero-row UPDATE remains a 412 conflict, not malformed protocol
+  ---
+  duration_ms: 1.33638
+  type: 'test'
+  ...
+# Subtest: all existing single-row writes accept normal pg result tags without requiring RETURNING
+ok 19 - all existing single-row writes accept normal pg result tags without requiring RETURNING
+  ---
+  duration_ms: 1.771023
+  type: 'test'
+  ...
+# Subtest: incompatible write result never includes the returned private payload or SQL in its error
+ok 20 - incompatible write result never includes the returned private payload or SQL in its error
+  ---
+  duration_ms: 0.838803
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1371.618691

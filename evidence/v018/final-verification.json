@@ -1,0 +1,31 @@
+{
+  "base": "07dc51f263fbf2dcd49f4605bec0c1a43d57e2ca",
+  "local_tests": {
+    "pass": 1002,
+    "fail": 0,
+    "skip": 0,
+    "added": 20,
+    "new_http_included": 3
+  },
+  "http_memory_smoke": {
+    "pass": 35
+  },
+  "sql_written": 196,
+  "sql_executed": 0,
+  "browser_written": 36,
+  "browser_pass": 0,
+  "migrations_verified": 11,
+  "historic_migrations_preserved": 10,
+  "verify_exit": 2,
+  "homologation": "blocked",
+  "release": "blocked",
+  "versions": {
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "typescript_global": "Version 5.8.3",
+    "node_types_global": "25.1.0"
+  },
+  "remote_reads": false,
+  "remote_writes": false,
+  "independent_review": false
+}

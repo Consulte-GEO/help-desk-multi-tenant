@@ -14,7 +14,7 @@ import type {Principal} from '../../src/domain/model.ts';
 
 const targets=validateDatabaseTestTargets(process.env);
 const bundle=await loadMigrationBundle(process.cwd());
-if(bundle.schemaVersion!=='0.16.0'||bundle.migrations.length!==10||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
+if(bundle.schemaVersion!=='0.18.0'||bundle.migrations.length!==11||bundle.migrations[10]?.file!=='20260917001100_conversation_lock.sql'||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
  throw Error('Review the upgrade scenario before changing the candidate migration set.');
 const upgradeUrl=(base:string)=>{const url=new URL(base);url.pathname='/helpdesk_upgrade_test';return url.toString();};
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
@@ -24,6 +24,8 @@ const input={accountId:id(101),productInstanceId:id(401),serviceCode:'SUPPORT',s
 const key='upgrade-legacy-create-key';
 let control:SqlPool,admin:SqlPool,app:SqlPool,service:HelpdeskService;
 let initialEffectRows:unknown[];
+let beforeLockRows:Record<string,unknown[]>,afterLockRows:Record<string,unknown[]>;
+let beforeLockMeta:unknown[],afterLockMeta:unknown[];
 let original:Record<string,unknown>,beforeRows:Record<string,unknown[]>,afterRows:Record<string,unknown[]>;
 const snapshotTables=['helpdesk_core.tickets','helpdesk_core.contract_versions','helpdesk_core.coverages','helpdesk_core.ticket_messages','helpdesk_core.internal_notes','helpdesk_core.ticket_events','helpdesk_integration.outbox_events','helpdesk_integration.api_idempotency_keys'];
 async function captureRows(){
@@ -86,12 +88,20 @@ before(async()=>{
  await admin.query(bundle.migrations[9]!.sql);
  initialEffectRows=(await admin.query('select id from helpdesk_audit.write_effects')).rows;
  afterRows=await captureRows();
+ assert.equal((await admin.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.16.0');
+ beforeLockRows=await captureRows();
+ const metadataSql="select proowner,proacl,prosecdef,proconfig from pg_proc where oid='helpdesk_audit.record_conversation_effect()'::regprocedure";
+ beforeLockMeta=(await admin.query(metadataSql)).rows;
+ await admin.query(bundle.migrations[10]!.sql);
+ afterLockMeta=(await admin.query(metadataSql)).rows;
+ afterLockRows=await captureRows();
+ assert.equal((await admin.query('select id from helpdesk_audit.write_effects')).rowCount,0);
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });
 after(async()=>{await app?.end();await admin?.end();await control?.end();});
 test('upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
-test('upgrade exposes schema 0.16.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgrade exposes schema 0.18.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
 test('legacy ticket receives null assignment without changing its version or policy',async()=>{const ticket=await service.get(requester,id(901));assert.equal(ticket.assignedTo,null);assert.equal(ticket.version,2);assert.deepEqual(ticket.contractSnapshot,original.contractSnapshot);});
 test('legacy idempotency replay retains its old snapshot without synthesizing assignment',async()=>{const result=await service.create(requester,input,key,'synthetic-upgrade');assert.equal(result.replayed,true);assert.deepEqual(result.ticket,original);assert.equal(Object.hasOwn(result.ticket,'assignedTo'),false);});
 test('public conversation remains readable while old internal note is denied to customer',async()=>{assert.equal((await service.messages(requester,id(901)))[0]?.body,'Synthetic public message');await assert.rejects(()=>service.notes(requester,id(901)),{status:403});assert.equal((await service.notes(agent,id(901)))[0]?.body,'Synthetic internal note');});
@@ -137,4 +147,22 @@ test('upgrade010 new public response on an old ticket has matched event and outb
  const rows=(await admin.query("select e.type as event_type,o.type as outbox_type,r.applied from helpdesk_audit.write_effects r join helpdesk_core.ticket_events e on(e.workspace_id,e.id)=(r.workspace_id,r.event_id) join helpdesk_integration.outbox_events o on(o.workspace_id,o.id)=(r.workspace_id,r.event_id) where r.source_id=$1",[result.message.id])).rows;
  assert.deepEqual(rows,[{event_type:'message.created',outbox_type:'message.created',applied:true}]);
  assert.deepEqual((await service.get(agent,id(901))).contractSnapshot,original.contractSnapshot);
+});
+
+
+// The final upgrade changes only the existing hook lock and schema version.
+test('upgrade011 preserves stored rows, owner, ACL and private trigger configuration',()=>{
+ assert.deepEqual(afterLockRows,beforeLockRows);assert.deepEqual(afterLockMeta,beforeLockMeta);
+});
+test('upgrade011 note-only operator writes and replays on the legacy ticket without public write or collection read',async()=>{
+ await admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3::text[],1,$4,$5)',[agent.workspaceId,agent.id,['tickets:read','notes:write'],'Synthetic upgrade note-only profile',id(999)]);
+ const who:Principal={...agent,scopes:['tickets:read','notes:write']};const prior=await service.get(who,id(901));
+ const outbox=(await admin.query('select id from helpdesk_integration.outbox_events order by id')).rows;
+ const first=await service.addNote(who,id(901),'Note-only legacy receipt','upgrade011-note-key','synthetic-upgrade');
+ const repeated=await service.addNote(who,id(901),'Note-only legacy receipt','upgrade011-note-key','synthetic-upgrade');
+ assert.equal(repeated.replayed,true);assert.deepEqual(repeated.note,first.note);
+ await assert.rejects(()=>service.notes(who,id(901)),{status:403});await assert.rejects(()=>service.addMessage(who,id(901),'Denied public write','upgrade011-message-key','synthetic-upgrade'),{status:403});
+ const current=await service.get(who,id(901));assert.equal(current.version,prior.version);assert.deepEqual(current.contractSnapshot,prior.contractSnapshot);
+ assert.deepEqual((await admin.query('select id from helpdesk_integration.outbox_events order by id')).rows,outbox);
+ assert.deepEqual((await service.create(requester,input,key,'synthetic-upgrade')).ticket,original);
 });

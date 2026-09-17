@@ -1,54 +1,58 @@
-# Help Desk v0.17.0 — Estado e evidências
+# Help Desk v0.18.0 — Estado e evidências
 
-**Entrega local, não publicada. M1 aberto.** Base: v0.16.0, commit `35426e0d90753902e977c71f0717c9c37302bedd`. Branch `work/helpdesk-v0.17.0`. Os logs desta rodada usam UTC de17/09/2026. Commit final no manifesto externo/bundle.
+**Entrega local, não publicada. M1 permanece aberto.** Base v0.17.0: `07dc51f263fbf2dcd49f4605bec0c1a43d57e2ca`. Branch `work/helpdesk-v0.18.0`. Execuções em17/09/2026; logs em UTC. O hash final da entrega está no manifesto externo e no bundle Git.
 
-## Implementado
+## 1. Implementado nesta rodada
 
-Leitura temporal PostgreSQL sem conversão inicial para Date, UTC com três/seis dígitos, limites de calendário/era, ordenação nativa e cursores sem perda. Comparador comum na aplicação e interface, desempate determinístico de IDs, mesma representação temporal exata para verificação do instante imutável em recibos, preservando formatos históricos com offset. Assets e fingerprint abrangem o módulo shared. Nenhuma migration, grant, endpoint ou dependência nova.
+R18-01: `addNote` deixa de exigir UPDATE na leitura do pai para um operador com tickets:read/notes:write. Migration011 substitui o bloqueio do helper privado de conversa por NO KEY UPDATE, sem expansão de acesso. R18-02: INSERT e UPDATE do Store exigem confirmação explícita do tipo do comando e de uma linha; UPDATE0 válido mantém412, resposta inválida gera503 e interrompe antes do COMMIT. Nenhuma nova tela, endpoint ou dependência.
 
-**API/interface0.17.0; schema0.16.0; dez migrations intactas;25 tabelas;18 operações/14 caminhos.** O helper de SQL foi revisado, não homologado em servidor. R14-04/05/06 continuam candidatos anteriores, não receberam aprovação de PostgreSQL.
+API/interface/schema candidato **0.18.0**. Onze migrations,25 tabelas,18operações/14caminhos. Dez migrations anteriores preservadas byte a byte; a011 é candidata não aplicada. Detalhes/razões/fontes em documento22.
 
-## Verificações realizadas
+## 2. Resultados executados
 
-| Verificação | Resultado / alcance | Evidência em `evidence/v017/` |
+Todos os caminhos são relativos ao repositório. Logs da rodada em `evidence/v018/`.
+
+| Verificação | Resultado e alcance | Evidência |
 |---|---|---|
-| Base v0.16 antes da alteração | 950 testes aprovados | 00-baseline-tests.txt |
-| Suíte local final | **982 aprovados, zero falhas/cancelados/skips/TODO;32 novos** | final-tests.txt |
-| HTTP com precisão | Quatro testes por socket, incluídos nos982; dados sintéticos | 08-local-precision-suite.txt e final-tests.txt |
-| Smoke normal de HTTP | **35 checks aprovados**; assets shared incluídos | 16-ui-attempt.txt |
-| Migrations | Dez verificadas e iguais por bytes à base | final-migrations.txt; migration-integrity.json |
-| TypeScript suplementar | Aprovado com compilador/tipos globais | final-typecheck-supplementary.txt |
-| TypeScript/verify padrão | **Falharam** por dependências/tipos locais ausentes e erros de checagem decorrentes; verify passou982 testes antes da checagem | final-typecheck-standard.txt; final-verify-standard.txt |
-| OpenAPI estrutural |18 operações, referências e sentinelas verificadas; não conformidade integral | final-contracts.txt |
-| Sintaxe/build/scan |28 arquivos JS/MJS/Python verificados, assets gerados; scan heurístico sem padrão reconhecido | final-syntax.json; final-build.txt; final-secrets.txt |
-| Homologação agregada/publicação | **Não aprovadas**; lock ausente e etapas dependentes bloqueadas | final-homologation.txt; final-release-gate.txt |
+| Base reproduzida antes de alterar | 982 testes aprovados | `00-baseline-tests.txt` |
+| Suíte local final | **1002 aprovados;0falhas/cancelados/ignorados/TODO** —20novos | `final-tests.txt`, extraído da execução final do verify |
+| Três novos casos HTTP/driver controlado | Incluídos nos1002, não testes de PG | `06-http-and-guards-green.txt` |
+| Smoke HTTP da demonstração | **35 checks aprovados**, persistência em memória | `12-ui-attempt.txt` |
+| Integridade das migrations | 11arquivos conferidos;10anteriores intactos | `final-migrations.txt`, `migration-integrity.json` |
+| TypeScript suplementar | Aprovado com tipos/compilador disponíveis globalmente | `final-typecheck-supplementary.txt` |
+| Verificação padrão com manifesto | **Falhou, código2**, após migrations/1002testes;tipos/dependências locais ausentes | `final-verify-standard.txt`, `verify-exit.json` |
+| OpenAPI estrutural | 18operações e referências verificadas; não conformance integral | `final-contracts.txt` |
+| Sintaxe JS/MJS e AST Python | 28arquivos verificados | `final-syntax.json` |
+| Build | Assets estáticos aprovados, **não** bundle de Functions | `final-build.txt` |
+| Scan heurístico | Sem padrão reconhecido de segredo; não pentest/audit de dependências | `final-secrets.txt` |
+| Homologação agregada/publicação | **Não aprovadas**;lock falhou, etapas dependentes blocked | `final-homologation.txt`, `final-release-gate.txt`, `evidence/homologation/latest.json` |
 
-Node22.16.0/tsc5.8.3; tipos globais não são os fixados no manifesto. Checagem suplementar não equivale a npm ci. Os testes locais incluem lógica real, memória, respostas controladas do driver e estado puro, não RLS, locks, DOM ou provedor real.
+A suíte local contém regras, sockets reais, estado puro, integridade de arquivos e doubles. **Não prova SQL, RLS, triggers, locks, Supabase Auth, Netlify ou DOM.** O fake novo modela apenas o protocolo e a interseção de policies relevante ao caso de nota. Confirmações de banco controladas não são confirmação de banco real.
 
-## Regressões e revisão
+O teste HTTP que suprime o INSERT do recibo verifica503, erro seguro, ROLLBACK, ausência de COMMIT e nenhum estado parcial. Depois uma tentativa explícita com a mesma chave cria uma nota, e o replay não duplica. Nenhuma requisição envia essa falha ao servidor real.
 
-13 cenários iniciais falharam antes da correção e passaram depois (02/03). Revisão acrescentou dois defeitos de desempate de ID, reproduzidos e corrigidos (11/12); uma proteção de intervalo na projeção SQL candidata (13/14, sentinela estrutural); e dois casos de comparação histórica de calendário/offset (17/18).
+## 3. Falhas reproduzidas e ajustes
 
-O primeiro conjunto completo passou961 de963. As duas falhas adicionais eram um fixture de estado com data abreviada sem fração e a sentinela da cláusula ORDER BY antiga. O fixture foi alinhado ao formato de fio vigente e a sentinela passou a exigir a coluna qualificada para evitar ordenar pelo alias textual. As expectativas de isolamento e resultados não foram retiradas (04/06).
+- Regressores iniciais:17testes,14falhas/3passagens na base. Após correção:17passagens. Logs `02-regressions-red.txt`, `03-regressions-green.txt`.
+- Primeira execução completa:999testes,992passagens e7falhas por contagem/versão do schema desatualizadas nos testes. Atualizados somente esses valores; hashes/permissões preservados. Log `04-full-suite-first.txt`.
+- Ao acrescentar3HTTP, um assert usou o campo incorreto add_message em vez do reply existente. Corrigido o teste, não a API. `05-http-and-guards.txt` e `06-http-and-guards-green.txt`.
+- Revisão dos cenários SQL alinhou duas expectativas à regra documentada de USING: linha filtrada não precisa lançar42501. As novas assertions exigem zero linhas e estado inalterado; ainda não executadas.
+- Revisão do diff registrada em `local-review.md`. Não houve revisor independente/subagente.
 
-Um teste novo presumiu indevidamente retorno do validador `asserts`; corrigido para verificar ausência de erro e preservação do objeto (07/08). As novas chamadas de testes SQL foram conferidas contra os métodos reais da aplicação e o schema das tabelas antes da checagem suplementar. A aprovação do compilador não comprova execução SQL.
+## 4. Tentativas bloqueadas
 
-Houve revisão local do diff e consulta a documentação primária. Não houve revisor independente, subagente, pentest, carga ou restauração.
+**Registry:** `npm run deps:resolve` falhou EAI_AGAIN ao consultar registry.npmjs.org. Nenhum lock real, instalação limpa ou auditoria foi concluída. Não houve proxy/registry alternativo ou alteração de política. Evidência `10-dependencies-attempt.txt`.
 
-## Bloqueado ou não executado
+**PostgreSQL:** `npm run test:db:local` recusou Docker indisponível antes de conectar (`11-db-attempt.txt`). O ambiente não possui servidor PostgreSQL instalado. Não houve fallback remoto nem troca de usuário/política. São **196 cenários escritos:180principais+16upgrade;9novos**. Zero executados contra servidor nesta sessão. A consulta, ACL, compatibilidade de locks, concorrência e upgrade ainda não estão comprovados.
 
-**Dependências:** `deps:resolve` retornou EAI_AGAIN no registry oficial (01-dependencies.txt). Sem package-lock real, npm ci, audit ou árvore revisada. Nenhuma dependência adicionada ou registry/política alterados. A tentativa de obter fonte oficial PostgreSQL não produziu instalação ou servidor; não foi usada para aprovar testes.
+**Navegador:** depois dos35checksHTTP, Playwright bloqueou em page.goto com ERR_BLOCKED_BY_ADMINISTRATOR, antes das asserções. Permanecem36checks escritos sem aprovação; a suíte humana seguinte não foi alcançada. Nenhuma aprovação visual/mobile/teclado/CSP/CORS.
 
-**PostgreSQL:** Docker e servidor instalados não disponíveis. Runner recusou antes de conectar (19-db-attempt.txt). **187 cenários escritos, zero executados nesta rodada**:173 principais+14upgrade. Os oito novos cenários não foram somados aos982 testes aprovados. Não foi usado Supabase remoto como alternativa, nem alterada exigência de usuário do runner nativo.
+**Runtime/operação:** Auth humano/M2M, pooler/TLS, driver instalado, IP/Functions, carga, retenção, logs do provedor, restauração e revisão independente pendentes. M1 não foi encerrado; R14-04/05/06 continuam candidatos em banco.
 
-**Navegador:** Playwright retornou ERR_BLOCKED_BY_ADMINISTRATOR em page.goto após os35 HTTP. **36 checks browser escritos, zero aprovados**:31 principais+cinco humanos sintéticos. A segunda suíte não foi alcançada pelo runner. Sem screenshot aprovado, inspeção visual, teclado/mobile, CSP/CORS ou E2E do provedor.
+Os gates1002/196/71 exigem testes efetivamente aprovados sem skips. Não foram reduzidos ou substituídos por mocks. A aprovação futura local não autoriza produção automaticamente.
 
-**Destino/operação:** Supabase Auth, pooler/TLS/IP, Functions, planos/custo das consultas com RLS, capacidade, logs e restauração continuam pendentes. O build gera apenas frontend estático.
+## 5. Efeitos externos e recuperação
 
-O gate exige982/187/71 aprovações efetivas (local/SQL/HTTP+browser), mas permaneceu bloqueado. Mesmo aprovação local futura não libera o destino ou produção. Não reclassificar estágios para superar a ausência de infraestrutura.
+**Nenhuma inspeção ou escrita remota nesta rodada.** Sem push/PR/merge/deploy, migration remota, mudança de dados, contas, segredos, MFA ou infraestrutura cobrada. As leituras históricas não são afirmação do estado atual. Reinspecionar destinos antes de integrar.
 
-## Efeitos externos e próximo marco
-
-Nenhuma inspeção ou escrita remota nesta rodada. Sem push/PR/merge/deploy, migrations remotas, alteração de dados, conta, segredo ou MFA. Metadados históricos dos destinos não são afirmação atual.
-
-Próximo resultado: dependências reais → PostgreSQL17/187 cenários e upgrade → revisar planos/precisão com papel real → Auth/pooler/Functions → browser36 → capacidade/restore/revisão. M1 aberto e backoffice M2 não iniciado. Novas leituras não recuperam microssegundos que já tenham sido descartados em cursores antigos; reiniciar coleções na atualização.
+O pacote contém código acumulado, patch e bundle para recuperação. O log da recuperação e verificação do bundle é anexado ao pacote depois do commit, sem alterar a árvore testada. Versões anteriores dos documentos04/05 foram preservadas em docs/history.

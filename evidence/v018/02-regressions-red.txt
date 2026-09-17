@@ -1,0 +1,355 @@
+TAP version 13
+# (node:1907) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: note-only operator creates and replays without requesting the ticket UPDATE policy
+not ok 1 - note-only operator creates and replays without requesting the ticket UPDATE policy
+  ---
+  duration_ms: 22.335839
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: 'Recurso não encontrado ou sem acesso.'
+  code: 'resource_not_found'
+  name: 'HelpdeskError'
+  stack: |-
+    deny (file:///mnt/data/helpdesk-v018/src/domain/errors.ts:6:37)
+    HelpdeskService.accessible (file:///mnt/data/helpdesk-v018/src/application/helpdesk.ts:32:158)
+    async file:///mnt/data/helpdesk-v018/src/application/helpdesk.ts:107:11
+    async runTransaction (file:///mnt/data/helpdesk-v018/src/infrastructure/transaction.ts:27:15)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:11:14)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: operator with broad scopes uses the same non-updating note path
+not ok 2 - operator with broad scopes uses the same non-updating note path
+  ---
+  duration_ms: 21.567528
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(!f.calls.some(c=>/for update/i.test(c.sql)))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:24:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note write still denies read-only, requester and missing ticket-read identities before insertion
+ok 3 - note write still denies read-only, requester and missing ticket-read identities before insertion
+  ---
+  duration_ms: 2.401695
+  type: 'test'
+  ...
+# Subtest: revoking note write prevents replay without granting collection read
+not ok 4 - revoking note write prevents replay without granting collection read
+  ---
+  duration_ms: 0.573781
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: 'Recurso não encontrado ou sem acesso.'
+  code: 'resource_not_found'
+  name: 'HelpdeskError'
+  stack: |-
+    deny (file:///mnt/data/helpdesk-v018/src/domain/errors.ts:6:37)
+    HelpdeskService.accessible (file:///mnt/data/helpdesk-v018/src/application/helpdesk.ts:32:158)
+    async file:///mnt/data/helpdesk-v018/src/application/helpdesk.ts:107:11
+    async runTransaction (file:///mnt/data/helpdesk-v018/src/infrastructure/transaction.ts:27:15)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:35:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: new migration narrows the internal conversation lock without changing application grants
+not ok 5 - new migration narrows the internal conversation lock without changing application grants
+  ---
+  duration_ms: 70.163164
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:39:1'
+  failureType: 'testCodeFailure'
+  error: 'An append-only migration is required for the trigger lock change'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-note-lock.test.ts:41:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# (node:1908) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: INSERT ticket requires a one-row INSERT acknowledgement before commit
+not ok 6 - INSERT ticket requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 19.091173
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: INSERT message requires a one-row INSERT acknowledgement before commit
+not ok 7 - INSERT message requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 0.608819
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: INSERT note requires a one-row INSERT acknowledgement before commit
+not ok 8 - INSERT note requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 3.372529
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: INSERT event requires a one-row INSERT acknowledgement before commit
+not ok 9 - INSERT event requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 0.731507
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: INSERT outbox requires a one-row INSERT acknowledgement before commit
+not ok 10 - INSERT outbox requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 1.006381
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: INSERT replay requires a one-row INSERT acknowledgement before commit
+not ok 11 - INSERT replay requires a one-row INSERT acknowledgement before commit
+  ---
+  duration_ms: 0.474839
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:26:51'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:28:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UPDATE status rejects malformed command/count/returned-row acknowledgements
+not ok 12 - UPDATE status rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 2.815629
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:32:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'invalid_database_write_result',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  actual:
+  error: "Cannot read properties of null (reading 'rowCount')"
+  name: 'TypeError'
+  stack: |-
+    PostgresStore.updateTicket (file:///mnt/data/helpdesk-v018/src/infrastructure/postgres.ts:90:286)
+    async runTransaction (file:///mnt/data/helpdesk-v018/src/infrastructure/transaction.ts:27:15)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UPDATE priority rejects malformed command/count/returned-row acknowledgements
+not ok 13 - UPDATE priority rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 0.885422
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:32:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'invalid_database_write_result',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  actual:
+  error: "Cannot read properties of null (reading 'rowCount')"
+  name: 'TypeError'
+  stack: |-
+    PostgresStore.updatePriority (file:///mnt/data/helpdesk-v018/src/infrastructure/postgres.ts:88:8)
+    async runTransaction (file:///mnt/data/helpdesk-v018/src/infrastructure/transaction.ts:27:15)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UPDATE assignment rejects malformed command/count/returned-row acknowledgements
+not ok 14 - UPDATE assignment rejects malformed command/count/returned-row acknowledgements
+  ---
+  duration_ms: 1.61328
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:32:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'invalid_database_write_result',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_database_write_result'
+  actual:
+  error: "Cannot read properties of null (reading 'rowCount')"
+  name: 'TypeError'
+  stack: |-
+    PostgresStore.updateAssignment (file:///mnt/data/helpdesk-v018/src/infrastructure/postgres.ts:84:8)
+    async runTransaction (file:///mnt/data/helpdesk-v018/src/infrastructure/transaction.ts:27:15)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:34:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a valid zero-row UPDATE remains a 412 conflict, not malformed protocol
+ok 15 - a valid zero-row UPDATE remains a 412 conflict, not malformed protocol
+  ---
+  duration_ms: 1.5544
+  type: 'test'
+  ...
+# Subtest: all existing single-row writes accept normal pg result tags without requiring RETURNING
+ok 16 - all existing single-row writes accept normal pg result tags without requiring RETURNING
+  ---
+  duration_ms: 0.909183
+  type: 'test'
+  ...
+# Subtest: incompatible write result never includes the returned private payload or SQL in its error
+not ok 17 - incompatible write result never includes the returned private payload or SQL in its error
+  ---
+  duration_ms: 0.566748
+  type: 'test'
+  location: '/mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:46:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v018/tests/v018-write-ack.test.ts:48:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 3
+# fail 14
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1047.94981

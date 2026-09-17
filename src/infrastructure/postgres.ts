@@ -1,3 +1,4 @@
+import {assertSingleWrite} from './write-result.ts';
 import {canonicalInstant} from '../../shared/instant.js';
 import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
 import {UUID_PATTERN,uuidIdentifier} from '../domain/input-values.ts';
@@ -27,7 +28,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.16.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!=='0.18.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 export {assertDatabaseSecurity} from './database-security.ts';
 export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{
@@ -52,7 +53,7 @@ const ticketReadColumns=ticketColumns.split(',').map(c=>c==='created_at'||c==='u
 class PostgresStore implements Store{
  readonly c:SqlClient;readonly p:Principal;constructor(c:SqlClient,p:Principal){this.c=c;this.p=p;}
  // Table and column names in this helper are developer-owned constants, never request values.
- private async insert(table:string,columns:string[],values:unknown[]):Promise<void>{await this.c.query(`insert into ${table} (${columns.join(',')}) values (${values.map((_,i)=>'$'+(i+1)).join(',')})`,values);}
+ private async insert(table:string,columns:string[],values:unknown[]):Promise<void>{const result=await this.c.query(`insert into ${table} (${columns.join(',')}) values (${values.map((_,i)=>'$'+(i+1)).join(',')})`,values);assertSingleWrite(result,'INSERT');}
  async supportContexts(window:CatalogWindow,_at:string):Promise<SupportCatalogEntry[]>{
   if(window.accountId!==undefined)uuidIdentifier(window.accountId);
   if(window.after){try{uuidIdentifier(window.after.accountId);uuidIdentifier(window.after.productInstanceId);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
@@ -81,13 +82,13 @@ class PostgresStore implements Store{
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt,t.assignedTo]);}
  async updateAssignment(t:Ticket,expectedVersion:number):Promise<void>{
   const r=await this.c.query('update helpdesk_core.tickets set assigned_to=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.assignedTo,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
-  if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');
+  assertSingleWrite(r,'UPDATE');
  }
  async updatePriority(t:Ticket,expectedVersion:number):Promise<void>{
   const r=await this.c.query('update helpdesk_core.tickets set priority=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.priority,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
-  if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');
+  assertSingleWrite(r,'UPDATE');
  }
- async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');}
+ async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);assertSingleWrite(r,'UPDATE');}
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}
  async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{
   const rows=(await this.c.query('select helpdesk_auth.lookup_idempotency($1,$2) as record',[operation,key])).rows;

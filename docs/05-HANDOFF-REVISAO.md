@@ -1,29 +1,33 @@
-# Continuidade — Help Desk v0.17.0
+# Continuidade — Help Desk v0.18.0
 
-Base `35426e0d90753902e977c71f0717c9c37302bedd`, branch `work/helpdesk-v0.17.0`. Ler README, AGENTS, documentos04/21 e plano. Sem inspeção/escrita remota nesta rodada. Reinspecionar os destinos antes de integrar e preservar trabalho concorrente. Não pressupor repositório vazio.
+Base `07dc51f263fbf2dcd49f4605bec0c1a43d57e2ca`. Branch local `work/helpdesk-v0.18.0`. Leia README, AGENTS e documentos 04/22. Nenhuma inspeção ou escrita remota nesta rodada; não presumir que o GitHub/Supabase/Netlify continuam como nas leituras históricas.
 
-## Próxima execução
+## Ordem de execução
 
-1. Resolver dependências no registry autorizado (`npm run deps:resolve`), revisar o lock real/árvore/integridades/alertas/licenças. Executar npm ci/verify/audit. Tipos globais não substituem a dependência declarada. Não fabricar lock ou alterar regras de rede.
-2. Conferir dez migrations (`npm run check:migrations`), iguais à v0.16 por bytes/hashes. Schema permanece0.16.0; não gerar migration cosmética. API/interface são0.17.0.
-3. Executar187 cenários PostgreSQL17 descartável:173 principais e14 de upgrade. Docker padrão/native só instalado autorizado e não root. Nada de banco real de clientes, limpeza de schema preexistente ou remote fallback.
-4. Revisar os SELECTs: to_char em UTC preserva US, CASE recusa era/ano incompatíveis, ORDER BY qualifica a coluna nativa, predicado usa timestamptz/UUID com parâmetros. Confirmar que pg retorna texto, não Date. EXPLAIN/custo com RLS, página muito concorrida, timestamps iguais e microssegundos, TimeZone não UTC. Testes locais não provam essas propriedades.
-5. Repetir todos os casos anteriores de perfis/versionamento/cache/write_effects e upgrades. Oito casos novos usam relógio de teste preciso, não campo HTTP livre. Não remover triggers para semear casos de teste. Fonte/corpo/evento anteriores não são reescritos.
-6. Homologar UI:35HTTP+36browser. Novo `/shared/instant.js` precisa estar no build raiz. Validar lista, detalhe, mensagens/notas, histórico com três/seis dígitos, IDs de desempate, paginação, rascunhos, erro/retry, troca de conta/perfil, foco/mobile. O navegador bloqueou antes das asserções; não contornar políticas.
-7. Homologar Auth/M2M/pooler/TLS/IP/Functions reais. Codecs de API devem aceitar date-time de comprimento variável. Recibos idempotentes preservam a forma histórica. Reiniciar listagem/histórico no rollout para descartar cursor antigo já truncado; não há como reconstruir dígitos perdidos apenas pelo cursor.
-8. Rodar homologate:local/check:homologation; mínimos982/187/71 são contagens efetivamente aprovadas sem skips. Manter HELPDESK_RELEASE_APPROVED fechado até decisão explícita, homologação do destino e capacidade/restore/revisão.
+1. Reinspecionar os destinos antes de integrar, preservar trabalho concorrente e não publicar sem autorização. Código e bundle desta entrega são locais.
+2. Resolver dependências no registry autorizado (`npm run deps:resolve`), revisar lock real/origens/versões/integridade/licenças/alertas, executar `npm ci --ignore-scripts`, `npm run verify`, `npm audit --audit-level=high`. Não usar tsc global nem lock sintético como substitutos. A tentativa desta sessão falhou EAI_AGAIN.
+3. Conferir `npm run check:migrations`:11 arquivos/schema0.18.0. Os dez anteriores são os mesmos da v0.17.0. Não recalcular hashes para ocultar mudanças. Aplicar 011 com o mesmo owner aprovado; CREATE OR REPLACE preserva o proprietário e não deve ganhar permissões públicas.
+4. Executar `npm run test:db:local` em PostgreSQL17 local novo e descartável. 196 casos:180 principais+16upgrade. Docker padrão; native apenas com binários autorizados e usuário não root. Nenhum banco remoto como fallback; não apagar schema/banco preexistente para tornar o teste verde.
+5. Homologar nota-only end-to-end: `tickets:read` e `notes:write`, sem `tickets:write` ou `notes:read`; SELECT pai permitido, SELECT FOR UPDATE filtrado, primeira nota e próprio recibo funcionam, coleção e mensagem pública negadas. Conferir que o trigger interno bloqueia sem mudar versão/estado/contrato/prioridade.
+6. Homologar concorrência: KEY SHARE retido enquanto nota conclui; dois autores com notas distintas; mesma key quatro vezes; recibos e efeitos únicos; rollback e revogação. Verificar FOR NO KEY UPDATE na função real, owner/ACL/search_path e todas as constraints. Testar junto aos casos anteriores de write_effects.
+7. Executar a injeção SQL de recibo suprimido somente no banco descartável: INSERT/0 deve produzir 503 antes de COMMIT, removendo nota, evento e efeito. O trigger de teste não é migration e não pode ser criado no ambiente de clientes. Não substituir assert por sucesso se a política/grant divergir.
+8. Executar o upgrade final010→011 e os anteriores no banco separado de testes. Comparar os registros e metadados do helper; validar nota-only em chamado legado e reenvio de criação original. Esse teste não é restauração de backup.
+9. Homologar Auth/M2M, pooler/TLS/IP e Functions reais. Conferir command/rowCount/rows do driver instalado, contador1 para os statements sem RETURNING, UPDATE0 para conflito e resultado incerto após COMMIT. Não adicionar INSERT RETURNING a notas privadas como atalho. API0.18 exige schema0.18.
+10. Executar UI35HTTP+36browser. Não houve nova funcionalidade visual, mas os perfis restritos devem funcionar no backend homologado. Não contornar ERR_BLOCKED_BY_ADMINISTRATOR. Depois executar homologate:local/check:homologation, revisar logs e fingerprint; mínimos1002/196/71 são aprovações efetivas, não testes apenas escritos.
 
-## Revisão dirigida
+## Arquivos prioritários
 
-- `shared/instant.js` e declaração: calendário, limites, comparação exata, representação antiga de milissegundos.
-- `src/infrastructure/postgres.ts`: projeção textual e ordenação/predicado nativos; erro seguro de dados inválidos. Nenhum parser global de pg alterado.
-- `pagination.ts`, `memory.ts`, `conversation-result.ts`, `replay-result.ts`: mesma ordem do cursor, validação íntegra, instante histórico exato sem modificar resposta.
-- `web/conversation-state.js`, `timeline-state.js`, `ticket-actions.js`, `ticket-list-state.js`: validação/comparação antes de apresentar.
-- Build/demo/smoke e fingerprint: shared incluso, sem CDN/fallback.
-- `tests/v017-*`, SQL017 em `rls.test.ts`, browser e OpenAPI. Testes de PG escritos não são casos aprovados; quatro HTTP extras estão dentro dos982.
+| Arquivo | Revisão |
+|---|---|
+| `src/application/helpdesk.ts` | Apenas addNote consulta pai sem FOR UPDATE; autorização e idempotência permanecem. |
+| `src/infrastructure/write-result.ts`, `postgres.ts` | Confirmação por comando/contagem, sem RETURNING, UPDATE0 distinto de protocolo inválido. |
+| `supabase/migrations/20260917001100_conversation_lock.sql` | Função substituída, NO KEY UPDATE, nenhum grant/policy ampliado, versão real do schema. |
+| `supabase/tests/rls.test.ts`, `upgrade.test.ts` | Nove novos casos e duas expectativas antigas de USING corrigidas, não executadas. |
+| `tests/helpers/v018-driver.ts`, `tests/v018-*.test.ts` | Double não prova RLS; sockets comprovam transporte, rollback e recibos controlados. |
+| `src/observability/codes.ts` | Erro fechado sem dados/SQL privados. |
 
 ## Invariantes
 
-Nenhuma alteração de autorização, estado, prioridade, responsável, fila, SLA, TTL ou sessão. Precisão não é monotonicidade, snapshot da coleção nem ordenação por atualização. Conteúdo de cache histórico não é reformatado; não repetir gravação diante de erro. Datas impossíveis/NULL não viram valores artificiais. Novos SELECTs não modificam os dados.
+Notas não alteram o chamado nem geram outbox. Recibo não é coleção. Responsabilidade não autoriza. Bloqueio interno não concede escrita pública. Não remover locks dos comandos que atualizam o ticket. Uma confirmação de INSERT não prova COMMIT. Sem retry automático ou chave nova diante de falha. Um erro de confirmação final ainda pode ter resultado incerto. Migrations históricas e conteúdo de clientes não são reescritos.
 
-R14-04/05/06 continuam candidatos de banco anteriores. M1 aberto, M2/SLA operacional/anexos/dispatcher/conectores não entregues. Não houve revisão independente, pentest ou restore. Pacote/bundle não autorizam publicação.
+M1 continua aberto; M2, SLA operacional, anexos, dispatcher e conectores reais continuam fora da entrega. 1002 testes locais incluem doubles; PostgreSQL e navegador não homologados. Sem revisor independente, pentest, capacidade/restore ou liberação de produção. Manter `HELPDESK_RELEASE_APPROVED` fechado.

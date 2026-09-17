@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "schemaVersion": "0.16.0",
+  "schemaVersion": "0.18.0",
   "migrations": [
     {
       "file": "20260915000100_restrict_existing_definer.sql",
@@ -41,6 +41,10 @@
     {
       "file": "20260917001000_transaction_effects.sql",
       "sha256": "8672037df0d7ae62593aefc865d82e6f7994d12a087f9ef40232d54b241a0d9c"
+    },
+    {
+      "file": "20260917001100_conversation_lock.sql",
+      "sha256": "14191c072a5d101ab644eeaa0dfc6cbed61dfa25a9eaaf92870ea5b413337166"
     }
   ]
 }

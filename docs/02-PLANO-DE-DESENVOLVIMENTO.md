@@ -241,3 +241,10 @@ R14-01/02 (replay) e R14-03 (leitura Auth) corrigidos com testes locais. HD-102 
 ## Incremento local v0.17.0 — precisão temporal (M1 aberto)
 
 Correção de HD-102/HD-105 na leitura de timestamps e paginação. Consultas SQL ainda candidatas; não adicionar novas funcionalidades para reclassificar o marco como concluído. 982 locais/35HTTP aprovados;187 SQL e36 browser escritos, pendentes. Relatório em docs04 e desenho/limites em docs21. Nenhuma migration nova. Prioridade continua instalação reproduzível → PostgreSQL/upgrade → runtime/Auth/Functions → browser → capacidade/restore.
+
+
+## Incremento local v0.18.0 — HD-102, notas-only e confirmações DML
+
+Revisão da fronteira aplicação/SQL identificou a exigência indevida da policy UPDATE no caminho de notas e a ausência de validação da confirmação de INSERT (incluindo cache). A correção local preserva a separação de capacidades; migration011 candidata ajusta o lock privado da conversa. Não há nova função de produto.
+
+1002 locais/35HTTP aprovados.196SQL escritos(180+16upgrade),36browser pendentes. Gate1002/196/71 ainda bloqueado por falta de lock/dependências/ambiente real. Schema0.18.0 não é cosmético: inclui alteração do protocolo de lock. R14-04/05/06 continuam aguardando homologação. Documentos04/05/22 detalham alcance e procedimentos. Prioridade segue banco e runtime efetivos, não ampliar o M2 enquanto a fundação não é comprovada.

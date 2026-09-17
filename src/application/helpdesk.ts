@@ -104,7 +104,9 @@ export class HelpdeskService{
   },value=>validateMessageReplay(value,t,p,body,'message'));return {message:result.value,replayed:result.replayed};
  });}
  async addNote(p:Principal,id:string,body:string,key:string,requestId:string){requireText(body,1,12000,'Nota');return this.db.run(p,async s=>{
-  const t=await this.accessible(s,p,id,true);if(!canWriteInternalNote(p,t))throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
+  // Notes do not mutate the ticket. The private conversation trigger locks its parent
+  // after INSERT, without requiring the caller to satisfy the ticket UPDATE policy.
+  const t=await this.accessible(s,p,id);if(!canWriteInternalNote(p,t))throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
   const result=await this.idempotent(s,p,`notes.create:${id}`,key,{body},async()=>{const note:InternalNote={id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,body,createdAt:this.now()};await s.addNote(note);await this.event(s,p,t,'note.created',{noteId:note.id},false,requestId);return note;},value=>validateMessageReplay(value,t,p,body,'note'));return {note:result.value,replayed:result.replayed};
  });}
  /** Operator-only priority classification; the contract snapshot and SLA are not recalculated. */

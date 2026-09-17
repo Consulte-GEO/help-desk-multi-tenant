@@ -1,3 +1,12 @@
+# v0.18.0 — notas-only e confirmação das gravações (local, não publicada)
+
+- Corrige addNote pedindo SELECT FOR UPDATE e exigindo tickets:write indevidamente; mantém autorização de recurso/nota e bloqueios dos demais comandos.
+- Migration011 substitui somente o lock interno da conversa por FOR NO KEY UPDATE e avança schema0.18.0, sem expandir policies/grants nem alterar os dez arquivos anteriores.
+- Exige command correto, rows vazio e rowCount1 nos INSERTs/UPDATEs sem RETURNING; preserva UPDATE0 como conflito412 e recusa resultados incompatíveis com503 antes de COMMIT. Nenhum retry automático.
+- 20 novos testes locais (1002 total), incluindo3HTTP/driver controlado;7SQL principais+2upgrade novos (196 escritos). PostgreSQL/navegador e dependências continuam sem homologação.
+- Alinha dois testes SQL antigos à filtragem USING: ausência da linha não é obrigatoriamente exceção SQL; estado continua obrigatoriamente inalterado.
+- API/interface/schema0.18.0;11 migrations/25 tabelas/18 operações. Sem novo módulo ou endpoint.
+
 # v0.16.0 — efeitos transacionais / candidato R14-06
 
 ## 0.17.0 — Paginação e precisão temporal (local, não publicada)

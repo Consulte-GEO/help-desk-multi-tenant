@@ -507,11 +507,18 @@ test('v015 explicit read-only operator can read but not mutate or create',async(
  assert.equal((await service.resolve(who,input)).status,'resolved');const actions=ticketActions(who,t);
  assert.equal(actions.reply,false);assert.equal(actions.add_note,false);assert.equal(actions.change_priority,false);assert.deepEqual(actions.transitions,[]);
  await assert.rejects(()=>service.create(who,input,randomUUID(),'v015'),{status:403});
- await assert.rejects(()=>sqlAs(who,"update helpdesk_core.tickets set priority='high',version=version+1,updated_at=now() where id=$1",[ticketId]),{code:'42501'});
+ // USING=false hides rows; PostgreSQL need not throw a policy error on this UPDATE.
+ const before=(await admin.query('select to_jsonb(t) as row from helpdesk_core.tickets t where id=$1',[ticketId])).rows;
+ const denied=await sqlAs(who,"update helpdesk_core.tickets set priority='high',version=version+1,updated_at=now() where id=$1",[ticketId]);
+ assert.equal(denied.command,'UPDATE');assert.equal(denied.rowCount,0);
+ assert.deepEqual((await admin.query('select to_jsonb(t) as row from helpdesk_core.tickets t where id=$1',[ticketId])).rows,before);
 });
 test('v015 stale application scopes cannot bypass the current DB capability ceiling',async()=>{
  const f=await scopeSubject(SCOPES),stale=await f.current();await f.set(['tickets:read'],1);
- await assert.rejects(()=>service.addMessage(stale,ticketId,'Should not persist',randomUUID(),'v015'),{code:'42501'});
+ const before=(await admin.query('select id from helpdesk_core.ticket_messages where ticket_id=$1 order by id',[ticketId])).rows;
+ // The mandatory SELECT FOR UPDATE is filtered by the live UPDATE policy.
+ await assert.rejects(()=>service.addMessage(stale,ticketId,'Should not persist',randomUUID(),'v015'),{status:404,code:'resource_not_found'});
+ assert.deepEqual((await admin.query('select id from helpdesk_core.ticket_messages where ticket_id=$1 order by id',[ticketId])).rows,before);
  assert.deepEqual((await f.current()).scopes,['tickets:read']);
 });
 test('v015 write-only notes yield an author receipt and replay without collection read',async()=>{
@@ -785,4 +792,80 @@ test('SQL017 replay preserves the exact original creation instant after a real d
  f.set('2026-09-18T12:00:00.000Z');const repeated=await f.precise.create(f.actor,payload,key,'precision-db');
  assert.equal(repeated.replayed,true);assert.deepEqual(repeated.ticket,original.ticket);
  const eventCount=await admin.query('select count(*)::integer as n from helpdesk_core.ticket_events where ticket_id=$1',[original.ticket.id]);assert.equal(eventCount.rows[0]!.n,1);
+});
+
+// v0.18. These cases require real PostgreSQL and are NOT covered by driver doubles.
+async function v018State(ticket:string){
+ return (await admin.query(`select t.version,
+  (select count(*)::integer from helpdesk_core.internal_notes n where n.ticket_id=t.id) as notes,
+  (select count(*)::integer from helpdesk_core.ticket_events e where e.ticket_id=t.id) as events,
+  (select count(*)::integer from helpdesk_integration.outbox_events o where o.ticket_id=t.id) as outbox,
+  (select count(*)::integer from helpdesk_audit.write_effects w where w.ticket_id=t.id) as effects
+  from helpdesk_core.tickets t where t.id=$1`,[ticket])).rows[0]!;
+}
+test('v018 note-only human sees ticket in SELECT but not through SELECT FOR UPDATE',async()=>{
+ const f=await scopeSubject(['tickets:read','notes:write']),who=await f.current();
+ assert.equal((await sqlAs(who,'select id from helpdesk_core.tickets where id=$1',[ticketId])).rowCount,1);
+ assert.equal((await sqlAs(who,'select id from helpdesk_core.tickets where id=$1 for update',[ticketId])).rowCount,0);
+ const before=await v018State(ticketId),note=await service.addNote(who,ticketId,'Note without public write',randomUUID(),'v018');
+ assert.equal(note.replayed,false);const after=await v018State(ticketId);
+ assert.equal(after.version,before.version);assert.equal(after.outbox,before.outbox);
+ assert.equal(after.notes,Number(before.notes)+1);assert.equal(after.events,Number(before.events)+1);
+ assert.equal(after.effects,Number(before.effects)+1);await assert.rejects(()=>service.notes(who,ticketId),{status:403});
+});
+test('v018 private parent lock coexists with an existing foreign-key KEY SHARE lock',async()=>{
+ const f=await scopeSubject(['tickets:read','notes:write']),who=await f.current(),holder=await admin.connect();
+ try{
+  await holder.query('BEGIN');await holder.query('select id from helpdesk_core.tickets where id=$1 for key share',[ticketId]);
+  // The held transaction is not released until the note commits. FOR UPDATE would hit lock_timeout.
+  const r=await service.addNote(who,ticketId,'Compatible parent lock',randomUUID(),'v018');assert.equal(r.replayed,false);
+ }finally{try{await holder.query('ROLLBACK');}finally{holder.release();}}
+});
+test('v018 two note-only operators create distinct receipts concurrently without a public outbox',async()=>{
+ const a=await scopeSubject(['tickets:read','notes:write']),b=await scopeSubject(['tickets:read','notes:write']);
+ const pa=await a.current(),pb=await b.current(),before=await v018State(ticketId);
+ const notes=await Promise.all([service.addNote(pa,ticketId,'Concurrent A',randomUUID(),'v018'),service.addNote(pb,ticketId,'Concurrent B',randomUUID(),'v018')]);
+ assert.equal(new Set(notes.map(x=>x.note.id)).size,2);const after=await v018State(ticketId);
+ assert.equal(after.notes,Number(before.notes)+2);assert.equal(after.events,Number(before.events)+2);assert.equal(after.effects,Number(before.effects)+2);
+ assert.equal(after.outbox,before.outbox);assert.equal(after.version,before.version);
+});
+test('v018 same-author concurrent note retries preserve one receipt and one effect',async()=>{
+ const f=await scopeSubject(['tickets:read','notes:write']),who=await f.current(),key=randomUUID(),before=await v018State(ticketId);
+ const results=await Promise.all(Array.from({length:4},()=>service.addNote(who,ticketId,'One concurrent note',key,'v018')));
+ assert.equal(new Set(results.map(x=>x.note.id)).size,1);assert.equal(results.filter(x=>!x.replayed).length,1);
+ const after=await v018State(ticketId);assert.equal(after.notes,Number(before.notes)+1);assert.equal(after.effects,Number(before.effects)+1);
+});
+test('v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of every new effect',async()=>{
+ const f=await scopeSubject(['tickets:read','notes:write']),who=await f.current(),key=randomUUID(),before=await v018State(ticketId);
+ await admin.query(`create function helpdesk_integration.v018_suppress_receipt() returns trigger language plpgsql set search_path='' as $$
+ begin if new.key=tg_argv[0] then return null;end if;return new;end$$`);
+ try{
+  await admin.query('revoke all on function helpdesk_integration.v018_suppress_receipt() from public,helpdesk_app');
+  // Fixed developer-created test trigger; scoped to this test's generated key, never a remote DB.
+  const ddl=(await admin.query("select format('create trigger v018_suppress_receipt before insert on helpdesk_integration.api_idempotency_keys for each row execute function helpdesk_integration.v018_suppress_receipt(%L)', $1) as ddl",[key])).rows[0]!.ddl;
+  await admin.query(String(ddl));
+  await assert.rejects(()=>service.addNote(who,ticketId,'Must roll back',key,'v018'),{status:503,code:'invalid_database_write_result'});
+  assert.deepEqual(await v018State(ticketId),before);
+  assert.equal((await admin.query('select 1 from helpdesk_integration.api_idempotency_keys where principal_id=$1 and key=$2',[who.id,key])).rowCount,0);
+ }finally{
+  await admin.query('drop trigger if exists v018_suppress_receipt on helpdesk_integration.api_idempotency_keys');
+  await admin.query('drop function helpdesk_integration.v018_suppress_receipt()');
+ }
+ const good=await service.addNote(who,ticketId,'Must roll back',key,'v018');assert.equal(good.replayed,false);
+ const retry=await service.addNote(who,ticketId,'Must roll back',key,'v018');assert.deepEqual(retry.note,good.note);assert.equal(retry.replayed,true);
+});
+test('v018 valid zero-row optimistic UPDATE remains conflict and leaves state intact',async()=>{
+ const t=await service.get(agent,ticketId),before=await v018State(ticketId);
+ await assert.rejects(()=>new PostgresUnitOfWork(app).run(agent,s=>s.updatePriority({...t,priority:t.priority==='high'?'normal':'high',version:t.version+1},t.version+50)),{status:412,code:'version_conflict'});
+ assert.deepEqual(await v018State(ticketId),before);
+});
+test('v018 replacement conversation hook retains private execution and empty search_path',async()=>{
+ const r=await admin.query(`select p.prosecdef,p.proconfig,
+ has_function_privilege('helpdesk_app',p.oid,'EXECUTE') as app,
+ exists(select 1 from aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where a.grantee=0 and a.privilege_type='EXECUTE') as public_execute,
+ pg_get_functiondef(p.oid) as definition
+ from pg_proc p where p.oid='helpdesk_audit.record_conversation_effect()'::regprocedure`);
+ assert.equal(r.rowCount,1);assert.equal(r.rows[0]!.prosecdef,true);assert.equal(r.rows[0]!.app,false);assert.equal(r.rows[0]!.public_execute,false);
+ assert.ok((r.rows[0]!.proconfig as string[]).some(x=>x==='search_path=""'));
+ assert.match(String(r.rows[0]!.definition),/for no key update/i);
 });

@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "npm",
+      "run",
+      "typecheck",
+      "--",
+      "--typeRoots",
+      "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+    ],
+    "exit_code": 0,
+    "seconds": 5.381,
+    "log": "evidence/v018/final-typecheck-supplementary.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "homologate:local"
+    ],
+    "exit_code": 1,
+    "seconds": 0.902,
+    "log": "evidence/v018/final-homologation.txt"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "verify:release"
+    ],
+    "exit_code": 1,
+    "seconds": 0.869,
+    "log": "evidence/v018/final-release-gate.txt"
+  }
+]
