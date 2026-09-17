@@ -13,4 +13,4 @@ Não houve revisor independente/subagente. Foram lidos diff, casos de uso, hist�
 - Manifesto das oito migrations preservado. Nenhuma dependência ou permissão foi adicionada.
 - M1 não encerrado; mocks não comprovam SQL nem serviços de hospedagem. Nova política de tamanho do perfil humano precisa ser homologada com o provedor.
 
-Regressão real: 54 falhas em63 casos de replay na base; depois63 aprovados. Leitura Auth:4 falhas em6casos; depois13 aprovados com revisão. Três casos adicionais por socket aprovados. Suite868 final aprovada. Git diff --check sem erros.
+Regressão real: 54 falhas em63 casos de replay na base; depois63 aprovados. Leitura Auth:4 falhas em6casos; depois13 aprovados com revisão. Três casos adicionais por socket aprovados. Suite868 final aprovada. Diff de código/documentação sem evidence passou no whitespace check. O check incluindo os logs brutos sinalizou espaços finais presentes nas saídas originais do Node/tsc; os logs foram preservados, não editados para apagar o aviso.

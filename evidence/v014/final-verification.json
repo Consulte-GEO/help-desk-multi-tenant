@@ -15,9 +15,9 @@
         "npm",
         "test"
       ],
-      "started_at_utc": "2026-09-17T14:34:36.882566+00:00",
       "exit_code": 0,
-      "log": "final-tests.txt"
+      "log": "final-tests.txt",
+      "note": "Reexecutado integralmente antes do commit; o log final cont\u00e9m 868 aprova\u00e7\u00f5es."
     },
     {
       "name": "final-typecheck-standard",
@@ -148,6 +148,21 @@
       ],
       "exit_code": 1,
       "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    },
+    {
+      "name": "source-diff-check",
+      "command": [
+        "git",
+        "diff",
+        "c94e49dc1066ffc89bfd444395d80e696e748daa",
+        "HEAD",
+        "--check",
+        "--",
+        ".",
+        ":!evidence"
+      ],
+      "exit_code": 0,
+      "note": "Code/docs only. Raw Node/tsc logs retain their original trailing whitespace; all-file check warns on those logs."
     }
   ]
 }
