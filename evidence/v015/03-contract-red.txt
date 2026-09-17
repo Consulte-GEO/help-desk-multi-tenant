@@ -1,0 +1,122 @@
+TAP version 13
+# (node:1686) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope migration and runtime catalogue name the same private version table
+not ok 1 - scope migration and runtime catalogue name the same private version table
+  ---
+  duration_ms: 9.943001
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(contract.tables.some(x=>x.name==='helpdesk_auth.human_scope_versions'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:9:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+not ok 2 - scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+  ---
+  duration_ms: 3.366472
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open 'supabase/migrations/20260917000900_human_scope_versions.sql'"
+  code: 'ENOENT'
+  stack: |-
+    async open (node:internal/fs/promises:633:25)
+    async readFile (node:internal/fs/promises:1237:14)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:14:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+not ok 3 - scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+  ---
+  duration_ms: 0.88056
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:20:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open 'supabase/migrations/20260917000900_human_scope_versions.sql'"
+  code: 'ENOENT'
+  stack: |-
+    async open (node:internal/fs/promises:633:25)
+    async readFile (node:internal/fs/promises:1237:14)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:21:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Auth and RLS read the same live scopes and absent profile is empty
+not ok 4 - Auth and RLS read the same live scopes and absent profile is empty
+  ---
+  duration_ms: 0.626285
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:25:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open 'supabase/migrations/20260917000900_human_scope_versions.sql'"
+  code: 'ENOENT'
+  stack: |-
+    async open (node:internal/fs/promises:633:25)
+    async readFile (node:internal/fs/promises:1237:14)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:26:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note receipt needs current write but not general note read
+not ok 5 - note receipt needs current write but not general note read
+  ---
+  duration_ms: 1.183167
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:31:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open 'supabase/migrations/20260917000900_human_scope_versions.sql'"
+  code: 'ENOENT'
+  stack: |-
+    async open (node:internal/fs/promises:633:25)
+    async readFile (node:internal/fs/promises:1237:14)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:32:13)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: manifest extends rather than alters the eight earlier migrations
+not ok 6 - manifest extends rather than alters the eight earlier migrations
+  ---
+  duration_ms: 7.061611
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:37:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    8 !== 9
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 9
+  actual: 8
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v015/tests/v015-scope-contract.test.ts:38:58)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 0
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 130.726091

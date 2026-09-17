@@ -1,29 +1,54 @@
-# Continuidade — Help Desk v0.14.0
+# Continuidade — Help Desk v0.15.0
 
-Base `c94e49dc1066ffc89bfd444395d80e696e748daa`. Branch `work/helpdesk-v0.14.0`; commit final no manifesto externo/bundle. Leia README/AGENTS e docs 04/18. Código acumulado local, não o site publicado.
+Base `503f1b0d3db59cb373d492bf7434d908ce6522dd`; branch `work/helpdesk-v0.15.0`. Ler README, AGENTS e documentos 04 e 19. Nenhuma escrita ou inspeção remota foi realizada nesta rodada. O código local não deve ser confundido com o site publicado. Reinspecionar os destinos antes de integrar e preservar alterações concorrentes.
 
-## Próximo resultado prioritário
+## Ordem de execução
 
-Resolver dependências reais → PostgreSQL 17/upgrade → configuração de escopos/invariantes → Auth/pooler/Functions → navegador/capacidade. Não usar outra feature para declarar M1 encerrado.
+### 1. Resolver dependências e conferir procedência
+Executar `npm run deps:resolve` no registry autorizado. Revisar lockfile, versões, origens, integridades, alertas e licenças. Repetir `npm ci --ignore-scripts`, `npm run verify` e `npm audit --audit-level=high`. Não utilizar tipos globais ou lockfile sintético como aprovação.
 
-1. Reinspecionar os três destinos antes de qualquer integração. Leituras desta rodada: GitHub vazio; cinco schemas Supabase consultados sem tabelas e ledger sem migrations; Netlify no deploy antigo. Sem writes.
-2. `npm run deps:resolve`; revisar versões/origens/integridade/licenças/alertas; `npm ci --ignore-scripts`, `npm run verify`, `npm audit --audit-level=high`. A tentativa atual falhou EAI_AGAIN; nenhum lock criado.
-3. `npm run check:migrations` e `npm run test:db:local`. Oito migrations inalteradas, schema 0.9.0, 125 cenários SQL escritos. Docker padrão/native somente instalado autorizado e não root; nunca banco remoto de fallback. Fresh/upgrade e roles reais, sem apagar dados existentes.
-4. Revisar SQL da consulta de cache: SELECT escalar deve produzir uma linha com record NULL para miss ou um JSON da migration 008. Não relaxar esse contrato para fazer mocks passarem; adaptar somente se o comportamento real documentado divergir.
-5. Conferir guards de replay: namespace, objeto, resultado da operação, contrato imutável, ator/corpo; históricos sem assignedTo e JSONB com ordem de chaves diferente. Desvio vira503, não cache miss/segunda escrita. Reenvio original não é GET atual.
-6. Definir e testar R14-04/05/06 do documento18: scopes humanos granulares não configuráveis hoje, replay SQL de notas exige leitura, nem toda escrita tem trigger correspondente de evento/outbox. Não chamar perfis sintéticos de perfis configurados no provedor.
-7. Validar Auth real com orçamento64 KiB decodificados, UTF-8, mesmo sinal5000ms, compressão, metadata grande e cancelamento. Sem promover JWT metadata, sem desativar MFA ou ampliar timeout para encobrir problema.
-8. UI:35 HTTP +35 browser escritos. Navegador bloqueado nesta entrega; não contornar política. Transações e efeitos do erro de replay devem ser homologados no ambiente autorizado.
-9. `npm run homologate:local`/`check:homologation`: piso868 locais/125 SQL/70 UI são APROVAÇÕES exigidas, não quantidades já aprovadas. Sucesso local não aprova produção, residência/RPO/RTO, restore, carga ou publicação.
+Executar `npm run check:migrations`: as migrations 001–008 permanecem intactas, e a 009 possui seu hash no manifesto. O backend 0.15.0 exige schema 0.15.0. Não publicar apenas HTML contra o schema 0.9.0.
 
-## Arquivos prioritários
-- `src/application/replay-result.ts`, `helpdesk.ts`: validação por operação, antes de devolver o snapshot.
-- `src/infrastructure/idempotency-lookup.ts`, `postgres.ts`: null explícito versus retorno incompatível.
-- `src/infrastructure/auth-response.ts`, `authentication.ts`: leitura limitada do JSON de identidade.
-- `tests/review-replay-integrity.test.ts`, `review-replay-http.test.ts`, `review-auth-response.test.ts`.
-- docs 18, inventário e regressões em `evidence/v014/`.
+### 2. Homologar PostgreSQL e upgrade
+Executar `npm run test:db:local` em PostgreSQL 17 descartável, com o login restrito real. Há 146 cenários: 136 principais e dez de upgrade. Docker é o padrão; o executor nativo exige instalação local autorizada e usuário não root. Não usar banco remoto como alternativa, nem apagar banco preexistente para fazer a suíte passar.
+
+Revisar a migration 009 por inteiro: defaults, lista de capacidades, nulos, duplicatas, chaves estrangeiras, tipos dos triggers, lock consultivo, revisão esperada, `session_user`, `search_path`, setter `SECURITY INVOKER` e privilégios. HTTP, clientes e manutenção não podem consultar o histórico ou invocar setter, getter ou guard. A revisão operacional deve preceder qualquer provisionamento de pessoa real.
+
+Na instalação nova, pessoas e vínculos precisam de perfil explícito; a ausência representa uma lista vazia. No upgrade, a carga inicial cria uma versão por relação humana ativa e preserva as cinco capacidades legadas. A mesma pessoa pode ter teto diferente por workspace, não por conta. Reativar um relacionamento exige revisar o teto existente. A prontidão espera 24 tabelas, 31 funções e 12 triggers, sem reparo automático.
+
+### 3. Conferir autorização e recibos
+Confirmar `resolve_human` e `has_scope` utilizando o mesmo getter. Retirar escrita de um administrador também deve retirar as ações correspondentes. Identidade Supabase e principal interno continuam sendo IDs diferentes. Novo vínculo não pode criar permissões implicitamente.
+
+No perfil que apenas escreve notas, conferir primeira criação, recibo próprio e reenvio. A coleção de notas deve continuar inacessível. Após revogar a escrita, o reenvio deve ser negado. Nenhuma operação é repetida, nenhum prazo de cache é estendido e nenhuma permissão geral de leitura é concedida. Não acrescentar `INSERT RETURNING` como atalho sem avaliar seu requisito de leitura.
+
+### 4. Validar o plano de provisionamento
+
+```bash
+npm run --silent scopes:plan -- examples/human-scope-change.json
+```
+
+A saída é somente um plano parametrizado. Não carrega driver, abre conexão ou executa SQL. O executor administrativo aprovado precisa vincular os parâmetros e confirmar o COMMIT. Se a confirmação for perdida, consultar a revisão e o histórico antes de uma nova execução. O UUID de correlação não implementa idempotência administrativa. Não criar um endpoint de concessão de permissões sem o desenho de administração, autorização e auditoria do M2.
+
+### 5. Homologar destino e operação
+Validar Auth, pooler, TLS, IP confiável, driver e Functions reais. Medir o custo de consultar a revisão atual e de executar a carga inicial. As verificações de catálogo não comprovam a semântica. Os testes locais não configuraram operadores no Supabase.
+
+Executar a interface: 35 verificações HTTP e 35 de navegador. Testar os novos perfis no backend homologado, além de rascunhos, conflitos, sessão humana, foco, teclado e mobile. O navegador ainda não foi aprovado; não contornar a política de navegação do ambiente.
+
+Resolver R14-06, capacidade, restauração e governança antes da produção. `homologate:local` e `check:homologation` exigem 905/146/70 aprovações efetivas, respectivamente locais, SQL e HTTP/navegador, sem falhas ou testes ignorados. Mesmo esse resultado não libera o destino nem a produção. Manter `HELPDESK_RELEASE_APPROVED` fechado até decisão explícita.
+
+## Revisão dirigida
+
+| Arquivos | Foco |
+|---|---|
+| `src/domain/scopes.ts`, `principal-validation.ts` | Contrato denso de capacidades e resposta de identidade validada. |
+| `src/application/human-scope-change.ts`, `scripts/plan-human-scopes.ts` | Plano sem execução, parâmetros explícitos e leitura limitada. |
+| `supabase/migrations/20260917000900_human_scope_versions.sql` | Configuração privada, ausência sem privilégios, revisão, histórico e reenvio de notas. |
+| `src/infrastructure/database-security*.ts` | Inventário, permissões esperadas e quantidade de tabelas. |
+| `supabase/tests/rls.test.ts`, `upgrade.test.ts` | Provisionamento explícito dos fixtures novos, testes antigos preservados e 146 cenários ainda não executados. |
+| `tests/v015-*`, `evidence/v015/` | 37 novos testes locais, ciclos de falha/correção e limitações da evidência. |
 
 ## Invariantes
-Não corrigir/delete cache na requisição, não trocar key nem repetir work diante de corrupção. Callback de escrita nunca executa em replay. Valor histórico não recebe available_actions. Alterações futuras de campos hoje imutáveis precisam versionar a validação. Verificação não é assinatura de histórico nem prova contra banco/runtime comprometidos. Auth ID e principal distintos; metadata não autoriza.
 
-868 testes locais incluem doubles; 125 SQL/35 browser não homologados. Sem revisão independente, pentest, carga ou restore. Nenhum push, PR, merge, deploy, migration remota, segredo, MFA ou conta alterados. API 0.14/schema 0.9, oito migrations e nenhuma nova dependência ou endpoint.
+Recibo não é coleção; responsabilidade não concede acesso; capacidade não substitui vínculo ou papel. O runtime não administra seu próprio perfil. Nenhum segredo entra no plano ou no cliente. Ausência de perfil nega capacidades, e a carga legada não se repete automaticamente. Histórico append-only não protege contra um administrador de banco comprometido.
+
+M1 continua aberto. M2 e R14-06 não foram entregues. Não existe aprovação de PostgreSQL, Auth, navegador real ou produção nesta sessão.

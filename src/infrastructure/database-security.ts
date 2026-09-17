@@ -88,7 +88,7 @@ export const READINESS_FLAGS = Object.freeze([
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
  const result=await pool.query(DATABASE_SECURITY_QUERY,[JSON.stringify(DATABASE_SECURITY_CONTRACT),[...DATABASE_SECURITY_CONTRACT.schemas]]);
  const row=result.rows[0];
- if(result.rows.length!==1||!row||row.table_count!==23||row.unsafe_tables!==0
+ if(result.rows.length!==1||!row||row.table_count!==DATABASE_SECURITY_CONTRACT.tables.length||row.unsafe_tables!==0
   ||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false
   ||READINESS_FLAGS.some(key=>row[key]!==true))
   throw new HelpdeskError(503,'unsafe_database_policies','Estrutura ou proteções do banco não correspondem à versão homologável.');

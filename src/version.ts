@@ -1,2 +1,2 @@
 /** Application release. Database compatibility is independently checked by the PostgreSQL adapter. */
-export const RELEASE='0.14.0';
+export const RELEASE='0.15.0';

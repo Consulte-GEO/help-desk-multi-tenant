@@ -1,0 +1,238 @@
+TAP version 13
+# (node:6279) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: CLI emits a bounded parameterized offline plan without driver credentials
+ok 1 - CLI emits a bounded parameterized offline plan without driver credentials
+  ---
+  duration_ms: 149.594688
+  type: 'test'
+  ...
+# Subtest: CLI refuses secret without printing file content
+ok 2 - CLI refuses secret without printing file content
+  ---
+  duration_ms: 97.10107
+  type: 'test'
+  ...
+# Subtest: CLI refuses oversize without printing file content
+ok 3 - CLI refuses oversize without printing file content
+  ---
+  duration_ms: 99.254579
+  type: 'test'
+  ...
+# Subtest: CLI refuses utf8 without printing file content
+ok 4 - CLI refuses utf8 without printing file content
+  ---
+  duration_ms: 98.389444
+  type: 'test'
+  ...
+# Subtest: CLI refuses symlink without printing file content
+ok 5 - CLI refuses symlink without printing file content
+  ---
+  duration_ms: 93.323061
+  type: 'test'
+  ...
+# Subtest: CLI refuses directory without printing file content
+ok 6 - CLI refuses directory without printing file content
+  ---
+  duration_ms: 89.377424
+  type: 'test'
+  ...
+# Subtest: CLI refuses missing without printing file content
+ok 7 - CLI refuses missing without printing file content
+  ---
+  duration_ms: 89.174919
+  type: 'test'
+  ...
+# Subtest: CLI requires exactly one file path
+ok 8 - CLI requires exactly one file path
+  ---
+  duration_ms: 186.531278
+  type: 'test'
+  ...
+# (node:6280) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope migration and runtime catalogue name the same private version table
+ok 9 - scope migration and runtime catalogue name the same private version table
+  ---
+  duration_ms: 11.921257
+  type: 'test'
+  ...
+# Subtest: scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+ok 10 - scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+  ---
+  duration_ms: 1.777033
+  type: 'test'
+  ...
+# Subtest: scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+ok 11 - scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+  ---
+  duration_ms: 1.884986
+  type: 'test'
+  ...
+# Subtest: Auth and RLS read the same live scopes and absent profile is empty
+ok 12 - Auth and RLS read the same live scopes and absent profile is empty
+  ---
+  duration_ms: 7.313109
+  type: 'test'
+  ...
+# Subtest: note receipt needs current write but not general note read
+ok 13 - note receipt needs current write but not general note read
+  ---
+  duration_ms: 4.129724
+  type: 'test'
+  ...
+# Subtest: manifest extends rather than alters the eight earlier migrations
+ok 14 - manifest extends rather than alters the eight earlier migrations
+  ---
+  duration_ms: 45.942285
+  type: 'test'
+  ...
+# Subtest: readiness accepts only the table count of the new catalogue
+ok 15 - readiness accepts only the table count of the new catalogue
+  ---
+  duration_ms: 7.573764
+  type: 'test'
+  ...
+# (node:6281) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope plan is a bound, non-executing command with explicit expected revision
+ok 16 - scope plan is a bound, non-executing command with explicit expected revision
+  ---
+  duration_ms: 14.976078
+  type: 'test'
+  ...
+# Subtest: scope plan canonicalizes order without adding read or write capabilities
+ok 17 - scope plan canonicalizes order without adding read or write capabilities
+  ---
+  duration_ms: 0.52955
+  type: 'test'
+  ...
+# Subtest: scope plan explicitly permits revoking all capabilities
+ok 18 - scope plan explicitly permits revoking all capabilities
+  ---
+  duration_ms: 0.709171
+  type: 'test'
+  ...
+# Subtest: scope plan rejects unknown capability
+ok 19 - scope plan rejects unknown capability
+  ---
+  duration_ms: 0.515488
+  type: 'test'
+  ...
+# Subtest: scope plan rejects duplicate
+ok 20 - scope plan rejects duplicate
+  ---
+  duration_ms: 0.240864
+  type: 'test'
+  ...
+# Subtest: scope plan rejects null capability
+ok 21 - scope plan rejects null capability
+  ---
+  duration_ms: 0.113221
+  type: 'test'
+  ...
+# Subtest: scope plan rejects missing scopes
+ok 22 - scope plan rejects missing scopes
+  ---
+  duration_ms: 0.20526
+  type: 'test'
+  ...
+# Subtest: scope plan rejects string scopes
+ok 23 - scope plan rejects string scopes
+  ---
+  duration_ms: 0.160602
+  type: 'test'
+  ...
+# Subtest: scope plan rejects negative revision
+ok 24 - scope plan rejects negative revision
+  ---
+  duration_ms: 0.296768
+  type: 'test'
+  ...
+# Subtest: scope plan rejects noninteger revision
+ok 25 - scope plan rejects noninteger revision
+  ---
+  duration_ms: 0.592234
+  type: 'test'
+  ...
+# Subtest: scope plan rejects null revision
+ok 26 - scope plan rejects null revision
+  ---
+  duration_ms: 0.217789
+  type: 'test'
+  ...
+# Subtest: scope plan rejects overflow revision
+ok 27 - scope plan rejects overflow revision
+  ---
+  duration_ms: 0.261254
+  type: 'test'
+  ...
+# Subtest: scope plan rejects blank reason
+ok 28 - scope plan rejects blank reason
+  ---
+  duration_ms: 0.186351
+  type: 'test'
+  ...
+# Subtest: scope plan rejects invalid text
+ok 29 - scope plan rejects invalid text
+  ---
+  duration_ms: 0.113131
+  type: 'test'
+  ...
+# Subtest: scope plan rejects long reason
+ok 30 - scope plan rejects long reason
+  ---
+  duration_ms: 0.274214
+  type: 'test'
+  ...
+# Subtest: scope plan rejects demo workspace
+ok 31 - scope plan rejects demo workspace
+  ---
+  duration_ms: 0.195155
+  type: 'test'
+  ...
+# Subtest: scope plan rejects demo principal
+ok 32 - scope plan rejects demo principal
+  ---
+  duration_ms: 0.102805
+  type: 'test'
+  ...
+# Subtest: scope plan rejects invalid request
+ok 33 - scope plan rejects invalid request
+  ---
+  duration_ms: 0.093071
+  type: 'test'
+  ...
+# Subtest: scope plan rejects extra privilege
+ok 34 - scope plan rejects extra privilege
+  ---
+  duration_ms: 0.161233
+  type: 'test'
+  ...
+# Subtest: scope plan rejects credentials field
+ok 35 - scope plan rejects credentials field
+  ---
+  duration_ms: 0.084638
+  type: 'test'
+  ...
+# Subtest: shared scope contract refuses sparse arrays and never promotes provider metadata
+ok 36 - shared scope contract refuses sparse arrays and never promotes provider metadata
+  ---
+  duration_ms: 0.619084
+  type: 'test'
+  ...
+# Subtest: notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+ok 37 - notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+  ---
+  duration_ms: 4.061852
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1029.944968

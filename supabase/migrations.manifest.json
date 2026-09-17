@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "schemaVersion": "0.9.0",
+  "schemaVersion": "0.15.0",
   "migrations": [
     {
       "file": "20260915000100_restrict_existing_definer.sql",
@@ -33,6 +33,10 @@
     {
       "file": "20260916000800_ticket_assignment.sql",
       "sha256": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348"
+    },
+    {
+      "file": "20260917000900_human_scope_versions.sql",
+      "sha256": "016562a019a745b8e8953aa32a232fda8b06163b02cb9ca5c40a5536fff064cd"
     }
   ]
 }

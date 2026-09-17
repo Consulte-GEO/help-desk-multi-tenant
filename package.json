@@ -1,6 +1,6 @@
 {
   "name": "@consulte-geo/helpdesk",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -25,7 +25,8 @@
     "test:ui:local": "node scripts/test-ui-local.mjs",
     "logs:summary": "node --experimental-strip-types scripts/summarize-http-logs.ts",
     "test:db:native": "node scripts/test-db-native.mjs",
-    "check:migrations": "node --experimental-strip-types scripts/check-migrations.ts"
+    "check:migrations": "node --experimental-strip-types scripts/check-migrations.ts",
+    "scopes:plan": "node --experimental-strip-types scripts/plan-human-scopes.ts"
   },
   "dependencies": {
     "pg": "8.16.3"

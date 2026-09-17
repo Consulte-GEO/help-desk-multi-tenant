@@ -14,7 +14,7 @@ import type {Principal} from '../../src/domain/model.ts';
 
 const targets=validateDatabaseTestTargets(process.env);
 const bundle=await loadMigrationBundle(process.cwd());
-if(bundle.schemaVersion!=='0.9.0'||bundle.migrations.length!==8||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
+if(bundle.schemaVersion!=='0.15.0'||bundle.migrations.length!==9||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
  throw Error('Review the upgrade scenario before changing the candidate migration set.');
 const upgradeUrl=(base:string)=>{const url=new URL(base);url.pathname='/helpdesk_upgrade_test';return url.toString();};
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
@@ -77,13 +77,16 @@ before(async()=>{
  }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
  beforeRows=await captureRows();
  await admin.query(bundle.migrations[7]!.sql);
+ assert.deepEqual(await captureRows(),beforeRows); // preserve the previous upgrade boundary too
+ assert.equal((await admin.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.9.0');
+ await admin.query(bundle.migrations[8]!.sql);
  afterRows=await captureRows();
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });
 after(async()=>{await app?.end();await admin?.end();await control?.end();});
-test('upgrade 001–007 to 008 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
-test('upgrade exposes schema 0.9.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgrade 001–007 through 008 and 009 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
+test('upgrade exposes schema 0.15.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
 test('legacy ticket receives null assignment without changing its version or policy',async()=>{const ticket=await service.get(requester,id(901));assert.equal(ticket.assignedTo,null);assert.equal(ticket.version,2);assert.deepEqual(ticket.contractSnapshot,original.contractSnapshot);});
 test('legacy idempotency replay retains its old snapshot without synthesizing assignment',async()=>{const result=await service.create(requester,input,key,'synthetic-upgrade');assert.equal(result.replayed,true);assert.deepEqual(result.ticket,original);assert.equal(Object.hasOwn(result.ticket,'assignedTo'),false);});
 test('public conversation remains readable while old internal note is denied to customer',async()=>{assert.equal((await service.messages(requester,id(901)))[0]?.body,'Synthetic public message');await assert.rejects(()=>service.notes(requester,id(901)),{status:403});assert.equal((await service.notes(agent,id(901)))[0]?.body,'Synthetic internal note');});
@@ -101,3 +104,14 @@ test('new assignment works on a legacy ticket without rewriting its policy or pu
  assert.equal((await service.timeline(agent,id(901))).some(e=>e.type==='ticket.assignment_changed'),true);
 });
 test('creation replay after assignment is still the original response, not a second mutation',async()=>{const result=await service.create(requester,input,key,'synthetic-upgrade');assert.deepEqual(result.ticket,original);assert.equal((await service.get(agent,id(901))).version,3);});
+
+// The one-time compatibility backfill must not silently revoke existing human workflows.
+test('upgrade009 backfills exactly the previously active human workspace relationships',async()=>{
+ const rows=(await admin.query('select principal_id,revision,scopes,reason from helpdesk_auth.human_scope_versions order by principal_id')).rows;
+ assert.equal(rows.length,2);assert.deepEqual(rows.map(r=>r.principal_id),[id(11),id(13)]);
+ for(const r of rows){assert.equal(r.revision,1);assert.deepEqual(r.scopes,['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']);assert.match(String(r.reason),/^Migration 009:/);}
+});
+test('upgrade009 resolves the same existing user while obtaining scopes from its first revision',async()=>{
+ const r=(await app.query('select helpdesk_auth.resolve_human($1,$2) as principal',[id(1013),id(1)])).rows[0]?.principal as {id:string;scopes:string[]};
+ assert.equal(r.id,agent.id);assert.deepEqual(r.scopes,['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']);
+});

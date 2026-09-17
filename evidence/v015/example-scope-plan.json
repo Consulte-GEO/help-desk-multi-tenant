@@ -1,0 +1,15 @@
+{
+  "executesDatabase": false,
+  "sql": "select helpdesk_auth.set_human_scopes($1::uuid,$2::uuid,$3::text[],$4::integer,$5::text,$6::uuid) as revision",
+  "values": [
+    "00000000-0000-4000-8000-000000000001",
+    "00000000-0000-4000-8000-000000000011",
+    [
+      "contexts:resolve",
+      "tickets:read"
+    ],
+    0,
+    "Exemplo fictício: acesso de consulta, sujeito à revisão",
+    "00000000-0000-4000-8000-000000000901"
+  ]
+}

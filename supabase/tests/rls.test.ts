@@ -20,6 +20,8 @@ before(async()=>{const moduleName='pg';const driver=await import(moduleName) as 
  await admin.query("insert into helpdesk_auth.principals(id,kind) values($1,'integration')",[id(15)]);
  for(const [w,a] of [[1,101],[1,102],[2,201]])await admin.query('insert into helpdesk_core.accounts(workspace_id,id,name) values($1,$2,$3)',[id(w!),id(a!),'Account '+a]);
  for(const who of [alice,bob,agent,outsider])await admin.query('insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,$4)',[who.workspaceId,who.grants[0]!.accountId,who.id,who.grants[0]!.role]);
+ // New humans require explicit provisioning after migration009. This is test setup, not a request grant.
+ for(const who of [alice,bob,agent,outsider])await admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[who.workspaceId,who.id,who.scopes,'Synthetic baseline provisioning',randomUUID()]);
  for(const w of [1,2]){await admin.query("insert into helpdesk_core.products(workspace_id,id,code,name) values($1,$2,'TEST','Product')",[id(w),id(300+w)]);await admin.query("insert into helpdesk_core.product_instances(workspace_id,product_id,id,environment) values($1,$2,$3,'staging')",[id(w),id(300+w),id(400+w)]);await admin.query("insert into helpdesk_core.services(workspace_id,product_id,code,name) values($1,$2,'SUPPORT','Support')",[id(w),id(300+w)]);await admin.query("insert into helpdesk_core.support_contracts(workspace_id,id,name) values($1,$2,'Contract')",[id(w),id(500+w)]);await admin.query("insert into helpdesk_core.contract_versions(workspace_id,contract_id,id,version,published,valid_from,policy) values($1,$2,$3,1,true,'2020-01-01','{}')",[id(w),id(500+w),id(600+w)]);}
  for(const [w,a,c] of [[1,101,701],[1,102,702],[2,201,703]])await admin.query("insert into helpdesk_core.coverages(workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,id) values($1,$2,$3,$4,'SUPPORT',$5,$6)",[id(w!),id(a!),id(300+w!),id(400+w!),id(600+w!),id(c!)]);
  app=new driver.Pool({connectionString:appUrl,max:12});await assertSafeDatabaseRole(app);service=new HelpdeskService(new PostgresUnitOfWork(app));ticketId=(await service.create(alice,input,'database-seed-create','db-test')).ticket.id;
@@ -381,6 +383,7 @@ before(async()=>{
  for(const who of [91,92])await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[id(who),id(1000+who)]);
  await admin.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[id(1),id(101),assignmentAgent.id]);
  await admin.query("insert into helpdesk_auth.workspace_memberships(workspace_id,principal_id,role) values($1,$2,'admin')",[id(1),assignmentAdmin.id]);
+ for(const who of [assignmentAgent,assignmentAdmin])await admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[who.workspaceId,who.id,who.scopes,'Synthetic assignment provisioning',randomUUID()]);
 });
 const assignmentTicket=async(suffix:string)=>(await service.create(alice,{...input,subject:'M1H responsibility '+suffix},'m1h-create-'+suffix+'-key','db-test')).ticket;
 const claim=async(t:{id:string;version:number},actor=agent,key='m1h-claim-key-0001')=>service.changeAssignment(actor,t.id,'claim',t.version,'Assumir a análise',key,'db-test');
@@ -478,4 +481,111 @@ test('SQL requester cannot use operator assignment selection',async()=>{
 test('SQL a different workspace sees no result for a known assigned ticket',async()=>{
  const mine=await reviewOwnedTicket();const otherOperator={...outsider,grants:[{accountId:id(201),role:'agent' as const}]};
  assert.equal((await service.list(otherOperator,{limit:25,q:mine,assignment:'mine'})).items.length,0);
+});
+
+// v0.15: executable only on a real disposable PostgreSQL17, not counted by npm test.
+import {SCOPES} from '../../src/domain/scopes.ts';
+import {ticketActions} from '../../src/application/ticket-actions.ts';
+async function scopeSubject(capabilities:readonly string[]|null,workspace=1,account=101){
+ const person=randomUUID(),authId=randomUUID();
+ await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[person,authId]);
+ await admin.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[id(workspace),id(account),person]);
+ const set=(list:unknown,expected:number,reason='Synthetic scope change',request=randomUUID())=>admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3::text[],$4,$5,$6) as revision',[id(workspace),person,list,expected,reason,request]);
+ if(capabilities!==null)await set([...capabilities],0);
+ const authentication=createAuthentication(withControlTransactions(app),{supabaseUrl:'https://example.supabase.co',publishableKey:'sb_publishable_test'},async()=>Response.json({id:authId}));
+ const current=()=>authentication.authenticate(new Request('https://hd.test/v1/me',{headers:{authorization:'Bearer synthetic-human','x-workspace-id':id(workspace)}}));
+ const history=()=>admin.query('select revision,scopes,reason,request_id,changed_by::text,created_at from helpdesk_auth.human_scope_versions where workspace_id=$1 and principal_id=$2 order by revision',[id(workspace),person]);
+ return {person,authId,set,current,history};
+}
+test('v015 membership without a capability revision has no implicit scope',async()=>{
+ const f=await scopeSubject(null),who=await f.current();assert.deepEqual(who.scopes,[]);assert.equal(who.id,f.person);assert.notEqual(who.id,f.authId);
+ assert.equal((await f.history()).rows.length,0);await assert.rejects(()=>service.get(who,ticketId),{status:403});
+ assert.equal((await sqlAs(who,'select id from helpdesk_core.tickets where id=$1',[ticketId])).rows.length,0);
+});
+test('v015 explicit read-only operator can read but not mutate or create',async()=>{
+ const f=await scopeSubject(['contexts:resolve','tickets:read']),who=await f.current(),t=await service.get(who,ticketId);
+ assert.equal((await service.resolve(who,input)).status,'resolved');const actions=ticketActions(who,t);
+ assert.equal(actions.reply,false);assert.equal(actions.add_note,false);assert.equal(actions.change_priority,false);assert.deepEqual(actions.transitions,[]);
+ await assert.rejects(()=>service.create(who,input,randomUUID(),'v015'),{status:403});
+ await assert.rejects(()=>sqlAs(who,"update helpdesk_core.tickets set priority='high',version=version+1,updated_at=now() where id=$1",[ticketId]),{code:'42501'});
+});
+test('v015 stale application scopes cannot bypass the current DB capability ceiling',async()=>{
+ const f=await scopeSubject(SCOPES),stale=await f.current();await f.set(['tickets:read'],1);
+ await assert.rejects(()=>service.addMessage(stale,ticketId,'Should not persist',randomUUID(),'v015'),{code:'42501'});
+ assert.deepEqual((await f.current()).scopes,['tickets:read']);
+});
+test('v015 write-only notes yield an author receipt and replay without collection read',async()=>{
+ const f=await scopeSubject(['tickets:read','notes:write']),who=await f.current(),key=randomUUID();
+ const first=await service.addNote(who,ticketId,'Private synthetic receipt',key,'v015');
+ const replay=await service.addNote(who,ticketId,'Private synthetic receipt',key,'v015');assert.equal(replay.replayed,true);assert.deepEqual(replay.note,first.note);
+ await assert.rejects(()=>service.notes(who,ticketId),{status:403});
+ assert.equal((await sqlAs(who,'select id from helpdesk_core.internal_notes where ticket_id=$1',[ticketId])).rows.length,0);
+ const saved=await sqlAs(who,'select helpdesk_auth.lookup_idempotency($1,$2) as result',['notes.create:'+ticketId,key]);
+ assert.equal((saved.rows[0]?.result as {result:{id:string}}).result.id,first.note.id);
+});
+test('v015 a note receipt is not shared with another write-only operator',async()=>{
+ const a=await scopeSubject(['tickets:read','notes:write']),b=await scopeSubject(['tickets:read','notes:write']),key=randomUUID();
+ await service.addNote(await a.current(),ticketId,'Only the original author receipt',key,'v015');
+ const result=await sqlAs(await b.current(),'select helpdesk_auth.lookup_idempotency($1,$2) as result',['notes.create:'+ticketId,key]);assert.equal(result.rows[0]?.result,null);
+});
+test('v015 revoking note write denies receipt even when collection read remains',async()=>{
+ const f=await scopeSubject(SCOPES),who=await f.current(),key=randomUUID();await service.addNote(who,ticketId,'Receipt before revocation',key,'v015');
+ await f.set(['tickets:read','notes:read'],1);const result=await sqlAs(who,'select helpdesk_auth.lookup_idempotency($1,$2) as result',['notes.create:'+ticketId,key]);
+ assert.deepEqual(result.rows[0]?.result,{denied:true});await assert.rejects(async()=>service.addNote(await f.current(),ticketId,'Receipt before revocation',key,'v015'),{status:403});
+});
+test('v015 revoking note collection read preserves write receipt for author',async()=>{
+ const f=await scopeSubject(SCOPES),who=await f.current(),key=randomUUID();const first=await service.addNote(who,ticketId,'Receipt survives read removal',key,'v015');
+ await f.set(['tickets:read','notes:write'],1);const again=await service.addNote(await f.current(),ticketId,'Receipt survives read removal',key,'v015');assert.deepEqual(again.note,first.note);
+});
+test('v015 empty scope revision denies previous ticket access without changing the ticket',async()=>{
+ const f=await scopeSubject(SCOPES),who=await f.current(),prior=await service.get(who,ticketId);await f.set([],1);
+ await assert.rejects(()=>service.get(who,ticketId),{status:404});assert.deepEqual((await f.current()).scopes,[]);assert.equal((await service.get(agent,ticketId)).version,prior.version);
+});
+test('v015 workspace administrator still requires explicitly granted capabilities',async()=>{
+ const f=await scopeSubject(['tickets:read']);await admin.query("insert into helpdesk_auth.workspace_memberships(workspace_id,principal_id,role) values($1,$2,'admin')",[id(1),f.person]);
+ const who=await f.current();assert.equal(who.workspaceRole,'admin');assert.deepEqual(who.scopes,['tickets:read']);assert.equal(ticketActions(who,await service.get(who,ticketId)).change_priority,false);
+});
+test('v015 HTTP login cannot read, append or update the scope history',async()=>{
+ const f=await scopeSubject(SCOPES);
+ for(const q of ['select * from helpdesk_auth.human_scope_versions','delete from helpdesk_auth.human_scope_versions','update helpdesk_auth.human_scope_versions set scopes=array[]::text[]'])await assert.rejects(()=>app.query(q),{code:'42501'});
+ await assert.rejects(()=>app.query('select helpdesk_auth.set_human_scopes($1,$2,$3::text[],1,$4,$5)',[id(1),f.person,[], 'Unauthorized scope update',randomUUID()]),{code:'42501'});
+ assert.equal((await f.history()).rows.length,1);
+});
+test('v015 scope getter and guard are not callable by HTTP or maintenance roles',async()=>{
+ for(const signature of ['helpdesk_auth.human_scopes(uuid,uuid)','helpdesk_auth.guard_human_scope_version()','helpdesk_auth.set_human_scopes(uuid,uuid,text[],integer,text,uuid)']){
+  const r=await admin.query("select has_function_privilege('helpdesk_app',$1,'EXECUTE') as app,has_function_privilege('helpdesk_maintenance',$1,'EXECUTE') as maintenance",[signature]);assert.deepEqual(r.rows[0],{app:false,maintenance:false});
+ }
+});
+test('v015 stale expected revision fails without altering existing audit history',async()=>{
+ const f=await scopeSubject(SCOPES),before=await f.history();await assert.rejects(()=>f.set(['tickets:read'],0),{code:'40001'});assert.deepEqual((await f.history()).rows,before.rows);
+});
+test('v015 concurrent provisioning of the same revision has exactly one winner',async()=>{
+ const f=await scopeSubject(SCOPES),r=await Promise.allSettled([f.set(['tickets:read'],1),f.set([],1)]);
+ assert.equal(r.filter(x=>x.status==='fulfilled').length,1);const rejected=r.find(x=>x.status==='rejected') as PromiseRejectedResult;assert.equal(rejected.reason.code,'40001');
+ assert.deepEqual((await f.history()).rows.map(x=>x.revision),[1,2]);
+});
+test('v015 history stores the real SQL session identity, reason and correlation',async()=>{
+ const f=await scopeSubject(null),request=randomUUID();await f.set(['notes:write','tickets:read'],0,'Reviewed synthetic note-only ceiling',request);
+ const row=(await f.history()).rows[0]!,login=(await admin.query('select session_user::text as name')).rows[0]?.name;
+ assert.deepEqual(row.scopes,['tickets:read','notes:write']);assert.equal(row.request_id,request);assert.equal(row.changed_by,login);assert.equal(row.reason,'Reviewed synthetic note-only ceiling');assert.ok(row.created_at);
+});
+test('v015 existing capability revisions are append-only even for ordinary owner DML',async()=>{
+ const f=await scopeSubject(SCOPES),before=await f.history();
+ await assert.rejects(()=>admin.query('update helpdesk_auth.human_scope_versions set reason=$1 where principal_id=$2',['Rewritten history',f.person]),{code:'23514'});
+ await assert.rejects(()=>admin.query('delete from helpdesk_auth.human_scope_versions where principal_id=$1',[f.person]),{code:'23514'});assert.deepEqual((await f.history()).rows,before.rows);
+});
+test('v015 malformed capabilities never produce an audit revision',async()=>{
+ const f=await scopeSubject(null);for(const list of [null,['unknown'],['tickets:read','tickets:read'],[null],['tickets:read',null]])await assert.rejects(()=>f.set(list,0),{code:'22023'});assert.equal((await f.history()).rows.length,0);
+});
+test('v015 capability revisions do not grant access to another workspace',async()=>{
+ const f=await scopeSubject(SCOPES),who=await f.current();
+ assert.equal((await sqlAs(who,'select helpdesk_auth.has_scope($1,$2) as allowed',[id(2),'tickets:read'])).rows[0]?.allowed,false);
+ await assert.rejects(()=>admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[id(2),f.person,[...SCOPES],'Invalid workspace mapping',randomUUID()]),{code:'42501'});
+});
+test('v015 suspended membership can be revoked without restoring access',async()=>{
+ const f=await scopeSubject(SCOPES),who=await f.current();await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[f.person]);await f.set([],1);
+ await assert.rejects(()=>f.current(),{code:'membership_required'});assert.equal((await sqlAs(who,'select id from helpdesk_core.tickets where id=$1',[ticketId])).rows.length,0);
+});
+test('v015 an integration principal cannot receive a human scope revision',async()=>{
+ await assert.rejects(()=>admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[machine.workspaceId,machine.id,['tickets:read'],'Invalid principal type',randomUUID()]),{code:'42501'});
 });

@@ -1,0 +1,459 @@
+TAP version 13
+# (node:1598) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope plan is a bound, non-executing command with explicit expected revision
+not ok 1 - scope plan is a bound, non-executing command with explicit expected revision
+  ---
+  duration_ms: 1.378351
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:12:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan canonicalizes order without adding read or write capabilities
+not ok 2 - scope plan canonicalizes order without adding read or write capabilities
+  ---
+  duration_ms: 0.459283
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan explicitly permits revoking all capabilities
+not ok 3 - scope plan explicitly permits revoking all capabilities
+  ---
+  duration_ms: 0.249977
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects unknown capability
+not ok 4 - scope plan rejects unknown capability
+  ---
+  duration_ms: 0.289637
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects duplicate
+not ok 5 - scope plan rejects duplicate
+  ---
+  duration_ms: 0.549089
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects null capability
+not ok 6 - scope plan rejects null capability
+  ---
+  duration_ms: 0.246442
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects missing scopes
+not ok 7 - scope plan rejects missing scopes
+  ---
+  duration_ms: 0.230317
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects string scopes
+not ok 8 - scope plan rejects string scopes
+  ---
+  duration_ms: 0.231069
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects negative revision
+not ok 9 - scope plan rejects negative revision
+  ---
+  duration_ms: 0.471302
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects noninteger revision
+not ok 10 - scope plan rejects noninteger revision
+  ---
+  duration_ms: 0.4836
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects null revision
+not ok 11 - scope plan rejects null revision
+  ---
+  duration_ms: 0.230188
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects overflow revision
+not ok 12 - scope plan rejects overflow revision
+  ---
+  duration_ms: 0.207323
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects blank reason
+not ok 13 - scope plan rejects blank reason
+  ---
+  duration_ms: 0.224549
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects invalid text
+not ok 14 - scope plan rejects invalid text
+  ---
+  duration_ms: 0.147853
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects long reason
+not ok 15 - scope plan rejects long reason
+  ---
+  duration_ms: 0.140261
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects demo workspace
+not ok 16 - scope plan rejects demo workspace
+  ---
+  duration_ms: 0.133411
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects demo principal
+not ok 17 - scope plan rejects demo principal
+  ---
+  duration_ms: 0.134273
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects invalid request
+not ok 18 - scope plan rejects invalid request
+  ---
+  duration_ms: 0.141654
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects extra privilege
+not ok 19 - scope plan rejects extra privilege
+  ---
+  duration_ms: 0.144298
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: scope plan rejects credentials field
+not ok 20 - scope plan rejects credentials field
+  ---
+  duration_ms: 0.195915
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:32:12'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/application/human-scope-change.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: shared scope contract refuses sparse arrays and never promotes provider metadata
+not ok 21 - shared scope contract refuses sparse arrays and never promotes provider metadata
+  ---
+  duration_ms: 0.274805
+  type: 'test'
+  location: '/mnt/data/helpdesk-v015/tests/v015-scopes.test.ts:33:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot find module '/mnt/data/helpdesk-v015/src/domain/scopes.ts' imported from /mnt/data/helpdesk-v015/tests/v015-scopes.test.ts"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    moduleResolve (node:internal/modules/esm/resolve:860:10)
+    defaultResolve (node:internal/modules/esm/resolve:984:11)
+    ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+  ...
+# Subtest: notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+ok 22 - notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+  ---
+  duration_ms: 4.0009
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 1
+# fail 21
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 155.532649

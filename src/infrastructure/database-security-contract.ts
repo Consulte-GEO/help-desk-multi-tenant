@@ -1,9 +1,9 @@
-/** Reviewed catalogue contract for schema 0.9.0.
+/** Reviewed catalogue contract for schema 0.15.0.
  * Metadata checks do NOT attest to function/policy/constraint expressions.
  * Not generated at runtime, not accepted from HTTP, never used for auto-repair.
  */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.9.0",
+  "schemaVersion": "0.15.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -154,6 +154,12 @@ export const DATABASE_SECURITY_CONTRACT = {
       "read": false,
       "insert": false,
       "updates": []
+    },
+    {
+      "name": "helpdesk_auth.human_scope_versions",
+      "read": false,
+      "insert": false,
+      "updates": []
     }
   ],
   "functions": [
@@ -295,6 +301,21 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "signature": "helpdesk_core.require_assignment_event()",
       "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.guard_human_scope_version()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.human_scopes(uuid, uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.set_human_scopes(uuid, uuid, text[], integer, text, uuid)",
+      "definer": false,
       "execute": false
     }
   ],
@@ -538,6 +559,20 @@ export const DATABASE_SECURITY_CONTRACT = {
       "function": "helpdesk_core.require_assignment_event()",
       "type": 17,
       "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_revision_guard",
+      "function": "helpdesk_auth.guard_human_scope_version()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_history_immutable",
+      "function": "helpdesk_auth.guard_human_scope_version()",
+      "type": 27,
+      "deferred": false
     }
   ],
   "constraints": [
@@ -599,6 +634,36 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "table": "helpdesk_integration.outbox_events",
       "name": "assignment_outbox_forbidden",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_versions_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_versions_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_versions_principal_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_revision_positive",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_reason_size",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.human_scope_versions",
+      "name": "human_scope_shape",
       "type": "c"
     }
   ]

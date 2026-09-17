@@ -1,0 +1,71 @@
+{
+  "timestamp_utc": "2026-09-17T15:11:11.831340+00:00",
+  "executed": [
+    {
+      "check": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-typecheck-supplementary",
+      "command": [
+        "npm",
+        "run",
+        "typecheck",
+        "--",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-migrations",
+      "command": [
+        "npm",
+        "run",
+        "check:migrations"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "local_tests_passed": 905,
+  "http_memory_checks_passed": 35,
+  "postgres_cases_written": 146,
+  "postgres_cases_executed": 0,
+  "browser_cases_written": 35,
+  "browser_cases_passed": 0,
+  "standard_verify_exit": 2,
+  "dependencies_resolve_exit": 1,
+  "remote_writes": false,
+  "remote_inspection_this_turn": false
+}

@@ -1,3 +1,5 @@
+> Atualização de execução v0.15.0: R14-04/R14-05 implementados como candidatos em docs19. Permissões por workspace/pessoa, ausência sem privilégios e recibo privado de notas. Falta PostgreSQL real/upgrade146, Auth/pooler/Functions e browser35; M1 não encerrado, M2 não iniciado. R14-06 continua pendente. CLI de plano não é CRUD administrativo nem executa SQL. Demais seções abaixo preservam o plano e seus registros históricos.
+
 # Plano de desenvolvimento e critérios de aceite
 
 > **Estado corrente v0.14.0:** M1 aberto. API0.14.0/schema0.9.0; oito migrations intactas. Revisão de envelope/resposta de reenvio e leitura do provedor humano implementada com regressões. Evidências em `04-ESTADO-E-EVIDENCIAS.md`; revisão e decisões em `18-REVISAO-REENVIOS-E-IDENTIDADE.md`. A execução PostgreSQL continua prioritária; não iniciar mais módulos como substituto dos testes de persistência.

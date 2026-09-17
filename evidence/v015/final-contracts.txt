@@ -1,0 +1,7 @@
+
+> @consulte-geo/helpdesk@0.15.0 check:contracts
+> node --experimental-strip-types scripts/check-contracts.ts
+
+(node:5939) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Structural checks passed: 18 API operations, internal references, production/demo separation and migration sentinels. Real SQL/RLS and OpenAPI conformance remain separate gates.

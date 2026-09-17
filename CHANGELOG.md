@@ -1,3 +1,11 @@
+# v0.15.0 — Permissões persistidas candidatas e recibos de notas
+
+- Nova migration009: human_scope_versions privado, getter comum da identidade/RLS, setter com revisão esperada, históricoappend-only e backfill único preservando relações legadas ativas. Ausência/[] concede zero capacidades.
+- R14-05: cache da própria nota passa a exigir escrita, não leitura da coleção; mantém recurso/autor/chave/prazos e reautorização.
+- Contrato compartilhado de capacidades recusa arrays esparsos e tipos inválidos; CLI offline bounded de provisionamento sem conexão/segredos.
+- Readiness passa a usar o inventário central para quantidade de tabelas. API/schema0.15;24 tabelas,18 operações; oito migrations anteriores intactas.
+- 905 locais aprovados,35 HTTP.146SQL escritos,0executados;35browser escritos,0aprovados. M1 e produção não aprovados. R14-06 permanece aberto.
+
 # 0.14.0 — revisão de reenvios e leitura de identidade (não publicado)
 
 - Envelope de idempotência conferido por workspace, principal, operação e chave; resultados incompatíveis não viram cache ausente nem autorizam nova gravação.

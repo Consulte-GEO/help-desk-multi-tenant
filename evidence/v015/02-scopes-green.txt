@@ -1,0 +1,144 @@
+TAP version 13
+# (node:1659) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope plan is a bound, non-executing command with explicit expected revision
+ok 1 - scope plan is a bound, non-executing command with explicit expected revision
+  ---
+  duration_ms: 7.142231
+  type: 'test'
+  ...
+# Subtest: scope plan canonicalizes order without adding read or write capabilities
+ok 2 - scope plan canonicalizes order without adding read or write capabilities
+  ---
+  duration_ms: 0.29849
+  type: 'test'
+  ...
+# Subtest: scope plan explicitly permits revoking all capabilities
+ok 3 - scope plan explicitly permits revoking all capabilities
+  ---
+  duration_ms: 0.156617
+  type: 'test'
+  ...
+# Subtest: scope plan rejects unknown capability
+ok 4 - scope plan rejects unknown capability
+  ---
+  duration_ms: 0.712195
+  type: 'test'
+  ...
+# Subtest: scope plan rejects duplicate
+ok 5 - scope plan rejects duplicate
+  ---
+  duration_ms: 0.205941
+  type: 'test'
+  ...
+# Subtest: scope plan rejects null capability
+ok 6 - scope plan rejects null capability
+  ---
+  duration_ms: 0.105649
+  type: 'test'
+  ...
+# Subtest: scope plan rejects missing scopes
+ok 7 - scope plan rejects missing scopes
+  ---
+  duration_ms: 0.175655
+  type: 'test'
+  ...
+# Subtest: scope plan rejects string scopes
+ok 8 - scope plan rejects string scopes
+  ---
+  duration_ms: 0.154193
+  type: 'test'
+  ...
+# Subtest: scope plan rejects negative revision
+ok 9 - scope plan rejects negative revision
+  ---
+  duration_ms: 0.312301
+  type: 'test'
+  ...
+# Subtest: scope plan rejects noninteger revision
+ok 10 - scope plan rejects noninteger revision
+  ---
+  duration_ms: 0.44387
+  type: 'test'
+  ...
+# Subtest: scope plan rejects null revision
+ok 11 - scope plan rejects null revision
+  ---
+  duration_ms: 0.192791
+  type: 'test'
+  ...
+# Subtest: scope plan rejects overflow revision
+ok 12 - scope plan rejects overflow revision
+  ---
+  duration_ms: 0.176146
+  type: 'test'
+  ...
+# Subtest: scope plan rejects blank reason
+ok 13 - scope plan rejects blank reason
+  ---
+  duration_ms: 0.118068
+  type: 'test'
+  ...
+# Subtest: scope plan rejects invalid text
+ok 14 - scope plan rejects invalid text
+  ---
+  duration_ms: 0.094913
+  type: 'test'
+  ...
+# Subtest: scope plan rejects long reason
+ok 15 - scope plan rejects long reason
+  ---
+  duration_ms: 0.168785
+  type: 'test'
+  ...
+# Subtest: scope plan rejects demo workspace
+ok 16 - scope plan rejects demo workspace
+  ---
+  duration_ms: 0.233993
+  type: 'test'
+  ...
+# Subtest: scope plan rejects demo principal
+ok 17 - scope plan rejects demo principal
+  ---
+  duration_ms: 0.100852
+  type: 'test'
+  ...
+# Subtest: scope plan rejects invalid request
+ok 18 - scope plan rejects invalid request
+  ---
+  duration_ms: 0.085979
+  type: 'test'
+  ...
+# Subtest: scope plan rejects extra privilege
+ok 19 - scope plan rejects extra privilege
+  ---
+  duration_ms: 0.098969
+  type: 'test'
+  ...
+# Subtest: scope plan rejects credentials field
+ok 20 - scope plan rejects credentials field
+  ---
+  duration_ms: 0.080452
+  type: 'test'
+  ...
+# Subtest: shared scope contract refuses sparse arrays and never promotes provider metadata
+ok 21 - shared scope contract refuses sparse arrays and never promotes provider metadata
+  ---
+  duration_ms: 0.40405
+  type: 'test'
+  ...
+# Subtest: notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+ok 22 - notes-write-only has own idempotent receipt but cannot list notes, alter a ticket or access another account
+  ---
+  duration_ms: 3.151908
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 151.228071

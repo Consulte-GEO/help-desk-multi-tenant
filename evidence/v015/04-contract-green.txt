@@ -1,0 +1,48 @@
+TAP version 13
+# (node:1733) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope migration and runtime catalogue name the same private version table
+ok 1 - scope migration and runtime catalogue name the same private version table
+  ---
+  duration_ms: 5.725422
+  type: 'test'
+  ...
+# Subtest: scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+ok 2 - scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy
+  ---
+  duration_ms: 1.346993
+  type: 'test'
+  ...
+# Subtest: scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+ok 3 - scope history serializes revisions, rejects UPDATE/DELETE, and captures database identity
+  ---
+  duration_ms: 1.110386
+  type: 'test'
+  ...
+# Subtest: Auth and RLS read the same live scopes and absent profile is empty
+ok 4 - Auth and RLS read the same live scopes and absent profile is empty
+  ---
+  duration_ms: 0.887811
+  type: 'test'
+  ...
+# Subtest: note receipt needs current write but not general note read
+ok 5 - note receipt needs current write but not general note read
+  ---
+  duration_ms: 0.707548
+  type: 'test'
+  ...
+# Subtest: manifest extends rather than alters the eight earlier migrations
+ok 6 - manifest extends rather than alters the eight earlier migrations
+  ---
+  duration_ms: 8.780306
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 134.670588
