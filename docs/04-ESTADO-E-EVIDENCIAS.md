@@ -1,51 +1,59 @@
-# Help Desk v0.10.0 — Estado e evidências
+# Help Desk v0.11.0 — Estado e evidências
 
-**Entrega local, não publicada. M1 permanece aberto.** Base v0.9.0: `fbed9dccfaaf6c388d1ddc24673cfdc6f8afc55e`. Branch `work/helpdesk-v0.10.0`. Commit final no manifesto da entrega e no bundle. Os logs usam UTC de 17/09/2026; as verificações ocorreram em 16/09/2026 no fuso America/Sao_Paulo.
+**Entrega local; M1 aberto; produção não aprovada.** Base `7acc0e13cba1ee4ee439de35eae4e8413cecc695`; branch `work/helpdesk-v0.11.0`. Os logs usam UTC de17/09/2026; a execução ocorreu em16/09/2026 no fuso America/Sao_Paulo. O commit de entrega é identificado no manifesto externo e no bundle, sem referência circular dentro deste arquivo.
 
-## O que foi implementado
-Contrato de metadados de segurança para inicialização, ampliando a checagem anterior sem alterar os privilégios do banco. Manifesto de integridade das oito migrations e loader limitado/estrito, com os mesmos bytes utilizados na execução SQL. Integração dessa verificação no verify, CI e suítes SQL. Novo ensaio de upgrade 001–007→008 em banco descartável separado e 11 cenários de desvio das proteções do banco. Nenhum módulo de atendimento adicional nesta rodada.
+## Implementação desta revisão
 
-API/interface **0.10.0**; schema candidato **0.9.0**; oito migrations intactas, 23 tabelas, 18 operações/14 caminhos. Novo código de consulta a catálogo ainda não foi executado pelo PostgreSQL.
+UUIDs nos limites Auth/principal e seletores PostgreSQL; principal do Help Desk distinto de usuário Supabase. Rejeição de NUL/surrogates isolados sem alterar silenciosamente conteúdo válido. Revalidação do chamado e do vínculo workspace/conta/ticket de cada mensagem/nota/evento antes da serialização. Coleção inconsistente recusa integralmente com erro seguro503. Filtros mine/unassigned para operadores humanos por conta, aplicados antes de LIMIT; cursor escopado aos filtros e UI limpa na troca de identidade, preservando detalhe/rascunhos ao filtrar.
+
+Matriz da revisão acumulada, diferenças entre pesquisas/implementação e riscos restantes em `15-REVISAO-CONSOLIDADA.md`. Fixtures SQL passaram a enumerar colunas por clareza; não se afirma falha SQL comprovada no código anterior. Nenhuma migration alterada.
+
+**API/interface0.11.0; schema candidato0.9.0;8 migrations/23 tabelas/18 operações/14 caminhos.**
 
 ## Resultados executados
-Todos os caminhos abaixo são relativos ao repositório.
 
-| Verificação | Resultado / alcance | Evidência |
+Caminhos relativos a `evidence/review-v011/`.
+
+| Verificação | Resultado e alcance | Evidência |
 |---|---|---|
-| Base v0.9.0 | 635 testes aprovados antes das alterações | `evidence/m1i/00-baseline-tests.txt` |
-| Suíte local final | **679 aprovados; zero falhas, cancelados ou ignorados** — 44 novos | `evidence/m1i/final-tests.txt` |
-| HTTP real de loopback | **28 checks aprovados**, domínio em memória e dados sintéticos | `evidence/m1i/13-ui-attempt.txt` |
-| Integridade das migrations | Oito arquivos e schema0.9.0 verificados; nenhuma execução SQL | `evidence/m1i/final-migrations.txt`, `migration-integrity.json` |
-| TypeScript suplementar | Aprovado com ferramentas globais do ambiente | `evidence/m1i/final-typecheck-environment.txt` |
-| OpenAPI estrutural | 18 operações/14 caminhos | `evidence/m1i/final-contracts.txt` |
-| Sintaxe | 22 arquivos JS/MJS/Python verificados | `evidence/m1i/final-syntax.json` |
-| Build | Apenas assets estáticos; aprovado | `evidence/m1i/final-build.txt` |
-| Scanner heurístico | Nenhum padrão reconhecido; não é auditoria completa | `evidence/m1i/final-secrets.txt` |
-| Verificação padrão do manifesto | **Falhou com saída 2**, após 679 testes aprovados, por tipos/dependências locais ausentes | `evidence/m1i/final-verify-manifest.txt` |
-| Homologação agregada/publicação | **Não aprovadas** por lock ausente | `evidence/m1i/final-homologation.txt`, `final-release-gate.txt`, `evidence/homologation/latest.json` |
+| Base v0.10.0 | 679 locais aprovados antes das mudanças | 00-baseline-tests.txt |
+| Suíte final | **710 aprovados,0 falhas/skips/cancelados**;31 novos | final-tests.txt |
+| HTTP loopback | **32 verificações aprovadas** em memória | final-ui-attempt.txt |
+| TypeScript suplementar | Saída0 com ferramentas globais | final-typecheck-supplemental.txt |
+| Migrations | Oito hashes/bytes anteriores intactos, sem SQL executado | final-migrations.txt; migration-integrity.json |
+| OpenAPI | Verificação estrutural18 operações/14 caminhos | final-contracts.txt |
+| Sintaxe | 22 arquivos JS/MJS e Python AST,0 falhas | final-syntax.json |
+| Build | Somente frontend estático aprovado | final-build.txt |
+| Scan de segredos | Nenhum padrão reconhecido; heurístico, não auditoria integral | final-secrets.txt |
+| Verify padrão | Saída2 após710 testes, dependências/tipos locais ausentes e erros de inferência resultantes | final-verify-standard.txt |
+| Homologação agregada | Falha de lock; instalação/audit/aplicação/SQL/UI dependentes bloqueados | final-homologation.txt |
+| Gate | Check e release recusados, saída1; produto NÃO aprovado | final-homologation-gate.txt; final-release-gate.txt |
 
-Os 679 testes locais incluem domínio, HTTP, estado puro, orquestração com respostas controladas do driver e integridade de arquivos. Os novos testes de prontidão simulam os resultados de catálogo; **não comprovam que o SQL de inspeção executa ou detecta os desvios em um banco real**. Os 28 HTTP utilizam a demonstração em memória, não Supabase ou Netlify.
+Comando suplementar: `npm run typecheck -- --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types`. Compilador/tipos globais não substituem dependências fixadas no package.json. `final-verification.json` reúne comandos, códigos e logs.
 
-## Regressões e revisão
-- Prontidão: 15 recusas ausentes reproduzidas na base em 16 testes; correção ampliada até 19 testes locais novos. Inclui resposta incompleta, booleanos inválidos, privilégios por coluna, helpers e triggers.
-- Loader: 19 falhas antes de implementação; 19 aprovações depois. Revisão ampliou para 25 com links, limites de tamanho, UTF-8 e arquivo vazio. Nenhum arquivo candidato alterado para fazer os testes passarem.
-- TypeScript detectou uma variável de fixture com nome igual ao helper de snapshot do upgrade; renomeada antes da rechecagem. Também foram adicionados parênteses explícitos na ordenação JSON do snapshot. Isso não é prova de execução SQL.
-- Uma execução agrupada de verificação foi interrompida pelo limite da ferramenta. O log parcial foi preservado e não aprovado. Na repetição isolada, cinco testes HTTP passaram e o verify padrão concluiu os 679 testes, falhando depois pelos tipos locais ausentes. Não foi identificada nem alegada correção de um bug funcional a partir dessa interrupção.
-- Revisão local do diff e das fontes oficiais dos metadados. **Não houve revisor independente, subagente, pentest, carga ou restore.**
+## Regressões e alcance da revisão
 
-Logs: `01-readiness-red.txt`, `02-readiness-green.txt`, `05-migrations-red.txt`, `06-migrations-green.txt`, `09-migrations-final.txt`, `14-aggregate-interrupted-verify.txt` e `15-isolated-http-review.txt`. Comandos e saídas consolidados em `final-verification.json`.
+Fronteiras:18 falhas/2 passagens na base;20 passagens após correção. Filtros:10 falhas/1 passagem antes;11 passagens depois. `01/02` e `04/05` preservam os ciclos. A primeira regressão completa detectou fixtures Auth simbólicas incompatíveis; foram corrigidas sem remover negações. A checagem de tipos identificou duas anotações nos testes, resolvidas antes da execução final.
 
-## O que ainda não foi comprovado
-**Dependências:** `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`. Sem package-lock real, npm ci, audit ou árvore revisada. Não foi usado registry alternativo nem contornada a política de rede. A checagem global é suplementar; tipos Node globais diferem dos declarados.
+Os testes locais abrangem domínio, HTTP in-process, memória, estado puro, adaptadores de banco/Auth com respostas controladas e integridade de arquivos. Os testes HTTP usam servidor Node e dados fictícios em memória. **Não se constatou vazamento remoto; respostas de adaptador deliberadamente incorretas reproduziram a defesa ausente da aplicação.**
 
-**PostgreSQL:** `test:db:local` recusou por Docker indisponível, antes de conectar. **119 cenários escritos, zero executados:** 111 na suíte principal (100 anteriores + 11 novos) e oito de upgrade. O schema real, os grants/RLS/constraints, a consulta de catálogo, a execução serial e o upgrade ainda precisam de homologação. Não foi usado Supabase remoto como alternativa.
+Foi feita revisão local dos módulos e diffs, não revisão independente, pentest ou execução semântica de todas as migrations. Inventário dos arquivos de fonte com hashes e operações em `source-inventory.json`; não é cobertura de testes.
 
-**Navegador:** após 28 checks HTTP, o Playwright encontrou `ERR_BLOCKED_BY_ADMINISTRATOR` em page.goto. Permanecem **25 checks de navegador escritos, zero aprovados** nesta execução. Nenhuma alteração funcional de interface, apenas a indicação da versão.
+## Bloqueado ou não realizado
 
-**Destino e operação:** Auth, pooler/TLS, IP confiável, empacotamento/execução de Functions, latência/capacidade da nova consulta, restore, coleta de logs e revisão operacional pendentes. A checagem de catálogo é pontual, não inspeção contínua ou prova de semântica de policies/functions.
+- `npm run deps:resolve` falhou com EAI_AGAIN registry.npmjs.org; sem lockfile real/npm ci/npm audit concluídos. `11-dependencies-attempt.txt`.
+- `npm run test:db:local` recusou Docker ausente antes de conectar. **125 cenários SQL escritos (117+8),0 executados**,6 novos. Sem fallback Supabase remoto. `12-db-attempt.txt`.
+- `npm run test:ui:local` aprovou32 HTTP e bloqueou em Playwright page.goto com ERR_BLOCKED_BY_ADMINISTRATOR. **27 checks browser escritos,0 aprovados**,2 novos. Sem homologação visual/teclado/mobile/acessibilidade.
+- Auth, pooler/TLS, IP de produção, bundle e execução de Netlify Functions, CI remoto, carga, restauração e políticas operacionais continuam pendentes. Logout humano da UI limpa estado local; revogação/renovação de sessão humana não foi entregue nesta rodada.
 
-## Efeitos remotos
-GitHub retornou repositório vazio em uma consulta somente leitura nesta rodada. Supabase e Netlify **não foram reinspecionados**. Sem push, PR, merge, deploy, migration remota, alteração de dados, segredo, MFA ou infraestrutura cobrada.
+A política do ambiente não foi contornada. Um código de saída esperado1/2 representa falha/bloqueio conhecido, NÃO aprovação do subsistema. O relatório agregado permanece incompleto e não assinado.
 
-## Próxima execução
-Resolver dependências → verificar manifesto → PostgreSQL17 novo/119 cenários e upgrade → corrigir achados reais → Auth/pooler/Functions → navegador → capacidade/restore/revisão. O gate local exige 679/119/53 (locais/SQL/HTTP+browser) efetivamente aprovados, mas mesmo esse resultado não autoriza publicação nem encerra critérios do destino. O M2/backoffice permanece não iniciado.
+## Ambientes remotos (somente leitura)
+
+GitHub retornou vazio. Supabase retornou zero tabelas nos cinco schemas consultados e nenhuma migration. Advisor manteve avisos sobre public.rls_auto_enable() executável por anon/authenticated como SECURITY DEFINER. Netlify manteve deploy6aa9cd6dab04ec2cdc23c0b4: manual, uma página, sem Functions/commit. Apenas campos não sensíveis em `remote-readonly.json`; nenhum inventário de Auth/Storage/backups é alegado.
+
+**Sem push/PR/merge/deploy/migration remota, alteração de dados, segredo, usuário, MFA ou infraestrutura cobrada.**
+
+## Continuidade
+
+Executar HD-101/102/103 em ambiente apto antes de ampliar o schema: dependências → oito migrations/125 casos e upgrade → Auth/pooler/Functions → browser/carga. Manter HELPDESK_RELEASE_APPROVED fechado. Mesmo fechar M1 não entrega M2, notificações, SLA, anexos, restauração e dois conectores reais. Consulte matriz15 e handoff05.

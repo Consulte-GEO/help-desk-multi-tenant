@@ -1,6 +1,8 @@
 # Plano de desenvolvimento e critérios de aceite
 
-> **Atualização v0.2.0 — M1 em andamento:** HD-101 tem guards/CI codificados, mas registry/lock/audit pendentes; HD-102 tem quatro migrations e 35 cenários SQL escritos, nenhum executado; HD-103 tem runtime reforçado, sem homologação no destino; HD-104 tem limites/lifecycle codificados e testes locais, sem carga/SQL real; HD-105 tem paginação/estado e HTTP local testados, navegador bloqueado. Ver documentos 04–06 para evidências atuais. A descrição de M0 abaixo permanece como registro da fundação.
+> **Estado corrente v0.11.0:** M1 aberto. API0.11.0/schema0.9.0; oito migrations,710 locais e32 HTTP aprovados;125 SQL e27 browser escritos, sem aprovação. Sem dependências reproduzíveis/runtime real. Parte de HD-301/302 foi antecipada; M2 não foi entregue. A matriz atual está em `15-REVISAO-CONSOLIDADA.md` e as evidências em04. Registros abaixo conservam as decisões históricas, não substituem o estado corrente.
+
+> **Registro histórico v0.2.0 — M1 em andamento:** HD-101 tem guards/CI codificados, mas registry/lock/audit pendentes; HD-102 tem quatro migrations e 35 cenários SQL escritos, nenhum executado; HD-103 tem runtime reforçado, sem homologação no destino; HD-104 tem limites/lifecycle codificados e testes locais, sem carga/SQL real; HD-105 tem paginação/estado e HTTP local testados, navegador bloqueado. Ver documentos 04–06 para evidências atuais. A descrição de M0 abaixo permanece como registro da fundação.
 
 
 **Data:** 15/09/2026 · **Produto:** Help Desk independente · **Base de código:** 0.1.0  

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.10.0",
+    "version": "0.11.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -504,7 +504,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -593,6 +593,18 @@
                 "urgent"
               ]
             }
+          },
+          {
+            "name": "assignment",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "mine",
+                "unassigned"
+              ]
+            },
+            "description": "Somente operadores humanos. Restringe cada linha às contas onde o ator é operador; responsabilidade nunca concede leitura. Conta explicitamente sem papel operador retorna 403. Não aceita IDs de outros responsáveis."
           }
         ],
         "responses": {
@@ -778,7 +790,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1039,7 +1051,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1225,7 +1237,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1470,7 +1482,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1714,7 +1726,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1843,7 +1855,7 @@
         },
         "requestBody": {
           "required": true,
-          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.",
+          "description": "Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.",
           "content": {
             "application/json": {
               "schema": {
@@ -1931,7 +1943,7 @@
             }
           }
         },
-        "description": "Histórico vivo paginado. Mudança de prioridade projeta from/to/version; reason somente para operador autorizado. Notas internas não aparecem ao cliente. Conteúdo de mensagens/notas não é incluído. Cursor não autoriza o recurso. A interface limita-se a 500 eventos carregados e a API continua paginada."
+        "description": "Páginas inconsistentes quanto ao vínculo/visibilidade são recusadas integralmente com 503. Histórico vivo paginado. Mudança de prioridade projeta from/to/version; reason somente para operador autorizado. Notas internas não aparecem ao cliente. Conteúdo de mensagens/notas não é incluído. Cursor não autoriza o recurso. A interface limita-se a 500 eventos carregados e a API continua paginada."
       }
     }
   },
@@ -1963,7 +1975,7 @@
           "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
           "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
         },
-        "description": "Seletor validado contra vínculos vivos; não concede autorização."
+        "description": "No runtime PostgreSQL/Auth, UUID padrão. Aliases opacos são exclusivos da demonstração local. Seletor não concede autorização."
       },
       "Idempotency": {
         "name": "Idempotency-Key",

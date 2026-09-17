@@ -1,0 +1,160 @@
+{
+  "base_commit": "7acc0e13cba1ee4ee439de35eae4e8413cecc695",
+  "api": "0.11.0",
+  "schema": "0.9.0",
+  "generated_at": "2026-09-17T02:56:46.879983+00:00",
+  "executed": [
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "tests": 710,
+      "pass": 710,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "command": "npm run test:ui:local",
+      "exit_code": 1,
+      "http_memory_pass": 32,
+      "browser_pass": 0,
+      "browser_written": 27,
+      "blocked_reason": "ERR_BLOCKED_BY_ADMINISTRATOR",
+      "log": "final-ui-attempt.txt"
+    },
+    {
+      "command": "npm run typecheck -- --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types",
+      "exit_code": 0,
+      "scope": "Supplemental global types, not installed package dependencies",
+      "log": "final-typecheck-supplemental.txt"
+    },
+    {
+      "command": "npm run deps:resolve",
+      "exit_code": 1,
+      "blocked_reason": "EAI_AGAIN registry.npmjs.org",
+      "log": "11-dependencies-attempt.txt"
+    },
+    {
+      "command": "npm run test:db:local",
+      "exit_code": 1,
+      "sql_written": 125,
+      "sql_executed": 0,
+      "blocked_reason": "Docker unavailable",
+      "log": "12-db-attempt.txt"
+    },
+    {
+      "command": "npm run verify",
+      "exit_code": 2,
+      "local_tests_pass": 710,
+      "log": "final-verify-standard.txt"
+    },
+    {
+      "command": "npm run homologate:local",
+      "exit_code": 1,
+      "log": "final-homologation.txt"
+    },
+    {
+      "command": "npm run check:homologation",
+      "exit_code": 1,
+      "log": "final-homologation-gate.txt"
+    },
+    {
+      "command": "npm run verify:release",
+      "exit_code": 1,
+      "log": "final-release-gate.txt"
+    },
+    {
+      "name": "migrations",
+      "command": [
+        "npm",
+        "run",
+        "check:migrations"
+      ],
+      "exit_code": 0,
+      "log": "final-migrations.txt"
+    },
+    {
+      "name": "contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "name": "secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check",
+        "--",
+        ".",
+        ":!evidence/**"
+      ],
+      "exit_code": 0,
+      "log": "final-diff.txt"
+    }
+  ],
+  "remote_writes": false,
+  "production_approved": false,
+  "m1_closed": false,
+  "independent_review": false,
+  "limitations": [
+    "No npm ci/audit",
+    "No real PostgreSQL or upgrade executed",
+    "No browser assertions completed",
+    "No Supabase Auth/pooler/Netlify runtime homologation",
+    "No capacity/pentest/restore"
+  ],
+  "log_sha256": {
+    "10-ui-attempt.txt": "5b19572f2d6c1e92f93c537b2f1c613e3d61506418431ac36543c56c780e5400",
+    "09-typecheck.txt": "736e3ab4c9ee4b03ef46bc4bc2d2697329cd3bfa47da58fb7a7684a97ebcd8cc",
+    "final-ui-attempt.txt": "5b19572f2d6c1e92f93c537b2f1c613e3d61506418431ac36543c56c780e5400",
+    "06-regression-tests.txt": "20810041bc472ae647fb79186c1c1a47c22ebd23ba7e513d08410205478ff9b5",
+    "02-boundaries-green.txt": "7eafc07d3878b2e96b45779fdb6c5e6fe4e716ae127bed5f51c6f7de8a43ae2e",
+    "final-release-gate.txt": "e8e47a56d995458877eb469326440a5294ee792c8a75744298c6d932710e9029",
+    "00-baseline-tests.txt": "be14a2665ad89082a4c18738dbf7265f908a809e1077785234577a7b6550de99",
+    "final-secrets.txt": "45ee9d244ab9ffc817ba96d3b74aa2f41fc2350ca577b9cf6d3e2bd8d8d45d89",
+    "final-tests.txt": "bf87cacaf6109dbd3f12291311415c2494e89176a76b509031e48931a8abce8c",
+    "final-verify-standard.txt": "a9c81846e52a4e065a4460f78b3acb2113539378086c252006c85246a473bde6",
+    "final-migrations.txt": "e162a766f678f37f378add39e4c1200d91b80c7819fbeb27561197bb70e2548a",
+    "05-assignment-filter-green.txt": "0d1c1d153e810ac3ef66902122276702809b79b505213a3d8409eb95694bd1d9",
+    "final-typecheck-supplemental.txt": "736e3ab4c9ee4b03ef46bc4bc2d2697329cd3bfa47da58fb7a7684a97ebcd8cc",
+    "final-build.txt": "b6f83c269e218410f6a68f087947d027f60ace5bc141c1ee570bf1b8c2784642",
+    "07-typecheck.txt": "f4d8f98799f451d4b151c43a476cca9e3e59a60fd557c0db83efd1602405d826",
+    "04-assignment-filter-red.txt": "ee7ab031d1aa2723bd0ebdec8707b0cd70c90be1428ca8a17aba36aaf6f5a67e",
+    "08-tests.txt": "3bbb0876b3aa4b4a9eb6b1a9db459ab8ec86be2756d1f26e6d901e7cc5cd3f0e",
+    "01-boundaries-red.txt": "920a6078a801b2d93df3012bfa2210fbf113cafff57d8d4ab35b8985ebb386c0",
+    "12-db-attempt.txt": "6a75b4db026b2bfcb60df3bf5d343786aa019d8177b3dc0ab2fde97c38adbee2",
+    "11-dependencies-attempt.txt": "ad0a264917b18251dd9c51bbabc9fda2ea76dfbee464e56758e85f283d15a45e",
+    "final-diff.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-homologation.txt": "14df595a14c3d06a4524229cf589bda8f32057284a7fce9143a174b33081ecef",
+    "final-contracts.txt": "903ae57bc8ea71bb0345574bc470a6c4c4ac291dbc9a6d4af832c018aaa57c9f",
+    "03-regression-first.txt": "01ba50e6000b82964a1ae4c254284d547a567fc3b9a53fa82e960e8466214f33",
+    "final-homologation-gate.txt": "69fdc014acad727aaaac76d4d19a68f41e98f8543c8da70fb76a5d3187bf4009"
+  }
+}

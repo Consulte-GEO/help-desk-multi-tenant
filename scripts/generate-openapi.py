@@ -30,7 +30,7 @@ schemas={
  'Timeline':{'type':'object','required':['items','next_cursor'],'properties':{'next_cursor':{'type':['string','null']},'items':{'type':'array','items':{'type':'object','required':['id','type','created_at','data'],'properties':{'id':identifier,'type':{'type':'string'},'created_at':{'type':'string','format':'date-time'},'data':{'type':'object'}}}}}}
 }
 parameters={
- 'Workspace':{'name':'X-Workspace-Id','in':'header','required':True,'schema':identifier,'description':'Seletor validado contra vínculos vivos; não concede autorização.'},
+ 'Workspace':{'name':'X-Workspace-Id','in':'header','required':True,'schema':identifier,'description':'No runtime PostgreSQL/Auth, UUID padrão. Aliases opacos são exclusivos da demonstração local. Seletor não concede autorização.'},
  'Idempotency':{'name':'Idempotency-Key','in':'header','required':True,'schema':{'type':'string','pattern':'^[A-Za-z0-9._:-]{16,128}$'}},
  'IfMatch':{'name':'If-Match','in':'header','required':True,'schema':{'type':'string','pattern':'^"[1-9][0-9]*"$'}},
  'TicketId':{'name':'ticket_id','in':'path','required':True,'schema':identifier}
@@ -46,7 +46,7 @@ def route(path,method,operation,summary,output,body=None,status=200,idem=False,m
   for code in ['200',str(status)]:op['responses'][code]['headers']={'Idempotency-Replayed':{'schema':{'type':'string','enum':['true','false']},'description':'Indica reprodução de resultado anterior.'}}
  if match:op['parameters'].append(param('IfMatch'))
  if body:
-  op['requestBody']={'required':True,'description':'Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Recebimento limitado a 5 segundos na aplicação.', 'content':{'application/json':{'schema':ref(body)}}}
+  op['requestBody']={'required':True,'description':'Objeto JSON UTF-8, até 65.536 bytes; sem compressão. Textos não aceitam NUL nem surrogate isolado. Recebimento limitado a 5 segundos na aplicação.', 'content':{'application/json':{'schema':ref(body)}}}
   for code,description in [('400','JSON, UTF-8, campos ou comprimento inválidos.'),('408','Prazo de recebimento do corpo excedido.'),('413','Corpo acima de 64 KiB.'),('415','Content-Type ou compressão não suportados.')]:
    op['responses'][code]={'description':description,'content':{'application/problem+json':{'schema':ref('Problem')}}}
 
@@ -75,7 +75,8 @@ listing['description']='Busca literal em assunto ou UUID completo, com dobra de 
 listing['parameters'] += [
  {'name':'q','in':'query','schema':{'type':'string','minLength':2,'maxLength':120},'description':'Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Apenas assunto ou UUID completo.'},
  {'name':'status','in':'query','schema':{'type':'string','enum':['received','in_progress','waiting_for_you','resolved','closed']},'description':'Situação pública. Não aceita seletores de estados internos.'},
- {'name':'priority','in':'query','schema':{'type':'string','enum':['low','normal','high','urgent']}}]
+ {'name':'priority','in':'query','schema':{'type':'string','enum':['low','normal','high','urgent']}},
+ {'name':'assignment','in':'query','schema':{'type':'string','enum':['mine','unassigned']},'description':'Somente operadores humanos. Restringe cada linha às contas onde o ator é operador; responsabilidade nunca concede leitura. Conta explicitamente sem papel operador retorna 403. Não aceita IDs de outros responsáveis.'}]
 listing['responses']['200']['headers']={'Cache-Control':{'schema':{'const':'no-store'}}}
 route('/tickets','post','createTicket','Cria chamado com revalidação transacional.',ref('Ticket'),'CreateTicket',status=201,idem=True)
 route('/tickets/{ticket_id}','get','getTicket','Consulta chamado e retorna ETag.',ref('Ticket'))['responses']['200']['headers']={'ETag':{'description':'Versão atual entre aspas.','schema':{'type':'string'}}}
@@ -94,7 +95,7 @@ for resource,name in [('messages','Message'),('notes','Note')]:
  route('/tickets/{ticket_id}/'+resource,'post','add'+name, 'Adiciona '+('mensagem pública.' if resource=='messages' else 'nota interna, sem outbox externo.'),ref(name),'Body',status=201,idem=True)
 route('/tickets/{ticket_id}/transitions','post','transitionTicket','Transição com versão esperada e motivo de reabertura.',ref('Ticket'),'Transition',idem=True,match=True)
 route('/tickets/{ticket_id}/timeline','get','getTimeline','Histórico projetado conforme autorização.',ref('Timeline'))
-paths['/tickets/{ticket_id}/timeline']['get']['description']='Histórico vivo paginado. Mudança de prioridade projeta from/to/version; reason somente para operador autorizado. Notas internas não aparecem ao cliente. Conteúdo de mensagens/notas não é incluído. Cursor não autoriza o recurso. A interface limita-se a 500 eventos carregados e a API continua paginada.'
+paths['/tickets/{ticket_id}/timeline']['get']['description']='Páginas inconsistentes quanto ao vínculo/visibilidade são recusadas integralmente com 503. Histórico vivo paginado. Mudança de prioridade projeta from/to/version; reason somente para operador autorizado. Notas internas não aparecem ao cliente. Conteúdo de mensagens/notas não é incluído. Cursor não autoriza o recurso. A interface limita-se a 500 eventos carregados e a API continua paginada.'
 # Explicit pagination and quota behavior; newest first, cursor scoped to resource and actor.
 for resource in ['messages','notes','timeline']:
  paths['/tickets/{ticket_id}/'+resource]['get']['parameters'] += [
@@ -106,6 +107,6 @@ for methods in paths.values():
    'headers':{'Retry-After':{'schema':{'type':'integer','minimum':1,'maximum':60}}},
    'content':{'application/problem+json':{'schema':ref('Problem')}}}
 parameters['Idempotency']['description']='Resposta por 7 dias; registro antirrepetição por 90 dias. Após expirar, HTTP 409; consulte o recurso antes de usar nova chave.'
-api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.10.0','description':'Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'integrationSession':{'type':'http','scheme':'bearer','description':'Somente hd_session_ seguido de 43 caracteres base64url. Nunca login humano ou hd_key_.'},'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
+api={'openapi':'3.1.1','info':{'title':'Consulte Help Desk — API v1','version':'0.11.0','description':'Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis.'},'servers':[{'url':'/v1','description':'Mesmo domínio da interface; adaptador Netlify.'}],'paths':paths,'components':{'securitySchemes':{'integrationSession':{'type':'http','scheme':'bearer','description':'Somente hd_session_ seguido de 43 caracteres base64url. Nunca login humano ou hd_key_.'},'bearerAuth':{'type':'http','scheme':'bearer','description':'Supabase access token humano ou hd_session_... M2M de curta duração.'},'integrationKey':{'type':'http','scheme':'bearer','description':'hd_key_... mantida exclusivamente no backend do consumidor.'}},'parameters':parameters,'schemas':schemas}}
 (root/'docs/openapi.json').write_text(json.dumps(api,ensure_ascii=False,indent=2)+'\n')
 print(len(paths),'paths;',sum(len(v) for v in paths.values()),'operations')

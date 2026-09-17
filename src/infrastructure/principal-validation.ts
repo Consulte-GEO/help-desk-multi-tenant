@@ -1,6 +1,6 @@
 import type {Principal,Role} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';
-import {identifier} from '../http/validation.ts';
+import {uuidIdentifier as identifier} from '../domain/input-values.ts';
 const scopes=['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write'];
 /** Validate the private SQL helper contract, not JWT metadata. Never infer or promote a role. */
 export function validatePrincipal(value:unknown,workspace:string,kind:Principal['kind']):Principal{

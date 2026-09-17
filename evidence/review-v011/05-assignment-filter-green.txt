@@ -1,0 +1,78 @@
+TAP version 13
+# (node:2052) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: mine filters before pagination and respects per-account operator scope
+ok 1 - mine filters before pagination and respects per-account operator scope
+  ---
+  duration_ms: 13.014938
+  type: 'test'
+  ...
+# Subtest: unassigned returns only authorized operator-account tickets
+ok 2 - unassigned returns only authorized operator-account tickets
+  ---
+  duration_ms: 0.486051
+  type: 'test'
+  ...
+# Subtest: assignment filters combine with existing status priority and subject filters
+ok 3 - assignment filters combine with existing status priority and subject filters
+  ---
+  duration_ms: 0.834175
+  type: 'test'
+  ...
+# Subtest: nonoperator cannot infer assignment through filters: human/requester
+ok 4 - nonoperator cannot infer assignment through filters: human/requester
+  ---
+  duration_ms: 0.679883
+  type: 'test'
+  ...
+# Subtest: nonoperator cannot infer assignment through filters: human/account_manager
+ok 5 - nonoperator cannot infer assignment through filters: human/account_manager
+  ---
+  duration_ms: 0.251238
+  type: 'test'
+  ...
+# Subtest: nonoperator cannot infer assignment through filters: integration/requester
+ok 6 - nonoperator cannot infer assignment through filters: integration/requester
+  ---
+  duration_ms: 0.201203
+  type: 'test'
+  ...
+# Subtest: mixed-role human cannot explicitly filter assignment in requester account
+ok 7 - mixed-role human cannot explicitly filter assignment in requester account
+  ---
+  duration_ms: 0.260542
+  type: 'test'
+  ...
+# Subtest: mine cursor cannot be reused for unassigned
+ok 8 - mine cursor cannot be reused for unassigned
+  ---
+  duration_ms: 0.71185
+  type: 'test'
+  ...
+# Subtest: HTTP supports assignment filter and rejects unknown and duplicate selectors
+ok 9 - HTTP supports assignment filter and rejects unknown and duplicate selectors
+  ---
+  duration_ms: 24.705253
+  type: 'test'
+  ...
+# Subtest: UI carries assignment selection to the API and preserves default behavior
+ok 10 - UI carries assignment selection to the API and preserves default behavior
+  ---
+  duration_ms: 0.95069
+  type: 'test'
+  ...
+# Subtest: late page from another assignment view cannot replace the current list
+ok 11 - late page from another assignment view cannot replace the current list
+  ---
+  duration_ms: 0.456877
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 229.234875

@@ -38,7 +38,7 @@ export class MemoryUnitOfWork implements UnitOfWork{
    },
    coverages:async(c:SupportContext)=>next.coverages.filter(x=>x.workspaceId===p.workspaceId&&x.accountId===c.accountId&&x.productInstanceId===c.productInstanceId&&x.serviceCode===c.serviceCode),
    getTicket:async id=>next.tickets.find(t=>t.id===id&&visible(t))??null,
-   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters)&&(!accountId||t.accountId===accountId)&&(!cursor||t.createdAt<cursor.at||(t.createdAt===cursor.at&&t.id<cursor.id))).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.id.localeCompare(a.id)).slice(0,limit),
+   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||t.createdAt<cursor.at||(t.createdAt===cursor.at&&t.id<cursor.id))).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.id.localeCompare(a.id)).slice(0,limit),
    insertTicket:async t=>{next.tickets.push(structuredClone(t));},
    updateTicket:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');next.tickets[i]=structuredClone(t);},
    updatePriority:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');next.tickets[i]={...next.tickets[i]!,priority:t.priority,version:t.version,updatedAt:t.updatedAt};},

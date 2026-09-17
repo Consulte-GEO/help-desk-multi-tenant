@@ -25,7 +25,9 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.9.0
-M1 aberto. 635 locais/28 HTTP aprovados;100 SQL/25 browser escritos, não homologados. API/schema candidato0.9.0, oito migrations/23 tabelas/18 operações. Sem publicação ou inspeção remota nova. Ler docs04/05/13. Preservar migrations001–007;008 precisa de banco real/fresh+upgrade. Responsabilidade nunca concede acesso e não gera outbox. Retry mantém chave; não remover gates nem fabricar dependências/evidências.
+## Estado v0.11.0
+M1 aberto. 710 locais/32 HTTP aprovados;125 SQL/27 browser escritos, não homologados. API0.11.0/schema0.9.0; oito migrations/23 tabelas/18 operações. Ler docs04/05/15. Reinspeção remota feita somente leitura; não pressupor estado futuro nem autorização de escrita.
 
-Preservar as invariantes anteriores: prioridade somente operador humano/read/write, motivo interno obrigatório, If-Match/idempotência e no-op; cliente não recebe motivo. Outbox de prioridade mínima; snapshot/SLA não mudam. Revalidar operador no cache e no banco. Histórico não é auditoria global. Preservar busca/catálogo/rascunhos/telemetria. Não usar bloqueio de ambiente como justificativa para chamar M1 concluído. Reinspecionar destinos antes de integrar.
+Preservar UUIDs nos limites persistidos/Auth e aliases somente no domínio/demo. NUL/surrogates isolados são recusados, não removidos silenciosamente. Validar parent e escopo de cada linha de conversa antes de serializar. Filtros assignment somente operador por conta, antes de paginação; não concedem acesso. Principal HelpDesk não é obrigatoriamente igual ao usuário Auth.
+
+Prioridade/atribuição são internas à equipe, com motivos restritos e controle de versão/idempotência. Responsabilidade não produz outbox e não entra na política de leitura. Cache devolve resposta original reautorizada. Preservar busca/catálogo/rascunhos/telemetria. Não alterar as oito migrations anteriores, seus hashes, gates ou fixtures para fabricar homologação.

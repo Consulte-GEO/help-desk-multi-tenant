@@ -1,3 +1,4 @@
+import {UUID_PATTERN,uuidIdentifier} from '../domain/input-values.ts';
 import {SEARCH_UPPER,SEARCH_LOWER,statusesForSearch} from '../application/ticket-search.ts';
 import type {TicketSearchFilters} from '../application/ticket-search.ts';
 import type {CatalogWindow,SupportCatalogEntry} from '../application/support-catalog.ts';
@@ -46,13 +47,17 @@ class PostgresStore implements Store{
  // Table and column names in this helper are developer-owned constants, never request values.
  private async insert(table:string,columns:string[],values:unknown[]):Promise<void>{await this.c.query(`insert into ${table} (${columns.join(',')}) values (${values.map((_,i)=>'$'+(i+1)).join(',')})`,values);}
  async supportContexts(window:CatalogWindow,_at:string):Promise<SupportCatalogEntry[]>{
+  if(window.accountId!==undefined)uuidIdentifier(window.accountId);
+  if(window.after){try{uuidIdentifier(window.after.accountId);uuidIdentifier(window.after.productInstanceId);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
   const rows=(await this.c.query('select item from helpdesk_auth.support_contexts($1,$2,$3,$4,$5,$6) as result(item)',
    [this.p.workspaceId,window.accountId??null,window.after?.accountId??null,window.after?.productInstanceId??null,window.after?.serviceCode??null,window.limit])).rows;
   return rows.map(r=>r.item as SupportCatalogEntry);
  }
- async coverages(context:SupportContext):Promise<Coverage[]>{const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
- async getTicket(id:string,lock=false):Promise<Ticket|null>{const r=(await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
+ async coverages(context:SupportContext):Promise<Coverage[]>{uuidIdentifier(context.accountId);uuidIdentifier(context.productInstanceId);const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
+ async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
  async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
+  if(accountId!==undefined)uuidIdentifier(accountId);
+  if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
   // No interpolation of search text, no private-note/message joins. RLS stays in effect.
   return (await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets
    where workspace_id=$1 and ($2::uuid is null or account_id=$2)
@@ -60,9 +65,11 @@ class PostgresStore implements Store{
     and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)
     and ($9::text[] is null or status=any($9::text[]))
     and ($10::text is null or priority=$10)
+    and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
+     and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
    order by created_at desc,id desc limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
-    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null])).rows.map(ticket);
+    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id])).rows.map(ticket);
  }
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt,t.assignedTo]);}
  async updateAssignment(t:Ticket,expectedVersion:number):Promise<void>{

@@ -1,6 +1,6 @@
 import {SHORT_SESSION_PATTERN, sessionResult, invalidSessionResult} from './session-lifecycle.ts';
 import {validatePrincipal} from './principal-validation.ts';
-import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';import type {Principal} from '../domain/model.ts';import {HelpdeskError} from '../domain/errors.ts';import {secretHash} from '../domain/canonical.ts';import {identifier} from '../http/validation.ts';
+import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';import type {Principal} from '../domain/model.ts';import {HelpdeskError} from '../domain/errors.ts';import {secretHash} from '../domain/canonical.ts';import {uuidIdentifier as identifier} from '../domain/input-values.ts';
 export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;publishableKey:string},fetcher:typeof fetch=fetch,clock:()=>Date=()=>new Date()){
  async function authenticate(request:Request):Promise<Principal>{
   const match=/^Bearer ([^\s]{1,8192})$/.exec(request.headers.get('authorization')??'');if(!match)throw new HelpdeskError(401,'unauthorized','Autenticação necessária.');

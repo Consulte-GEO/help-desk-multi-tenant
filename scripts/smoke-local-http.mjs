@@ -10,7 +10,7 @@ async function call(path,who='laboratory',method='GET',body,key=randomUUID(),ext
 }
 function passed(name){checks.push({check:name,result:'passed'});}
 for(const [who,account] of [['laboratory',lab.account_id],['school',school.account_id]]){const r=await call('/tickets',who);assert.equal(r.response.status,200);assert.ok(r.body.items.every(t=>t.account_id===account));}passed('HTTP account isolation in local demo');
-assert.equal((await call('/capabilities')).body.release,'0.10.0');passed('HTTP advertises current version');
+assert.equal((await call('/capabilities')).body.release,'0.11.0');passed('HTTP advertises current version');
 const input={account_id:lab.account_id,product_instance_id:lab.product_instance_id,service_code:lab.service_code,subject:'M1 smoke via HTTP',description:'Loopback only; fictitious data.',priority:'normal'},key=randomUUID();
 const created=await call('/tickets','laboratory','POST',input,key);assert.equal(created.response.status,201);const id=created.body.id;
 const replay=await call('/tickets','laboratory','POST',input,key);assert.equal(replay.response.status,200);assert.equal(replay.body.id,id);passed('HTTP create and idempotent replay');
@@ -115,5 +115,27 @@ passed('HTTP assignment history stays private and projection excludes assignee i
 assert.equal('assignment' in (await call('/tickets/'+id)).body,false);assert.ok((await call('/tickets','laboratory')).body.items.every(t=>!('assignment' in t)));assert.equal((await call('/capabilities')).body.capabilities.ticket_self_assignment,true);
 const html=await (await fetch(base+'/')).text();for(const name of ['assignment-form','assignment-reason','claim-ticket','release-ticket','assignment-reload'])assert.ok(html.includes('id="'+name+'"'));
 passed('HTTP customer lists omit assignment and shipped interface contains explicit claim/release controls');
+
+// Review v0.11: responsibility filter on the real local HTTP transport.
+const beforeFilter=(await call('/tickets/'+id,'agent')).body;
+const filterClaim=await call('/tickets/'+id+'/assignments','agent','POST',{action:'claim',reason:'Review filter'},randomUUID(),{'if-match':'"'+beforeFilter.version+'"'});
+assert.equal(filterClaim.response.status,200);
+const ownView=await call('/tickets?assignment=mine&q='+id,'agent');assert.equal(ownView.response.status,200);assert.deepEqual(ownView.body.items.map(t=>t.id),[id]);
+const freeView=await call('/tickets?assignment=unassigned&q='+id,'agent');assert.equal(freeView.response.status,200);assert.equal(freeView.body.items.length,0);
+passed('HTTP mine/unassigned views are applied on the server, not only loaded items');
+assert.equal((await call('/tickets?assignment=mine','laboratory')).response.status,403);
+assert.equal((await call('/tickets?assignment=unassigned','school')).response.status,403);
+assert.equal((await call('/tickets?assignment=other','agent')).response.status,400);
+assert.equal((await call('/tickets?assignment=mine&assignment=unassigned','agent')).response.status,400);
+passed('HTTP responsibility filters deny customers and malformed selectors');
+const invalidText=await call('/tickets/'+id+'/messages','agent','POST',{body:'Not persistable\u0000'},randomUUID());
+assert.equal(invalidText.response.status,400);assert.doesNotMatch(JSON.stringify(invalidText.body),/Not persistable/);
+const invalidUnicode=await call('/tickets/'+id+'/messages','agent','POST',{body:'Not persistable\uD800'},randomUUID());assert.equal(invalidUnicode.response.status,400);
+passed('HTTP rejects JSON-escaped NUL and lone surrogate before writing a message');
+const filterReleased=await call('/tickets/'+id+'/assignments','agent','POST',{action:'release',reason:'Review complete'},randomUUID(),{'if-match':'"'+filterClaim.body.version+'"'});
+assert.equal(filterReleased.response.status,200);assert.deepEqual((await call('/tickets?assignment=unassigned&q='+id,'agent')).body.items.map(t=>t.id),[id]);
+assert.equal((await call('/capabilities')).body.capabilities.ticket_assignment_filter,true);
+assert.ok(html.includes('id="assignment-filter"'));
+passed('HTTP released ticket returns to unassigned and the capability/UI are shipped');
 
 console.log(JSON.stringify({scope:'Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.',checks},null,2));

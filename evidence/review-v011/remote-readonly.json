@@ -1,0 +1,44 @@
+{
+  "mode": "read_only",
+  "observation_utc_day": "2026-09-17",
+  "github": {
+    "repository": "Consulte-GEO/help-desk-multi-tenant",
+    "result": "This repository is empty.",
+    "http_status": 404
+  },
+  "supabase": {
+    "project_id": "xaelbntjnvztznnpcvtm",
+    "schemas_queried": [
+      "public",
+      "helpdesk_core",
+      "helpdesk_auth",
+      "helpdesk_integration",
+      "helpdesk_audit"
+    ],
+    "tables_returned": 0,
+    "migrations_returned": 0,
+    "security_advisor": {
+      "observed_at": "2026-09-17T02:45:23.512Z",
+      "function": "public.rls_auto_enable()",
+      "warning_roles": [
+        "anon",
+        "authenticated"
+      ],
+      "security_definer": true,
+      "remote_fix_applied": false
+    }
+  },
+  "netlify": {
+    "site_id": "ee32e955-42e5-4417-bf4f-39cbef2366cc",
+    "deploy_id": "6aa9cd6dab04ec2cdc23c0b4",
+    "state": "ready",
+    "manual_deploy": true,
+    "published_at": "2026-09-15T22:57:52.364Z",
+    "commit_ref": null,
+    "available_functions": [],
+    "files_from_summary": [
+      "index.html"
+    ]
+  },
+  "limitations": "Selected schemas and deploy metadata only; not an inventory of Auth, Storage, backups or secrets. No remote writes."
+}

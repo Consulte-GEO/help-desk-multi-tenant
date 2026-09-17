@@ -1,3 +1,15 @@
+# 0.11.0 — revisão consolidada e filtros de responsabilidade (não publicado)
+
+- UUIDs estritos nos limites Auth/principal e seletores PostgreSQL; principal local e usuário Supabase continuam distintos.
+- Recusa de NUL/surrogate isolado em textos sem substituição silenciosa; conteúdo Unicode válido preservado.
+- Revalidação do parent e de cada linha de mensagem/nota/evento antes da serialização; coleção inconsistente falha integralmente.
+- GET tickets aceita assignment=mine|unassigned somente para operador por conta, antes de LIMIT, vinculado ao cursor. UI preserva detalhe/rascunho e limpa no logout.
+- Fixtures SQL com colunas explícitas e seis cenários SQL adicionais escritos; duas regressões browser escritas.
+- Revisão acumulada e matriz de diferenças entre pesquisa, código, homologação e publicação. README/AGENTS/plano atualizados sem apagar histórico.
+- API/interface0.11.0; schema0.9.0 e oito migrations preservados. 710 locais/32 HTTP aprovados;125 SQL/27 browser pendentes. Sem publicação.
+
+---
+
 # 0.10.0 — prontidão e integridade do banco (não publicado)
 
 - Guard de catálogo ampliado: permissões efetivas por tabela/coluna/função, inventário, policies, triggers diferidos, constraints e índices. Sem leitura de dados de atendimento e sem auto-repair.

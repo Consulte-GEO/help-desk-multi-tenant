@@ -1,0 +1,132 @@
+TAP version 13
+# (node:1410) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: production Auth rejects symbolic workspace before provider/SQL
+ok 1 - production Auth rejects symbolic workspace before provider/SQL
+  ---
+  duration_ms: 16.452702
+  type: 'test'
+  ...
+# Subtest: successful provider response must contain a UUID, not a demo alias
+ok 2 - successful provider response must contain a UUID, not a demo alias
+  ---
+  duration_ms: 2.221347
+  type: 'test'
+  ...
+# Subtest: private principal rejects non-UUID principal
+ok 3 - private principal rejects non-UUID principal
+  ---
+  duration_ms: 0.72343
+  type: 'test'
+  ...
+# Subtest: private principal rejects non-UUID grant
+ok 4 - private principal rejects non-UUID grant
+  ---
+  duration_ms: 0.490289
+  type: 'test'
+  ...
+# Subtest: production Auth preserves distinct Supabase user and Help Desk principal UUIDs
+ok 5 - production Auth preserves distinct Supabase user and Help Desk principal UUIDs
+  ---
+  duration_ms: 0.585603
+  type: 'test'
+  ...
+# Subtest: PostgreSQL store rejects an unknown symbolic ticket without querying it
+ok 6 - PostgreSQL store rejects an unknown symbolic ticket without querying it
+  ---
+  duration_ms: 0.433974
+  type: 'test'
+  ...
+# Subtest: creation rejects NUL before persistence
+ok 7 - creation rejects NUL before persistence
+  ---
+  duration_ms: 0.709138
+  type: 'test'
+  ...
+# Subtest: public reply rejects NUL without a new message
+ok 8 - public reply rejects NUL without a new message
+  ---
+  duration_ms: 0.295095
+  type: 'test'
+  ...
+# Subtest: creation rejects lone high surrogate before persistence
+ok 9 - creation rejects lone high surrogate before persistence
+  ---
+  duration_ms: 0.394865
+  type: 'test'
+  ...
+# Subtest: public reply rejects lone high surrogate without a new message
+ok 10 - public reply rejects lone high surrogate without a new message
+  ---
+  duration_ms: 0.424479
+  type: 'test'
+  ...
+# Subtest: creation rejects lone low surrogate before persistence
+ok 11 - creation rejects lone low surrogate before persistence
+  ---
+  duration_ms: 0.253382
+  type: 'test'
+  ...
+# Subtest: public reply rejects lone low surrogate without a new message
+ok 12 - public reply rejects lone low surrogate without a new message
+  ---
+  duration_ms: 0.131649
+  type: 'test'
+  ...
+# Subtest: valid multiline Unicode content is preserved exactly
+ok 13 - valid multiline Unicode content is preserved exactly
+  ---
+  duration_ms: 1.715325
+  type: 'test'
+  ...
+# Subtest: conversation rejects wrong workspaceId even after authorized parent lookup
+ok 14 - conversation rejects wrong workspaceId even after authorized parent lookup
+  ---
+  duration_ms: 2.112853
+  type: 'test'
+  ...
+# Subtest: conversation rejects wrong accountId even after authorized parent lookup
+ok 15 - conversation rejects wrong accountId even after authorized parent lookup
+  ---
+  duration_ms: 0.629999
+  type: 'test'
+  ...
+# Subtest: conversation rejects wrong ticketId even after authorized parent lookup
+ok 16 - conversation rejects wrong ticketId even after authorized parent lookup
+  ---
+  duration_ms: 0.561727
+  type: 'test'
+  ...
+# Subtest: conversation rejects duplicated rows rather than emitting a partial page
+ok 17 - conversation rejects duplicated rows rather than emitting a partial page
+  ---
+  duration_ms: 0.328906
+  type: 'test'
+  ...
+# Subtest: customer cannot receive a misclassified internal event
+ok 18 - customer cannot receive a misclassified internal event
+  ---
+  duration_ms: 0.35157
+  type: 'test'
+  ...
+# Subtest: operator internal notes still require the exact account/ticket
+ok 19 - operator internal notes still require the exact account/ticket
+  ---
+  duration_ms: 0.26585
+  type: 'test'
+  ...
+# Subtest: parent lookup cannot substitute another authorized ticket
+ok 20 - parent lookup cannot substitute another authorized ticket
+  ---
+  duration_ms: 0.173751
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 210.562037

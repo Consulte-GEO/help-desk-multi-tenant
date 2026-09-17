@@ -1,6 +1,8 @@
+import {isPersistableText} from '../domain/input-values.ts';
+import {validateConversationResult} from './conversation-result.ts';
 import {assignmentChangeInput} from './ticket-assignment.ts';
 import {priorityChangeInput} from './ticket-priority.ts';
-import {ticketSearch} from './ticket-search.ts';
+import {matchesTicketSearch,ticketSearch} from './ticket-search.ts';
 import type {TicketListOptions} from './ticket-search.ts';
 import {discoverSupportContexts} from './support-catalog.ts';
 import type {CatalogOptions,CatalogPage} from './support-catalog.ts';
@@ -15,7 +17,7 @@ import {canTransition} from '../domain/workflow.ts';
 import {requestHash} from '../domain/canonical.ts';
 import {HelpdeskError,deny} from '../domain/errors.ts';
 function requireText(value:string,min:number,max:number,label:string):void{
- if(typeof value!=='string'||value.trim().length<min||value.length>max)throw new HelpdeskError(400,'invalid_input',`${label} inválido.`);
+ if(!isPersistableText(value)||value.trim().length<min||value.length>max)throw new HelpdeskError(400,'invalid_input',`${label} inválido.`);
 }
 export class HelpdeskService{
  readonly db:UnitOfWork;readonly clock:()=>Date;
@@ -26,7 +28,7 @@ export class HelpdeskService{
   if(!hasScope(p,scope)||(scope==='tickets:write'&&!hasScope(p,'tickets:read')))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(!canAccessAccount(p,p.workspaceId,c.accountId)||!canUseProduct(p,c.productInstanceId))deny();
  }
- private async accessible(s:Store,p:Principal,id:string,lock=false):Promise<Ticket>{const t=await s.getTicket(id,lock);if(!t||!canReadTicket(p,t))deny();return t;}
+ private async accessible(s:Store,p:Principal,id:string,lock=false):Promise<Ticket>{const t=await s.getTicket(id,lock);if(!t||t.id!==id||!canReadTicket(p,t))deny();return t;}
  private async idempotent<T>(s:Store,p:Principal,operation:string,key:string,payload:unknown,work:()=>Promise<T>):Promise<{value:T;replayed:boolean}>{
   if(!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw new HelpdeskError(400,'invalid_idempotency_key','Idempotency-Key deve ter 16 a 128 caracteres seguros.');
   const hash=requestHash(payload);
@@ -62,10 +64,13 @@ export class HelpdeskService{
   if(!hasScope(p,'tickets:read'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(options.accountId!==undefined&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
   const filters=ticketSearch(options);
+  if(filters.assignment&&(p.kind!=='human'||!(p.workspaceRole==='admin'||p.grants.some(g=>g.role==='agent'))
+   ||options.accountId!==undefined&&!isOperator(p,p.workspaceId,options.accountId)))
+   throw new HelpdeskError(403,'forbidden','Filtros de responsabilidade são restritos à equipe autorizada.');
   // Retain pre-0.7 cursors when no new filters are supplied. Filters never grant access.
   const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null,...(Object.keys(filters).length?{search:filters}:{})});
   return this.db.run(p,async s=>{
-   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId,filters)).filter(t=>canReadTicket(p,t));
+   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId,filters)).filter(t=>canReadTicket(p,t)&&matchesTicketSearch(t,filters,p));
    return page(rows,options.limit,filter);
   });
  }
@@ -79,6 +84,7 @@ export class HelpdeskService{
    if(kind==='notes'&&!internal)throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
    const {window,filter}=pagination(options,{version:1,kind,ticket:id,workspace:p.workspaceId,principal:p.id,internal});
    const rows=kind==='messages'?await s.messages(id,window):kind==='notes'?await s.notes(id,window):await s.events(id,internal,window);
+   validateConversationResult(rows,t,kind,internal,window.limit);
    return page<PublicMessage|InternalNote|TicketEvent>(rows,options.limit,filter) as Page<{messages:PublicMessage;notes:InternalNote;timeline:TicketEvent}[K]>;
   });
  }
@@ -146,7 +152,7 @@ export class HelpdeskService{
  async transition(p:Principal,id:string,to:TicketStatus,expectedVersion:number,reason:string,key:string,requestId:string){
   if(!hasScope(p,'tickets:write'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(!Number.isSafeInteger(expectedVersion)||expectedVersion<1)throw new HelpdeskError(428,'precondition_required','Informe a versão atual em If-Match.');
-  if(typeof reason!=='string'||reason.length>2000)throw new HelpdeskError(400,'invalid_input','Motivo inválido.');
+  if(!isPersistableText(reason)||reason.length>2000)throw new HelpdeskError(400,'invalid_input','Motivo inválido.');
   return this.db.run(p,async s=>{
    const t=await this.accessible(s,p,id,true);
    const result=await this.idempotent(s,p,`transitions.create:${id}`,key,{to,expectedVersion,reason},async()=>{

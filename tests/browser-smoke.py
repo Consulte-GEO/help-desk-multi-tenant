@@ -228,6 +228,15 @@ with sync_playwright() as p:
     expect(page.locator('#release-ticket')).to_be_enabled()
     expect(page.locator('#message-body')).to_have_value('Rascunho exclusivo da escola.')
     record('Agent claims responsibility without erasing the public reply draft')
+    expect(page.locator('#assignment-filter-label')).to_be_visible()
+    page.locator('#assignment-filter').select_option('mine')
+    page.locator('#apply-filters').click()
+    expect(page.locator('#ticket-list')).to_contain_text('boletins')
+    expect(page.locator('#ticket-list')).not_to_contain_text('Relatório de ensaio')
+    expect(page.locator('#message-body')).to_have_value('Rascunho exclusivo da escola.')
+    page.locator('#clear-filters').click()
+    expect(page.locator('#assignment-filter')).to_have_value('')
+    record('Operator filters own assignments and clearing preserves the current draft')
     held_assignment=[]
     def hold_assignment(route): held_assignment.append(route)
     page.route('**/v1/tickets/*/assignments',hold_assignment)
@@ -253,6 +262,8 @@ with sync_playwright() as p:
     expect(page.locator('#history-list')).not_to_contain_text('Atendimento assumido')
     expect(page.locator('#history-list')).not_to_contain_text('Motivo privado de responsabilidade.')
     record('Customer has no assignment controls or internal responsibility history')
+    expect(page.locator('#assignment-filter-label')).to_be_hidden()
+    record('Customer profile hides responsibility filters and resets the previous selection')
     # A late response from a closed dialog must not replace a newer profile's catalogue.
     held_catalog=[]
     def hold_catalog(route): held_catalog.append(route)

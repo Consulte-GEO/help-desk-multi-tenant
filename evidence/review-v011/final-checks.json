@@ -1,0 +1,56 @@
+[
+  {
+    "name": "migrations",
+    "command": [
+      "npm",
+      "run",
+      "check:migrations"
+    ],
+    "exit_code": 0,
+    "log": "final-migrations.txt"
+  },
+  {
+    "name": "contracts",
+    "command": [
+      "npm",
+      "run",
+      "check:contracts"
+    ],
+    "exit_code": 0,
+    "log": "final-contracts.txt"
+  },
+  {
+    "name": "secrets",
+    "command": [
+      "npm",
+      "run",
+      "check:secrets"
+    ],
+    "exit_code": 0,
+    "log": "final-secrets.txt"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "final-build.txt"
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":!evidence/**"
+    ],
+    "exit_code": 0,
+    "log": "final-diff.txt"
+  }
+]

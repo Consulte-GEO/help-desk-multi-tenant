@@ -1,12 +1,14 @@
 import {HelpdeskError} from '../domain/errors.ts';
+import {isOperator} from '../domain/policy.ts';
+import type {Principal} from '../domain/model.ts';
 import {statuses} from '../domain/model.ts';
 import type {Ticket,TicketStatus} from '../domain/model.ts';
 import {customerStatus} from '../domain/workflow.ts';
 import type {PageOptions} from './pagination.ts';
 
 export type CustomerStatus=ReturnType<typeof customerStatus>;
-export type TicketListOptions=PageOptions&{accountId?:string;q?:string;status?:string;priority?:string};
-export type TicketSearchFilters={q?:string;status?:CustomerStatus;priority?:Ticket['priority']};
+export type TicketListOptions=PageOptions&{accountId?:string;q?:string;status?:string;priority?:string;assignment?:string};
+export type TicketSearchFilters={q?:string;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned'};
 // Deliberately deterministic Latin-1 case folding in JS AND SQL, independent of DB locale.
 // Accents stay significant; this is literal substring search, not linguistic full-text search.
 export const SEARCH_UPPER='ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ';
@@ -31,13 +33,19 @@ export function ticketSearch(options:TicketListOptions):TicketSearchFilters{
   if(!['low','normal','high','urgent'].includes(options.priority))throw new HelpdeskError(400,'invalid_input','Prioridade inválida.');
   result.priority=options.priority as Ticket['priority'];
  }
+ if(options.assignment!==undefined){
+  if(!['mine','unassigned'].includes(options.assignment))throw new HelpdeskError(400,'invalid_input','Responsabilidade inválida.');
+  result.assignment=options.assignment as 'mine'|'unassigned';
+ }
  return Object.freeze(result);
 }
 export function statusesForSearch(filters:TicketSearchFilters):TicketStatus[]|null{
  return filters.status?statuses.filter(s=>customerStatus(s)===filters.status):null;
 }
-export function matchesTicketSearch(ticket:Ticket,filters:TicketSearchFilters):boolean{
+export function matchesTicketSearch(ticket:Ticket,filters:TicketSearchFilters,p?:Principal):boolean{
  return (!filters.q||foldSearch(ticket.subject).includes(filters.q)||foldSearch(ticket.id)===filters.q)
   &&(!filters.status||customerStatus(ticket.status)===filters.status)
-  &&(!filters.priority||ticket.priority===filters.priority);
+  &&(!filters.priority||ticket.priority===filters.priority)
+  &&(!filters.assignment||!!p&&isOperator(p,ticket.workspaceId,ticket.accountId)
+   &&(filters.assignment==='mine'?ticket.assignedTo===p.id:ticket.assignedTo===null));
 }

@@ -37,7 +37,7 @@ test('context is cleared between reused pooled connections',async()=>{await serv
 test('concurrent PostgreSQL retries create one ticket and one creation outbox event',async()=>{const results=await Promise.all(Array.from({length:8},()=>service.create(alice,{...input,subject:'Concurrent database ticket'},'database-concurrent-key','db-test')));assert.equal(new Set(results.map(r=>r.ticket.id)).size,1);const r=await admin.query("select id from helpdesk_integration.outbox_events where ticket_id=$1 and type='ticket.created'",[results[0]!.ticket.id]);assert.equal(r.rows.length,1);});
 test('same idempotency key with different body yields conflict',async()=>{await assert.rejects(()=>service.create(alice,{...input,subject:'Changed'},'database-seed-create','db-test'),e=>(e as {status:number}).status===409);});
 test('published policy cannot be edited in place',async()=>{await assert.rejects(()=>admin.query("update helpdesk_core.contract_versions set policy='{\"changed\":true}' where id=$1",[id(601)]),e=>(e as {code:string}).code==='23514');});
-test('committed ticket requires initial event and outbox even for an admin insert',async()=>{await assert.rejects(()=>admin.query('insert into helpdesk_core.tickets select workspace_id,account_id,$1,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at from helpdesk_core.tickets where id=$2',[randomUUID(),ticketId]),e=>(e as {code:string}).code==='23514');});
+test('committed ticket requires initial event and outbox even for an admin insert',async()=>{await assert.rejects(()=>admin.query('insert into helpdesk_core.tickets(workspace_id,account_id,id,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at) select workspace_id,account_id,$1,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at from helpdesk_core.tickets where id=$2',[randomUUID(),ticketId]),e=>(e as {code:string}).code==='23514');});
 test('contract suspension after resolution blocks creation',async()=>{assert.equal((await service.resolve(alice,input)).status,'resolved');await admin.query("update helpdesk_core.support_contracts set status='suspended' where id=$1",[id(501)]);try{await assert.rejects(()=>service.create(alice,input,'database-suspension-key','db-test'),e=>(e as {status:number}).status===422);}finally{await admin.query("update helpdesk_core.support_contracts set status='active' where id=$1",[id(501)]);}});
 test('revoked account grant takes effect despite previously resolved principal',async()=>{await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);try{await assert.rejects(()=>service.get(alice,ticketId),e=>(e as {status:number}).status===404);}finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}});
 test('integration credential revocation invalidates a previously minted session',async()=>{const key='hd_key_'+'t'.repeat(43);await admin.query('insert into helpdesk_auth.integration_connections(workspace_id,id,product_instance_id,principal_id) values($1,$2,$3,$4)',[id(1),id(801),id(401),id(15)]);await admin.query("insert into helpdesk_auth.source_scope_bindings(workspace_id,connection_id,account_id,external_account_ref) values($1,$2,$3,'origin-account')",[id(1),id(801),id(101)]);await admin.query('insert into helpdesk_auth.integration_credentials(id,workspace_id,connection_id,key_hash) values($1,$2,$3,$4)',[id(901),id(1),id(801),secretHash(key)]);const auth=createAuthentication(app,{supabaseUrl:'https://example.supabase.co',publishableKey:'sb_publishable_test'}),session=await auth.exchangeToken(key);const req=new Request('https://hd.test',{headers:{authorization:'Bearer '+session.access_token,'x-workspace-id':id(1)}});assert.equal((await auth.authenticate(req)).kind,'integration');await admin.query('update helpdesk_auth.integration_credentials set revoked_at=now() where id=$1',[id(901)]);await assert.rejects(()=>auth.authenticate(req));});
@@ -80,7 +80,7 @@ test('read-only machine cannot bypass HTTP and insert a public message by SQL',a
 });
 test('integration cannot forge a human-agent author type',async()=>{await assert.rejects(()=>sqlAs(machine,"insert into helpdesk_core.ticket_messages(workspace_id,account_id,ticket_id,id,actor_id,actor_type,body,created_at) values($1,$2,$3,$4,$5,'human_agent','forged',now())",[id(1),id(101),machineTicket,randomUUID(),machine.id]),{code:'42501'});});
 test('requester cannot use direct SQL to force a forbidden status change',async()=>{await assert.rejects(()=>sqlAs(alice,"update helpdesk_core.tickets set status='closed',version=version+1,updated_at=now() where id=$1",[ticketId]),{code:'42501'});});
-test('composite FK rejects a ticket referencing a sibling account coverage',async()=>{await assert.rejects(()=>admin.query('insert into helpdesk_core.tickets select workspace_id,$1,$2,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at from helpdesk_core.tickets where id=$3',[id(102),randomUUID(),ticketId]),{code:'23503'});});
+test('composite FK rejects a ticket referencing a sibling account coverage',async()=>{await assert.rejects(()=>admin.query('insert into helpdesk_core.tickets(workspace_id,account_id,id,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at) select workspace_id,$1,$2,product_instance_id,service_code,coverage_id,contract_version_id,created_by,subject,description,status,priority,version,contract_snapshot,created_at,updated_at from helpdesk_core.tickets where id=$3',[id(102),randomUUID(),ticketId]),{code:'23503'});});
 test('cross-account public-message insertion is denied by SQL',async()=>{await assert.rejects(()=>sqlAs(bob,"insert into helpdesk_core.ticket_messages(workspace_id,account_id,ticket_id,id,actor_id,actor_type,body,created_at) values($1,$2,$3,$4,$5,'customer','forged',now())",[id(1),id(101),ticketId,randomUUID(),bob.id]),{code:'42501'});});
 test('integration cannot read notes through table or operation helper',async()=>{assert.equal((await sqlAs(machine,'select id from helpdesk_core.internal_notes')).rows.length,0);});
 test('concurrent updates with the same ETag produce exactly one transition',async()=>{
@@ -444,3 +444,38 @@ test('startup refuses missing required public-conversation SELECT',()=>rejectsDr
 test('startup refuses app CREATE inside a private schema',()=>rejectsDrift(
  'grant create on schema helpdesk_auth to helpdesk_app',
  'revoke create on schema helpdesk_auth from helpdesk_app'));
+
+// v0.11 review: these exercise the real SQL adapter when this suite is run on PostgreSQL.
+async function reviewOwnedTicket(){
+ const r=await service.create(alice,{...input,subject:'Review assignment '+randomUUID()},randomUUID(),'db-review');
+ await service.changeAssignment(agent,r.ticket.id,'claim',r.ticket.version,'Review ownership',randomUUID(),'db-review');
+ return r.ticket.id;
+}
+test('SQL mine filter returns the assigned ticket before pagination',async()=>{
+ const mine=await reviewOwnedTicket();const r=await service.list(agent,{limit:1,assignment:'mine',q:mine});
+ assert.deepEqual(r.items.map(t=>t.id),[mine]);assert.equal(r.nextCursor,null);
+});
+test('SQL unassigned filter omits an assigned ticket visible without the filter',async()=>{
+ const mine=await reviewOwnedTicket();assert.equal((await service.list(agent,{limit:25,q:mine})).items.length,1);
+ assert.equal((await service.list(agent,{limit:25,q:mine,assignment:'unassigned'})).items.length,0);
+});
+test('SQL release returns the ticket to the unassigned view',async()=>{
+ const mine=await reviewOwnedTicket(),t=await service.get(agent,mine);
+ await service.changeAssignment(agent,mine,'release',t.version,'Return to pool',randomUUID(),'db-review');
+ assert.deepEqual((await service.list(agent,{limit:25,q:mine,assignment:'unassigned'})).items.map(t=>t.id),[mine]);
+ assert.equal((await service.list(agent,{limit:25,q:mine,assignment:'mine'})).items.length,0);
+});
+test('SQL assignment filter observes a live operator downgrade',async()=>{
+ const mine=await reviewOwnedTicket();
+ await admin.query("update helpdesk_auth.account_grants set role='requester' where principal_id=$1 and account_id=$2",[agent.id,input.accountId]);
+ try{assert.equal((await service.list(agent,{limit:25,q:mine,assignment:'mine'})).items.length,0);}
+ finally{await admin.query("update helpdesk_auth.account_grants set role='agent' where principal_id=$1 and account_id=$2",[agent.id,input.accountId]);}
+});
+test('SQL requester cannot use operator assignment selection',async()=>{
+ const mine=await reviewOwnedTicket();await assert.rejects(()=>service.list(alice,{limit:25,q:mine,assignment:'mine'}),{status:403});
+ const r=await sqlAs(alice,'select id from helpdesk_core.tickets where id=$1 and helpdesk_auth.is_operator(workspace_id,account_id)',[mine]);assert.equal(r.rows.length,0);
+});
+test('SQL a different workspace sees no result for a known assigned ticket',async()=>{
+ const mine=await reviewOwnedTicket();const otherOperator={...outsider,grants:[{accountId:id(201),role:'agent' as const}]};
+ assert.equal((await service.list(otherOperator,{limit:25,q:mine,assignment:'mine'})).items.length,0);
+});
