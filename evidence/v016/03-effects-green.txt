@@ -1,0 +1,198 @@
+TAP version 13
+# (node:1823) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: effects: silently lost event rolls back create and idempotency
+ok 1 - effects: silently lost event rolls back create and idempotency
+  ---
+  duration_ms: 5.376598
+  type: 'test'
+  ...
+# Subtest: effects: complete create commits exactly one new event
+ok 2 - effects: complete create commits exactly one new event
+  ---
+  duration_ms: 1.817776
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back message and idempotency
+ok 3 - effects: silently lost event rolls back message and idempotency
+  ---
+  duration_ms: 2.537149
+  type: 'test'
+  ...
+# Subtest: effects: complete message commits exactly one new event
+ok 4 - effects: complete message commits exactly one new event
+  ---
+  duration_ms: 0.484209
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back note and idempotency
+ok 5 - effects: silently lost event rolls back note and idempotency
+  ---
+  duration_ms: 1.45321
+  type: 'test'
+  ...
+# Subtest: effects: complete note commits exactly one new event
+ok 6 - effects: complete note commits exactly one new event
+  ---
+  duration_ms: 0.34762
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back transition and idempotency
+ok 7 - effects: silently lost event rolls back transition and idempotency
+  ---
+  duration_ms: 1.441398
+  type: 'test'
+  ...
+# Subtest: effects: complete transition commits exactly one new event
+ok 8 - effects: complete transition commits exactly one new event
+  ---
+  duration_ms: 0.468925
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back priority and idempotency
+ok 9 - effects: silently lost event rolls back priority and idempotency
+  ---
+  duration_ms: 1.110769
+  type: 'test'
+  ...
+# Subtest: effects: complete priority commits exactly one new event
+ok 10 - effects: complete priority commits exactly one new event
+  ---
+  duration_ms: 0.696778
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back assignment and idempotency
+ok 11 - effects: silently lost event rolls back assignment and idempotency
+  ---
+  duration_ms: 1.079766
+  type: 'test'
+  ...
+# Subtest: effects: complete assignment commits exactly one new event
+ok 12 - effects: complete assignment commits exactly one new event
+  ---
+  duration_ms: 0.493459
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back create
+ok 13 - effects: silently lost outbox rolls back create
+  ---
+  duration_ms: 0.561237
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back message
+ok 14 - effects: silently lost outbox rolls back message
+  ---
+  duration_ms: 0.33612
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back transition
+ok 15 - effects: silently lost outbox rolls back transition
+  ---
+  duration_ms: 0.332295
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back priority
+ok 16 - effects: silently lost outbox rolls back priority
+  ---
+  duration_ms: 0.263472
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption account
+ok 17 - effects: rejects event corruption account
+  ---
+  duration_ms: 0.529601
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption actor
+ok 18 - effects: rejects event corruption actor
+  ---
+  duration_ms: 0.296384
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption data
+ok 19 - effects: rejects event corruption data
+  ---
+  duration_ms: 0.442394
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption duplicate
+ok 20 - effects: rejects event corruption duplicate
+  ---
+  duration_ms: 0.266739
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption private
+ok 21 - effects: rejects event corruption private
+  ---
+  duration_ms: 2.548244
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption version
+ok 22 - effects: rejects outbox corruption version
+  ---
+  duration_ms: 0.563159
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption body
+ok 23 - effects: rejects outbox corruption body
+  ---
+  duration_ms: 0.325575
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption type
+ok 24 - effects: rejects outbox corruption type
+  ---
+  duration_ms: 0.264862
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption duplicate
+ok 25 - effects: rejects outbox corruption duplicate
+  ---
+  duration_ms: 0.197977
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption id
+ok 26 - effects: rejects outbox corruption id
+  ---
+  duration_ms: 0.478692
+  type: 'test'
+  ...
+# Subtest: effects: parent version cannot advance without public message
+ok 27 - effects: parent version cannot advance without public message
+  ---
+  duration_ms: 0.414528
+  type: 'test'
+  ...
+# Subtest: effects: note may not leave an external event
+ok 28 - effects: note may not leave an external event
+  ---
+  duration_ms: 0.447452
+  type: 'test'
+  ...
+# Subtest: effects: earlier event cannot replace a new event of the same type
+ok 29 - effects: earlier event cannot replace a new event of the same type
+  ---
+  duration_ms: 0.656296
+  type: 'test'
+  ...
+# Subtest: effects: reenvio adds no event/outbox and returns original answer
+ok 30 - effects: reenvio adds no event/outbox and returns original answer
+  ---
+  duration_ms: 0.713049
+  type: 'test'
+  ...
+# Subtest: effects: orphan event cannot be committed independently
+ok 31 - effects: orphan event cannot be committed independently
+  ---
+  duration_ms: 0.405948
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 205.7602

@@ -1,0 +1,5 @@
+
+> @consulte-geo/helpdesk@0.16.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+src/domain/transaction-effects.ts(31,21): error TS18048: 'e' is possibly 'undefined'.

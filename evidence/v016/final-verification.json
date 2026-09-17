@@ -1,0 +1,143 @@
+{
+  "date_utc": "2026-09-17T16:14:36.321531+00:00",
+  "scope": "local-files-and-memory-tests; no PostgreSQL or hosted runtime approval",
+  "checks": [
+    {
+      "check": "00-baseline-tests",
+      "exit_code": 0,
+      "log": "00-baseline-tests.txt"
+    },
+    {
+      "check": "05-contract-red",
+      "exit_code": 1,
+      "log": "05-contract-red.txt"
+    },
+    {
+      "check": "06-contract-green",
+      "exit_code": 0,
+      "log": "06-contract-green.txt"
+    },
+    {
+      "check": "07-suite-integrated",
+      "exit_code": 1,
+      "log": "07-suite-integrated.txt"
+    },
+    {
+      "check": "08-effects-http",
+      "exit_code": 0,
+      "log": "08-effects-http.txt"
+    },
+    {
+      "check": "09-typecheck-review",
+      "exit_code": 2,
+      "log": "09-typecheck-review.txt"
+    },
+    {
+      "check": "10-deferred-outcome-contract",
+      "exit_code": 0,
+      "log": "10-deferred-outcome-contract.txt"
+    },
+    {
+      "check": "11-tests-reviewed",
+      "exit_code": 0,
+      "log": "11-tests-reviewed.txt"
+    },
+    {
+      "check": "12-typecheck-reviewed",
+      "exit_code": 0,
+      "log": "12-typecheck-reviewed.txt"
+    },
+    {
+      "check": "13-dependencies-attempt",
+      "exit_code": 1,
+      "log": "13-dependencies-attempt.txt"
+    },
+    {
+      "check": "14-database-attempt",
+      "exit_code": 1,
+      "log": "14-database-attempt.txt"
+    },
+    {
+      "check": "15-ui-attempt",
+      "exit_code": 1,
+      "log": "15-ui-attempt.txt"
+    },
+    {
+      "check": "16-ui-repeat",
+      "exit_code": 1,
+      "log": "16-ui-repeat.txt"
+    },
+    {
+      "check": "17-typecheck-formatted",
+      "exit_code": 0,
+      "log": "17-typecheck-formatted.txt"
+    },
+    {
+      "check": "18-review-focused",
+      "exit_code": 0,
+      "log": "18-review-focused.txt"
+    },
+    {
+      "check": "final-build",
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "check": "final-check-homologation",
+      "exit_code": 1,
+      "log": "final-check-homologation.txt"
+    },
+    {
+      "check": "final-contracts",
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "check": "final-homologation",
+      "exit_code": 1,
+      "log": "final-homologation.txt"
+    },
+    {
+      "check": "final-migrations",
+      "exit_code": 0,
+      "log": "final-migrations.txt"
+    },
+    {
+      "check": "final-release-gate",
+      "exit_code": 1,
+      "log": "final-release-gate.txt"
+    },
+    {
+      "check": "final-secrets",
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "check": "final-tests",
+      "exit_code": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "check": "final-typecheck-standard",
+      "exit_code": 2,
+      "log": "final-typecheck-standard.txt"
+    },
+    {
+      "check": "final-typecheck-supplementary",
+      "exit_code": 0,
+      "log": "final-typecheck-supplementary.txt"
+    },
+    {
+      "check": "final-verify-standard",
+      "exit_code": 2,
+      "log": "final-verify-standard.txt"
+    }
+  ],
+  "local_tests": 950,
+  "local_http_smoke": 35,
+  "sql_written": 179,
+  "sql_executed": 0,
+  "browser_written": 35,
+  "browser_passed": 0,
+  "remote_writes": false
+}

@@ -1,0 +1,7 @@
+
+> @consulte-geo/helpdesk@0.16.0 check:migrations
+> node --experimental-strip-types scripts/check-migrations.ts
+
+(node:6118) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Verified 10 migration files; candidate schema 0.16.0. No SQL executed.

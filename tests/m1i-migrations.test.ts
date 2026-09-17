@@ -45,8 +45,8 @@ test('a changed file on disk does not replace the bytes already verified',async(
  const m=await loader(),b=await m.loadMigrationBundle(root);await writeFile(join(root,'supabase/migrations',file),'changed');assert.equal(b.migrations[0].sql,sql);
  await assert.rejects(()=>m.loadMigrationBundle(root));
 }));
-test('actual project bundle is eight unchanged candidate migrations, not DB execution',async()=>{
- const m=await loader(),b=await m.loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,9);assert.equal(b.schemaVersion,'0.15.0');
+test('actual project bundle preserves assignment migration bytes, not DB execution',async()=>{
+ const m=await loader(),b=await m.loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,10);assert.equal(b.schemaVersion,'0.16.0');
  const bytes=await readFile('supabase/migrations/20260916000800_ticket_assignment.sql','utf8');assert.equal(b.migrations[7].sql,bytes);
 });
 for(const mode of ['manifest-symlink','supabase-symlink','oversized-manifest','oversized-sql','invalid-utf8','empty-sql'])test('migration bytes reject '+mode,async()=>fixture(async(root,manifest)=>{

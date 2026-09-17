@@ -69,7 +69,11 @@ export const DATABASE_SECURITY_QUERY = `with
  (not exists(select 1 from pg_catalog.pg_index i join tables t on t.oid=i.indrelid where not i.indisvalid or not i.indisready)
   and exists(select 1 from pg_catalog.pg_index i join pg_catalog.pg_class x on x.oid=i.indexrelid
    join tables t on t.oid=i.indrelid where t.full_name='helpdesk_core.ticket_events' and x.relname='assignment_event_version'
-    and i.indisunique and i.indisvalid and i.indisready)) as index_contract_ok,
+    and i.indisunique and i.indisvalid and i.indisready)
+  and (select count(*) from pg_catalog.pg_index i join pg_catalog.pg_class x on x.oid=i.indexrelid
+   join tables t on t.oid=i.indrelid where t.full_name='helpdesk_audit.write_effects'
+    and x.relname in ('write_effect_revision','write_effect_source')
+    and i.indisunique and i.indisvalid and i.indisready and i.indpred is not null)=2) as index_contract_ok,
  ((select count(*) from pg_catalog.pg_policy p join tables t on t.oid=p.polrelid)=(select count(*) from expected_policies)
   and not exists(select 1 from expected_policies e left join tables t on t.full_name=e."table"
    left join pg_catalog.pg_policy p on p.polrelid=t.oid and p.polname=e.name where p.oid is null

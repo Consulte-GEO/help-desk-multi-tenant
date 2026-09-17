@@ -358,7 +358,7 @@ test('SQL requester cannot write priority even by bypassing the application',asy
 test('SQL integration cannot write its own ticket priority',async()=>{const t=(await service.create(machine,{...input,subject:'M1G machine'},'m1g-machine-priority-create','db-test')).ticket;await assert.rejects(()=>sqlAs(machine,"update helpdesk_core.tickets set priority='urgent',version=2 where id=$1",[t.id]),{code:'42501'});});
 test('SQL operator mutation without event and outbox cannot commit',async()=>{const t=await priorityTicket('missing-intent');await assert.rejects(()=>sqlAs(agent,"update helpdesk_core.tickets set priority='high',version=2 where id=$1",[t.id]),{code:'23514'});assert.equal((await service.get(alice,t.id)).version,1);});
 test('SQL operator event without matching outbox cannot commit',async()=>{
- const t=await priorityTicket('missing-outbox');const db=new PostgresUnitOfWork(app);await assert.rejects(()=>db.run(agent,async s=>{await s.updatePriority({...t,priority:'high',version:2},1);await s.addEvent({id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:agent.id,type:'ticket.priority_changed',data:{from:'normal',to:'high',version:2,reason:'Expected rollback'},customerVisible:true,createdAt:new Date().toISOString()});}),{code:'23514'});assert.equal((await service.get(alice,t.id)).priority,'normal');
+ const t=await priorityTicket('missing-outbox');const db=new PostgresUnitOfWork(app);await assert.rejects(()=>db.run(agent,async s=>{await s.updatePriority({...t,priority:'high',version:2},1);await s.addEvent({id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:agent.id,type:'ticket.priority_changed',data:{from:'normal',to:'high',version:2,reason:'Expected rollback'},customerVisible:true,createdAt:new Date().toISOString()});}),{code:'transaction_outcome_unknown'});assert.equal((await service.get(alice,t.id)).priority,'normal');
 });
 test('SQL repeated priority request returns original version without another event',async()=>{const t=await priorityTicket('replay');await service.changePriority(agent,t.id,'high',1,'Internal reason','m1g-priority-repeat-key','db-test');await service.addMessage(agent,t.id,'Later response','m1g-priority-after-message','db-test');const r=await service.changePriority(agent,t.id,'high',1,'Internal reason','m1g-priority-repeat-key','db-test');assert.equal(r.replayed,true);assert.equal(r.ticket.version,2);assert.equal((await service.get(alice,t.id)).version,3);assert.equal((await admin.query("select id from helpdesk_core.ticket_events where ticket_id=$1 and type='ticket.priority_changed'",[t.id])).rows.length,1);});
 test('SQL same-priority no-op records cache but not event/outbox or new version',async()=>{const t=await priorityTicket('noop');const r=await service.changePriority(agent,t.id,'normal',1,'Reviewed and kept','m1g-priority-noop-key','db-test');assert.equal(r.ticket.version,1);assert.equal((await admin.query("select id from helpdesk_core.ticket_events where ticket_id=$1 and type='ticket.priority_changed'",[t.id])).rows.length,0);assert.equal((await service.changePriority(agent,t.id,'normal',1,'Reviewed and kept','m1g-priority-noop-key','db-test')).replayed,true);});
@@ -588,4 +588,130 @@ test('v015 suspended membership can be revoked without restoring access',async()
 });
 test('v015 an integration principal cannot receive a human scope revision',async()=>{
  await assert.rejects(()=>admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[machine.workspaceId,machine.id,['tickets:read'],'Invalid principal type',randomUUID()]),{code:'42501'});
+});
+
+// v0.16 / R14-06: actual PostgreSQL ONLY. These are written scenarios, not npm-test approvals.
+import type {Store} from '../../src/application/ports.ts';
+import type {Ticket} from '../../src/domain/model.ts';
+const effectTicket=async(label:string)=>(await service.create(alice,{...input,subject:'Effects '+label},randomUUID(),'db-test')).ticket;
+const corruptEffects=(alter:(s:Store)=>Store)=>new HelpdeskService({run:(p,f)=>new PostgresUnitOfWork(app).run(p,s=>f(alter(s)))});
+async function captureEffectRows(tid:string){
+ const result:Record<string,unknown[]>={};
+ for(const [table,where] of [
+  ['helpdesk_core.tickets','id'],['helpdesk_core.ticket_messages','ticket_id'],['helpdesk_core.internal_notes','ticket_id'],
+  ['helpdesk_core.ticket_events','ticket_id'],['helpdesk_integration.outbox_events','ticket_id'],['helpdesk_audit.write_effects','ticket_id']])
+  result[table!]=(await admin.query(`select to_jsonb(r) as value from ${table} r where ${where}=$1 order by to_jsonb(r)::text`,[tid])).rows;
+ return result;
+}
+const effectCommands={
+ message:(s:HelpdeskService,t:Ticket,key:string)=>s.addMessage(agent,t.id,'Synthetic public reply',key,'db-test'),
+ note:(s:HelpdeskService,t:Ticket,key:string)=>s.addNote(agent,t.id,'Synthetic internal note',key,'db-test'),
+ status:(s:HelpdeskService,t:Ticket,key:string)=>s.transition(agent,t.id,'open',t.version,'',key,'db-test'),
+ priority:(s:HelpdeskService,t:Ticket,key:string)=>s.changePriority(agent,t.id,'high',t.version,'Synthetic priority',key,'db-test'),
+ assignment:(s:HelpdeskService,t:Ticket,key:string)=>s.changeAssignment(agent,t.id,'claim',t.version,'Synthetic assignment',key,'db-test'),
+};
+for(const [kind,command] of Object.entries(effectCommands))test(`SQL016 omitted ${kind} event rejects and preserves all prior rows`,async()=>{
+ const t=await effectTicket('missing-event-'+kind),before=await captureEffectRows(t.id),key=randomUUID();
+ const broken=corruptEffects(s=>({...s,addEvent:async()=>{}}));await assert.rejects(()=>command(broken,t,key));
+ assert.deepEqual(await captureEffectRows(t.id),before);
+ assert.equal((await admin.query('select key from helpdesk_integration.api_idempotency_keys where key=$1',[key])).rows.length,0);
+});
+for(const kind of ['message','status','priority'] as const)test(`SQL016 omitted ${kind} outbox rejects even with a correct event`,async()=>{
+ const t=await effectTicket('missing-outbox-'+kind),before=await captureEffectRows(t.id);
+ await assert.rejects(()=>effectCommands[kind](corruptEffects(s=>({...s,enqueue:async()=>{}})),t,randomUUID()));
+ assert.deepEqual(await captureEffectRows(t.id),before);
+});
+test('SQL016 creation cannot commit if the application silently omits its event',async()=>{
+ const key=randomUUID(),count=(await admin.query('select count(*)::integer as n from helpdesk_core.tickets')).rows[0]?.n;
+ await assert.rejects(()=>corruptEffects(s=>({...s,addEvent:async()=>{}})).create(alice,input,key,'db-test'));
+ assert.equal((await admin.query('select count(*)::integer as n from helpdesk_core.tickets')).rows[0]?.n,count);
+ assert.equal((await admin.query('select key from helpdesk_integration.api_idempotency_keys where key=$1',[key])).rows.length,0);
+});
+test('SQL016 direct status change fails at COMMIT without a corresponding new event/outbox',async()=>{
+ const t=await effectTicket('raw-status');await assert.rejects(()=>sqlAs(agent,"update helpdesk_core.tickets set status='open',version=version+1,updated_at=now() where id=$1",[t.id]),{code:'23514'});
+ assert.equal((await service.get(agent,t.id)).status,'new');
+});
+test('SQL016 direct note insert fails at COMMIT without its private functional event',async()=>{
+ const t=await effectTicket('raw-note'),nid=randomUUID();
+ await assert.rejects(()=>sqlAs(agent,'insert into helpdesk_core.internal_notes(workspace_id,account_id,ticket_id,id,actor_id,body,created_at) values($1,$2,$3,$4,$5,$6,now())',[t.workspaceId,t.accountId,t.id,nid,agent.id,'No event']),{code:'23514'});
+ assert.equal((await admin.query('select id from helpdesk_core.internal_notes where id=$1',[nid])).rows.length,0);
+});
+test('SQL016 message with no parent-version advance cannot commit',async()=>{
+ const t=await effectTicket('missing-version'),before=await captureEffectRows(t.id);
+ await assert.rejects(()=>effectCommands.message(corruptEffects(s=>({...s,updateTicket:async()=>{}})),t,randomUUID()));
+ assert.deepEqual(await captureEffectRows(t.id),before);
+});
+test('SQL016 an empty version bump cannot commit without a newly inserted public message',async()=>{
+ const t=await effectTicket('empty-bump');await assert.rejects(()=>sqlAs(agent,'update helpdesk_core.tickets set version=version+1 where id=$1',[t.id]),{code:'23514'});
+ assert.equal((await service.get(agent,t.id)).version,1);
+});
+test('SQL016 an event from an earlier committed write cannot stand in for a new message event',async()=>{
+ const t=await effectTicket('old-message');await service.addMessage(agent,t.id,'Previous',randomUUID(),'db-test');const before=await captureEffectRows(t.id);
+ await assert.rejects(()=>effectCommands.message(corruptEffects(s=>({...s,addEvent:async()=>{}})),t,randomUUID()));
+ assert.deepEqual(await captureEffectRows(t.id),before);
+});
+for(const field of ['actor','data','duplicate'] as const)test(`SQL016 event ${field} corruption rolls back the new public message`,async()=>{
+ const t=await effectTicket('event-'+field),before=await captureEffectRows(t.id);
+ const broken=corruptEffects(s=>({...s,addEvent:async e=>{
+  if(field==='duplicate')await s.addEvent(e);
+  await s.addEvent({...e,...(field==='actor'?{actorId:alice.id}:{}),...(field==='data'?{data:{...e.data,secret:'Must not be sent'}}:{})});
+ }}));await assert.rejects(()=>effectCommands.message(broken,t,randomUUID()));assert.deepEqual(await captureEffectRows(t.id),before);
+});
+for(const field of ['version','extra','duplicate','time'] as const)test(`SQL016 outbox ${field} corruption is not a valid counterpart`,async()=>{
+ const t=await effectTicket('outbox-'+field),before=await captureEffectRows(t.id);
+ const broken=corruptEffects(s=>({...s,enqueue:async e=>{
+  if(field==='duplicate')await s.enqueue(e);
+  await s.enqueue({...e,payload:{...e.payload,...(field==='version'?{data:{ticket_id:t.id,version:999}}:{}),...(field==='extra'?{reason:'PRIVATE'}:{}),...(field==='time'?{time:'2020-01-01T00:00:00Z'}:{})}});
+ }}));await assert.rejects(()=>effectCommands.message(broken,t,randomUUID()));assert.deepEqual(await captureEffectRows(t.id),before);
+});
+test('SQL016 private note cannot generate an external outbox record',async()=>{
+ const t=await effectTicket('private-external'),before=await captureEffectRows(t.id);
+ const broken=corruptEffects(s=>({...s,addEvent:async e=>{await s.addEvent(e);await s.enqueue({id:e.id,workspaceId:e.workspaceId,accountId:e.accountId,ticketId:e.ticketId,type:e.type,payload:{},createdAt:e.createdAt,requestId:'db-test'});}}));
+ await assert.rejects(()=>effectCommands.note(broken,t,randomUUID()));assert.deepEqual(await captureEffectRows(t.id),before);
+});
+test('SQL016 app cannot read or modify private effect receipts',async()=>{
+ for(const statement of ['select * from helpdesk_audit.write_effects','update helpdesk_audit.write_effects set applied=true','delete from helpdesk_audit.write_effects'])await assert.rejects(()=>app.query(statement),{code:'42501'});
+});
+test('SQL016 client and maintenance roles cannot invoke receipt functions',async()=>{
+ const r=await admin.query("select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace cross join pg_roles r where n.nspname='helpdesk_audit' and p.proname in ('record_ticket_effect','record_conversation_effect','bind_effect_event','bind_effect_outbox','require_write_effect') and r.rolname in ('helpdesk_app','anon','authenticated','service_role','helpdesk_maintenance') and has_function_privilege(r.oid,p.oid,'EXECUTE')");assert.equal(r.rows.length,0);
+});
+test('SQL016 a committed message has one complete receipt joined to one matching event/outbox',async()=>{
+ const t=await effectTicket('complete');await effectCommands.message(service,t,randomUUID());
+ const r=await admin.query("select r.applied,r.expected_data,e.type as event_type,o.type as outbox_type from helpdesk_audit.write_effects r join helpdesk_core.ticket_events e on(e.workspace_id,e.id)=(r.workspace_id,r.event_id) join helpdesk_integration.outbox_events o on(o.workspace_id,o.id)=(r.workspace_id,r.event_id) where r.ticket_id=$1 and r.kind='message.created'",[t.id]);
+ assert.equal(r.rows.length,1);assert.equal(r.rows[0]?.applied,true);assert.equal(r.rows[0]?.event_type,'message.created');assert.equal(r.rows[0]?.outbox_type,'message.created');assert.doesNotMatch(JSON.stringify(r.rows),/Synthetic public reply|body|reason/);
+});
+test('SQL016 no-op and idempotent replay add no receipt',async()=>{
+ const t=await effectTicket('no-op'),key=randomUUID(),before=await captureEffectRows(t.id);
+ await service.changePriority(agent,t.id,'normal',1,'No change',key,'db-test');
+ const replay=await service.changePriority(agent,t.id,'normal',1,'No change',key,'db-test');assert.equal(replay.replayed,true);
+ assert.deepEqual(await captureEffectRows(t.id),before);
+});
+test('SQL016 multiple application commands in one transaction bind distinct receipts and versions',async()=>{
+ const t=await effectTicket('multiple');await new PostgresUnitOfWork(app).run(agent,async store=>{
+  const s=new HelpdeskService({run:async(_p,f)=>f(store)});
+  await s.addMessage(agent,t.id,'Batch message',randomUUID(),'db-test');
+  await s.transition(agent,t.id,'open',2,'',randomUUID(),'db-test');
+  await s.addNote(agent,t.id,'Batch note',randomUUID(),'db-test');
+ });
+ assert.equal((await service.get(agent,t.id)).version,3);
+ const rows=(await admin.query('select kind,ticket_version,applied from helpdesk_audit.write_effects where ticket_id=$1 order by created_at,id',[t.id])).rows;
+ assert.equal(rows.length,4);assert.ok(rows.every(r=>r.applied===true));
+});
+test('SQL016 savepoint rollback removes its pending receipt before a valid note is committed',async()=>{
+ const t=await effectTicket('savepoint'),c=await app.connect(),nid=randomUUID(),eid=randomUUID();
+ try{
+  await c.query('BEGIN');await c.query("select set_config('app.workspace_id',$1,true),set_config('app.principal_id',$2,true)",[agent.workspaceId,agent.id]);await c.query('SAVEPOINT ignored_write');
+  const insert='insert into helpdesk_core.internal_notes(workspace_id,account_id,ticket_id,id,actor_id,body,created_at) values($1,$2,$3,$4,$5,$6,now())';
+  await c.query(insert,[t.workspaceId,t.accountId,t.id,randomUUID(),agent.id,'Rolled back']);await c.query('ROLLBACK TO ignored_write');
+  await c.query(insert,[t.workspaceId,t.accountId,t.id,nid,agent.id,'Kept']);
+  await c.query("insert into helpdesk_core.ticket_events(workspace_id,account_id,ticket_id,id,actor_id,type,customer_visible,data,created_at) values($1,$2,$3,$4,$5,'note.created',false,$6,now())",[t.workspaceId,t.accountId,t.id,eid,agent.id,JSON.stringify({noteId:nid})]);
+  assert.equal((await c.query('COMMIT')).command,'COMMIT');
+ }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}
+ assert.equal((await admin.query("select id from helpdesk_audit.write_effects where ticket_id=$1 and kind='note.created'",[t.id])).rows.length,1);
+});
+test('SQL016 disabled completion trigger is refused by runtime readiness',async()=>{
+ await admin.query('alter table helpdesk_audit.write_effects disable trigger complete_write_effect');
+ try{await assert.rejects(()=>assertDatabaseSecurity(app),{code:'unsafe_database_policies'});}
+ finally{await admin.query('alter table helpdesk_audit.write_effects enable trigger complete_write_effect');}
+ await assertDatabaseSecurity(app);
 });

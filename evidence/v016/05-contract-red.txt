@@ -1,0 +1,507 @@
+TAP version 13
+# (node:2761) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: write effects have a private table in the runtime inventory
+not ok 1 - write effects have a private table in the runtime inventory
+  ---
+  duration_ms: 14.845711
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-contract.test.ts:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(t)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-contract.test.ts:9:75)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: write effect trigger functions are never callable by the application
+not ok 2 - write effect trigger functions are never callable by the application
+  ---
+  duration_ms: 8.02794
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-contract.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(f)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-contract.test.ts:12:108)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: inventory requires the six enabled effect triggers including deferred completion
+not ok 3 - inventory requires the six enabled effect triggers including deferred completion
+  ---
+  duration_ms: 1.967107
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-contract.test.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(c.triggers.some(t=>t.name===name))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-contract.test.ts:15:174)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: readiness requires both receipt uniqueness indexes
+not ok 4 - readiness requires both receipt uniqueness indexes
+  ---
+  duration_ms: 1.247516
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-contract.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /write_effect_revision/. Input:
+    
+    'with\n' +
+      ' contract as (select $1::jsonb as doc),\n' +
+      ` expected_tables as (select * from pg_catalog.jsonb_to_recordset((select doc->'tables' from contract)) as x(name text,read boolean,"insert" boolean,updates text[])),\n` +
+      " expected_functions as (select * from pg_catalog.jsonb_to_recordset((select doc->'functions' from contract)) as x(signature text,definer boolean,execute boolean)),\n" +
+      ` expected_triggers as (select * from pg_catalog.jsonb_to_recordset((select doc->'triggers' from contract)) as x("table" text,name text,"function" text,type integer,deferred boolean)),\n` +
+      ` expected_constraints as (select * from pg_catalog.jsonb_to_recordset((select doc->'constraints' from contract)) as x("table" text,name text,type text)),\n` +
+      ` expected_policies as (select * from pg_catalog.jsonb_to_recordset((select doc->'policies' from contract)) as x("table" text,name text,permissive boolean,command text)),\n` +
+      ' schemas as (select * from pg_catalog.pg_namespace where nspname=any($2::text[])),\n' +
+      " tables as (select c.*,n.nspname||'.'||c.relname as full_name from pg_catalog.pg_class c join schemas n on n.oid=c.relnamespace where c.relkind in ('r','p','v','m','f','S')),\n" +
+      ' functions as (select p.*,r.rolsuper,r.rolbypassrls,r.rolname as owner_name,\n' +
+      "  n.nspname||'.'||p.proname||'('||pg_catalog.oidvectortypes(p.proargtypes)||')' as signature\n" +
+      '  from pg_catalog.pg_proc p join schemas n on n.oid=p.pronamespace join pg_catalog.pg_roles r on r.oid=p.proowner),\n' +
+      " app as (select oid from pg_catalog.pg_roles where rolname='helpdesk_app'),\n" +
+      " clients as (select oid from pg_catalog.pg_roles where rolname in ('anon','authenticated','service_role'))\n" +
+      ' select\n' +
+      " (select count(*)::integer from tables where relkind='r') as table_count,\n" +
+      ' (select count(*)::integer from tables where not relrowsecurity or not relforcerowsecurity) as unsafe_tables,\n' +
+      " exists(select 1 from schemas n cross join lateral pg_catalog.aclexplode(coalesce(n.nspacl,pg_catalog.acldefault('n',n.nspowner))) a where a.grantee=0) as public_schema_access,\n" +
+      " exists(select 1 from schemas n cross join clients r where pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE,CREATE')) as client_schema_access,\n" +
+      " exists(select 1 from functions p cross join lateral pg_catalog.aclexplode(coalesce(p.proacl,pg_catalog.acldefault('f',p.proowner))) a where a.grantee=0 and a.privilege_type='EXECUTE') as public_helper_execute,\n" +
+      ' ((select count(*) from schemas)=4 and not exists(select 1 from schemas n\n' +
+      "  where not pg_catalog.has_schema_privilege(current_user,n.oid,'USAGE')\n" +
+      "   or pg_catalog.has_schema_privilege(current_user,n.oid,'CREATE,USAGE WITH GRANT OPTION'))) as schema_contract_ok,\n" +
+      ' (not exists(select 1 from expected_tables e full join tables t on t.full_name=e.name\n' +
+      "  where e.name is null or t.oid is null or t.relkind<>'r')) as table_contract_ok,\n" +
+      ' (not exists(select 1 from tables t join expected_tables e on e.name=t.full_name where\n' +
+      "  pg_catalog.has_table_privilege(current_user,t.oid,'SELECT') is distinct from e.read\n" +
+      `  or pg_catalog.has_table_privilege(current_user,t.oid,'INSERT') is distinct from e."insert"\n` +
+      "  or pg_catalog.has_table_privilege(current_user,t.oid,'UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN')\n" +
+      "  or pg_catalog.has_table_privilege(current_user,t.oid,'SELECT WITH GRANT OPTION,INSERT WITH GRANT OPTION,UPDATE WITH GRANT OPTION'))\n" +
+      '  ) as table_privileges_ok,\n' +
+      ' (not exists(select 1 from tables t join expected_tables e on e.name=t.full_name\n' +
+      '  join pg_catalog.pg_attribute a on a.attrelid=t.oid and a.attnum>0 and not a.attisdropped where\n' +
+      "  pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'SELECT') is distinct from e.read\n" +
+      `  or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'INSERT') is distinct from e."insert"\n` +
+      "  or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'UPDATE') is distinct from (a.attname=any(e.updates))\n" +
+      "  or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'REFERENCES,SELECT WITH GRANT OPTION,INSERT WITH GRANT OPTION,UPDATE WITH GRANT OPTION'))\n" +
+      '  ) as column_privileges_ok,\n' +
+      ' (not exists(select 1 from tables t cross join clients r where\n' +
+      "   pg_catalog.has_table_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN')\n" +
+      "   or pg_catalog.has_any_column_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,REFERENCES'))\n" +
+      "  and not exists(select 1 from functions p cross join clients r where pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE'))\n" +
+      "  and not exists(select 1 from tables t cross join lateral pg_catalog.aclexplode(coalesce(t.relacl,pg_catalog.acldefault('r',t.relowner))) a where a.grantee=0)\n" +
+      '  and not exists(select 1 from tables t join pg_catalog.pg_attribute c on c.attrelid=t.oid\n' +
+      '   cross join lateral pg_catalog.aclexplode(c.attacl) a where a.grantee=0)) as client_object_privileges_ok,\n' +
+      ' (not exists(select 1 from expected_functions e full join functions p on p.signature=e.signature\n' +
+      "  where e.signature is null or p.oid is null or p.prokind<>'f' or p.prosecdef is distinct from e.definer)) as helper_contract_ok,\n" +
+      ' (not exists(select 1 from functions p join expected_functions e on e.signature=p.signature\n' +
+      "  where pg_catalog.has_function_privilege(current_user,p.oid,'EXECUTE') is distinct from e.execute\n" +
+      "   or pg_catalog.has_function_privilege(current_user,p.oid,'EXECUTE WITH GRANT OPTION'))) as helper_privileges_ok,\n" +
+      " (not exists(select 1 from functions p where p.owner_name='helpdesk_app'\n" +
+      `  or not coalesce(p.proconfig @> array['search_path=""'] or p.proconfig @> array['search_path='],false)\n` +
+      '  or (p.prosecdef and not (p.rolsuper or p.rolbypassrls)))) as helper_settings_ok,\n' +
+      ' (not exists(select 1 from expected_triggers e left join tables t on t.full_name=e."table"\n' +
+      '  left join pg_catalog.pg_trigger g on g.tgrelid=t.oid and g.tgname=e.name\n' +
+      "  left join functions p on p.oid=g.tgfoid where g.oid is null or g.tgenabled not in ('O','A')\n" +
+      '   or g.tgisinternal or g.tgtype<>e.type or g.tgdeferrable is distinct from e.deferred\n' +
+      '   or g.tginitdeferred is distinct from e.deferred or p.signature is distinct from e."function")\n' +
+      "  and not exists(select 1 from pg_catalog.pg_trigger g join tables t on t.oid=g.tgrelid where g.tgenabled not in ('O','A'))) as trigger_contract_ok,\n" +
+      ' (not exists(select 1 from expected_constraints e left join tables t on t.full_name=e."table"\n' +
+      '  left join pg_catalog.pg_constraint c on c.conrelid=t.oid and c.conname=e.name\n' +
+      '  where c.oid is null or c.contype::text<>e.type or not c.convalidated)\n' +
+      '  and not exists(select 1 from pg_catalog.pg_constraint c join tables t on t.oid=c.conrelid where not c.convalidated)) as constraint_contract_ok,\n' +
+      ' (not exists(select 1 from pg_catalog.pg_index i join tables t on t.oid=i.indrelid where not i.indisvalid or not i.indisready)\n' +
+      '  and exists(select 1 from pg_catalog.pg_index i join pg_catalog.pg_class x on x.oid=i.indexrelid\n' +
+      "   join tables t on t.oid=i.indrelid where t.full_name='helpdesk_core.ticket_events' and x.relname='assignment_event_version'\n" +
+      '    and i.indisunique and i.indisvalid and i.indisready)) as index_contract_ok,\n' +
+      ' ((select count(*) from pg_catalog.pg_policy p join tables t on t.oid=p.polrelid)=(select count(*) from expected_policies)\n' +
+      '  and not exists(select 1 from expected_policies e left join tables t on t.full_name=e."table"\n' +
+      '   left join pg_catalog.pg_policy p on p.polrelid=t.oid and p.polname=e.name where p.oid is null\n' +
+      '    or p.polpermissive is distinct from e.permissive or p.polcmd::text<>e.command\n' +
+      '    or p.polroles is distinct from array[(select oid from app)]::oid[])) as policy_contract_ok,\n' +
+      " (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999\n" +
+      "  and pg_catalog.current_setting('row_security')='on'\n" +
+      "  and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok"
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    with
+     contract as (select $1::jsonb as doc),
+     expected_tables as (select * from pg_catalog.jsonb_to_recordset((select doc->'tables' from contract)) as x(name text,read boolean,"insert" boolean,updates text[])),
+     expected_functions as (select * from pg_catalog.jsonb_to_recordset((select doc->'functions' from contract)) as x(signature text,definer boolean,execute boolean)),
+     expected_triggers as (select * from pg_catalog.jsonb_to_recordset((select doc->'triggers' from contract)) as x("table" text,name text,"function" text,type integer,deferred boolean)),
+     expected_constraints as (select * from pg_catalog.jsonb_to_recordset((select doc->'constraints' from contract)) as x("table" text,name text,type text)),
+     expected_policies as (select * from pg_catalog.jsonb_to_recordset((select doc->'policies' from contract)) as x("table" text,name text,permissive boolean,command text)),
+     schemas as (select * from pg_catalog.pg_namespace where nspname=any($2::text[])),
+     tables as (select c.*,n.nspname||'.'||c.relname as full_name from pg_catalog.pg_class c join schemas n on n.oid=c.relnamespace where c.relkind in ('r','p','v','m','f','S')),
+     functions as (select p.*,r.rolsuper,r.rolbypassrls,r.rolname as owner_name,
+      n.nspname||'.'||p.proname||'('||pg_catalog.oidvectortypes(p.proargtypes)||')' as signature
+      from pg_catalog.pg_proc p join schemas n on n.oid=p.pronamespace join pg_catalog.pg_roles r on r.oid=p.proowner),
+     app as (select oid from pg_catalog.pg_roles where rolname='helpdesk_app'),
+     clients as (select oid from pg_catalog.pg_roles where rolname in ('anon','authenticated','service_role'))
+     select
+     (select count(*)::integer from tables where relkind='r') as table_count,
+     (select count(*)::integer from tables where not relrowsecurity or not relforcerowsecurity) as unsafe_tables,
+     exists(select 1 from schemas n cross join lateral pg_catalog.aclexplode(coalesce(n.nspacl,pg_catalog.acldefault('n',n.nspowner))) a where a.grantee=0) as public_schema_access,
+     exists(select 1 from schemas n cross join clients r where pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE,CREATE')) as client_schema_access,
+     exists(select 1 from functions p cross join lateral pg_catalog.aclexplode(coalesce(p.proacl,pg_catalog.acldefault('f',p.proowner))) a where a.grantee=0 and a.privilege_type='EXECUTE') as public_helper_execute,
+     ((select count(*) from schemas)=4 and not exists(select 1 from schemas n
+      where not pg_catalog.has_schema_privilege(current_user,n.oid,'USAGE')
+       or pg_catalog.has_schema_privilege(current_user,n.oid,'CREATE,USAGE WITH GRANT OPTION'))) as schema_contract_ok,
+     (not exists(select 1 from expected_tables e full join tables t on t.full_name=e.name
+      where e.name is null or t.oid is null or t.relkind<>'r')) as table_contract_ok,
+     (not exists(select 1 from tables t join expected_tables e on e.name=t.full_name where
+      pg_catalog.has_table_privilege(current_user,t.oid,'SELECT') is distinct from e.read
+      or pg_catalog.has_table_privilege(current_user,t.oid,'INSERT') is distinct from e."insert"
+      or pg_catalog.has_table_privilege(current_user,t.oid,'UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN')
+      or pg_catalog.has_table_privilege(current_user,t.oid,'SELECT WITH GRANT OPTION,INSERT WITH GRANT OPTION,UPDATE WITH GRANT OPTION'))
+      ) as table_privileges_ok,
+     (not exists(select 1 from tables t join expected_tables e on e.name=t.full_name
+      join pg_catalog.pg_attribute a on a.attrelid=t.oid and a.attnum>0 and not a.attisdropped where
+      pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'SELECT') is distinct from e.read
+      or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'INSERT') is distinct from e."insert"
+      or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'UPDATE') is distinct from (a.attname=any(e.updates))
+      or pg_catalog.has_column_privilege(current_user,t.oid,a.attnum,'REFERENCES,SELECT WITH GRANT OPTION,INSERT WITH GRANT OPTION,UPDATE WITH GRANT OPTION'))
+      ) as column_privileges_ok,
+     (not exists(select 1 from tables t cross join clients r where
+       pg_catalog.has_table_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN')
+       or pg_catalog.has_any_column_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,REFERENCES'))
+      and not exists(select 1 from functions p cross join clients r where pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE'))
+      and not exists(select 1 from tables t cross join lateral pg_catalog.aclexplode(coalesce(t.relacl,pg_catalog.acldefault('r',t.relowner))) a where a.grantee=0)
+      and not exists(select 1 from tables t join pg_catalog.pg_attribute c on c.attrelid=t.oid
+       cross join lateral pg_catalog.aclexplode(c.attacl) a where a.grantee=0)) as client_object_privileges_ok,
+     (not exists(select 1 from expected_functions e full join functions p on p.signature=e.signature
+      where e.signature is null or p.oid is null or p.prokind<>'f' or p.prosecdef is distinct from e.definer)) as helper_contract_ok,
+     (not exists(select 1 from functions p join expected_functions e on e.signature=p.signature
+      where pg_catalog.has_function_privilege(current_user,p.oid,'EXECUTE') is distinct from e.execute
+       or pg_catalog.has_function_privilege(current_user,p.oid,'EXECUTE WITH GRANT OPTION'))) as helper_privileges_ok,
+     (not exists(select 1 from functions p where p.owner_name='helpdesk_app'
+      or not coalesce(p.proconfig @> array['search_path=""'] or p.proconfig @> array['search_path='],false)
+      or (p.prosecdef and not (p.rolsuper or p.rolbypassrls)))) as helper_settings_ok,
+     (not exists(select 1 from expected_triggers e left join tables t on t.full_name=e."table"
+      left join pg_catalog.pg_trigger g on g.tgrelid=t.oid and g.tgname=e.name
+      left join functions p on p.oid=g.tgfoid where g.oid is null or g.tgenabled not in ('O','A')
+       or g.tgisinternal or g.tgtype<>e.type or g.tgdeferrable is distinct from e.deferred
+       or g.tginitdeferred is distinct from e.deferred or p.signature is distinct from e."function")
+      and not exists(select 1 from pg_catalog.pg_trigger g join tables t on t.oid=g.tgrelid where g.tgenabled not in ('O','A'))) as trigger_contract_ok,
+     (not exists(select 1 from expected_constraints e left join tables t on t.full_name=e."table"
+      left join pg_catalog.pg_constraint c on c.conrelid=t.oid and c.conname=e.name
+      where c.oid is null or c.contype::text<>e.type or not c.convalidated)
+      and not exists(select 1 from pg_catalog.pg_constraint c join tables t on t.oid=c.conrelid where not c.convalidated)) as constraint_contract_ok,
+     (not exists(select 1 from pg_catalog.pg_index i join tables t on t.oid=i.indrelid where not i.indisvalid or not i.indisready)
+      and exists(select 1 from pg_catalog.pg_index i join pg_catalog.pg_class x on x.oid=i.indexrelid
+       join tables t on t.oid=i.indrelid where t.full_name='helpdesk_core.ticket_events' and x.relname='assignment_event_version'
+        and i.indisunique and i.indisvalid and i.indisready)) as index_contract_ok,
+     ((select count(*) from pg_catalog.pg_policy p join tables t on t.oid=p.polrelid)=(select count(*) from expected_policies)
+      and not exists(select 1 from expected_policies e left join tables t on t.full_name=e."table"
+       left join pg_catalog.pg_policy p on p.polrelid=t.oid and p.polname=e.name where p.oid is null
+        or p.polpermissive is distinct from e.permissive or p.polcmd::text<>e.command
+        or p.polroles is distinct from array[(select oid from app)]::oid[])) as policy_contract_ok,
+     (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999
+      and pg_catalog.current_setting('row_security')='on'
+      and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-contract.test.ts:19:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: migration010 extends the nine originals without replacing their hashes
+not ok 5 - migration010 extends the nine originals without replacing their hashes
+  ---
+  duration_ms: 8.832505
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-contract.test.ts:21:1'
+  failureType: 'testCodeFailure'
+  error: 'Migration bundle is invalid or changed. Review the manifest and candidate files before executing SQL.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    invalid (file:///mnt/data/helpdesk-work/scripts/migration-files.ts:12:33)
+    loadMigrationBundle (file:///mnt/data/helpdesk-work/scripts/migration-files.ts:53:16)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-contract.test.ts:22:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effect SQL binds the actual top-level transaction, not caller IDs or xmin
+ok 6 - effect SQL binds the actual top-level transaction, not caller IDs or xmin
+  ---
+  duration_ms: 2.097897
+  type: 'test'
+  ...
+# Subtest: effect SQL never backfills historical effects or adds a runtime read policy
+ok 7 - effect SQL never backfills historical effects or adds a runtime read policy
+  ---
+  duration_ms: 1.334442
+  type: 'test'
+  ...
+# (node:2767) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: effects: silently lost event rolls back create and idempotency
+ok 8 - effects: silently lost event rolls back create and idempotency
+  ---
+  duration_ms: 4.683819
+  type: 'test'
+  ...
+# Subtest: effects: complete create commits exactly one new event
+ok 9 - effects: complete create commits exactly one new event
+  ---
+  duration_ms: 0.671216
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back message and idempotency
+ok 10 - effects: silently lost event rolls back message and idempotency
+  ---
+  duration_ms: 0.833409
+  type: 'test'
+  ...
+# Subtest: effects: complete message commits exactly one new event
+ok 11 - effects: complete message commits exactly one new event
+  ---
+  duration_ms: 0.330975
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back note and idempotency
+ok 12 - effects: silently lost event rolls back note and idempotency
+  ---
+  duration_ms: 0.744542
+  type: 'test'
+  ...
+# Subtest: effects: complete note commits exactly one new event
+ok 13 - effects: complete note commits exactly one new event
+  ---
+  duration_ms: 0.289178
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back transition and idempotency
+ok 14 - effects: silently lost event rolls back transition and idempotency
+  ---
+  duration_ms: 0.709396
+  type: 'test'
+  ...
+# Subtest: effects: complete transition commits exactly one new event
+ok 15 - effects: complete transition commits exactly one new event
+  ---
+  duration_ms: 0.821971
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back priority and idempotency
+ok 16 - effects: silently lost event rolls back priority and idempotency
+  ---
+  duration_ms: 1.143074
+  type: 'test'
+  ...
+# Subtest: effects: complete priority commits exactly one new event
+ok 17 - effects: complete priority commits exactly one new event
+  ---
+  duration_ms: 2.736289
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back assignment and idempotency
+ok 18 - effects: silently lost event rolls back assignment and idempotency
+  ---
+  duration_ms: 1.208434
+  type: 'test'
+  ...
+# Subtest: effects: complete assignment commits exactly one new event
+ok 19 - effects: complete assignment commits exactly one new event
+  ---
+  duration_ms: 0.624292
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back create
+ok 20 - effects: silently lost outbox rolls back create
+  ---
+  duration_ms: 1.099605
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back message
+ok 21 - effects: silently lost outbox rolls back message
+  ---
+  duration_ms: 0.618727
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back transition
+ok 22 - effects: silently lost outbox rolls back transition
+  ---
+  duration_ms: 0.519366
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back priority
+ok 23 - effects: silently lost outbox rolls back priority
+  ---
+  duration_ms: 0.490349
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption account
+ok 24 - effects: rejects event corruption account
+  ---
+  duration_ms: 0.722091
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption actor
+ok 25 - effects: rejects event corruption actor
+  ---
+  duration_ms: 0.601452
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption data
+ok 26 - effects: rejects event corruption data
+  ---
+  duration_ms: 0.570659
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption duplicate
+ok 27 - effects: rejects event corruption duplicate
+  ---
+  duration_ms: 1.193227
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption private
+ok 28 - effects: rejects event corruption private
+  ---
+  duration_ms: 0.374967
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption version
+ok 29 - effects: rejects outbox corruption version
+  ---
+  duration_ms: 0.649549
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption body
+ok 30 - effects: rejects outbox corruption body
+  ---
+  duration_ms: 0.328831
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption type
+ok 31 - effects: rejects outbox corruption type
+  ---
+  duration_ms: 0.217501
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption duplicate
+ok 32 - effects: rejects outbox corruption duplicate
+  ---
+  duration_ms: 0.185144
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption id
+ok 33 - effects: rejects outbox corruption id
+  ---
+  duration_ms: 0.228039
+  type: 'test'
+  ...
+# Subtest: effects: parent version cannot advance without public message
+ok 34 - effects: parent version cannot advance without public message
+  ---
+  duration_ms: 0.328397
+  type: 'test'
+  ...
+# Subtest: effects: note may not leave an external event
+ok 35 - effects: note may not leave an external event
+  ---
+  duration_ms: 0.393073
+  type: 'test'
+  ...
+# Subtest: effects: earlier event cannot replace a new event of the same type
+ok 36 - effects: earlier event cannot replace a new event of the same type
+  ---
+  duration_ms: 0.588823
+  type: 'test'
+  ...
+# Subtest: effects: reenvio adds no event/outbox and returns original answer
+ok 37 - effects: reenvio adds no event/outbox and returns original answer
+  ---
+  duration_ms: 0.85652
+  type: 'test'
+  ...
+# Subtest: effects: orphan event cannot be committed independently
+ok 38 - effects: orphan event cannot be committed independently
+  ---
+  duration_ms: 0.438109
+  type: 'test'
+  ...
+# Subtest: effects: multiple complete commands may commit together with their own versions
+ok 39 - effects: multiple complete commands may commit together with their own versions
+  ---
+  duration_ms: 0.643333
+  type: 'test'
+  ...
+# Subtest: effects: missing parent version advance leaves the message transaction incomplete
+ok 40 - effects: missing parent version advance leaves the message transaction incomplete
+  ---
+  duration_ms: 0.349378
+  type: 'test'
+  ...
+# Subtest: effects: a status event cannot legitimize an unsupported subject change
+not ok 41 - effects: a status event cannot legitimize an unsupported subject change
+  ---
+  duration_ms: 0.895667
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:62:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:64:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 35
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 244.414796

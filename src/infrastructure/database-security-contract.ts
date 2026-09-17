@@ -1,9 +1,9 @@
-/** Reviewed catalogue contract for schema 0.15.0.
+/** Reviewed catalogue contract for schema 0.16.0.
  * Metadata checks do NOT attest to function/policy/constraint expressions.
  * Not generated at runtime, not accepted from HTTP, never used for auto-repair.
  */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.15.0",
+  "schemaVersion": "0.16.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -157,6 +157,12 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_auth.human_scope_versions",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.write_effects",
       "read": false,
       "insert": false,
       "updates": []
@@ -316,6 +322,31 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "signature": "helpdesk_auth.set_human_scopes(uuid, uuid, text[], integer, text, uuid)",
       "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_audit.record_ticket_effect()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_audit.record_conversation_effect()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_audit.bind_effect_event()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_audit.bind_effect_outbox()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_audit.require_write_effect()",
+      "definer": true,
       "execute": false
     }
   ],
@@ -573,6 +604,48 @@ export const DATABASE_SECURITY_CONTRACT = {
       "function": "helpdesk_auth.guard_human_scope_version()",
       "type": 27,
       "deferred": false
+    },
+    {
+      "table": "helpdesk_core.tickets",
+      "name": "record_ticket_effect",
+      "function": "helpdesk_audit.record_ticket_effect()",
+      "type": 21,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.ticket_messages",
+      "name": "record_message_effect",
+      "function": "helpdesk_audit.record_conversation_effect()",
+      "type": 5,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.internal_notes",
+      "name": "record_note_effect",
+      "function": "helpdesk_audit.record_conversation_effect()",
+      "type": 5,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.ticket_events",
+      "name": "bind_write_effect_event",
+      "function": "helpdesk_audit.bind_effect_event()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.outbox_events",
+      "name": "bind_write_effect_outbox",
+      "function": "helpdesk_audit.bind_effect_outbox()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "complete_write_effect",
+      "function": "helpdesk_audit.require_write_effect()",
+      "type": 5,
+      "deferred": true
     }
   ],
   "constraints": [
@@ -665,6 +738,46 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_auth.human_scope_versions",
       "name": "human_scope_shape",
       "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effects_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effects_actor_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_ticket_fk",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_version_positive",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_kind",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_data_shape",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_source_kind",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.write_effects",
+      "name": "write_effect_event_unique",
+      "type": "u"
     }
   ]
 } as const;

@@ -54,6 +54,7 @@ export const ERROR_CODES=new Set([
  'session_quota_exceeded',
  'session_required',
  'transaction_outcome_unknown',
+ 'transaction_effect_mismatch',
  'trusted_client_ip_required',
  'unauthorized',
  'unclassified_error',

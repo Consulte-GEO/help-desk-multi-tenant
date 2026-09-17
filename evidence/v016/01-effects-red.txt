@@ -1,0 +1,581 @@
+TAP version 13
+# (node:1742) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: effects: silently lost event rolls back create and idempotency
+not ok 1 - effects: silently lost event rolls back create and idempotency
+  ---
+  duration_ms: 5.593203
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: effects: complete create commits exactly one new event
+ok 2 - effects: complete create commits exactly one new event
+  ---
+  duration_ms: 0.76843
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back message and idempotency
+not ok 3 - effects: silently lost event rolls back message and idempotency
+  ---
+  duration_ms: 0.729239
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: complete message commits exactly one new event
+ok 4 - effects: complete message commits exactly one new event
+  ---
+  duration_ms: 0.630358
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back note and idempotency
+not ok 5 - effects: silently lost event rolls back note and idempotency
+  ---
+  duration_ms: 1.031899
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: complete note commits exactly one new event
+ok 6 - effects: complete note commits exactly one new event
+  ---
+  duration_ms: 0.330506
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back transition and idempotency
+not ok 7 - effects: silently lost event rolls back transition and idempotency
+  ---
+  duration_ms: 0.718337
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: complete transition commits exactly one new event
+ok 8 - effects: complete transition commits exactly one new event
+  ---
+  duration_ms: 0.346149
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back priority and idempotency
+not ok 9 - effects: silently lost event rolls back priority and idempotency
+  ---
+  duration_ms: 2.028538
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'precondition_required'
+    -   code: 'transaction_effect_mismatch'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  actual:
+  error: 'Informe a versão atual em If-Match.'
+  stack: |-
+    priorityChangeInput (file:///mnt/data/helpdesk-work/src/application/ticket-priority.ts:10:9)
+    HelpdeskService.changePriority (file:///mnt/data/helpdesk-work/src/application/helpdesk.ts:114:15)
+    priority (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:15:34)
+    assert.rejects.code (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:28)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: complete priority commits exactly one new event
+not ok 10 - effects: complete priority commits exactly one new event
+  ---
+  duration_ms: 0.463051
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: 'Informe a versão atual em If-Match.'
+  code: 'precondition_required'
+  name: 'HelpdeskError'
+  stack: |-
+    priorityChangeInput (file:///mnt/data/helpdesk-work/src/application/ticket-priority.ts:10:9)
+    HelpdeskService.changePriority (file:///mnt/data/helpdesk-work/src/application/helpdesk.ts:114:15)
+    priority (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:15:34)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:24:36)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: silently lost event rolls back assignment and idempotency
+not ok 11 - effects: silently lost event rolls back assignment and idempotency
+  ---
+  duration_ms: 0.750106
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:19:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'precondition_required'
+    -   code: 'transaction_effect_mismatch'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  actual:
+  error: 'Informe a versão atual em If-Match.'
+  stack: |-
+    assignmentChangeInput (file:///mnt/data/helpdesk-work/src/application/ticket-assignment.ts:10:9)
+    HelpdeskService.changeAssignment (file:///mnt/data/helpdesk-work/src/application/helpdesk.ts:132:15)
+    assignment (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:16:36)
+    assert.rejects.code (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:28)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:21:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: complete assignment commits exactly one new event
+not ok 12 - effects: complete assignment commits exactly one new event
+  ---
+  duration_ms: 0.144325
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:23:2'
+  failureType: 'testCodeFailure'
+  error: 'Informe a versão atual em If-Match.'
+  code: 'precondition_required'
+  name: 'HelpdeskError'
+  stack: |-
+    assignmentChangeInput (file:///mnt/data/helpdesk-work/src/application/ticket-assignment.ts:10:9)
+    HelpdeskService.changeAssignment (file:///mnt/data/helpdesk-work/src/application/helpdesk.ts:132:15)
+    assignment (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:16:36)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:24:36)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: silently lost outbox rolls back create
+not ok 13 - effects: silently lost outbox rolls back create
+  ---
+  duration_ms: 0.593224
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:147)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: silently lost outbox rolls back message
+not ok 14 - effects: silently lost outbox rolls back message
+  ---
+  duration_ms: 0.36416
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:147)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: silently lost outbox rolls back transition
+not ok 15 - effects: silently lost outbox rolls back transition
+  ---
+  duration_ms: 0.649153
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:147)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: silently lost outbox rolls back priority
+not ok 16 - effects: silently lost outbox rolls back priority
+  ---
+  duration_ms: 0.384788
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:2'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'precondition_required'
+    -   code: 'transaction_effect_mismatch'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  actual:
+  error: 'Informe a versão atual em If-Match.'
+  stack: |-
+    priorityChangeInput (file:///mnt/data/helpdesk-work/src/application/ticket-priority.ts:10:9)
+    HelpdeskService.changePriority (file:///mnt/data/helpdesk-work/src/application/helpdesk.ts:114:15)
+    Object.priority (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:15:34)
+    assert.rejects.code (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:186)
+    waitForActual (node:assert:552:21)
+    Function.rejects (node:assert:687:31)
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:160)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:29:147)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects event corruption account
+not ok 17 - effects: rejects event corruption account
+  ---
+  duration_ms: 0.548736
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:32:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:34:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects event corruption actor
+not ok 18 - effects: rejects event corruption actor
+  ---
+  duration_ms: 0.316174
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:32:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:34:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects event corruption data
+not ok 19 - effects: rejects event corruption data
+  ---
+  duration_ms: 0.437105
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:32:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:34:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects event corruption duplicate
+not ok 20 - effects: rejects event corruption duplicate
+  ---
+  duration_ms: 0.385834
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:32:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:34:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects event corruption private
+not ok 21 - effects: rejects event corruption private
+  ---
+  duration_ms: 0.31451
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:32:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:34:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects outbox corruption version
+not ok 22 - effects: rejects outbox corruption version
+  ---
+  duration_ms: 0.636859
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:40:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects outbox corruption body
+not ok 23 - effects: rejects outbox corruption body
+  ---
+  duration_ms: 0.543816
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:40:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects outbox corruption type
+not ok 24 - effects: rejects outbox corruption type
+  ---
+  duration_ms: 1.174719
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:40:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects outbox corruption duplicate
+not ok 25 - effects: rejects outbox corruption duplicate
+  ---
+  duration_ms: 0.35214
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:40:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: rejects outbox corruption id
+not ok 26 - effects: rejects outbox corruption id
+  ---
+  duration_ms: 0.23816
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:38:2'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:40:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: parent version cannot advance without public message
+not ok 27 - effects: parent version cannot advance without public message
+  ---
+  duration_ms: 0.25405
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:43:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:43:120)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: note may not leave an external event
+not ok 28 - effects: note may not leave an external event
+  ---
+  duration_ms: 0.513292
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:44:297)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: earlier event cannot replace a new event of the same type
+not ok 29 - effects: earlier event cannot replace a new event of the same type
+  ---
+  duration_ms: 0.588674
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:45:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:45:264)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: effects: reenvio adds no event/outbox and returns original answer
+ok 30 - effects: reenvio adds no event/outbox and returns original answer
+  ---
+  duration_ms: 1.344736
+  type: 'test'
+  ...
+# Subtest: effects: orphan event cannot be committed independently
+not ok 31 - effects: orphan event cannot be committed independently
+  ---
+  duration_ms: 0.458296
+  type: 'test'
+  location: '/mnt/data/helpdesk-work/tests/v016-effects.test.ts:47:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'transaction_effect_mismatch'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-work/tests/v016-effects.test.ts:47:166)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 5
+# fail 26
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 222.275005

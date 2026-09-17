@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "schemaVersion": "0.15.0",
+  "migrations": [
+    {
+      "file": "20260915000100_restrict_existing_definer.sql",
+      "sha256": "b98618ba0c23b1f126119e159324ad4576358798d8fb6e6fb09553ffdc7f3607"
+    },
+    {
+      "file": "20260915000200_helpdesk_foundation.sql",
+      "sha256": "ede5ab9756781e396e0065c0124f5bf1c698ea53fc72aef067582221b65b7ccc"
+    },
+    {
+      "file": "20260915000300_m1_authorization.sql",
+      "sha256": "aee3c4a82c791c0519719884e2e0ad0fe15f7fbff4afe0e9f552559959ae279c"
+    },
+    {
+      "file": "20260915000400_m1_resource_limits.sql",
+      "sha256": "3448a0c925bac1477183b01858180c12bce44dd4999f23122db0bae2c2185f11"
+    },
+    {
+      "file": "20260916000500_m1_session_lifecycle.sql",
+      "sha256": "cc862fb5f5259344be73c606a94b816a5dd964915a2a7397fbdd3003c27f0a32"
+    },
+    {
+      "file": "20260916000600_support_catalog.sql",
+      "sha256": "f5c30d4fce3c7671c4b946704e57bbd0139c10936e93e48dcbc77b2c214cb979"
+    },
+    {
+      "file": "20260916000700_ticket_priority.sql",
+      "sha256": "4d8065d139c66d7256d555cac0c56a32d1a0ee027d6471bbcddcbb77399cf637"
+    },
+    {
+      "file": "20260916000800_ticket_assignment.sql",
+      "sha256": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348"
+    },
+    {
+      "file": "20260917000900_human_scope_versions.sql",
+      "sha256": "016562a019a745b8e8953aa32a232fda8b06163b02cb9ca5c40a5536fff064cd"
+    }
+  ]
+}

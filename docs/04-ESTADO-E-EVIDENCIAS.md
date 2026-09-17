@@ -1,65 +1,57 @@
-# Help Desk v0.15.0 — Estado e evidências
+# Help Desk v0.16.0 — Estado e evidências
 
-**Entrega local, não publicada. O M1 permanece aberto.** A base é a v0.14.0, commit `503f1b0d3db59cb373d492bf7434d908ce6522dd`. A branch é `work/helpdesk-v0.15.0`. As verificações ocorreram em 17 de setembro de 2026; os logs usam UTC. O manifesto externo e o bundle identificam o commit final.
+**Entrega local, não publicada. M1 permanece aberto.** Base v0.15.0 `b3f70538370704489e01f12545ee578d6b28c84b`; branch `work/helpdesk-v0.16.0`. Logs UTC de17/09/2026 em `evidence/v016/`. Hash final no manifesto externo e bundle.
 
-## 1. Desenvolvimento desta rodada
+## Implementação
 
-R14-04 e R14-05 receberam implementação candidata: capacidades humanas versionadas por pessoa e workspace, função de consulta compartilhada entre a resolução de identidade e o RLS, ausência de perfil sem permissões e histórico privado com revisão esperada. A migration realiza uma carga inicial única das relações humanas legadas ativas, preservando as cinco capacidades anteriores.
+R14-06: modelo executável de efeitos por transação integrado ao adaptador de memória e migration010 candidata. O banco produzirá registros privados a partir das escritas reais; evento e outbox pública devem corresponder ao recurso, ator, tipo, versão e transação. Triggers privados vinculam os pares e uma constraint diferida exige conclusão antes do COMMIT. Nota/atribuição continuam internas, sem outbox. Reenvio/no-op não produzem novos efeitos. Não há processamento/envio de notificações.
 
-O setter SQL é `SECURITY INVOKER` e não pode ser executado pelo login HTTP. A ferramenta de linha de comando gera um plano de provisionamento parametrizado, sem conectar ou executar SQL. O acesso a cada conta continua dependente de vínculo, papel e recurso. Nenhuma interface administrativa foi entregue.
+**API/schema candidato0.16.0;10 migrations/25 tabelas/36 funções/18 triggers;18 operaçõesHTTP/14 caminhos.** Nove migrations anteriores preservadas byte a byte. Nenhuma dependência, endpoint, funcionalidade de interface ou privilégio direto do runtime foi adicionado. O novo ledger privado não copia corpos/motivos e não certifica registros antigos. Retenção e custo precisam de homologação.
 
-A recuperação do recibo da própria nota exige `tickets:read`, `notes:write` e condição de operador. A consulta da coleção privada continua exigindo `notes:read`. Namespace, integridade dos reenvios e prazos do cache foram preservados. O contrato compartilhado recusa listas de capacidades desconhecidas, repetidas, nulas ou com posições ausentes. A verificação de inicialização também deixou de usar a quantidade fixa de 23 tabelas e passou a consultar o inventário central.
+## Verificações executadas
 
-**API, interface e schema candidato: 0.15.0.** São nove migrations, 24 tabelas e 18 operações em 14 caminhos HTTP. A migration 009 é nova; as oito anteriores estão intactas. Não foi adicionada dependência ou rota. Na interface, houve apenas atualização da indicação de versão.
-
-## 2. Resultados efetivamente executados
-
-Os caminhos abaixo são relativos ao repositório.
-
-| Verificação | Resultado e alcance | Evidência |
+| Verificação | Resultado / alcance | Evidência em evidence/v016/ |
 |---|---|---|
-| Base anterior | 868 testes aprovados antes das alterações. | `evidence/v015/00-baseline-tests.txt` |
-| Suíte local final | **905 aprovados**, zero falhas, cancelados, ignorados ou TODO; 37 novos. | `evidence/v015/final-tests.txt` |
-| HTTP de loopback | **35 verificações aprovadas**, usando memória e dados fictícios. | `evidence/v015/15-interface-attempt.txt` |
-| Plano offline | Saída parametrizada sobre exemplo fictício; nenhuma execução de banco. | `evidence/v015/example-scope-plan.json` |
-| Integridade das migrations | Oito arquivos anteriores idênticos ao Git base; nona migration incluída no manifesto. | `evidence/v015/migration-integrity.json` e `final-migrations.txt` |
-| TypeScript suplementar | Aprovado com ferramentas globais previamente instaladas. | `evidence/v015/final-typecheck-supplementary.txt` |
-| OpenAPI estrutural | 18 operações e 14 caminhos; referências e verificações estruturais. | `evidence/v015/final-contracts.txt` |
-| Sintaxe e build estático | 27 arquivos JavaScript, MJS e Python verificados; assets gerados. Não inclui Functions. | `evidence/v015/final-syntax.json` e `final-build.txt` |
-| Busca heurística de segredos | Nenhum padrão reconhecido; não equivale a pentest ou auditoria integral. | `evidence/v015/final-secrets.txt` |
-| Verificação padrão | **Falhou com código 2**, depois dos testes, por dependências e tipos locais ausentes. | `evidence/v015/16-verify-standard.txt` |
-| Homologação agregada e publicação | **Não aprovadas**. A ausência do lockfile bloqueia as etapas dependentes. | `evidence/v015/final-homologation.txt` e `final-release-gate.txt` |
+| Baseline v0.15 |905 testes aprovados antes de alterar|00-baseline-tests.txt|
+| Suíte local final |**950 aprovados**, zero falhas/cancelados/ignorados/TODO;45 novos|final-tests.txt|
+| HTTP de loopback |**35 checks aprovados**, domínio em memória|16-ui-repeat.txt|
+| Novos sockets de falha de efeitos |Três aprovados, já incluídos nos950|08-effects-http.txt,18-review-focused.txt|
+| Migrations |Dez arquivos conferidos; nove anteriores inalterados; não executa SQL|final-migrations.txt,migration-integrity.json|
+| TypeScript padrão |**Falhou(2)** por dependências/tipos locais ausentes|final-typecheck-standard.txt|
+| TypeScript suplementar |Aprovado com ferramentas globais; não é npm ci|final-typecheck-supplementary.txt,tool-versions.txt|
+| Verify padrão |**Falhou(2)** após migrations e950 testes, na checagem de tipos|final-verify-standard.txt|
+| OpenAPI estrutural |18 operações e referências verificadas; não conformidade integral|final-contracts.txt|
+| Sintaxe/build/scan |27 arquivos JS/Python verificados; build só estático; scanner heurístico sem padrão reconhecido|final-syntax.json,final-build.txt,final-secrets.txt|
+| Homologação agregada e publicação |**Não aprovadas**; lock falha e demais etapas dependentes ficam bloqueadas|final-homologation.txt,final-release-gate.txt|
 
-Os 37 novos testes correspondem a 22 casos do contrato e fluxo em memória, sete verificações estruturais e de prontidão e oito da ferramenta offline, com processos e arquivos locais. **Não são 37 testes de PostgreSQL.** Nenhum perfil foi configurado no Supabase. Os testes locais que usam adaptadores SQL empregam respostas controladas e não comprovam execução de funções, permissões ou RLS reais.
+Os950 incluem testes de domínio, HTTP, sockets sintéticos, fixtures, estado puro e orquestração controlada do driver. O modelo de efeitos em memória não executa o novo PL/pgSQL. Os checks de inventário e manifesto não comprovam funcionamento das policies, constraints, queries ou triggers reais.
 
-## 3. Regressões e revisão
+## Regressões e revisão
 
-O primeiro grupo teve 21 falhas antes da implementação, incluindo importações ausentes, e um fluxo existente aprovado. Os 22 passaram depois. As seis verificações estruturais da migration falharam pela ausência do arquivo e passaram depois de sua criação; isso não representa execução de SQL.
+- Primeira tentativa dos testes de omissão incluiu argumentos incorretos de comandos nos fixtures; esse log não foi apresentado como reprodução de26 falhas funcionais. Após ajustar a chamada para a assinatura existente:24 falhas/7passagens na base,31 aprovações após implementação.
+- Novo grupo de contrato + casos complementares:6 falhas/35 passagens antes de atualizar inventário/manifesto e proibir alteração lateral do assunto;41 aprovações depois.
+- Integração identificou quatro fixtures antigos com cardinalidade de tabelas/objetos anterior. Expectativas foram atualizadas, sem retirar os testes negativos.
+- Typecheck identificou narrowing de um efeito opcional, corrigido antes de reexecutar a checagem suplementar.
+- Revisão dos binders BEFORE INSERT levou à autorização explícita do pai antes de consultar metadados privados; políticas posteriores permanecem. O SQL não foi executado.
+- Teste local confirmou que uma rejeição diferida simulada durante COMMIT continua retornando transaction_outcome_unknown, conforme executor anterior. Um teste SQL antigo foi alinhado a esse contrato, preservando recusa e rollback. Testes de SQL direto continuam exigindo23514.
+- Primeira tentativaHTTP parou por release esperado0.15.0. Após atualizar para0.16.0,35HTTP passaram; navegador bloqueou.
 
-A regressão de prontidão apresentou seis aprovações e uma falha pelo limite antigo de 23 tabelas. Os sete testes passaram após a correção. A ferramenta offline teve oito falhas antes de existir e oito aprovações depois. Foram verificados resultado, campos de segredo adicionais, tamanho, UTF-8, link simbólico, arquivo ausente, diretório e quantidade de argumentos.
+Logs red/green01–12 e15–18 preservados. Revisão local em local-review.md. Não houve subagente/revisor independente, pentest, carga ou restore.
 
-A primeira execução integrada apresentou 892 aprovações e quatro falhas em 896 testes. Os fixtures de sucesso ainda esperavam schema 0.9.0, 23 tabelas e oito migrations. Essas expectativas foram atualizadas para o novo contrato, sem remover testes negativos. Com todos os testes novos incluídos, os 905 passaram.
+## Não homologado
 
-O compilador encontrou `await` em um callback não assíncrono de uma nova asserção SQL. O teste foi corrigido e a checagem suplementar foi repetida. Isso não comprova que o cenário SQL foi executado.
+**Dependências:** nova tentativa real `npm run deps:resolve` retornou EAI_AGAIN registry.npmjs.org (13-dependencies-attempt.txt). Ausência de package-lock.json confirmada após a tentativa. Não houve instalação limpa, audit, registry alternativo ou alteração de política. Tipos globais diferem dos declarados e são somente evidência suplementar.
 
-A revisão do diff, da semântica, dos privilégios propostos e dos limites está em `evidence/v015/local-review.md`. **Foi uma revisão local pelo implementador, sem revisor independente, subagente, pentest, carga ou restauração.**
+**PostgreSQL:** executor `test:db:local` recusou Docker indisponível antes da conexão (14-database-attempt.txt). **179 cenários escritos, zero executados:**165 principais+14upgrade,33 novos (29+4). Contagem estática documentada em sql-scenario-inventory.json, não um relatório de aprovações. Sintaxe PL/pgSQL, papéis, RLS, FKs, índices, locks, subtransações, guards, upgrade e planos continuam pendentes. Nenhum Supabase remoto foi usado como alternativa.
 
-## 4. O que não foi homologado
+**Navegador:** após35HTTP, Playwright retornou ERR_BLOCKED_BY_ADMINISTRATOR em page.goto.35 cenários de navegador escritos,zero aprovados nesta sessão; nenhuma nova interface além da versão. A segunda suíte humana não foi alcançada pelo runner após o bloqueio inicial. Sem aprovação visual/mobile/teclado/CSP/CORS.
 
-**Dependências.** A nova tentativa de `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`. Não há lockfile real, instalação limpa ou auditoria da árvore instalada. A checagem suplementar usou Node 22.16.0, TypeScript 5.8.3 e tipos Node globais diferentes dos declarados. Ela não substitui a instalação do manifesto. Evidência: `13-dependencies-attempt.txt`.
+**Runtime/operacional:** Auth humano/M2M, pooler/TLS/IP, pg e Functions empacotados, latência/capacidade, política de retenção dos efeitos, restauração, logs de ingresso e revisão operacional não homologados. Os helpers atuais de permissões também precisam de execução real. Intenção de outbox não é entrega nem efeito externo exatamente uma vez.
 
-**PostgreSQL.** O executor `test:db:local` recusou a ausência de Docker antes de conectar. Há **146 cenários escritos, zero executados nesta rodada**: 136 principais, sendo 19 novos, e dez de upgrade, sendo dois novos. O ensaio mantém a comparação do upgrade 001–007 para 008 e depois aplica a 009, verificando também a carga inicial das capacidades. Permanecem sem comprovação a concorrência, o RLS, os grants, as chaves estrangeiras, os triggers, a latência e o upgrade. Não foi utilizado o Supabase remoto como alternativa. Evidências: `14-database-attempt.txt` e `sql-written-counts.json`.
+O gate exige950/179/70 aprovações efetivas (locais/SQL/HTTP+browser), não números de testes escritos. O relatório agregado está bloqueado, não assinado e não é autorização de produção.
 
-**Navegador.** Depois dos 35 checks HTTP, a navegação bloqueou em `page.goto` com `ERR_BLOCKED_BY_ADMINISTRATOR`. Permanecem **35 verificações escritas, zero aprovadas**. A segunda suíte, de autenticação humana, não foi alcançada pelo executor. Não há validação visual, mobile, de acessibilidade, CSP ou CORS. Nenhuma política do ambiente foi alterada.
+## Efeitos externos e continuidade
 
-**Destino e operação.** Auth, pooler, TLS, metadados IP, empacotamento e execução de Functions, capacidade, restauração e governança de provisionamento continuam pendentes. O histórico não é WORM: um administrador do banco pode alterar DDL ou utilizar TRUNCATE. O teto de capacidades é por workspace, não distinto por conta. Não foi acrescentada revogação instantânea de JWT nem cancelamento de comandos já autorizados.
+GitHub consultado somente para leitura: repositório retornou vazio. Supabase/Netlify não foram reinspecionados. Nenhum push, merge, PR, deploy, migration remota, dado, conta, segredo, MFA ou infraestrutura cobrada foi alterado.
 
-## 5. Pendências e efeitos externos
-
-R14-04 e R14-05 possuem código candidato nesta entrega, **com homologação SQL e operacional pendente**. R14-06, sobre a obrigação de evento e outbox em todas as mudanças de estado e mensagens, **não foi implementado nesta rodada**. O backoffice M2, anexos, SLA operacional, processamento de notificações e conectores reais continuam ausentes.
-
-**Nenhum push, PR, merge, deploy, migration remota, alteração de dados, segredos, MFA ou usuários.** Não houve nova inspeção remota nesta rodada. Os estados anteriores de GitHub, Supabase e Netlify são históricos, não confirmação atual. O pacote foi desenvolvido a partir do bundle anterior.
-
-A próxima sequência é: dependências reproduzíveis, PostgreSQL 17 e os 146 cenários, alinhamento de R14-06, runtime real, navegador e critérios operacionais. O verificador exige 905 testes locais, 146 SQL e 70 checks HTTP/navegador realmente aprovados. Nesta execução, permaneceu bloqueado por ausência do lockfile. Mesmo uma aprovação local não autoriza produção.
-
-O bundle recuperado e os resultados dessa recuperação acompanham o pacote, fora da árvore do commit.
+R14-06 possui implementação candidata nesta entrega; seu aceite depende de banco real. Próximo passo: dependências reais →10 migrations/179cenários e upgrade → revisão do protocolo e desempenho → Auth/pooler/Functions →browser → capacidade/restore/governança. M1 aberto; M2, anexos, SLA operacional, notificações e conectores reais continuam pendentes.

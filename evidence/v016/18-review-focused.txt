@@ -1,0 +1,286 @@
+TAP version 13
+# (node:5129) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: write effects have a private table in the runtime inventory
+ok 1 - write effects have a private table in the runtime inventory
+  ---
+  duration_ms: 1.809552
+  type: 'test'
+  ...
+# Subtest: write effect trigger functions are never callable by the application
+ok 2 - write effect trigger functions are never callable by the application
+  ---
+  duration_ms: 0.244175
+  type: 'test'
+  ...
+# Subtest: inventory requires the six enabled effect triggers including deferred completion
+ok 3 - inventory requires the six enabled effect triggers including deferred completion
+  ---
+  duration_ms: 0.203086
+  type: 'test'
+  ...
+# Subtest: readiness requires both receipt uniqueness indexes
+ok 4 - readiness requires both receipt uniqueness indexes
+  ---
+  duration_ms: 0.38769
+  type: 'test'
+  ...
+# Subtest: migration010 extends the nine originals without replacing their hashes
+ok 5 - migration010 extends the nine originals without replacing their hashes
+  ---
+  duration_ms: 84.413418
+  type: 'test'
+  ...
+# Subtest: effect SQL binds the actual top-level transaction, not caller IDs or xmin
+ok 6 - effect SQL binds the actual top-level transaction, not caller IDs or xmin
+  ---
+  duration_ms: 1.750236
+  type: 'test'
+  ...
+# Subtest: effect SQL never backfills historical effects or adds a runtime read policy
+ok 7 - effect SQL never backfills historical effects or adds a runtime read policy
+  ---
+  duration_ms: 1.578128
+  type: 'test'
+  ...
+# (node:5130) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: HTTP event omitted silently: no success, no partial state, explicit retry only
+ok 8 - HTTP event omitted silently: no success, no partial state, explicit retry only
+  ---
+  duration_ms: 79.637648
+  type: 'test'
+  ...
+# Subtest: HTTP outbox omitted silently: no success, no partial state, explicit retry only
+ok 9 - HTTP outbox omitted silently: no success, no partial state, explicit retry only
+  ---
+  duration_ms: 27.970789
+  type: 'test'
+  ...
+# Subtest: HTTP orphaned note produces no private data or success and no external delivery
+ok 10 - HTTP orphaned note produces no private data or success and no external delivery
+  ---
+  duration_ms: 18.519097
+  type: 'test'
+  ...
+# (node:5131) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: effects: silently lost event rolls back create and idempotency
+ok 11 - effects: silently lost event rolls back create and idempotency
+  ---
+  duration_ms: 6.418619
+  type: 'test'
+  ...
+# Subtest: effects: complete create commits exactly one new event
+ok 12 - effects: complete create commits exactly one new event
+  ---
+  duration_ms: 0.745267
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back message and idempotency
+ok 13 - effects: silently lost event rolls back message and idempotency
+  ---
+  duration_ms: 1.265614
+  type: 'test'
+  ...
+# Subtest: effects: complete message commits exactly one new event
+ok 14 - effects: complete message commits exactly one new event
+  ---
+  duration_ms: 0.431968
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back note and idempotency
+ok 15 - effects: silently lost event rolls back note and idempotency
+  ---
+  duration_ms: 0.791208
+  type: 'test'
+  ...
+# Subtest: effects: complete note commits exactly one new event
+ok 16 - effects: complete note commits exactly one new event
+  ---
+  duration_ms: 0.362731
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back transition and idempotency
+ok 17 - effects: silently lost event rolls back transition and idempotency
+  ---
+  duration_ms: 0.707241
+  type: 'test'
+  ...
+# Subtest: effects: complete transition commits exactly one new event
+ok 18 - effects: complete transition commits exactly one new event
+  ---
+  duration_ms: 0.400685
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back priority and idempotency
+ok 19 - effects: silently lost event rolls back priority and idempotency
+  ---
+  duration_ms: 1.253897
+  type: 'test'
+  ...
+# Subtest: effects: complete priority commits exactly one new event
+ok 20 - effects: complete priority commits exactly one new event
+  ---
+  duration_ms: 1.445281
+  type: 'test'
+  ...
+# Subtest: effects: silently lost event rolls back assignment and idempotency
+ok 21 - effects: silently lost event rolls back assignment and idempotency
+  ---
+  duration_ms: 1.063827
+  type: 'test'
+  ...
+# Subtest: effects: complete assignment commits exactly one new event
+ok 22 - effects: complete assignment commits exactly one new event
+  ---
+  duration_ms: 0.816215
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back create
+ok 23 - effects: silently lost outbox rolls back create
+  ---
+  duration_ms: 0.499899
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back message
+ok 24 - effects: silently lost outbox rolls back message
+  ---
+  duration_ms: 0.627431
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back transition
+ok 25 - effects: silently lost outbox rolls back transition
+  ---
+  duration_ms: 0.406309
+  type: 'test'
+  ...
+# Subtest: effects: silently lost outbox rolls back priority
+ok 26 - effects: silently lost outbox rolls back priority
+  ---
+  duration_ms: 0.394818
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption account
+ok 27 - effects: rejects event corruption account
+  ---
+  duration_ms: 0.46686
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption actor
+ok 28 - effects: rejects event corruption actor
+  ---
+  duration_ms: 0.455701
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption data
+ok 29 - effects: rejects event corruption data
+  ---
+  duration_ms: 1.197517
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption duplicate
+ok 30 - effects: rejects event corruption duplicate
+  ---
+  duration_ms: 1.460229
+  type: 'test'
+  ...
+# Subtest: effects: rejects event corruption private
+ok 31 - effects: rejects event corruption private
+  ---
+  duration_ms: 0.35656
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption version
+ok 32 - effects: rejects outbox corruption version
+  ---
+  duration_ms: 0.530733
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption body
+ok 33 - effects: rejects outbox corruption body
+  ---
+  duration_ms: 0.352594
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption type
+ok 34 - effects: rejects outbox corruption type
+  ---
+  duration_ms: 0.224149
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption duplicate
+ok 35 - effects: rejects outbox corruption duplicate
+  ---
+  duration_ms: 0.387998
+  type: 'test'
+  ...
+# Subtest: effects: rejects outbox corruption id
+ok 36 - effects: rejects outbox corruption id
+  ---
+  duration_ms: 0.258123
+  type: 'test'
+  ...
+# Subtest: effects: parent version cannot advance without public message
+ok 37 - effects: parent version cannot advance without public message
+  ---
+  duration_ms: 0.286544
+  type: 'test'
+  ...
+# Subtest: effects: note may not leave an external event
+ok 38 - effects: note may not leave an external event
+  ---
+  duration_ms: 0.382663
+  type: 'test'
+  ...
+# Subtest: effects: earlier event cannot replace a new event of the same type
+ok 39 - effects: earlier event cannot replace a new event of the same type
+  ---
+  duration_ms: 0.537871
+  type: 'test'
+  ...
+# Subtest: effects: reenvio adds no event/outbox and returns original answer
+ok 40 - effects: reenvio adds no event/outbox and returns original answer
+  ---
+  duration_ms: 0.737585
+  type: 'test'
+  ...
+# Subtest: effects: orphan event cannot be committed independently
+ok 41 - effects: orphan event cannot be committed independently
+  ---
+  duration_ms: 0.549956
+  type: 'test'
+  ...
+# Subtest: effects: multiple complete commands may commit together with their own versions
+ok 42 - effects: multiple complete commands may commit together with their own versions
+  ---
+  duration_ms: 0.818057
+  type: 'test'
+  ...
+# Subtest: effects: missing parent version advance leaves the message transaction incomplete
+ok 43 - effects: missing parent version advance leaves the message transaction incomplete
+  ---
+  duration_ms: 0.478969
+  type: 'test'
+  ...
+# Subtest: effects: a status event cannot legitimize an unsupported subject change
+ok 44 - effects: a status event cannot legitimize an unsupported subject change
+  ---
+  duration_ms: 2.83155
+  type: 'test'
+  ...
+# Subtest: effects: a deferred server rejection is never returned as successful COMMIT
+ok 45 - effects: a deferred server rejection is never returned as successful COMMIT
+  ---
+  duration_ms: 45.663092
+  type: 'test'
+  ...
+1..45
+# tests 45
+# suites 0
+# pass 45
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 506.136904

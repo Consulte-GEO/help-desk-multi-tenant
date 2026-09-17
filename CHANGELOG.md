@@ -1,3 +1,12 @@
+# v0.16.0 — efeitos transacionais / candidato R14-06
+
+- Modelo por transação em memória recusa gravações sem evento/outbox, pares inconsistentes, duplicados e eventos órfãos; rollback inclui o cache.
+- Migration010 cria write_effects privada, cinco helpers/six triggers e vínculo ao xid8 do banco, com verificação diferida antes de COMMIT. Nenhuma reescrita de histórico.
+- Mantém notas e atribuições estritamente internas; envelope externo mínimo não transporta motivos/corpos. Não implementa worker/envio.
+- API/schema0.16.0,10 migrations,25 tabelas; nenhuma operação HTTP/dependência nova. Preserva bytes001–009.
+-45 testes locais novos (950 total);29 casos SQL principais+4upgrade adicionais (179 escritos, não executados).35 checksHTTP passaram;browser bloqueado. Dependências/lock/audit/runtime não homologados, publicação fechada.
+- Inventário/fixtures atualizados; teste SQL de erro diferido alinhado ao contrato já existente de resultado incerto após COMMIT, sem relaxar rollback.
+
 # v0.15.0 — Permissões persistidas candidatas e recibos de notas
 
 - Nova migration009: human_scope_versions privado, getter comum da identidade/RLS, setter com revisão esperada, históricoappend-only e backfill único preservando relações legadas ativas. Ausência/[] concede zero capacidades.

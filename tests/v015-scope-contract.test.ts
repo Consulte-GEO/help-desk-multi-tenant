@@ -8,7 +8,7 @@ const sql=()=>readFile(path,'utf8');
 test('scope migration and runtime catalogue name the same private version table',async()=>{
  assert.ok(contract.tables.some(x=>x.name==='helpdesk_auth.human_scope_versions'));
  assert.match(await sql(),/create table helpdesk_auth\.human_scope_versions/i);
- assert.equal(contract.schemaVersion,'0.15.0');
+ assert.equal(contract.schemaVersion,'0.16.0');
 });
 test('scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy',async()=>{
  const text=await sql();assert.match(text,/human_scope_versions enable row level security/i);assert.match(text,/human_scope_versions force row level security/i);
@@ -35,7 +35,7 @@ test('note receipt needs current write but not general note read',async()=>{
  assert.match(lookup,/principal_id=helpdesk_auth\.actor_id\(\)/);
 });
 test('manifest extends rather than alters the eight earlier migrations',async()=>{
- const b=await loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,9);assert.equal(b.schemaVersion,'0.15.0');
+ const b=await loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,10);assert.equal(b.schemaVersion,'0.16.0');
  const old=JSON.parse(await readFile('evidence/v015/base-migrations.manifest.json','utf8'));
  assert.deepEqual(b.migrations.slice(0,8).map(x=>({file:x.file,sha256:x.sha256})),old.migrations);
 });
@@ -44,5 +44,5 @@ test('readiness accepts only the table count of the new catalogue',async()=>{
  const {assertDatabaseSecurity,READINESS_FLAGS}=await import('../src/infrastructure/database-security.ts');
  const row={table_count:24,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,...Object.fromEntries(READINESS_FLAGS.map(k=>[k,true]))};
  const pool=(count:number)=>({query:async()=>({rows:[{...row,table_count:count}],rowCount:1}),connect:async()=>{throw Error('unused');},end:async()=>{}});
- await assertDatabaseSecurity(pool(24));await assert.rejects(()=>assertDatabaseSecurity(pool(23)),{code:'unsafe_database_policies'});
+ await assertDatabaseSecurity(pool(contract.tables.length));await assert.rejects(()=>assertDatabaseSecurity(pool(contract.tables.length-1)),{code:'unsafe_database_policies'});
 });

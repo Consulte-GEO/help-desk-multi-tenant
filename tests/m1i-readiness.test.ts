@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assertDatabaseSecurity} from '../src/infrastructure/postgres.ts';
 import type {SqlPool} from '../src/infrastructure/sql.ts';
-const good = () => ({table_count:24,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,
+const good = () => ({table_count:25,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,
  schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,
  client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,
  trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true});
@@ -42,11 +42,11 @@ test('catalogue query uses developer-owned parameters and only pg_catalog metada
 });
 test('schema contract has explicit least privileges and excludes administrative helper execution',async()=>{
  const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/database-security-contract.ts');
- assert.equal(c.tables.length,24);assert.equal(c.functions.length,31);assert.equal(c.triggers.length,12);assert.equal(c.policies.length,28);
- assert.equal(new Set(c.tables.map(t=>t.name)).size,24);
+ assert.equal(c.tables.length,25);assert.equal(c.functions.length,36);assert.equal(c.triggers.length,18);assert.equal(c.policies.length,28);
+ assert.equal(new Set(c.tables.map(t=>t.name)).size,25);
  for(const t of c.tables.filter(t=>t.name.startsWith('helpdesk_auth.')))assert.deepEqual([t.read,t.insert,t.updates],[false,false,[]]);
  assert.deepEqual(c.tables.find(t=>t.name==='helpdesk_core.tickets')!.updates,['status','version','updated_at','priority','assigned_to']);
  assert.equal(c.functions.find(f=>f.signature==='helpdesk_auth.maintain_ephemeral(boolean, integer)')!.execute,false);
  assert.equal(c.functions.find(f=>f.signature==='helpdesk_auth.lookup_idempotency(text, text)')!.execute,true);
- assert.equal(c.triggers.filter(t=>t.deferred).length,3);
+ assert.equal(c.triggers.filter(t=>t.deferred).length,4);
 });

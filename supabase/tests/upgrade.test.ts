@@ -14,7 +14,7 @@ import type {Principal} from '../../src/domain/model.ts';
 
 const targets=validateDatabaseTestTargets(process.env);
 const bundle=await loadMigrationBundle(process.cwd());
-if(bundle.schemaVersion!=='0.15.0'||bundle.migrations.length!==9||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
+if(bundle.schemaVersion!=='0.16.0'||bundle.migrations.length!==10||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
  throw Error('Review the upgrade scenario before changing the candidate migration set.');
 const upgradeUrl=(base:string)=>{const url=new URL(base);url.pathname='/helpdesk_upgrade_test';return url.toString();};
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
@@ -23,6 +23,7 @@ const agent:Principal={...requester,id:id(13),grants:[{accountId:id(101),role:'a
 const input={accountId:id(101),productInstanceId:id(401),serviceCode:'SUPPORT',subject:'Legacy upgrade fixture',description:'Synthetic pre-assignment ticket',priority:'normal' as const};
 const key='upgrade-legacy-create-key';
 let control:SqlPool,admin:SqlPool,app:SqlPool,service:HelpdeskService;
+let initialEffectRows:unknown[];
 let original:Record<string,unknown>,beforeRows:Record<string,unknown[]>,afterRows:Record<string,unknown[]>;
 const snapshotTables=['helpdesk_core.tickets','helpdesk_core.contract_versions','helpdesk_core.coverages','helpdesk_core.ticket_messages','helpdesk_core.internal_notes','helpdesk_core.ticket_events','helpdesk_integration.outbox_events','helpdesk_integration.api_idempotency_keys'];
 async function captureRows(){
@@ -80,13 +81,17 @@ before(async()=>{
  assert.deepEqual(await captureRows(),beforeRows); // preserve the previous upgrade boundary too
  assert.equal((await admin.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.9.0');
  await admin.query(bundle.migrations[8]!.sql);
+ assert.deepEqual(await captureRows(),beforeRows);
+ assert.equal((await admin.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.15.0');
+ await admin.query(bundle.migrations[9]!.sql);
+ initialEffectRows=(await admin.query('select id from helpdesk_audit.write_effects')).rows;
  afterRows=await captureRows();
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });
 after(async()=>{await app?.end();await admin?.end();await control?.end();});
-test('upgrade 001–007 through 008 and 009 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
-test('upgrade exposes schema 0.15.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
+test('upgrade exposes schema 0.16.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
 test('legacy ticket receives null assignment without changing its version or policy',async()=>{const ticket=await service.get(requester,id(901));assert.equal(ticket.assignedTo,null);assert.equal(ticket.version,2);assert.deepEqual(ticket.contractSnapshot,original.contractSnapshot);});
 test('legacy idempotency replay retains its old snapshot without synthesizing assignment',async()=>{const result=await service.create(requester,input,key,'synthetic-upgrade');assert.equal(result.replayed,true);assert.deepEqual(result.ticket,original);assert.equal(Object.hasOwn(result.ticket,'assignedTo'),false);});
 test('public conversation remains readable while old internal note is denied to customer',async()=>{assert.equal((await service.messages(requester,id(901)))[0]?.body,'Synthetic public message');await assert.rejects(()=>service.notes(requester,id(901)),{status:403});assert.equal((await service.notes(agent,id(901)))[0]?.body,'Synthetic internal note');});
@@ -114,4 +119,22 @@ test('upgrade009 backfills exactly the previously active human workspace relatio
 test('upgrade009 resolves the same existing user while obtaining scopes from its first revision',async()=>{
  const r=(await app.query('select helpdesk_auth.resolve_human($1,$2) as principal',[id(1013),id(1)])).rows[0]?.principal as {id:string;scopes:string[]};
  assert.equal(r.id,agent.id);assert.deepEqual(r.scopes,['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']);
+});
+
+// Effect receipts intentionally certify ONLY writes made after the migration.
+test('upgrade010 creates no synthetic receipts for historical messages/events',()=>{assert.deepEqual(initialEffectRows,[]);});
+test('upgrade010 records the new assignment on a legacy ticket without public outbox',async()=>{
+ const r=(await admin.query('select kind,applied,ticket_version from helpdesk_audit.write_effects where ticket_id=$1',[id(901)])).rows;
+ assert.deepEqual(r,[{kind:'ticket.assignment_changed',applied:true,ticket_version:3}]);
+});
+test('upgrade010 replay of legacy creation does not create a retrospective receipt',async()=>{
+ const before=(await admin.query('select to_jsonb(r) as data from helpdesk_audit.write_effects r order by id')).rows;
+ assert.deepEqual((await service.create(requester,input,key,'synthetic-upgrade')).ticket,original);
+ assert.deepEqual((await admin.query('select to_jsonb(r) as data from helpdesk_audit.write_effects r order by id')).rows,before);
+});
+test('upgrade010 new public response on an old ticket has matched event and outbox',async()=>{
+ const result=await service.addMessage(agent,id(901),'Post-upgrade response','upgrade-new-message-010','synthetic-upgrade');
+ const rows=(await admin.query("select e.type as event_type,o.type as outbox_type,r.applied from helpdesk_audit.write_effects r join helpdesk_core.ticket_events e on(e.workspace_id,e.id)=(r.workspace_id,r.event_id) join helpdesk_integration.outbox_events o on(o.workspace_id,o.id)=(r.workspace_id,r.event_id) where r.source_id=$1",[result.message.id])).rows;
+ assert.deepEqual(rows,[{event_type:'message.created',outbox_type:'message.created',applied:true}]);
+ assert.deepEqual((await service.get(agent,id(901))).contractSnapshot,original.contractSnapshot);
 });

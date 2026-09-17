@@ -25,7 +25,12 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.15.0
+## Estado v0.16.0
+M1 aberto.950 locais/35 HTTP de memória;179 SQL/35 browser escritos, não homologados. API/schema0.16;10 migrations/25 tabelas/36 funções/18 triggers. Ler docs04/05/20. GitHub lido vazio; Supabase/Netlify não reinspecionados, nenhuma escrita remota.
+
+R14-06 possui candidato de write_effects, produzido pelo banco e ligado a pg_current_xact_id. Não dar acesso ao app/clientes, não backfill do passado, não confundir com cache idempotente ou entrega externa. Preservar001–009. Memorystore é modelo de referência, não PostgreSQL. Deferir verificação não é permitir confirmar pares incompletos. Não remover triggers/asserts para aprovar uma sequência inválida. No-op/replay sem novo efeito; notas/atribuições sem outbox. Conferir atualizações do inventário e efeitos da tabela na retenção/restore/custo antes de produção.
+
+## Registro histórico v0.15.0
 M1 aberto. 905 testes locais/35 HTTP de memória aprovados;146 SQL/35 browser escritos, não homologados. API/schema0.15, nove migrations/24 tabelas/18 operações. Leia docs04/05/19. Sem publicação nem inspeção remota nesta rodada.
 
 Human scope versions é teto por pessoa/workspace, não autorização de conta. Perfil ausente é vazio; backfill único preserva relações humanas legadas ativas. Não voltar ao fallback de cinco scopes para novos humanos. Os helpers has_scope/resolve_human consultam a mesma revisão. Setter SQL é privado, SECURITY INVOKER, sem EXECUTE do app/clientes. CLI scopes:plan não executa SQL. Não colocar credenciais no plano, não conceder self-service de escopos para "facilitar" o backoffice.
