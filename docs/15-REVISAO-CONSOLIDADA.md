@@ -134,3 +134,7 @@ API/interface **0.11.0**, schema exigido **0.9.0**, oito migrations preservadas,
 
 ## Nota posterior — v0.12.0
 A análise acima é a fotografia da v0.11. A lacuna de refresh e pedido de logout humano recebeu código e testes locais no incremento0.12; ver documento16. Não reclassifica Auth real/MFA/SSO, banco, navegador ou M1 como homologados. Estados atualizados em04/05.
+
+
+## Nota posterior — v0.14.0
+A nova revisão está em documento18. Ela explicita que a configuração granular de escopos humanos não está presente no SQL, identifica assimetria de replay de notas e distingue as garantias SQL por comando. Os achados de replay/identidade foram corrigidos localmente; não houve aprovação do banco. A análise acima continua um registro histórico da v0.11.

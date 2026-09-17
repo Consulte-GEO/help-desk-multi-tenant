@@ -1,0 +1,99 @@
+TAP version 13
+# (node:2432) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: oversized successful identity response is rejected before membership resolution
+not ok 1 - oversized successful identity response is rejected before membership resolution
+  ---
+  duration_ms: 18.219666
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:17:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: identity stream exceeding the byte budget is cancelled before reading further data
+not ok 2 - identity stream exceeding the byte budget is cancelled before reading further data
+  ---
+  duration_ms: 2.747317
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:24:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid UTF-8 in ignored provider metadata is not silently replaced
+not ok 3 - invalid UTF-8 in ignored provider metadata is not silently replaced
+  ---
+  duration_ms: 1.14929
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'auth_unavailable'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:30:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: normal Unicode metadata is not promoted to a role or echoed as part of the principal
+ok 4 - normal Unicode metadata is not promoted to a role or echoed as part of the principal
+  ---
+  duration_ms: 1.451326
+  type: 'test'
+  ...
+# Subtest: decoded size is checked independently of the compressed Content-Length header
+not ok 5 - decoded size is checked independently of the compressed Content-Length header
+  ---
+  duration_ms: 2.149206
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:36:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'auth_unavailable'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-auth-response.test.ts:38:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid provider JSON remains a safe authentication error
+ok 6 - invalid provider JSON remains a safe authentication error
+  ---
+  duration_ms: 0.776259
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 2
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 168.541744

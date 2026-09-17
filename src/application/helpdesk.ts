@@ -1,3 +1,4 @@
+import {validateReplayEnvelope,validateTicketReplayShape,validateCreatedReplay,validateChangedReplay,validateMessageReplay} from './replay-result.ts';
 import {isPersistableText} from '../domain/input-values.ts';
 import {validateConversationResult} from './conversation-result.ts';
 import {assignmentChangeInput} from './ticket-assignment.ts';
@@ -29,12 +30,12 @@ export class HelpdeskService{
   if(!canAccessAccount(p,p.workspaceId,c.accountId)||!canUseProduct(p,c.productInstanceId))deny();
  }
  private async accessible(s:Store,p:Principal,id:string,lock=false):Promise<Ticket>{const t=await s.getTicket(id,lock);if(!t||t.id!==id||!canReadTicket(p,t))deny();return t;}
- private async idempotent<T>(s:Store,p:Principal,operation:string,key:string,payload:unknown,work:()=>Promise<T>):Promise<{value:T;replayed:boolean}>{
+ private async idempotent<T>(s:Store,p:Principal,operation:string,key:string,payload:unknown,work:()=>Promise<T>,validateReplay:(value:unknown)=>Promise<void>|void):Promise<{value:T;replayed:boolean}>{
   if(!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw new HelpdeskError(400,'invalid_idempotency_key','Idempotency-Key deve ter 16 a 128 caracteres seguros.');
   const hash=requestHash(payload);
   await s.lockIdempotency(operation,key);
   const prior=await s.getIdempotency(operation,key);
-  if(prior){if(prior.denied)deny();if(prior.expired)throw new HelpdeskError(409,'idempotency_expired','Chave expirada. Consulte o recurso antes de iniciar uma nova operação.');if(prior.hash!==hash)throw new HelpdeskError(409,'idempotency_conflict','Chave já utilizada com outro conteúdo.');return {value:structuredClone(prior.result) as T,replayed:true};}
+  if(prior!==null){validateReplayEnvelope(prior,p,operation,key);if(prior.denied)deny();if(prior.expired)throw new HelpdeskError(409,'idempotency_expired','Chave expirada. Consulte o recurso antes de iniciar uma nova operação.');if(prior.hash!==hash)throw new HelpdeskError(409,'idempotency_conflict','Chave já utilizada com outro conteúdo.');await validateReplay(prior.result);return {value:structuredClone(prior.result) as T,replayed:true};}
   const value=await work();
   await s.saveIdempotency({principalId:p.id,workspaceId:p.workspaceId,operation,key,hash,result:structuredClone(value)});
   return {value,replayed:false};
@@ -53,9 +54,11 @@ export class HelpdeskService{
     if(!selected)throw new HelpdeskError(422,'coverage_ineligible','Cobertura não elegível para este contexto.');
     const ticket:Ticket={id:randomUUID(),workspaceId:p.workspaceId,accountId:input.accountId,productInstanceId:input.productInstanceId,serviceCode:input.serviceCode,createdBy:p.id,assignedTo:null,subject:input.subject,description:input.description,status:'new',priority:input.priority,version:1,coverageId:selected.id,contractVersionId:selected.contractVersionId,contractSnapshot:structuredClone({contractId:selected.contractId,version:selected.contractVersion,policy:selected.policy}),createdAt:at,updatedAt:at};
     await s.insertTicket(ticket);await this.event(s,p,ticket,'ticket.created',{version:1},true,requestId);return ticket;
+   },async value=>{
+    validateTicketReplayShape(value);
+    const current=await this.accessible(s,p,value.id);
+    validateCreatedReplay(value,current,p,input);
    });
-   // A cached result is not an authorization grant; RLS is consulted again on replay.
-   if(result.replayed)await this.accessible(s,p,result.value.id);
    return {ticket:result.value,replayed:result.replayed};
   });
  }
@@ -98,11 +101,11 @@ export class HelpdeskService{
   const result=await this.idempotent(s,p,`messages.create:${id}`,key,{body},async()=>{
    const message:PublicMessage={id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,actorType:isOperator(p,t.workspaceId,t.accountId)?'human_agent':p.kind==='integration'?'integration':'customer',body,createdAt:this.now()};
    await s.addMessage(message);const updated={...t,version:t.version+1,updatedAt:this.now()};await s.updateTicket(updated,t.version);await this.event(s,p,updated,'message.created',{messageId:message.id,actorType:message.actorType},true,requestId);return message;
-  });return {message:result.value,replayed:result.replayed};
+  },value=>validateMessageReplay(value,t,p,body,'message'));return {message:result.value,replayed:result.replayed};
  });}
  async addNote(p:Principal,id:string,body:string,key:string,requestId:string){requireText(body,1,12000,'Nota');return this.db.run(p,async s=>{
   const t=await this.accessible(s,p,id,true);if(!canWriteInternalNote(p,t))throw new HelpdeskError(403,'forbidden','Notas internas são restritas à equipe.');
-  const result=await this.idempotent(s,p,`notes.create:${id}`,key,{body},async()=>{const note:InternalNote={id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,body,createdAt:this.now()};await s.addNote(note);await this.event(s,p,t,'note.created',{noteId:note.id},false,requestId);return note;});return {note:result.value,replayed:result.replayed};
+  const result=await this.idempotent(s,p,`notes.create:${id}`,key,{body},async()=>{const note:InternalNote={id:randomUUID(),workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,actorId:p.id,body,createdAt:this.now()};await s.addNote(note);await this.event(s,p,t,'note.created',{noteId:note.id},false,requestId);return note;},value=>validateMessageReplay(value,t,p,body,'note'));return {note:result.value,replayed:result.replayed};
  });}
  /** Operator-only priority classification; the contract snapshot and SLA are not recalculated. */
  async changePriority(p:Principal,id:string,priority:unknown,expectedVersion:unknown,reason:unknown,key:string,requestId:string){
@@ -121,7 +124,7 @@ export class HelpdeskService{
     await s.updatePriority(updated,t.version);
     await this.event(s,p,updated,'ticket.priority_changed',{from:t.priority,to:updated.priority,reason:input.reason,version:updated.version},true,requestId);
     return updated;
-   });
+   },value=>validateChangedReplay(value,t,p,{kind:'priority',priority:input.priority,expectedVersion:input.expectedVersion}));
    return {ticket:result.value,replayed:result.replayed};
   });
  }
@@ -145,7 +148,7 @@ export class HelpdeskService{
     // Internal operational event only: no customer event or external notification intent.
     await this.event(s,p,updated,'ticket.assignment_changed',{action:input.action,from:t.assignedTo,to:assignedTo,reason:input.reason,version:updated.version},false,requestId);
     return updated;
-   });
+   },value=>validateChangedReplay(value,t,p,{kind:'assignment',action:input.action,expectedVersion:input.expectedVersion}));
    return {ticket:result.value,replayed:result.replayed};
   });
  }
@@ -161,7 +164,7 @@ export class HelpdeskService{
     if(t.status==='resolved'&&to==='open'&&!reason.trim())throw new HelpdeskError(400,'reopen_reason_required','Informe o motivo da reabertura.');
     const updated={...t,status:to,version:t.version+1,updatedAt:this.now()};await s.updateTicket(updated,t.version);
     await this.event(s,p,updated,'ticket.status_changed',{from:t.status,to,reason},true,requestId);return updated;
-   });return {ticket:result.value,replayed:result.replayed};
+   },value=>validateChangedReplay(value,t,p,{kind:'transition',to,expectedVersion}));return {ticket:result.value,replayed:result.replayed};
   });
  }
 }

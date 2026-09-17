@@ -1,6 +1,6 @@
 # Plano de desenvolvimento e critérios de aceite
 
-> **Estado corrente v0.13.0:** M1 aberto. API0.13.0/schema0.9.0; oito migrations. Ações por chamado e isolamento da falha das notas codificados (HD-103/HD-105), sem nova operação de banco. Evidências atuais em `04-ESTADO-E-EVIDENCIAS.md` e decisão em `17-ACOES-POR-CHAMADO.md`. Registros abaixo conservam decisões históricas; não representam M1 concluído ou administração M2 entregue.
+> **Estado corrente v0.14.0:** M1 aberto. API0.14.0/schema0.9.0; oito migrations intactas. Revisão de envelope/resposta de reenvio e leitura do provedor humano implementada com regressões. Evidências em `04-ESTADO-E-EVIDENCIAS.md`; revisão e decisões em `18-REVISAO-REENVIOS-E-IDENTIDADE.md`. A execução PostgreSQL continua prioritária; não iniciar mais módulos como substituto dos testes de persistência.
 
 > **Registro histórico v0.2.0 — M1 em andamento:** HD-101 tem guards/CI codificados, mas registry/lock/audit pendentes; HD-102 tem quatro migrations e 35 cenários SQL escritos, nenhum executado; HD-103 tem runtime reforçado, sem homologação no destino; HD-104 tem limites/lifecycle codificados e testes locais, sem carga/SQL real; HD-105 tem paginação/estado e HTTP local testados, navegador bloqueado. Ver documentos 04–06 para evidências atuais. A descrição de M0 abaixo permanece como registro da fundação.
 
@@ -228,3 +228,7 @@ Assumir/liberar com motivo, versão e idempotência; política de acesso preserv
 Lacuna da revisão v0.11 abordada: refresh sob demanda, rotação compartilhada, pausa/retry explícito, saída local no provedor e geração de sessão para descartar respostas atrasadas. Memória apenas; não cria cadastro/convite/MFA/SSO nem concede acesso por metadata. A janela de validade de JWT após logout é limitação explícita no documento16.
 
 753 locais/32HTTP aprovados.125SQL inalterados e32browser escritos(27+5), ainda não homologados. Gate753/125/64; M1 e HD-101/102 permanecem abertos. API0.12/schema0.9, sem migration. Não considerar esse código aprovação de Auth remoto; antes de M2 continuam necessárias dependências reproduzíveis, banco/upgrade, runtime, navegador e critérios operacionais.
+
+
+## Revisão v0.14.0 — lacunas de validação antes de ampliar escopo
+R14-01/02 (replay) e R14-03 (leitura Auth) corrigidos com testes locais. HD-102 deve verificar diretamente cache/results, scopes reais e invariantes de eventos por comando. R14-04: configuração granular humana ausente; R14-05: política de replay de notes:write sem notes:read assimétrica; R14-06: obrigações SQL não uniformes. Definição em docs18. Nenhum desses itens é considerado resolvido por contagem de testes/migrations. M2 não iniciado nesta entrega.

@@ -1,0 +1,1176 @@
+TAP version 13
+# (node:1617) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: replay rejects mismatched envelope workspaceId without another mutation
+not ok 1 - replay rejects mismatched envelope workspaceId without another mutation
+  ---
+  duration_ms: 4.384211
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:41:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:44:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: replay rejects mismatched envelope principalId without another mutation
+not ok 2 - replay rejects mismatched envelope principalId without another mutation
+  ---
+  duration_ms: 0.553614
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:41:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:44:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects mismatched envelope operation without another mutation
+not ok 3 - replay rejects mismatched envelope operation without another mutation
+  ---
+  duration_ms: 0.515787
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:41:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:44:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects mismatched envelope key without another mutation
+not ok 4 - replay rejects mismatched envelope key without another mutation
+  ---
+  duration_ms: 0.47122
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:41:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:44:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects false cache value instead of treating it as absent or authoritative
+not ok 5 - replay rejects false cache value instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.89704
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:54:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects missing cache value instead of treating it as absent or authoritative
+not ok 6 - replay rejects missing cache value instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.583749
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:54:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects string denial instead of treating it as absent or authoritative
+not ok 7 - replay rejects string denial instead of treating it as absent or authoritative
+  ---
+  duration_ms: 1.570164
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:54:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'resource_not_found',
+    +   status: 404
+    -   code: 'invalid_idempotency_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  actual:
+  error: 'Recurso não encontrado ou sem acesso.'
+  stack: |-
+    deny (file:///mnt/data/helpdesk-v014/src/domain/errors.ts:6:37)
+    HelpdeskService.idempotent (file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:37:29)
+    async file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:98:16
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v014/src/infrastructure/memory.ts:54:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects string expiry instead of treating it as absent or authoritative
+not ok 8 - replay rejects string expiry instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.706274
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:54:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'idempotency_expired',
+    +   status: 409
+    -   code: 'invalid_idempotency_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  actual:
+  error: 'Chave expirada. Consulte o recurso antes de iniciar uma nova operação.'
+  stack: |-
+    HelpdeskService.idempotent (file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:37:59)
+    async file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:98:16
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v014/src/infrastructure/memory.ts:54:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: replay rejects invalid hash instead of treating it as absent or authoritative
+not ok 9 - replay rejects invalid hash instead of treating it as absent or authoritative
+  ---
+  duration_ms: 1.051423
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:54:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      Comparison {
+    +   code: 'idempotency_conflict',
+    +   status: 409
+    -   code: 'invalid_idempotency_result',
+    -   status: 503
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  actual:
+  error: 'Chave já utilizada com outro conteúdo.'
+  stack: |-
+    HelpdeskService.idempotent (file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:37:204)
+    async file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:98:16
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v014/src/infrastructure/memory.ts:54:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:56:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: create replay rejects result from another account even with a matching key
+not ok 10 - create replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 1.838608
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: create replay accepts only its result shape, not appended private fields
+not ok 11 - create replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.573614
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay rejects result from another account even with a matching key
+not ok 12 - message replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.32496
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay accepts only its result shape, not appended private fields
+not ok 13 - message replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.326922
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay rejects result from another account even with a matching key
+not ok 14 - note replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.489037
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay accepts only its result shape, not appended private fields
+not ok 15 - note replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.43887
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority replay rejects result from another account even with a matching key
+not ok 16 - priority replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.711592
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority replay accepts only its result shape, not appended private fields
+not ok 17 - priority replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.38545
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment replay rejects result from another account even with a matching key
+not ok 18 - assignment replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.907115
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment replay accepts only its result shape, not appended private fields
+not ok 19 - assignment replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.335095
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: transition replay rejects result from another account even with a matching key
+not ok 20 - transition replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.686003
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:61:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:64:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: transition replay accepts only its result shape, not appended private fields
+not ok 21 - transition replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.371799
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:67:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:70:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay binds ticketId to the authorized request
+not ok 22 - message replay binds ticketId to the authorized request
+  ---
+  duration_ms: 0.489658
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay binds actorId to the authorized request
+not ok 23 - message replay binds actorId to the authorized request
+  ---
+  duration_ms: 0.364629
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay binds body to the authorized request
+not ok 24 - message replay binds body to the authorized request
+  ---
+  duration_ms: 0.34541
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: message replay binds createdAt to the authorized request
+not ok 25 - message replay binds createdAt to the authorized request
+  ---
+  duration_ms: 1.225525
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay binds ticketId to the authorized request
+not ok 26 - note replay binds ticketId to the authorized request
+  ---
+  duration_ms: 0.282205
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay binds actorId to the authorized request
+not ok 27 - note replay binds actorId to the authorized request
+  ---
+  duration_ms: 0.262005
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay binds body to the authorized request
+not ok 28 - note replay binds body to the authorized request
+  ---
+  duration_ms: 0.402316
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: note replay binds createdAt to the authorized request
+not ok 29 - note replay binds createdAt to the authorized request
+  ---
+  duration_ms: 0.255224
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:75:5'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:78:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible id
+not ok 30 - priority snapshot refuses incompatible id
+  ---
+  duration_ms: 0.483568
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible productInstanceId
+not ok 31 - priority snapshot refuses incompatible productInstanceId
+  ---
+  duration_ms: 0.329076
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible serviceCode
+not ok 32 - priority snapshot refuses incompatible serviceCode
+  ---
+  duration_ms: 0.427283
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible createdBy
+not ok 33 - priority snapshot refuses incompatible createdBy
+  ---
+  duration_ms: 0.296737
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible coverageId
+not ok 34 - priority snapshot refuses incompatible coverageId
+  ---
+  duration_ms: 0.302085
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible contractVersionId
+not ok 35 - priority snapshot refuses incompatible contractVersionId
+  ---
+  duration_ms: 0.316256
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible subject
+not ok 36 - priority snapshot refuses incompatible subject
+  ---
+  duration_ms: 0.256486
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible description
+not ok 37 - priority snapshot refuses incompatible description
+  ---
+  duration_ms: 0.351219
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible contractSnapshot
+not ok 38 - priority snapshot refuses incompatible contractSnapshot
+  ---
+  duration_ms: 0.266611
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible version
+not ok 39 - priority snapshot refuses incompatible version
+  ---
+  duration_ms: 0.272821
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible priority
+not ok 40 - priority snapshot refuses incompatible priority
+  ---
+  duration_ms: 0.28555
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: priority snapshot refuses incompatible updatedAt
+not ok 41 - priority snapshot refuses incompatible updatedAt
+  ---
+  duration_ms: 0.23919
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:89:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:92:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: create replay validates the snapshot before using its identifier
+not ok 42 - create replay validates the snapshot before using its identifier
+  ---
+  duration_ms: 0.87019
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:95:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + Comparison {}
+    - Comparison {
+    -   code: 'invalid_idempotency_result',
+    -   status: 503
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  actual:
+  error: "Cannot read properties of null (reading 'id')"
+  name: 'TypeError'
+  stack: |-
+    file:///mnt/data/helpdesk-v014/src/application/helpdesk.ts:58:62
+    async MemoryUnitOfWork.run (file:///mnt/data/helpdesk-v014/src/infrastructure/memory.ts:54:20)
+    async waitForActual (node:assert:566:5)
+    async Function.rejects (node:assert:687:25)
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:97:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:97:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: assignment replay cannot return a different owner for a claim
+not ok 43 - assignment replay cannot return a different owner for a claim
+  ---
+  duration_ms: 0.387563
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:99:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:101:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: transition replay must represent the requested target status
+not ok 44 - transition replay must represent the requested target status
+  ---
+  duration_ms: 0.400593
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:103:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:105:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: valid replay preserves the original response after further changes, not the current ticket
+ok 45 - valid replay preserves the original response after further changes, not the current ticket
+  ---
+  duration_ms: 1.671277
+  type: 'test'
+  ...
+# Subtest: pre-assignment cache stays byte-semantically historical without adding assignedTo
+ok 46 - pre-assignment cache stays byte-semantically historical without adding assignedTo
+  ---
+  duration_ms: 0.49769
+  type: 'test'
+  ...
+# Subtest: JSONB property ordering in a contractual snapshot is not a conflict
+ok 47 - JSONB property ordering in a contractual snapshot is not a conflict
+  ---
+  duration_ms: 0.3652
+  type: 'test'
+  ...
+# Subtest: historical message actor type is preserved when a requester becomes an operator
+ok 48 - historical message actor type is preserved when a requester becomes an operator
+  ---
+  duration_ms: 0.383207
+  type: 'test'
+  ...
+# Subtest: legitimate expired and denied cache signals keep their existing public errors
+ok 49 - legitimate expired and denied cache signals keep their existing public errors
+  ---
+  duration_ms: 0.517479
+  type: 'test'
+  ...
+# Subtest: valid different request digest still means idempotency conflict, not cache absence
+ok 50 - valid different request digest still means idempotency conflict, not cache absence
+  ---
+  duration_ms: 0.31194
+  type: 'test'
+  ...
+# Subtest: revoked access is checked before reading protected reply cache
+ok 51 - revoked access is checked before reading protected reply cache
+  ---
+  duration_ms: 0.269747
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects missing SQL row; cannot execute a replacement mutation
+not ok 52 - PostgreSQL adapter rejects missing SQL row; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.383177
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects record absent; cannot execute a replacement mutation
+not ok 53 - PostgreSQL adapter rejects record absent; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.109866
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects multiple rows; cannot execute a replacement mutation
+not ok 54 - PostgreSQL adapter rejects multiple rows; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.134983
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects false record; cannot execute a replacement mutation
+not ok 55 - PostgreSQL adapter rejects false record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.09293
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects empty string record; cannot execute a replacement mutation
+not ok 56 - PostgreSQL adapter rejects empty string record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.082484
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects zero record; cannot execute a replacement mutation
+not ok 57 - PostgreSQL adapter rejects zero record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.075223
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects array record; cannot execute a replacement mutation
+not ok 58 - PostgreSQL adapter rejects array record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.090476
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects string boolean; cannot execute a replacement mutation
+not ok 59 - PostgreSQL adapter rejects string boolean; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.076706
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects missing result; cannot execute a replacement mutation
+not ok 60 - PostgreSQL adapter rejects missing result; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.166601
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter rejects additional private fields; cannot execute a replacement mutation
+not ok 61 - PostgreSQL adapter rejects additional private fields; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.110286
+  type: 'test'
+  location: '/mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:167:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    status: 503
+    code: 'invalid_idempotency_result'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/helpdesk-v014/tests/review-replay-integrity.test.ts:169:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: PostgreSQL adapter accepts only explicit SQL NULL as cache miss
+ok 62 - PostgreSQL adapter accepts only explicit SQL NULL as cache miss
+  ---
+  duration_ms: 0.113921
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves legitimate successful and terminal lookup records
+ok 63 - PostgreSQL adapter preserves legitimate successful and terminal lookup records
+  ---
+  duration_ms: 0.209445
+  type: 'test'
+  ...
+1..63
+# tests 63
+# suites 0
+# pass 9
+# fail 54
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 210.47598

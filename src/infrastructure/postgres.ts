@@ -1,3 +1,4 @@
+import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
 import {UUID_PATTERN,uuidIdentifier} from '../domain/input-values.ts';
 import {SEARCH_UPPER,SEARCH_LOWER,statusesForSearch} from '../application/ticket-search.ts';
 import type {TicketSearchFilters} from '../application/ticket-search.ts';
@@ -83,8 +84,8 @@ class PostgresStore implements Store{
  async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);if(r.rowCount!==1)throw new HelpdeskError(412,'version_conflict','O chamado foi alterado ou deixou de estar acessível.');}
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}
  async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{
-  const value=(await this.c.query('select helpdesk_auth.lookup_idempotency($1,$2) as record',[operation,key])).rows[0]?.record as {hash?:string;result?:unknown;expired?:boolean;denied?:boolean}|null;
-  return value?{workspaceId:this.p.workspaceId,principalId:this.p.id,operation,key,hash:value.hash??'',result:value.result,expired:value.expired===true,denied:value.denied===true}:null;
+  const rows=(await this.c.query('select helpdesk_auth.lookup_idempotency($1,$2) as record',[operation,key])).rows;
+  return decodeIdempotencyLookup(rows,this.p,operation,key);
  }
  async saveIdempotency(r:StoredResult):Promise<void>{await this.insert('helpdesk_integration.api_idempotency_keys',['workspace_id','principal_id','operation','key','request_hash','result'],[r.workspaceId,r.principalId,r.operation,r.key,r.hash,JSON.stringify(r.result)]);}
  async addMessage(m:PublicMessage):Promise<void>{await this.insert('helpdesk_core.ticket_messages',['id','workspace_id','account_id','ticket_id','actor_id','actor_type','body','created_at'],[m.id,m.workspaceId,m.accountId,m.ticketId,m.actorId,m.actorType,m.body,m.createdAt]);}

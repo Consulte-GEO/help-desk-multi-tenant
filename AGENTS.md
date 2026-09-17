@@ -25,8 +25,15 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.13.0
-M1 aberto.789 locais/35 HTTP aprovados;125 SQL/35 browser escritos, não homologados. API0.13/schema0.9; oito migrations/23 tabelas/18 operações. Ler documentos04,05,17 e revisão histórica15. Sem reinspeção ou escrita remota nesta rodada.
+## Estado v0.14.0
+M1 aberto.868 testes locais/35 HTTP aprovados; 125 SQL/35 browser escritos, não homologados. API 0.14/schema 0.9; oito migrations,23 tabelas,18 operações. Leia docs 04/05/18 e revisão histórica15. Sem publicação.
+
+Reenvio validado por namespace e recurso/operação. Cache inválido NÃO é ausente; não executar work, reparar/limpar cache ou gerar nova key. Retornar snapshot histórico autorizado, não GET atual. Preservar falta histórica de assignedTo, ordem JSONB e autoria original. Scopes humanos granulares ainda não têm configuração persistida: conferir R14-04/05/06 antes de anunciar perfis só leitura/escrita de notas.
+
+Leitura humana do provedor limitada a64 KiB decodificados e ao sinal5000ms, UTF-8 estrito. Metadados não autorizam. Não ampliar orçamento sem teste real com dados sintéticos representativos.
+
+## Registro histórico v0.13.0
+M1 aberto.789 locais/35 HTTP aprovados; 125 SQL/35 browser escritos, não homologados. API0.13/schema 0.9; oito migrations/23 tabelas/18 operações. Ler documentos 04,05,17 e revisão histórica15. Sem reinspeção ou escrita remota nesta rodada.
 
 available_actions é snapshot consultivo do GET, não autorização. Não armazenar em cache de reenvio, não inferir escrita pelo papel e não adicionar fallback do frontend para /me. Cada comando revalida. Notas read/write independentes. Falha opcional remove itens privados antigos, conserva rascunho da mesma identidade e não bloqueia conversa pública. GET/diálogo inválido não é sucesso vazio.
 

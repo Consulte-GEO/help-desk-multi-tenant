@@ -1,27 +1,29 @@
-# Continuidade — Help Desk v0.13.0
+# Continuidade — Help Desk v0.14.0
 
-Base `a0928abdff3b1bc01653c7af4a1b207af179d32e`; branch `work/helpdesk-v0.13.0`. Sem escrita ou reinspeção remota nesta rodada. Ler README/AGENTS/documentos04/17 e plano. Reinspecionar destinos e preservar trabalho concorrente antes de integrar.
+Base `c94e49dc1066ffc89bfd444395d80e696e748daa`. Branch `work/helpdesk-v0.14.0`; commit final no manifesto externo/bundle. Leia README/AGENTS e docs 04/18. Código acumulado local, não o site publicado.
 
-## Prioridade
+## Próximo resultado prioritário
 
-1. Resolver dependências (`npm run deps:resolve`) no registry autorizado; revisar lock real/árvore/origens/integridades/alertas. Executar npm ci, verify e audit. Não fabricar lock ou aceitar tsc global como instalação reproduzível.
-2. Conferir oito migrations (`npm run check:migrations`), executar125 casos PostgreSQL17 descartável/upgrade com papel restrito. Nenhuma migration nova; schema continua0.9.0. Sem Supabase real como fallback.
-3. Homologar autenticação humana/M2M, live scopes, pooler/TLS/IP e Functions. Confirmar que `available_actions` usa o principal revalidado na leitura, mas o comando revalida novamente. Remover tickets:write sem alterar a versão deve retirar os hints e negar envio posterior. Admin não supre scope; notes:read e notes:write são independentes.
-4. Executar UI:35 HTTP +30 browser principais +5 humanas sintéticas. Rever consulta read-only, leitura/escrita de notas separadas, permissões em contas diferentes, motivos de reabertura, notas503/403/malformadas, conversa pública503, A→B→A, fechar/login durante resposta, refresh do canal privado e nenhum replay automático. O erro da seção privada abre o aviso e oferece atualização. Não contornar a política de navegação.
-5. Confirmar preservação das garantias anteriores: cache de mutações representa resposta original **sem available_actions**; listagem também não inclui o campo. Frontend0.13 depende de GET0.13. Validadores rígidos de consumidores devem adotar TicketDetail para leitura, mantendo Ticket em comandos/listas. ETag não representa permissões.
-6. Executar homologate:local/check:homologation; pisos789/125/70 referem-se a contagens efetivas aprovadas. Aprovação local não libera destino/capacidade/restore/produção. Manter HELPDESK_RELEASE_APPROVED fechado até decisão explícita e evidências.
+Resolver dependências reais → PostgreSQL 17/upgrade → configuração de escopos/invariantes → Auth/pooler/Functions → navegador/capacidade. Não usar outra feature para declarar M1 encerrado.
 
-## Revisão dirigida
+1. Reinspecionar os três destinos antes de qualquer integração. Leituras desta rodada: GitHub vazio; cinco schemas Supabase consultados sem tabelas e ledger sem migrations; Netlify no deploy antigo. Sem writes.
+2. `npm run deps:resolve`; revisar versões/origens/integridade/licenças/alertas; `npm ci --ignore-scripts`, `npm run verify`, `npm audit --audit-level=high`. A tentativa atual falhou EAI_AGAIN; nenhum lock criado.
+3. `npm run check:migrations` e `npm run test:db:local`. Oito migrations inalteradas, schema 0.9.0, 125 cenários SQL escritos. Docker padrão/native somente instalado autorizado e não root; nunca banco remoto de fallback. Fresh/upgrade e roles reais, sem apagar dados existentes.
+4. Revisar SQL da consulta de cache: SELECT escalar deve produzir uma linha com record NULL para miss ou um JSON da migration 008. Não relaxar esse contrato para fazer mocks passarem; adaptar somente se o comportamento real documentado divergir.
+5. Conferir guards de replay: namespace, objeto, resultado da operação, contrato imutável, ator/corpo; históricos sem assignedTo e JSONB com ordem de chaves diferente. Desvio vira503, não cache miss/segunda escrita. Reenvio original não é GET atual.
+6. Definir e testar R14-04/05/06 do documento18: scopes humanos granulares não configuráveis hoje, replay SQL de notas exige leitura, nem toda escrita tem trigger correspondente de evento/outbox. Não chamar perfis sintéticos de perfis configurados no provedor.
+7. Validar Auth real com orçamento64 KiB decodificados, UTF-8, mesmo sinal5000ms, compressão, metadata grande e cancelamento. Sem promover JWT metadata, sem desativar MFA ou ampliar timeout para encobrir problema.
+8. UI:35 HTTP +35 browser escritos. Navegador bloqueado nesta entrega; não contornar política. Transações e efeitos do erro de replay devem ser homologados no ambiente autorizado.
+9. `npm run homologate:local`/`check:homologation`: piso868 locais/125 SQL/70 UI são APROVAÇÕES exigidas, não quantidades já aprovadas. Sucesso local não aprova produção, residência/RPO/RTO, restore, carga ou publicação.
 
-- `src/application/ticket-actions.ts`, `src/http/handler.ts`: deriva funções de política/workflow sem conceder privilégios; GET somente.
-- `web/ticket-actions.js`/`.d.ts`: DTO estrito, página íntegra, erro de notas isolado, respostas antigas descartadas, modo do compositor preservado durante pausa.
-- `web/app.js`/HTML: sem máquina de estados duplicada; formulários só com hints atuais, erro de notas visível, rascunho pessoal distinto dos dados privados removidos.
-- `tests/ticket-actions*.test.ts`, `ui-wiring.test.ts`: local/sockets/sentinelas estruturais; não confundem com navegador real.
-- `tests/browser-smoke.py`, `browser-human-session.py`: três checks DOM novos e fixture GET humano atualizado; navegação bloqueada, não aprovados.
-- OpenAPI (`TicketDetail`, `TicketActions`), assets/servidor demo, exemplo HTTP e `evidence/v013/`.
+## Arquivos prioritários
+- `src/application/replay-result.ts`, `helpdesk.ts`: validação por operação, antes de devolver o snapshot.
+- `src/infrastructure/idempotency-lookup.ts`, `postgres.ts`: null explícito versus retorno incompatível.
+- `src/infrastructure/auth-response.ts`, `authentication.ts`: leitura limitada do JSON de identidade.
+- `tests/review-replay-integrity.test.ts`, `review-replay-http.test.ts`, `review-auth-response.test.ts`.
+- docs 18, inventário e regressões em `evidence/v014/`.
 
-## Limites
+## Invariantes
+Não corrigir/delete cache na requisição, não trocar key nem repetir work diante de corrupção. Callback de escrita nunca executa em replay. Valor histórico não recebe available_actions. Alterações futuras de campos hoje imutáveis precisam versionar a validação. Verificação não é assinatura de histórico nem prova contra banco/runtime comprometidos. Auth ID e principal distintos; metadata não autoriza.
 
-API0.13.0/schema0.9.0,8 migrations/23 tabelas/18 operações. Nenhum novo grant/endpoint/dependência. Hints são consultivos; podem ficar antigos sem mudança da versão do chamado. Mensagens/notas em resolvido/fechado mantêm regras anteriores e não reabrem sozinhas. Notas inválidas limpam os itens anteriores e desabilitam o compositor privado até atualizar; rascunho pessoal permanece só na memória da mesma identidade. Sem polling de autorização, revogação instantânea de JWT, worker/notificações/SLA/anexos/backoffice.
-
-789 locais incluem mocks;125 SQL/35 browser não aprovados. Sem revisor independente/pentest/carga/restore. Código entregue localmente não autoriza publicação.
+868 testes locais incluem doubles; 125 SQL/35 browser não homologados. Sem revisão independente, pentest, carga ou restore. Nenhum push, PR, merge, deploy, migration remota, segredo, MFA ou conta alterados. API 0.14/schema 0.9, oito migrations e nenhuma nova dependência ou endpoint.

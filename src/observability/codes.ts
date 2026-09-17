@@ -27,6 +27,7 @@ export const ERROR_CODES=new Set([
  'invalid_content_length',
  'invalid_cursor',
  'invalid_idempotency_key',
+ 'invalid_idempotency_result',
  'invalid_identifier',
  'invalid_if_match',
  'invalid_input',

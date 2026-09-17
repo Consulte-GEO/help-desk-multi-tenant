@@ -1,0 +1,552 @@
+{
+  "created_at_utc": "2026-09-17T14:33:32.425002+00:00",
+  "note": "Inventory is not a claim of line-by-line review or runtime approval. Frontend DOM and PostgreSQL not validated.",
+  "files": [
+    {
+      "path": "src/application/conversation-result.ts",
+      "bytes": 2252,
+      "sha256": "4a3f3594d7a86bd92a593b4c9294460411e44e51fcea1067ddf2341c4e7e579a",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/application/helpdesk.ts",
+      "bytes": 16607,
+      "sha256": "95e884a877a036e047dcb1ed4afb32d8615f254d39d3f95270862bb33afd5462",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/application/pagination.ts",
+      "bytes": 1502,
+      "sha256": "37ddd648dcd6184c24676b5b9618ad43be1dfecc741689aabcdb15c9009cf351",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/application/ports.ts",
+      "bytes": 2031,
+      "sha256": "d242d6391cc9bf8e8ad390fb97e7c065f39fe8b2b3478339d857aaa852373812",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/application/replay-result.ts",
+      "bytes": 7707,
+      "sha256": "3de05c23ff44e871f0158bba76723b13874b066925356ce443d4426f2e875c9c",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/application/support-catalog.ts",
+      "bytes": 5347,
+      "sha256": "7d784e3bd6700de4f9e2fb12ff80062720c4b8a5b2262eedc03c14de2ddf9344",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/application/ticket-actions.ts",
+      "bytes": 1743,
+      "sha256": "b51f2aafed5786e4bac326e4a414072f388ce254e3a0eb2b6c24f7aa30cf26aa",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/application/ticket-assignment.ts",
+      "bytes": 1595,
+      "sha256": "b7f4c54f155d300c03670638a05e0e2f86324b2c267f14b80b74ffd1c56e73b5",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/application/ticket-priority.ts",
+      "bytes": 1143,
+      "sha256": "e4345c92b1e1e55b1c14e4ba1f522edd8fa44188838db7cf15de000453b9f0d7",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/application/ticket-search.ts",
+      "bytes": 3215,
+      "sha256": "77283caf8c610e860691084f40cdc2753209d6dd7fd331378055d0dcaf81b681",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/domain/calendar.ts",
+      "bytes": 2112,
+      "sha256": "285027ca7a50e16af243cd321e14f935a3830be775bb9bdfb6155de4a1f2fc4f",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/domain/canonical.ts",
+      "bytes": 1031,
+      "sha256": "ab4e1e1111143e8403782307c477e61bd4f4bbb37680a74eba370367502a0847",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/domain/contracts.ts",
+      "bytes": 632,
+      "sha256": "46345a944619854e9522f1addf569d67464ecf35947f1990bd961db08bbce2eb",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/domain/errors.ts",
+      "bytes": 351,
+      "sha256": "c9b6fdc8a8565fafd10c4ad877da7c6dbbc0707b6901642456115f5e46ee9155",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/domain/input-values.ts",
+      "bytes": 719,
+      "sha256": "f81581e43a9a5a0797fce8d7ef58c619cb52706008c2dcc7c4d7c757b8fda6b9",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/domain/model.ts",
+      "bytes": 1896,
+      "sha256": "5de40e2d322d9faff11507ec80f6c71d8b6f64a23964e24d36697ca9bb8fd63e",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/domain/policy.ts",
+      "bytes": 1504,
+      "sha256": "7637a02cdcd9622cea26e78780617b7d32b0be1bf668493f221f70086656e009",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/domain/workflow.ts",
+      "bytes": 1083,
+      "sha256": "e8c8fd81a3229a478eee1c4875851d050294f2843088328209195fbd4a24b4d0",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/http/empty-body.ts",
+      "bytes": 1359,
+      "sha256": "ec14f857b1e4d5f922dab253454770fb6432fbfc0e5999d3d6798d975e2c278d",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/http/handler.ts",
+      "bytes": 13510,
+      "sha256": "61e254cd45e4315267e53102b811c8c732cd30483e13c3d7850c8b21cb915f77",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/http/serialization.ts",
+      "bytes": 2250,
+      "sha256": "ca6644191d843077408f9168d5bdb9c15150a32a8ee1ac9e9c07ac4e5fc542ec",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/http/validation.ts",
+      "bytes": 3832,
+      "sha256": "a5230cb16204c64cb7f6178b9ed650f6a6bb5635bab60c5a2754548b0baaa819",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/auth-response.ts",
+      "bytes": 1867,
+      "sha256": "52a365859c6c197e6d965409f01c51a6dfb38637d9dc5080cd6ad05564b59d78",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/authentication.ts",
+      "bytes": 3963,
+      "sha256": "dcfd0fbdbd2ff139111d7e4b37a0c43828dc551c559e685db4481d1f70f8c6c4",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/database-security-contract.ts",
+      "bytes": 14278,
+      "sha256": "5ba52a97d471bdfe17c7a07b0db400fdc1c810b9a01631b619155fdedee35ba3",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/database-security.ts",
+      "bytes": 8945,
+      "sha256": "efa9cc22d801b9805be3fc2f7fb3b5139c5af712d1d9bfe8b9c321b53d292dd9",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/hosted-handler.ts",
+      "bytes": 1550,
+      "sha256": "eac25b432d8b20f17e251a49b8596d1ad3a2ff5a9c57f80b7e30a0a3841089e2",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/idempotency-lookup.ts",
+      "bytes": 1488,
+      "sha256": "91c2837dc1968400de77842fce082aeba292b06f6c41ef583768f2e5fbbb569e",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/memory.ts",
+      "bytes": 5957,
+      "sha256": "a2943a25990fc0633f44edc1e096d1b3a22e00c3bf3a3cb5a3967159b08fb1fe",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/postgres.ts",
+      "bytes": 13124,
+      "sha256": "0140bdb5e24c96e8828508abe35d6af09e90506bd908ed56107d841f51090877",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/principal-validation.ts",
+      "bytes": 2057,
+      "sha256": "5dcdf655cca7616f2f8f9ffff185b69520bc27991828275e28aede60101bbbeb",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/rate-limit.ts",
+      "bytes": 3020,
+      "sha256": "68e67cf1092b4496a97c03f3c9a07ca4edcb3c13b3945f0bd6e46e2bcd5e27b8",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/runtime.ts",
+      "bytes": 3695,
+      "sha256": "99f612a7b6f6dec2cb82b8a62dffe673a7ab8a44af4af52cc818e7ec5c243eaa",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/infrastructure/session-lifecycle.ts",
+      "bytes": 1546,
+      "sha256": "2646abab1452385c18329613a04b68cd2ebc2fe9968ca1d3603d64afbd235d28",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/sql.ts",
+      "bytes": 476,
+      "sha256": "f7563c247e582c391ff33f904ad390f63d46f7fa4f737f2b5cadfdbc5738484d",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/infrastructure/transaction.ts",
+      "bytes": 2644,
+      "sha256": "7a27ffe175c469274ed2f5803169c31850f1920c55e4eafcaecb8c089e971a55",
+      "review_scope": "focused-code-review"
+    },
+    {
+      "path": "src/observability/codes.ts",
+      "bytes": 1751,
+      "sha256": "6ca7bee2f23bb3e68536df8dce2286622d39f895e4109572900a48ffd0b75507",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/observability/http.ts",
+      "bytes": 3350,
+      "sha256": "49b99e46fc0c4e6a69879bd88364ef99bbf1b6c1ef2f05f27b72e980db40a473",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/observability/summary.ts",
+      "bytes": 5224,
+      "sha256": "2a40dafb0aedc3122f0d53e54359167516335452cef99cea8a08eeb1446008c1",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "src/version.ts",
+      "bytes": 134,
+      "sha256": "d59a49db1cf830d0c19795a4e20bcbc16bba58fcfd98f3f7a5683b98c23e60e0",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/app.js",
+      "bytes": 35617,
+      "sha256": "bbff314f77b2361eb86f290734c27a5f72c0a7f95a71a95f5e0c1078336dde4d",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/conversation-state.js",
+      "bytes": 984,
+      "sha256": "81614ca1eafaba1fceddb47b21684ed0a970a77e9138d7b542429b6a695c003d",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/human-auth.d.ts",
+      "bytes": 635,
+      "sha256": "7dc268d49f356a8c3ad1ecd9af1c19107cbb2faf34c1e7fef5ec99d55141efc0",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/human-auth.js",
+      "bytes": 7097,
+      "sha256": "204558db4868fdfb05b1231284232cb042ffedcb8f76ad1f1d37e0486588d124",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/human-session.d.ts",
+      "bytes": 851,
+      "sha256": "eb49b1ad0dd15ad1eee09e711fb9867eacb91a2bde8450b70b8d894e7694e173",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/human-session.js",
+      "bytes": 4010,
+      "sha256": "4dafab42b3b0def98358917155cb18f207eab7bbc9197ced60b8163a134745ba",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/index.html",
+      "bytes": 15012,
+      "sha256": "6ce7d944e75245c8905d724e711ef07922f13605702183b9e91b32e57999153b",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/mutation-state.d.ts",
+      "bytes": 678,
+      "sha256": "877ffb6444d0d57040175f991cc5ebaac703d2ca3d8115df5f0591b7fc4d2a2f",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/mutation-state.js",
+      "bytes": 1708,
+      "sha256": "1020a746647729b381913d52f8d0f7648693f4147d0d16f61b3fc93142b67e64",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/session-fetch.d.ts",
+      "bytes": 188,
+      "sha256": "2ed1b32bd6d7e76a3e788d727dd24dadc1876b930bae481615b977f6b1db4602",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/session-fetch.js",
+      "bytes": 1294,
+      "sha256": "f29ce96b8f9622c9d37db5e82219fc130b7c83be610dadcb01ad098dd1c0ebf5",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/styles.css",
+      "bytes": 16288,
+      "sha256": "559ec16adab8ec20255e96ecf7548a699df4532142afd97997b2d7351c185dfb",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/support-catalog-state.js",
+      "bytes": 2701,
+      "sha256": "851f406df2bc905ff65cce1890a8baa5c4a1a967168f4da18099a7da599bf8f3",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/ticket-actions.d.ts",
+      "bytes": 741,
+      "sha256": "7b6b0d8f1eb4fa58f90d75799283c26f1fa0f21549d0d073fbdfdb160e361c62",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/ticket-actions.js",
+      "bytes": 4791,
+      "sha256": "47152c6a4e3b3fe5bcb88fff5c2ee61ffca195e9fc326a0ef4129978df2e94d7",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/ticket-list-state.d.ts",
+      "bytes": 715,
+      "sha256": "b7e2b54e3fa942e8e6a0db38406f1e1109cde6fa8e7a303605d0ec459f49f5e8",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/ticket-list-state.js",
+      "bytes": 4761,
+      "sha256": "ca69f363b41972454e42603309a44ae5d989d932003a7b3e4701aafd7cf8242e",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/timeline-state.d.ts",
+      "bytes": 721,
+      "sha256": "293725a18c63bf908a65394ba2247e96fbccd8eac4fab5cb824f483635068c28",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "web/timeline-state.js",
+      "bytes": 5580,
+      "sha256": "ccaa4f593f1430c4eab98a935d1ccbee243b91d86b0d4adca67137095f1d1f29",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "supabase/migrations/20260915000100_restrict_existing_definer.sql",
+      "bytes": 598,
+      "sha256": "b98618ba0c23b1f126119e159324ad4576358798d8fb6e6fb09553ffdc7f3607",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260915000200_helpdesk_foundation.sql",
+      "bytes": 28461,
+      "sha256": "ede5ab9756781e396e0065c0124f5bf1c698ea53fc72aef067582221b65b7ccc",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260915000300_m1_authorization.sql",
+      "bytes": 7267,
+      "sha256": "aee3c4a82c791c0519719884e2e0ad0fe15f7fbff4afe0e9f552559959ae279c",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260915000400_m1_resource_limits.sql",
+      "bytes": 15988,
+      "sha256": "3448a0c925bac1477183b01858180c12bce44dd4999f23122db0bae2c2185f11",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260916000500_m1_session_lifecycle.sql",
+      "bytes": 1483,
+      "sha256": "cc862fb5f5259344be73c606a94b816a5dd964915a2a7397fbdd3003c27f0a32",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260916000600_support_catalog.sql",
+      "bytes": 4066,
+      "sha256": "f5c30d4fce3c7671c4b946704e57bbd0139c10936e93e48dcbc77b2c214cb979",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260916000700_ticket_priority.sql",
+      "bytes": 10054,
+      "sha256": "4d8065d139c66d7256d555cac0c56a32d1a0ee027d6471bbcddcbb77399cf637",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations/20260916000800_ticket_assignment.sql",
+      "bytes": 10839,
+      "sha256": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348",
+      "review_scope": "schema-chain-inspection"
+    },
+    {
+      "path": "supabase/migrations.manifest.json",
+      "bytes": 1277,
+      "sha256": "dc0ea0be5ac2b2fbfbf267881be0a9817532736eff2f5ef685d892e4da18cb32",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "supabase/tests/rls.test.ts",
+      "bytes": 66269,
+      "sha256": "52c2cfb8016eec139355bc33bbf2c188e3930f590f7479b9f01639dcf65e85a9",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "supabase/tests/upgrade.test.ts",
+      "bytes": 12063,
+      "sha256": "8bc42baa1994dcfdd65cc2633f2f739dca2227b684ede3fde8e11411f9f2eb6f",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/build.mjs",
+      "bytes": 643,
+      "sha256": "8e19604ffb1d40c27903d28137fee6827c8440d7ebb8200c2a49ad48eb4cb16c",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/check-contracts.ts",
+      "bytes": 2075,
+      "sha256": "9f39890f8f1f28fd428ee4e3bfe70711422878fe4004f580f6f23fd48e7eed0e",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/check-homologation.mjs",
+      "bytes": 909,
+      "sha256": "126e5f7f2e80689fd1b8ff44eb55cb0416e2384389de66cf8d8b59713070568c",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/check-migrations.ts",
+      "bytes": 405,
+      "sha256": "6c3849f67e9f377791a45a2ecf1982ecea3f0e429b55699ff8a9efc84c1b4219",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/check-secrets.mjs",
+      "bytes": 1158,
+      "sha256": "c8997e64b7abbcce37eb45445ef8bfaecfe292844a5a8758ea523cf553bd2763",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/database-target.ts",
+      "bytes": 1233,
+      "sha256": "19d31048b7626953b84dc9c5ef95c697068d5bd6aac6276d9858a32b2e678658",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/demo.ts",
+      "bytes": 7344,
+      "sha256": "feef5e017ad4f899c24b1fa61fc4f9954c0aefb43cb74b0312f4f08e32b18cef",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/generate-openapi.py",
+      "bytes": 20258,
+      "sha256": "2ae9b031bf3c362431f8396d751a7d742e0bcab05ec68067f1b2548043d00be8",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/homologate-local.mjs",
+      "bytes": 1928,
+      "sha256": "3ff2d5ded05f361dfda1c1132c31e14cfcd96152d9dd6c5b5fcbf05e9528e0e7",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/homologation-core.mjs",
+      "bytes": 5757,
+      "sha256": "3c436a151e22f7f4af92e3ba8cb8297bd71d50993fc17534fd6e770ae7f9c15a",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/local-process.mjs",
+      "bytes": 1906,
+      "sha256": "69a58435553350cb034d970c482f3767ca77980270c59bbd7964c85eadcacdd9",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/migration-files.ts",
+      "bytes": 3865,
+      "sha256": "841b4d15e3b465afd4e18974040a76e68e8687d78d51202a12d24dea9be8ad6b",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/native-postgres.mjs",
+      "bytes": 7110,
+      "sha256": "43b277d0966f9332f2d3602bc92a80baad3b814855c3b76a248ea0babe559f56",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/prepare-dependencies.mjs",
+      "bytes": 861,
+      "sha256": "a94987416e0dd732c778060c7465098fd5e74ad19ddb519ef3e122c6b736990a",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/smoke-local-http.mjs",
+      "bytes": 21031,
+      "sha256": "30dcb2b058b2a7aaf731e507464807854b71e10ad1874c1842161c880f220d49",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/summarize-http-logs.ts",
+      "bytes": 854,
+      "sha256": "25d7215d9845cbe7e8416c7fda8a713ee75c80c67fd1b5cdc319891d7d359e00",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/test-db-docker.mjs",
+      "bytes": 2751,
+      "sha256": "81575bbfe1169a3cde818caad9cbfc9a5a63933aaa3a88a75821beacbcf771b0",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/test-db-local.mjs",
+      "bytes": 397,
+      "sha256": "e2f4077ff2f55001451df4fafd5765a839c3eb9f29a381ff8075e7197dd2445c",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/test-db-native.mjs",
+      "bytes": 957,
+      "sha256": "bf309c3e40e0d68d93d13ffc5846e11b8101962895ee031a399cab60c731ab90",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/test-ui-local.mjs",
+      "bytes": 2427,
+      "sha256": "671e12db6fa8498c0b3dc9a50e29a4f982672668654cc57d869b0401d73b16f5",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    },
+    {
+      "path": "scripts/verify-lock.mjs",
+      "bytes": 2042,
+      "sha256": "79d244e59fb2e9b632817c1429b670d1270edfbb5546dadd9f7cd763683dede3",
+      "review_scope": "inventory-and-regression-scope-not-line-audit"
+    }
+  ]
+}

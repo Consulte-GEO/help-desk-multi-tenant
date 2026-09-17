@@ -1,0 +1,390 @@
+TAP version 13
+# (node:1655) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: replay rejects mismatched envelope workspaceId without another mutation
+ok 1 - replay rejects mismatched envelope workspaceId without another mutation
+  ---
+  duration_ms: 5.691985
+  type: 'test'
+  ...
+# Subtest: replay rejects mismatched envelope principalId without another mutation
+ok 2 - replay rejects mismatched envelope principalId without another mutation
+  ---
+  duration_ms: 0.714405
+  type: 'test'
+  ...
+# Subtest: replay rejects mismatched envelope operation without another mutation
+ok 3 - replay rejects mismatched envelope operation without another mutation
+  ---
+  duration_ms: 0.510478
+  type: 'test'
+  ...
+# Subtest: replay rejects mismatched envelope key without another mutation
+ok 4 - replay rejects mismatched envelope key without another mutation
+  ---
+  duration_ms: 0.467643
+  type: 'test'
+  ...
+# Subtest: replay rejects false cache value instead of treating it as absent or authoritative
+ok 5 - replay rejects false cache value instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.894056
+  type: 'test'
+  ...
+# Subtest: replay rejects missing cache value instead of treating it as absent or authoritative
+ok 6 - replay rejects missing cache value instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.718581
+  type: 'test'
+  ...
+# Subtest: replay rejects string denial instead of treating it as absent or authoritative
+ok 7 - replay rejects string denial instead of treating it as absent or authoritative
+  ---
+  duration_ms: 2.537228
+  type: 'test'
+  ...
+# Subtest: replay rejects string expiry instead of treating it as absent or authoritative
+ok 8 - replay rejects string expiry instead of treating it as absent or authoritative
+  ---
+  duration_ms: 0.770379
+  type: 'test'
+  ...
+# Subtest: replay rejects invalid hash instead of treating it as absent or authoritative
+ok 9 - replay rejects invalid hash instead of treating it as absent or authoritative
+  ---
+  duration_ms: 1.168709
+  type: 'test'
+  ...
+# Subtest: create replay rejects result from another account even with a matching key
+ok 10 - create replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 2.071297
+  type: 'test'
+  ...
+# Subtest: create replay accepts only its result shape, not appended private fields
+ok 11 - create replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.906223
+  type: 'test'
+  ...
+# Subtest: message replay rejects result from another account even with a matching key
+ok 12 - message replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.561775
+  type: 'test'
+  ...
+# Subtest: message replay accepts only its result shape, not appended private fields
+ok 13 - message replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.476087
+  type: 'test'
+  ...
+# Subtest: note replay rejects result from another account even with a matching key
+ok 14 - note replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.610509
+  type: 'test'
+  ...
+# Subtest: note replay accepts only its result shape, not appended private fields
+ok 15 - note replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.351729
+  type: 'test'
+  ...
+# Subtest: priority replay rejects result from another account even with a matching key
+ok 16 - priority replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.899093
+  type: 'test'
+  ...
+# Subtest: priority replay accepts only its result shape, not appended private fields
+ok 17 - priority replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.391058
+  type: 'test'
+  ...
+# Subtest: assignment replay rejects result from another account even with a matching key
+ok 18 - assignment replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 1.122829
+  type: 'test'
+  ...
+# Subtest: assignment replay accepts only its result shape, not appended private fields
+ok 19 - assignment replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.315204
+  type: 'test'
+  ...
+# Subtest: transition replay rejects result from another account even with a matching key
+ok 20 - transition replay rejects result from another account even with a matching key
+  ---
+  duration_ms: 0.728987
+  type: 'test'
+  ...
+# Subtest: transition replay accepts only its result shape, not appended private fields
+ok 21 - transition replay accepts only its result shape, not appended private fields
+  ---
+  duration_ms: 0.316506
+  type: 'test'
+  ...
+# Subtest: message replay binds ticketId to the authorized request
+ok 22 - message replay binds ticketId to the authorized request
+  ---
+  duration_ms: 1.204412
+  type: 'test'
+  ...
+# Subtest: message replay binds actorId to the authorized request
+ok 23 - message replay binds actorId to the authorized request
+  ---
+  duration_ms: 0.44504
+  type: 'test'
+  ...
+# Subtest: message replay binds body to the authorized request
+ok 24 - message replay binds body to the authorized request
+  ---
+  duration_ms: 0.261964
+  type: 'test'
+  ...
+# Subtest: message replay binds createdAt to the authorized request
+ok 25 - message replay binds createdAt to the authorized request
+  ---
+  duration_ms: 0.446883
+  type: 'test'
+  ...
+# Subtest: note replay binds ticketId to the authorized request
+ok 26 - note replay binds ticketId to the authorized request
+  ---
+  duration_ms: 0.423958
+  type: 'test'
+  ...
+# Subtest: note replay binds actorId to the authorized request
+ok 27 - note replay binds actorId to the authorized request
+  ---
+  duration_ms: 0.402526
+  type: 'test'
+  ...
+# Subtest: note replay binds body to the authorized request
+ok 28 - note replay binds body to the authorized request
+  ---
+  duration_ms: 0.416046
+  type: 'test'
+  ...
+# Subtest: note replay binds createdAt to the authorized request
+ok 29 - note replay binds createdAt to the authorized request
+  ---
+  duration_ms: 0.35871
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible id
+ok 30 - priority snapshot refuses incompatible id
+  ---
+  duration_ms: 0.616367
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible productInstanceId
+ok 31 - priority snapshot refuses incompatible productInstanceId
+  ---
+  duration_ms: 0.286842
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible serviceCode
+ok 32 - priority snapshot refuses incompatible serviceCode
+  ---
+  duration_ms: 0.43879
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible createdBy
+ok 33 - priority snapshot refuses incompatible createdBy
+  ---
+  duration_ms: 0.37185
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible coverageId
+ok 34 - priority snapshot refuses incompatible coverageId
+  ---
+  duration_ms: 0.240692
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible contractVersionId
+ok 35 - priority snapshot refuses incompatible contractVersionId
+  ---
+  duration_ms: 0.307533
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible subject
+ok 36 - priority snapshot refuses incompatible subject
+  ---
+  duration_ms: 0.537178
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible description
+ok 37 - priority snapshot refuses incompatible description
+  ---
+  duration_ms: 0.464339
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible contractSnapshot
+ok 38 - priority snapshot refuses incompatible contractSnapshot
+  ---
+  duration_ms: 0.448195
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible version
+ok 39 - priority snapshot refuses incompatible version
+  ---
+  duration_ms: 0.386131
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible priority
+ok 40 - priority snapshot refuses incompatible priority
+  ---
+  duration_ms: 0.380382
+  type: 'test'
+  ...
+# Subtest: priority snapshot refuses incompatible updatedAt
+ok 41 - priority snapshot refuses incompatible updatedAt
+  ---
+  duration_ms: 0.35886
+  type: 'test'
+  ...
+# Subtest: create replay validates the snapshot before using its identifier
+ok 42 - create replay validates the snapshot before using its identifier
+  ---
+  duration_ms: 0.620344
+  type: 'test'
+  ...
+# Subtest: assignment replay cannot return a different owner for a claim
+ok 43 - assignment replay cannot return a different owner for a claim
+  ---
+  duration_ms: 1.279095
+  type: 'test'
+  ...
+# Subtest: transition replay must represent the requested target status
+ok 44 - transition replay must represent the requested target status
+  ---
+  duration_ms: 0.505661
+  type: 'test'
+  ...
+# Subtest: valid replay preserves the original response after further changes, not the current ticket
+ok 45 - valid replay preserves the original response after further changes, not the current ticket
+  ---
+  duration_ms: 0.472701
+  type: 'test'
+  ...
+# Subtest: pre-assignment cache stays byte-semantically historical without adding assignedTo
+ok 46 - pre-assignment cache stays byte-semantically historical without adding assignedTo
+  ---
+  duration_ms: 0.487393
+  type: 'test'
+  ...
+# Subtest: JSONB property ordering in a contractual snapshot is not a conflict
+ok 47 - JSONB property ordering in a contractual snapshot is not a conflict
+  ---
+  duration_ms: 0.449176
+  type: 'test'
+  ...
+# Subtest: historical message actor type is preserved when a requester becomes an operator
+ok 48 - historical message actor type is preserved when a requester becomes an operator
+  ---
+  duration_ms: 0.436177
+  type: 'test'
+  ...
+# Subtest: legitimate expired and denied cache signals keep their existing public errors
+ok 49 - legitimate expired and denied cache signals keep their existing public errors
+  ---
+  duration_ms: 0.553163
+  type: 'test'
+  ...
+# Subtest: valid different request digest still means idempotency conflict, not cache absence
+ok 50 - valid different request digest still means idempotency conflict, not cache absence
+  ---
+  duration_ms: 0.310617
+  type: 'test'
+  ...
+# Subtest: revoked access is checked before reading protected reply cache
+ok 51 - revoked access is checked before reading protected reply cache
+  ---
+  duration_ms: 0.260862
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects missing SQL row; cannot execute a replacement mutation
+ok 52 - PostgreSQL adapter rejects missing SQL row; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.472771
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects record absent; cannot execute a replacement mutation
+ok 53 - PostgreSQL adapter rejects record absent; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.150877
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects multiple rows; cannot execute a replacement mutation
+ok 54 - PostgreSQL adapter rejects multiple rows; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.094493
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects false record; cannot execute a replacement mutation
+ok 55 - PostgreSQL adapter rejects false record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.067281
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects empty string record; cannot execute a replacement mutation
+ok 56 - PostgreSQL adapter rejects empty string record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.062514
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects zero record; cannot execute a replacement mutation
+ok 57 - PostgreSQL adapter rejects zero record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.060501
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects array record; cannot execute a replacement mutation
+ok 58 - PostgreSQL adapter rejects array record; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.057196
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects string boolean; cannot execute a replacement mutation
+ok 59 - PostgreSQL adapter rejects string boolean; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.089594
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects missing result; cannot execute a replacement mutation
+ok 60 - PostgreSQL adapter rejects missing result; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.17266
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter rejects additional private fields; cannot execute a replacement mutation
+ok 61 - PostgreSQL adapter rejects additional private fields; cannot execute a replacement mutation
+  ---
+  duration_ms: 0.099339
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter accepts only explicit SQL NULL as cache miss
+ok 62 - PostgreSQL adapter accepts only explicit SQL NULL as cache miss
+  ---
+  duration_ms: 0.112039
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves legitimate successful and terminal lookup records
+ok 63 - PostgreSQL adapter preserves legitimate successful and terminal lookup records
+  ---
+  duration_ms: 0.257928
+  type: 'test'
+  ...
+1..63
+# tests 63
+# suites 0
+# pass 63
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 230.823978

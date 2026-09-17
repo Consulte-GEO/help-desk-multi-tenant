@@ -1,0 +1,153 @@
+{
+  "captured_at_utc": "2026-09-17T14:37:30.573973+00:00",
+  "counts_local": {
+    "tests": 868,
+    "pass": 868,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "commands": [
+    {
+      "name": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "started_at_utc": "2026-09-17T14:34:36.882566+00:00",
+      "exit_code": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "name": "final-typecheck-standard",
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "started_at_utc": "2026-09-17T14:34:42.322884+00:00",
+      "exit_code": 2,
+      "log": "final-typecheck-standard.txt"
+    },
+    {
+      "name": "final-typecheck-supplementary",
+      "command": [
+        "npm",
+        "run",
+        "typecheck",
+        "--",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "started_at_utc": "2026-09-17T14:34:44.204273+00:00",
+      "exit_code": 0,
+      "log": "final-typecheck-supplementary.txt"
+    },
+    {
+      "name": "final-migrations",
+      "command": [
+        "npm",
+        "run",
+        "check:migrations"
+      ],
+      "started_at_utc": "2026-09-17T14:34:46.483213+00:00",
+      "exit_code": 0,
+      "log": "final-migrations.txt"
+    },
+    {
+      "name": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "started_at_utc": "2026-09-17T14:34:46.659177+00:00",
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "name": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "started_at_utc": "2026-09-17T14:34:46.845687+00:00",
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "name": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started_at_utc": "2026-09-17T14:34:47.001967+00:00",
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "name": "final-verify-standard",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "started_at_utc": "2026-09-17T14:34:47.119868+00:00",
+      "exit_code": 2,
+      "log": "final-verify-standard.txt"
+    },
+    {
+      "name": "dependencies-attempt",
+      "command": [
+        "npm",
+        "run",
+        "deps:resolve"
+      ],
+      "exit_code": 1,
+      "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    },
+    {
+      "name": "database-attempt",
+      "command": [
+        "npm",
+        "run",
+        "test:db:local"
+      ],
+      "exit_code": 1,
+      "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    },
+    {
+      "name": "ui-attempt",
+      "command": [
+        "npm",
+        "run",
+        "test:ui:local"
+      ],
+      "exit_code": 1,
+      "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    },
+    {
+      "name": "homologation",
+      "command": [
+        "npm",
+        "run",
+        "homologate:local"
+      ],
+      "exit_code": 1,
+      "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    },
+    {
+      "name": "release-gate",
+      "command": [
+        "npm",
+        "run",
+        "verify:release"
+      ],
+      "exit_code": 1,
+      "note": "Executed; nonzero is a failure/block, not subsystem approval."
+    }
+  ]
+}

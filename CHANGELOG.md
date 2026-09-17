@@ -1,12 +1,24 @@
-# 0.12.0 — sessão humana e renovação sob demanda (não publicado)
+# 0.14.0 — revisão de reenvios e leitura de identidade (não publicado)
 
-## 0.13.0 — ações por chamado e carregamento parcial seguro
+- Envelope de idempotência conferido por workspace, principal, operação e chave; resultados incompatíveis não viram cache ausente nem autorizam nova gravação.
+- Respostas de criação, mensagens, notas, transições, prioridade e responsabilidade vinculadas ao recurso autorizado, autoria e operação. Snapshot original preservado; campos mutáveis atuais não substituem a resposta antiga.
+- Adaptador PostgreSQL aceita somente uma linha com SQL NULL explícito como ausência do cache. Flags inválidas, dados incompletos e linhas ausentes/duplicadas geram recusa segura.
+- Leitura da identidade no backend limitada a 64 KiB decodificados, UTF-8 estrito e mesmo sinal de prazo de cinco segundos do transporte. Falha antes da consulta de vínculos; metadados não promovem papéis.
+- Revisão acumulada explicita limites de scopes humanos, assimetria no reenvio de notas e garantias SQL de evento/outbox. Não implementa backoffice, dispatcher, SLA ou anexos.
+- 868 testes locais aprovados (79 novos); 35 checks HTTP de memória. Oito migrations preservadas, schema 0.9.0, nenhuma nova dependência/endpoint ou escrita remota.
+- M1 permanece aberto: dependências reais, PostgreSQL125, navegador35 e runtime de destino não homologados.
+
+---
+
+# 0.13.0 — ações por chamado e carregamento parcial seguro
 - GET individual recebe `available_actions` derivado das políticas/workflow existentes; novo schema TicketDetail, sem alteração nos snapshots de comando/reenvio/listagem.
 - Interface deixa de inferir transições e escrita de notas pelo papel. Modo de consulta, flags separadas, razão de reabertura, pausa segura de controles, preservação do canal/rascunho.
 - Falhas opcionais de notas não ocultam conversa pública nem reutilizam notas antigas; resposta pública obrigatória e DTO inválido falham sem resultado parcial.
 - Assets, contrato e fixtures humanas atualizados; testes estáticos de IDs/imports, socket, loader, scope revogado e Unicode.
 - API0.13/schema0.9, oito migrations preservadas, sem nova dependência/operação ou escrita remota.789 locais/35 HTTP aprovados;125 SQL/35 browser pendentes. M1 não encerrado.
 
+
+# 0.12.0 — sessão humana e renovação sob demanda (não publicado)
 
 - Transporte por senha/refresh/logout local com origem e chave publicável validadas, JSON/UTF-8/deadline/limite de64KiB e expiração limitada.
 - Estado apenas em memória, rotação single-flight com margem adaptativa, pausa/retry explícito e proteção de gerações em login/refresh/saída.

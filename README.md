@@ -1,18 +1,20 @@
-# Consulte Help Desk — v0.13.0 / ações por chamado
+# Consulte Help Desk — v0.14.0 / revisão de reenvios e identidade
 
 Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
 
 ## Esta entrega
 
-Ações de cada chamado calculadas pelo servidor e interface em modo de consulta quando faltam escopos. Leitura/escrita de notas independentes; transições vêm da máquina de estados existente, não de uma cópia no frontend. Falha nas notas deixa a conversa pública disponível sem reutilizar itens privados antigos. Controle de rascunho preserva o canal durante atualização e nenhuma mutação é repetida.
+Validação do namespace e da resposta histórica de reenvio; resultado incompatível não vira cache ausente nem produz uma segunda gravação. SQL exige null explícito para ausência. Leitura de identidade humana no backend limitada a64 KiB decodificados, UTF-8 estrito e sinal de prazo compartilhado com o fetch. Sem novo módulo/tela de negócio.
 
-**789 testes locais e35 checks HTTP aprovados.125 SQL e35 browser escritos, não homologados.** Sem lock real/npm ci/audit; verificação padrão falha nos tipos locais ausentes. Typecheck global é suplementar. Não houve publicação nem reinspeção remota.
+**868 testes locais aprovados (79 novos),35 checks HTTP de memória aprovados.125 SQL e35 browser escritos, não homologados.** Sem lock real/npm ci/audit; verificação padrão falha nos tipos locais ausentes. Typecheck global é suplementar.
 
 ## Documentação
 
-[Ações por chamado](docs/17-ACOES-POR-CHAMADO.md) · [Sessão humana e limitações](docs/16-SESSAO-HUMANA.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Revisão acumulada v0.11](docs/15-REVISAO-CONSOLIDADA.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
+[Revisão acumulada e achados](docs/18-REVISAO-REENVIOS-E-IDENTIDADE.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
 
-## Executar a demonstração local
+R14-04/05/06 distinguem configuração granular de scopes humanos, replay de notas e invariantes SQL por comando. Mocks com scope reduzido não provam que esse perfil está configurável no Supabase. A revisão não é pentest ou certificação independente.
+
+## Demonstração local
 
 ```bash
 npm run check:migrations
@@ -20,13 +22,13 @@ npm test
 npm run demo
 ```
 
-Node utilizado 22.16.0. Demo em loopback com memória e dados fictícios, sem Auth externo/notificações. O catálogo, tickets, mensagens, notas, buscas/filtros, prioridade, responsabilidade e histórico anteriores foram preservados. A demonstração não comprova autenticação humana real.
+Node utilizado22.16.0; demo em loopback com memória e dados fictícios. Catálogo, abertura, busca/filtros, mensagens, notas, estados, prioridade, responsável, histórico e ações por chamado preservados. Não comprova o runtime real.
 
-## Homologação pendente
+## Homologação
 
 ```bash
 npm run deps:resolve
-# Revisar lock real, árvore, integridades, licenças e alertas.
+# Revisar o lock REAL antes de prosseguir.
 npm ci --ignore-scripts
 npm run verify
 npm audit --audit-level=high
@@ -36,10 +38,8 @@ npm run homologate:local
 npm run check:homologation
 ```
 
-Os runners recusam infraestrutura/configuração ausente, não trocam para o Supabase remoto nem criam aprovação por mocks. Homologação local não autoriza publicação, capacidade, residência/RPO/RTO ou restauração.
+Os runners recusam infraestrutura ausente; não trocam para Supabase remoto ou aprovam etapas por mocks. Não usar o login postgres/service_role no runtime. Frontend estático não é bundle de Functions.
 
-## Sessão: consequências para o usuário
+**API/interface0.14.0; schema esperado0.9.0; oito migrations/23 tabelas/18 operações.** Sem migration, dependência ou endpoint novos. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
 
-Recarregar/fechar a página exige novo login. A saída usa scope local e informa se o provedor confirmou. **JWT emitido anteriormente pode continuar válido até expirar:** não foi criada revogação imediata adicional no backend. O projeto exige uma política de sessão homologada antes de produção. Não houve mudança de MFA, configuração Supabase ou senhas; fluxos MFA/SSO/CAPTCHA e recuperação administrativa continuam fora deste incremento.
-
-**API/interface 0.13.0; schema esperado0.9.0;8 migrations/23 tabelas/18 operações.** Nenhum pacote adicional instalado, migration nova ou efeito remoto. Não publicar apenas HTML nem usar service_role/postgres/BYPASSRLS como runtime normal.
+Sessão humana permanece somente em memória; reload exige novo login. Logout solicita escopo local e não invalida imediatamente um JWT já emitido. MFA/SSO/CAPTCHA, administração, anexos, clocks de SLA, dispatcher/entregas e dois conectores reais continuam pendentes.
