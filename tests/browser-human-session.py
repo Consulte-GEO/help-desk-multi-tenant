@@ -45,7 +45,7 @@ def prepare(browser):
         if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest'}
         elif path=='/v1/me': value={'id':'33333333-3333-4333-8333-333333333333','kind':'human','workspace_id':WS,'workspace_role':None,'grants':[{'account_id':ACCOUNT,'role':'agent'}],'scopes':['tickets:read','tickets:write','notes:read','notes:write','contexts:resolve']}
         elif path=='/v1/tickets': value={'items':[ticket],'next_cursor':None}
-        elif path=='/v1/tickets/'+TICKET: value=ticket
+        elif path=='/v1/tickets/'+TICKET: value={**ticket,'available_actions':{'ticket_id':TICKET,'version':ticket['version'],'reply':True,'read_notes':True,'add_note':True,'change_priority':True,'claim':True,'release':False,'transitions':[{'to':'triage','requires_reason':False},{'to':'open','requires_reason':False},{'to':'cancelled','requires_reason':False}]}}
         elif path.endswith('/messages'):
             if route.request.method=='POST':
                 posts.append(route.request.post_data_json)

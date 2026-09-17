@@ -1,0 +1,25 @@
+
+> @consulte-geo/helpdesk@0.13.0 test:ui:local
+> node scripts/test-ui-local.mjs
+
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+409 !== 200
+
+    at file:///mnt/data/helpdesk-v0.13.0/scripts/smoke-local-http.mjs:149:193
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 409,
+  expected: 200,
+  operator: 'strictEqual'
+}
+
+Node.js v22.16.0
+
+HTTP em memória: não aprovado.

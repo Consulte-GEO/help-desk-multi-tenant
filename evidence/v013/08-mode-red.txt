@@ -1,0 +1,150 @@
+TAP version 13
+# (node:2332) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: UI reads a defensive projection and does not persist actions
+ok 1 - UI reads a defensive projection and does not persist actions
+  ---
+  duration_ms: 1.616478
+  type: 'test'
+  ...
+# Subtest: missing actions never falls back to agent/admin role in the browser
+ok 2 - missing actions never falls back to agent/admin role in the browser
+  ---
+  duration_ms: 0.561537
+  type: 'test'
+  ...
+# Subtest: mismatched ticket or version rejects the full actions package
+ok 3 - mismatched ticket or version rejects the full actions package
+  ---
+  duration_ms: 0.26541
+  type: 'test'
+  ...
+# Subtest: actions require real booleans and a closed set of fields
+ok 4 - actions require real booleans and a closed set of fields
+  ---
+  duration_ms: 0.647176
+  type: 'test'
+  ...
+# Subtest: invalid, duplicate or augmented transitions are rejected
+ok 5 - invalid, duplicate or augmented transitions are rejected
+  ---
+  duration_ms: 0.2324
+  type: 'test'
+  ...
+# Subtest: customer DTO cannot carry internal privileges or private workflow destinations
+ok 6 - customer DTO cannot carry internal privileges or private workflow destinations
+  ---
+  duration_ms: 0.296838
+  type: 'test'
+  ...
+# Subtest: all false writes is view-only even when notes can be read
+ok 7 - all false writes is view-only even when notes can be read
+  ---
+  duration_ms: 0.203657
+  type: 'test'
+  ...
+# Subtest: detail loader fetches notes only when the server grants reading them
+ok 8 - detail loader fetches notes only when the server grants reading them
+  ---
+  duration_ms: 1.27295
+  type: 'test'
+  ...
+# Subtest: note service failure does not hide the public conversation; old notes are not reused
+ok 9 - note service failure does not hide the public conversation; old notes are not reused
+  ---
+  duration_ms: 0.971756
+  type: 'test'
+  ...
+# Subtest: required public-conversation failure is propagated, not replaced by empty success
+ok 10 - required public-conversation failure is propagated, not replaced by empty success
+  ---
+  duration_ms: 0.538212
+  type: 'test'
+  ...
+# Subtest: stale detail response does not launch another conversation request
+ok 11 - stale detail response does not launch another conversation request
+  ---
+  duration_ms: 0.197858
+  type: 'test'
+  ...
+# Subtest: stale nested responses never become a new detail result
+ok 12 - stale nested responses never become a new detail result
+  ---
+  duration_ms: 0.30496
+  type: 'test'
+  ...
+# Subtest: invalid actions stop before any conversation request
+ok 13 - invalid actions stop before any conversation request
+  ---
+  duration_ms: 0.696801
+  type: 'test'
+  ...
+# Subtest: wrong ticket response is rejected rather than loading that conversation
+ok 14 - wrong ticket response is rejected rather than loading that conversation
+  ---
+  duration_ms: 0.141483
+  type: 'test'
+  ...
+# Subtest: malformed note page is a section failure; malformed public page fails the read
+ok 15 - malformed note page is a section failure; malformed public page fails the read
+  ---
+  duration_ms: 0.51727
+  type: 'test'
+  ...
+# Subtest: refresh pauses writing without switching the selected private draft to public
+not ok 16 - refresh pauses writing without switching the selected private draft to public
+  ---
+  duration_ms: 0.839246
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.13.0/tests/ticket-actions-ui.test.ts:86:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.13.0/tests/ticket-actions-ui.test.ts:88:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: fresh permissions change the composer channel only to an explicitly available channel
+not ok 17 - fresh permissions change the composer channel only to an explicitly available channel
+  ---
+  duration_ms: 0.213703
+  type: 'test'
+  location: '/mnt/data/helpdesk-v0.13.0/tests/ticket-actions-ui.test.ts:92:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/helpdesk-v0.13.0/tests/ticket-actions-ui.test.ts:94:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 15
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 135.018012

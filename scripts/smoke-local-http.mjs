@@ -10,7 +10,7 @@ async function call(path,who='laboratory',method='GET',body,key=randomUUID(),ext
 }
 function passed(name){checks.push({check:name,result:'passed'});}
 for(const [who,account] of [['laboratory',lab.account_id],['school',school.account_id]]){const r=await call('/tickets',who);assert.equal(r.response.status,200);assert.ok(r.body.items.every(t=>t.account_id===account));}passed('HTTP account isolation in local demo');
-assert.equal((await call('/capabilities')).body.release,'0.12.0');passed('HTTP advertises current version');
+assert.equal((await call('/capabilities')).body.release,'0.13.0');passed('HTTP advertises current version');
 const input={account_id:lab.account_id,product_instance_id:lab.product_instance_id,service_code:lab.service_code,subject:'M1 smoke via HTTP',description:'Loopback only; fictitious data.',priority:'normal'},key=randomUUID();
 const created=await call('/tickets','laboratory','POST',input,key);assert.equal(created.response.status,201);const id=created.body.id;
 const replay=await call('/tickets','laboratory','POST',input,key);assert.equal(replay.response.status,200);assert.equal(replay.body.id,id);passed('HTTP create and idempotent replay');
@@ -22,7 +22,7 @@ assert.equal((await call('/tickets/'+id+'/notes','agent','POST',{body:'PRIVATE L
 assert.equal((await call('/tickets/'+id+'/notes')).response.status,403);assert.doesNotMatch(JSON.stringify((await call('/tickets/'+id+'/messages')).body),/PRIVATE LOCAL NOTE/);passed('HTTP public/private conversation separation');
 
 
-for(const asset of ['/app.js','/human-auth.js','/human-session.js','/session-fetch.js','/conversation-state.js','/mutation-state.js','/support-catalog-state.js','/ticket-list-state.js','/timeline-state.js']){const r=await fetch(base+asset);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/javascript/);assert.ok((await r.text()).length>100);}passed('HTTP serves all JavaScript modules including mutation guard');
+for(const asset of ['/app.js','/ticket-actions.js','/human-auth.js','/human-session.js','/session-fetch.js','/conversation-state.js','/mutation-state.js','/support-catalog-state.js','/ticket-list-state.js','/timeline-state.js']){const r=await fetch(base+asset);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/javascript/);assert.ok((await r.text()).length>100);}passed('HTTP serves all JavaScript modules including mutation guard');
 assert.equal((await call('/tickets?limit=1&limit=100')).response.status,400);assert.equal((await call('/tickets?cursor=')).response.status,400);assert.equal((await call('/tickets?account_id=')).response.status,400);passed('HTTP rejects duplicate parameters and empty selectors');
 const profile=configuration.profiles.find(p=>p.key==='laboratory');
 const encoded=await fetch(base+'/v1/tickets',{method:'POST',headers:{authorization:'Bearer '+profile.token,'x-workspace-id':profile.workspace_id,'content-type':'application/json','content-encoding':'gzip','idempotency-key':randomUUID()},body:'{}'});assert.equal(encoded.status,415);passed('HTTP rejects compressed bodies rather than silently decoding unsupported input');
@@ -137,5 +137,22 @@ assert.equal(filterReleased.response.status,200);assert.deepEqual((await call('/
 assert.equal((await call('/capabilities')).body.capabilities.ticket_assignment_filter,true);
 assert.ok(html.includes('id="assignment-filter"'));
 passed('HTTP released ticket returns to unassigned and the capability/UI are shipped');
+
+const actionCustomer=await call('/tickets/'+id),actionAgent=await call('/tickets/'+id,'agent');
+for(const result of [actionCustomer,actionAgent]){const a=result.body.available_actions;assert.equal(a.ticket_id,id);assert.equal(a.version,result.body.version);assert.equal(result.response.headers.get('etag'),'"'+a.version+'"');assert.equal(result.response.headers.get('cache-control'),'no-store');}
+assert.equal(actionAgent.body.available_actions.read_notes,true);assert.equal(actionCustomer.body.available_actions.read_notes,false);assert.equal(actionCustomer.body.available_actions.change_priority,false);assert.deepEqual(actionCustomer.body.available_actions.transitions,[]);
+passed('HTTP current detail actions match the version and keep customer privileges restricted');
+assert.ok(!('available_actions' in created.body));assert.ok(!('available_actions' in replay.body));assert.ok((await call('/tickets','agent')).body.items.every(t=>!('available_actions' in t)));assert.ok(!('available_actions' in filterReleased.body));
+assert.equal((await call('/capabilities')).body.capabilities.ticket_action_hints,true);
+passed('HTTP current actions are not copied into lists, commands or stored replay responses');
+const beforeOpen=(await call('/tickets/'+id,'agent')).body;assert.equal(beforeOpen.internal_status,'new');
+const opened=await call('/tickets/'+id+'/transitions','agent','POST',{to:'open',reason:'Synthetic triage accepted'},randomUUID(),{'if-match':'"'+beforeOpen.version+'"'});assert.equal(opened.response.status,200);
+const beforeResolve=(await call('/tickets/'+id,'agent')).body;
+const resolved=await call('/tickets/'+id+'/transitions','agent','POST',{to:'resolved',reason:'Synthetic action contract check'},randomUUID(),{'if-match':'"'+beforeResolve.version+'"'});assert.equal(resolved.response.status,200);
+const reopenHints=(await call('/tickets/'+id)).body;
+assert.deepEqual(reopenHints.available_actions.transitions,[{to:'open',requires_reason:true},{to:'closed',requires_reason:false}]);
+const refusedReopen=await call('/tickets/'+id+'/transitions','laboratory','POST',{to:'open',reason:''},randomUUID(),{'if-match':'"'+reopenHints.version+'"'});assert.equal(refusedReopen.response.status,400);
+assert.equal((await call('/tickets/'+id)).body.version,reopenHints.version);
+passed('HTTP reopen hints require a reason and the actual command rejects an empty one');
 
 console.log(JSON.stringify({scope:'Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.',checks},null,2));

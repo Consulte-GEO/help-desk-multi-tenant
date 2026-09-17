@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -804,7 +804,7 @@
     "/tickets/{ticket_id}": {
       "get": {
         "operationId": "getTicket",
-        "summary": "Consulta chamado e retorna ETag.",
+        "summary": "Consulta chamado, ações disponíveis e ETag da versão; resposta no-store.",
         "security": [
           {
             "bearerAuth": []
@@ -824,7 +824,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ticket"
+                  "$ref": "#/components/schemas/TicketDetail"
                 }
               }
             },
@@ -866,7 +866,8 @@
               }
             }
           }
-        }
+        },
+        "description": "available_actions acompanha somente a leitura atual. Listagem, comandos e reenvios idempotentes mantêm Ticket sem esse campo. Mudança de permissão pode invalidar a disponibilidade sem alterar a versão do chamado. Cliente não recebe destinos privados de workflow ou IDs de outros operadores. ETag não representa permissões."
       },
       "patch": {
         "operationId": "changeTicketPriority",
@@ -2667,6 +2668,197 @@
             }
           }
         }
+      },
+      "TicketActions": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reply": {
+            "type": "boolean"
+          },
+          "read_notes": {
+            "type": "boolean"
+          },
+          "add_note": {
+            "type": "boolean"
+          },
+          "change_priority": {
+            "type": "boolean"
+          },
+          "claim": {
+            "type": "boolean"
+          },
+          "release": {
+            "type": "boolean"
+          },
+          "transitions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "to": {
+                  "type": "string",
+                  "enum": [
+                    "new",
+                    "triage",
+                    "open",
+                    "waiting_customer",
+                    "waiting_internal",
+                    "waiting_third_party",
+                    "resolved",
+                    "closed",
+                    "cancelled"
+                  ]
+                },
+                "requires_reason": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "to",
+                "requires_reason"
+              ]
+            },
+            "maxItems": 9
+          }
+        },
+        "required": [
+          "ticket_id",
+          "version",
+          "reply",
+          "read_notes",
+          "add_note",
+          "change_priority",
+          "claim",
+          "release",
+          "transitions"
+        ],
+        "description": "Disponibilidade consultiva calculada no GET com permissões atuais, estado e versão do chamado. Não é autorização, reserva ou política persistida; cada comando revalida acesso e concorrência."
+      },
+      "TicketDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "product_instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "service_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "received",
+              "in_progress",
+              "waiting_for_you",
+              "resolved",
+              "closed"
+            ]
+          },
+          "internal_status": {
+            "type": "string",
+            "enum": [
+              "new",
+              "triage",
+              "open",
+              "waiting_customer",
+              "waiting_internal",
+              "waiting_third_party",
+              "resolved",
+              "closed",
+              "cancelled"
+            ],
+            "description": "Somente equipe autorizada."
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/AssignmentSummary",
+            "description": "Somente operador humano autorizado. Estado consultivo, não autorização; não contém principal ID."
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "coverage_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "contract_version_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+            "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "available_actions": {
+            "$ref": "#/components/schemas/TicketActions"
+          }
+        },
+        "required": [
+          "id",
+          "account_id",
+          "product_instance_id",
+          "service_code",
+          "subject",
+          "description",
+          "status",
+          "priority",
+          "version",
+          "coverage_id",
+          "contract_version_id",
+          "created_at",
+          "updated_at",
+          "available_actions"
+        ]
       },
       "SupportContextOption": {
         "type": "object",

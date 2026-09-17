@@ -25,8 +25,10 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.12.0
-M1 aberto.753 locais/32 HTTP aprovados;125 SQL/32 browser escritos, não homologados. API 0.12/schema 0.9; oito migrations/23 tabelas/18 operações. Ler documentos 04, 05 e 16 e revisão histórica 15. Apenas GitHub foi reinspecionado nesta rodada; ausência antiga de trabalho remoto não autoriza sobrescrita.
+## Estado v0.13.0
+M1 aberto.789 locais/35 HTTP aprovados;125 SQL/35 browser escritos, não homologados. API0.13/schema0.9; oito migrations/23 tabelas/18 operações. Ler documentos04,05,17 e revisão histórica15. Sem reinspeção ou escrita remota nesta rodada.
+
+available_actions é snapshot consultivo do GET, não autorização. Não armazenar em cache de reenvio, não inferir escrita pelo papel e não adicionar fallback do frontend para /me. Cada comando revalida. Notas read/write independentes. Falha opcional remove itens privados antigos, conserva rascunho da mesma identidade e não bloqueia conversa pública. GET/diálogo inválido não é sucesso vazio.
 
 Preservar UUIDs nos limites persistidos/Auth e aliases somente no domínio/demo. Rejeitar NUL/surrogate, não substituir. Conferir parent e filhos nas conversas. Responsabilidade não concede acesso, filtros apenas operador por conta; motivos/eventos internos não saem ao cliente. Cache é snapshot original reautorizado; repetir resposta não é leitura atual.
 

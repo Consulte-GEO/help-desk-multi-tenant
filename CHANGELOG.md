@@ -1,5 +1,13 @@
 # 0.12.0 — sessão humana e renovação sob demanda (não publicado)
 
+## 0.13.0 — ações por chamado e carregamento parcial seguro
+- GET individual recebe `available_actions` derivado das políticas/workflow existentes; novo schema TicketDetail, sem alteração nos snapshots de comando/reenvio/listagem.
+- Interface deixa de inferir transições e escrita de notas pelo papel. Modo de consulta, flags separadas, razão de reabertura, pausa segura de controles, preservação do canal/rascunho.
+- Falhas opcionais de notas não ocultam conversa pública nem reutilizam notas antigas; resposta pública obrigatória e DTO inválido falham sem resultado parcial.
+- Assets, contrato e fixtures humanas atualizados; testes estáticos de IDs/imports, socket, loader, scope revogado e Unicode.
+- API0.13/schema0.9, oito migrations preservadas, sem nova dependência/operação ou escrita remota.789 locais/35 HTTP aprovados;125 SQL/35 browser pendentes. M1 não encerrado.
+
+
 - Transporte por senha/refresh/logout local com origem e chave publicável validadas, JSON/UTF-8/deadline/limite de64KiB e expiração limitada.
 - Estado apenas em memória, rotação single-flight com margem adaptativa, pausa/retry explícito e proteção de gerações em login/refresh/saída.
 - Saída limpa UI imediatamente e distingue confirmação do provedor; não promete invalidar imediatamente JWT já emitido.

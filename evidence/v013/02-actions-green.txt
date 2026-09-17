@@ -1,0 +1,84 @@
+TAP version 13
+# (node:1478) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: GET returns actions bound to the same ticket/version and no internal identifiers
+ok 1 - GET returns actions bound to the same ticket/version and no internal identifiers
+  ---
+  duration_ms: 22.720948
+  type: 'test'
+  ...
+# Subtest: read-only operator has no mutating actions even though their account role is agent
+ok 2 - read-only operator has no mutating actions even though their account role is agent
+  ---
+  duration_ms: 0.981119
+  type: 'test'
+  ...
+# Subtest: admin role does not compensate for absent write scopes
+ok 3 - admin role does not compensate for absent write scopes
+  ---
+  duration_ms: 0.750812
+  type: 'test'
+  ...
+# Subtest: reading notes and writing notes are independent permissions
+ok 4 - reading notes and writing notes are independent permissions
+  ---
+  duration_ms: 2.560661
+  type: 'test'
+  ...
+# Subtest: transitions agree with the domain for every state and relevant profile, not a second frontend workflow
+ok 5 - transitions agree with the domain for every state and relevant profile, not a second frontend workflow
+  ---
+  duration_ms: 12.254988
+  type: 'test'
+  ...
+# Subtest: mixed-role actor receives customer actions in customer account, even after seeing agent actions
+ok 6 - mixed-role actor receives customer actions in customer account, even after seeing agent actions
+  ---
+  duration_ms: 0.453274
+  type: 'test'
+  ...
+# Subtest: assignment hints preserve claim-own and admin-release behavior
+ok 7 - assignment hints preserve claim-own and admin-release behavior
+  ---
+  duration_ms: 1.039868
+  type: 'test'
+  ...
+# Subtest: terminal status disables classification/assignment but preserves conversation without reopening
+ok 8 - terminal status disables classification/assignment but preserves conversation without reopening
+  ---
+  duration_ms: 2.558237
+  type: 'test'
+  ...
+# Subtest: a plan is not authorization: scope revocation after GET blocks the command and clears new hints
+ok 9 - a plan is not authorization: scope revocation after GET blocks the command and clears new hints
+  ---
+  duration_ms: 3.343741
+  type: 'test'
+  ...
+# Subtest: known ticket of another account/workspace does not disclose hints
+ok 10 - known ticket of another account/workspace does not disclose hints
+  ---
+  duration_ms: 0.83622
+  type: 'test'
+  ...
+# Subtest: action hints exist only in current detail reads; list and replays stay immutable snapshots
+ok 11 - action hints exist only in current detail reads; list and replays stay immutable snapshots
+  ---
+  duration_ms: 2.603556
+  type: 'test'
+  ...
+# Subtest: reopen requires explanation at execution, not just a frontend hint
+ok 12 - reopen requires explanation at execution, not just a frontend hint
+  ---
+  duration_ms: 0.89577
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 245.202812

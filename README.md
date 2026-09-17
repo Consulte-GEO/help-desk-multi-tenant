@@ -1,16 +1,16 @@
-# Consulte Help Desk — v0.12.0 / sessão humana
+# Consulte Help Desk — v0.13.0 / ações por chamado
 
 Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
 
 ## Esta entrega
 
-A interface passa a manter access/refresh tokens somente em memória, renovar sob demanda, compartilhar rotações simultâneas, pausar novas requisições em falhas transitórias e solicitar saída da sessão atual no provedor. Login/refresh/logout atrasados não restauram identidade anterior. Rascunhos são preservados em pausa e removidos na saída. Nenhuma mutação é repetida automaticamente; recusa anterior ao envio é diferenciada de resultado incerto.
+Ações de cada chamado calculadas pelo servidor e interface em modo de consulta quando faltam escopos. Leitura/escrita de notas independentes; transições vêm da máquina de estados existente, não de uma cópia no frontend. Falha nas notas deixa a conversa pública disponível sem reutilizar itens privados antigos. Controle de rascunho preserva o canal durante atualização e nenhuma mutação é repetida.
 
-**753 testes locais e 32 checks HTTP existentes aprovados.** Os 5 novos testes de loopback com provedor sintético já estão incluídos nos 753. **125 casos SQL e 32 browser são escritos, não homologados.** Sem lock real/npm ci/audit por DNS do registry. Typecheck global suplementar não substitui as dependências do projeto.
+**789 testes locais e35 checks HTTP aprovados.125 SQL e35 browser escritos, não homologados.** Sem lock real/npm ci/audit; verificação padrão falha nos tipos locais ausentes. Typecheck global é suplementar. Não houve publicação nem reinspeção remota.
 
 ## Documentação
 
-[Sessão humana e limitações](docs/16-SESSAO-HUMANA.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Revisão acumulada v0.11](docs/15-REVISAO-CONSOLIDADA.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
+[Ações por chamado](docs/17-ACOES-POR-CHAMADO.md) · [Sessão humana e limitações](docs/16-SESSAO-HUMANA.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Handoff](docs/05-HANDOFF-REVISAO.md) · [Revisão acumulada v0.11](docs/15-REVISAO-CONSOLIDADA.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
 
 ## Executar a demonstração local
 
@@ -42,4 +42,4 @@ Os runners recusam infraestrutura/configuração ausente, não trocam para o Sup
 
 Recarregar/fechar a página exige novo login. A saída usa scope local e informa se o provedor confirmou. **JWT emitido anteriormente pode continuar válido até expirar:** não foi criada revogação imediata adicional no backend. O projeto exige uma política de sessão homologada antes de produção. Não houve mudança de MFA, configuração Supabase ou senhas; fluxos MFA/SSO/CAPTCHA e recuperação administrativa continuam fora deste incremento.
 
-**API/interface 0.12.0; schema esperado0.9.0;8 migrations/23 tabelas/18 operações.** Nenhum pacote adicional instalado, migration nova ou efeito remoto. Não publicar apenas HTML nem usar service_role/postgres/BYPASSRLS como runtime normal.
+**API/interface 0.13.0; schema esperado0.9.0;8 migrations/23 tabelas/18 operações.** Nenhum pacote adicional instalado, migration nova ou efeito remoto. Não publicar apenas HTML nem usar service_role/postgres/BYPASSRLS como runtime normal.

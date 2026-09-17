@@ -1,53 +1,60 @@
-# Help Desk v0.12.0 — estado e evidências
+# Help Desk v0.13.0 — Estado e evidências
 
-**Entrega local, não publicada. M1 aberto.** Base v0.11.0 `667dfde53fcc38481800935b8b865c178aad8237`; branch `work/helpdesk-v0.12.0`. Logs UTC de 17/09/2026. Commit final acompanha manifesto externo e bundle.
+**Entrega local, não publicada. M1 permanece aberto.** Base v0.12.0: `a0928abdff3b1bc01653c7af4a1b207af179d32e`. Branch `work/helpdesk-v0.13.0`. Logs desta rodada em `evidence/v013/`, UTC de 17/09/2026. O hash final do código está no manifesto externo e bundle.
 
-## Implementação
+## 1. Implementação
 
-Jornada humana da interface: transporte limitado de senha/refresh/saída local no provedor, sessões em memória, rotação sob demanda compartilhada entre chamadas, pausa e retry explícito, geração contra respostas atrasadas, limpeza local imediata e resultado remoto da saída visível. Token/refresh não são persistidos no navegador. Cada operação de negócio é enviada uma vez, sem replay automático. Nenhuma alteração na autorização do backend, M2M ou nas migrations.
+GET individual de chamado passa a devolver `available_actions` calculado com principal atual, regras existentes de política/workflow e o mesmo ticket/versão. Não há nova autorização de escrita, coluna, migration ou endpoint. A interface deixa de decidir transições/escrita de notas pelo papel do `/me` e passa a validar as orientações de cada detalhe. Permissões de leitura e escrita das notas permanecem independentes. Respostas de comandos, listas e reenvios preservam o formato anterior, sem disponibilidade antiga armazenada.
 
-**API/interface 0.12.0, schema candidato0.9.0.** Oito migrations intactas,23 tabelas candidatas e 18 operações em 14 caminhos. As três rotas usadas pertencem ao provedor Auth, não são novos endpoints do Help Desk.
+Carregamento do detalhe separa a conversa pública obrigatória das notas opcionais. Falha ou página inválida de notas limpa os itens privados antigos, apresenta aviso e desabilita a escrita de nota até atualizar; conversa pública permanece disponível. Falha na conversa pública ou no pacote de ações não é convertida em sucesso vazio. Respostas atrasadas são descartadas. Na atualização, controles ficam bloqueados sem mudar o canal/rascunho; nenhuma mutação é repetida.
 
-## Resultados efetivos
+API/interface **0.13.0**; schema esperado **0.9.0**. Oito migrations, 23 tabelas candidatas, 18 operações/14 caminhos. Todas as oito migrations anteriores preservadas por bytes e manifesto. Novo frontend requer backend 0.13.0: ausência de `available_actions` bloqueia o detalhe, sem fallback ao papel local. O GET mudou de schema `Ticket` para `TicketDetail` na OpenAPI; consumidores com validação estrita devem atualizar seu contrato.
 
-| Verificação | Resultado e alcance | Evidência em `evidence/v012/` |
+## 2. Verificações executadas
+
+| Verificação | Resultado e alcance | Evidência em `evidence/v013/` |
 |---|---|---|
-| Base reproduzida |710 aprovados antes de implementar |00-baseline-tests.txt|
-| Suíte local final |**753 aprovados,0 falhas/skips/cancelados**,43 novos |final-tests.txt|
-| Cinco testes de HTTP adicionais |Aprovados e já contidos nos 753; provedor sintético, domínio memória, resolução SQL controlada |08-http-synthetic.txt; final-tests.txt|
-| Smoke HTTP existente |**32 checks aprovados**, memória e dados fictícios; inclui módulos JS novos servidos |final-ui.txt|
-| Migrações |8 arquivos inalterados por hash; nenhum SQL executado |final-migrations.txt; migration-integrity.json|
-| TypeScript global suplementar |Aprovado com compilador/tipos previamente disponíveis |final-typecheck-environment.txt|
-| Contrato |18 operações/14 caminhos; estrutura/sentinelas, não validação integral OpenAPI |final-contracts.txt|
-| Sintaxe/build |23 JS/MJS e ASTs Python verificados; assets estáticos criados |final-syntax.json; final-build.txt|
-| Scanner de segredos |Nenhum padrão reconhecido; não é auditoria completa |final-secrets.txt|
-| Verificação padrão |**Falhou com código2**, após753 testes; dependências/tipos locais ausentes |final-verify.txt|
-| Homologação/publicação |**Bloqueadas**, não aprovadas |final-homologation.txt; final-release.txt|
+| Base antes das alterações | 753 testes aprovados | `00-baseline-tests.txt` |
+| Suíte final Node | **789 aprovados; zero falhas, cancelados, ignorados e TODO** — 36 novos | `final-tests.txt` |
+| HTTP real em loopback | **35 checks aprovados**, persistência em memória | `final-http-smoke.json`, `final-ui-attempt.txt` |
+| Três testes novos de socket/loader | Incluídos nos 789; perfis e falhas controlados | `12-http-actions.txt` |
+| Manifesto migrations | Oito arquivos íntegros; não executa SQL | `final-migrations.txt`, `migration-integrity.json` |
+| TypeScript com dependências declaradas | **Falhou (2)**: tipos locais ausentes | `final-typecheck-standard.txt` |
+| TypeScript suplementar | Aprovado com compilador/tipos globais já disponíveis | `final-typecheck-supplementary.txt` |
+| `npm run verify` padrão | **Falhou (2)** depois de passar migrations e 789 testes, na checagem de tipos | `final-verify-standard.txt` |
+| Contrato, sintaxe, build e scan | Aprovados no alcance abaixo | `final-contracts.txt`, `final-syntax.json`, `final-build.txt`, `final-secrets.txt` |
+| Homologação/publicação | **Não aprovadas**; falta lock real | `final-homologation.txt`, `final-release-gate.txt` |
 
-A execução TypeScript suplementar utiliza tipos Node globais diferentes dos fixados no package.json. Não substitui `npm ci` nem aprovação do comando padrão. Código e números recuperáveis nos logs, com limites do teste explícitos.
+Os testes locais incluem domínio, handlers, sockets reais com dados sintéticos, estado puro e respostas controladas do driver. Não provam RLS, autenticação do provedor, Netlify ou DOM. A checagem OpenAPI é estrutural, não validação integral de conformidade. O build é de assets estáticos, não bundle das Functions. Scan por padrões não é auditoria de supply chain/pentest. Compilador global 5.8.3/Node22.16.0; tipos globais diferem dos fixados no manifesto.
 
-## Ciclos e correções da revisão
+## 3. Regressões e revisão
 
-- Estado: primeiro teste falhou na importação dos módulos ainda ausentes, não em21 asserções comportamentais já executadas (`01-session-red`). Depois o conjunto passou.
-- Transporte:12 passagens e2 falhas reproduzidas. Corrigidos comprimento comprimido versus corpo decodificado e cancelamento de leitura pendente após deadline (`03`→`04`).
-- Falha antes de envio:1 falha reproduzida; wrapper marca somente recusas anteriores ao dispatch como não enviadas; erros de rede posteriores não recebem essa marca (`06`→`07`).
-- Token com validade curta:1 falha reproduzida por rotação logo após login; margem adaptativa evita chamadas desnecessárias (`10`→`11`). Não é recomendação para configurar validade curta em produção.
-- UTF-8/JSON malformado:1 falha reproduzida; classificado como sessão incompatível, não falha transitória que convida retry de token já consumido (`13`→`14`).
-- Typecheck encontrou inferência de headers e acesso direto ao campo privado de fixture; testes passaram a usar tipagem explícita e `snapshot()` público (`09`→`12`). Nenhum assert de autorização removido.
-- Revisão local de integração/erros/artefatos; **sem revisor independente ou subagente**, sem pentest/carga/restore.
+- Disponibilidade no GET: 11 falhas e uma passagem na base; 12 aprovações após implementação (`01–02`).
+- Módulo do detalhe: tentativa inicial falhou na importação ausente; não foi apresentada como 15 falhas comportamentais. Depois 15 testes passaram (`03–04`).
+- Integração estática: dois checks falharam por IDs novos ausentes no HTML e módulo ausente nos assets. Corrigidos e aprovados (`05–06`). Não comprovam DOM.
+- Canal do rascunho durante refresh: duas falhas reproduzidas; duas aprovações após separar pausa de troca de canal (`08–09`).
+- Contrato GET versus snapshots: uma falha/duas passagens antes de atualizar o schema; três aprovações depois (`10–11`).
+- Suíte de socket: falha de notas preserva só conversa pública; operador read-only não consulta notas nem escreve mesmo após alterar hints; revogação reduz ações sem alterar a versão (`12`).
+- Primeiro smoke novo tentou `new → resolved`, caminho inválido. Corrigido o **cenário** para `new → open → resolved`, sem relaxar workflow (`20–21`).
+- Unicode: um teste reproduziu recusa de leitura de texto válido com caracteres suplementares; limite alinhado à projeção de leitura existente e teste aprovado (`22–23`). Isso não altera o limite de escrita preexistente.
+- Typecheck apontou indexação possivelmente indefinida em um fixture; corrigida antes da checagem suplementar final.
 
-## Bloqueado ou não executado
+Revisão local do diff/contrato/limites, registrada em `local-review.md`. Não houve revisor independente, subagente, pentest, carga ou restore.
 
-**Dependências:** `npm run deps:resolve` retornou EAI_AGAIN registry.npmjs.org. Sem lock real, instalação limpa/audit. Nenhum registry alternativo, proxy ou política modificada. Uma tentativa de obter tarball oficial também foi recusada pelo ambiente e abandonada, sem contorno.
+## 4. Bloqueado ou não executado
 
-**Banco:** o runner recusou Docker ausente antes de conectar. Permanecem **125 cenários SQL escritos,0 executados** nesta sessão. Nenhuma mudança nos cenários, schema, grants, RLS ou backups. Não foi usado Supabase remoto como teste descartável.
+**Dependências:** `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org`, na resolução de `@netlify/functions`. Sem package-lock real, npm ci/audit ou árvore instalada revisada. Não houve registry alternativo ou alteração de política. Tentativa em `18-dependencies-attempt.txt`.
 
-**Browser:** o runner concluiu os 32 HTTP e bloqueou em `page.goto` com ERR_BLOCKED_BY_ADMINISTRATOR. A nova suíte humana foi tentada isoladamente em uma demonstração própria e bloqueou no mesmo ponto (`final-human-browser.txt`). **32 checks browser escritos =27 anteriores+5 novos;0 aprovados.** Mock de Auth não foi utilizado para contornar a navegação bloqueada. Sem validação DOM/visual/mobile/acessibilidade.
+**PostgreSQL:** `npm run test:db:local` recusou Docker ausente antes de conectar. Continuam **125 cenários escritos, zero executados nesta rodada**, incluindo upgrade. Sem nova suíte SQL, migrations ou teste remoto substituto. Tentativa em `19-db-attempt.txt`.
 
-**Destino:** Supabase Auth real, refresh/expiração/saída, janela dos JWTs, CORS/CSP, pooler/TLS/IP, Functions com pg instalado, capacidade/carga e restauração não foram homologados. Logout no provedor não garante invalidação imediata de JWT emitido: documento 16 explicita a limitação. Sessão pausada preserva dados já carregados daquela identidade, não cria autorização nova.
+**Navegador:** executor passou os 35 HTTP e bloqueou em `page.goto` com `ERR_BLOCKED_BY_ADMINISTRATOR`, antes das asserções. Há **35 verificações escritas: 30 principais (27 anteriores + 3 novas) e cinco humanas com provedor sintético**. Zero aprovadas nesta execução; a segunda suíte não foi alcançada pelo runner após a falha da primeira. Sem validação visual/teclado/mobile/CSP/CORS.
 
-## Efeitos externos e sequência
+**Destino/operacional:** Auth real/pooler/TLS/IP/Functions, capacidade/latência, backup/restore, logs de ingresso e política de sessão continuam pendentes. Hints não eliminam a janela de JWT já emitido, não são garantia de que um comando posterior será aceito e não habilitam notificações/SLA/anexos/administração.
 
-GitHub foi consultado somente leitura e retornou repositório vazio. Supabase/Netlify **não foram reinspecionados nesta rodada**. Nenhum push/PR/merge/deploy/migration remota, conta, segredo, MFA ou infraestrutura cobrada foi criado ou modificado.
+O gate agora exige no mínimo789/125/70 (locais/SQL/HTTP+browser) efetivamente aprovados sem skips. Nesta rodada o lock falhou e as etapas dependentes ficaram bloqueadas; não foram consideradas verdes por resultados locais separados. Relatório não assinado, sujeito à revisão.
 
-O incremento cobre HD-103/HD-105. M1 continua aberto; M2/backoffice, anexos, SLA operacional, notificações e conectores reais continuam ausentes. Gate753 locais/125 SQL/64 UI exige aprovações efetivas, não testes escritos. Próximo passo: dependências → banco/upgrade → runtime/identidade real → browser → decisões operacionais. O pacote não autoriza dados reais nem publicação.
+## 5. Efeitos externos e próximo passo
+
+Nenhuma escrita remota: sem push/PR/merge/deploy/migration, alteração de dados, usuário, segredo ou MFA. Não houve reinspeção de GitHub/Supabase/Netlify nesta rodada; as observações anteriores são históricas.
+
+Prioridade permanece: dependências reais → PostgreSQL17/upgrade125 → Auth/pooler/Functions → navegador35 → capacidade/restore/revisão operacional. M1 aberto, M2 não iniciado. Esta entrega resolve divergências da interface do núcleo atual; não substitui essa homologação.

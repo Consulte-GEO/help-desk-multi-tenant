@@ -1,3 +1,4 @@
+import {loadTicketDetail,hasWriteActions,composerMode} from './ticket-actions.js';
 import {createHumanAuthTransport} from './human-auth.js';
 import {createHumanSession} from './human-session.js';
 import {createSessionFetch} from './session-fetch.js';
@@ -11,9 +12,8 @@ import {createMutationState} from './mutation-state.js';
 import {createSupportCatalogState} from './support-catalog-state.js';
 const conversation=createConversationState(),mutations=createMutationState(),catalog=createSupportCatalogState();
 const $=id=>document.getElementById(id);
-const s={token:'',workspace:'',me:null,tickets:[],ticket:null,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),createPending:null};
+const s={token:'',workspace:'',me:null,tickets:[],ticket:null,actions:null,notesUnavailable:false,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),createPending:null};
 const labels={received:'Recebido',in_progress:'Em atendimento',waiting_for_you:'Aguardando você',resolved:'Resolvido',closed:'Encerrado',new:'Novo',triage:'Triagem',open:'Em atendimento',waiting_customer:'Aguardando cliente',waiting_internal:'Aguardando equipe',waiting_third_party:'Aguardando terceiro',cancelled:'Cancelado'};
-const moves={new:['triage','open','cancelled'],triage:['open','waiting_customer','cancelled'],open:['waiting_customer','waiting_internal','waiting_third_party','resolved','cancelled'],waiting_customer:['open','resolved','cancelled'],waiting_internal:['open','resolved','cancelled'],waiting_third_party:['open','resolved','cancelled'],resolved:['open','closed'],closed:[],cancelled:[]};
 const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
 function notice(text,error=false){$('notification').textContent=text;$('notification').classList.toggle('error',error);$('notification').hidden=false;clearTimeout(notice.timer);notice.timer=setTimeout(()=>$('notification').hidden=true,error?10000:5000);}
@@ -35,9 +35,8 @@ async function api(path,options={}){
 const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempotency-key':key,...headers},body:JSON.stringify(body)});
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
-const operator=account=>s.me?.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.account_id===account&&g.role==='agent'));
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -87,54 +86,93 @@ function renderConversation(){
 }
 async function older(kind){
  const cursor=conversation.next(kind),id=s.ticket?.id,seq=s.detail,generation=conversation.generation();
- if(!cursor||!id)return;
+ if(!cursor||!id||(kind==='notes'&&!s.actions?.read_notes))return;
  const button=$('older-'+kind);button.disabled=true;
  try{const page=await api('/tickets/'+id+'/'+kind+'?limit=50&cursor='+encodeURIComponent(cursor));
   if(seq===s.detail&&id===s.ticket?.id&&conversation.accept(generation,kind,page))renderConversation();
  }finally{button.disabled=false;}
 }
 async function detail(id){
- // Invalidate pending writes as soon as navigation starts, not after the GET returns.
- if(s.ticket?.id!==id){timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');$('ticket-detail').hidden=true;$('empty-detail').hidden=false;}
- const seq=++s.detail,t=await api('/tickets/'+id);
- const [messages,notes]=await Promise.all([api('/tickets/'+id+'/messages?limit=50'),operator(t.account_id)&&s.me.scopes.includes('notes:read')?api('/tickets/'+id+'/notes?limit=50'):Promise.resolve({items:[],next_cursor:null})]);
- if(seq!==s.detail)return;
- mutations.select(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]));
- s.ticket=t;renderComposer();const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
- conversation.accept(generation,'messages',messages);conversation.accept(generation,'notes',notes);
- $('empty-detail').hidden=true;$('ticket-detail').hidden=false;
- $('ticket-number').textContent='CHAMADO '+t.id.slice(0,8).toUpperCase()+' · VERSÃO '+t.version;
- $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;
- $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));
- $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
- renderConversation();const agent=operator(t.account_id);$('notes-section').hidden=!agent;$('note-tab').hidden=!agent;
- if(!agent)mode('public');const allowed=agent?(moves[t.internal_status]??[]):t.status==='resolved'?['open','closed']:[];
- $('transition-area').hidden=!allowed.length;$('next-status').replaceChildren(...allowed.map(v=>option(v,labels[v])));
- renderAssignment();renderPriority();timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),agent);renderTimeline();if($('history-section').open)await loadTimeline();render();
+ // Lock controls while the current GET and required conversation are being refreshed.
+ s.actions=null;s.notesUnavailable=false;
+ timeline.reset();renderTimeline();$('notes-section').hidden=true;$('note-tab').hidden=true;
+ if(s.ticket?.id!==id){
+  $('history-section').open=false;$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;
+  $('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;
+  s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';mode('public');
+  $('ticket-detail').hidden=true;$('empty-detail').hidden=false;
+ }
+ renderComposer();renderAssignment();renderPriority();renderTransitions();
+ $('detail-action-status').textContent='Atualizando as ações disponíveis para este chamado…';
+ const seq=++s.detail,epoch=s.epoch,current=()=>seq===s.detail&&epoch===s.epoch;
+ try{
+  const loaded=await loadTicketDetail(id,api,current);if(!loaded||!current())return;
+  const {ticket:t,actions,messages,notes,notesUnavailable}=loaded;
+  mutations.select(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]));
+  s.ticket=t;s.actions=actions;s.notesUnavailable=notesUnavailable;
+  const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
+  conversation.accept(generation,'messages',messages);conversation.accept(generation,'notes',notes);
+  $('empty-detail').hidden=true;$('ticket-detail').hidden=false;
+  $('ticket-number').textContent='CHAMADO '+t.id.slice(0,8).toUpperCase()+' · VERSÃO '+t.version;
+  $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;
+  $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));
+  $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
+  renderConversation();$('notes-section').hidden=!actions.read_notes&&!notesUnavailable;
+  $('notes-status').textContent=notesUnavailable?'Notas indisponíveis nesta consulta. O conteúdo anterior foi removido; a conversa pública continua disponível.':'';
+  $('notes-retry').hidden=!notesUnavailable;if(notesUnavailable)$('notes-section').open=true;
+  $('detail-action-status').textContent=hasWriteActions(actions)?'Ações verificadas pelo servidor para esta versão. Cada envio revalida suas permissões.':'Modo de consulta: seu acesso atual não permite alterações neste chamado.';
+  mode(s.mode);renderTransitions();renderAssignment();renderPriority();
+  timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),t.internal_status!==undefined);renderTimeline();
+  if($('history-section').open)await loadTimeline();if(current())render();
+ }catch(error){
+  if(!current())return;
+  s.actions=null;conversation.reset('');timeline.reset();renderConversation();renderTimeline();
+  $('ticket-detail').hidden=true;$('empty-detail').hidden=false;
+  if([401,403,404].includes(error.status)){s.ticket=null;mutations.reset('');$('message-body').value='';}
+  renderComposer();renderAssignment();renderPriority();renderTransitions();
+  throw error;
+ }
 }
+
+function renderTransitions(){
+ const moves=s.actions?.transitions??[],selected=$('next-status').value;
+ $('transition-area').hidden=!moves.length;
+ $('next-status').replaceChildren(...moves.map(v=>option(v.to,labels[v.to])));
+ if(moves.some(v=>v.to===selected))$('next-status').value=selected;
+ updateTransitionReason();
+}
+function updateTransitionReason(){
+ const move=s.actions?.transitions.find(v=>v.to===$('next-status').value);
+ $('transition-reason').required=!!move?.requires_reason;
+ $('transition-reason').setAttribute('aria-required',String(!!move?.requires_reason));
+ $('transition-reason').placeholder=move?.requires_reason?'Informe por que o chamado deve ser reaberto':'Motivo opcional';
+ $('transition').disabled=!move||mutations.busy('transition');
+}
+$('next-status').onchange=updateTransitionReason;
+$('notes-retry').onclick=()=>run(async()=>{const id=s.ticket?.id;if(id)await detail(id);});
 
 function renderTimeline(){
  const phase=timeline.status(),rows=timeline.items();$('history-list').replaceChildren();
- for(const item of rows){const view=eventPresentation(item,operator(s.ticket?.account_id));const node=el('li','history-event'+(view.internal?' internal':''));node.append(el('small','',date(item.created_at)),el('h4','',view.title),el('p','',view.description));if(view.internal)node.append(el('span','badge','Restrito à equipe'));$('history-list').append(node);}
+ for(const item of rows){const view=eventPresentation(item,!!s.actions&&s.ticket?.internal_status!==undefined);const node=el('li','history-event'+(view.internal?' internal':''));node.append(el('small','',date(item.created_at)),el('h4','',view.title),el('p','',view.description));if(view.internal)node.append(el('span','badge','Restrito à equipe'));$('history-list').append(node);}
  $('history-status').textContent=phase==='loading'?'Consultando o histórico…':phase==='error'?'Não foi possível carregar o histórico. Eventos já carregados foram preservados.':phase==='capped'?'Limite de 500 eventos nesta tela. A lista não representa o total do histórico.':phase==='ready'?(rows.length?rows.length+' evento(s) carregado(s).':'Nenhum evento autorizado disponível.'):'Abra esta seção para consultar o histórico.';
- $('history-more').hidden=!timeline.next()||phase==='capped'||phase==='error';$('history-more').disabled=phase==='loading';$('history-retry').hidden=phase!=='error';$('history-refresh').disabled=phase==='loading'||!s.ticket;
+ $('history-more').hidden=!timeline.next()||phase==='capped'||phase==='error';$('history-more').disabled=phase==='loading';$('history-retry').hidden=phase!=='error';$('history-refresh').disabled=phase==='loading'||!s.ticket||!s.actions;
 }
 async function loadTimeline(){
- const id=s.ticket?.id,op=timeline.begin();if(!id||!op)return;renderTimeline();
+ const id=s.ticket?.id,op=s.actions?timeline.begin():null;if(!id||!op)return;renderTimeline();
  try{const page=await api('/tickets/'+id+'/timeline?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(timeline.accept(op,page))renderTimeline();}
  catch(error){if(timeline.fail(op))renderTimeline();}
 }
 $('history-section').ontoggle=()=>{if($('history-section').open&&timeline.status()==='idle')run(loadTimeline);};
 $('history-more').onclick=()=>run(loadTimeline);$('history-retry').onclick=()=>run(loadTimeline);
-$('history-refresh').onclick=()=>run(async()=>{if(!s.ticket)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),operator(s.ticket.account_id));await loadTimeline();});
+$('history-refresh').onclick=()=>run(async()=>{if(!s.ticket||!s.actions)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),s.ticket.internal_status!==undefined);await loadTimeline();});
 function renderAssignment(){
- const t=s.ticket,a=t?.assignment,visible=t&&operator(t.account_id)&&a;
+ const t=s.ticket,a=t?.assignment,visible=t&&s.actions&&a;
  $('assignment-form').hidden=!visible;if(!visible)return;
  $('assignment-label').textContent=a.state==='mine'?'Responsável: você.':a.state==='other'?'Responsável: outro atendente. Em chamados não encerrados, um administrador pode liberar para nova atribuição.':'Este chamado está sem responsável.';
  const busy=mutations.busy('assignment'),draft=mutations.draft('assignment');
  if(draft){try{$('assignment-reason').value=JSON.parse(draft).reason;}catch{$('assignment-status').textContent='Rascunho inválido. Reabra o chamado.';}}
  else $('assignment-reason').value='';
- $('claim-ticket').disabled=busy||!a.can_claim;$('release-ticket').disabled=busy||!a.can_release;$('assignment-reload').disabled=busy;
+ $('claim-ticket').disabled=busy||!s.actions?.claim;$('release-ticket').disabled=busy||!s.actions?.release;$('assignment-reload').disabled=busy;
 }
 function editAssignment(action,rebase=false){
  if(!s.ticket)return;let previous=null;try{previous=JSON.parse(mutations.draft('assignment'));}catch{}
@@ -146,7 +184,7 @@ function editAssignment(action,rebase=false){
 }
 $('assignment-reason').oninput=()=>editAssignment();
 $('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.value;if(!['claim','release'].includes(action))return;run(async()=>{
- const t=s.ticket;if(!t||!operator(t.account_id))return;editAssignment(action);const op=mutations.begin('assignment');if(!op)return;
+ const t=s.ticket;if(!t||!(action==='claim'?s.actions?.claim:s.actions?.release))return;editAssignment(action);const op=mutations.begin('assignment');if(!op)return;
  const d=JSON.parse(op.body);$('assignment-status').textContent='Confirmando responsabilidade com a versão '+d.version+'…';$('assignment-reload').hidden=true;renderAssignment();
  try{
   await post('/tickets/'+t.id+'/assignments',{action:d.action,reason:d.reason.trim()},op.key,{'if-match':'"'+d.version+'"'});
@@ -167,7 +205,7 @@ $('assignment-reload').onclick=()=>run(async()=>{
 });
 
 function renderPriority(){
- const t=s.ticket,allowed=t&&operator(t.account_id)&&s.me.scopes.includes('tickets:read')&&s.me.scopes.includes('tickets:write')&&!['closed','cancelled'].includes(t.internal_status);
+ const t=s.ticket,allowed=t&&s.actions?.change_priority;
  $('priority-form').hidden=!allowed;if(!allowed)return;
  const draft=mutations.draft('priority');
  if(draft){try{const d=JSON.parse(draft);$('ticket-priority').value=d.priority;$('priority-reason').value=d.reason;}catch{$('priority-status').textContent='Rascunho de prioridade inválido. Reabra o chamado.';}}
@@ -177,7 +215,7 @@ function renderPriority(){
 function editPriority(){if(!s.ticket)return;mutations.edit('priority',JSON.stringify({priority:$('ticket-priority').value,reason:$('priority-reason').value,version:s.ticket.version}));}
 $('ticket-priority').onchange=editPriority;$('priority-reason').oninput=editPriority;
 $('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- const t=s.ticket;if(!t||!operator(t.account_id))return;editPriority();const op=mutations.begin('priority');if(!op)return;
+ const t=s.ticket;if(!t||!s.actions?.change_priority)return;editPriority();const op=mutations.begin('priority');if(!op)return;
  const draft=JSON.parse(op.body);$('priority-status').textContent='Salvando com a versão '+draft.version+'…';$('priority-reload').hidden=true;renderPriority();
  try{
   await api('/tickets/'+t.id,{method:'PATCH',headers:{'idempotency-key':op.key,'if-match':'"'+draft.version+'"'},body:JSON.stringify({priority:draft.priority,reason:draft.reason})});
@@ -196,8 +234,24 @@ $('priority-reload').onclick=()=>run(async()=>{const id=s.ticket?.id,epoch=s.epo
 $('older-messages').onclick=()=>run(()=>older('messages'));
 $('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}
-function renderComposer(){$('message-body').value=mutations.draft(s.mode);$('send-message').disabled=mutations.busy(s.mode)||!s.ticket;$('transition').disabled=mutations.busy('transition')||!s.ticket;}
-function mode(value){s.mode=value;renderComposer();$('message-form').classList.toggle('internal',value==='internal');for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===value);$('composer-label').textContent=value==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';$('visibility-help').textContent=value==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';$('send-message').textContent=value==='internal'?'Salvar nota':'Enviar resposta';}
+function renderComposer(){
+ const a=s.actions,publicAllowed=!!a?.reply,internalAllowed=!!a?.add_note;
+ s.mode=composerMode(s.mode,a);
+ $('public-tab').hidden=!publicAllowed;$('note-tab').hidden=!internalAllowed;
+ $('message-form').hidden=!publicAllowed&&!internalAllowed;
+ $('message-body').value=mutations.draft(s.mode);
+ const enabled=s.mode==='internal'?internalAllowed:publicAllowed;
+ $('message-body').disabled=!enabled;
+ $('send-message').disabled=!enabled||mutations.busy(s.mode)||!s.ticket;
+ $('transition').disabled=mutations.busy('transition')||!s.ticket||!a?.transitions.length;
+ $('message-form').classList.toggle('internal',s.mode==='internal');
+ for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===s.mode);
+ $('composer-label').textContent=s.mode==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';
+ $('visibility-help').textContent=s.mode==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';
+ $('send-message').textContent=s.mode==='internal'?'Salvar nota':'Enviar resposta';
+}
+function mode(value){s.mode=value;renderComposer();}
+
 const contextKey=v=>JSON.stringify([v.account_id,v.product_instance_id,v.service_code]);
 const environmentLabels={production:'Produção',staging:'Homologação',development:'Desenvolvimento'};
 function resetOpening(){catalog.reset();s.createPending=null;s.createKey=crypto.randomUUID();$('create-form').reset();$('context-choice').replaceChildren(option('','Selecione uma opção'));$('coverage-choice').replaceChildren();$('coverage-label').hidden=true;renderCatalog();}
@@ -245,7 +299,7 @@ $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
 });};
 $('message-body').oninput=()=>mutations.edit(s.mode,$('message-body').value);
 $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- if(!s.ticket)return;
+ if(!s.ticket||!(s.mode==='internal'?s.actions?.add_note:s.actions?.reply))return;
  const id=s.ticket.id,channel=s.mode;mutations.edit(channel,$('message-body').value);
  const op=mutations.begin(channel);if(!op)return;renderComposer();
  try{
@@ -257,8 +311,9 @@ $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
  finally{renderComposer();}
 });};
 $('transition').onclick=()=>run(async()=>{
- const t=s.ticket;if(!t)return;
- const body={to:$('next-status').value,reason:$('transition-reason').value};
+ const t=s.ticket,move=s.actions?.transitions.find(v=>v.to===$('next-status').value);if(!t||!move)return;
+ if(move.requires_reason&&!$('transition-reason').value.trim()){notice('Informe o motivo da reabertura.',true);$('transition-reason').focus();return;}
+ const body={to:move.to,reason:$('transition-reason').value};
  mutations.edit('transition',JSON.stringify({...body,version:t.version}));
  const op=mutations.begin('transition');if(!op)return;renderComposer();
  try{

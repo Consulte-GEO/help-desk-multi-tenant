@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-09-17T12:57:39.992782+00:00",
+  "records": [
+    {
+      "id": "final-tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "log": "final-tests.txt"
+    },
+    {
+      "id": "final-migrations",
+      "command": [
+        "npm",
+        "run",
+        "check:migrations"
+      ],
+      "exit_code": 0,
+      "log": "final-migrations.txt"
+    },
+    {
+      "id": "final-typecheck-standard",
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit_code": 2,
+      "log": "final-typecheck-standard.txt"
+    },
+    {
+      "id": "final-typecheck-supplementary",
+      "command": [
+        "npm",
+        "run",
+        "typecheck",
+        "--",
+        "--typeRoots",
+        "/opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types"
+      ],
+      "exit_code": 0,
+      "log": "final-typecheck-supplementary.txt"
+    },
+    {
+      "id": "final-contracts",
+      "command": [
+        "npm",
+        "run",
+        "check:contracts"
+      ],
+      "exit_code": 0,
+      "log": "final-contracts.txt"
+    },
+    {
+      "id": "final-secrets",
+      "command": [
+        "npm",
+        "run",
+        "check:secrets"
+      ],
+      "exit_code": 0,
+      "log": "final-secrets.txt"
+    },
+    {
+      "id": "final-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "final-build.txt"
+    },
+    {
+      "id": "final-verify-standard",
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exit_code": 2,
+      "log": "final-verify-standard.txt"
+    }
+  ],
+  "syntax_all_passed": true,
+  "remote_writes": false
+}

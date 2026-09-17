@@ -1,5 +1,5 @@
 """Run against `npm run demo`; tests only the loopback, in-memory UI."""
-import json, os, shutil, uuid
+import json, os, shutil, uuid, re
 from urllib.parse import quote
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
@@ -17,6 +17,48 @@ with sync_playwright() as p:
     expect(page.locator('#ticket-title')).to_have_text('Relatório de ensaio não foi concluído')
     expect(page.locator('#note-tab')).to_be_visible()
     record('Agent sees two authorized accounts and internal note control')
+    # These DOM tests are written but must not be counted as passed if navigation is blocked.
+    page.locator('#note-tab').click()
+    page.locator('#message-body').fill('Rascunho interno preservado no refresh.')
+    page.locator('#refresh').click()
+    expect(page.locator('#note-tab')).to_have_class(re.compile('selected'))
+    expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
+    record('Refreshing server actions preserves the private composer channel and draft')
+    def notes_outage(route): route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
+    page.route('**/v1/tickets/*/notes?*',notes_outage)
+    page.locator('#refresh').click()
+    expect(page.locator('#notes-status')).to_contain_text('Notas indisponíveis')
+    expect(page.locator('#notes-status')).to_be_visible()
+    expect(page.locator('#notes')).to_have_text('')
+    expect(page.locator('#note-tab')).to_be_hidden()
+    expect(page.locator('#public-tab')).to_be_visible()
+    expect(page.locator('#message-body')).not_to_have_value('Rascunho interno preservado no refresh.')
+    page.unroute('**/v1/tickets/*/notes?*',notes_outage)
+    page.locator('#notes-retry').click()
+    expect(page.locator('#note-tab')).to_be_visible()
+    page.locator('#note-tab').click()
+    expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
+    record('Optional notes outage leaves the public conversation usable and private draft stays private')
+    detail_pattern=re.compile(r'.*/v1/tickets/[A-Za-z0-9_-]+$')
+    def readonly_actions(route):
+        response=route.fetch();body=response.json()
+        actions=body['available_actions']
+        for field in ['reply','add_note','change_priority','claim','release']: actions[field]=False
+        actions['transitions']=[]
+        route.fulfill(response=response,json=body)
+    page.route(detail_pattern,readonly_actions)
+    page.locator('#refresh').click()
+    expect(page.locator('#detail-action-status')).to_contain_text('Modo de consulta')
+    expect(page.locator('#message-form')).to_be_hidden()
+    expect(page.locator('#priority-form')).to_be_hidden()
+    expect(page.locator('#transition-area')).to_be_hidden()
+    expect(page.locator('#claim-ticket')).to_be_disabled()
+    expect(page.locator('#release-ticket')).to_be_disabled()
+    page.unroute(detail_pattern,readonly_actions)
+    page.locator('#refresh').click()
+    expect(page.locator('#note-tab')).to_be_visible()
+    page.locator('#public-tab').click()
+    record('Fresh server action snapshot controls read-only UI despite unchanged agent profile')
     # All data remains local. These assertions need an authorized browser; no bypass flags are added.
     expect(page.locator('#priority-form')).to_be_visible()
     page.locator('#message-body').fill('Rascunho público preservado pela prioridade.')

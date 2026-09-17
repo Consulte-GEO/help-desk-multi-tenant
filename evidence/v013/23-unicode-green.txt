@@ -1,0 +1,120 @@
+TAP version 13
+# (node:3701) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: UI reads a defensive projection and does not persist actions
+ok 1 - UI reads a defensive projection and does not persist actions
+  ---
+  duration_ms: 1.473692
+  type: 'test'
+  ...
+# Subtest: missing actions never falls back to agent/admin role in the browser
+ok 2 - missing actions never falls back to agent/admin role in the browser
+  ---
+  duration_ms: 0.436438
+  type: 'test'
+  ...
+# Subtest: mismatched ticket or version rejects the full actions package
+ok 3 - mismatched ticket or version rejects the full actions package
+  ---
+  duration_ms: 0.308485
+  type: 'test'
+  ...
+# Subtest: actions require real booleans and a closed set of fields
+ok 4 - actions require real booleans and a closed set of fields
+  ---
+  duration_ms: 0.600295
+  type: 'test'
+  ...
+# Subtest: invalid, duplicate or augmented transitions are rejected
+ok 5 - invalid, duplicate or augmented transitions are rejected
+  ---
+  duration_ms: 0.260694
+  type: 'test'
+  ...
+# Subtest: customer DTO cannot carry internal privileges or private workflow destinations
+ok 6 - customer DTO cannot carry internal privileges or private workflow destinations
+  ---
+  duration_ms: 0.243026
+  type: 'test'
+  ...
+# Subtest: all false writes is view-only even when notes can be read
+ok 7 - all false writes is view-only even when notes can be read
+  ---
+  duration_ms: 0.190528
+  type: 'test'
+  ...
+# Subtest: detail loader fetches notes only when the server grants reading them
+ok 8 - detail loader fetches notes only when the server grants reading them
+  ---
+  duration_ms: 1.017164
+  type: 'test'
+  ...
+# Subtest: note service failure does not hide the public conversation; old notes are not reused
+ok 9 - note service failure does not hide the public conversation; old notes are not reused
+  ---
+  duration_ms: 0.937294
+  type: 'test'
+  ...
+# Subtest: required public-conversation failure is propagated, not replaced by empty success
+ok 10 - required public-conversation failure is propagated, not replaced by empty success
+  ---
+  duration_ms: 0.616339
+  type: 'test'
+  ...
+# Subtest: stale detail response does not launch another conversation request
+ok 11 - stale detail response does not launch another conversation request
+  ---
+  duration_ms: 0.195024
+  type: 'test'
+  ...
+# Subtest: stale nested responses never become a new detail result
+ok 12 - stale nested responses never become a new detail result
+  ---
+  duration_ms: 1.018636
+  type: 'test'
+  ...
+# Subtest: invalid actions stop before any conversation request
+ok 13 - invalid actions stop before any conversation request
+  ---
+  duration_ms: 0.158018
+  type: 'test'
+  ...
+# Subtest: wrong ticket response is rejected rather than loading that conversation
+ok 14 - wrong ticket response is rejected rather than loading that conversation
+  ---
+  duration_ms: 0.209265
+  type: 'test'
+  ...
+# Subtest: malformed note page is a section failure; malformed public page fails the read
+ok 15 - malformed note page is a section failure; malformed public page fails the read
+  ---
+  duration_ms: 0.397129
+  type: 'test'
+  ...
+# Subtest: refresh pauses writing without switching the selected private draft to public
+ok 16 - refresh pauses writing without switching the selected private draft to public
+  ---
+  duration_ms: 0.167333
+  type: 'test'
+  ...
+# Subtest: fresh permissions change the composer channel only to an explicitly available channel
+ok 17 - fresh permissions change the composer channel only to an explicitly available channel
+  ---
+  duration_ms: 0.142264
+  type: 'test'
+  ...
+# Subtest: detail accepts valid supplementary Unicode scalars up to the API read limit
+ok 18 - detail accepts valid supplementary Unicode scalars up to the API read limit
+  ---
+  duration_ms: 0.916812
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 126.823954

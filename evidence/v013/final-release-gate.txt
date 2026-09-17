@@ -1,0 +1,9 @@
+
+> @consulte-geo/helpdesk@0.13.0 verify:release
+> npm run check:lock && npm run check:homologation && npm run verify && npm audit --audit-level=high
+
+
+> @consulte-geo/helpdesk@0.13.0 check:lock
+> node scripts/verify-lock.mjs
+
+PUBLICAÇÃO BLOQUEADA: package-lock.json ainda não foi gerado e revisado.

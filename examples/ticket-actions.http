@@ -1,0 +1,15 @@
+# Backend0.13.0+; substituir variáveis no consumidor. Não contém credenciais reais.
+# Hints são informativos. Ler de novo após mudança; não persistir em cache/idempotência.
+GET {{baseUrl}}/v1/tickets/{{ticketId}}
+Authorization: Bearer {{accessToken}}
+X-Workspace-Id: {{workspaceId}}
+
+### Mesmo que available_actions ofereça open, o servidor revalida permissão e versão.
+POST {{baseUrl}}/v1/tickets/{{ticketId}}/transitions
+Authorization: Bearer {{accessToken}}
+X-Workspace-Id: {{workspaceId}}
+If-Match: "{{version}}"
+Idempotency-Key: {{stableKeyForThisExactCommand}}
+Content-Type: application/json
+
+{"to":"open","reason":"A situação voltou a ocorrer após a resolução."}

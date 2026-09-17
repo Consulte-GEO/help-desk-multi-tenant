@@ -1,0 +1,5 @@
+
+> @consulte-geo/helpdesk@0.13.0 typecheck
+> tsc --noEmit --typeRoots /opt/nvm/versions/node/v22.16.0/lib/node_modules/ts-node/node_modules/@types
+
+tests/ticket-actions-ui.test.ts(57,98): error TS2532: Object is possibly 'undefined'.
