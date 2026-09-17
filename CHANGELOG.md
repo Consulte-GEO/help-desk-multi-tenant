@@ -1,5 +1,14 @@
 # v0.16.0 — efeitos transacionais / candidato R14-06
 
+## 0.17.0 — Paginação e precisão temporal (local, não publicada)
+- Preserva microssegundos na projeção SQL/cursor e no estado da interface; UTC três/seis dígitos.
+- Ordenação nativa no banco e desempate determinístico na memória/UI.
+- Recibos com instante imutável exato e calendário validado, sem alterar sua forma original.
+- Módulo shared incluído no build/demo/smoke/fingerprint, erros de dados seguros.
+- 32 testes locais novos; oito SQL e uma regressão DOM escritos, ainda não homologados.
+- API0.17.0/schema0.16.0; dez migrations preservadas. M1/produção não aprovados.
+
+
 - Modelo por transação em memória recusa gravações sem evento/outbox, pares inconsistentes, duplicados e eventos órfãos; rollback inclui o cache.
 - Migration010 cria write_effects privada, cinco helpers/six triggers e vínculo ao xid8 do banco, com verificação diferida antes de COMMIT. Nenhuma reescrita de histórico.
 - Mantém notas e atribuições estritamente internas; envelope externo mínimo não transporta motivos/corpos. Não implementa worker/envio.

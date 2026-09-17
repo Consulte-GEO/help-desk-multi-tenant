@@ -1,0 +1,105 @@
+TAP version 13
+# (node:5221) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: UTC normalization retains microseconds and preserves the legacy millisecond format when exact
+ok 1 - UTC normalization retains microseconds and preserves the legacy millisecond format when exact
+  ---
+  duration_ms: 2.243802
+  type: 'test'
+  ...
+# Subtest: calendar and input validation reject coercion, offsets, unsupported precision and rollovers
+ok 2 - calendar and input validation reject coercion, offsets, unsupported precision and rollovers
+  ---
+  duration_ms: 0.790941
+  type: 'test'
+  ...
+# Subtest: exact ordering crosses second, day, year and leap-day boundaries without numeric rounding
+ok 3 - exact ordering crosses second, day, year and leap-day boundaries without numeric rounding
+  ---
+  duration_ms: 0.996251
+  type: 'test'
+  ...
+# Subtest: deterministic microsecond range comparison agrees with an independent BigInt oracle
+ok 4 - deterministic microsecond range comparison agrees with an independent BigInt oracle
+  ---
+  duration_ms: 8.427193
+  type: 'test'
+  ...
+# Subtest: legacy three-digit cursor retains timestamp and scope without a format migration
+ok 5 - legacy three-digit cursor retains timestamp and scope without a format migration
+  ---
+  duration_ms: 1.515906
+  type: 'test'
+  ...
+# Subtest: replay accepts identical three/six-digit instants without rewriting the stored original
+ok 6 - replay accepts identical three/six-digit instants without rewriting the stored original
+  ---
+  duration_ms: 2.016835
+  type: 'test'
+  ...
+# Subtest: replay refuses impossible historical dates normalized by JavaScript
+not ok 7 - replay refuses impossible historical dates normalized by JavaScript
+  ---
+  duration_ms: 2.567722
+  type: 'test'
+  location: '/mnt/data/work/helpdesk/tests/v017-instants.test.ts:59:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_idempotency_result'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-instants.test.ts:60:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: historical offset snapshots compare exact microseconds without changing the original representation
+not ok 8 - historical offset snapshots compare exact microseconds without changing the original representation
+  ---
+  duration_ms: 0.383609
+  type: 'test'
+  location: '/mnt/data/work/helpdesk/tests/v017-instants.test.ts:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Got unwanted exception.
+    Actual message: "Não foi possível confirmar o reenvio com segurança. Consulte o chamado antes de tentar novamente com a mesma chave."
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: 'Não foi possível confirmar o reenvio com segurança. Consulte o chamado antes de tentar novamente com a mesma chave.'
+  stack: |-
+    invalidReplayResult (file:///mnt/data/work/helpdesk/src/application/replay-result.ts:12:9)
+    validateTicketReplay (file:///mnt/data/work/helpdesk/src/application/replay-result.ts:83:94)
+    file:///mnt/data/work/helpdesk/tests/v017-instants.test.ts:64:65
+    getActual (node:assert:531:5)
+    Function.doesNotThrow (node:assert:697:32)
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-instants.test.ts:64:48)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  operator: 'doesNotThrow'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-instants.test.ts:64:48)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 6
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 230.119026

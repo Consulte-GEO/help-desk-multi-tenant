@@ -236,3 +236,8 @@ Lacuna da revisão v0.11 abordada: refresh sob demanda, rotação compartilhada,
 
 ## Revisão v0.14.0 — lacunas de validação antes de ampliar escopo
 R14-01/02 (replay) e R14-03 (leitura Auth) corrigidos com testes locais. HD-102 deve verificar diretamente cache/results, scopes reais e invariantes de eventos por comando. R14-04: configuração granular humana ausente; R14-05: política de replay de notes:write sem notes:read assimétrica; R14-06: obrigações SQL não uniformes. Definição em docs18. Nenhum desses itens é considerado resolvido por contagem de testes/migrations. M2 não iniciado nesta entrega.
+
+
+## Incremento local v0.17.0 — precisão temporal (M1 aberto)
+
+Correção de HD-102/HD-105 na leitura de timestamps e paginação. Consultas SQL ainda candidatas; não adicionar novas funcionalidades para reclassificar o marco como concluído. 982 locais/35HTTP aprovados;187 SQL e36 browser escritos, pendentes. Relatório em docs04 e desenho/limites em docs21. Nenhuma migration nova. Prioridade continua instalação reproduzível → PostgreSQL/upgrade → runtime/Auth/Functions → browser → capacidade/restore.

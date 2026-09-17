@@ -1,0 +1,102 @@
+TAP version 13
+# (node:3956) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cursor emitted for a six-digit instant can be consumed without losing precision
+ok 1 - cursor emitted for a six-digit instant can be consumed without losing precision
+  ---
+  duration_ms: 4.186816
+  type: 'test'
+  ...
+# Subtest: mixed milliseconds and microseconds sort by instant, not raw string
+ok 2 - mixed milliseconds and microseconds sort by instant, not raw string
+  ---
+  duration_ms: 4.237845
+  type: 'test'
+  ...
+# Subtest: different representations of the same instant use the ID as tie breaker
+ok 3 - different representations of the same instant use the ID as tie breaker
+  ---
+  duration_ms: 1.199874
+  type: 'test'
+  ...
+# Subtest: messages: 75 rows within one millisecond page without loss or duplicates
+ok 4 - messages: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 35.035942
+  type: 'test'
+  ...
+# Subtest: notes: 75 rows within one millisecond page without loss or duplicates
+ok 5 - notes: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 18.399905
+  type: 'test'
+  ...
+# Subtest: timeline: 75 rows within one millisecond page without loss or duplicates
+ok 6 - timeline: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 19.48364
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves microseconds returned as text
+ok 7 - PostgreSQL adapter preserves microseconds returned as text
+  ---
+  duration_ms: 1.36241
+  type: 'test'
+  ...
+# Subtest: PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+ok 8 - PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+  ---
+  duration_ms: 0.927132
+  type: 'test'
+  ...
+# Subtest: replay immutable creation time does not conflate two instants in one millisecond
+ok 9 - replay immutable creation time does not conflate two instants in one millisecond
+  ---
+  duration_ms: 2.28189
+  type: 'test'
+  ...
+# Subtest: conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+ok 10 - conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+  ---
+  duration_ms: 1.119318
+  type: 'test'
+  ...
+# Subtest: list state accepts canonical six-digit timestamps
+ok 11 - list state accepts canonical six-digit timestamps
+  ---
+  duration_ms: 12.779814
+  type: 'test'
+  ...
+# Subtest: timeline state accepts and orders mixed precision instants without collapsing ties
+ok 12 - timeline state accepts and orders mixed precision instants without collapsing ties
+  ---
+  duration_ms: 5.169552
+  type: 'test'
+  ...
+# Subtest: conversation display orders mixed precision chronologically
+ok 13 - conversation display orders mixed precision chronologically
+  ---
+  duration_ms: 2.771327
+  type: 'test'
+  ...
+# Subtest: same instant uses a deterministic identifier order matching the cursor predicate
+ok 14 - same instant uses a deterministic identifier order matching the cursor predicate
+  ---
+  duration_ms: 1.665651
+  type: 'test'
+  ...
+# Subtest: conversation display ID tie-break agrees with cursor ordering, not locale collation
+ok 15 - conversation display ID tie-break agrees with cursor ordering, not locale collation
+  ---
+  duration_ms: 0.373865
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 358.76879

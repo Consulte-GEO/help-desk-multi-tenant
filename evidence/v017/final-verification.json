@@ -1,0 +1,41 @@
+{
+  "scope": "local-development; not production certification",
+  "release": "0.17.0",
+  "schema": "0.16.0",
+  "date_utc": "2026-09-17T17:32:42.511523+00:00",
+  "base_commit": "35426e0d90753902e977c71f0717c9c37302bedd",
+  "tests": {
+    "tests": 982,
+    "pass": 982,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "http_smoke": {
+    "passed": 35,
+    "storage": "synthetic-memory"
+  },
+  "sql": {
+    "written": 187,
+    "executed": 0,
+    "reason": "No Docker/PostgreSQL installed"
+  },
+  "browser": {
+    "written": 36,
+    "passed": 0,
+    "reason": "ERR_BLOCKED_BY_ADMINISTRATOR at navigation"
+  },
+  "typecheck_standard_exit": 2,
+  "typecheck_supplementary_exit": 0,
+  "verify_standard_exit": 2,
+  "homologation_exit": 1,
+  "release_gate_exit": 1,
+  "database_attempt_exit": 1,
+  "dependency_resolution": "EAI_AGAIN registry.npmjs.org; no lock",
+  "migration_files": 10,
+  "migration_changes": 0,
+  "remote_reads": false,
+  "remote_writes": false,
+  "published": false
+}

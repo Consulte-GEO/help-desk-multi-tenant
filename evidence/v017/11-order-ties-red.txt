@@ -1,0 +1,159 @@
+TAP version 13
+# (node:3928) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cursor emitted for a six-digit instant can be consumed without losing precision
+ok 1 - cursor emitted for a six-digit instant can be consumed without losing precision
+  ---
+  duration_ms: 5.118021
+  type: 'test'
+  ...
+# Subtest: mixed milliseconds and microseconds sort by instant, not raw string
+ok 2 - mixed milliseconds and microseconds sort by instant, not raw string
+  ---
+  duration_ms: 3.532817
+  type: 'test'
+  ...
+# Subtest: different representations of the same instant use the ID as tie breaker
+ok 3 - different representations of the same instant use the ID as tie breaker
+  ---
+  duration_ms: 15.403665
+  type: 'test'
+  ...
+# Subtest: messages: 75 rows within one millisecond page without loss or duplicates
+ok 4 - messages: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 52.29799
+  type: 'test'
+  ...
+# Subtest: notes: 75 rows within one millisecond page without loss or duplicates
+ok 5 - notes: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 11.943989
+  type: 'test'
+  ...
+# Subtest: timeline: 75 rows within one millisecond page without loss or duplicates
+ok 6 - timeline: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 21.128232
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves microseconds returned as text
+ok 7 - PostgreSQL adapter preserves microseconds returned as text
+  ---
+  duration_ms: 1.389662
+  type: 'test'
+  ...
+# Subtest: PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+ok 8 - PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+  ---
+  duration_ms: 0.611306
+  type: 'test'
+  ...
+# Subtest: replay immutable creation time does not conflate two instants in one millisecond
+ok 9 - replay immutable creation time does not conflate two instants in one millisecond
+  ---
+  duration_ms: 1.31342
+  type: 'test'
+  ...
+# Subtest: conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+ok 10 - conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+  ---
+  duration_ms: 0.420114
+  type: 'test'
+  ...
+# Subtest: list state accepts canonical six-digit timestamps
+ok 11 - list state accepts canonical six-digit timestamps
+  ---
+  duration_ms: 13.529805
+  type: 'test'
+  ...
+# Subtest: timeline state accepts and orders mixed precision instants without collapsing ties
+ok 12 - timeline state accepts and orders mixed precision instants without collapsing ties
+  ---
+  duration_ms: 5.029432
+  type: 'test'
+  ...
+# Subtest: conversation display orders mixed precision chronologically
+ok 13 - conversation display orders mixed precision chronologically
+  ---
+  duration_ms: 2.482188
+  type: 'test'
+  ...
+# Subtest: same instant uses a deterministic identifier order matching the cursor predicate
+not ok 14 - same instant uses a deterministic identifier order matching the cursor predicate
+  ---
+  duration_ms: 2.299029
+  type: 'test'
+  location: '/mnt/data/work/helpdesk/tests/v017-precision.test.ts:91:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    -   't_1',
+    -   't-a',
+        't-B',
+        't-9'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 't_1'
+    1: 't-a'
+    2: 't-B'
+    3: 't-9'
+  actual:
+    0: 't-B'
+    1: 't-9'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-precision.test.ts:95:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: conversation display ID tie-break agrees with cursor ordering, not locale collation
+not ok 15 - conversation display ID tie-break agrees with cursor ordering, not locale collation
+  ---
+  duration_ms: 0.933717
+  type: 'test'
+  location: '/mnt/data/work/helpdesk/tests/v017-precision.test.ts:97:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    +   'm_1',
+    +   'm-a',
+        'm-B',
+    -   'm-a',
+    -   'm_1'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'm-B'
+    1: 'm-a'
+    2: 'm_1'
+  actual:
+    0: 'm_1'
+    1: 'm-a'
+    2: 'm-B'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-precision.test.ts:100:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 13
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 380.245726

@@ -1,3 +1,4 @@
+import {compareInstants,isCanonicalInstant} from '../../shared/instant.js';
 import {canonicalJson} from '../domain/canonical.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 import {isPersistableText} from '../domain/input-values.ts';
@@ -64,13 +65,37 @@ export function validateTicketReplayShape(value:unknown):asserts value is Ticket
  * Mutable priority/status/owner remain the ORIGINAL response, even after later writes.
  * If a future feature edits subject/description/contract, this contract needs explicit versioning.
  */
+/** Legacy snapshots may use an explicit offset or fewer fractional digits. Compare
+ * their exact instant without mutating the snapshot or accepting Date rollover.
+ * Epoch milliseconds are exact for four-digit years; the remaining microseconds
+ * are added as integers, never converted through floating point seconds.
+ */
+function historicalInstant(value:string):bigint|undefined {
+  const match=/^((?!0000)\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if(!match)return undefined;
+  const fraction=(match[2]??'').padEnd(6,'0');
+  const local=match[1]+'.'+fraction+'Z';
+  if(!isCanonicalInstant(local))return undefined;
+  const zone=match[3]!;let offset=0;
+  if(zone!=='Z'){
+    const hours=Number(zone.slice(1,3)),minutes=Number(zone.slice(4,6));
+    if(hours>23||minutes>59)return undefined;
+    offset=(hours*60+minutes)*(zone[0]==='-'?-1:1);
+  }
+  return BigInt(Date.parse(local.slice(0,23)+'Z'))*1000n+BigInt(fraction.slice(3))-BigInt(offset)*60000000n;
+}
+function sameCreatedInstant(saved:string,current:string):boolean {
+  if(isCanonicalInstant(saved)&&isCanonicalInstant(current))return compareInstants(saved,current)===0;
+  const previous=historicalInstant(saved),actual=historicalInstant(current);
+  return previous!==undefined&&actual!==undefined&&previous===actual;
+}
 export function validateTicketReplay(value:unknown,current:Ticket):asserts value is Ticket {
   validateTicketReplayShape(value);
   for(const field of ['id','workspaceId','accountId','productInstanceId','serviceCode','createdBy',
     'coverageId','contractVersionId','subject','description'] as const) {
     if(value[field]!==current[field])invalidReplayResult();
   }
-  if(value.version>current.version || Date.parse(value.createdAt)!==Date.parse(current.createdAt))invalidReplayResult();
+  if(value.version>current.version || !sameCreatedInstant(value.createdAt,current.createdAt))invalidReplayResult();
   try {
     if(canonicalJson(value.contractSnapshot)!==canonicalJson(current.contractSnapshot))invalidReplayResult();
   } catch {invalidReplayResult();}

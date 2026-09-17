@@ -1,3 +1,4 @@
+import {isCanonicalInstant} from '../../shared/instant.js';
 import {requestHash} from '../domain/canonical.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 import type {Cursor} from './ports.ts';
@@ -11,7 +12,7 @@ export function pagination(options:PageOptions,context:unknown):{window:PageWind
   if(options.cursor.length>700||!options.cursor.length)throw Error();
   const c=JSON.parse(Buffer.from(options.cursor,'base64url').toString());
   if(!c||Object.keys(c).sort().join(',')!=='at,filter,id'||typeof c.id!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(c.id)
-    ||typeof c.at!=='string'||new Date(c.at).toISOString()!==c.at||c.filter!==filter)throw Error();
+    ||!isCanonicalInstant(c.at)||c.filter!==filter)throw Error();
   cursor=c;
  }catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
  return {window:{limit:options.limit+1,cursor},filter};

@@ -25,7 +25,12 @@ Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04
 ## Qualidade
 Escrever testes negativos antes da correção; executar npm test, typecheck, check:contracts e build. Executar a suíte PostgreSQL e a interface em ambiente apto. Não publicar com lockfile ausente, dependência não auditada ou capabilities fictícias. Documentar explicitamente não executado, bloqueado e não implementado. Entregar evidências por commit e atualizar a matriz de status.
 
-## Estado v0.16.0
+## Estado v0.17.0
+M1 aberto.982 locais/35HTTP de memória aprovados;187SQL/36browser escritos, não aprovados. API0.17/schema0.16;10 migrations intactas/25tabelas/18operações. Ler docs04/05/21. Sem inspeção ou escrita remota.
+
+Preservar microssegundos nos SELECTs e cursores; não passar o timestamp PostgreSQL por Date antes de paginar. ORDER BY coluna nativa qualificada, não alias textual. Comparações exatas, mesmas regras de desempate do cursor. shared/instant.js deve ir ao build e ao fingerprint. Representação de recibo histórico não muda; Date.parse não deve confundir instantes distintos ou datas impossíveis. Cursor antigo já truncado exige reiniciar a coleção. Não alterar calendários/SLA/TTL/fluxos sob pretexto desta correção.
+
+## Registro histórico v0.16.0
 M1 aberto.950 locais/35 HTTP de memória;179 SQL/35 browser escritos, não homologados. API/schema0.16;10 migrations/25 tabelas/36 funções/18 triggers. Ler docs04/05/20. GitHub lido vazio; Supabase/Netlify não reinspecionados, nenhuma escrita remota.
 
 R14-06 possui candidato de write_effects, produzido pelo banco e ligado a pg_current_xact_id. Não dar acesso ao app/clientes, não backfill do passado, não confundir com cache idempotente ou entrega externa. Preservar001–009. Memorystore é modelo de referência, não PostgreSQL. Deferir verificação não é permitir confirmar pares incompletos. Não remover triggers/asserts para aprovar uma sequência inválida. No-op/replay sem novo efeito; notas/atribuições sem outbox. Conferir atualizações do inventário e efeitos da tabela na retenção/restore/custo antes de produção.

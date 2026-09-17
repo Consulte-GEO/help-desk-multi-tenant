@@ -1,3 +1,4 @@
+import {isCanonicalInstant} from '../shared/instant.js';
 /** Per-session, per-query inbox state. No persistent cache or authorization decisions. */
 const PUBLIC=['received','in_progress','waiting_for_you','resolved','closed'];
 const PRIORITIES=['low','normal','high','urgent'];
@@ -7,7 +8,7 @@ const bad=()=>{throw Error('Resposta da lista incompatível. Atualize a consulta
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const identifier=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(v);
 const text=(v,min,max)=>typeof v==='string'&&v.length<=max*2&&Array.from(v).length>=min&&Array.from(v).length<=max&&!/\p{Cs}/u.test(v);
-const instant=v=>typeof v==='string'&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString()===v;
+const instant=isCanonicalInstant;
 function filters(raw={}){
  if(!object(raw)||Object.keys(raw).some(k=>!['q','status','priority','assignment'].includes(k)))throw Error('Filtros inválidos.');
  const out={};

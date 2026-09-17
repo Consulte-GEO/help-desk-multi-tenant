@@ -1,3 +1,4 @@
+import {isCanonicalInstant,compareInstants} from '../shared/instant.js';
 /** A timeline is a separately authorized, live collection. Never render arbitrary event JSON. */
 const priorities={low:'Baixa',normal:'Normal',high:'Alta',urgent:'Urgente'};
 const statuses={received:'Recebido',in_progress:'Em atendimento',waiting_for_you:'Aguardando você',resolved:'Resolvido',closed:'Encerrado'};
@@ -10,7 +11,7 @@ const known=(map,v)=>typeof v==='string'&&Object.hasOwn(map,v);
 const text=v=>typeof v==='string'&&[...v].length<=2000&&!/[\u0000\ud800-\udfff]/u.test(v);
 const invalid=()=>{throw Error('Histórico inválido. Atualize o chamado ou tente novamente.');};
 function validateEvent(e,internal){
- if(!fields(e,['id','type','created_at','data'])||Object.keys(e).length!==4||!identifier(e.id)||typeof e.created_at!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(e.created_at)||!Number.isFinite(Date.parse(e.created_at))||new Date(e.created_at).toISOString()!==e.created_at||!object(e.data))invalid();
+ if(!fields(e,['id','type','created_at','data'])||Object.keys(e).length!==4||!identifier(e.id)||!isCanonicalInstant(e.created_at)||!object(e.data))invalid();
  const d=e.data;let ok=false;
  switch(e.type){
   case 'ticket.created':ok=internal?fields(d,['version'])&&positive(d.version):fields(d,[]);break;
@@ -22,7 +23,7 @@ function validateEvent(e,internal){
  }
  if(!ok)invalid();return structuredClone(e);
 }
-const compare=(a,b)=>a.created_at===b.created_at?(a.id===b.id?0:a.id<b.id?-1:1):a.created_at<b.created_at?-1:1;
+const compare=(a,b)=>compareInstants(a.created_at,b.created_at)||(a.id===b.id?0:a.id<b.id?-1:1);
 export function createTimelineState(){
  let owner='',generation=0,internal=false,rows=[],cursor=null,pending=null,phase='idle';let used=new Set();
  const current=op=>!!op&&pending===op&&op.owner===owner&&op.generation===generation;

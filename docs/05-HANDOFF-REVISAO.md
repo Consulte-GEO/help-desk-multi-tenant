@@ -1,31 +1,29 @@
-# Continuidade — Help Desk v0.16.0
+# Continuidade — Help Desk v0.17.0
 
-Base `b3f70538370704489e01f12545ee578d6b28c84b`; branch `work/helpdesk-v0.16.0`. Hash final no manifesto/bundle. Nenhuma escrita remota. GitHub foi consultado e retornou vazio; Supabase e Netlify não foram reinspecionados. Reinspecionar todos os destinos antes de integrar, preservando trabalho concorrente.
+Base `35426e0d90753902e977c71f0717c9c37302bedd`, branch `work/helpdesk-v0.17.0`. Ler README, AGENTS, documentos04/21 e plano. Sem inspeção/escrita remota nesta rodada. Reinspecionar os destinos antes de integrar e preservar trabalho concorrente. Não pressupor repositório vazio.
 
-Leia README, AGENTS, documentos 04 e20 e plano atualizado. R14-06 tem implementação candidata, não homologação PostgreSQL. R14-04/05 permanecem candidatos anteriores, sem nova liberação.
+## Próxima execução
 
-## Ordem de execução
-
-1. Resolver dependências no registry autorizado: `npm run deps:resolve`. Revisar lock real/árvore/integridade/origens/licenças/alertas; executar npm ci, verify e audit. DNS voltou a falhar nesta rodada; não usar lock sintético ou typecheck global como substitutos.
-2. Conferir `npm run check:migrations`: dez migrations, nove anteriores preservadas; schema0.16.0. Não recalcular hashes para encobrir alteração de histórico.
-3. Executar `npm run test:db:local` em PostgreSQL17 novo/descartável com login restrito. Há179 cenários escritos,165 principais+14upgrade. Não usar Supabase real como fallback, apagar schema preexistente para passar ou alterar política de rede/navegador. Docker é padrão; native exige instalação autorizada e usuário não root.
-4. Revisar migration010 integralmente: write_effects, xid8, FKs, índices únicos parciais, papéis, funções definer com search_path vazio, contexto, lock do pai, vínculo por evento e trigger diferido. Conferir que erro de SQL direto é recusado e que o UoW não anuncia sucesso quando COMMIT falha. Validar assinatura/tipos/policies/readiness com servidor real.
-5. Executar upgrade001–007→008→009→010 no banco separado de testes. A tabela de efeitos deve nascer vazia; nenhum evento/recibo antigo é reescrito. Conferir atribuição, mensagem e reenvio posterior com snapshots preservados. Isso não substitui restore de backup.
-6. Validar o protocolo de escrita: chamada/mensagem/nota/transição/prioridade/atribuição geram seus efeitos; mensagem vem antes de avançar versão; evento antes da outbox; no-op/replay não geram novos efeitos. Conferir reuso de evento de transação anterior, múltiplas operações e ROLLBACK TO SAVEPOINT. Notas/atribuições não podem gerar outbox externo.
-7. Homologar Auth/M2M, perfis granulares, pooler/TLS/IP e Functions reais. API0.16 exige schema0.16; não publicar apenas o HTML. Medir custo dos novos registros/índices/locks e atualizar política de retenção e recuperação sem apagar mensagens.
-8. Rodar interface35HTTP+35browser e rever os fluxos anteriores. O navegador bloqueou antes das asserções nesta rodada. Três testes novos de socket estão incluídos na suíte Node, não substituem DOM nem provedor real.
-9. Rodar homologate:local/check:homologation: mínimos950/179/70 efetivamente aprovados, sem skips. Revisar logs/fingerprints; aprovação local não libera destino/capacidade/restore/produção. Manter HELPDESK_RELEASE_APPROVED fechado até decisão explícita.
+1. Resolver dependências no registry autorizado (`npm run deps:resolve`), revisar o lock real/árvore/integridades/alertas/licenças. Executar npm ci/verify/audit. Tipos globais não substituem a dependência declarada. Não fabricar lock ou alterar regras de rede.
+2. Conferir dez migrations (`npm run check:migrations`), iguais à v0.16 por bytes/hashes. Schema permanece0.16.0; não gerar migration cosmética. API/interface são0.17.0.
+3. Executar187 cenários PostgreSQL17 descartável:173 principais e14 de upgrade. Docker padrão/native só instalado autorizado e não root. Nada de banco real de clientes, limpeza de schema preexistente ou remote fallback.
+4. Revisar os SELECTs: to_char em UTC preserva US, CASE recusa era/ano incompatíveis, ORDER BY qualifica a coluna nativa, predicado usa timestamptz/UUID com parâmetros. Confirmar que pg retorna texto, não Date. EXPLAIN/custo com RLS, página muito concorrida, timestamps iguais e microssegundos, TimeZone não UTC. Testes locais não provam essas propriedades.
+5. Repetir todos os casos anteriores de perfis/versionamento/cache/write_effects e upgrades. Oito casos novos usam relógio de teste preciso, não campo HTTP livre. Não remover triggers para semear casos de teste. Fonte/corpo/evento anteriores não são reescritos.
+6. Homologar UI:35HTTP+36browser. Novo `/shared/instant.js` precisa estar no build raiz. Validar lista, detalhe, mensagens/notas, histórico com três/seis dígitos, IDs de desempate, paginação, rascunhos, erro/retry, troca de conta/perfil, foco/mobile. O navegador bloqueou antes das asserções; não contornar políticas.
+7. Homologar Auth/M2M/pooler/TLS/IP/Functions reais. Codecs de API devem aceitar date-time de comprimento variável. Recibos idempotentes preservam a forma histórica. Reiniciar listagem/histórico no rollout para descartar cursor antigo já truncado; não há como reconstruir dígitos perdidos apenas pelo cursor.
+8. Rodar homologate:local/check:homologation; mínimos982/187/71 são contagens efetivamente aprovadas sem skips. Manter HELPDESK_RELEASE_APPROVED fechado até decisão explícita, homologação do destino e capacidade/restore/revisão.
 
 ## Revisão dirigida
 
-- `src/domain/transaction-effects.ts`: modelo de referência por transação, sem histórico como substituto, pares exatos e sem orfandade.
-- `src/infrastructure/memory.ts`: registrar somente novas escritas; validar antes de confirmar o clone; replay sem novos efeitos.
-- `supabase/migrations/20260917001000_transaction_effects.sql`: cinco helpers privados e seis triggers; nenhuma policy de leitura ou setter HTTP.
-- `database-security*.ts`: inventário25 tabelas/36 funções/18 triggers, incluindo quatro diferidos; índices de efeitos obrigatórios. Metadados não atestam semântica.
-- `supabase/tests/rls.test.ts`:29 casos adicionais. Um teste antigo de prioridade passa a esperar o contrato já existente de resultado incerto do UoW após erro de COMMIT; rollback continua obrigatório.
-- `supabase/tests/upgrade.test.ts`: quatro novos cenários, fonte histórica anterior mantida antes dos novos triggers.
-- `tests/v016-*`, `evidence/v016/`:45 testes novos locais, fases de falha/correção, tentativas bloqueadas e revisão local.
+- `shared/instant.js` e declaração: calendário, limites, comparação exata, representação antiga de milissegundos.
+- `src/infrastructure/postgres.ts`: projeção textual e ordenação/predicado nativos; erro seguro de dados inválidos. Nenhum parser global de pg alterado.
+- `pagination.ts`, `memory.ts`, `conversation-result.ts`, `replay-result.ts`: mesma ordem do cursor, validação íntegra, instante histórico exato sem modificar resposta.
+- `web/conversation-state.js`, `timeline-state.js`, `ticket-actions.js`, `ticket-list-state.js`: validação/comparação antes de apresentar.
+- Build/demo/smoke e fingerprint: shared incluso, sem CDN/fallback.
+- `tests/v017-*`, SQL017 em `rls.test.ts`, browser e OpenAPI. Testes de PG escritos não são casos aprovados; quatro HTTP extras estão dentro dos982.
 
-## Invariantes e limites
+## Invariantes
 
-Intenção não é entrega. Registro de efeitos não é autorização nem recibo idempotente. Nunca gerar/limpar/alterar o registro privado via API. Novo helper precisa ser homologado com o owner aprovado e o login real restrito. Não promover essa tabela a auditoria WORM ou certificação de registros anteriores. Não apagar o histórico para contornar falhas do upgrade. Auth/contas/MFA/segredos não foram alterados. M1 permanece aberto; M2, SLA operacional, anexos, dispatcher e conectores reais não foram entregues.
+Nenhuma alteração de autorização, estado, prioridade, responsável, fila, SLA, TTL ou sessão. Precisão não é monotonicidade, snapshot da coleção nem ordenação por atualização. Conteúdo de cache histórico não é reformatado; não repetir gravação diante de erro. Datas impossíveis/NULL não viram valores artificiais. Novos SELECTs não modificam os dados.
+
+R14-04/05/06 continuam candidatos de banco anteriores. M1 aberto, M2/SLA operacional/anexos/dispatcher/conectores não entregues. Não houve revisão independente, pentest ou restore. Pacote/bundle não autorizam publicação.

@@ -6,9 +6,9 @@ export const steps = Object.freeze([
  {id:'lock',requires:[],command:['node','scripts/verify-lock.mjs'],timeout:60_000,minTests:0},
  {id:'install',requires:['lock'],command:['npm','ci','--ignore-scripts'],timeout:600_000,minTests:0},
  {id:'audit',requires:['install'],command:['npm','audit','--audit-level=high'],timeout:300_000,minTests:0},
- {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:950},
- {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:179},
- {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:70}
+ {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:982},
+ {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:187},
+ {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:71}
 ]);
 const hash = text => createHash('sha256').update(text).digest('hex');
 export function testCounts(output) {
@@ -64,7 +64,7 @@ export async function verifyLogs(report,directory) {
 }
 /** Hash every relevant source/config/test file, including new/untracked source files. */
 export async function sourceFingerprint(root) {
- const roots=['src','scripts','tests','supabase','web','netlify','.github','package.json','package-lock.json','tsconfig.json',
+ const roots=['shared','src','scripts','tests','supabase','web','netlify','.github','package.json','package-lock.json','tsconfig.json',
   'netlify.toml','.gitignore','.npmrc','.nvmrc','.env.example','docs/openapi.json'];
  const files=[];
  async function walk(path){

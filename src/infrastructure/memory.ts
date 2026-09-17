@@ -1,3 +1,4 @@
+import {compareInstants} from '../../shared/instant.js';
 import {TransactionEffects} from '../domain/transaction-effects.ts';
 import {matchesTicketSearch} from '../application/ticket-search.ts';
 import {compareContext} from '../application/support-catalog.ts';
@@ -10,8 +11,8 @@ import {canReadTicket,canAccessAccount,canUseProduct,hasScope} from '../domain/p
 import {HelpdeskError} from '../domain/errors.ts';
 export type MemoryState={supportContexts:SupportCatalogEntry[];coverages:Coverage[];tickets:Ticket[];messages:PublicMessage[];notes:InternalNote[];events:TicketEvent[];outbox:OutboxEvent[];idempotency:StoredResult[]};
 function windowRows<T extends {id:string;createdAt:string}>(rows:T[],window:PageWindow={limit:100,cursor:null}):T[]{
- const c=window.cursor;return rows.filter(r=>!c||r.createdAt<c.at||(r.createdAt===c.at&&r.id<c.id))
-  .sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.id.localeCompare(a.id)).slice(0,window.limit);
+ const c=window.cursor;return rows.filter(r=>!c||compareInstants(r.createdAt,c.at)<0||(compareInstants(r.createdAt,c.at)===0&&r.id<c.id))
+  .sort((a,b)=>compareInstants(b.createdAt,a.createdAt)||(a.id===b.id?0:a.id<b.id?1:-1)).slice(0,window.limit);
 }
 /** Test/demo adapter only. Its mutex verifies application invariants, not PostgreSQL locking/RLS. */
 export class MemoryUnitOfWork implements UnitOfWork{
@@ -40,7 +41,7 @@ export class MemoryUnitOfWork implements UnitOfWork{
    },
    coverages:async(c:SupportContext)=>next.coverages.filter(x=>x.workspaceId===p.workspaceId&&x.accountId===c.accountId&&x.productInstanceId===c.productInstanceId&&x.serviceCode===c.serviceCode),
    getTicket:async id=>next.tickets.find(t=>t.id===id&&visible(t))??null,
-   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||t.createdAt<cursor.at||(t.createdAt===cursor.at&&t.id<cursor.id))).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.id.localeCompare(a.id)).slice(0,limit),
+   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||compareInstants(t.createdAt,cursor.at)<0||(compareInstants(t.createdAt,cursor.at)===0&&t.id<cursor.id))).sort((a,b)=>compareInstants(b.createdAt,a.createdAt)||(a.id===b.id?0:a.id<b.id?1:-1)).slice(0,limit),
    insertTicket:async t=>{effects.ticket(null,t,p);next.tickets.push(structuredClone(t));},
    updateTicket:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');effects.ticket(next.tickets[i]!,t,p);next.tickets[i]=structuredClone(t);},
    updatePriority:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');effects.ticket(next.tickets[i]!,t,p);next.tickets[i]={...next.tickets[i]!,priority:t.priority,version:t.version,updatedAt:t.updatedAt};},

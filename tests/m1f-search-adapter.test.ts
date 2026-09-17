@@ -17,7 +17,7 @@ test('busca SQL mantém texto malicioso somente em parâmetros e filtros antes d
  const q=f.calls.find(c=>c.sql.includes('from helpdesk_core.tickets'));assert.ok(q);
  assert.ok(!q.sql.includes(needle));assert.equal(q.values[5],foldSearch(needle));assert.equal(q.values[4],26);
  assert.match(q.sql,/workspace_id=\$1/);assert.match(q.sql,/strpos\(translate\(subject,\$7::text,\$8::text\),\$6\)>0/);
- assert.match(q.sql,/status=any\(\$9::text\[\]\)/);assert.match(q.sql,/priority=\$10/);assert.match(q.sql,/order by created_at desc,id desc limit \$5/);
+ assert.match(q.sql,/status=any\(\$9::text\[\]\)/);assert.match(q.sql,/priority=\$10/);assert.match(q.sql,/order by tickets\.created_at desc,id desc limit \$5/);
  assert.deepEqual(q.values[8],['open','waiting_internal','waiting_third_party']);assert.equal(q.values[9],'high');
  assert.doesNotMatch(q.sql,/join|internal_notes|ticket_messages|unaccent|ilike/i);
 });

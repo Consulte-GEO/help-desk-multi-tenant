@@ -1,0 +1,145 @@
+{
+  "scope": "Real loopback HTTP; DEMO MEMORY only. Not Supabase/PostgreSQL/Netlify.",
+  "checks": [
+    {
+      "check": "HTTP account isolation in local demo",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP advertises current version",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP create and idempotent replay",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP known ID from sibling account denied",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP pagination across 55 actual API-created messages",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP public/private conversation separation",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP serves all JavaScript modules including mutation guard",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP rejects duplicate parameters and empty selectors",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP rejects compressed bodies rather than silently decoding unsupported input",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP self-revocation rejects human tokens and does not fake a missing M2M backend",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP authorized catalog supplies names without sibling account or private data",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP catalog pagination keeps two contexts distinct and creates no tickets",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP catalog denies forbidden filters and a cursor from another actor",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP server search reaches a ticket beyond the first 25 without preloading pages",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP combines literal query, public status and priority before pagination",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP filtered pagination has 30 distinct results and rejects cursor reuse with another query",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP search preserves account/private-note isolation and advertises the implemented capability",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP priority update is versioned, minimizes response and supports exact replay",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP stale version and changed idempotency payload do not overwrite priority",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP requester, sibling account and mass assignment cannot change priority",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP paginated timeline and real presentation module keep internal reasons out of client events",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP same-priority review is a no-op and capabilities announce only implemented operations",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP operator claims responsibility with version increment and no principal identifier in DTO",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP claim replay and release preserve original responses without reassigning again",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP assignment denies customer, sibling account and arbitrary target injection",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP assignment requires current version and rejects stale updates",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP assignment history stays private and projection excludes assignee identifiers",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP customer lists omit assignment and shipped interface contains explicit claim/release controls",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP mine/unassigned views are applied on the server, not only loaded items",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP responsibility filters deny customers and malformed selectors",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP rejects JSON-escaped NUL and lone surrogate before writing a message",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP released ticket returns to unassigned and the capability/UI are shipped",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP current detail actions match the version and keep customer privileges restricted",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP current actions are not copied into lists, commands or stored replay responses",
+      "result": "passed"
+    },
+    {
+      "check": "HTTP reopen hints require a reason and the actual command rejects an empty one",
+      "result": "passed"
+    }
+  ]
+}

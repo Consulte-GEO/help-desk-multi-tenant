@@ -715,3 +715,74 @@ test('SQL016 disabled completion trigger is refused by runtime readiness',async(
  finally{await admin.query('alter table helpdesk_audit.write_effects enable trigger complete_write_effect');}
  await assertDatabaseSecurity(app);
 });
+
+// v0.17: actual PostgreSQL precision tests. Written here, not executed by npm test.
+// This test-only clock injects six digits at the service boundary. HTTP clients cannot set dates.
+class PrecisionClockDate extends Date {
+ readonly exact:string;
+ constructor(exact:string){super(exact);this.exact=exact;}
+ override toISOString():string{return this.exact;}
+}
+async function precisionFixture(){
+ const actor:Principal={...agent,id:randomUUID()};
+ await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[actor.id,randomUUID()]);
+ await admin.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[actor.workspaceId,input.accountId,actor.id]);
+ await admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[actor.workspaceId,actor.id,actor.scopes,'Synthetic microsecond tests',randomUUID()]);
+ let instant='2026-09-17T12:00:00.122000Z';
+ const precise=new HelpdeskService(new PostgresUnitOfWork(app),()=>new PrecisionClockDate(instant));
+ return {actor,precise,set:(value:string)=>{instant=value;},create:async(subject='V017 '+randomUUID())=>
+  (await precise.create(actor,{...input,subject},randomUUID(),'precision-db')).ticket};
+}
+const precisionAt=(n:number)=>'2026-09-17T12:00:00.123'+String(n).padStart(3,'0')+'Z';
+test('SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation',async()=>{
+ const f=await precisionFixture();f.set(precisionAt(456));const t=await f.create();
+ const r=await f.precise.get(f.actor,t.id);assert.equal(r.createdAt,precisionAt(456));assert.equal(r.updatedAt,precisionAt(456));
+ const db=await admin.query('select extract(microseconds from created_at)::integer as micros from helpdesk_core.tickets where id=$1',[t.id]);
+ assert.equal(Number(db.rows[0]!.micros),123456);
+});
+test('SQL017 keyset list reaches all tickets within one millisecond',async()=>{
+ const f=await precisionFixture(),marker='V017-'+randomUUID(),created:string[]=[];
+ for(let i=1;i<=9;i++){f.set(precisionAt(i));created.push((await f.create(marker)).id);}
+ const ids:string[]=[];let cursor:string|undefined;
+ for(let n=0;n<5;n++){const result=await f.precise.list(f.actor,{limit:2,q:marker,...(cursor?{cursor}:{})});ids.push(...result.items.map(t=>t.id));cursor=result.nextCursor??undefined;if(!cursor)break;}
+ assert.equal(cursor,undefined);assert.deepEqual(ids,created.reverse());assert.equal(new Set(ids).size,9);
+});
+for(const kind of ['messages','notes','timeline'] as const)test(`SQL017 ${kind} pagination keeps every sub-millisecond row with the real app role`,async()=>{
+ const f=await precisionFixture(),t=await f.create(),made:string[]=[];
+ for(let i=1;i<=12;i++){
+  f.set(precisionAt(i));
+  if(kind==='notes')made.push((await f.precise.addNote(f.actor,t.id,'Precision note '+i,randomUUID(),'precision-db')).note.id);
+  else made.push((await f.precise.addMessage(f.actor,t.id,'Precision message '+i,randomUUID(),'precision-db')).message.id);
+ }
+ const items:{id:string;createdAt:string}[]=[];let cursor:string|undefined;
+ for(let n=0;n<6;n++){
+  const result=await f.precise.conversation(f.actor,t.id,kind,{limit:3,...(cursor?{cursor}:{})});items.push(...result.items);cursor=result.nextCursor??undefined;if(!cursor)break;
+ }
+ assert.equal(cursor,undefined);assert.equal(items.length,kind==='timeline'?13:12);assert.equal(new Set(items.map(x=>x.id)).size,items.length);
+ assert.equal(items[0]!.createdAt,precisionAt(12));assert.equal(items[11]!.createdAt,precisionAt(1));
+ if(kind!=='timeline')assert.deepEqual(items.map(x=>x.id),made.reverse());
+ await assert.rejects(()=>service.conversation(bob,t.id,kind,{limit:3}),{code:'resource_not_found'});
+});
+test('SQL017 equal timestamps with three and six input digits use UUID tie-break without dropping rows',async()=>{
+ const f=await precisionFixture(),marker='V017-equal-'+randomUUID();
+ f.set('2026-09-17T12:00:00.123Z');const a=await f.create(marker);f.set(precisionAt(0));const b=await f.create(marker);
+ const first=await f.precise.list(f.actor,{limit:1,q:marker});assert.ok(first.nextCursor);
+ const next=await f.precise.list(f.actor,{limit:1,q:marker,cursor:first.nextCursor});assert.equal(next.nextCursor,null);
+ assert.deepEqual([...first.items,...next.items].map(x=>x.id),[a.id,b.id].sort().reverse());
+ assert.equal(first.items[0]!.createdAt,'2026-09-17T12:00:00.123Z');
+});
+test('SQL017 projection remains canonical UTC even on a connection with another TimeZone',async()=>{
+ const f=await precisionFixture();f.set(precisionAt(456));const t=await f.create();
+ const moduleName='pg',driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};const one=new driver.Pool({connectionString:appUrl,max:1});
+ try{
+  await one.query("set time zone 'Pacific/Auckland'");
+  const result=await new HelpdeskService(new PostgresUnitOfWork(one)).get(f.actor,t.id);assert.equal(result.createdAt,precisionAt(456));
+ }finally{await one.end();}
+});
+test('SQL017 replay preserves the exact original creation instant after a real database roundtrip',async()=>{
+ const f=await precisionFixture(),key=randomUUID(),payload={...input,subject:'V017-replay '+randomUUID()};f.set(precisionAt(789));
+ const original=await f.precise.create(f.actor,payload,key,'precision-db');
+ f.set('2026-09-18T12:00:00.000Z');const repeated=await f.precise.create(f.actor,payload,key,'precision-db');
+ assert.equal(repeated.replayed,true);assert.deepEqual(repeated.ticket,original.ticket);
+ const eventCount=await admin.query('select count(*)::integer as n from helpdesk_core.ticket_events where ticket_id=$1',[original.ticket.id]);assert.equal(eventCount.rows[0]!.n,1);
+});

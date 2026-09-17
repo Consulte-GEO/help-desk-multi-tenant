@@ -1,0 +1,348 @@
+
+> @consulte-geo/helpdesk@0.17.0 typecheck
+> tsc --noEmit
+
+scripts/check-contracts.ts(2,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/check-contracts.ts(2,62): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+scripts/check-migrations.ts(3,41): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/check-migrations.ts(7,2): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/demo.ts(2,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+scripts/demo.ts(2,63): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/demo.ts(2,110): error TS2307: Cannot find module 'node:url' or its corresponding type declarations.
+scripts/demo.ts(15,33): error TS7006: Parameter 'input' implicitly has an 'any' type.
+scripts/demo.ts(15,39): error TS7006: Parameter 'out' implicitly has an 'any' type.
+scripts/demo.ts(15,488): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+scripts/demo.ts(15,1242): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/demo.ts(16,194): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/demo.ts(16,233): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(1,25): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+scripts/migration-files.ts(2,43): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/migration-files.ts(3,20): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+scripts/migration-files.ts(4,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+scripts/migration-files.ts(17,65): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(22,16): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(23,27): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(25,10): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(28,21): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/migration-files.ts(45,53): error TS7006: Parameter 'e' implicitly has an 'any' type.
+scripts/plan-human-scopes.ts(1,26): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/plan-human-scopes.ts(2,25): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+scripts/plan-human-scopes.ts(8,13): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/plan-human-scopes.ts(17,16): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/plan-human-scopes.ts(25,2): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/summarize-http-logs.ts(2,32): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+scripts/summarize-http-logs.ts(2,61): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+scripts/summarize-http-logs.ts(5,13): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+scripts/summarize-http-logs.ts(9,142): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/helpdesk.ts(12,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/application/pagination.ts(13,22): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/pagination.ts(22,51): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/support-catalog.ts(22,89): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/support-catalog.ts(22,104): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/support-catalog.ts(22,124): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/support-catalog.ts(44,15): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/application/support-catalog.ts(64,52): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/domain/canonical.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/domain/transaction-effects.ts(3,33): error TS2307: Cannot find module 'node:util' or its corresponding type declarations.
+src/http/validation.ts(30,68): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/infrastructure/authentication.ts(4,27): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(2,20): error TS2307: Cannot find module 'node:net' or its corresponding type declarations.
+src/infrastructure/rate-limit.ts(28,12): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/observability/http.ts(1,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+src/observability/summary.ts(52,14): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/observability/summary.ts(53,163): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+src/observability/summary.ts(54,126): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(2,33): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+supabase/tests/rls.test.ts(2,64): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+supabase/tests/rls.test.ts(2,110): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+supabase/tests/rls.test.ts(5,53): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(6,49): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(37,152): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(40,184): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(41,194): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(42,613): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(43,338): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(44,255): error TS7006: Parameter 'e' implicitly has an 'any' type.
+supabase/tests/rls.test.ts(276,58): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(276,73): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(276,88): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/rls.test.ts(770,60): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+supabase/tests/upgrade.test.ts(5,33): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+supabase/tests/upgrade.test.ts(6,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+supabase/tests/upgrade.test.ts(15,43): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+supabase/tests/upgrade.test.ts(16,40): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/application.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/application.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/conversation-pages.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/conversation-pages.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/conversation-state.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/conversation-state.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/database-target.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/database-target.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/domain.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/domain.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/http.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/http.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/human-auth-transport.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/human-auth-transport.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/human-session-http.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/human-session-http.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/human-session-http.test.ts(2,97): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/human-session-http.test.ts(20,34): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/human-session-http.test.ts(20,38): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/human-session-http.test.ts(21,17): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/human-session-http.test.ts(21,71): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/human-session-http.test.ts(21,102): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/human-session-http.test.ts(32,98): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/human-session-http.test.ts(34,80): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/human-session.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/human-session.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/infrastructure.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/infrastructure.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/infrastructure.test.ts(10,325): error TS18048: 'q' is possibly 'undefined'.
+tests/infrastructure.test.ts(10,352): error TS18048: 'q' is possibly 'undefined'.
+tests/lockfile.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/lockfile.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1-migration-contract.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1-migration-contract.test.ts(3,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1-migration-contract.test.ts(4,39): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/m1-regressions.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1-regressions.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1-review.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1-review.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1b-auth.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1b-auth.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1b-homologation.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1b-homologation.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1b-homologation.test.ts(2,50): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1b-homologation.test.ts(2,90): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/m1b-homologation.test.ts(2,119): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/m1b-mutation-state.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1b-mutation-state.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1b-process.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1b-process.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1b-process.test.ts(3,131): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1b-process.test.ts(4,137): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1b-process.test.ts(5,151): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1b-process.test.ts(7,127): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1b-request.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1b-request.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1c-contract.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1c-contract.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1c-contract.test.ts(3,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1c-empty-body.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1c-empty-body.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1c-sessions.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1c-sessions.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1c-transaction.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1c-transaction.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1c-transaction.test.ts(31,109): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/m1c-transaction.test.ts(40,109): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/m1c-transaction.test.ts(53,19): error TS18048: 'settings' is possibly 'undefined'.
+tests/m1c-transaction.test.ts(53,57): error TS18048: 'settings' is possibly 'undefined'.
+tests/m1c-transaction.test.ts(54,15): error TS18048: 'settings' is possibly 'undefined'.
+tests/m1c-transaction.test.ts(54,87): error TS18048: 'settings' is possibly 'undefined'.
+tests/m1c-transaction.test.ts(59,71): error TS7006: Parameter 'e' implicitly has an 'any' type.
+tests/m1d-catalog-http.test.ts(1,20): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1d-catalog-http.test.ts(1,51): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1d-catalog-sql.test.ts(1,20): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1d-catalog-sql.test.ts(1,51): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1d-catalog-sql.test.ts(1,95): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1d-catalog-sql.test.ts(7,110): error TS18048: 'call' is possibly 'undefined'.
+tests/m1d-catalog-sql.test.ts(7,288): error TS18048: 'call' is possibly 'undefined'.
+tests/m1d-catalog-state.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1d-catalog-state.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1d-catalog.test.ts(1,20): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1d-catalog.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1d-catalog.test.ts(80,51): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-http-summary.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(3,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(3,75): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(3,115): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(3,144): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/m1e-http-summary.test.ts(9,34): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/m1e-http-summary.test.ts(9,38): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/m1e-http-summary.test.ts(10,111): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/m1e-http-summary.test.ts(12,79): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-http-summary.test.ts(38,38): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-http-summary.test.ts(45,38): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-native-postgres.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1e-native-postgres.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1e-native-postgres.test.ts(2,74): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1e-native-postgres.test.ts(2,114): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/m1e-native-postgres.test.ts(2,152): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/m1e-native-postgres.test.ts(24,45): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-native-postgres.test.ts(49,179): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-native-postgres.test.ts(52,175): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-native-postgres.test.ts(70,117): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-native-postgres.test.ts(70,173): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-observability.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1e-observability.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1e-observability.test.ts(50,30): error TS2304: Cannot find name 'setImmediate'.
+tests/m1e-observability.test.ts(52,93): error TS2304: Cannot find name 'setImmediate'.
+tests/m1e-observability.test.ts(81,137): error TS2304: Cannot find name 'setImmediate'.
+tests/m1e-summary.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1e-summary.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1e-summary.test.ts(30,33): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-summary.test.ts(30,67): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-summary.test.ts(32,34): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-summary.test.ts(36,117): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1e-summary.test.ts(36,151): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1f-search-adapter.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1f-search-adapter.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1f-search-adapter.test.ts(18,13): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(18,50): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(18,95): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(19,15): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(19,54): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(20,15): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(20,65): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(20,101): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(21,19): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(21,95): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(22,22): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(31,98): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(31,129): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-search-adapter.test.ts(31,160): error TS18048: 'q' is possibly 'undefined'.
+tests/m1f-ticket-list-state.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1f-ticket-list-state.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1f-ticket-list-state.test.ts(6,81): error TS18047: 'module' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(12,53): error TS18047: 'op' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(14,94): error TS18047: 'more' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(33,154): error TS18047: 'retry' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(33,167): error TS18047: 'op' is possibly 'null'.
+tests/m1f-ticket-list-state.test.ts(38,114): error TS2532: Object is possibly 'undefined'.
+tests/m1f-ticket-list-state.test.ts(38,199): error TS18048: 'current' is possibly 'undefined'.
+tests/m1f-ticket-search.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1f-ticket-search.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1g-priority.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1g-priority.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1g-sql-contract.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1g-sql-contract.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1g-sql-contract.test.ts(3,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1g-sql-contract.test.ts(19,88): error TS18048: 'update' is possibly 'undefined'.
+tests/m1g-sql-contract.test.ts(19,159): error TS18048: 'update' is possibly 'undefined'.
+tests/m1g-sql-contract.test.ts(19,253): error TS18048: 'update' is possibly 'undefined'.
+tests/m1g-sql-contract.test.ts(19,356): error TS18048: 'update' is possibly 'undefined'.
+tests/m1g-timeline-state.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1g-timeline-state.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1h-assignment.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1h-assignment.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1h-event-validation.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1h-event-validation.test.ts(1,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1h-ui-contract.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1h-ui-contract.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1h-ui-contract.test.ts(3,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(3,59): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(4,22): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(5,20): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(6,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/m1i-migrations.test.ts(49,55): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1i-migrations.test.ts(58,38): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1i-migrations.test.ts(58,91): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1i-migrations.test.ts(58,116): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/m1i-readiness.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/m1i-readiness.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/rate-limit.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/rate-limit.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/review-assignment-filter.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/review-assignment-filter.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/review-assignment-filter.test.ts(22,57): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+tests/review-auth-response.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/review-auth-response.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/review-auth-response.test.ts(42,100): error TS18046: 'err' is of type 'unknown'.
+tests/review-auth-response.test.ts(75,57): error TS18046: 'err' is of type 'unknown'.
+tests/review-boundaries.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/review-boundaries.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/review-replay-http.test.ts(4,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/review-replay-http.test.ts(5,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/review-replay-http.test.ts(6,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/review-replay-http.test.ts(7,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/review-replay-http.test.ts(25,35): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/review-replay-http.test.ts(25,39): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/review-replay-http.test.ts(26,18): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/review-replay-http.test.ts(26,71): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/review-replay-http.test.ts(27,16): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/review-replay-http.test.ts(28,85): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/review-replay-http.test.ts(30,81): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/review-replay-integrity.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/review-replay-integrity.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/ticket-actions-http.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/ticket-actions-http.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/ticket-actions-http.test.ts(2,97): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/ticket-actions-http.test.ts(3,26): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/ticket-actions-http.test.ts(17,34): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/ticket-actions-http.test.ts(17,38): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/ticket-actions-http.test.ts(18,16): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/ticket-actions-http.test.ts(18,69): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/ticket-actions-http.test.ts(19,14): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/ticket-actions-http.test.ts(19,142): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/ticket-actions-http.test.ts(22,79): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/ticket-actions-ui.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/ticket-actions-ui.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/ticket-actions.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/ticket-actions.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/ui-wiring.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/ui-wiring.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/ui-wiring.test.ts(3,28): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(3,44): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(4,22): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(4,51): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(4,87): error TS2307: Cannot find module 'node:child_process' or its corresponding type declarations.
+tests/v015-scope-cli.test.ts(7,46): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v015-scope-cli.test.ts(7,174): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v015-scope-cli.test.ts(12,40): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v015-scope-contract.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v015-scope-contract.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v015-scope-contract.test.ts(3,24): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/v015-scope-contract.test.ts(38,36): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v015-scopes.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v015-scopes.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v016-contract.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v016-contract.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v016-contract.test.ts(2,93): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/v016-contract.test.ts(9,94): error TS18048: 't' is possibly 'undefined'.
+tests/v016-contract.test.ts(9,121): error TS18048: 't' is possibly 'undefined'.
+tests/v016-contract.test.ts(9,154): error TS18048: 't' is possibly 'undefined'.
+tests/v016-contract.test.ts(12,127): error TS18048: 'f' is possibly 'undefined'.
+tests/v016-contract.test.ts(12,156): error TS18048: 'f' is possibly 'undefined'.
+tests/v016-contract.test.ts(22,36): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v016-effects-http.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v016-effects-http.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v016-effects-http.test.ts(3,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/v016-effects-http.test.ts(3,65): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/v016-effects-http.test.ts(15,34): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/v016-effects-http.test.ts(15,38): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/v016-effects-http.test.ts(16,16): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v016-effects-http.test.ts(16,69): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v016-effects-http.test.ts(16,100): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v016-effects-http.test.ts(17,97): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/v016-effects-http.test.ts(19,79): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v016-effects.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v016-effects.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v017-instants.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v017-instants.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v017-packaging.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v017-packaging.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v017-packaging.test.ts(3,51): error TS2307: Cannot find module 'node:fs/promises' or its corresponding type declarations.
+tests/v017-packaging.test.ts(4,22): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/v017-packaging.test.ts(4,51): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/v017-precision-http.test.ts(2,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v017-precision-http.test.ts(2,49): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v017-precision-http.test.ts(3,28): error TS2307: Cannot find module 'node:http' or its corresponding type declarations.
+tests/v017-precision-http.test.ts(22,34): error TS7006: Parameter 'req' implicitly has an 'any' type.
+tests/v017-precision-http.test.ts(22,38): error TS7006: Parameter 'res' implicitly has an 'any' type.
+tests/v017-precision-http.test.ts(23,96): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
+tests/v017-precision-http.test.ts(25,79): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/v017-precision.test.ts(1,18): error TS2307: Cannot find module 'node:test' or its corresponding type declarations.
+tests/v017-precision.test.ts(2,20): error TS2307: Cannot find module 'node:assert/strict' or its corresponding type declarations.
+tests/v017-precision.test.ts(27,35): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.

@@ -1,3 +1,4 @@
+import {isCanonicalInstant} from '../shared/instant.js';
 /** Current GET hints only. Never an authorization token, cached policy, or fallback to /me roles. */
 const BOOLEAN_FIELDS=['reply','read_notes','add_note','change_priority','claim','release'];
 const ACTION_FIELDS=['ticket_id','version',...BOOLEAN_FIELDS,'transitions'].sort().join(',');
@@ -45,7 +46,7 @@ function conversationPage(page,ticketId,kind){
  for(const row of page.items){
   if(!object(row)||Object.keys(row).sort().join(',')!==keys||!id(row.id)||row.ticket_id!==ticketId||seen.has(row.id)
    ||typeof row.body!=='string'||!row.body.trim()||(row.body.length>24000||Array.from(row.body).length>12000)||/[\u0000\p{Cs}]/u.test(row.body)
-   ||typeof row.created_at!=='string'||!Number.isFinite(Date.parse(row.created_at))||new Date(row.created_at).toISOString()!==row.created_at
+   ||!isCanonicalInstant(row.created_at)
    ||kind==='messages'&&!['human_agent','customer','integration'].includes(row.actor_type))fail();
   seen.add(row.id);
  }

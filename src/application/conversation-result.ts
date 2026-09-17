@@ -1,3 +1,4 @@
+import {isCanonicalInstant} from '../../shared/instant.js';
 import {HelpdeskError} from '../domain/errors.ts';
 import {isPersistableText} from '../domain/input-values.ts';
 import type {Ticket,PublicMessage,InternalNote,TicketEvent} from '../domain/model.ts';
@@ -21,7 +22,7 @@ export function validateConversationResult(
     const r=value as Record<string,unknown>;
     if (r.workspaceId!==ticket.workspaceId || r.accountId!==ticket.accountId || r.ticketId!==ticket.id
       || !identifier(r.id) || !identifier(r.actorId) || ids.has(r.id)
-      || typeof r.createdAt!=='string' || !Number.isFinite(Date.parse(r.createdAt))) incompatible();
+      || !isCanonicalInstant(r.createdAt)) incompatible();
     ids.add(r.id);
     if (kind==='timeline') {
       if (typeof r.type!=='string' || !eventTypes.has(r.type) || typeof r.customerVisible!=='boolean'

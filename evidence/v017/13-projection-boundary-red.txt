@@ -1,0 +1,147 @@
+TAP version 13
+# (node:3982) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cursor emitted for a six-digit instant can be consumed without losing precision
+ok 1 - cursor emitted for a six-digit instant can be consumed without losing precision
+  ---
+  duration_ms: 5.090181
+  type: 'test'
+  ...
+# Subtest: mixed milliseconds and microseconds sort by instant, not raw string
+ok 2 - mixed milliseconds and microseconds sort by instant, not raw string
+  ---
+  duration_ms: 2.51076
+  type: 'test'
+  ...
+# Subtest: different representations of the same instant use the ID as tie breaker
+ok 3 - different representations of the same instant use the ID as tie breaker
+  ---
+  duration_ms: 0.968284
+  type: 'test'
+  ...
+# Subtest: messages: 75 rows within one millisecond page without loss or duplicates
+ok 4 - messages: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 25.231504
+  type: 'test'
+  ...
+# Subtest: notes: 75 rows within one millisecond page without loss or duplicates
+ok 5 - notes: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 13.822926
+  type: 'test'
+  ...
+# Subtest: timeline: 75 rows within one millisecond page without loss or duplicates
+ok 6 - timeline: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 21.418841
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves microseconds returned as text
+ok 7 - PostgreSQL adapter preserves microseconds returned as text
+  ---
+  duration_ms: 1.453473
+  type: 'test'
+  ...
+# Subtest: PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+ok 8 - PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+  ---
+  duration_ms: 0.451783
+  type: 'test'
+  ...
+# Subtest: replay immutable creation time does not conflate two instants in one millisecond
+ok 9 - replay immutable creation time does not conflate two instants in one millisecond
+  ---
+  duration_ms: 2.527722
+  type: 'test'
+  ...
+# Subtest: conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+ok 10 - conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+  ---
+  duration_ms: 0.703969
+  type: 'test'
+  ...
+# Subtest: list state accepts canonical six-digit timestamps
+ok 11 - list state accepts canonical six-digit timestamps
+  ---
+  duration_ms: 10.230007
+  type: 'test'
+  ...
+# Subtest: timeline state accepts and orders mixed precision instants without collapsing ties
+ok 12 - timeline state accepts and orders mixed precision instants without collapsing ties
+  ---
+  duration_ms: 3.177687
+  type: 'test'
+  ...
+# Subtest: conversation display orders mixed precision chronologically
+ok 13 - conversation display orders mixed precision chronologically
+  ---
+  duration_ms: 5.775072
+  type: 'test'
+  ...
+# Subtest: same instant uses a deterministic identifier order matching the cursor predicate
+ok 14 - same instant uses a deterministic identifier order matching the cursor predicate
+  ---
+  duration_ms: 0.749227
+  type: 'test'
+  ...
+# Subtest: conversation display ID tie-break agrees with cursor ordering, not locale collation
+ok 15 - conversation display ID tie-break agrees with cursor ordering, not locale collation
+  ---
+  duration_ms: 0.212566
+  type: 'test'
+  ...
+# Subtest: SQL projection refuses infinity and non-AD/out-of-range years instead of formatting ambiguous eras
+not ok 16 - SQL projection refuses infinity and non-AD/out-of-range years instead of formatting ambiguous eras
+  ---
+  duration_ms: 1.538963
+  type: 'test'
+  location: '/mnt/data/work/helpdesk/tests/v017-precision.test.ts:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /case when created_at >= '0001-01-01 00:00:00\+00'::timestamptz/. Input:
+    
+    `select id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,to_char(created_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as created_at,to_char(updated_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as updated_at,assigned_to from helpdesk_core.tickets\n` +
+      '   where workspace_id=$1 and ($2::uuid is null or account_id=$2)\n' +
+      '    and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))\n' +
+      '    and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)\n' +
+      '    and ($9::text[] is null or status=any($9::text[]))\n' +
+      '    and ($10::text is null or priority=$10)\n' +
+      '    and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)\n' +
+      "     and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))\n" +
+      '   order by tickets.created_at desc,id desc limit $5'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    select id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,to_char(created_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as created_at,to_char(updated_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as updated_at,assigned_to from helpdesk_core.tickets
+       where workspace_id=$1 and ($2::uuid is null or account_id=$2)
+        and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
+        and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)
+        and ($9::text[] is null or status=any($9::text[]))
+        and ($10::text is null or priority=$10)
+        and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
+         and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
+       order by tickets.created_at desc,id desc limit $5
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work/helpdesk/tests/v017-precision.test.ts:105:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: an invalid timestamp returned by the driver is a safe error, not a fabricated Date
+ok 17 - an invalid timestamp returned by the driver is a safe error, not a fabricated Date
+  ---
+  duration_ms: 0.932084
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 16
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 428.599931

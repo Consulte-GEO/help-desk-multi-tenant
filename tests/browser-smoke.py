@@ -12,11 +12,36 @@ with sync_playwright() as p:
     errors=[]
     page.on('pageerror',lambda e: errors.append(str(e)))
     page.goto('http://127.0.0.1:4317/',wait_until='networkidle')
+    # Synthetic six-digit response fields, real DOM and same-origin module imports.
+    # Does not modify the server records or prove PostgreSQL/CSP in the hosted runtime.
+    precision_pattern=re.compile(r'.*/v1/tickets(?:[/?].*)?$')
+    def precise_response(route):
+        if route.request.method!='GET':
+            route.continue_(); return
+        response=route.fetch()
+        def patch(value):
+            if isinstance(value,list):
+                for row in value: patch(row)
+            elif isinstance(value,dict):
+                for key,item in value.items():
+                    if key in ('created_at','updated_at') and isinstance(item,str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z',item):
+                        value[key]=item[:-1]+'123Z'
+                    else: patch(item)
+        body=response.json(); patch(body); route.fulfill(response=response,json=body)
+    page.route(precision_pattern,precise_response)
     page.get_by_role('button',name='Explorar demonstração').click()
     expect(page.locator('#stat-total')).to_have_text('2')
     expect(page.locator('#ticket-title')).to_have_text('Relatório de ensaio não foi concluído')
     expect(page.locator('#note-tab')).to_be_visible()
     record('Agent sees two authorized accounts and internal note control')
+    expect(page.locator('#messages')).to_contain_text('Olá! Recebemos a solicitação')
+    expect(page.locator('#notes-status')).to_be_hidden()
+    expect(page.locator('#message-form')).to_be_visible()
+    record('Six-digit timestamps load authorized list, detail and public conversation without Date validation errors')
+    page.unroute(precision_pattern,precise_response)
+    page.locator('#refresh').click()
+    expect(page.locator('#note-tab')).to_be_visible()
+
     # These DOM tests are written but must not be counted as passed if navigation is blocked.
     page.locator('#note-tab').click()
     page.locator('#message-body').fill('Rascunho interno preservado no refresh.')

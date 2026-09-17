@@ -1,3 +1,4 @@
+import {canonicalInstant} from '../../shared/instant.js';
 import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
 import {UUID_PATTERN,uuidIdentifier} from '../domain/input-values.ts';
 import {SEARCH_UPPER,SEARCH_LOWER,statusesForSearch} from '../application/ticket-search.ts';
@@ -38,11 +39,16 @@ export class PostgresUnitOfWork implements UnitOfWork{
   return runTransaction(this.pool,p,client=>work(new PostgresStore(client,p)));
  }
 }
-type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const iso=(v:unknown)=>new Date(v as string|Date).toISOString();
+type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const iso=(v:unknown):string=>{try{return canonicalInstant(v);}catch{throw new HelpdeskError(503,'invalid_database_result','Resposta do banco incompatível. Tente atualizar o chamado.');}};
 function ticket(r:Row):Ticket{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),assignedTo:r.assigned_to==null?null:str(r,'assigned_to'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at)};}
 function message(r:Row):PublicMessage{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),actorType:r.actor_type as PublicMessage['actorType'],body:str(r,'body'),createdAt:iso(r.created_at)};}
 function note(r:Row):InternalNote{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),body:str(r,'body'),createdAt:iso(r.created_at)};}
 const ticketColumns='id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,created_at,updated_at,assigned_to';
+// Developer-owned columns only. The driver otherwise truncates timestamptz to Date milliseconds.
+const timeColumn=(column:'created_at'|'updated_at')=>
+ `case when ${column} >= '0001-01-01 00:00:00+00'::timestamptz and ${column} < '10000-01-01 00:00:00+00'::timestamptz
+  then to_char(${column} at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') end as ${column}`;
+const ticketReadColumns=ticketColumns.split(',').map(c=>c==='created_at'||c==='updated_at'?timeColumn(c):c).join(',');
 class PostgresStore implements Store{
  readonly c:SqlClient;readonly p:Principal;constructor(c:SqlClient,p:Principal){this.c=c;this.p=p;}
  // Table and column names in this helper are developer-owned constants, never request values.
@@ -55,12 +61,12 @@ class PostgresStore implements Store{
   return rows.map(r=>r.item as SupportCatalogEntry);
  }
  async coverages(context:SupportContext):Promise<Coverage[]>{uuidIdentifier(context.accountId);uuidIdentifier(context.productInstanceId);const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
- async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
+ async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketReadColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
  async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
   if(accountId!==undefined)uuidIdentifier(accountId);
   if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
   // No interpolation of search text, no private-note/message joins. RLS stays in effect.
-  return (await this.c.query(`select ${ticketColumns} from helpdesk_core.tickets
+  return (await this.c.query(`select ${ticketReadColumns} from helpdesk_core.tickets
    where workspace_id=$1 and ($2::uuid is null or account_id=$2)
     and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
     and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)
@@ -68,7 +74,7 @@ class PostgresStore implements Store{
     and ($10::text is null or priority=$10)
     and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
      and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
-   order by created_at desc,id desc limit $5`,
+   order by tickets.created_at desc,id desc limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
     filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id])).rows.map(ticket);
  }
@@ -90,9 +96,9 @@ class PostgresStore implements Store{
  async saveIdempotency(r:StoredResult):Promise<void>{await this.insert('helpdesk_integration.api_idempotency_keys',['workspace_id','principal_id','operation','key','request_hash','result'],[r.workspaceId,r.principalId,r.operation,r.key,r.hash,JSON.stringify(r.result)]);}
  async addMessage(m:PublicMessage):Promise<void>{await this.insert('helpdesk_core.ticket_messages',['id','workspace_id','account_id','ticket_id','actor_id','actor_type','body','created_at'],[m.id,m.workspaceId,m.accountId,m.ticketId,m.actorId,m.actorType,m.body,m.createdAt]);}
  async addNote(n:InternalNote):Promise<void>{await this.insert('helpdesk_core.internal_notes',['id','workspace_id','account_id','ticket_id','actor_id','body','created_at'],[n.id,n.workspaceId,n.accountId,n.ticketId,n.actorId,n.body,n.createdAt]);}
- async messages(id:string,w:PageWindow={limit:100,cursor:null}):Promise<PublicMessage[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,actor_type,body,created_at from helpdesk_core.ticket_messages where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5',[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(message);}
- async notes(id:string,w:PageWindow={limit:100,cursor:null}):Promise<InternalNote[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,body,created_at from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by created_at desc,id desc limit $5',[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(note);}
+ async messages(id:string,w:PageWindow={limit:100,cursor:null}):Promise<PublicMessage[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,actor_type,body,${timeColumn('created_at')} from helpdesk_core.ticket_messages where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by ticket_messages.created_at desc,id desc limit $5`,[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(message);}
+ async notes(id:string,w:PageWindow={limit:100,cursor:null}):Promise<InternalNote[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,body,${timeColumn('created_at')} from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by internal_notes.created_at desc,id desc limit $5`,[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(note);}
  async addEvent(e:TicketEvent):Promise<void>{await this.insert('helpdesk_core.ticket_events',['id','workspace_id','account_id','ticket_id','actor_id','type','customer_visible','data','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.actorId,e.type,e.customerVisible,JSON.stringify(e.data),e.createdAt]);}
- async events(id:string,includeInternal:boolean,w:PageWindow={limit:100,cursor:null}):Promise<TicketEvent[]>{return (await this.c.query('select id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,created_at from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2 and ($3::boolean or customer_visible) and ($4::timestamptz is null or (created_at,id)<($4::timestamptz,$5::uuid)) order by created_at desc,id desc limit $6',[this.p.workspaceId,id,includeInternal,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(r=>({id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),type:str(r,'type'),customerVisible:r.customer_visible===true,data:r.data as Record<string,unknown>,createdAt:iso(r.created_at)}));}
+ async events(id:string,includeInternal:boolean,w:PageWindow={limit:100,cursor:null}):Promise<TicketEvent[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,${timeColumn('created_at')} from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2 and ($3::boolean or customer_visible) and ($4::timestamptz is null or (created_at,id)<($4::timestamptz,$5::uuid)) order by ticket_events.created_at desc,id desc limit $6`,[this.p.workspaceId,id,includeInternal,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(r=>({id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),type:str(r,'type'),customerVisible:r.customer_visible===true,data:r.data as Record<string,unknown>,createdAt:iso(r.created_at)}));}
  async enqueue(e:Parameters<Store['enqueue']>[0]):Promise<void>{await this.insert('helpdesk_integration.outbox_events',['id','workspace_id','account_id','ticket_id','type','payload','request_id','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.type,JSON.stringify(e.payload),e.requestId,e.createdAt]);}
 }

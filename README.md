@@ -1,18 +1,18 @@
-# Consulte Help Desk — v0.16.0 / efeitos transacionais
+# Consulte Help Desk — v0.17.0 / paginação e precisão temporal
 
 Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
 
 ## Esta entrega
 
-R14-06: gravações do núcleo associadas ao evento correto e à intenção externa mínima quando pública. Modelo de referência integrado ao COMMIT em memória e migration010 candidata com registros privados gerados pelo banco, vínculo de transação, verificação de evento/outbox e constraint trigger diferido. Notas e atribuições continuam sem outbox externo. Não há envio de notificações.
+Correção da precisão de datas em consultas/cursor: PostgreSQL projetado como texto UTC sem truncar microssegundos; comparador compartilhado na API/interface; desempate determinístico; validação do instante de criação em recibos históricos sem alterar sua representação. Datas inválidas não são normalizadas silenciosamente. Nenhuma migration ou dependência nova.
 
-**950 testes locais aprovados (45 novos) e35 checksHTTP de memória.179 SQL e35 browser escritos, não homologados.** Sem lock real/npm ci/audit; o verify padrão falha nos tipos locais ausentes. Typecheck global é suplementar. O código SQL ainda não foi executado.
+**982 testes locais aprovados (32 novos) e35 checksHTTP de memória.187 SQL e36 browser escritos, não homologados.** Sem lock real/npm ci/audit. Verify padrão falha nos tipos locais; typecheck global é suplementar. Quatro testes de socket novos estão incluídos nos982.
 
 ## Documentação
 
-[Efeitos transacionais e limites](docs/20-EFEITOS-TRANSACIONAIS.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Permissões versionadas](docs/19-PERMISSOES-VERSIONADAS.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
+[Precisão temporal](docs/21-PAGINACAO-E-PRECISAO-TEMPORAL.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Efeitos transacionais](docs/20-EFEITOS-TRANSACIONAIS.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
 
-R14-04/05/06 possuem código candidato para validação no PostgreSQL. Nenhuma das três está homologada no banco real. Registros antigos não são certificados retroativamente, e as nove migrations anteriores permanecem intactas. Nova tabela privada sem acesso direto/endpoint ao runtime, clientes ou manutenção. Retenção, tamanho e custo precisam de medição; não foi criado expurgo.
+M1 e R14-04/05/06 continuam sem homologação PostgreSQL. Outbox não significa entrega externa. Cursores antigos de três dígitos seguem aceitos, mas precisão já perdida não pode ser reconstruída: reiniciar as coleções no rollout.
 
 ## Plano de provisionamento sem executar SQL
 
@@ -48,6 +48,6 @@ npm run check:homologation
 
 Os runners recusam infraestrutura ausente; não trocam para Supabase remoto ou aprovam etapas por mocks. Não usar o login postgres/service_role no runtime. Frontend estático não é bundle de Functions.
 
-**API/interface e schema esperado 0.16.0; dez migrations/25 tabelas/18 operações.** Nova migration010; nenhuma dependência ou endpoint novo. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
+**API/interface0.17.0, schema esperado0.16.0; dez migrations/25 tabelas/18 operações.** Migrations preservadas; nenhuma dependência ou endpoint novo. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
 
 Sessão humana permanece somente em memória; reload exige novo login. Logout solicita escopo local e não invalida imediatamente um JWT já emitido. MFA/SSO/CAPTCHA, administração, anexos, clocks de SLA, dispatcher/entregas e dois conectores reais continuam pendentes.

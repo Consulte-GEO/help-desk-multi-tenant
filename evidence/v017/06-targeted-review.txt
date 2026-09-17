@@ -1,0 +1,154 @@
+TAP version 13
+# (node:2800) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: late response from another ticket or profile is discarded and old notes are erased
+ok 1 - late response from another ticket or profile is discarded and old notes are erased
+  ---
+  duration_ms: 3.511702
+  type: 'test'
+  ...
+# Subtest: descending API pages are displayed chronologically and duplicate IDs are merged
+ok 2 - descending API pages are displayed chronologically and duplicate IDs are merged
+  ---
+  duration_ms: 1.969912
+  type: 'test'
+  ...
+# Subtest: message and note cursors remain separate and refreshed ticket invalidates in-flight pages
+ok 3 - message and note cursors remain separate and refreshed ticket invalidates in-flight pages
+  ---
+  duration_ms: 0.327085
+  type: 'test'
+  ...
+# (node:2801) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT
+ok 4 - busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT
+  ---
+  duration_ms: 3.472883
+  type: 'test'
+  ...
+# Subtest: normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino
+ok 5 - normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino
+  ---
+  duration_ms: 0.182979
+  type: 'test'
+  ...
+# Subtest: consulta sem novos filtros mantém parâmetros opcionais nulos
+ok 6 - consulta sem novos filtros mantém parâmetros opcionais nulos
+  ---
+  duration_ms: 0.335796
+  type: 'test'
+  ...
+# Subtest: não há cache de busca que preserve autorização de uma página anterior
+ok 7 - não há cache de busca que preserve autorização de uma página anterior
+  ---
+  duration_ms: 19.514388
+  type: 'test'
+  ...
+# Subtest: filtro de conta continua autorizado antes da consulta de texto
+ok 8 - filtro de conta continua autorizado antes da consulta de texto
+  ---
+  duration_ms: 0.634237
+  type: 'test'
+  ...
+# Subtest: telemetria da busca não inclui termo, prioridade, conta nem querystring
+ok 9 - telemetria da busca não inclui termo, prioridade, conta nem querystring
+  ---
+  duration_ms: 52.10909
+  type: 'test'
+  ...
+# Subtest: busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120
+ok 10 - busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120
+  ---
+  duration_ms: 0.5418
+  type: 'test'
+  ...
+# (node:2807) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cursor emitted for a six-digit instant can be consumed without losing precision
+ok 11 - cursor emitted for a six-digit instant can be consumed without losing precision
+  ---
+  duration_ms: 3.92059
+  type: 'test'
+  ...
+# Subtest: mixed milliseconds and microseconds sort by instant, not raw string
+ok 12 - mixed milliseconds and microseconds sort by instant, not raw string
+  ---
+  duration_ms: 3.30793
+  type: 'test'
+  ...
+# Subtest: different representations of the same instant use the ID as tie breaker
+ok 13 - different representations of the same instant use the ID as tie breaker
+  ---
+  duration_ms: 24.436724
+  type: 'test'
+  ...
+# Subtest: messages: 75 rows within one millisecond page without loss or duplicates
+ok 14 - messages: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 25.60996
+  type: 'test'
+  ...
+# Subtest: notes: 75 rows within one millisecond page without loss or duplicates
+ok 15 - notes: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 24.35794
+  type: 'test'
+  ...
+# Subtest: timeline: 75 rows within one millisecond page without loss or duplicates
+ok 16 - timeline: 75 rows within one millisecond page without loss or duplicates
+  ---
+  duration_ms: 33.455177
+  type: 'test'
+  ...
+# Subtest: PostgreSQL adapter preserves microseconds returned as text
+ok 17 - PostgreSQL adapter preserves microseconds returned as text
+  ---
+  duration_ms: 1.546195
+  type: 'test'
+  ...
+# Subtest: PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+ok 18 - PostgreSQL timestamp projection is textual but order and cursor compare native timestamps
+  ---
+  duration_ms: 0.747926
+  type: 'test'
+  ...
+# Subtest: replay immutable creation time does not conflate two instants in one millisecond
+ok 19 - replay immutable creation time does not conflate two instants in one millisecond
+  ---
+  duration_ms: 2.692014
+  type: 'test'
+  ...
+# Subtest: conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+ok 20 - conversation rejects normalized-impossible calendar dates rather than accepting Date.parse coercion
+  ---
+  duration_ms: 0.959739
+  type: 'test'
+  ...
+# Subtest: list state accepts canonical six-digit timestamps
+ok 21 - list state accepts canonical six-digit timestamps
+  ---
+  duration_ms: 20.256324
+  type: 'test'
+  ...
+# Subtest: timeline state accepts and orders mixed precision instants without collapsing ties
+ok 22 - timeline state accepts and orders mixed precision instants without collapsing ties
+  ---
+  duration_ms: 2.466598
+  type: 'test'
+  ...
+# Subtest: conversation display orders mixed precision chronologically
+ok 23 - conversation display orders mixed precision chronologically
+  ---
+  duration_ms: 3.091828
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 529.913419
