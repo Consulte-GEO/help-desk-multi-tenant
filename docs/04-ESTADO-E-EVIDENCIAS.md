@@ -34,3 +34,12 @@ M1 ainda aberto: Auth real, pooler/TLS/runtime configurado, carga/abuso, restore
 ## Publicação
 
 GitHub publicado na branch autorizada. Netlify helpdesk-consultegeo (site9781cd85-7dc1-4ef5-868b-947e389a9d4d): publicação desta evidência preparada; resultado do deploy será registrado após execução. O erro original foi verify:release rejeitando evidência incompleta, não simples falta de assets.
+
+## Resultado de publicação — 20:23 UTC
+
+Deploy Netlify `6abacc45ec4ca0832ffe6aeb`: **ready**, contexto production, publicado 28/09/2026 às20:21:45UTC. Fonte enviada: extração limpa do commit `9ea9851e6e8d448654fcbb0a04caf950983bde74`, com código validado em c7aa0af. Upload via MCP; commit_ref remoto nulo é esperado nesse mecanismo. Build verify:release preservado.
+
+Site: https://helpdesk-consultegeo.netlify.app
+Logs: https://app.netlify.com/projects/helpdesk-consultegeo/deploys/6abacc45ec4ca0832ffe6aeb
+
+Frontend200; Functionapi publicada em Node22; GET/v1/config retorna503/release_gate_closed. **DEPLOYADO, ainda não OPERACIONAL nem HOMOLOGADO para atendimento real.** Não houve ativação do gate de runtime, alteração de secrets/usuários ou migration remota. Evidências compactas e smoke em evidence/m1-ci-20260928/netlify-*.json. Próxima etapa exige ambiente e operações de backend explicitamente autorizados; não basta ligar a flag.

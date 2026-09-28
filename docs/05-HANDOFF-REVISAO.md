@@ -14,3 +14,12 @@ Próximos passos:
 5. Push na branch e deploy neste site foram explicitamente autorizados pelo usuário nesta conversa. Migration remota/usuários/MFA/secrets/buckets/dados externos não foram autorizados e não foram alterados.
 
 Último pacote completo antigo: bundle de M1 em07cbeef; a fonte mais recente é a branch GitHub e este handoff. Não recomeçar pelo ZIPv0.19.0 anterior.
+
+## Resultado de publicação — 20:23 UTC
+
+Deploy Netlify `6abacc45ec4ca0832ffe6aeb`: **ready**, contexto production, publicado 28/09/2026 às20:21:45UTC. Fonte enviada: extração limpa do commit `9ea9851e6e8d448654fcbb0a04caf950983bde74`, com código validado em c7aa0af. Upload via MCP; commit_ref remoto nulo é esperado nesse mecanismo. Build verify:release preservado.
+
+Site: https://helpdesk-consultegeo.netlify.app
+Logs: https://app.netlify.com/projects/helpdesk-consultegeo/deploys/6abacc45ec4ca0832ffe6aeb
+
+Frontend200; Functionapi publicada em Node22; GET/v1/config retorna503/release_gate_closed. **DEPLOYADO, ainda não OPERACIONAL nem HOMOLOGADO para atendimento real.** Não houve ativação do gate de runtime, alteração de secrets/usuários ou migration remota. Evidências compactas e smoke em evidence/m1-ci-20260928/netlify-*.json. Próxima etapa exige ambiente e operações de backend explicitamente autorizados; não basta ligar a flag.

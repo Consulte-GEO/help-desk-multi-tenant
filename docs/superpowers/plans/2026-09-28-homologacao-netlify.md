@@ -18,8 +18,8 @@
 - [x] Habilitar CI na branch codex, instalar Playwright em venv do runner, executar homologate:local e guardar artefatos mesmo em falha.
 - [x] Publicar mudanças na branch autorizada, acompanhar execução real e investigar falhas pela causa antes de corrigir.
 - [x] Recuperar evidências, verificar integridade e executar gate; documentar falhas ou aprovações reais.
-- [ ] Somente com gate aprovado: publicar evidências e acompanhar Netlify; verificar frontend e resposta da API sem habilitar liberação fictícia.
-- [ ] Atualizar estado/handoff e informar commit, deploy e bloqueios restantes.
+- [x] Somente com gate aprovado: publicar evidências e acompanhar Netlify; verificar frontend e resposta da API sem habilitar liberação fictícia.
+- [x] Atualizar estado/handoff e informar commit, deploy e bloqueios restantes.
 
 ## Revisão
 Saída sem contagens deve reprovar; alteração de configuração deve invalidar evidência; EOL deve preservar SQL/logs; PostgreSQL deve ser novo/restrito; navegador sintético não deve ser chamado de Auth real. Revisão nesta sessão sem delegação.
@@ -32,3 +32,5 @@ Saída sem contagens deve reprovar; alteração de configuração deve invalidar
 - 36477266647 (459f27c):199/201SQL,71/71interface. Dois asserts antigos de autorização corrigidos conforme contratos existentes, sem afrouxar proteção.
 - 36477734874(c7aa0af):1045/1045aplicação,201/201SQL,71/71interface; gate e logs verificados contra git archive limpo.
 - Revisão final independente release_review: sem achados críticos/importantes/menores. Nenhuma migration alterada; nenhuma aprovação de plataforma inferida. A revisão independente substitui a previsão inicial de revisão sem delegação.
+
+- Deploy6abacc45ec4ca0832ffe6aeb ready em20:21:45UTC; frontend200,Functionapi presente,API503release_gate_closed. Backend real permanece bloqueado e não foi autorizado a alterar secrets/migrations/usuários.

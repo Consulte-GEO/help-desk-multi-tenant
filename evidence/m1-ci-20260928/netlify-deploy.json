@@ -1,0 +1,20 @@
+{
+  "deploy_id": "6abacc45ec4ca0832ffe6aeb",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "state": "ready",
+  "published_at": "2026-09-28T20:21:45.734Z",
+  "context": "production",
+  "source_commit": "9ea9851e6e8d448654fcbb0a04caf950983bde74",
+  "code_commit": "c7aa0aff9d33bd05f0248ac904ecbc834204f986",
+  "source_sha256": "94e6b61079895d992209ec14ced701199d0622d24fa704b6495f8b62fc25800a",
+  "site_url": "https://helpdesk-consultegeo.netlify.app",
+  "deploy_url": "https://6abacc45ec4ca0832ffe6aeb--helpdesk-consultegeo.netlify.app",
+  "functions": [
+    {
+      "name": "api",
+      "runtime": "nodejs22.x",
+      "size": 446901
+    }
+  ],
+  "method": "Netlify MCP source upload; remote build with verify:release"
+}
