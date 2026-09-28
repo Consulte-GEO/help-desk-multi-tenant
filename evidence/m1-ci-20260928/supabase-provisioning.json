@@ -1,0 +1,118 @@
+{
+  "project_id": "xaelbntjnvztznnpcvtm",
+  "base_commit": "e989cb268fb2ec8e0ae87275ec1ceaf4b7f0c900",
+  "workspace_id": "e57d6844-f5df-4d82-a4cf-6c85b3be7c9e",
+  "migrations": [
+    {
+      "file": "20260915000100_restrict_existing_definer",
+      "success": true
+    },
+    {
+      "file": "20260915000200_helpdesk_foundation",
+      "success": true
+    },
+    {
+      "file": "20260915000300_m1_authorization",
+      "success": true
+    },
+    {
+      "file": "20260915000400_m1_resource_limits",
+      "success": true
+    },
+    {
+      "file": "20260916000500_m1_session_lifecycle",
+      "success": true
+    },
+    {
+      "file": "20260916000600_support_catalog",
+      "success": true
+    },
+    {
+      "file": "20260916000700_ticket_priority",
+      "success": true
+    },
+    {
+      "file": "20260916000800_ticket_assignment",
+      "success": true
+    },
+    {
+      "file": "20260917000900_human_scope_versions",
+      "success": true
+    },
+    {
+      "file": "20260917001000_transaction_effects",
+      "success": true
+    },
+    {
+      "file": "20260917001100_conversation_lock",
+      "success": true
+    }
+  ],
+  "remote_history": [
+    {
+      "version": "20260928204720",
+      "name": "20260915000100_restrict_existing_definer"
+    },
+    {
+      "version": "20260928204735",
+      "name": "20260915000200_helpdesk_foundation"
+    },
+    {
+      "version": "20260928204741",
+      "name": "20260915000300_m1_authorization"
+    },
+    {
+      "version": "20260928204748",
+      "name": "20260915000400_m1_resource_limits"
+    },
+    {
+      "version": "20260928204753",
+      "name": "20260916000500_m1_session_lifecycle"
+    },
+    {
+      "version": "20260928204808",
+      "name": "20260916000600_support_catalog"
+    },
+    {
+      "version": "20260928204814",
+      "name": "20260916000700_ticket_priority"
+    },
+    {
+      "version": "20260928204823",
+      "name": "20260916000800_ticket_assignment"
+    },
+    {
+      "version": "20260928204829",
+      "name": "20260917000900_human_scope_versions"
+    },
+    {
+      "version": "20260928204855",
+      "name": "20260917001000_transaction_effects"
+    },
+    {
+      "version": "20260928204900",
+      "name": "20260917001100_conversation_lock"
+    }
+  ],
+  "schema": "0.18.0",
+  "tables": 25,
+  "tables_without_forced_rls": 0,
+  "identity_resolution_verified": true,
+  "workspace_role": "agent",
+  "scopes": [
+    "contexts:resolve",
+    "tickets:read"
+  ],
+  "account_grants": 0,
+  "auth_user_credentials_modified": false,
+  "runtime_gate_enabled": false,
+  "security_advisors": {
+    "info_no_policy_private_tables": 14,
+    "warn_leaked_password_protection_disabled": 1
+  },
+  "limitations": [
+    "Not an end-to-end browser login test",
+    "Netlify runtime and credentials unchanged",
+    "No production data tests performed"
+  ]
+}

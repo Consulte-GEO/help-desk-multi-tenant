@@ -23,3 +23,13 @@ Site: https://helpdesk-consultegeo.netlify.app
 Logs: https://app.netlify.com/projects/helpdesk-consultegeo/deploys/6abacc45ec4ca0832ffe6aeb
 
 Frontend200; Functionapi publicada em Node22; GET/v1/config retorna503/release_gate_closed. **DEPLOYADO, ainda não OPERACIONAL nem HOMOLOGADO para atendimento real.** Não houve ativação do gate de runtime, alteração de secrets/usuários ou migration remota. Evidências compactas e smoke em evidence/m1-ci-20260928/netlify-*.json. Próxima etapa exige ambiente e operações de backend explicitamente autorizados; não basta ligar a flag.
+
+## Provisionamento autorizado — 28/09/2026, 20:49 UTC
+
+O usuário autorizou explicitamente as11migrations e o vínculo ao workspace. Aplicadas no Supabase HelpDesk (xaelbntjnvztznnpcvtm), PostgreSQL17.6: schema0.18.0,25tabelas com ENABLE/FORCE RLS,11registros de migration. O MCP atribuiu novos timestamps de execução; os nomes preservam o identificador original. Mapeamento completo em evidence/m1-ci-20260928/supabase-provisioning.json. Não executar novamente com timestamps locais nem usar migration repair automaticamente.
+
+Workspace Consulte GEO: e57d6844-f5df-4d82-a4cf-6c85b3be7c9e. Vínculo humano confirmado pela função resolve_human; papel agent, capabilities iniciais contexts:resolve/tickets:read,sem grants de contas. Não concede administração nem escrita. Usuário Auth existente preservado; nenhuma senha/MFA/secret alterada.
+
+Advisors:14informativos de RLS sem policies em tabelas privadas deliberadamente fechadas; não adicionar policies públicas para silenciar. Um aviso Auth de proteção contra senhas vazadas desativada: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection — configuração não alterada nesta autorização.
+
+Migrations históricas locais intactas; não houve mudança funcional de código. Asserções remotas de schema/RLS/vínculo aprovadas, mas não equivalem aos201testes descartáveis nem a login ponta a ponta. Backend Netlify/credenciais e release gate permanecem pendentes. A autorização desta rodada substitui somente a restrição histórica referente a aplicar migrations e cadastrar este vínculo.
