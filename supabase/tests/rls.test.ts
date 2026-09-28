@@ -1,9 +1,17 @@
-/** Destructive fixture SETUP is allowed ONLY on an explicitly opted-in fresh local test database. */
-import test,{before,after} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
+import test,{before,after,describe} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
 import {loadMigrationBundle} from '../../scripts/migration-files.ts';
+import {assertSchemaCompatibility,assertDatabaseSecurity} from '../../src/infrastructure/postgres.ts';
+import {createPostgresRateLimiter} from '../../src/infrastructure/rate-limit.ts';
+import {runTransaction,withControlTransactions} from '../../src/infrastructure/transaction.ts';
+import {SCOPES} from '../../src/domain/scopes.ts';
+import {ticketActions} from '../../src/application/ticket-actions.ts';
+import type {Store} from '../../src/application/ports.ts';
+import type {Ticket} from '../../src/domain/model.ts';
+/** Destructive fixture SETUP is allowed ONLY on an explicitly opted-in fresh local test database. */
 const {adminUrl,appUrl}=validateDatabaseTestTargets(process.env);
 const migrationBundle=await loadMigrationBundle(process.cwd());
+describe('PostgreSQL authorization and integrity',()=>{
 const id=(n:number)=>'00000000-0000-4000-8000-'+n.toString().padStart(12,'0');
 let admin:SqlPool,app:SqlPool,service:HelpdeskService,ticketId:string;
 const p=(who:number,account:number,role:'requester'|'agent'='requester',workspace=1):Principal=>({id:id(who),workspaceId:id(workspace),kind:'human',workspaceRole:null,grants:[{accountId:id(account),role}],scopes:['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']});
@@ -45,8 +53,6 @@ test('revoked account grant takes effect despite previously resolved principal',
 test('integration credential revocation invalidates a previously minted session',async()=>{const key='hd_key_'+'t'.repeat(43);await admin.query('insert into helpdesk_auth.integration_connections(workspace_id,id,product_instance_id,principal_id) values($1,$2,$3,$4)',[id(1),id(801),id(401),id(15)]);await admin.query("insert into helpdesk_auth.source_scope_bindings(workspace_id,connection_id,account_id,external_account_ref) values($1,$2,$3,'origin-account')",[id(1),id(801),id(101)]);await admin.query('insert into helpdesk_auth.integration_credentials(id,workspace_id,connection_id,key_hash) values($1,$2,$3,$4)',[id(901),id(1),id(801),secretHash(key)]);const auth=createAuthentication(app,{supabaseUrl:'https://example.supabase.co',publishableKey:'sb_publishable_test'}),session=await auth.exchangeToken(key);const req=new Request('https://hd.test',{headers:{authorization:'Bearer '+session.access_token,'x-workspace-id':id(1)}});assert.equal((await auth.authenticate(req)).kind,'integration');await admin.query('update helpdesk_auth.integration_credentials set revoked_at=now() where id=$1',[id(901)]);await assert.rejects(()=>auth.authenticate(req));});
 
 // M1: these cases run only after the same fresh-database guard and real driver setup.
-import {assertSchemaCompatibility,assertDatabaseSecurity} from '../../src/infrastructure/postgres.ts';
-import {createPostgresRateLimiter} from '../../src/infrastructure/rate-limit.ts';
 const machine:Principal={id:id(16),kind:'integration',workspaceId:id(1),workspaceRole:null,grants:[{accountId:id(101),role:'requester'}],scopes:['contexts:resolve','tickets:read','tickets:write'],connectionId:id(802),productInstanceIds:[id(401)]};
 const machineKey='hd_key_'+'u'.repeat(43);
 let machineTicket:string;
@@ -136,7 +142,6 @@ test('technical cleanup defaults to simulation and never deletes tickets or pend
 });
 
 // M1c: definitions for real PostgreSQL, NOT executed by the in-memory npm test suite.
-import {runTransaction,withControlTransactions} from '../../src/infrastructure/transaction.ts';
 async function lifecycleFixture(workspace=1,account=101,instance=401){
  const principalId=randomUUID(),connectionId=randomUUID(),credentialId=randomUUID();
  const key='hd_key_'+secretHash(randomUUID());
@@ -484,8 +489,6 @@ test('SQL a different workspace sees no result for a known assigned ticket',asyn
 });
 
 // v0.15: executable only on a real disposable PostgreSQL17, not counted by npm test.
-import {SCOPES} from '../../src/domain/scopes.ts';
-import {ticketActions} from '../../src/application/ticket-actions.ts';
 async function scopeSubject(capabilities:readonly string[]|null,workspace=1,account=101){
  const person=randomUUID(),authId=randomUUID();
  await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[person,authId]);
@@ -598,8 +601,6 @@ test('v015 an integration principal cannot receive a human scope revision',async
 });
 
 // v0.16 / R14-06: actual PostgreSQL ONLY. These are written scenarios, not npm-test approvals.
-import type {Store} from '../../src/application/ports.ts';
-import type {Ticket} from '../../src/domain/model.ts';
 const effectTicket=async(label:string)=>(await service.create(alice,{...input,subject:'Effects '+label},randomUUID(),'db-test')).ticket;
 const corruptEffects=(alter:(s:Store)=>Store)=>new HelpdeskService({run:(p,f)=>new PostgresUnitOfWork(app).run(p,s=>f(alter(s)))});
 async function captureEffectRows(tid:string){
@@ -914,4 +915,5 @@ test('SQL019 non-UTC PostgreSQL session output is compared without truncation or
 test('SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result',async()=>{
  const f=await contractBoundaryFixture('infinity',null);
  await assert.rejects(()=>f.precise.resolve(f.actor,f.context),{code:'invalid_coverage_result',status:503});
+});
 });

@@ -360,7 +360,7 @@ with sync_playwright() as p:
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
     page.screenshot(path=str(ROOT/'evidence/interface-mobile.png'),full_page=True)
     record('390px mobile layout has no horizontal overflow')
-    page.get_by_role('button',name='◇ Arquitetura e estágio').click()
+    page.get_by_role('button',name='Arquitetura e estágio',exact=True).click()
     expect(page.locator('#guide-view')).to_be_visible()
     record('Roadmap screen identifies implementation versus pending production features')
     assert not errors, errors
