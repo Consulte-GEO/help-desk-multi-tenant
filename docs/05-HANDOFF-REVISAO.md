@@ -33,3 +33,11 @@ Workspace Consulte GEO: e57d6844-f5df-4d82-a4cf-6c85b3be7c9e. Vínculo humano co
 Advisors:14informativos de RLS sem policies em tabelas privadas deliberadamente fechadas; não adicionar policies públicas para silenciar. Um aviso Auth de proteção contra senhas vazadas desativada: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection — configuração não alterada nesta autorização.
 
 Migrations históricas locais intactas; não houve mudança funcional de código. Asserções remotas de schema/RLS/vínculo aprovadas, mas não equivalem aos201testes descartáveis nem a login ponta a ponta. Backend Netlify/credenciais e release gate permanecem pendentes. A autorização desta rodada substitui somente a restrição histórica referente a aplicar migrations e cadastrar este vínculo.
+
+## Configuração de backend autorizada — 28/09/2026
+
+O usuário autorizou configurar e validar a conexão do backend no Netlify. O login restrito `helpdesk_app` foi habilitado com senha aleatória nova. Netlify production/functions recebeu HELPDESK_DATABASE_URL (segredo), HELPDESK_DATABASE_CA (CA pública Supabase Root2021), SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY e HELPDESK_RATE_LIMIT_HMAC_KEY (segredo). Valores secretos não entram no repositório.
+
+Pooler Supavisor session port5432, TLS com verificação de CA/hostname. A senha do login foi testada em conexão real: current_user=session_user=helpdesk_app, schema0.18.0. createProductionRuntime executou os guards reais de papel/schema/RLS/grants e GET/v1/public-config retornou200 no processo de validação local. Com o mesmo login restrito, resolve_human retornou o usuário provisionado no workspace e57d6844-f5df-4d82-a4cf-6c85b3be7c9e, papel agent, capabilities contexts:resolve/tickets:read, zero contas. O teste local passou `releaseApproved:true` apenas como entrada efêmera de validação; a variável de produção não foi criada.
+
+Deploy Netlify6abaddf0e69e8a97891f533a ready, Functionapi Node22 publicada. GET/v1/public-config no host continua503/release_gate_closed. A conexão não foi testada *dentro* da Function porque o gate impede a inicialização. Login real com senha do usuário não foi executado. M1 segue aberto (host/Auth, carga/abuso, restore e revisão operacional); não marcar HOMOLOGADO ou OPERACIONAL. Evidência compacta em evidence/m1-ci-20260928/netlify-backend-config.json.

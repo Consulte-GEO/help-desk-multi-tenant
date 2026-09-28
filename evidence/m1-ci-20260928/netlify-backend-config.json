@@ -1,0 +1,47 @@
+{
+  "date_utc": "2026-09-28",
+  "source_base": "8add1d283be54d5659ee5ddff0e144dc9fe91c2f",
+  "branch": "codex/m1-reproducibilidade",
+  "netlify_site": "helpdesk-consultegeo",
+  "deploy_id": "6abaddf0e69e8a97891f533a",
+  "deploy_state": "ready",
+  "api_function_runtime": "nodejs22.x",
+  "netlify_environment_keys": [
+    "SUPABASE_URL",
+    "SUPABASE_PUBLISHABLE_KEY",
+    "HELPDESK_RATE_LIMIT_HMAC_KEY",
+    "HELPDESK_DATABASE_CA",
+    "HELPDESK_DATABASE_URL"
+  ],
+  "netlify_environment_scope": "production/functions",
+  "netlify_secret_values_recorded": false,
+  "database_project": "xaelbntjnvztznnpcvtm",
+  "database_mode": "Supavisor session pooler port 5432",
+  "database_role": "helpdesk_app",
+  "role_safe": true,
+  "schema_version": "0.18.0",
+  "tls_ca_subject": "Supabase Root 2021 CA",
+  "tls_ca_sha256": "807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa",
+  "local_real_runtime_bootstrap": "passed",
+  "local_public_config_http_status": 200,
+  "local_restricted_resolve_human": {
+    "verified": true,
+    "workspace": "e57d6844-f5df-4d82-a4cf-6c85b3be7c9e",
+    "role": "agent",
+    "scopes": [
+      "contexts:resolve",
+      "tickets:read"
+    ],
+    "account_grants": 0
+  },
+  "deployed_public_config_http_status": 503,
+  "deployed_public_config_code": "release_gate_closed",
+  "release_approved_enabled": false,
+  "real_user_browser_login_executed": false,
+  "remaining_gates": [
+    "Netlify Function authenticated smoke",
+    "load and abuse",
+    "backup restore rehearsal",
+    "independent security and operational review"
+  ]
+}
