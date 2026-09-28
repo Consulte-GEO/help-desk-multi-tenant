@@ -23,7 +23,7 @@ jobs:
       - name: Prepare browser tooling in an isolated environment
         run: |
           python3 -m venv "$RUNNER_TEMP/helpdesk-browser"
-          "$RUNNER_TEMP/helpdesk-browser/bin/python" -m pip install 'playwright==1.55.1'
+          "$RUNNER_TEMP/helpdesk-browser/bin/python" -m pip install 'playwright==1.63.0'
           "$RUNNER_TEMP/helpdesk-browser/bin/python" -m playwright install --with-deps chromium
           echo "$RUNNER_TEMP/helpdesk-browser/bin" >> "$GITHUB_PATH"
       - name: Execute application, PostgreSQL 17, upgrade and browser gates
