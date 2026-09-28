@@ -1,0 +1,44 @@
+✖ dependency resolver launches npm CLI without a shell and completes ordered gates (140.6029ms)
+✖ dependency resolver launches npm CLI without a shell and stops on failure (97.6336ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 475.5484
+
+✖ failing tests:
+
+test at tests\m1-dependency-launch.test.ts:9:35
+✖ dependency resolver launches npm CLI without a shell and completes ordered gates (140.6029ms)
+  AssertionError [ERR_ASSERTION]: Resolução/instalação/auditoria NÃO concluída. Gate de publicação continua fechado.
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1-dependency-launch.test.ts:17:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\m1-dependency-launch.test.ts:9:35
+✖ dependency resolver launches npm CLI without a shell and stops on failure (97.6336ms)
+  Error: ENOENT: no such file or directory, open 'C:\Users\thiag\AppData\Local\Temp\helpdesk npm cli aWo3ze\calls.jsonl'
+      at async open (node:internal/fs/promises:1345:25)
+      at async readFile (node:internal/fs/promises:1996:14)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1-dependency-launch.test.ts:18:18)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: 'C:\\Users\\thiag\\AppData\\Local\\Temp\\helpdesk npm cli aWo3ze\\calls.jsonl'
+  }

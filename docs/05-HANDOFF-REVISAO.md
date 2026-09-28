@@ -1,28 +1,20 @@
-# Continuidade — Help Desk v0.19.0
+# Handoff — v0.19.0, rodada M1 de 28/09/2026
 
-Base `3ecd5abb185cf04333c00b6f5349b5563a5779d4`; branch `work/helpdesk-v0.19.0`. Leia README, AGENTS, docs04/23 e plano. Não houve reinspeção/escrita remota. Antes de integrar, conferir GitHub/Supabase/Netlify e preservar trabalho concorrente; não presumir repositório vazio.
+Base `94d827654d0ca19144b857e014acef1494f924b3`; branch `codex/m1-reproducibilidade`. Commit final na entrega/manifesto externo. Código recuperado em helpdesk/; Git da pasta pai continua sem commits. Leia PROJECT_HELP_DESK.md, README, AGENTS e docs04 antes de editar. Handoff anterior em history/v019-05-before-m1-20260928.md.
+
+Lock real, npm ci e audit aprovados também pelo agregador após corrigir subprocessos npm no Windows. SDK Netlify6.0.0, 20 pacotes, zero alertas. Três regressões novas passaram após falhas confirmadas. Typecheck local, contratos, scan heurístico, build estático e35HTTP aprovados. **Suíte integral reprovada: 1.035/1.043; oito falhas Windows discriminadas em docs04. M1 aberto.**
+
+API/interface0.19.0, schema0.18.0, onze migrations com bytes/hashes originais. Não alterar SQL histórico ou recalcular manifesto. Nenhum domínio/endpoint/grant/UI novo.
 
 ## Próxima execução
-1. Resolver dependências pelo registry autorizado (`npm run deps:resolve`), revisar lock real/árvore/origens/integridades/licenças/alertas. Executar npm ci, verify e audit. Tipos globais e testes locais não substituem esse requisito; não criar lock sintético.
-2. `npm run check:migrations`:11 arquivos idênticos àv0.18, schema0.18.0. API/interface0.19.0; não criar migration cosmética para igualar a versão do frontend.
-3. Executar `npm run test:db:local` em PostgreSQL17 novo/descartável, com login restrito.201 cenários escritos,185 principais+16upgrade. Docker padrão; native apenas com binários autorizados e usuário não root. Sem banco remoto como fallback nem remoção de banco preexistente para fazer passar.
-4. Homologar os cinco novos casosSQL019: início futuro fracionário, fim posterior no mesmo milissegundo, janela de um microssegundo, JSONB do helper em timezone não UTC e infinity recusado. A classe de relógio precisa continuar exclusiva dos testes. Ela não altera now()/statement_timestamp() do PostgreSQL.
-5. Conferir resposta real de locked_coverages: array de objetos completos, flagsbooleanas, versão positiva, políticaJSON e datas com fuso explícito; o limite100 já existe no helper. Valores inválidos devem resultar em503, não lista parcial/no_coverage ou segunda escrita. O limite16KiB de JSON compacto da aplicação não substitui a constraintSQL de policy::text.
-6. Testar criação com locks reais, expiração durante espera, suspensão, seleção explícita e reenvio após mudança contratual. Recibos válidos permanecem históricos e reautorizados; não reformatar data/política, repetir mutações ou apagar cache para resolver erro. Comparador exato não sincroniza os relógios API/DB.
-7. Repetir perfis de notas-only, command tags, efeitos transacionais e upgrades anteriores sem retirar triggers/asserts. Esta versão não altera esses contratos nem o SQL histórico.
-8. Homologar Auth/M2M/pooler/TLS/IP/Functions e executar UI35HTTP+36browser. Interface não ganhou novo controle, mas o módulo compartilhado de instantes mudou e precisa de regressão. Não contornar bloqueio de política de navegador/rede.
-9. Executar homologate:local/check:homologation, revisar logs/fingerprint e as contagens1040/201/71 efetivamente aprovadas. Resolver destino/capacidade/restore/governança e aprovação explícita antes de HELPDESK_RELEASE_APPROVED. M1 continua aberto; M2 só depois.
 
-## Arquivos de revisão
-| Arquivo | Foco |
-|---|---|
-| shared/instant.js e .d.ts | Parser de fuso/0–6 frações, calendário e BigInt; nenhuma mudança na gramática dos cursores. |
-| src/domain/contracts.ts | Limites `[start,end)`, flags reais, ordem de ID determinística e nenhum relógio global. |
-| src/application/coverage-result.ts | Validação integral antes de seleção; contexto, período,JSON/limites e erro seguro. |
-| src/application/helpdesk.ts | Validar antes de resolver/criar, amostrar relógio depois da espera; replay não consulta cobertura. |
-| src/application/replay-result.ts | Extração do parser antigo para módulo compartilhado sem alterar recibos. |
-| src/infrastructure/memory.ts | Excluir dados estrangeiros antes de interpretar períodos do catálogo. |
-| tests/v019-* e supabase/tests/rls.test.ts |38 testes locais novos e5SQL escritos; não confundir com PG homologado. |
-| docs/openapi.json e scripts/generate-openapi.py | Erro503 descrito, corpo/DTO anteriores preservados; versão0.19.0. |
+1. Confirmar branch/HEAD e mudanças concorrentes. GitHub consultado: branches vazias. Reinspecionar antes de integrar; não há autorização para publicação ou operação remota.
+2. Usar o lock revisado: npm ci --ignore-scripts, check:lock, audit. Cache padrão falhou EPERM; foi usado por processo no PowerShell: `$env:npm_config_cache=Join-Path $env:TEMP 'helpdesk-npm-cache-20260928'`. Nenhuma configuração global alterada. Não regenerar lock sem necessidade.
+3. Resolver as oito falhas de ambiente/portabilidade com TDD, sem remover proteção contra symlinks. Preferir repetição em Linux autorizado e apto. Garantir saída TAP no agregador: não aceitar contagens ausentes do reporter spec.
+4. Executar PostgreSQL17 novo/descartável e login restrito:185 principais+16upgrades. Docker ausente nesta máquina; native recusa Windows. Não usar Supabase, banco preexistente ou login privilegiado como fallback. Não afirmar SQL aprovado antes da execução.
+5. Preservar cenários de microssegundos, notas-only, command tags, efeitos, locks, revogação e replay. Consultar docs23 e handoff histórico para detalhes. Não ampliar grants para fazer testes passar.
+6. Empacotar/verificar Functions com pg; build existente só copia frontend. SDK6 é compatível com engine declarado, mas o host não foi homologado. Prosseguir Auth/M2M/pooler/TLS/IP apenas no ambiente explicitamente autorizado.
+7. Preparar Playwright em ambiente apto: Python fornecido não contém módulo.35HTTP passaram; zero dos36browser executou. Verificar mobile/acessibilidade/sessão, sem contornar política.
+8. Reexecutar homologate:local/check:homologation, revisar fingerprint/logs. Último estado: lock/install/audit passed; application/postgres failed; interface blocked. Não ativar HELPDESK_RELEASE_APPROVED. Completar carga, restore, revisão e governança. M2 somente após M1.
 
-Sem migration, endpoint, grant, dependência, edição de contrato, SLA operacional, anexos, dispatcher, administração ou conector novo. Não houve revisor independente/pentest/carga/restore. O pacote é local e não autoriza publicação.
+Nenhum efeito remoto de escrita, carga, restore, revisão independente ou pentest. Evidências em evidence/m1-20260928/ e evidence/homologation/.

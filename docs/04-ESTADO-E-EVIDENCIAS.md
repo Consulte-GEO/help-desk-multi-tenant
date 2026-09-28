@@ -1,55 +1,66 @@
-# Help Desk v0.19.0 — Estado e evidências
+# Help Desk v0.19.0 — estado e evidências, 28/09/2026
 
-**Entrega local, não publicada. M1 permanece aberto.** Base: `3ecd5abb185cf04333c00b6f5349b5563a5779d4`. Branch `work/helpdesk-v0.19.0`. Verificações em17/09/2026; logs UTC. O commit final acompanha o manifesto externo e o bundle.
+**M1 aberto, M2 não iniciado; nenhuma publicação.** Base `94d827654d0ca19144b857e014acef1494f924b3`; branch `codex/m1-reproducibilidade`. Commit final na entrega e manifesto externo. Documento anterior preservado em `history/v019-04-before-m1-20260928.md`.
 
-## Implementação e compatibilidade
-Correção da comparação de vigência contratual com microssegundos, validação integral das coberturas retornadas pelo adaptador antes de resolver/criar e erro503 seguro para configuração incompatível. Preserva replay após vencimento, snapshots, relógio amostrado após esperar as coberturas e todos os controles de nota-only/efeitos/confirmacão da v0.18. O catálogo de memória filtra o escopo antes de interpretar períodos; dados estrangeiros inválidos não derrubam a descoberta autorizada.
+## Base e concorrência
 
-API/interface0.19.0; schema esperado0.18.0;11 migrations intactas,25 tabelas candidatas,18 operações/14 caminhos. Sem novo endpoint, grant, dependency, tela ou migration. Documentação técnica em23-VIGENCIA-E-INTEGRIDADE-CONTRATUAL.md.
+Workspace inicial: somente .git, master sem commits/remoto. O bundle do ZIP v0.19.0 fornecido foi validado (histórico completo) e clonado em helpdesk/, preservando o repositório inicial. HEAD coincide com o handoff externo. Nenhuma versão posterior encontrada entre os arquivos HelpDesk de Downloads.
 
-## Verificações executadas
-Todos os caminhos de evidência abaixo são relativos a `evidence/v019/`.
+Git HTTPS falhou SEC_E_NO_CREDENTIALS. Leitura pelo conector GitHub confirmou Consulte-GEO/help-desk-multi-tenant com tamanho zero e branches vazias em 28/09. Não houve integração. Supabase/Netlify não reinspecionados; seus estados históricos não são evidência atual. Reinspecionar antes de integração autorizada.
 
-| Verificação | Resultado e alcance | Evidência |
+## Mudanças e compatibilidade
+
+- PROJECT_HELP_DESK.md incorporado do documento mestre fornecido.
+- Lock real gerado pelo registry npm oficial. Instalação limpa e audit executados.
+- SDK @netlify/functions 4.2.5 → 6.0.0, após audit detectar quatro alertas altos e um baixo. A árvore antiga de ferramentas de desenvolvimento foi removida pela atualização. O projeto não importa /dev (removido na v5); requisito Node >=22.12 da v6 cabe no engine >=22.16 <25 existente. Referência: https://github.com/netlify/primitives/blob/main/packages/functions/prod/CHANGELOG.md. Sem audit fix --force ou overrides.
+- prepare-dependencies.mjs e local-process.mjs lançam o entry point JS informado pelo npm usando Node, argumentos separados, sem shell. Três testes de regressão: sucesso, interrupção em falha e argumentos/código de saída preservados.
+- .gitattributes impede conversão EOL das migrations. core.autocrlf global havia convertido o checkout para CRLF. Restaurados bytes dos blobs HEAD após verificar SHA-256 contra manifesto. Onze migrations e manifesto idênticos à base; nenhuma migration nova, SQL ou grant alterado.
+
+API/interface0.19.0, schema candidato0.18.0, 25 tabelas, 18 operações/14 caminhos. Nenhuma funcionalidade de domínio, endpoint ou UI modificada. Node24.20.0/npm11.19.0 em Windows nesta rodada; Node22 e runtime Netlify não homologados. Build continua estático; bundle Functions/pg pendente.
+
+## Resultados reais
+
+Logs relativos a evidence/m1-20260928/; relatórios agregados em evidence/homologation/.
+
+| Verificação | Resultado | Evidência |
 |---|---|---|
-| Base antes da alteração |1.002 testes locais aprovados |00-baseline-tests.txt |
-| Suíte Node final |**1.040 aprovados; zero falhas, cancelados, ignorados ou TODO**,38 novos |28-final-tests.txt |
-| HTTP novo de contratos |**Três aprovados, incluídos nos1.040**; sockets reais, identidade sintética e memória |11-contract-http-reviewed.txt |
-| HTTP da demonstração |**35 checks aprovados**; o runner falhou depois no browser |17-ui-attempt.txt |
-| Integridade de migrations |Onze arquivos conferidos, todos iguais à base; nenhuma execuçãoSQL |29-final-migrations.txt; migration-integrity.json |
-| TypeScript do manifesto/verify |**Falhou(2)** após passar migrations e1.040 testes; dependências/tipos locais ausentes |20-verify-standard.txt |
-| TypeScript suplementar |Saída0 com compilador/tipos globais existentes; não equivale a npm ci |31-final-typecheck-supplemental.txt |
-| OpenAPI |18 operações/14 caminhos; verificação estrutural, não conformidade integral |30-final-contracts.txt |
-| Sintaxe |26 arquivos JS/MJS/Python verificados |26-syntax.json |
-| Build |Somente frontend estático aprovado; sem bundle de Functions |33-final-build.txt |
-| Scan heurístico |Nenhum padrão reconhecido; não pentest/auditoria integral |32-final-secret-scan.txt |
-| Diff |Sem erro de whitespace |34-diff-check.txt |
-| Homologação agregada/check/publicação |**Não aprovadas**; lock falhou e dependentes ficaram bloqueadas |22–24; evidence/homologation/latest.json |
+| Baseline | 1.040 executados, 1.028 aprovados, 12 falhas | 02-baseline.txt |
+| Migrations | Falha CRLF inicial; 11 aprovadas após restauração exata | 01 e 06 |
+| TDD npm | 2 vermelhos → 2 verdes; terceiro vermelho → 3 verdes | 04/05 e 24/25 |
+| Resolução inicial | spawn EINVAL; depois cache padrão EPERM; cache temporário funcionou | 03/07/08 |
+| Audit inicial | 4 high, 1 low | 10-audit-before.json |
+| Lock/ci/audit final | Aprovados, zero vulnerabilidades reportadas | 13/14; homologation/latest.json |
+| Árvore/licenças | 20 pacotes, HTTPS npm oficial e SHA-512; MIT/ISC/Apache-2.0 | 15 e 29-lock-review.json |
+| Suíte final | **1.043 executados, 1.035 aprovados, oito falhas, zero skips** | homologation/runs/e0babfc5-9869-44e7-a520-c2356226eb00/application.log |
+| Typecheck com deps locais | Aprovado | 28-typecheck.txt |
+| Contratos/scan/build | Aprovados; scan heurístico e build somente estático | 19/20/21 |
+| HTTP memória | 35 aprovados | 17-ui.txt |
+| PostgreSQL | Docker indisponível; runner recusou antes de conexão | 09; relatório agregado |
+| Browser | Playwright ausente no Python; zero checks DOM executados | 17-ui.txt |
+| Agregador | lock/install/audit passed; application/postgres failed; interface blocked | 26-homologate-final.txt |
+| Gate | Reprovado; publicação bloqueada | 27-gate-final.txt |
 
-Testes locais incluem domínio real, estado puro, helpers e respostas controladas do driver. Sockets reais não transformam memória em PostgreSQL nem autenticação sintética em Supabase. Os cinco casosSQL novos não foram incluídos nas aprovações locais.
+pg-native é peer opcional ausente; driver JS pg instalado. Inventário de licenças não é parecer jurídico, audit não é pentest. Primeira tentativa do agregador falhou ao lançar npm: logs22/23 e run f2ddaf7e preservados; nova tentativa usa executor corrigido.
 
-## Regressões e revisão
-- Na base,31 testes contratuais tiveram28 falhas e3 aprovações; depois31 passaram (03/04).
-- A primeira suíte completa detectou o fixture antigo de contrato futuro com fim igual ao início. Corrigido o fim para2028, mantendo o resultado de não elegibilidade e acrescentando teste explícito de recusa do intervalo vazio. Não houve relaxamento da regra.
-- Uma regressão mostrou que a interpretação estrita de datas no catálogo de memória ocorria antes de excluir outro workspace. O filtro foi movido antes da resolução, mantendo o caso estrangeiro fora do resultado (07/08).
-- O primeiro arquivoHTTP falhou na carga por propriedade de parâmetro TypeScript não suportada em strip-only. Foi corrigida a declaração do fixture; essa falha de carga não foi contabilizada como regressão do produto (10/11).
-- O compilador suplementar detectou inferência circular de uma variável do teste; a anotação explícita foi aplicada e a checagem repetida com saída0 (12/13).
-- Revisados diff, limites do parser, flags/dadosJSON, autenticação antes da consulta, rollback, compatibilidade do recibo e ausência de mudança no SQL histórico. **Revisão local, sem revisor independente ou subagente.**
+## Oito falhas remanescentes, sem remover asserts ou criar skips
 
-## Bloqueado ou não executado
-**Dependências:** `npm run deps:resolve` retornou `EAI_AGAIN registry.npmjs.org` (01). Sem package-lock real, npm ci, auditoria ou árvore de dependências instalada/revisada. Nenhum registry alternativo ou alteração de política de rede. A checagem global é apenas suplementar.
+Seis testes falham EPERM na criação de symlink:
 
-**PostgreSQL:** runner recusou Docker ausente antes da conexão (02/25). Há**201 cenários escritos:185 principais e16 upgrade**, cinco novos; zero executados contra servidor real nesta rodada. `pg_config` do ambiente não constitui servidor instalado. Uma tentativa de obter fonte no endereço oficial não concluiu o download; nenhum PostgreSQL foi instalado/iniciado. Não foi usado Supabase remoto, limpeza de banco existente ou bypass de política como alternativa.
+1. fingerprint refuses symlinked source trees;
+2. migration loader rejects symbolic-file;
+3. migration loader rejects symbolic-directory;
+4. migration bytes reject manifest-symlink;
+5. migration bytes reject supabase-symlink;
+6. CLI refuses symlink without printing file content.
 
-**Browser:** os35HTTP passaram; Playwright parou em `page.goto` com `ERR_BLOCKED_BY_ADMINISTRATOR`.36 checks browser permanecem escritos, zero aprovados. A suíte humana subsequente não foi alcançada depois da falha. Nenhum screenshot, acessibilidade, mobile ouDOM aprovado nesta rodada.
+O teste symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files também não consegue criar o symlink. O runner remove seu diretório próprio e falha a expectativa preserved. Não é prova de remoção de alvo estrangeiro nem teste aprovado.
 
-**Destino/operação:** Auth real, pooler/TLS/IP, Functions com pg instalado, RLS/grants/locks/triggers reais, latência/capacidade, backup/restore e governança continuam pendentes. Precisão lógica não garante relógios sincronizados. O guard SQL de criação e as políticas devem ser validados conjuntamente; a correção do comparador não prova autorização real do banco.
+native environment cannot inherit production, PG service overrides or Node preload hooks espera /owned/home, enquanto path.join no Windows produz barras invertidas. O runner nativo real já recusa Windows. Não foram alteradas permissões, políticas do sistema, asserts ou timeouts para aprovar esses casos.
 
-O gate exige1040/201/71 aprovações efetivas, respectivamente locais/SQL/HTTP+browser, sem skips. Ele não foi aprovado. Mesmo um sucesso local não liberaria produção ou substituiria os critérios do destino.
+## Bloqueios e continuidade
 
-## Efeito remoto e continuidade
-**Nenhuma inspeção ou escrita remota nesta rodada:** sem push/PR/merge/deploy/migration, alteração de dados, usuário, segredo, MFA ou infraestrutura cobrada. O estado remoto histórico não é apresentado como atual.
+201 SQL (185 principais+16 upgrade) continuam escritos e não executados. Docker ausente; runner native não suporta Windows. Nenhum servidor instalado ou fallback remoto utilizado. Os 36 checks browser permanecem escritos: Python do runtime existe, mas não contém Playwright.
 
-Prioridade: dependências reais → PostgreSQL17 e upgrade → perfis e transações/runtime/Auth/Functions → navegador → capacidade/restore/revisão operacional. M1 aberto; M2, anexos, SLA operacional, dispatcher e conectores reais não entregues.
+O agregador exige TAP; Node24 neste terminal emitiu spec. A suíte já reprova por oito causas concretas. Antes de aprovar em ambiente apto, garantir reporter TAP de forma testada, sem relaxar contagens. Lock/ci/audit verdes não fecham HD-101 inteiro: regressão integral e bundle Functions ainda faltam.
 
-O pacote inclui o histórico Git e os logs; o commit final é informado no manifesto externo. A evidência da recuperação do bundle, realizada após o commit, acompanha o pacote separadamente para evitar autorreferência do hash.
+Próximos gates: ambiente apto para regressão integral → PostgreSQL17/upgrade → RLS/grants → Auth/M2M/runtime → navegador → carga → restore/revisão/governança. Nenhum push/merge/PR/deploy/migration remota, alteração de usuário/MFA/secrets/bucket/dado externo. Sem carga, restore, revisão independente ou pentest nesta rodada.

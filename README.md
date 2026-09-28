@@ -1,5 +1,7 @@
 # Consulte Help Desk — v0.19.0 / vigência e integridade contratual
 
+> **Rodada M1 de 28/09/2026:** lock real, `npm ci` e audit aprovados (zero alertas), SDK Netlify6.0.0; três regressões novas para execução npm no Windows. Suíte atual: **1.035/1.043 aprovados, oito falhas Windows**, 35HTTP aprovados, PostgreSQL/browser não executados. Typecheck com dependências locais aprovado. M1 aberto. Leia [estado atual](docs/04-ESTADO-E-EVIDENCIAS.md), [handoff](docs/05-HANDOFF-REVISAO.md) e [documento mestre](PROJECT_HELP_DESK.md). Os números e bloqueios de registry abaixo são o registro histórico da entrega original.
+
 Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
 
 ## Esta entrega

@@ -1,5 +1,8 @@
 # Instruções de continuidade — Help Desk
 
+## Rodada atual — 28/09/2026
+Leia também PROJECT_HELP_DESK.md. Branch codex/m1-reproducibilidade, base94d8276. Lock real/ci/audit aprovados, SDK Netlify6.0.0; API0.19/schema0.18 preservados. Onze migrations idênticas à base; .gitattributes evita conversão CRLF. Suíte atual1035/1043, oito falhas Windows detalhadas em docs04;35HTTP aprovados. PostgreSQL201/browser36 continuam sem execução real. M1 aberto, M2 não iniciado. Demais contagens abaixo são históricas. Sem autorização para escrita remota.
+
 Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04-ESTADO-E-EVIDENCIAS.md e docs/06-M1-SEGURANCA-E-LIMITES.md antes de alterar o código.
 
 ## Fronteiras obrigatórias

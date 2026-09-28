@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "scope": "local-m1",
+  "platform_approved": false,
+  "source_sha256": "4927a1fa1a754e97fd87627bcd674c06405a27ca91afedae8d99f7c40c5cad3e",
+  "started_at": "2026-09-28T19:26:55.111Z",
+  "completed_at": "2026-09-28T19:27:05.898Z",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/e0babfc5-9869-44e7-a520-c2356226eb00/lock.log",
+      "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/e0babfc5-9869-44e7-a520-c2356226eb00/install.log",
+      "sha256": "d9839e6d996c52c05095bfbef9b3d21a924ff0be796710b3e95e557de48a906f",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/e0babfc5-9869-44e7-a520-c2356226eb00/audit.log",
+      "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "failed",
+      "reason": "command_or_assertions_failed",
+      "exit_code": 1,
+      "signal": null,
+      "artifact": "runs/e0babfc5-9869-44e7-a520-c2356226eb00/application.log",
+      "sha256": "b1857ae85f5165885ec9492cba421ab3375c1da5f3716c9c2710aa5b896262fd",
+      "tests": null
+    },
+    {
+      "id": "postgres",
+      "status": "failed",
+      "reason": "command_or_assertions_failed",
+      "exit_code": 1,
+      "signal": null,
+      "artifact": "runs/e0babfc5-9869-44e7-a520-c2356226eb00/postgres.log",
+      "sha256": "7ad05cd3cf11f17a7640f7bca395887548a5eafcd31db5468179e20105b2a7c2",
+      "tests": null
+    },
+    {
+      "id": "interface",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    }
+  ]
+}

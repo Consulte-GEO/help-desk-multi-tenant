@@ -1,0 +1,12 @@
+
+> @consulte-geo/helpdesk@0.19.0 test:ui:local
+> node scripts/test-ui-local.mjs
+
+HTTP em memória: 35 verificações aprovadas.
+
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\browser-smoke.py", line 5, in <module>
+    from playwright.sync_api import sync_playwright, expect
+ModuleNotFoundError: No module named 'playwright'
+
+Navegador em memória: não aprovado.

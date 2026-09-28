@@ -8,7 +8,11 @@ export function runCommand({command,cwd,env=process.env,timeoutMs=60_000,maxByte
  if(signal?.aborted)return Promise.resolve({exit_code:1,signal:null,reason:'aborted',stdout:'',stderr:'',output:''});
  return new Promise(resolve=>{
   let stdout='',stderr='',bytes=0,reason=null,finished=false,timer,force;
-  const [binary,...args]=command;
+  // npm lifecycle provides a JS CLI path, including paths with spaces on Windows.
+  // Preserve argument boundaries and avoid executing .cmd through a shell.
+  const resolved=command[0]==='npm'&&env.npm_execpath
+   ?[process.execPath,env.npm_execpath,...command.slice(1)]:command;
+  const [binary,...args]=resolved;
   const child=spawn(binary,args,{cwd,env,stdio:['ignore','pipe','pipe'],detached:process.platform!=='win32'});
   const stop=why=>{reason??=why;stopOwned(child);force??=setTimeout(()=>stopOwned(child,'SIGKILL'),1000);};
   const onAbort=()=>stop('aborted');

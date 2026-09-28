@@ -1,3 +1,5 @@
+> **Rodada M1 28/09/2026:** lock real/ci/audit aprovados; suíte Windows1035/1043, oito falhas;35HTTP aprovados. PostgreSQL/browser e runtime pendentes. Prioridade continua HD-101/102, M2 não iniciado. Ver docs04/05. Registros anteriores abaixo são históricos.
+
 > **Estado corrente v0.19.0:** correção do fluxo contratual de M1/CON-06: comparação exata de vigência e validação integral do retorno privado, sem nova autorização ou edição de contratos. API0.19/schema0.18;11 migrations intactas.1.040 testes locais/35HTTP aprovados;201SQL/36browser escritos, não homologados. M1 continua aberto, M2 não iniciado. Ver docs04/05/23. Os demais registros de execução abaixo são históricos.
 
 > **Registro histórico v0.16.0:** R14-06 com modelo de referência e migration010 candidata de efeitos privados, exigindo evento e outbox pública vinculados à mesma transação. Nove migrations anteriores preservadas;950 testes locais/35 HTTP aprovados.179 SQL/35 browser não homologados. M1 aberto e M2 não iniciado. Nenhum novo módulo/endpoint; retenção e custo precisam de revisão real. Ver docs04/05/20. Demais atualizações abaixo são históricas.

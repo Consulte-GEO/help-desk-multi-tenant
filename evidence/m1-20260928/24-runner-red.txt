@@ -1,0 +1,31 @@
+✔ dependency resolver launches npm CLI without a shell and completes ordered gates (416.3732ms)
+✔ dependency resolver launches npm CLI without a shell and stops on failure (193.6034ms)
+✖ homologation command runner executes npm CLI with literal arguments and preserves failure (14.838ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 766.7017
+
+✖ failing tests:
+
+test at tests\m1-dependency-launch.test.ts:26:1
+✖ homologation command runner executes npm CLI with literal arguments and preserves failure (14.838ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 7
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1-dependency-launch.test.ts:35:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 7,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
