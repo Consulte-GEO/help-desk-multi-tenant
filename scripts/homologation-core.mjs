@@ -65,7 +65,7 @@ export async function verifyLogs(report,directory) {
 /** Hash every relevant source/config/test file, including new/untracked source files. */
 export async function sourceFingerprint(root) {
  const roots=['shared','src','scripts','tests','supabase','web','netlify','.github','package.json','package-lock.json','tsconfig.json',
-  'netlify.toml','.gitignore','.npmrc','.nvmrc','.env.example','docs/openapi.json'];
+  'netlify.toml','.gitattributes','.gitignore','.npmrc','.nvmrc','.env.example','docs/openapi.json'];
  const files=[];
  async function walk(path){
   let stat;try{stat=await lstat(path);}catch(e){if(e.code==='ENOENT')return;throw e;}

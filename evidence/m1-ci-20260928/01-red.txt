@@ -1,0 +1,54 @@
+✖ declared application test command emits counts accepted by the release gate (95.4251ms)
+✖ changing checkout byte rules invalidates the source fingerprint (8.4467ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 287.0438
+
+✖ failing tests:
+
+test at tests\m1-ci-evidence.test.ts:10:1
+✖ declared application test command emits counts accepted by the release gate (95.4251ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + null
+  - {
+  -   cancelled: 0,
+  -   fail: 0,
+  -   pass: 1,
+  -   skipped: 0,
+  -   tests: 1,
+  -   todo: 0
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1-ci-evidence.test.ts:20:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: { tests: 1, pass: 1, fail: 0, cancelled: 0, skipped: 0, todo: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\m1-ci-evidence.test.ts:24:1
+✖ changing checkout byte rules invalidates the source fingerprint (8.4467ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1-ci-evidence.test.ts:30:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    expected: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }

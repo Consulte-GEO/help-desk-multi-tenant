@@ -7,10 +7,10 @@
     "node": ">=22.16.0 <25"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test": "node --experimental-strip-types --test --test-reporter=tap tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "demo": "node --experimental-strip-types scripts/demo.ts",
-    "test:db": "node --experimental-strip-types --test --test-concurrency=1 supabase/tests/*.test.ts",
+    "test:db": "node --experimental-strip-types --test --test-reporter=tap --test-concurrency=1 supabase/tests/*.test.ts",
     "check:contracts": "node --experimental-strip-types scripts/check-contracts.ts",
     "build": "node scripts/build.mjs",
     "dev": "netlify dev",
