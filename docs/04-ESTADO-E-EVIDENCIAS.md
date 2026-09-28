@@ -1,66 +1,36 @@
-# Help Desk v0.19.0 — estado e evidências, 28/09/2026
+# Estado e evidências — M1 / 28-09-2026
 
-**M1 aberto, M2 não iniciado; nenhuma publicação.** Base `94d827654d0ca19144b857e014acef1494f924b3`; branch `codex/m1-reproducibilidade`. Commit final na entrega e manifesto externo. Documento anterior preservado em `history/v019-04-before-m1-20260928.md`.
+Base original `94d827654d0ca19144b857e014acef1494f924b3`; base desta rodada `07cbeefac28e048c8fb585fb12ccf9cd07758450`. Branch `codex/m1-reproducibilidade`. Código validado: `c7aa0aff9d33bd05f0248ac904ecbc834204f986`.
 
-## Base e concorrência
+CI real: https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/36477734874 — aprovado em 28/09/2026, 20:15:51 UTC. Ubuntu 24.04, Node22, PostgreSQL17 descartável em Docker local, Chromium via Playwright Python1.63.0. Dados sintéticos.
 
-Workspace inicial: somente .git, master sem commits/remoto. O bundle do ZIP v0.19.0 fornecido foi validado (histórico completo) e clonado em helpdesk/, preservando o repositório inicial. HEAD coincide com o handoff externo. Nenhuma versão posterior encontrada entre os arquivos HelpDesk de Downloads.
+| Verificação | Resultado executado |
+|---|---|
+| Lock, instalação limpa, audit | Aprovados; zero vulnerabilidades reportadas |
+| Aplicação, contratos, typecheck, build | 1045/1045 testes aprovados |
+| PostgreSQL real, RLS/grants, isolamento, concorrência | 185/185 aprovados |
+| Upgrade e preservação de histórico | 16/16 aprovados |
+| HTTP da demonstração | 35/35 aprovados |
+| Chromium: interface e sessão sintética | 31+5 aprovados |
+| Gate e integridade dos logs | Aprovados no CI e reconferidos contra extração limpa do Git |
+| Revisão independente das mudanças desta rodada | Sem achados; não equivale a pentest ou aprovação de plataforma |
 
-Git HTTPS falhou SEC_E_NO_CREDENTIALS. Leitura pelo conector GitHub confirmou Consulte-GEO/help-desk-multi-tenant com tamanho zero e branches vazias em 28/09. Não houve integração. Supabase/Netlify não reinspecionados; seus estados históricos não são evidência atual. Reinspecionar antes de integração autorizada.
+Nenhum teste ignorado, cancelado ou todo. Evidências: `evidence/homologation/latest.json` e seus logs com SHA256; screenshots desktop/mobile e relatórios browser em `evidence/`. Fingerprint de código: `94e6b61079895d992209ec14ced701199d0622d24fa704b6495f8b62fc25800a`.
 
-## Mudanças e compatibilidade
+## Causas corrigidas
 
-- PROJECT_HELP_DESK.md incorporado do documento mestre fornecido.
-- Lock real gerado pelo registry npm oficial. Instalação limpa e audit executados.
-- SDK @netlify/functions 4.2.5 → 6.0.0, após audit detectar quatro alertas altos e um baixo. A árvore antiga de ferramentas de desenvolvimento foi removida pela atualização. O projeto não importa /dev (removido na v5); requisito Node >=22.12 da v6 cabe no engine >=22.16 <25 existente. Referência: https://github.com/netlify/primitives/blob/main/packages/functions/prod/CHANGELOG.md. Sem audit fix --force ou overrides.
-- prepare-dependencies.mjs e local-process.mjs lançam o entry point JS informado pelo npm usando Node, argumentos separados, sem shell. Três testes de regressão: sucesso, interrupção em falha e argumentos/código de saída preservados.
-- .gitattributes impede conversão EOL das migrations. core.autocrlf global havia convertido o checkout para CRLF. Restaurados bytes dos blobs HEAD após verificar SHA-256 contra manifesto. Onze migrations e manifesto idênticos à base; nenhuma migration nova, SQL ou grant alterado.
+CI não abrangia codex; reporter precisava TAP para contagem; checkout precisava EOL estável e configuração no fingerprint. Fixtures SQL tinham parâmetros variádicos sem cast e registro de hooks concorrente. Rotas atrasadas no browser eram removidas antes de liberar; seletor usava símbolo aria-hidden. Dois asserts SQL refletiam expectativas antigas: último grant humano revogado nega catálogo (42501), recurso sem leitura fica oculto (404/resource_not_found). Novos asserts comprovam negação SQL/serviço, ausência de linhas e recuperação após restaurar o grant sintético.
 
-API/interface0.19.0, schema candidato0.18.0, 25 tabelas, 18 operações/14 caminhos. Nenhuma funcionalidade de domínio, endpoint ou UI modificada. Node24.20.0/npm11.19.0 em Windows nesta rodada; Node22 e runtime Netlify não homologados. Build continua estático; bundle Functions/pg pendente.
+Falhas reais preservadas: runs 36475904032 (0/201 SQL), 36476687740 (16/201), 36477266647 (199/201 e interface71/71). A instalação da primeira tentativa36475731482 falhou antes de testar; artefatos antigos daquela tentativa não foram usados como aprovação.
 
-## Resultados reais
+## Compatibilidade e limites
 
-Logs relativos a evidence/m1-20260928/; relatórios agregados em evidence/homologation/.
+API/interface0.19.0; schema0.18.0; 11 migrations históricas byte a byte preservadas. SDK Netlify6.0.0; pg8.16.3; Node>=22.16 <25. Nenhuma migration nova ou remota, usuário, MFA, segredo, bucket ou dado externo alterado.
 
-| Verificação | Resultado | Evidência |
-|---|---|---|
-| Baseline | 1.040 executados, 1.028 aprovados, 12 falhas | 02-baseline.txt |
-| Migrations | Falha CRLF inicial; 11 aprovadas após restauração exata | 01 e 06 |
-| TDD npm | 2 vermelhos → 2 verdes; terceiro vermelho → 3 verdes | 04/05 e 24/25 |
-| Resolução inicial | spawn EINVAL; depois cache padrão EPERM; cache temporário funcionou | 03/07/08 |
-| Audit inicial | 4 high, 1 low | 10-audit-before.json |
-| Lock/ci/audit final | Aprovados, zero vulnerabilidades reportadas | 13/14; homologation/latest.json |
-| Árvore/licenças | 20 pacotes, HTTPS npm oficial e SHA-512; MIT/ISC/Apache-2.0 | 15 e 29-lock-review.json |
-| Suíte final | **1.043 executados, 1.035 aprovados, oito falhas, zero skips** | homologation/runs/e0babfc5-9869-44e7-a520-c2356226eb00/application.log |
-| Typecheck com deps locais | Aprovado | 28-typecheck.txt |
-| Contratos/scan/build | Aprovados; scan heurístico e build somente estático | 19/20/21 |
-| HTTP memória | 35 aprovados | 17-ui.txt |
-| PostgreSQL | Docker indisponível; runner recusou antes de conexão | 09; relatório agregado |
-| Browser | Playwright ausente no Python; zero checks DOM executados | 17-ui.txt |
-| Agregador | lock/install/audit passed; application/postgres failed; interface blocked | 26-homologate-final.txt |
-| Gate | Reprovado; publicação bloqueada | 27-gate-final.txt |
+Windows local continua com oito falhas de symlink/portabilidade já documentadas no histórico; Linux real passou. O checkout Windows pode conter CRLF antigos: validar evidência com extração limpa (`git archive`) ou checkout novo que respeite .gitattributes. Não recalcular relatórios para acomodar bytes diferentes.
 
-pg-native é peer opcional ausente; driver JS pg instalado. Inventário de licenças não é parecer jurídico, audit não é pentest. Primeira tentativa do agregador falhou ao lançar npm: logs22/23 e run f2ddaf7e preservados; nova tentativa usa executor corrigido.
+M1 ainda aberto: Auth real, pooler/TLS/runtime configurado, carga/abuso, restore, residência/RPO/RTO e segurança operacional pendentes. Browser usa provedor sintético. `platform_approved:false`; não ativar HELPDESK_RELEASE_APPROVED para contornar pendências. M2 não iniciado.
 
-## Oito falhas remanescentes, sem remover asserts ou criar skips
+## Publicação
 
-Seis testes falham EPERM na criação de symlink:
-
-1. fingerprint refuses symlinked source trees;
-2. migration loader rejects symbolic-file;
-3. migration loader rejects symbolic-directory;
-4. migration bytes reject manifest-symlink;
-5. migration bytes reject supabase-symlink;
-6. CLI refuses symlink without printing file content.
-
-O teste symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files também não consegue criar o symlink. O runner remove seu diretório próprio e falha a expectativa preserved. Não é prova de remoção de alvo estrangeiro nem teste aprovado.
-
-native environment cannot inherit production, PG service overrides or Node preload hooks espera /owned/home, enquanto path.join no Windows produz barras invertidas. O runner nativo real já recusa Windows. Não foram alteradas permissões, políticas do sistema, asserts ou timeouts para aprovar esses casos.
-
-## Bloqueios e continuidade
-
-201 SQL (185 principais+16 upgrade) continuam escritos e não executados. Docker ausente; runner native não suporta Windows. Nenhum servidor instalado ou fallback remoto utilizado. Os 36 checks browser permanecem escritos: Python do runtime existe, mas não contém Playwright.
-
-O agregador exige TAP; Node24 neste terminal emitiu spec. A suíte já reprova por oito causas concretas. Antes de aprovar em ambiente apto, garantir reporter TAP de forma testada, sem relaxar contagens. Lock/ci/audit verdes não fecham HD-101 inteiro: regressão integral e bundle Functions ainda faltam.
-
-Próximos gates: ambiente apto para regressão integral → PostgreSQL17/upgrade → RLS/grants → Auth/M2M/runtime → navegador → carga → restore/revisão/governança. Nenhum push/merge/PR/deploy/migration remota, alteração de usuário/MFA/secrets/bucket/dado externo. Sem carga, restore, revisão independente ou pentest nesta rodada.
+GitHub publicado na branch autorizada. Netlify helpdesk-consultegeo (site9781cd85-7dc1-4ef5-868b-947e389a9d4d): publicação desta evidência preparada; resultado do deploy será registrado após execução. O erro original foi verify:release rejeitando evidência incompleta, não simples falta de assets.

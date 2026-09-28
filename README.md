@@ -1,3 +1,5 @@
+> **Atualização CI 28/09/2026:** código c7aa0af; 1045 aplicação,201 PostgreSQL17 e71HTTP/browser aprovados. Gate local aprovado, M1/produção ainda não homologados. Estado e limites atuais em docs/04-ESTADO-E-EVIDENCIAS.md e docs/05-HANDOFF-REVISAO.md; números e restrições de autorização nos registros abaixo são históricos. Push/deploy no destino indicado foram autorizados nesta conversa; demais operações externas não.
+
 # Consulte Help Desk — v0.19.0 / vigência e integridade contratual
 
 > **Rodada M1 de 28/09/2026:** lock real, `npm ci` e audit aprovados (zero alertas), SDK Netlify6.0.0; três regressões novas para execução npm no Windows. Suíte atual: **1.035/1.043 aprovados, oito falhas Windows**, 35HTTP aprovados, PostgreSQL/browser não executados. Typecheck com dependências locais aprovado. M1 aberto. Leia [estado atual](docs/04-ESTADO-E-EVIDENCIAS.md), [handoff](docs/05-HANDOFF-REVISAO.md) e [documento mestre](PROJECT_HELP_DESK.md). Os números e bloqueios de registry abaixo são o registro histórico da entrega original.

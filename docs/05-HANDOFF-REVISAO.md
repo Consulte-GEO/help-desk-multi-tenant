@@ -1,20 +1,16 @@
-# Handoff — v0.19.0, rodada M1 de 28/09/2026
+# Handoff — M1 validado em CI / 28-09-2026
 
-Base `94d827654d0ca19144b857e014acef1494f924b3`; branch `codex/m1-reproducibilidade`. Commit final na entrega/manifesto externo. Código recuperado em helpdesk/; Git da pasta pai continua sem commits. Leia PROJECT_HELP_DESK.md, README, AGENTS e docs04 antes de editar. Handoff anterior em history/v019-05-before-m1-20260928.md.
+Leia PROJECT_HELP_DESK.md, README.md, AGENTS.md e docs/04-ESTADO-E-EVIDENCIAS.md. Base94d8276; rodada07cbeef; branchcodex/m1-reproducibilidade. Código validado c7aa0aff9d33bd05f0248ac904ecbc834204f986, run36477734874. Commit de documentação/evidência é posterior e não altera fingerprint.
 
-Lock real, npm ci e audit aprovados também pelo agregador após corrigir subprocessos npm no Windows. SDK Netlify6.0.0, 20 pacotes, zero alertas. Três regressões novas passaram após falhas confirmadas. Typecheck local, contratos, scan heurístico, build estático e35HTTP aprovados. **Suíte integral reprovada: 1.035/1.043; oito falhas Windows discriminadas em docs04. M1 aberto.**
+1045 aplicação,201 PostgreSQL17 (185RLS+16upgrade),71HTTP/browser passaram sem skips. Lock/ci/audit, typecheck/contratos/build e gate aprovados. Logs reais assinados apenas por hash local (não são atestação de plataforma), screenshots e histórico de falhas preservados. Revisão independente da rodada sem achados.
 
-API/interface0.19.0, schema0.18.0, onze migrations com bytes/hashes originais. Não alterar SQL histórico ou recalcular manifesto. Nenhum domínio/endpoint/grant/UI novo.
+API/interface0.19.0, schema0.18.0,11migrations intactas; SDKNetlify6.0.0,pg8.16.3,Node>=22.16 <25. Não modificar SQL histórico.
 
-## Próxima execução
+Próximos passos:
+1. Confirmar HEAD/branch e remoto, preservar mudanças concorrentes. Origin local ainda é bundle de recuperação; pushes usam URL GitHub explícita.
+2. Verificar deploy Netlify após publicar evidências. Manter verify:release e não ligar HELPDESK_RELEASE_APPROVED sem homologação real.
+3. Windows: oito falhas ambientais permanecem; usar Linux para suíte completa. EOL antigo do checkout difere de extração limpa. Relatório CI corresponde ao código Git limpo, não normalizar hashes artificialmente.
+4. Completar Auth/M2M no destino, pooler/TLS, carga/restore e aprovação operacional antes de encerrar M1/M2. Provedor browser é sintético; PostgreSQL foi descartável no runner.
+5. Push na branch e deploy neste site foram explicitamente autorizados pelo usuário nesta conversa. Migration remota/usuários/MFA/secrets/buckets/dados externos não foram autorizados e não foram alterados.
 
-1. Confirmar branch/HEAD e mudanças concorrentes. GitHub consultado: branches vazias. Reinspecionar antes de integrar; não há autorização para publicação ou operação remota.
-2. Usar o lock revisado: npm ci --ignore-scripts, check:lock, audit. Cache padrão falhou EPERM; foi usado por processo no PowerShell: `$env:npm_config_cache=Join-Path $env:TEMP 'helpdesk-npm-cache-20260928'`. Nenhuma configuração global alterada. Não regenerar lock sem necessidade.
-3. Resolver as oito falhas de ambiente/portabilidade com TDD, sem remover proteção contra symlinks. Preferir repetição em Linux autorizado e apto. Garantir saída TAP no agregador: não aceitar contagens ausentes do reporter spec.
-4. Executar PostgreSQL17 novo/descartável e login restrito:185 principais+16upgrades. Docker ausente nesta máquina; native recusa Windows. Não usar Supabase, banco preexistente ou login privilegiado como fallback. Não afirmar SQL aprovado antes da execução.
-5. Preservar cenários de microssegundos, notas-only, command tags, efeitos, locks, revogação e replay. Consultar docs23 e handoff histórico para detalhes. Não ampliar grants para fazer testes passar.
-6. Empacotar/verificar Functions com pg; build existente só copia frontend. SDK6 é compatível com engine declarado, mas o host não foi homologado. Prosseguir Auth/M2M/pooler/TLS/IP apenas no ambiente explicitamente autorizado.
-7. Preparar Playwright em ambiente apto: Python fornecido não contém módulo.35HTTP passaram; zero dos36browser executou. Verificar mobile/acessibilidade/sessão, sem contornar política.
-8. Reexecutar homologate:local/check:homologation, revisar fingerprint/logs. Último estado: lock/install/audit passed; application/postgres failed; interface blocked. Não ativar HELPDESK_RELEASE_APPROVED. Completar carga, restore, revisão e governança. M2 somente após M1.
-
-Nenhum efeito remoto de escrita, carga, restore, revisão independente ou pentest. Evidências em evidence/m1-20260928/ e evidence/homologation/.
+Último pacote completo antigo: bundle de M1 em07cbeef; a fonte mais recente é a branch GitHub e este handoff. Não recomeçar pelo ZIPv0.19.0 anterior.

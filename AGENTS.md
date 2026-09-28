@@ -1,3 +1,5 @@
+> **Atualização CI 28/09/2026:** código c7aa0af; 1045 aplicação,201 PostgreSQL17 e71HTTP/browser aprovados. Gate local aprovado, M1/produção ainda não homologados. Estado e limites atuais em docs/04-ESTADO-E-EVIDENCIAS.md e docs/05-HANDOFF-REVISAO.md; números e restrições de autorização nos registros abaixo são históricos. Push/deploy no destino indicado foram autorizados nesta conversa; demais operações externas não.
+
 # Instruções de continuidade — Help Desk
 
 ## Rodada atual — 28/09/2026

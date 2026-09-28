@@ -1,0 +1,3811 @@
+
+> @consulte-geo/helpdesk@0.19.0 test:db:local
+> node scripts/test-db-local.mjs
+
+TAP version 13
+# Subtest: actual request login has no BYPASSRLS or table ownership
+not ok 1 - actual request login has no BYPASSRLS or table ownership
+  ---
+  duration_ms: 266.049382
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:31:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: all domain and authentication tables have ENABLE plus FORCE RLS
+not ok 2 - all domain and authentication tables have ENABLE plus FORCE RLS
+  ---
+  duration_ms: 0.974851
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:32:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: PUBLIC cannot execute private helpers
+not ok 3 - PUBLIC cannot execute private helpers
+  ---
+  duration_ms: 0.116086
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:33:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: known ticket UUID cannot be read from another workspace
+not ok 4 - known ticket UUID cannot be read from another workspace
+  ---
+  duration_ms: 0.078648
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:34:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: known ticket UUID cannot be read by sibling account
+not ok 5 - known ticket UUID cannot be read by sibling account
+  ---
+  duration_ms: 0.110226
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:35:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: requester cannot read notes with direct SQL, authorized agent can
+not ok 6 - requester cannot read notes with direct SQL, authorized agent can
+  ---
+  duration_ms: 0.06656
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:36:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: credential table denies direct app access
+not ok 7 - credential table denies direct app access
+  ---
+  duration_ms: 0.205991
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:37:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: context is cleared between reused pooled connections
+not ok 8 - context is cleared between reused pooled connections
+  ---
+  duration_ms: 0.070246
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:38:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: concurrent PostgreSQL retries create one ticket and one creation outbox event
+not ok 9 - concurrent PostgreSQL retries create one ticket and one creation outbox event
+  ---
+  duration_ms: 0.193853
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:39:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: same idempotency key with different body yields conflict
+not ok 10 - same idempotency key with different body yields conflict
+  ---
+  duration_ms: 0.174413
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:40:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: published policy cannot be edited in place
+not ok 11 - published policy cannot be edited in place
+  ---
+  duration_ms: 0.048744
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:41:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: committed ticket requires initial event and outbox even for an admin insert
+not ok 12 - committed ticket requires initial event and outbox even for an admin insert
+  ---
+  duration_ms: 0.040261
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:42:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: contract suspension after resolution blocks creation
+not ok 13 - contract suspension after resolution blocks creation
+  ---
+  duration_ms: 0.037457
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:43:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: revoked account grant takes effect despite previously resolved principal
+not ok 14 - revoked account grant takes effect despite previously resolved principal
+  ---
+  duration_ms: 0.039359
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:44:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: integration credential revocation invalidates a previously minted session
+not ok 15 - integration credential revocation invalidates a previously minted session
+  ---
+  duration_ms: 0.074723
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:45:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1 schema readiness is checked with the real request login
+not ok 16 - M1 schema readiness is checked with the real request login
+  ---
+  duration_ms: 0.03989
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:61:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: runtime role cannot read cached JSON directly, even for its current actor
+not ok 17 - runtime role cannot read cached JSON directly, even for its current actor
+  ---
+  duration_ms: 0.035023
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:62:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: creation replay loses access after grant revocation, with no cached payload returned
+not ok 18 - creation replay loses access after grant revocation, with no cached payload returned
+  ---
+  duration_ms: 0.032298
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:63:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: former agent cannot retrieve an internal note from the cache
+not ok 19 - former agent cannot retrieve an internal note from the cache
+  ---
+  duration_ms: 0.031688
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:68:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: revoked integration read scope removes direct SQL visibility and cached access
+not ok 20 - revoked integration read scope removes direct SQL visibility and cached access
+  ---
+  duration_ms: 0.051658
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:73:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: read-only machine cannot bypass HTTP and insert a public message by SQL
+not ok 21 - read-only machine cannot bypass HTTP and insert a public message by SQL
+  ---
+  duration_ms: 0.036025
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:78:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: integration cannot forge a human-agent author type
+not ok 22 - integration cannot forge a human-agent author type
+  ---
+  duration_ms: 0.037807
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:83:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: requester cannot use direct SQL to force a forbidden status change
+not ok 23 - requester cannot use direct SQL to force a forbidden status change
+  ---
+  duration_ms: 0.032429
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:84:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: composite FK rejects a ticket referencing a sibling account coverage
+not ok 24 - composite FK rejects a ticket referencing a sibling account coverage
+  ---
+  duration_ms: 0.092109
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:85:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: cross-account public-message insertion is denied by SQL
+not ok 25 - cross-account public-message insertion is denied by SQL
+  ---
+  duration_ms: 0.05326
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:86:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: integration cannot read notes through table or operation helper
+not ok 26 - integration cannot read notes through table or operation helper
+  ---
+  duration_ms: 0.052389
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:87:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: concurrent updates with the same ETag produce exactly one transition
+not ok 27 - concurrent updates with the same ETag produce exactly one transition
+  ---
+  duration_ms: 0.051628
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:88:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: transaction rollback clears context on the exact same single-connection pool
+not ok 28 - transaction rollback clears context on the exact same single-connection pool
+  ---
+  duration_ms: 0.047332
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:93:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: expired replay returns conflict, preserves ticket and does not disclose old response
+not ok 29 - expired replay returns conflict, preserves ticket and does not disclose old response
+  ---
+  duration_ms: 0.048192
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:98:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL limiter rejects malformed budgets and caller-chosen thresholds
+not ok 30 - SQL limiter rejects malformed budgets and caller-chosen thresholds
+  ---
+  duration_ms: 0.047321
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:104:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: multiple HTTP instances share the token-exchange budget and denial consumes no other budget
+not ok 31 - multiple HTTP instances share the token-exchange budget and denial consumes no other budget
+  ---
+  duration_ms: 0.047511
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:107:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: HTTP limiter adapter consumes real SQL budgets with pseudonymous keys
+not ok 32 - HTTP limiter adapter consumes real SQL budgets with pseudonymous keys
+  ---
+  duration_ms: 0.047442
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:118:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: app cannot access rate bucket rows or invoke technical cleanup
+not ok 33 - app cannot access rate bucket rows or invoke technical cleanup
+  ---
+  duration_ms: 0.072069
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:119:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: connection-wide active-session quota serializes concurrent token exchanges
+not ok 34 - connection-wide active-session quota serializes concurrent token exchanges
+  ---
+  duration_ms: 0.03979
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:123:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: technical cleanup defaults to simulation and never deletes tickets or pending outbox
+not ok 35 - technical cleanup defaults to simulation and never deletes tickets or pending outbox
+  ---
+  duration_ms: 0.039079
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:129:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c actual PostgreSQL COMMIT after a swallowed SQL error is not business success
+not ok 36 - M1c actual PostgreSQL COMMIT after a swallowed SQL error is not business success
+  ---
+  duration_ms: 0.038258
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:151:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c control statements see the real server timeouts and empty identity selectors
+not ok 37 - M1c control statements see the real server timeouts and empty identity selectors
+  ---
+  duration_ms: 0.0329
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:161:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c control failure resets timeouts and context on the same single-connection pool
+not ok 38 - M1c control failure resets timeouts and context on the same single-connection pool
+  ---
+  duration_ms: 0.032919
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:165:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c self-revocation denies the revoked bearer and preserves its peer and credential
+not ok 39 - M1c self-revocation denies the revoked bearer and preserves its peer and credential
+  ---
+  duration_ms: 0.035724
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:175:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c terminating workspace A session cannot terminate workspace B session
+not ok 40 - M1c terminating workspace A session cannot terminate workspace B session
+  ---
+  duration_ms: 0.031307
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:183:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c repeated and nonexistent session digests receive the same SQL acknowledgement
+not ok 41 - M1c repeated and nonexistent session digests receive the same SQL acknowledgement
+  ---
+  duration_ms: 0.031417
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:189:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c an expired session can be terminated even after connection access is disabled
+not ok 42 - M1c an expired session can be terminated even after connection access is disabled
+  ---
+  duration_ms: 0.030877
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:194:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c the runtime role cannot delete session-table rows directly
+not ok 43 - M1c the runtime role cannot delete session-table rows directly
+  ---
+  duration_ms: 0.036295
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:201:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c the revocation helper is private, search-path hardened and excluded from maintenance
+not ok 44 - M1c the revocation helper is private, search-path hardened and excluded from maintenance
+  ---
+  duration_ms: 0.035544
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:204:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c the revocation helper rejects malformed hashes without accepting another selector
+not ok 45 - M1c the revocation helper rejects malformed hashes without accepting another selector
+  ---
+  duration_ms: 0.032178
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:211:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1c concurrent termination is idempotent and does not affect peer sessions
+not ok 46 - M1c concurrent termination is idempotent and does not affect peer sessions
+  ---
+  duration_ms: 0.032709
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:214:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d real catalog returns only authorized account labels in each workspace
+not ok 47 - M1d real catalog returns only authorized account labels in each workspace
+  ---
+  duration_ms: 0.034562
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:224:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d forbidden account filters are denied in both service and private helper
+not ok 48 - M1d forbidden account filters are denied in both service and private helper
+  ---
+  duration_ms: 0.032169
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:230:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d a selected foreign workspace cannot override the transaction workspace
+not ok 49 - M1d a selected foreign workspace cannot override the transaction workspace
+  ---
+  duration_ms: 0.031297
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:234:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d revoking a live account grant clears catalog despite a cached principal
+not ok 50 - M1d revoking a live account grant clears catalog despite a cached principal
+  ---
+  duration_ms: 0.031758
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:238:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d machine discovery respects its live account binding and product instance
+not ok 51 - M1d machine discovery respects its live account binding and product instance
+  ---
+  duration_ms: 1.545994
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:243:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d removing contexts scope denies SQL discovery even with old principal scopes
+not ok 52 - M1d removing contexts scope denies SQL discovery even with old principal scopes
+  ---
+  duration_ms: 0.070907
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:249:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d disabled coverage disappears from real catalog
+not ok 53 - M1d disabled coverage disappears from real catalog
+  ---
+  duration_ms: 0.056275
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:254:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d suspension after catalog selection still blocks the actual creation
+not ok 54 - M1d suspension after catalog selection still blocks the actual creation
+  ---
+  duration_ms: 0.052349
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:259:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d duplicate eligible coverages remain one option but resolution stays ambiguous
+not ok 55 - M1d duplicate eligible coverages remain one option but resolution stays ambiguous
+  ---
+  duration_ms: 0.05285
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:265:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d real composite cursor follows UTF-8 C order without duplicates
+not ok 56 - M1d real composite cursor follows UTF-8 C order without duplicates
+  ---
+  duration_ms: 0.046701
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:270:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d private catalog rejects partial cursor tuples and invalid page bounds
+not ok 57 - M1d private catalog rejects partial cursor tuples and invalid page bounds
+  ---
+  duration_ms: 0.04685
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:279:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d catalog helper is private and gives no new direct catalogue table grants
+not ok 58 - M1d catalog helper is private and gives no new direct catalogue table grants
+  ---
+  duration_ms: 0.049004
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:282:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d catalog truncates Unicode labels by characters, not UTF-16 units
+not ok 59 - M1d catalog truncates Unicode labels by characters, not UTF-16 units
+  ---
+  duration_ms: 0.057036
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:290:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: M1d discovery does not create tickets, events or outbox side effects
+not ok 60 - M1d discovery does not create tickets, events or outbox side effects
+  ---
+  duration_ms: 0.047712
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:295:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL busca filtra antes do limite e encontra chamado antigo entre 31 criações
+not ok 61 - SQL busca filtra antes do limite e encontra chamado antigo entre 31 criações
+  ---
+  duration_ms: 0.045048
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:301:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL busca mantém autorização de conta/workspace mesmo conhecendo UUID
+not ok 62 - SQL busca mantém autorização de conta/workspace mesmo conhecendo UUID
+  ---
+  duration_ms: 0.051208
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:309:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL busca não encontra nota interna, mensagem ou descrição
+not ok 63 - SQL busca não encontra nota interna, mensagem ou descrição
+  ---
+  duration_ms: 0.051518
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:314:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL busca perde acesso imediatamente na próxima consulta após revogação
+not ok 64 - SQL busca perde acesso imediatamente na próxima consulta após revogação
+  ---
+  duration_ms: 0.050015
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:320:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL filtros públicos agregam espera interna sem expor seletor privado
+not ok 65 - SQL filtros públicos agregam espera interna sem expor seletor privado
+  ---
+  duration_ms: 0.04652
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:326:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL trata curingas e aspas literalmente sem ampliar escopo
+not ok 66 - SQL trata curingas e aspas literalmente sem ampliar escopo
+  ---
+  duration_ms: 0.045298
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:333:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL e memória concordam na busca latina sem depender da locale do banco
+not ok 67 - SQL e memória concordam na busca latina sem depender da locale do banco
+  ---
+  duration_ms: 0.077096
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:338:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL prioridade e assunto são aplicados em conjunto no escopo da integração
+not ok 68 - SQL prioridade e assunto são aplicados em conjunto no escopo da integração
+  ---
+  duration_ms: 0.037025
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:343:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL priority mutation records one versioned event and minimal outbox with immutable contract
+not ok 69 - SQL priority mutation records one versioned event and minimal outbox with immutable contract
+  ---
+  duration_ms: 0.028113
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:352:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL requester cannot write priority even by bypassing the application
+not ok 70 - SQL requester cannot write priority even by bypassing the application
+  ---
+  duration_ms: 0.028513
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:357:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL integration cannot write its own ticket priority
+not ok 71 - SQL integration cannot write its own ticket priority
+  ---
+  duration_ms: 0.025629
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:358:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL operator mutation without event and outbox cannot commit
+not ok 72 - SQL operator mutation without event and outbox cannot commit
+  ---
+  duration_ms: 0.028393
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:359:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL operator event without matching outbox cannot commit
+not ok 73 - SQL operator event without matching outbox cannot commit
+  ---
+  duration_ms: 0.027662
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:360:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL repeated priority request returns original version without another event
+not ok 74 - SQL repeated priority request returns original version without another event
+  ---
+  duration_ms: 0.042374
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:363:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL same-priority no-op records cache but not event/outbox or new version
+not ok 75 - SQL same-priority no-op records cache but not event/outbox or new version
+  ---
+  duration_ms: 0.027151
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:364:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL two concurrent priority updates cannot silently overwrite a version
+not ok 76 - SQL two concurrent priority updates cannot silently overwrite a version
+  ---
+  duration_ms: 0.02646
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:365:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL priority cache denies a former operator who can still read the account
+not ok 77 - SQL priority cache denies a former operator who can still read the account
+  ---
+  duration_ms: 0.027692
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:366:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL sibling account cannot insert a priority event into a known ticket
+not ok 78 - SQL sibling account cannot insert a priority event into a known ticket
+  ---
+  duration_ms: 0.033881
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:371:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL priority event shape denies reason-less and extra-private payloads
+not ok 79 - SQL priority event shape denies reason-less and extra-private payloads
+  ---
+  duration_ms: 0.025428
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:372:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL priority outbox forbids accidental internal reason propagation
+not ok 80 - SQL priority outbox forbids accidental internal reason propagation
+  ---
+  duration_ms: 0.025708
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:373:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL terminal status blocks operator priority update independently of UI
+not ok 81 - SQL terminal status blocks operator priority update independently of UI
+  ---
+  duration_ms: 0.027632
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:374:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL column grant and private trigger privileges remain least privilege
+not ok 82 - SQL column grant and private trigger privileges remain least privilege
+  ---
+  duration_ms: 0.031998
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:375:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL claim persists assignee, private event and no outbound event
+not ok 83 - SQL claim persists assignee, private event and no outbound event
+  ---
+  duration_ms: 0.028543
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:390:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assigned ownership is invisible in requester timeline
+not ok 84 - SQL assigned ownership is invisible in requester timeline
+  ---
+  duration_ms: 0.025439
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:391:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL release by owner removes assignment with a second event
+not ok 85 - SQL release by owner removes assignment with a second event
+  ---
+  duration_ms: 0.034612
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:392:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL occupied claim and release by another agent are denied
+not ok 86 - SQL occupied claim and release by another agent are denied
+  ---
+  duration_ms: 0.037727
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:393:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL administrator may release but not steal occupied ticket
+not ok 87 - SQL administrator may release but not steal occupied ticket
+  ---
+  duration_ms: 0.028533
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:394:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL requester cannot bypass API to claim
+not ok 88 - SQL requester cannot bypass API to claim
+  ---
+  duration_ms: 0.025569
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:395:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL M2M cannot bypass API to assign even its own ticket
+not ok 89 - SQL M2M cannot bypass API to assign even its own ticket
+  ---
+  duration_ms: 0.025288
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:396:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL cross-account principal assignment target is refused
+not ok 90 - SQL cross-account principal assignment target is refused
+  ---
+  duration_ms: 0.028603
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:397:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assignment cannot commit without its private event
+not ok 91 - SQL assignment cannot commit without its private event
+  ---
+  duration_ms: 0.027852
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:398:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL two agents racing a version yield one successful assignment
+not ok 92 - SQL two agents racing a version yield one successful assignment
+  ---
+  duration_ms: 0.026029
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:399:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL identical concurrent claim returns a replay without another event
+not ok 93 - SQL identical concurrent claim returns a replay without another event
+  ---
+  duration_ms: 0.025529
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:400:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL replay remains the old assignment snapshot after release
+not ok 94 - SQL replay remains the old assignment snapshot after release
+  ---
+  duration_ms: 0.027231
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:401:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL no-op keeps version and writes no assignment event
+not ok 95 - SQL no-op keeps version and writes no assignment event
+  ---
+  duration_ms: 0.027101
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:402:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assignee whose grant is revoked cannot read or use assignment cache
+not ok 96 - SQL assignee whose grant is revoked cannot read or use assignment cache
+  ---
+  duration_ms: 0.03339
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:403:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL terminal and combined status-assignment updates are refused
+not ok 97 - SQL terminal and combined status-assignment updates are refused
+  ---
+  duration_ms: 0.026259
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:404:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL internal assignment cannot enter outbox
+not ok 98 - SQL internal assignment cannot enter outbox
+  ---
+  duration_ms: 0.028673
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:405:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assignment event requires exact shape and private visibility
+not ok 99 - SQL assignment event requires exact shape and private visibility
+  ---
+  duration_ms: 0.027842
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:406:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assignment grants remain narrow and trigger functions inaccessible
+not ok 100 - SQL assignment grants remain narrow and trigger functions inaccessible
+  ---
+  duration_ms: 0.027962
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:407:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses extra table-level credential access
+not ok 101 - startup refuses extra table-level credential access
+  ---
+  duration_ms: 0.025739
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:417:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses extra credential-column access without a table grant
+not ok 102 - startup refuses extra credential-column access without a table grant
+  ---
+  duration_ms: 0.027352
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:420:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses extra update permission on ticket identity
+not ok 103 - startup refuses extra update permission on ticket identity
+  ---
+  duration_ms: 0.026891
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:423:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses grant option while ordinary SELECT remains required
+not ok 104 - startup refuses grant option while ordinary SELECT remains required
+  ---
+  duration_ms: 0.028483
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:426:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses disabled deferred creation invariant
+not ok 105 - startup refuses disabled deferred creation invariant
+  ---
+  duration_ms: 0.025718
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:429:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses disabled deferred assignment invariant
+not ok 106 - startup refuses disabled deferred assignment invariant
+  ---
+  duration_ms: 0.024317
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:432:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses an additional permissive policy
+not ok 107 - startup refuses an additional permissive policy
+  ---
+  duration_ms: 0.02668
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:435:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses exposing the maintenance function to the HTTP role
+not ok 108 - startup refuses exposing the maintenance function to the HTTP role
+  ---
+  duration_ms: 0.027312
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:438:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses a private helper search_path change
+not ok 109 - startup refuses a private helper search_path change
+  ---
+  duration_ms: 0.027431
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:441:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses missing required public-conversation SELECT
+not ok 110 - startup refuses missing required public-conversation SELECT
+  ---
+  duration_ms: 0.025288
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:444:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: startup refuses app CREATE inside a private schema
+not ok 111 - startup refuses app CREATE inside a private schema
+  ---
+  duration_ms: 0.027371
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:447:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL mine filter returns the assigned ticket before pagination
+not ok 112 - SQL mine filter returns the assigned ticket before pagination
+  ---
+  duration_ms: 0.027802
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:457:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL unassigned filter omits an assigned ticket visible without the filter
+not ok 113 - SQL unassigned filter omits an assigned ticket visible without the filter
+  ---
+  duration_ms: 0.027622
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:461:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL release returns the ticket to the unassigned view
+not ok 114 - SQL release returns the ticket to the unassigned view
+  ---
+  duration_ms: 0.02613
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:465:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL assignment filter observes a live operator downgrade
+not ok 115 - SQL assignment filter observes a live operator downgrade
+  ---
+  duration_ms: 0.026039
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:471:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL requester cannot use operator assignment selection
+not ok 116 - SQL requester cannot use operator assignment selection
+  ---
+  duration_ms: 0.027611
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:477:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL a different workspace sees no result for a known assigned ticket
+not ok 117 - SQL a different workspace sees no result for a known assigned ticket
+  ---
+  duration_ms: 0.02703
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:481:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 membership without a capability revision has no implicit scope
+not ok 118 - v015 membership without a capability revision has no implicit scope
+  ---
+  duration_ms: 0.024497
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:500:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 explicit read-only operator can read but not mutate or create
+not ok 119 - v015 explicit read-only operator can read but not mutate or create
+  ---
+  duration_ms: 0.027291
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:505:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 stale application scopes cannot bypass the current DB capability ceiling
+not ok 120 - v015 stale application scopes cannot bypass the current DB capability ceiling
+  ---
+  duration_ms: 0.027391
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:516:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 write-only notes yield an author receipt and replay without collection read
+not ok 121 - v015 write-only notes yield an author receipt and replay without collection read
+  ---
+  duration_ms: 0.027752
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:524:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 a note receipt is not shared with another write-only operator
+not ok 122 - v015 a note receipt is not shared with another write-only operator
+  ---
+  duration_ms: 0.027641
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:533:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 revoking note write denies receipt even when collection read remains
+not ok 123 - v015 revoking note write denies receipt even when collection read remains
+  ---
+  duration_ms: 0.025028
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:538:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 revoking note collection read preserves write receipt for author
+not ok 124 - v015 revoking note collection read preserves write receipt for author
+  ---
+  duration_ms: 0.024767
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:543:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 empty scope revision denies previous ticket access without changing the ticket
+not ok 125 - v015 empty scope revision denies previous ticket access without changing the ticket
+  ---
+  duration_ms: 0.027532
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:547:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 workspace administrator still requires explicitly granted capabilities
+not ok 126 - v015 workspace administrator still requires explicitly granted capabilities
+  ---
+  duration_ms: 0.027792
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:551:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 HTTP login cannot read, append or update the scope history
+not ok 127 - v015 HTTP login cannot read, append or update the scope history
+  ---
+  duration_ms: 0.027772
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:555:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 scope getter and guard are not callable by HTTP or maintenance roles
+not ok 128 - v015 scope getter and guard are not callable by HTTP or maintenance roles
+  ---
+  duration_ms: 0.026009
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:561:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 stale expected revision fails without altering existing audit history
+not ok 129 - v015 stale expected revision fails without altering existing audit history
+  ---
+  duration_ms: 0.030166
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:566:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 concurrent provisioning of the same revision has exactly one winner
+not ok 130 - v015 concurrent provisioning of the same revision has exactly one winner
+  ---
+  duration_ms: 0.026771
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:569:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 history stores the real SQL session identity, reason and correlation
+not ok 131 - v015 history stores the real SQL session identity, reason and correlation
+  ---
+  duration_ms: 0.027432
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:574:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 existing capability revisions are append-only even for ordinary owner DML
+not ok 132 - v015 existing capability revisions are append-only even for ordinary owner DML
+  ---
+  duration_ms: 0.070136
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:579:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 malformed capabilities never produce an audit revision
+not ok 133 - v015 malformed capabilities never produce an audit revision
+  ---
+  duration_ms: 0.044217
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:584:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 capability revisions do not grant access to another workspace
+not ok 134 - v015 capability revisions do not grant access to another workspace
+  ---
+  duration_ms: 0.042565
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:587:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 suspended membership can be revoked without restoring access
+not ok 135 - v015 suspended membership can be revoked without restoring access
+  ---
+  duration_ms: 1.193091
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:592:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v015 an integration principal cannot receive a human scope revision
+not ok 136 - v015 an integration principal cannot receive a human scope revision
+  ---
+  duration_ms: 0.054513
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:596:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted message event rejects and preserves all prior rows
+not ok 137 - SQL016 omitted message event rejects and preserves all prior rows
+  ---
+  duration_ms: 0.042023
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:620:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted note event rejects and preserves all prior rows
+not ok 138 - SQL016 omitted note event rejects and preserves all prior rows
+  ---
+  duration_ms: 0.037627
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:620:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted status event rejects and preserves all prior rows
+not ok 139 - SQL016 omitted status event rejects and preserves all prior rows
+  ---
+  duration_ms: 0.035354
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:620:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted priority event rejects and preserves all prior rows
+not ok 140 - SQL016 omitted priority event rejects and preserves all prior rows
+  ---
+  duration_ms: 0.05955
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:620:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted assignment event rejects and preserves all prior rows
+not ok 141 - SQL016 omitted assignment event rejects and preserves all prior rows
+  ---
+  duration_ms: 0.027541
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:620:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted message outbox rejects even with a correct event
+not ok 142 - SQL016 omitted message outbox rejects even with a correct event
+  ---
+  duration_ms: 0.023605
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:626:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted status outbox rejects even with a correct event
+not ok 143 - SQL016 omitted status outbox rejects even with a correct event
+  ---
+  duration_ms: 0.023395
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:626:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 omitted priority outbox rejects even with a correct event
+not ok 144 - SQL016 omitted priority outbox rejects even with a correct event
+  ---
+  duration_ms: 0.022133
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:626:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 creation cannot commit if the application silently omits its event
+not ok 145 - SQL016 creation cannot commit if the application silently omits its event
+  ---
+  duration_ms: 0.022804
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:631:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 direct status change fails at COMMIT without a corresponding new event/outbox
+not ok 146 - SQL016 direct status change fails at COMMIT without a corresponding new event/outbox
+  ---
+  duration_ms: 0.022644
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:637:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 direct note insert fails at COMMIT without its private functional event
+not ok 147 - SQL016 direct note insert fails at COMMIT without its private functional event
+  ---
+  duration_ms: 0.022744
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:641:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 message with no parent-version advance cannot commit
+not ok 148 - SQL016 message with no parent-version advance cannot commit
+  ---
+  duration_ms: 0.022314
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:646:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 an empty version bump cannot commit without a newly inserted public message
+not ok 149 - SQL016 an empty version bump cannot commit without a newly inserted public message
+  ---
+  duration_ms: 0.022274
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:651:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 an event from an earlier committed write cannot stand in for a new message event
+not ok 150 - SQL016 an event from an earlier committed write cannot stand in for a new message event
+  ---
+  duration_ms: 0.022714
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:655:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 event actor corruption rolls back the new public message
+not ok 151 - SQL016 event actor corruption rolls back the new public message
+  ---
+  duration_ms: 0.022444
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:660:58'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 event data corruption rolls back the new public message
+not ok 152 - SQL016 event data corruption rolls back the new public message
+  ---
+  duration_ms: 0.021883
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:660:58'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 event duplicate corruption rolls back the new public message
+not ok 153 - SQL016 event duplicate corruption rolls back the new public message
+  ---
+  duration_ms: 0.022644
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:660:58'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 outbox version corruption is not a valid counterpart
+not ok 154 - SQL016 outbox version corruption is not a valid counterpart
+  ---
+  duration_ms: 0.022203
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:667:68'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 outbox extra corruption is not a valid counterpart
+not ok 155 - SQL016 outbox extra corruption is not a valid counterpart
+  ---
+  duration_ms: 0.022584
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:667:68'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 outbox duplicate corruption is not a valid counterpart
+not ok 156 - SQL016 outbox duplicate corruption is not a valid counterpart
+  ---
+  duration_ms: 0.023105
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:667:68'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 outbox time corruption is not a valid counterpart
+not ok 157 - SQL016 outbox time corruption is not a valid counterpart
+  ---
+  duration_ms: 0.022694
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:667:68'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 private note cannot generate an external outbox record
+not ok 158 - SQL016 private note cannot generate an external outbox record
+  ---
+  duration_ms: 0.022244
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:674:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 app cannot read or modify private effect receipts
+not ok 159 - SQL016 app cannot read or modify private effect receipts
+  ---
+  duration_ms: 0.051247
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:679:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 client and maintenance roles cannot invoke receipt functions
+not ok 160 - SQL016 client and maintenance roles cannot invoke receipt functions
+  ---
+  duration_ms: 0.024797
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:682:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 a committed message has one complete receipt joined to one matching event/outbox
+not ok 161 - SQL016 a committed message has one complete receipt joined to one matching event/outbox
+  ---
+  duration_ms: 0.022855
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:685:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 no-op and idempotent replay add no receipt
+not ok 162 - SQL016 no-op and idempotent replay add no receipt
+  ---
+  duration_ms: 0.022955
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:690:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 multiple application commands in one transaction bind distinct receipts and versions
+not ok 163 - SQL016 multiple application commands in one transaction bind distinct receipts and versions
+  ---
+  duration_ms: 0.022344
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:696:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 savepoint rollback removes its pending receipt before a valid note is committed
+not ok 164 - SQL016 savepoint rollback removes its pending receipt before a valid note is committed
+  ---
+  duration_ms: 0.022284
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:707:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL016 disabled completion trigger is refused by runtime readiness
+not ok 165 - SQL016 disabled completion trigger is refused by runtime readiness
+  ---
+  duration_ms: 0.021923
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:719:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation
+not ok 166 - SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation
+  ---
+  duration_ms: 0.022724
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:744:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 keyset list reaches all tickets within one millisecond
+not ok 167 - SQL017 keyset list reaches all tickets within one millisecond
+  ---
+  duration_ms: 0.022334
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:750:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 messages pagination keeps every sub-millisecond row with the real app role
+not ok 168 - SQL017 messages pagination keeps every sub-millisecond row with the real app role
+  ---
+  duration_ms: 0.022193
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:757:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 notes pagination keeps every sub-millisecond row with the real app role
+not ok 169 - SQL017 notes pagination keeps every sub-millisecond row with the real app role
+  ---
+  duration_ms: 0.022203
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:757:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 timeline pagination keeps every sub-millisecond row with the real app role
+not ok 170 - SQL017 timeline pagination keeps every sub-millisecond row with the real app role
+  ---
+  duration_ms: 0.022043
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:757:60'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 equal timestamps with three and six input digits use UUID tie-break without dropping rows
+not ok 171 - SQL017 equal timestamps with three and six input digits use UUID tie-break without dropping rows
+  ---
+  duration_ms: 0.027752
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:773:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 projection remains canonical UTC even on a connection with another TimeZone
+not ok 172 - SQL017 projection remains canonical UTC even on a connection with another TimeZone
+  ---
+  duration_ms: 0.027952
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:781:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL017 replay preserves the exact original creation instant after a real database roundtrip
+not ok 173 - SQL017 replay preserves the exact original creation instant after a real database roundtrip
+  ---
+  duration_ms: 0.022985
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:789:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 note-only human sees ticket in SELECT but not through SELECT FOR UPDATE
+not ok 174 - v018 note-only human sees ticket in SELECT but not through SELECT FOR UPDATE
+  ---
+  duration_ms: 0.022624
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:806:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 private parent lock coexists with an existing foreign-key KEY SHARE lock
+not ok 175 - v018 private parent lock coexists with an existing foreign-key KEY SHARE lock
+  ---
+  duration_ms: 0.022764
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:816:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 two note-only operators create distinct receipts concurrently without a public outbox
+not ok 176 - v018 two note-only operators create distinct receipts concurrently without a public outbox
+  ---
+  duration_ms: 0.060621
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:824:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 same-author concurrent note retries preserve one receipt and one effect
+not ok 177 - v018 same-author concurrent note retries preserve one receipt and one effect
+  ---
+  duration_ms: 0.041293
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:832:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of every new effect
+not ok 178 - v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of every new effect
+  ---
+  duration_ms: 0.037727
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:838:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 valid zero-row optimistic UPDATE remains conflict and leaves state intact
+not ok 179 - v018 valid zero-row optimistic UPDATE remains conflict and leaves state intact
+  ---
+  duration_ms: 0.037838
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:857:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: v018 replacement conversation hook retains private execution and empty search_path
+not ok 180 - v018 replacement conversation hook retains private execution and empty search_path
+  ---
+  duration_ms: 0.038618
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:862:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL019 locked coverage preserves a future microsecond start rather than granting early eligibility
+not ok 181 - SQL019 locked coverage preserves a future microsecond start rather than granting early eligibility
+  ---
+  duration_ms: 0.040131
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:884:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL019 expiry after the clock within the same millisecond remains eligible
+not ok 182 - SQL019 expiry after the clock within the same millisecond remains eligible
+  ---
+  duration_ms: 0.060702
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:891:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL019 a single-microsecond interval has inclusive start and exclusive end after JSONB transport
+not ok 183 - SQL019 a single-microsecond interval has inclusive start and exclusive end after JSONB transport
+  ---
+  duration_ms: 0.05985
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:897:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL019 non-UTC PostgreSQL session output is compared without truncation or source mutation
+not ok 184 - SQL019 non-UTC PostgreSQL session output is compared without truncation or source mutation
+  ---
+  duration_ms: 0.027271
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:903:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result
+not ok 185 - SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result
+  ---
+  duration_ms: 0.023004
+  type: 'test'
+  location: '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:914:1'
+  failureType: 'hookFailed'
+  error: "Cannot read properties of undefined (reading 'query')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:55:14)
+    TestHook.runInAsyncScope (node:async_hooks:214:14)
+    TestHook.run (node:internal/test_runner/test:1047:25)
+    TestHook.run (node:internal/test_runner/test:1354:18)
+    TestHook.run (node:internal/util:580:20)
+    Test.createHook (node:internal/test_runner/test:872:33)
+    node:internal/test_runner/harness:335:12
+    file:///home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/supabase/tests/rls.test.ts:53:1
+  ...
+# Subtest: upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date
+ok 186 - upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date
+  ---
+  duration_ms: 228.458501
+  type: 'test'
+  ...
+# Subtest: upgrade exposes schema 0.18.0 to a restricted real request login
+ok 187 - upgrade exposes schema 0.18.0 to a restricted real request login
+  ---
+  duration_ms: 23.074659
+  type: 'test'
+  ...
+# Subtest: legacy ticket receives null assignment without changing its version or policy
+ok 188 - legacy ticket receives null assignment without changing its version or policy
+  ---
+  duration_ms: 5.915369
+  type: 'test'
+  ...
+# Subtest: legacy idempotency replay retains its old snapshot without synthesizing assignment
+ok 189 - legacy idempotency replay retains its old snapshot without synthesizing assignment
+  ---
+  duration_ms: 8.535444
+  type: 'test'
+  ...
+# Subtest: public conversation remains readable while old internal note is denied to customer
+ok 190 - public conversation remains readable while old internal note is denied to customer
+  ---
+  duration_ms: 14.65423
+  type: 'test'
+  ...
+# Subtest: live revocation still denies old replay after schema upgrade
+ok 191 - live revocation still denies old replay after schema upgrade
+  ---
+  duration_ms: 4.493152
+  type: 'test'
+  ...
+# Subtest: new assignment works on a legacy ticket without rewriting its policy or publishing an event
+ok 192 - new assignment works on a legacy ticket without rewriting its policy or publishing an event
+  ---
+  duration_ms: 37.01364
+  type: 'test'
+  ...
+# Subtest: creation replay after assignment is still the original response, not a second mutation
+ok 193 - creation replay after assignment is still the original response, not a second mutation
+  ---
+  duration_ms: 9.173847
+  type: 'test'
+  ...
+# Subtest: upgrade009 backfills exactly the previously active human workspace relationships
+ok 194 - upgrade009 backfills exactly the previously active human workspace relationships
+  ---
+  duration_ms: 1.692905
+  type: 'test'
+  ...
+# Subtest: upgrade009 resolves the same existing user while obtaining scopes from its first revision
+ok 195 - upgrade009 resolves the same existing user while obtaining scopes from its first revision
+  ---
+  duration_ms: 1.649049
+  type: 'test'
+  ...
+# Subtest: upgrade010 creates no synthetic receipts for historical messages/events
+ok 196 - upgrade010 creates no synthetic receipts for historical messages/events
+  ---
+  duration_ms: 0.155045
+  type: 'test'
+  ...
+# Subtest: upgrade010 records the new assignment on a legacy ticket without public outbox
+ok 197 - upgrade010 records the new assignment on a legacy ticket without public outbox
+  ---
+  duration_ms: 1.217648
+  type: 'test'
+  ...
+# Subtest: upgrade010 replay of legacy creation does not create a retrospective receipt
+ok 198 - upgrade010 replay of legacy creation does not create a retrospective receipt
+  ---
+  duration_ms: 16.80776
+  type: 'test'
+  ...
+# Subtest: upgrade010 new public response on an old ticket has matched event and outbox
+ok 199 - upgrade010 new public response on an old ticket has matched event and outbox
+  ---
+  duration_ms: 29.481941
+  type: 'test'
+  ...
+# Subtest: upgrade011 preserves stored rows, owner, ACL and private trigger configuration
+ok 200 - upgrade011 preserves stored rows, owner, ACL and private trigger configuration
+  ---
+  duration_ms: 0.243067
+  type: 'test'
+  ...
+# Subtest: upgrade011 note-only operator writes and replays on the legacy ticket without public write or collection read
+ok 201 - upgrade011 note-only operator writes and replays on the legacy ticket without public write or collection read
+  ---
+  duration_ms: 33.925658
+  type: 'test'
+  ...
+1..201
+# tests 201
+# suites 0
+# pass 16
+# fail 185
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1550.218213
+
