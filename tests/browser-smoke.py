@@ -145,18 +145,20 @@ with sync_playwright() as p:
     page.locator('#profile').select_option('agent')
     expect(page.locator('#stat-total')).to_have_text('2')
     held_history=[]
-    def hold_history(route): held_history.append(route)
+    def hold_history(route):
+        if not held_history: held_history.append(route)
+        else: route.continue_()
     page.route('**/v1/tickets/*/timeline?*',hold_history)
     with page.expect_request(lambda r: '/timeline?' in r.url):
         page.locator('#history-section summary').click()
     page.wait_for_timeout(50)
     assert held_history
-    page.unroute('**/v1/tickets/*/timeline?*',hold_history)
     page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
     expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
     page.locator('#history-section summary').click()
     expect(page.locator('#history-list')).to_contain_text('Chamado aberto')
-    held_history.pop(0).continue_()
+    held_history[0].continue_()
+    page.unroute('**/v1/tickets/*/timeline?*',hold_history)
     page.wait_for_load_state('networkidle')
     expect(page.locator('#history-list')).not_to_contain_text('Prioridade alterada')
     page.get_by_role('button',name='Abrir chamado: Relatório de ensaio não foi concluído',exact=True).click()
@@ -333,19 +335,21 @@ with sync_playwright() as p:
     record('Customer profile hides responsibility filters and resets the previous selection')
     # A late response from a closed dialog must not replace a newer profile's catalogue.
     held_catalog=[]
-    def hold_catalog(route): held_catalog.append(route)
+    def hold_catalog(route):
+        if not held_catalog: held_catalog.append(route)
+        else: route.continue_()
     page.route('**/v1/support-contexts?*',hold_catalog)
     with page.expect_request(lambda r: '/v1/support-contexts?' in r.url):
         page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
     page.wait_for_timeout(50)
     assert held_catalog
     page.locator('#cancel-create').click()
-    page.unroute('**/v1/support-contexts?*',hold_catalog)
     page.locator('#profile').select_option('laboratory')
     expect(page.locator('#stat-total')).to_have_text('2')
     page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
     expect(page.locator('#context-choice')).to_contain_text('Laboratório Horizonte')
-    held_catalog.pop(0).continue_()
+    held_catalog[0].continue_()
+    page.unroute('**/v1/support-contexts?*',hold_catalog)
     page.wait_for_load_state('networkidle')
     expect(page.locator('#context-choice')).not_to_contain_text('Escola Caminhos')
     expect(page.locator('#context-choice')).not_to_have_value('')

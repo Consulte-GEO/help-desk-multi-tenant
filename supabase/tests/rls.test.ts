@@ -14,7 +14,7 @@ before(async()=>{const moduleName='pg';const driver=await import(moduleName) as 
  const version=Number((await admin.query("select current_setting('server_version_num') as version")).rows[0]?.version);if(version<170000||version>=180000)throw Error('This suite requires PostgreSQL 17.');
  const existing=await admin.query("select 1 from pg_namespace where nspname like 'helpdesk_%'");if(existing.rows.length)throw Error('Use a FRESH helpdesk_test database. This test never drops existing schemas.');
  for(const migration of migrationBundle.migrations)await admin.query(migration.sql);
- const password=decodeURIComponent(new URL(appUrl).password);const command=(await admin.query("select format('alter role helpdesk_app login password %L',$1) as command",[password])).rows[0]!.command;await admin.query(String(command));
+ const password=decodeURIComponent(new URL(appUrl).password);const command=(await admin.query("select format('alter role helpdesk_app login password %L',$1::text) as command",[password])).rows[0]!.command;await admin.query(String(command));
  await admin.query(`insert into helpdesk_core.workspaces(id,name) values($1,'Workspace A'),($2,'Workspace B')`,[id(1),id(2)]);
  for(const who of [11,12,13,14])await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[id(who),id(1000+who)]);
  await admin.query("insert into helpdesk_auth.principals(id,kind) values($1,'integration')",[id(15)]);
@@ -842,7 +842,7 @@ test('v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of ev
  try{
   await admin.query('revoke all on function helpdesk_integration.v018_suppress_receipt() from public,helpdesk_app');
   // Fixed developer-created test trigger; scoped to this test's generated key, never a remote DB.
-  const ddl=(await admin.query("select format('create trigger v018_suppress_receipt before insert on helpdesk_integration.api_idempotency_keys for each row execute function helpdesk_integration.v018_suppress_receipt(%L)', $1) as ddl",[key])).rows[0]!.ddl;
+  const ddl=(await admin.query("select format('create trigger v018_suppress_receipt before insert on helpdesk_integration.api_idempotency_keys for each row execute function helpdesk_integration.v018_suppress_receipt(%L)', $1::text) as ddl",[key])).rows[0]!.ddl;
   await admin.query(String(ddl));
   await assert.rejects(()=>service.addNote(who,ticketId,'Must roll back',key,'v018'),{status:503,code:'invalid_database_write_result'});
   assert.deepEqual(await v018State(ticketId),before);

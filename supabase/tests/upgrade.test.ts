@@ -47,7 +47,7 @@ before(async()=>{
  for(const migration of bundle.migrations.slice(0,7))await admin.query(migration.sql);
  assert.equal((await admin.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.8.0');
  assert.equal((await admin.query("select 1 from information_schema.columns where table_schema='helpdesk_core' and table_name='tickets' and column_name='assigned_to'")).rows.length,0);
- const login=(await admin.query('select format(\'alter role helpdesk_app login password %L\',$1) as command',[decodeURIComponent(new URL(targets.appUrl).password)])).rows[0]?.command;
+ const login=(await admin.query('select format(\'alter role helpdesk_app login password %L\',$1::text) as command',[decodeURIComponent(new URL(targets.appUrl).password)])).rows[0]?.command;
  await admin.query(String(login));
  const createdAt=new Date().toISOString(),snapshot={contractId:id(501),version:1,policy:{marker:'historic-policy'}};
  original={id:id(901),workspaceId:id(1),accountId:id(101),productInstanceId:id(401),serviceCode:'SUPPORT',createdBy:id(11),...{subject:input.subject,description:input.description},status:'new',priority:'normal',version:1,coverageId:id(701),contractVersionId:id(601),contractSnapshot:snapshot,createdAt,updatedAt:createdAt};

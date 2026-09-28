@@ -1,0 +1,176 @@
+homologation	Set up job	﻿2026-09-28T19:56:52.4852997Z Current runner version: '2.337.0'
+homologation	Set up job	2026-09-28T19:56:52.4878110Z ##[group]Runner Image Provisioner
+homologation	Set up job	2026-09-28T19:56:52.4878912Z Hosted Compute Agent
+homologation	Set up job	2026-09-28T19:56:52.4879454Z Version: 20260828.587
+homologation	Set up job	2026-09-28T19:56:52.4880133Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+homologation	Set up job	2026-09-28T19:56:52.4880773Z Build Date: 2026-08-28T16:44:25Z
+homologation	Set up job	2026-09-28T19:56:52.4881433Z Worker ID: {63fa0b5e-5009-40aa-b9e8-a55a7bb416f3}
+homologation	Set up job	2026-09-28T19:56:52.4882064Z Azure Region: westus3
+homologation	Set up job	2026-09-28T19:56:52.4882594Z ##[endgroup]
+homologation	Set up job	2026-09-28T19:56:52.4884524Z ##[group]Operating System
+homologation	Set up job	2026-09-28T19:56:52.4885149Z Ubuntu
+homologation	Set up job	2026-09-28T19:56:52.4885661Z 24.04.5
+homologation	Set up job	2026-09-28T19:56:52.4886121Z LTS
+homologation	Set up job	2026-09-28T19:56:52.4886614Z ##[endgroup]
+homologation	Set up job	2026-09-28T19:56:52.4887160Z ##[group]Runner Image
+homologation	Set up job	2026-09-28T19:56:52.4887732Z Image: ubuntu-24.04
+homologation	Set up job	2026-09-28T19:56:52.4888609Z Version: 20260920.314.1
+homologation	Set up job	2026-09-28T19:56:52.4889587Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+homologation	Set up job	2026-09-28T19:56:52.4891395Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+homologation	Set up job	2026-09-28T19:56:52.4892274Z ##[endgroup]
+homologation	Set up job	2026-09-28T19:56:52.4893465Z ##[group]GITHUB_TOKEN Permissions
+homologation	Set up job	2026-09-28T19:56:52.4895513Z Contents: read
+homologation	Set up job	2026-09-28T19:56:52.4896120Z Metadata: read
+homologation	Set up job	2026-09-28T19:56:52.4896634Z ##[endgroup]
+homologation	Set up job	2026-09-28T19:56:52.4898555Z Secret source: Actions
+homologation	Set up job	2026-09-28T19:56:52.4899537Z Cache mode: write
+homologation	Set up job	2026-09-28T19:56:52.4900163Z Prepare workflow directory
+homologation	Set up job	2026-09-28T19:56:52.6450454Z Prepare all required actions
+homologation	Set up job	2026-09-28T19:56:52.6556816Z Getting action download info
+homologation	Set up job	2026-09-28T19:56:52.9935431Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+homologation	Set up job	2026-09-28T19:56:53.1773510Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+homologation	Set up job	2026-09-28T19:56:53.3559805Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+homologation	Set up job	2026-09-28T19:56:53.6246431Z Complete job name: homologation
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-09-28T19:56:53.6803353Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6804425Z with:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6804907Z   persist-credentials: false
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6805572Z   repository: Consulte-GEO/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6810661Z   token: ***
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6811139Z   ssh-strict: true
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6811627Z   ssh-user: git
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6812098Z   clean: true
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6812598Z   sparse-checkout-cone-mode: true
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6813277Z   fetch-depth: 1
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6813753Z   fetch-tags: false
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6814250Z   show-progress: true
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6814747Z   lfs: false
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6815193Z   submodules: false
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6815710Z   set-safe-directory: true
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.6816329Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7543895Z Syncing repository: Consulte-GEO/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7548316Z ##[group]Getting Git version info
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7550193Z Working directory is '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant'
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7568776Z [command]/usr/bin/git version
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7704207Z git version 2.55.0
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7714643Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7723596Z Temporarily overriding HOME='/home/runner/work/_temp/a570bf1e-9cc2-4415-b9bb-c0f1e61ce49d' before making global git config changes
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7726316Z Adding repository directory to the temporary git global config as a safe directory
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7728796Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7825810Z Deleting the contents of '/home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant'
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7828328Z ##[group]Initializing the repository
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7853401Z [command]/usr/bin/git init /home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7964751Z hint: Using 'master' as the name for the initial branch. This default branch name
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7975579Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7977503Z hint: to use in all of your new repositories, which will suppress this warning,
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7978907Z hint: call:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7980048Z hint:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7981039Z hint: 	git config --global init.defaultBranch <name>
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7982190Z hint:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7983435Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7985113Z hint: 'development'. The just-created branch can be renamed via this command:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7986407Z hint:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7987167Z hint: 	git branch -m <name>
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7988021Z hint:
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7989151Z hint: Disable this message with "git config set advice.defaultBranchName false"
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7991335Z Initialized empty Git repository in /home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant/.git/
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.7997854Z [command]/usr/bin/git remote add origin https://github.com/Consulte-GEO/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8060427Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8062221Z ##[group]Disabling automatic garbage collection
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8063704Z [command]/usr/bin/git config --local gc.auto 0
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8096543Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8097942Z ##[group]Setting up auth
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8118771Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8143408Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8458374Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8497343Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8678361Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8715466Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8716934Z ##[group]Fetching the repository
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:53.8725451Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +636601a8ba3ac34df4f585ddcc2cc9844f245474:refs/remotes/origin/codex/m1-reproducibilidade
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1155300Z From https://github.com/Consulte-GEO/help-desk-multi-tenant
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1164222Z  * [new ref]         636601a8ba3ac34df4f585ddcc2cc9844f245474 -> origin/codex/m1-reproducibilidade
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1167019Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1173924Z ##[group]Determining the checkout info
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1174651Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1175354Z [command]/usr/bin/git sparse-checkout disable
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1217474Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1248008Z ##[group]Checking out the ref
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1251665Z [command]/usr/bin/git checkout --progress --force -B codex/m1-reproducibilidade refs/remotes/origin/codex/m1-reproducibilidade
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1859577Z Switched to a new branch 'codex/m1-reproducibilidade'
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1873383Z branch 'codex/m1-reproducibilidade' set up to track 'origin/codex/m1-reproducibilidade'.
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1879554Z ##[endgroup]
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1928362Z [command]/usr/bin/git log -1 --format=%H
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1960779Z 636601a8ba3ac34df4f585ddcc2cc9844f245474
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1968633Z ##[group]Removing auth
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.1971938Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2003638Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2196044Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2224747Z http.https://github.com/.extraheader
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2232241Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2264215Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+homologation	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:55.2448589Z ##[endgroup]
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	﻿2026-09-28T19:56:55.2647250Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2647533Z with:
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2647690Z   node-version: 22
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2647862Z   always-auth: false
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2648021Z   check-latest: false
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2649407Z   token: ***
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.2649553Z ##[endgroup]
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.3695314Z Found in cache @ /opt/hostedtoolcache/node/22.23.2/x64
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.3698477Z (node:1948) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.3699364Z (Use `node --trace-deprecation ...` to show where the warning was created)
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.3700622Z ##[group]Environment details
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.7174381Z node: v22.23.2
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.7189256Z npm: 10.9.8
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.7203449Z yarn: 1.22.22
+homologation	Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-09-28T19:56:55.7211427Z ##[endgroup]
+homologation	Prepare browser tooling in an isolated environment	﻿2026-09-28T19:56:55.7303223Z ##[group]Run python3 -m venv "$RUNNER_TEMP/helpdesk-browser"
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7303583Z ^[[36;1mpython3 -m venv "$RUNNER_TEMP/helpdesk-browser"^[[0m
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7303867Z ^[[36;1m"$RUNNER_TEMP/helpdesk-browser/bin/python" -m pip install 'playwright==1.55.1'^[[0m
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7304227Z ^[[36;1m"$RUNNER_TEMP/helpdesk-browser/bin/python" -m playwright install --with-deps chromium^[[0m
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7304525Z ^[[36;1mecho "$RUNNER_TEMP/helpdesk-browser/bin" >> "$GITHUB_PATH"^[[0m
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7611596Z shell: /usr/bin/bash -e {0}
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:55.7611826Z ##[endgroup]
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:58.2146077Z ERROR: Could not find a version that satisfies the requirement playwright==1.55.1 (from versions: 1.9.0, 1.9.1, 1.9.2, 1.10.0, 1.11.0, 1.11.1, 1.11.2, 1.12.0, 1.12.1, 1.13.0, 1.13.1, 1.14.0, 1.14.1, 1.15.0, 1.15.1, 1.15.2, 1.15.3, 1.16.0, 1.16.1, 1.17.0, 1.17.1, 1.17.2, 1.18.0, 1.18.1, 1.18.2, 1.19.0, 1.19.1, 1.20.0, 1.20.1, 1.21.0, 1.22.0, 1.23.0, 1.23.1, 1.24.0, 1.24.1, 1.25.0, 1.25.1, 1.25.2, 1.26.0, 1.26.1, 1.27.0, 1.27.1, 1.28.0, 1.29.0, 1.29.1, 1.30.0, 1.31.0, 1.31.1, 1.32.0, 1.32.1, 1.33.0, 1.34.0, 1.35.0, 1.36.0, 1.37.0, 1.38.0, 1.39.0, 1.40.0, 1.41.0, 1.41.1, 1.41.2, 1.42.0, 1.43.0, 1.44.0, 1.45.0, 1.45.1, 1.46.0, 1.47.0, 1.48.0, 1.49.0, 1.49.1, 1.50.0, 1.51.0, 1.52.0, 1.53.0, 1.54.0, 1.55.0, 1.56.0, 1.57.0, 1.58.0, 1.59.0, 1.60.0, 1.61.0, 1.62.0, 1.63.0)
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:58.2148428Z ERROR: No matching distribution found for playwright==1.55.1
+homologation	Prepare browser tooling in an isolated environment	2026-09-28T19:56:58.2580533Z ##[error]Process completed with exit code 1.
+homologation	Preserve actual results even when a gate fails	﻿2026-09-28T19:56:58.2650535Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2650765Z with:
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2650948Z   name: helpdesk-homologation-636601a8ba3ac34df4f585ddcc2cc9844f245474
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2651301Z   path: evidence/homologation/
+homologation	Preserve actual results even when a gate fails	evidence/browser-smoke.json
+homologation	Preserve actual results even when a gate fails	evidence/browser-human-session.json
+homologation	Preserve actual results even when a gate fails	evidence/*.png
+homologation	Preserve actual results even when a gate fails	
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2651584Z   retention-days: 14
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2651715Z   if-no-files-found: error
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2651848Z   compression-level: 6
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2651973Z   overwrite: false
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2652099Z   include-hidden-files: false
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.2652237Z ##[endgroup]
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.3774308Z (node:2024) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.3780058Z (Use `node --trace-deprecation ...` to show where the warning was created)
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.4137573Z With the provided path, there will be 50 files uploaded
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.4138434Z Artifact name is valid!
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.4138801Z Root directory input is valid!
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.7450296Z Beginning upload of artifact content to blob storage
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:58.7965994Z (node:2024) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.1247715Z Uploaded bytes 49077
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.1862341Z Finished uploading artifact content to blob storage!
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.1864679Z SHA256 digest of uploaded artifact zip is cbc0e84a818d5a0ea8bb27005f5d3fc0bf06a073dee3238abbe5817bb29ac023
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.1869478Z Finalizing artifact upload
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.4491392Z Artifact helpdesk-homologation-636601a8ba3ac34df4f585ddcc2cc9844f245474.zip successfully finalized. Artifact ID 10993162663
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.4493151Z Artifact helpdesk-homologation-636601a8ba3ac34df4f585ddcc2cc9844f245474 has been successfully uploaded! Final size is 49077 bytes. Artifact ID is 10993162663
+homologation	Preserve actual results even when a gate fails	2026-09-28T19:56:59.4496989Z Artifact download URL: https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/36475731482/artifacts/10993162663
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-09-28T19:56:59.4648721Z Post job cleanup.
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.5251215Z [command]/usr/bin/git version
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.5312342Z git version 2.55.0
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.5359095Z Temporarily overriding HOME='/home/runner/work/_temp/6dc25e6d-346f-4829-bb6f-52ae805eeffe' before making global git config changes
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.5371661Z Adding repository directory to the temporary git global config as a safe directory
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.5373009Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/help-desk-multi-tenant/help-desk-multi-tenant
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.9384869Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.9424861Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.9614563Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+homologation	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-09-28T19:56:59.9645203Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+homologation	Complete job	﻿2026-09-28T19:57:00.1634763Z Cleaning up orphan processes
+homologation	Complete job	2026-09-28T19:57:00.1825470Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
