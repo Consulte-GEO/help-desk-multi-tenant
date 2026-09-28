@@ -240,10 +240,17 @@ test('M1d a selected foreign workspace cannot override the transaction workspace
  await assert.rejects(()=>sqlAs(alice,catalogSQL,catalogArgs(2)),{code:'42501'});
  await assert.rejects(()=>sqlAs(alice,catalogSQL,[null,null,null,null,null,51]),{code:'42501'});
 });
-test('M1d revoking a live account grant clears catalog despite a cached principal',async()=>{
+test('M1d revoking the last live human grant denies catalog despite a cached principal',async()=>{
+ assert.equal((await service.supportContexts(alice,{limit:50})).items.length,1);
  await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);
- try{assert.equal((await service.supportContexts(alice,{limit:50})).items.length,0);}
- finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}
+ try{
+  // Migration009 requires a live membership/grant as well as the capability revision.
+  // Removing the last grant therefore denies discovery, rather than returning a catalog.
+  await assert.rejects(()=>service.supportContexts(alice,{limit:50}),{code:'42501'});
+  await assert.rejects(()=>sqlAs(alice,catalogSQL,catalogArgs()),{code:'42501'});
+  assert.equal((await sqlAs(alice,'select id from helpdesk_core.tickets')).rows.length,0);
+ }finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}
+ assert.equal((await service.supportContexts(alice,{limit:50})).items.length,1);
 });
 test('M1d machine discovery respects its live account binding and product instance',async()=>{
  const page=await service.supportContexts(machine,{limit:100});assert.equal(page.items.length,1);assert.equal(page.items[0]?.accountId,id(101));assert.equal(page.items[0]?.productInstanceId,id(401));
@@ -502,7 +509,8 @@ async function scopeSubject(capabilities:readonly string[]|null,workspace=1,acco
 }
 test('v015 membership without a capability revision has no implicit scope',async()=>{
  const f=await scopeSubject(null),who=await f.current();assert.deepEqual(who.scopes,[]);assert.equal(who.id,f.person);assert.notEqual(who.id,f.authId);
- assert.equal((await f.history()).rows.length,0);await assert.rejects(()=>service.get(who,ticketId),{status:403});
+ // A resource read hides rows denied by RLS and must not disclose ticket existence.
+ assert.equal((await f.history()).rows.length,0);await assert.rejects(()=>service.get(who,ticketId),{status:404,code:'resource_not_found'});
  assert.equal((await sqlAs(who,'select id from helpdesk_core.tickets where id=$1',[ticketId])).rows.length,0);
 });
 test('v015 explicit read-only operator can read but not mutate or create',async()=>{
