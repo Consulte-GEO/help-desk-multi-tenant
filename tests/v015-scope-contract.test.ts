@@ -36,7 +36,7 @@ test('note receipt needs current write but not general note read',async()=>{
 });
 test('manifest extends rather than alters the eight earlier migrations',async()=>{
  const b=await loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,11);assert.equal(b.schemaVersion,'0.18.0');
- const old=JSON.parse(await readFile('evidence/v015/base-migrations.manifest.json','utf8'));
+ const old=JSON.parse(await readFile('tests/fixtures/migration-baselines/v015.json','utf8'));
  assert.deepEqual(b.migrations.slice(0,8).map(x=>({file:x.file,sha256:x.sha256})),old.migrations);
 });
 

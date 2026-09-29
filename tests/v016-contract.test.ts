@@ -20,7 +20,7 @@ test('readiness requires both receipt uniqueness indexes',()=>{
 });
 test('migration010 extends the nine originals without replacing their hashes',async()=>{
  const b=await loadMigrationBundle(process.cwd());assert.equal(b.schemaVersion,'0.18.0');assert.equal(b.migrations.length,11);
- const old=JSON.parse(await readFile('evidence/v016/base-migrations.manifest.json','utf8'));
+ const old=JSON.parse(await readFile('tests/fixtures/migration-baselines/v016.json','utf8'));
  assert.deepEqual(b.migrations.slice(0,9).map(m=>({file:m.file,sha256:m.sha256})),old.migrations);
 });
 test('effect SQL binds the actual top-level transaction, not caller IDs or xmin',async()=>{

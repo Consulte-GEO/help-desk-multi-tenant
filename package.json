@@ -26,7 +26,10 @@
     "logs:summary": "node --experimental-strip-types scripts/summarize-http-logs.ts",
     "test:db:native": "node scripts/test-db-native.mjs",
     "check:migrations": "node --experimental-strip-types scripts/check-migrations.ts",
-    "scopes:plan": "node --experimental-strip-types scripts/plan-human-scopes.ts"
+    "scopes:plan": "node --experimental-strip-types scripts/plan-human-scopes.ts",
+    "runtime:preflight": "node --experimental-strip-types scripts/runtime-preflight.ts",
+    "test:tls:local": "node --experimental-strip-types --test --test-reporter=tap tests/m1-preflight-tls.test.ts",
+    "integration:check": "node scripts/check-integration.mjs"
   },
   "dependencies": {
     "pg": "8.16.3"

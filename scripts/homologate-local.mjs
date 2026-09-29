@@ -6,7 +6,8 @@ const root=fileURLToPath(new URL('../',import.meta.url)),directory=join(root,'ev
 await mkdir(join(directory,'runs',runId),{recursive:true});
 try{
  const fingerprint=await sourceFingerprint(root);
- const report=await runChecks({fingerprint,execute:async step=>{
+ const interfaceReady=process.env.HELPDESK_CI_BROWSER_READY===undefined||process.env.HELPDESK_CI_BROWSER_READY==='1';
+ const report=await runChecks({fingerprint,interfaceReady,execute:async step=>{
   console.log('Verificação local: '+step.id);
   const command=step.command[0]==='node'?[process.execPath,...step.command.slice(1)]:step.command;
   const result=await runCommand({command,cwd:root,timeoutMs:step.timeout});

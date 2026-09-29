@@ -1,3 +1,4 @@
+import {probeDatabaseReadOnly} from '../../src/infrastructure/runtime-preflight.ts';
 import test,{before,after,describe} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
 import {loadMigrationBundle} from '../../scripts/migration-files.ts';
@@ -923,5 +924,164 @@ test('SQL019 non-UTC PostgreSQL session output is compared without truncation or
 test('SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result',async()=>{
  const f=await contractBoundaryFixture('infinity',null);
  await assert.rejects(()=>f.precise.resolve(f.actor,f.context),{code:'invalid_coverage_result',status:503});
+});
+
+// M1-R2: these cases exercise PostgreSQL only. They do NOT assert client TLS or Supabase Auth.
+const preflightState=async()=>(await admin.query(`select
+ (select count(*) from helpdesk_core.tickets)::integer as tickets,
+ (select count(*) from helpdesk_core.ticket_events)::integer as events,
+ (select count(*) from helpdesk_integration.outbox_events)::integer as outbox,
+ (select count(*) from helpdesk_integration.api_idempotency_keys)::integer as receipts`)).rows[0];
+test('SQL M1-R2 private database probe passes without business writes and restores transaction settings',async()=>{
+ const before=await preflightState(),client=await app.connect();
+ try{
+  const result=await probeDatabaseReadOnly(client);assert.equal(result.success,true,JSON.stringify(result));
+  assert.ok(result.checks.every(check=>check.status==='passed'));
+  const state=(await client.query("select current_setting('transaction_read_only') as read_only, nullif(current_setting('app.principal_id',true),'') as actor")).rows[0];
+  assert.equal(state?.read_only,'off');assert.equal(state?.actor,null);
+ }finally{client.release();}
+ assert.deepEqual(await preflightState(),before);
+});
+test('SQL M1-R2 private probe refuses an administrative login and still rolls back',async()=>{
+ const client=await admin.connect();
+ try{
+  const result=await probeDatabaseReadOnly(client);assert.equal(result.success,false);
+  assert.equal(result.checks.find(check=>check.id==='database_role')?.code,'unsafe_database_role');
+  assert.equal(result.checks.find(check=>check.id==='database_security')?.status,'not_executed');
+  assert.equal(result.checks.find(check=>check.id==='rollback')?.status,'passed');
+ }finally{client.release();}
+});
+test('SQL M1-R2 private probe detects a real helper grant regression without repairing it',async()=>{
+ // Only the disposable fixture administrator changes this permission; production probes never do.
+ await admin.query('grant execute on function helpdesk_auth.schema_version() to public');
+ let client:SqlClient|undefined;
+ try{
+  client=await app.connect();
+  const result=await probeDatabaseReadOnly(client);assert.equal(result.success,false);
+  assert.equal(result.checks.find(check=>check.id==='database_security')?.code,'unsafe_database_policies');
+  assert.equal(result.checks.find(check=>check.id==='rollback')?.status,'passed');
+ }finally{
+  try{client?.release();}
+  finally{await admin.query('revoke execute on function helpdesk_auth.schema_version() from public');}
+ }
+});
+// M1-R4: run only inside this suite's fresh/disposable PostgreSQL guard.
+type RuntimeEventClient=SqlClient&{
+ removeListener(event:'error',listener:(error:Error)=>void):unknown;
+ listenerCount(event:'error'):number;
+};
+function expectOwnedClientError(client:RuntimeEventClient){
+ let timer:ReturnType<typeof setTimeout>;
+ let finish:(seen:boolean)=>void=()=>{};
+ const listener=()=>{clearTimeout(timer);finish(true);};
+ const received=new Promise<boolean>(resolve=>{finish=resolve;timer=setTimeout(()=>resolve(false),5000);});
+ client.on!('error',listener);
+ return {received,dispose:()=>{clearTimeout(timer);client.removeListener('error',listener);}};
+}
+async function runtimeEventPool(){
+ const moduleName='pg';const driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
+ const pool=new driver.Pool({connectionString:appUrl,max:1,connectionTimeoutMillis:5000});
+ let leased:RuntimeEventClient|undefined;
+ const tracked:SqlPool={query:(sql,values)=>pool.query(sql,values),
+  connect:async()=>{leased=await pool.connect() as RuntimeEventClient;return leased;},end:()=>pool.end()};
+ return {pool,tracked,raw:()=>{assert.ok(leased);return leased;}};
+}
+test('M1-R4 terminated owned backend cannot commit a message and next request gets a fresh client',async()=>{
+ const f=await runtimeEventPool(),messageId=randomUUID();let works=0,terminatedPid=0;
+ try{
+  await assert.rejects(()=>runTransaction(f.tracked,agent,async client=>{
+   works++;
+   terminatedPid=Number((await client.query('select pg_backend_pid() as pid')).rows[0]?.pid);
+   assert.ok(Number.isSafeInteger(terminatedPid)&&terminatedPid>0);
+   await client.query("insert into helpdesk_core.ticket_messages(workspace_id,account_id,ticket_id,id,actor_id,actor_type,body,created_at) values($1,$2,$3,$4,$5,'human_agent','M1-R4 uncommitted fixture',now())",[id(1),id(101),ticketId,messageId,agent.id]);
+   const wait=expectOwnedClientError(f.raw());
+   try{
+    const killed=await admin.query("select pg_terminate_backend(pid) as terminated from pg_stat_activity where pid=$1 and datname=current_database() and usename='helpdesk_app' and backend_type='client backend'",[terminatedPid]);
+    assert.equal(killed.rows[0]?.terminated,true);assert.equal(await wait.received,true,'Real pg client error was not observed');
+   }finally{wait.dispose();}
+   return {mustNotCommit:true};
+  }),{status:503,code:'database_unavailable'});
+  assert.equal(works,1);
+  assert.equal((await admin.query('select id from helpdesk_core.ticket_messages where id=$1',[messageId])).rows.length,0);
+  const pid=await runTransaction(f.tracked,bob,async c=>Number((await c.query('select pg_backend_pid() as pid')).rows[0]?.pid));
+  assert.ok(pid>0);assert.notEqual(pid,terminatedPid);
+ }finally{await f.pool.end();}
+});
+test('M1-R4 saved callback client cannot inspect the next account on a reused connection',async()=>{
+ const f=await runtimeEventPool();let saved:SqlClient|undefined;
+ try{
+  const first=await runTransaction(f.tracked,alice,async client=>{saved=client;return (await client.query('select pg_backend_pid() as pid')).rows[0]?.pid;});
+  await runTransaction(f.tracked,bob,async client=>{
+   assert.equal((await client.query('select pg_backend_pid() as pid')).rows[0]?.pid,first);
+   await assert.rejects(()=>saved!.query("select current_setting('app.principal_id') as actor"),{status:503,code:'database_unavailable'});
+   assert.equal((await client.query("select current_setting('app.principal_id') as actor")).rows[0]?.actor,bob.id);
+  });
+ }finally{await f.pool.end();}
+});
+test('M1-R4 real pg client retains exactly one transaction listener across repeated control queries',async()=>{
+ const f=await runtimeEventPool();
+ try{
+  const before=await f.tracked.connect() as RuntimeEventClient;
+  const baseline=before.listenerCount('error');before.release();
+  for(let n=0;n<25;n++)assert.equal((await withControlTransactions(f.tracked).query('select 42 as answer')).rows[0]?.answer,42);
+  const after=await f.tracked.connect() as RuntimeEventClient;
+  try{assert.equal(after,before);assert.equal(after.listenerCount('error'),baseline+1);}finally{after.release();}
+ }finally{await f.pool.end();}
+});
+
+// M1-R6: real SQL/driver tests with a deliberately faulting release/ack adapter.
+// Written only until the fresh/local PostgreSQL guard and installed pg prerequisites run.
+async function releaseFaultPool(loseCommitAcknowledgement=false){
+ const moduleName='pg';const driver=await import(moduleName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
+ const pool=new driver.Pool({connectionString:appUrl,max:1,connectionTimeoutMillis:5000});
+ let commits=0,releases=0;
+ const tracked:SqlPool={query:(sql,values)=>pool.query(sql,values),end:()=>pool.end(),
+  connect:async()=>{
+   const client=await pool.connect(),query=client.query.bind(client),release=client.release.bind(client);
+   client.query=async(sql,values)=>{
+    const result=await query(sql,values);
+    if(sql==='COMMIT'){
+     commits++;
+     if(loseCommitAcknowledgement)throw Error('Synthetic lost acknowledgement after real COMMIT');
+    }
+    return result;
+   };
+   client.release=error=>{
+    releases++;
+    // Force actual discard first: the suite must not leak a checked-out physical client.
+    release(error??Error('Synthetic M1-R6 forced discard'));
+    throw Error('Synthetic M1-R6 post-disposal adapter fault');
+   };
+   return client;
+  }};
+ return {pool,tracked,state:()=>({commits,releases})};
+}
+test('M1-R6 confirmed ticket survives throwing release and same-key replay does not duplicate effects',async()=>{
+ const f=await releaseFaultPool(),key=randomUUID(),body={...input,subject:'M1-R6 confirmed '+key};
+ try{
+  const guarded=new HelpdeskService(new PostgresUnitOfWork(f.tracked));
+  const created=await guarded.create(alice,body,key,'db-test');
+  assert.deepEqual(f.state(),{commits:1,releases:1});
+  const replay=await service.create(alice,body,key,'db-test');
+  assert.deepEqual(replay.ticket,created.ticket);assert.equal(created.replayed,false);assert.equal(replay.replayed,true);
+  assert.equal((await admin.query('select id from helpdesk_core.tickets where id=$1',[created.ticket.id])).rows.length,1);
+  assert.equal((await admin.query("select id from helpdesk_core.ticket_events where ticket_id=$1 and type='ticket.created'",[created.ticket.id])).rows.length,1);
+  assert.equal((await admin.query("select id from helpdesk_integration.outbox_events where ticket_id=$1 and type='ticket.created'",[created.ticket.id])).rows.length,1);
+ }finally{await f.pool.end();}
+});
+test('M1-R6 lost acknowledgement plus throwing release keeps unknown outcome and recovers original receipt',async()=>{
+ const f=await releaseFaultPool(true),key=randomUUID(),body={...input,subject:'M1-R6 uncertain '+key};
+ try{
+  const guarded=new HelpdeskService(new PostgresUnitOfWork(f.tracked));
+  await assert.rejects(()=>guarded.create(alice,body,key,'db-test'),{status:503,code:'transaction_outcome_unknown'});
+  assert.deepEqual(f.state(),{commits:1,releases:1});
+  const before=await admin.query('select id from helpdesk_core.tickets where subject=$1',[body.subject]);
+  assert.equal(before.rows.length,1,'The fixture really committed before withholding the acknowledgement');
+  const replay=await service.create(alice,body,key,'db-test');
+  assert.equal(replay.ticket.id,before.rows[0]?.id);assert.equal(replay.replayed,true);
+  assert.equal((await admin.query('select id from helpdesk_core.tickets where subject=$1',[body.subject])).rows.length,1);
+  assert.equal((await admin.query("select id from helpdesk_core.ticket_events where ticket_id=$1 and type='ticket.created'",[replay.ticket.id])).rows.length,1);
+  assert.equal((await admin.query("select id from helpdesk_integration.outbox_events where ticket_id=$1 and type='ticket.created'",[replay.ticket.id])).rows.length,1);
+ }finally{await f.pool.end();}
 });
 });

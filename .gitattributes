@@ -8,3 +8,5 @@ evidence/** -text
 evidence/m1-20260928/** -text
 evidence/homologation/runs/e0babfc5-9869-44e7-a520-c2356226eb00/*.log -text
 evidence/homologation/runs/f2ddaf7e-29fe-40db-a866-bc6081df6da1/*.log -text
+# Immutable inputs to migration-regression tests, not generated run evidence.
+tests/fixtures/migration-baselines/*.json -text

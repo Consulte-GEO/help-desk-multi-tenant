@@ -6,8 +6,8 @@ export const steps = Object.freeze([
  {id:'lock',requires:[],command:['node','scripts/verify-lock.mjs'],timeout:60_000,minTests:0},
  {id:'install',requires:['lock'],command:['npm','ci','--ignore-scripts'],timeout:600_000,minTests:0},
  {id:'audit',requires:['install'],command:['npm','audit','--audit-level=high'],timeout:300_000,minTests:0},
- {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:1040},
- {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:201},
+ {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:1200},
+ {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:209},
  {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:71}
 ]);
 const hash = text => createHash('sha256').update(text).digest('hex');
@@ -18,11 +18,14 @@ export function testCounts(output) {
 }
 const countOK=(counts,min)=>!min||!!counts&&Number.isSafeInteger(counts.tests)&&counts.tests>=min&&counts.pass===counts.tests
  &&counts.fail===0&&counts.cancelled===0&&counts.skipped===0&&counts.todo===0;
-export async function runChecks({fingerprint,execute,now=()=>new Date().toISOString()}) {
+export async function runChecks({fingerprint,execute,interfaceReady=true,now=()=>new Date().toISOString()}) {
  const report={schema:1,scope:'local-m1',platform_approved:false,source_sha256:fingerprint,started_at:now(),completed_at:null,checks:[]};
  for(const step of steps){
   if(step.requires.some(id=>!report.checks.some(c=>c.id===id&&c.status==='passed'))){
    report.checks.push({id:step.id,status:'blocked',reason:'prerequisite_not_passed',exit_code:null,signal:null,tests:null});continue;
+  }
+  if(step.id==='interface'&&interfaceReady!==true){
+   report.checks.push({id:step.id,status:'blocked',reason:'browser_tooling_not_ready',exit_code:null,signal:null,tests:null});continue;
   }
   try{
    const result=await execute(step),counts=step.minTests?testCounts(result.output):null;
@@ -36,11 +39,27 @@ export async function runChecks({fingerprint,execute,now=()=>new Date().toISOStr
  }
  report.completed_at=now();return report;
 }
+/** A hash alone does not associate a log with its execution or phase.
+ * Require one complete run and the exact phase filename before accepting any log.
+ * This is structural consistency, not a signed attestation of the producer.
+ */
+function coherentArtifacts(checks) {
+ if(!Array.isArray(checks)||checks.length!==steps.length)return false;
+ let run;
+ for(const step of steps){
+  const matches=checks.filter(check=>check?.id===step.id);
+  if(matches.length!==1||typeof matches[0].artifact!=='string')return false;
+  const path=/^runs\/([a-zA-Z0-9-]+)\/([a-z]+)\.log$/.exec(matches[0].artifact);
+  if(!path||path[2]!==step.id||(run!==undefined&&run!==path[1]))return false;
+  run=path[1];
+ }
+ return true;
+}
 export function validateReport(report,currentFingerprint,now=new Date()) {
  const reject=()=>{throw Error('PUBLICAÇÃO BLOQUEADA: evidência local incompleta, vencida ou incompatível com este código.');};
  if(report?.source_changed_during_run===true||report?.schema!==1||report.scope!=='local-m1'||report.platform_approved!==false
    ||!/^[a-f0-9]{64}$/.test(report.source_sha256??'')||report.source_sha256!==currentFingerprint
-   ||!Array.isArray(report.checks)||report.checks.length!==steps.length)reject();
+   ||!coherentArtifacts(report.checks))reject();
  const started=Date.parse(report.started_at),ended=Date.parse(report.completed_at),age=now.getTime()-ended;
  if(!Number.isFinite(started)||!Number.isFinite(ended)||ended<started||age<0||age>7*24*60*60*1000)reject();
  for(const step of steps){
@@ -50,12 +69,13 @@ export function validateReport(report,currentFingerprint,now=new Date()) {
  }
 }
 export async function verifyLogs(report,directory) {
+ if(!coherentArtifacts(report?.checks))throw Error('Arquivos de evidência incompatíveis com as etapas de uma mesma execução.');
  const base=await realpath(directory);
  for(const step of steps){
   const check=report.checks.find(c=>c.id===step.id);
   if(!check||!/^runs\/[a-zA-Z0-9-]+\/[a-z]+\.log$/.test(check.artifact??''))throw Error('Arquivo de evidência inválido.');
   const candidate=join(base,check.artifact),resolved=await realpath(candidate),rel=relative(base,resolved);
-  if(rel.startsWith('..'+sep)||rel==='..'||rel.startsWith(sep)||(await lstat(candidate)).isSymbolicLink())throw Error('Evidência fora do diretório autorizado.');
+  if(resolved!==candidate||rel.startsWith('..'+sep)||rel==='..'||rel.startsWith(sep)||(await lstat(candidate)).isSymbolicLink())throw Error('Evidência fora do diretório autorizado.');
   const bytes=await readFile(resolved);
   if(hash(bytes)!==check.sha256)throw Error('Arquivo de evidência alterado ou incompatível.');
   if(step.minTests&&(!countOK(testCounts(bytes.toString('utf8')),step.minTests)

@@ -20,25 +20,36 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
+      - name: Stage exact committed source without historical evidence
+        id: source
+        run: node scripts/stage-ci-source.mjs
+      - name: Verify ephemeral TLS test prerequisite
+        id: tls
+        run: openssl version
       - name: Prepare browser tooling in an isolated environment
+        id: browser
+        working-directory: ${{ steps.source.outputs.root }}
         run: |
           python3 -m venv "$RUNNER_TEMP/helpdesk-browser"
           "$RUNNER_TEMP/helpdesk-browser/bin/python" -m pip install 'playwright==1.63.0'
           "$RUNNER_TEMP/helpdesk-browser/bin/python" -m playwright install --with-deps chromium
           echo "$RUNNER_TEMP/helpdesk-browser/bin" >> "$GITHUB_PATH"
-      - name: Execute application, PostgreSQL 17, upgrade and browser gates
+      - name: Execute independent gates even when browser preparation fails
+        id: gates
+        if: ${{ !cancelled() && steps.source.outcome == 'success' }}
+        working-directory: ${{ steps.source.outputs.root }}
+        env:
+          HELPDESK_CI_BROWSER_READY: ${{ steps.browser.outcome == 'success' && '1' || '0' }}
         run: npm run homologate:local
       - name: Validate generated evidence
+        if: ${{ !cancelled() && steps.gates.outcome == 'success' }}
+        working-directory: ${{ steps.source.outputs.root }}
         run: npm run check:homologation
-      - name: Preserve actual results even when a gate fails
-        if: always()
+      - name: Preserve only this attempt's results, including failures
+        if: ${{ always() && steps.source.outcome == 'success' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: helpdesk-homologation-${{ github.sha }}
-          path: |
-            evidence/homologation/
-            evidence/browser-smoke.json
-            evidence/browser-human-session.json
-            evidence/*.png
+          name: helpdesk-homologation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.source.outputs.root }}/evidence/
           retention-days: 14
           if-no-files-found: error
