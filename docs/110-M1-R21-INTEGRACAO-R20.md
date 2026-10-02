@@ -25,3 +25,8 @@ Exigir na mesma fonte: lock, npm ci, audit, typecheck e verify; 1436 Node, 215 P
 6. Correlação privada no destino, concorrência, capacidade, restore, residência/RPO/RTO e aceite operacional: pendentes.
 
 M1 permanece aberto; M2 não iniciado. API/interface 0.19.0, schema 0.18.0, 11 migrations e lockfile preservados. CI aprovado não autoriza abertura de HELPDESK_RELEASE_APPROVED, uso de produção como laboratório, mutações remotas ou publicação operacional.
+
+
+## Atualização R22 — 02/10/2026
+
+O CI de R21 foi concluído com sucesso: 1436 Node, 215 PostgreSQL17 e 71 HTTP/browser. Os arquivos originais foram incorporados sem reescrita, com arquivo dos documentos de evidência substituídos. A descrição acima de CI pendente é histórica. Leia o documento111 para continuidade. Não houve merge, liberação operacional ou mutação de Supabase por esta incorporação.
