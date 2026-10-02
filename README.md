@@ -1,3 +1,5 @@
+> **M1-R22 — 02/10/2026:** código R20/R21 na branch `codex/m1-r21-integracao-r20`; evidências originais do CI 37021243365 incorporadas e verificadas, sem mudança executável. 1436 Node, 215 PostgreSQL 17 e 71 HTTP/browser são resultados do runner. Revisão independente e aceitação hospedada continuam pendentes. M1 aberto; M2 não iniciado. Leia `docs/111-M1-R22-EVIDENCIAS-E-INTEGRACAO.md`. Não abrir o gate operacional.
+
 > **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
 
 # Help Desk independente — API/interface 0.19.0

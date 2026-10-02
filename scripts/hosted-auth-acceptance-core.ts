@@ -6,9 +6,10 @@ import {readIdentityResponse} from '../src/infrastructure/auth-response.ts';
 import {SHORT_SESSION_PATTERN,sessionResult} from '../src/infrastructure/session-lifecycle.ts';
 import {RELEASE} from '../src/version.ts';
 import {isPersistableText} from '../src/domain/input-values.ts';
+import {isHostedDeployOrigin,LEGACY_HOSTED_SITE} from './hosted-origin.ts';
 
 type Obj=Record<string,unknown>;
-export type AuthAcceptanceConfig={schema:1;environment:'homologation';origin:string;supabaseUrl:string;deploymentCommit:string;
+export type AuthAcceptanceConfig={schema:1;environment:'homologation';origin:string;netlifySiteName?:string;supabaseUrl:string;deploymentCommit:string;
  workspaceId:string;accountId:string;humanAuthUserId:string;humanPrincipalId:string;integrationPrincipalId:string;productInstanceId:string};
 export type AuthAcceptanceSecrets={email:string;password:string;integrationKey:string};
 export type AuthAcceptanceOptions={execute?:boolean;allowSessionMutations?:boolean;confirmOrigin?:string;confirmAuthOrigin?:string;fetcher?:typeof fetch};
@@ -30,8 +31,8 @@ const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{
 function invalid():never {throw Error('Argumentos, configuração ou credenciais de aceitação inválidos.');}
 function configuration(value:unknown):AuthAcceptanceConfig{
  const fields=['schema','environment','origin','supabaseUrl','deploymentCommit','workspaceId','accountId','humanAuthUserId','humanPrincipalId','integrationPrincipalId','productInstanceId'];
- if(!object(value)||!exact(value,fields)||value.schema!==1||value.environment!=='homologation'
-  ||typeof value.origin!=='string'||!/^https:\/\/[a-f0-9]{24}--helpdesk-consultegeo\.netlify\.app$/.test(value.origin)
+ if(!object(value)||!exact(value,[...fields,...(Object.hasOwn(value,'netlifySiteName')?['netlifySiteName']:[])])||value.schema!==1||value.environment!=='homologation'
+  ||typeof value.origin!=='string'||!isHostedDeployOrigin(value.origin,Object.hasOwn(value,'netlifySiteName')?value.netlifySiteName:LEGACY_HOSTED_SITE)
   ||typeof value.supabaseUrl!=='string'||!/^https:\/\/[a-z]{20}\.supabase\.co$/.test(value.supabaseUrl)
   ||typeof value.deploymentCommit!=='string'||!/^[a-f0-9]{40}$/.test(value.deploymentCommit))invalid();
  for(const key of fields.slice(5))if(!uuid(value[key]))invalid();
