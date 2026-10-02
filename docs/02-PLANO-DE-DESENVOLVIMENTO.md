@@ -1,4 +1,4 @@
-> **Rodada M1 28/09/2026:** lock real/ci/audit aprovados; suíte Windows1035/1043, oito falhas;35HTTP aprovados. PostgreSQL/browser e runtime pendentes. Prioridade continua HD-101/102, M2 não iniciado. Ver docs04/05. Registros anteriores abaixo são históricos.
+> **Retomada R19 — 01/10/2026:** ler o estado/handoff/tarefa nos documentos 102–104. Código R18 preservado; 1.417 Node revalidados. Lock existente: usar npm ci, não regenerá-lo por orientação histórica. 215 SQL e navegador ainda não executados com sucesso nesta rodada. M1 aberto; sem nova autorização externa. Números e passos antigos abaixo são históricos.
 
 > **Estado corrente v0.19.0:** correção do fluxo contratual de M1/CON-06: comparação exata de vigência e validação integral do retorno privado, sem nova autorização ou edição de contratos. API0.19/schema0.18;11 migrations intactas.1.040 testes locais/35HTTP aprovados;201SQL/36browser escritos, não homologados. M1 continua aberto, M2 não iniciado. Ver docs04/05/23. Os demais registros de execução abaixo são históricos.
 
