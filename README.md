@@ -1,57 +1,39 @@
-> **Atualização CI 28/09/2026:** código c7aa0af; 1045 aplicação,201 PostgreSQL17 e71HTTP/browser aprovados. Gate local aprovado, M1/produção ainda não homologados. Estado e limites atuais em docs/04-ESTADO-E-EVIDENCIAS.md e docs/05-HANDOFF-REVISAO.md; números e restrições de autorização nos registros abaixo são históricos. Push/deploy no destino indicado foram autorizados nesta conversa; demais operações externas não.
+> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
 
-# Consulte Help Desk — v0.19.0 / vigência e integridade contratual
+# Help Desk independente — API/interface 0.19.0
 
-> **Rodada M1 de 28/09/2026:** lock real, `npm ci` e audit aprovados (zero alertas), SDK Netlify6.0.0; três regressões novas para execução npm no Windows. Suíte atual: **1.035/1.043 aprovados, oito falhas Windows**, 35HTTP aprovados, PostgreSQL/browser não executados. Typecheck com dependências locais aprovado. M1 aberto. Leia [estado atual](docs/04-ESTADO-E-EVIDENCIAS.md), [handoff](docs/05-HANDOFF-REVISAO.md) e [documento mestre](PROJECT_HELP_DESK.md). Os números e bloqueios de registry abaixo são o registro histórico da entrega original.
+**M1 aberto.** Produto genérico multiproduto e multicontrato. O núcleo não incorpora campos próprios de GeoLab, Financeiro ou outro consumidor.
 
-Produto independente, multiproduto e multicontrato. **Entrega local; M1 aberto; não publicada.**
+## Retomada atual — R19 / 01-10-2026
+Código acumulado R10–R18, revalidado sem mudanças funcionais nesta rodada. **1.417 testes Node e 35 verificações HTTP em memória passaram.** Instalação/auditoria/typecheck padrão, 215 testes PostgreSQL, navegador e gate não foram aprovados aqui. O deploy R9 existe; o acumulado local não está publicado nem homologado.
 
-## Esta entrega
+Leia [documento mestre](PROJECT_HELP_DESK.md), [estado](docs/102-M1-R19-ESTADO-E-EVIDENCIAS.md), [handoff](docs/103-M1-R19-HANDOFF-E-BACKLOG.md) e [tarefa de integração](docs/104-M1-R19-TAREFA-CODEX.md). A próxima ação é integrar e executar a validação real; não criar outra funcionalidade M2 como substituto.
 
-A resolução de cobertura compara o início inclusivo e o fim exclusivo sem perder microssegundos. O retorno do adaptador é validado integralmente antes de escolher contrato ou criar chamado; configuração inválida é erro controlado, não ausência de cobertura. Reenvios autorizados preservam a resposta histórica, mesmo após o vencimento contratual.
-
-**1.040 testes locais aprovados (38 novos) e 35 checks HTTP da demonstração.** Os três novos testes de socket estão incluídos nos 1.040. Há 201 SQL e 36 browser escritos, ainda sem homologação real. Não há lockfile, npm ci/audit concluídos ou aprovação do runtime. Typecheck global é suplementar.
-
-## Documentação
-
-[Vigência e coberturas](docs/23-VIGENCIA-E-INTEGRIDADE-CONTRATUAL.md) · [Evidências](docs/04-ESTADO-E-EVIDENCIAS.md) · [Continuidade](docs/05-HANDOFF-REVISAO.md) · [Notas e gravações](docs/22-NOTAS-E-CONFIRMACAO-DE-ESCRITAS.md) · [Precisão temporal](docs/21-PAGINACAO-E-PRECISAO-TEMPORAL.md) · [Arquitetura](docs/01-ARQUITETURA.md) · [Plano](docs/02-PLANO-DE-DESENVOLVIMENTO.md) · [OpenAPI](docs/openapi.json).
-
-M1 e R14-04/05/06 continuam sem homologação PostgreSQL. Comparação exata não melhora a resolução do relógio do servidor e não garante sincronização entre API e banco. Nenhum contrato, snapshot, recibo ou migration foi reescrito.
-
-## Plano de provisionamento sem executar SQL
+## Instalação e verificação
+O `package-lock.json` já existe. Preserve-o e use:
 
 ```bash
-npm run --silent scopes:plan -- examples/human-scope-change.json
-```
-
-Use apenas o exemplo fictício para conhecer o formato. O resultado é SQL parametrizado + valores; precisa de revisão e executor administrativo aprovado. Não é uma rota pública e não altera dados. Não conceder EXECUTE do setter ao loginHTTP.
-
-## Demonstração local
-
-```bash
-npm run check:migrations
-npm test
-npm run demo
-```
-
-Node utilizado22.16.0; demo em loopback com memória e dados fictícios. Catálogo, abertura, busca/filtros, mensagens, notas, estados, prioridade, responsável, histórico e ações por chamado preservados. Não comprova o runtime real.
-
-## Homologação
-
-```bash
-npm run deps:resolve
-# Revisar o lock REAL antes de prosseguir.
 npm ci --ignore-scripts
+npm run check:lock
 npm run verify
 npm audit --audit-level=high
 npm run test:db:local
 npm run test:ui:local
+```
+
+O banco da suíte é PostgreSQL 17 novo, local e descartável. Não apontar os testes SQL para o Supabase remoto. Homologação consolidada e conferência das evidências:
+
+```bash
 npm run homologate:local
 npm run check:homologation
 ```
 
-Os runners recusam infraestrutura ausente; não trocam para Supabase remoto ou aprovam etapas por mocks. Não usar o login postgres/service_role no runtime. Frontend estático não é bundle de Functions.
+O primeiro comando repete etapas deliberadamente para gerar um conjunto coerente; não juntar logs de execuções diferentes. Falta de dependências, SQL ou browser deve manter o gate fechado. O build gera frontend estático; empacotamento e execução da Function são verificações separadas.
 
-**API/interface0.19.0; schema esperado0.18.0; onze migrations/25 tabelas/18 operações.** Todas as onze migrations anteriores preservadas; nenhuma dependência ou endpoint novo. Nenhuma escrita remota. Não publicar com dados reais antes de homologar.
+## Demonstração e clientes de aceitação
+`npm run demo` usa dados fictícios em memória. Os comandos `test:hosted:read`, `test:hosted:auth` e `test:hosted:write` apresentam plano sem rede por padrão; seus exemplos são fictícios. Execução com sessões, gravações e destino precisa de autorização e isolamento explícitos. Não incluir credenciais em arquivos ou logs. Os detalhes permanecem nos documentos 65–100.
 
-Sessão humana permanece somente em memória; reload exige novo login. Logout solicita escopo local e não invalida imediatamente um JWT já emitido. MFA/SSO/CAPTCHA, administração, anexos, clocks de SLA, dispatcher/entregas e dois conectores reais continuam pendentes.
+API/interface 0.19.0; schema 0.18.0; 11 migrations históricas preservadas; 18 operações HTTP. Nunca ligar `HELPDESK_RELEASE_APPROVED` para contornar pendências, nem usar `postgres`/`service_role` como identidade de atendimento.
+
+## Histórico
+[README integral anterior](docs/history/r18-README.md). As decisões arquiteturais e os registros das entregas anteriores continuam disponíveis; seus números e destinos não substituem os estados atuais.

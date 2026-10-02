@@ -11,8 +11,13 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
   else{
    const signal=AbortSignal.timeout(5000);
    let result:Response;try{result=await fetcher(`${config.supabaseUrl}/auth/v1/user`,{headers:{authorization:`Bearer ${token}`,apikey:config.publishableKey},signal,redirect:'error'});}catch{throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');}
-   if(result.status>=500||result.status===429)throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');
-   if(!result.ok)throw new HelpdeskError(401,'unauthorized','Sessão inválida ou expirada.');
+   if(!result.ok){
+    // Rejected bodies are not identity data. Cancel without parsing or awaiting cleanup:
+    // an unfinished provider stream must not retain transport resources after denial.
+    try{void result.body?.cancel().catch(()=>{});}catch{/* Cleanup cannot replace the safe authentication error. */}
+    if(result.status>=500||result.status===429)throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');
+    throw new HelpdeskError(401,'unauthorized','Sessão inválida ou expirada.');
+   }
    let userId:string;
    try{const user:unknown=await readIdentityResponse(result,signal);if(!user||typeof user!=='object'||Array.isArray(user))throw Error();userId=identifier((user as {id:unknown}).id);}
    catch{throw new HelpdeskError(503,'auth_unavailable','Resposta inválida do serviço de identidade. Acesso não concedido.');}

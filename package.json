@@ -29,7 +29,10 @@
     "scopes:plan": "node --experimental-strip-types scripts/plan-human-scopes.ts",
     "runtime:preflight": "node --experimental-strip-types scripts/runtime-preflight.ts",
     "test:tls:local": "node --experimental-strip-types --test --test-reporter=tap tests/m1-preflight-tls.test.ts",
-    "integration:check": "node scripts/check-integration.mjs"
+    "integration:check": "node scripts/check-integration.mjs",
+    "test:hosted:read": "node --experimental-strip-types scripts/hosted-acceptance.ts",
+    "test:hosted:auth": "node --experimental-strip-types scripts/hosted-auth-acceptance.ts",
+    "test:hosted:write": "node --experimental-strip-types scripts/hosted-write-acceptance.ts"
   },
   "dependencies": {
     "pg": "8.16.3"

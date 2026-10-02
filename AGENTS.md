@@ -1,9 +1,8 @@
-> **Atualização CI 28/09/2026:** código c7aa0af; 1045 aplicação,201 PostgreSQL17 e71HTTP/browser aprovados. Gate local aprovado, M1/produção ainda não homologados. Estado e limites atuais em docs/04-ESTADO-E-EVIDENCIAS.md e docs/05-HANDOFF-REVISAO.md; números e restrições de autorização nos registros abaixo são históricos. Push/deploy no destino indicado foram autorizados nesta conversa; demais operações externas não.
+> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
+
+> **Retomada R19 — 01/10/2026:** ler o estado/handoff/tarefa nos documentos 102–104. Código R18 preservado; 1.417 Node revalidados. Lock existente: usar npm ci, não regenerá-lo por orientação histórica. 215 SQL e navegador ainda não executados com sucesso nesta rodada. M1 aberto; sem nova autorização externa. Números e passos antigos abaixo são históricos.
 
 # Instruções de continuidade — Help Desk
-
-## Rodada atual — 28/09/2026
-Leia também PROJECT_HELP_DESK.md. Branch codex/m1-reproducibilidade, base94d8276. Lock real/ci/audit aprovados, SDK Netlify6.0.0; API0.19/schema0.18 preservados. Onze migrations idênticas à base; .gitattributes evita conversão CRLF. Suíte atual1035/1043, oito falhas Windows detalhadas em docs04;35HTTP aprovados. PostgreSQL201/browser36 continuam sem execução real. M1 aberto, M2 não iniciado. Demais contagens abaixo são históricas. Sem autorização para escrita remota.
 
 Leia README, docs/01-ARQUITETURA.md, docs/02-PLANO-DE-DESENVOLVIMENTO.md docs/04-ESTADO-E-EVIDENCIAS.md e docs/06-M1-SEGURANCA-E-LIMITES.md antes de alterar o código.
 

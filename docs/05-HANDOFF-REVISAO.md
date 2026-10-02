@@ -1,43 +1,37 @@
-# Handoff — M1 validado em CI / 28-09-2026
+> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
 
-Leia PROJECT_HELP_DESK.md, README.md, AGENTS.md e docs/04-ESTADO-E-EVIDENCIAS.md. Base94d8276; rodada07cbeef; branchcodex/m1-reproducibilidade. Código validado c7aa0aff9d33bd05f0248ac904ecbc834204f986, run36477734874. Commit de documentação/evidência é posterior e não altera fingerprint.
+# Help Desk M1-R19 — Handoff e backlog
 
-1045 aplicação,201 PostgreSQL17 (185RLS+16upgrade),71HTTP/browser passaram sem skips. Lock/ci/audit, typecheck/contratos/build e gate aprovados. Logs reais assinados apenas por hash local (não são atestação de plataforma), screenshots e histórico de falhas preservados. Revisão independente da rodada sem achados.
+## Ponto de retomada
+Código R18 revalidado: **1.417 testes Node**. Fingerprint `66b19776e652a210ebc819e49dac7650bb27eae00c269b8c186ab55e90d84491`. Remoto ainda R9 `78bbb00112331531168ae24600604cb7f3148770`. R19 tem somente consolidação documental, nova inspeção de metadados e evidências. Não repetir o desenvolvimento dos clientes R10–R18.
 
-API/interface0.19.0, schema0.18.0,11migrations intactas; SDKNetlify6.0.0,pg8.16.3,Node>=22.16 <25. Não modificar SQL histórico.
+Leia `PROJECT_HELP_DESK.md`, `docs/101-M1-R19-PLANO-DE-FECHAMENTO.md`, `docs/102-M1-R19-ESTADO-E-EVIDENCIAS.md` e `docs/104-M1-R19-TAREFA-CODEX.md`. Os estados anteriores ficam em histórico, sem apagar decisões. O corpo arquitetural foi mantido literalmente.
 
-Próximos passos:
-1. Confirmar HEAD/branch e remoto, preservar mudanças concorrentes. Origin local ainda é bundle de recuperação; pushes usam URL GitHub explícita.
-2. Verificar deploy Netlify após publicar evidências. Manter verify:release e não ligar HELPDESK_RELEASE_APPROVED sem homologação real.
-3. Windows: oito falhas ambientais permanecem; usar Linux para suíte completa. EOL antigo do checkout difere de extração limpa. Relatório CI corresponde ao código Git limpo, não normalizar hashes artificialmente.
-4. Completar Auth/M2M no destino, pooler/TLS, carga/restore e aprovação operacional antes de encerrar M1/M2. Provedor browser é sintético; PostgreSQL foi descartável no runner.
-5. Push na branch e deploy neste site foram explicitamente autorizados pelo usuário nesta conversa. Migration remota/usuários/MFA/secrets/buckets/dados externos não foram autorizados e não foram alterados.
+## Próxima tarefa efetiva
+**Integrar uma variante no checkout real e executar a toolchain travada em ambiente apto**, obtendo 1.417 Node, 215 PostgreSQL e 71 HTTP/browser da mesma fonte. Essa tarefa ainda não foi concluída nesta sessão. Há 215 SQL escritos e zero executados no R19; o Supabase só foi inspecionado por metadados, sem executar SQL.
 
-Último pacote completo antigo: bundle de M1 em07cbeef; a fonte mais recente é a branch GitHub e este handoff. Não recomeçar pelo ZIPv0.19.0 anterior.
+O lock existe e foi preservado. Usar `npm ci --ignore-scripts`; não seguir o `deps:resolve` do handoff histórico como passo normal. Não substituir versões, desabilitar TLS, abrir schema privado, enfraquecer RLS ou reduzir mínimos do gate.
 
-## Resultado de publicação — 20:23 UTC
+## Backlog prioritário
+| Item | Estado | Próxima evidência |
+|---|---|---|
+| Código R10–R18 / comparadores / clientes | Implementado e Node local revalidado | Integração, toolchain e CI atuais |
+| Integração no GitHub | Pendente | HEAD contendo os incrementos e inspeção after |
+| Instalação/auditoria/typecheck padrão | Bloqueados no ambiente atual | Logs oficiais sem falhas |
+| 215 cenários PostgreSQL | Escritos, não executados nesta sessão | Banco descartável com os seis percursos R17/R18 aprovados |
+| 36 checks browser | Bloqueados no ambiente atual | Chromium permitido, sem interceptações substituindo o destino pretendido |
+| Fixtures hospedadas | Não demonstradas pelos metadados | Alvos, identidades, dados e outbox isolados com autorização |
+| Aceitação HTTP/Auth/M2M hospedada | Pendente | Relatórios reais dos clientes existentes |
+| Capacidade/restauração/governança | Pendente | Ensaios, residência/RPO/RTO e aceite |
+| Revisão independente | Pendente | Outro executor revisando diff e evidências |
+| M2 | Não iniciado | M1 encerrado formalmente |
 
-Deploy Netlify `6abacc45ec4ca0832ffe6aeb`: **ready**, contexto production, publicado 28/09/2026 às20:21:45UTC. Fonte enviada: extração limpa do commit `9ea9851e6e8d448654fcbb0a04caf950983bde74`, com código validado em c7aa0af. Upload via MCP; commit_ref remoto nulo é esperado nesse mecanismo. Build verify:release preservado.
+## Fontes confirmadas
+Netlify `helpdesk-consultegeo`, site `9781cd85-7dc1-4ef5-868b-947e389a9d4d`, deploy R9 `6abbdecfeefd99000864e661` ready. Supabase `xaelbntjnvztznnpcvtm`, PostgreSQL 17, 25 tabelas e 11 migrations por metadados. Valores de linhas são os reportados pelo conector, não uma auditoria SELECT. FORCE RLS, grants e login HTTP não foram reconfirmados. Não confundir get_project/list_tables com execução SQL ou homologação.
 
-Site: https://helpdesk-consultegeo.netlify.app
-Logs: https://app.netlify.com/projects/helpdesk-consultegeo/deploys/6abacc45ec4ca0832ffe6aeb
+## Integração e segurança
+R9 sem os incrementos: `patches/helpdesk-m1-r10-r19.patch` (`r9-r19`). R18 exato: `patches/helpdesk-m1-r19-only.patch` (`r18-r19`). Uma variante somente. Bases intermediárias exigem reconciliação; o pacote não concede autorização para push, merge, PR, deploy ou mudanças remotas. O snapshot de recuperação serve a uma pasta nova, não a force-push.
 
-Frontend200; Functionapi publicada em Node22; GET/v1/config retorna503/release_gate_closed. **DEPLOYADO, ainda não OPERACIONAL nem HOMOLOGADO para atendimento real.** Não houve ativação do gate de runtime, alteração de secrets/usuários ou migration remota. Evidências compactas e smoke em evidence/m1-ci-20260928/netlify-*.json. Próxima etapa exige ambiente e operações de backend explicitamente autorizados; não basta ligar a flag.
+Se o usuário pedir apenas continuidade e os bloqueios permanecerem, retomar este ponto. Não produzir outra funcionalidade ou suíte sintética como substituto da execução real. A ausência de aprovação é um resultado válido, não um motivo para marcar o marco como fechado.
 
-## Provisionamento autorizado — 28/09/2026, 20:49 UTC
-
-O usuário autorizou explicitamente as11migrations e o vínculo ao workspace. Aplicadas no Supabase HelpDesk (xaelbntjnvztznnpcvtm), PostgreSQL17.6: schema0.18.0,25tabelas com ENABLE/FORCE RLS,11registros de migration. O MCP atribuiu novos timestamps de execução; os nomes preservam o identificador original. Mapeamento completo em evidence/m1-ci-20260928/supabase-provisioning.json. Não executar novamente com timestamps locais nem usar migration repair automaticamente.
-
-Workspace Consulte GEO: e57d6844-f5df-4d82-a4cf-6c85b3be7c9e. Vínculo humano confirmado pela função resolve_human; papel agent, capabilities iniciais contexts:resolve/tickets:read,sem grants de contas. Não concede administração nem escrita. Usuário Auth existente preservado; nenhuma senha/MFA/secret alterada.
-
-Advisors:14informativos de RLS sem policies em tabelas privadas deliberadamente fechadas; não adicionar policies públicas para silenciar. Um aviso Auth de proteção contra senhas vazadas desativada: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection — configuração não alterada nesta autorização.
-
-Migrations históricas locais intactas; não houve mudança funcional de código. Asserções remotas de schema/RLS/vínculo aprovadas, mas não equivalem aos201testes descartáveis nem a login ponta a ponta. Backend Netlify/credenciais e release gate permanecem pendentes. A autorização desta rodada substitui somente a restrição histórica referente a aplicar migrations e cadastrar este vínculo.
-
-## Configuração de backend autorizada — 28/09/2026
-
-O usuário autorizou configurar e validar a conexão do backend no Netlify. O login restrito `helpdesk_app` foi habilitado com senha aleatória nova. Netlify production/functions recebeu HELPDESK_DATABASE_URL (segredo), HELPDESK_DATABASE_CA (CA pública Supabase Root2021), SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY e HELPDESK_RATE_LIMIT_HMAC_KEY (segredo). Valores secretos não entram no repositório.
-
-Pooler Supavisor session port5432, TLS com verificação de CA/hostname. A senha do login foi testada em conexão real: current_user=session_user=helpdesk_app, schema0.18.0. createProductionRuntime executou os guards reais de papel/schema/RLS/grants e GET/v1/public-config retornou200 no processo de validação local. Com o mesmo login restrito, resolve_human retornou o usuário provisionado no workspace e57d6844-f5df-4d82-a4cf-6c85b3be7c9e, papel agent, capabilities contexts:resolve/tickets:read, zero contas. O teste local passou `releaseApproved:true` apenas como entrada efêmera de validação; a variável de produção não foi criada.
-
-Deploy Netlify6abaddf0e69e8a97891f533a ready, Functionapi Node22 publicada. GET/v1/public-config no host continua503/release_gate_closed. A conexão não foi testada *dentro* da Function porque o gate impede a inicialização. Login real com senha do usuário não foi executado. M1 segue aberto (host/Auth, carga/abuso, restore e revisão operacional); não marcar HOMOLOGADO ou OPERACIONAL. Evidência compacta em evidence/m1-ci-20260928/netlify-backend-config.json.
+O handoff histórico integral anterior está em `history/r18-05-HANDOFF-REVISAO.md`.
