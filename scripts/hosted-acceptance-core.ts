@@ -3,10 +3,11 @@ import {createHash,randomUUID} from 'node:crypto';
 import {readIdentityResponse} from '../src/infrastructure/auth-response.ts';
 import {SHORT_SESSION_PATTERN} from '../src/infrastructure/session-lifecycle.ts';
 import {RELEASE} from '../src/version.ts';
+import {isHostedDeployOrigin,LEGACY_HOSTED_SITE} from './hosted-origin.ts';
 
 type ObjectValue=Record<string,unknown>;
 export type HostedAccount={accountId:string;requesterId:string;productInstanceId:string;ticketId:string;serviceCode:string};
-export type HostedFixture={schema:1;environment:'homologation';origin:string;supabaseUrl:string;deploymentCommit:string;
+export type HostedFixture={schema:1;environment:'homologation';origin:string;netlifySiteName?:string;supabaseUrl:string;deploymentCommit:string;
  workspaceId:string;deniedWorkspaceId:string;agentId:string;integrationId:string;accountA:HostedAccount;accountB:HostedAccount;
  machineTicketId:string;machinePublicMessageId:string;internalNoteId:string;internalNoteMarker:string;publicMessageId:string};
 export type HostedTokens={requesterA:string;requesterB:string;agentA:string;machineA:string};
@@ -30,9 +31,10 @@ function invalidConfig():never {throw new Error('Configuração de homologação
 /** Return a private copy, so caller mutations cannot redirect an in-progress run. */
 function configuration(input:unknown):HostedFixture {
  if(!isObject(input)||!exact(input,['schema','environment','origin','supabaseUrl','deploymentCommit','workspaceId','deniedWorkspaceId',
-  'agentId','integrationId','accountA','accountB','machineTicketId','machinePublicMessageId','internalNoteId','internalNoteMarker','publicMessageId']))invalidConfig();
+  'agentId','integrationId','accountA','accountB','machineTicketId','machinePublicMessageId','internalNoteId','internalNoteMarker','publicMessageId',
+  ...(Object.hasOwn(input,'netlifySiteName')?['netlifySiteName']:[])]))invalidConfig();
  if(input.schema!==1||input.environment!=='homologation'||typeof input.origin!=='string'
-  ||!/^https:\/\/[a-f0-9]{24}--helpdesk-consultegeo\.netlify\.app$/.test(input.origin)
+  ||!isHostedDeployOrigin(input.origin,Object.hasOwn(input,'netlifySiteName')?input.netlifySiteName:LEGACY_HOSTED_SITE)
   ||typeof input.supabaseUrl!=='string'||!/^https:\/\/[a-z]{20}\.supabase\.co$/.test(input.supabaseUrl)
   ||typeof input.deploymentCommit!=='string'||!/^[a-f0-9]{40}$/.test(input.deploymentCommit)
   ||typeof input.internalNoteMarker!=='string'||!/^HD_TEST_INTERNAL_[A-Za-z0-9_-]{12,80}$/.test(input.internalNoteMarker))invalidConfig();
