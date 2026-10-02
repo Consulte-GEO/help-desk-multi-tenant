@@ -1,207 +1,43 @@
-name: One-time R22 evidence import
+name: Export verified R22 handoff
 on:
   push:
     branches: ['ops/m1-r22-evidence-import']
-permissions: {}
-concurrency:
-  group: helpdesk-r22-evidence-import
-  cancel-in-progress: false
+permissions:
+  contents: read
 jobs:
-  import:
+  export:
     if: github.repository == 'Consulte-GEO/help-desk-multi-tenant' && github.ref == 'refs/heads/ops/m1-r22-evidence-import'
     runs-on: ubuntu-24.04
     timeout-minutes: 8
-    permissions:
-      actions: read
-      contents: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: b77399a4334115bc499c35b6cdf6c0a69f345062
+          ref: da331df619492c8eab370fdaeeed41c9ac499057
+          fetch-depth: 3
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
-      - name: Verify original artifact and preserve evidence on the existing work branch
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Reverify evidence and export exact product tree
         run: |
-          python3 - <<'PYTHON'
-          """One-time R22 evidence transfer. Never merge this execution helper into the product."""
-          import base64, hashlib, io, json, os, pathlib, stat, subprocess, sys, urllib.error, urllib.parse, urllib.request, zipfile
-          
-          REPO='Consulte-GEO/help-desk-multi-tenant'
-          HEAD='b77399a4334115bc499c35b6cdf6c0a69f345062'
-          TARGET='codex/m1-r21-integracao-r20'
-          RUN=37021243365
-          ARTIFACT=11233201399
-          DIGEST='8dabfa81f2ad775024a4296ccfb0ac178f1a60d9fe4f31b17440c4bd2aa0ceaf'
-          FINGERPRINT='659e9ad6d69d822888486a59b2c9c6bf5d39c7a3ec1391ee29fd048c0e9a6a82'
-          EXECUTION='ae00a4ca-bcad-4743-98b8-ec2e0afd6c53'
-          PATHS={'browser-human-session.json','browser-smoke.json','ci/source.json','homologation/latest.json','interface-desktop.png','interface-mobile.png'}
-          PATHS.update('homologation/runs/'+EXECUTION+'/'+n for n in ('application.log','audit.log','install.log','interface.log','lock.log','postgres.log','report.json'))
-          
-          def require(ok, message='Evidence transfer refused.'):
-              if not ok: raise ValueError(message)
-          
-          def verified_files(raw):
-              require(len(raw)==489081 and hashlib.sha256(raw).hexdigest()==DIGEST,'Artifact digest mismatch.')
-              with zipfile.ZipFile(io.BytesIO(raw)) as z:
-                  infos=z.infolist()
-                  require(len(infos)==len(PATHS) and {i.filename for i in infos}==PATHS,'Unexpected archive entries.')
-                  require(sum(i.file_size for i in infos)<2_000_000,'Archive too large.')
-                  for i in infos:
-                      require(not i.is_dir() and not stat.S_ISLNK(i.external_attr>>16) and not i.flag_bits&1)
-                  files={i.filename:z.read(i) for i in infos}
-              report=json.loads(files['homologation/latest.json'])
-              require(files['homologation/latest.json']==files['homologation/runs/'+EXECUTION+'/report.json'])
-              require(report['source_sha256']==FINGERPRINT and report['platform_approved'] is False)
-              require(len(report['checks'])==6)
-              counts={'application':1436,'postgres':215,'interface':71}
-              require({c['id'] for c in report['checks']}=={'lock','install','audit',*counts})
-              for c in report['checks']:
-                  require(c['status']=='passed' and c['exit_code']==0 and c['signal'] is None)
-                  require(c['artifact']=='runs/'+EXECUTION+'/'+c['id']+'.log')
-                  require(hashlib.sha256(files['homologation/'+c['artifact']]).hexdigest()==c['sha256'])
-                  if c['id'] in counts:
-                      require(c['tests']=={'tests':counts[c['id']],'pass':counts[c['id']],'fail':0,'cancelled':0,'skipped':0,'todo':0})
-              source=json.loads(files['ci/source.json'])
-              require(source['commit']==HEAD and source['run_id']==str(RUN) and source['run_attempt']=='1' and source['source_sha256']==FINGERPRINT)
-              return files
-          
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self, req, fp, code, msg, headers, newurl): return None
-          OPENER=urllib.request.build_opener(NoRedirect)
-          
-          def api(path, data=None, method=None):
-              require(path.startswith('/') and not path.startswith('//'))
-              body=None if data is None else json.dumps(data).encode()
-              req=urllib.request.Request('https://api.github.com/repos/'+REPO+path,data=body,method=method,
-                headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'})
-              with OPENER.open(req,timeout=30) as response:
-                  raw=response.read(4_000_001);require(len(raw)<=4_000_000);return json.loads(raw)
-          
-          def download():
-              # The repository token is sent only to api.github.com, never to the signed archive host.
-              req=urllib.request.Request('https://api.github.com/repos/'+REPO+'/actions/artifacts/'+str(ARTIFACT)+'/zip',
-                headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
-              try:
-                  with OPENER.open(req,timeout=30) as response: raise ValueError('Expected archive redirect.')
-              except urllib.error.HTTPError as exc:
-                  require(exc.code==302);location=exc.headers['Location']
-              parsed=urllib.parse.urlsplit(location)
-              require(parsed.scheme=='https' and parsed.hostname and parsed.username is None and parsed.password is None and parsed.port in (None,443))
-              with OPENER.open(urllib.request.Request(location),timeout=30) as response:
-                  raw=response.read(2_000_001);require(len(raw)<=2_000_000);return raw
-          
-          def local_files(files, root):
-              changes={}
-              for name, raw in sorted(files.items()):
-                  path='evidence/'+name
-                  existing=root/path
-                  if existing.exists():
-                      require(existing.is_file() and not existing.is_symlink())
-                      old=existing.read_bytes()
-                      if old!=raw:changes['evidence/m1-r22/previous/'+name]=old
-                  changes[path]=raw
-              note=(
-                '> **M1-R22 — 02/10/2026:** código R20/R21 na branch `codex/m1-r21-integracao-r20`; '
-                'evidências originais do CI 37021243365 incorporadas e verificadas, sem mudança executável. '
-                '1436 Node, 215 PostgreSQL 17 e 71 HTTP/browser são resultados do runner. '
-                'Revisão independente e aceitação hospedada continuam pendentes. M1 aberto; M2 não iniciado. '
-                'Leia `docs/111-M1-R22-EVIDENCIAS-E-INTEGRACAO.md`. Não abrir o gate operacional.\n\n')
-              for name in ('PROJECT_HELP_DESK.md','README.md'):
-                  changes[name]=note.encode()+(root/name).read_bytes()
-              original=(root/'docs/110-M1-R21-INTEGRACAO-R20.md').read_bytes()
-              changes['docs/110-M1-R21-INTEGRACAO-R20.md']=original+('\n\n## Atualização R22 — 02/10/2026\n\n'
-                'O CI de R21 foi concluído com sucesso: 1436 Node, 215 PostgreSQL17 e 71 HTTP/browser. '
-                'Os arquivos originais foram incorporados sem reescrita, com arquivo dos documentos de evidência substituídos. '
-                'A descrição acima de CI pendente é histórica. Leia o documento111 para continuidade. '
-                'Não houve merge, liberação operacional ou mutação de Supabase por esta incorporação.\n').encode()
-              document='''# M1-R22 — evidências originais e preparação da integração final
-          
-          Data: 02/10/2026. Base de código `b77399a4334115bc499c35b6cdf6c0a69f345062`, branch `codex/m1-r21-integracao-r20`; base padrão observada `9fa74499f2f81a61de044d5826fbc398c5e167b3`.
-          
-          ## Alteração desta rodada
-          Incorporar os arquivos originais de evidência R21, arquivar os arquivos substituídos e atualizar os pontos de entrada. Zero mudança em código, testes, workflow do produto, migrations, dependências, frontend, Functions ou regras de autorização. O executor pontual de transferência está numa branch `ops/` separada e não faz parte da branch do produto; não o mesclar à padrão.
-          
-          ## Origem e integridade
-          CI 37021243365, tentativa1, artefato11233201399. ZIP SHA-256 `8dabfa81f2ad775024a4296ccfb0ac178f1a60d9fe4f31b17440c4bd2aa0ceaf`.
-          Fingerprint executável `659e9ad6d69d822888486a59b2c9c6bf5d39c7a3ec1391ee29fd048c0e9a6a82`.
-          Execução interna `ae00a4ca-bcad-4743-98b8-ec2e0afd6c53`. Download do artefato pelo GitHub, digest confrontado, 13 arquivos preservados byte a byte, seis logs verificados pelo gate existente na fonte exata. Não regenerar timestamps, contagens, origem, hash ou relatório. Arquivos anteriores substituídos ficam em `evidence/m1-r22/previous/`; as pastas de runs históricas não foram apagadas.
-          
-          ## Estados
-          - Implementado: R20 incorporado na branch R21; R22 muda somente documentação/evidência.
-          - Testado localmente: reconferência do pacote e dos arquivos; ver relatório da rodada.
-          - Testado em PostgreSQL real: 215/215 no CI R21, PostgreSQL17 descartável, dados sintéticos.
-          - Testado em navegador: Chromium real no CI, 31 checks de interface e cinco de sessão sintética; 35 HTTP, total71.
-          - Node: 1436/1436 no CI R21; lock, instalação padrão, audit e typecheck aprovados.
-          - Deployado: não estabelecido por esta transferência. Produção observada antes desta rodada continua R19.
-          - Homologado para atendimento real: não. Operacional: não. M1 aberto; M2 não iniciado.
-          
-          Esta rodada não é outra execução de 1436/215/71. É preservação e verificação da execução citada. Revisão local pelo executor não é revisão independente. `platform_approved:false` permanece no relatório original; gate técnico não concede autorização operacional.
-          
-          ## Próxima prioridade
-          1. Conferir HEAD/diff, revisar R20 de forma independente e verificar o gate desta fonte; preparar PR sem merge automático.
-          2. Aprovar separadamente o isolamento e os destinos de homologação: site, banco, Auth, custos, identidades, dados sintéticos, segredos e consumidores de outbox. IDs de examples são fictícios.
-          3. Só após autorização/preparo, executar os clientes de Auth, leitura e gravação existentes. Conferir dentro da Function TLS/pooler/role; correlacionar efeitos privados somente em leitura autorizada. Nunca rodar a suíte destrutiva de CI no Supabase hospedado.
-          4. Completar concorrência, capacidade/abuso, backup/restore, residência/RPO/RTO, revisão e aceite operacional antes de M2.
-          
-          ## Retomada no Codex
-          Usar a branch existente, sem reaplicar R20/R21. Confirmar estado limpo e mudanças concorrentes. `npm ci --ignore-scripts`, `npm run check:lock`, `npm run check:homologation`. Se o gate falhar por mudança de fonte ou validade, obter nova execução completa; não ajustar os originais. A validade do relatório é limitada pelo verificador existente.
-          
-          Não fazer force-push. Não copiar scripts da branch temporária ops para o produto. Não conceder acesso por UUID/metadata, usar postgres como identidade de atendimento ou abrir HELPDESK_RELEASE_APPROVED para contornar pendências.
-          '''
-              changes['docs/111-M1-R22-EVIDENCIAS-E-INTEGRACAO.md']=document.encode()
-              receipt={'schema':1,'scope':'evidence-transfer-not-new-tests','source_commit':HEAD,'source_sha256':FINGERPRINT,
-                'workflow_run_id':RUN,'attempt':1,'artifact_id':ARTIFACT,'artifact_sha256':DIGEST,
-                'transfer_run_id':os.environ.get('GITHUB_RUN_ID'),'platform_approved':False,'operational':False,
-                'files':{n:hashlib.sha256(v).hexdigest() for n,v in sorted(files.items())}}
-              changes['evidence/m1-r22/provenance.json']=(json.dumps(receipt,indent=2)+'\n').encode()
-              for name in changes:
-                  require(name.startswith(('evidence/','docs/')) or name in ('PROJECT_HELP_DESK.md','README.md'))
-              return changes
-          
-          def main():
-              root=pathlib.Path.cwd()
-              require(subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==HEAD,'Wrong checkout.')
-              require(not subprocess.check_output(['git','status','--porcelain'],text=True).strip(),'Dirty checkout.')
-              require(api('/git/ref/heads/'+TARGET)['object']['sha']==HEAD,'Target branch changed.')
-              run=api('/actions/runs/'+str(RUN))
-              require(run['head_sha']==HEAD and run['conclusion']=='success' and run['status']=='completed' and run['run_attempt']==1)
-              artifact=api('/actions/artifacts/'+str(ARTIFACT))
-              require(artifact['digest']=='sha256:'+DIGEST and not artifact['expired'] and artifact['workflow_run']['head_sha']==HEAD)
-              files=verified_files(download())
-              changes=local_files(files,root)
-              for name,raw in changes.items():
-                  destination=root/name
-                  require(not destination.is_symlink())
-                  for parent in destination.parents:
-                      if parent==root:break
-                      require(not parent.is_symlink())
-                  destination.parent.mkdir(parents=True,exist_ok=True)
-                  destination.write_bytes(raw)
-              gate=subprocess.run(['node','scripts/check-homologation.mjs'],capture_output=True,text=True,timeout=30)
-              require(gate.returncode==0,'Existing release evidence checker rejected the source or artifacts.')
-              print('Existing evidence checker: PASS. No operational approval.')
-              # No code is committed: only this explicit in-memory evidence/documentation map.
-              tree=[]
-              for name,raw in sorted(changes.items()):
-                  blob=api('/git/blobs',{'content':base64.b64encode(raw).decode(),'encoding':'base64'})
-                  expected=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
-                  require(blob['sha']==expected,'Uploaded bytes mismatch.')
-                  tree.append({'path':name,'mode':'100644','type':'blob','sha':blob['sha']})
-              base=api('/git/commits/'+HEAD)
-              newtree=api('/git/trees',{'base_tree':base['tree']['sha'],'tree':tree})
-              newcommit=api('/git/commits',{'message':'docs(m1): preserve verified R21 evidence and R22 handoff; runtime unchanged','tree':newtree['sha'],'parents':[HEAD]})
-              require(api('/git/ref/heads/'+TARGET)['object']['sha']==HEAD,'Concurrent update; ref unchanged by this job.')
-              api('/git/refs/heads/'+TARGET,{'sha':newcommit['sha'],'force':False},method='PATCH')
-              require(api('/git/ref/heads/'+TARGET)['object']['sha']==newcommit['sha'],'Ref confirmation failed; inspect manually.')
-              print(json.dumps({'result':'evidence_committed','branch':TARGET,'commit':newcommit['sha'],'files':len(changes),'code_changed':False,'operational':False}))
-          
-          if __name__=='__main__':
-              try:main()
-              except Exception:
-                  print('Evidence transfer failed or outcome unconfirmed. Inspect branch before any retry; no raw provider details emitted.',file=sys.stderr)
-                  sys.exit(1)
-          PYTHON
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = da331df619492c8eab370fdaeeed41c9ac499057
+          test -z "$(git status --porcelain)"
+          node scripts/check-homologation.mjs
+          mkdir -p "$RUNNER_TEMP/r22-export"
+          git archive --format=tar HEAD | gzip -n > "$RUNNER_TEMP/r22-export/source.tar.gz"
+          git diff --binary b77399a4334115bc499c35b6cdf6c0a69f345062 HEAD > "$RUNNER_TEMP/r22-export/helpdesk-m1-r22-only.patch"
+          git diff --binary 9fa74499f2f81a61de044d5826fbc398c5e167b3 HEAD > "$RUNNER_TEMP/r22-export/helpdesk-m1-r20-r22.patch"
+          git ls-tree -r HEAD > "$RUNNER_TEMP/r22-export/git-tree.txt"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/r22-export/source-git.txt"
+          git diff --name-only b77399a4334115bc499c35b6cdf6c0a69f345062 HEAD > "$RUNNER_TEMP/r22-export/changed-paths.txt"
+          node --input-type=module -e "import {sourceFingerprint} from './scripts/homologation-core.mjs'; console.log(await sourceFingerprint(process.cwd()));" > "$RUNNER_TEMP/r22-export/fingerprint.txt"
+          cd "$RUNNER_TEMP/r22-export"
+          sha256sum source.tar.gz helpdesk-m1-r22-only.patch helpdesk-m1-r20-r22.patch git-tree.txt source-git.txt changed-paths.txt fingerprint.txt > SHA256SUMS.txt
+      - name: Preserve exact export; not a new CI test run
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: helpdesk-r22-exact-export-da331df
+          path: ${{ runner.temp }}/r22-export/
+          retention-days: 14
+          if-no-files-found: error
