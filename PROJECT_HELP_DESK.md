@@ -1,3 +1,5 @@
+> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
+
 # Estado de continuidade — M1-R19 / 01-10-2026
 
 **Código executável:** R18, sem alteração funcional nesta rodada. **Base remota:** R9 `78bbb00112331531168ae24600604cb7f3148770`. **M1 aberto; M2 não iniciado.**
