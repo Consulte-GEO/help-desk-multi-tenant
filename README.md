@@ -1,18 +1,20 @@
-> **M1-R22 — 02/10/2026:** código R20/R21 na branch `codex/m1-r21-integracao-r20`; evidências originais do CI 37021243365 incorporadas e verificadas, sem mudança executável. 1436 Node, 215 PostgreSQL 17 e 71 HTTP/browser são resultados do runner. Revisão independente e aceitação hospedada continuam pendentes. M1 aberto; M2 não iniciado. Leia `docs/111-M1-R22-EVIDENCIAS-E-INTEGRACAO.md`. Não abrir o gate operacional.
-
-> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
+> **M1-R24 — 05/10/2026:** base canônica R23 `072287f`, com R20–R22 já integrados. Estado, revisão e evidências desta rodada em [docs/113-M1-R24-REVISAO-E-ESTADO.md](docs/113-M1-R24-REVISAO-E-ESTADO.md). M1 operacional aberto; M2 não iniciado. Os estados antigos abaixo são históricos.
 
 # Help Desk independente — API/interface 0.19.0
 
-**M1 aberto.** Produto genérico multiproduto e multicontrato. O núcleo não incorpora campos próprios de GeoLab, Financeiro ou outro consumidor.
+Produto genérico multiproduto e multicontrato. **M1 operacional aberto; M2 não iniciado.**
 
-## Retomada atual — R19 / 01-10-2026
-Código acumulado R10–R18, revalidado sem mudanças funcionais nesta rodada. **1.417 testes Node e 35 verificações HTTP em memória passaram.** Instalação/auditoria/typecheck padrão, 215 testes PostgreSQL, navegador e gate não foram aprovados aqui. O deploy R9 existe; o acumulado local não está publicado nem homologado.
+## Estado atual e retomada
 
-Leia [documento mestre](PROJECT_HELP_DESK.md), [estado](docs/102-M1-R19-ESTADO-E-EVIDENCIAS.md), [handoff](docs/103-M1-R19-HANDOFF-E-BACKLOG.md) e [tarefa de integração](docs/104-M1-R19-TAREFA-CODEX.md). A próxima ação é integrar e executar a validação real; não criar outra funcionalidade M2 como substituto.
+R10–R22 estão integrados na branch padrão GitHub `codex/m1-reproducibilidade`. O PR #2 foi mesclado em `129a434`; o handoff R23 está em `072287f`. Não reaplicar patches desses incrementos.
+
+Leia [documento mestre](PROJECT_HELP_DESK.md), [estado e revisão R24](docs/113-M1-R24-REVISAO-E-ESTADO.md), [estado](docs/04-ESTADO-E-EVIDENCIAS.md) e [handoff/backlog](docs/05-HANDOFF-REVISAO.md).
+
+O CI Linux R23 aprovou 1.436 Node, 215 PostgreSQL 17 e 71 HTTP/browser. Na reprodução Windows R24, instalação, audit, typecheck e build passaram; a suíte Node teve 1.413 aprovações e 23 falhas, registradas sem omissão. CI descartável não equivale a homologação hospedada.
 
 ## Instalação e verificação
-O `package-lock.json` já existe. Preserve-o e use:
+
+Preserve o lock existente:
 
 ```bash
 npm ci --ignore-scripts
@@ -23,19 +25,23 @@ npm run test:db:local
 npm run test:ui:local
 ```
 
-O banco da suíte é PostgreSQL 17 novo, local e descartável. Não apontar os testes SQL para o Supabase remoto. Homologação consolidada e conferência das evidências:
+A suíte integral usa Linux, OpenSSL, suporte a links simbólicos, Docker local (ou PostgreSQL 17 nativo explicitamente configurado) e Chromium/Python preparado. O banco é novo e descartável; nunca apontar a suíte SQL para o Supabase hospedado. Windows não é o ambiente de referência da homologação integral.
 
 ```bash
 npm run homologate:local
 npm run check:homologation
 ```
 
-O primeiro comando repete etapas deliberadamente para gerar um conjunto coerente; não juntar logs de execuções diferentes. Falta de dependências, SQL ou browser deve manter o gate fechado. O build gera frontend estático; empacotamento e execução da Function são verificações separadas.
+O primeiro comando produz um conjunto coerente. Não juntar logs de rodadas diferentes nem editar relatórios para aprovar um código novo. O build estático e o empacotamento/execução da Function são verificações distintas.
 
-## Demonstração e clientes de aceitação
-`npm run demo` usa dados fictícios em memória. Os comandos `test:hosted:read`, `test:hosted:auth` e `test:hosted:write` apresentam plano sem rede por padrão; seus exemplos são fictícios. Execução com sessões, gravações e destino precisa de autorização e isolamento explícitos. Não incluir credenciais em arquivos ou logs. Os detalhes permanecem nos documentos 65–100.
+## Destino e clientes de aceitação
 
-API/interface 0.19.0; schema 0.18.0; 11 migrations históricas preservadas; 18 operações HTTP. Nunca ligar `HELPDESK_RELEASE_APPROVED` para contornar pendências, nem usar `postgres`/`service_role` como identidade de atendimento.
+O site atual é `helpdesk-consultegeo`, ID `9781cd85-7dc1-4ef5-868b-947e389a9d4d`. O site histórico `help-desk-multi-tenant` é outro recurso. O Supabase HelpDesk é `xaelbntjnvztznnpcvtm`; inspeção R24 encontrou onze migrations e 25 tabelas privadas com ENABLE/FORCE RLS. Isso não prova o percurso Function → PostgreSQL nem Auth/M2M.
+
+`npm run demo` usa dados fictícios em memória. Os clientes `test:hosted:read`, `test:hosted:auth` e `test:hosted:write` apresentam plano sem rede por padrão. Os exemplos isolados são fictícios, não recursos provisionados. Execução efetiva requer destino, fixtures, Auth e canais isolados definidos e autorizados. Não incluir credenciais em arquivos ou logs.
+
+API/interface 0.19.0; schema 0.18.0; onze migrations históricas; 18 operações HTTP. Não abrir `HELPDESK_RELEASE_APPROVED` para contornar a homologação pendente.
 
 ## Histórico
-[README integral anterior](docs/history/r18-README.md). As decisões arquiteturais e os registros das entregas anteriores continuam disponíveis; seus números e destinos não substituem os estados atuais.
+
+[README anterior ao R24](docs/history/r23-README.md). Decisões arquiteturais e evidências anteriores permanecem preservadas.

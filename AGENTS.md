@@ -1,3 +1,5 @@
+> **M1-R24 — 05/10/2026:** base canônica R23 `072287f`, com R20–R22 já integrados. Estado, revisão e evidências desta rodada em [docs/113-M1-R24-REVISAO-E-ESTADO.md](docs/113-M1-R24-REVISAO-E-ESTADO.md). M1 operacional aberto; M2 não iniciado. Os estados antigos abaixo são históricos.
+
 > **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
 
 > **Retomada R19 — 01/10/2026:** ler o estado/handoff/tarefa nos documentos 102–104. Código R18 preservado; 1.417 Node revalidados. Lock existente: usar npm ci, não regenerá-lo por orientação histórica. 215 SQL e navegador ainda não executados com sucesso nesta rodada. M1 aberto; sem nova autorização externa. Números e passos antigos abaixo são históricos.
