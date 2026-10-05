@@ -1,19 +1,16 @@
-> **M1-R22 — 02/10/2026:** código R20/R21 na branch `codex/m1-r21-integracao-r20`; evidências originais do CI 37021243365 incorporadas e verificadas, sem mudança executável. 1436 Node, 215 PostgreSQL 17 e 71 HTTP/browser são resultados do runner. Revisão independente e aceitação hospedada continuam pendentes. M1 aberto; M2 não iniciado. Leia `docs/111-M1-R22-EVIDENCIAS-E-INTEGRACAO.md`. Não abrir o gate operacional.
+> **M1-R24 — 05/10/2026:** base canônica R23 `072287f`, com R20–R22 já integrados. Estado, revisão e evidências desta rodada em [docs/113-M1-R24-REVISAO-E-ESTADO.md](docs/113-M1-R24-REVISAO-E-ESTADO.md). M1 operacional aberto; M2 não iniciado. Os estados antigos abaixo são históricos.
 
-> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
+# Estado de continuidade — M1-R24 / 05-10-2026
 
-# Estado de continuidade — M1-R19 / 01-10-2026
+Base GitHub confirmada: `072287f934b5f7620d14531181a7cb4f01fadc6b`, após merge R23 `129a434`. R20–R22 integrados; não reaplicar seus patches. Fingerprint executável preservado: `659e9ad6d69d822888486a59b2c9c6bf5d39c7a3ec1391ee29fd048c0e9a6a82`.
 
-**Código executável:** R18, sem alteração funcional nesta rodada. **Base remota:** R9 `78bbb00112331531168ae24600604cb7f3148770`. **M1 aberto; M2 não iniciado.**
+Estado atual em [113-M1-R24-REVISAO-E-ESTADO.md](docs/113-M1-R24-REVISAO-E-ESTADO.md); backlog em [05-HANDOFF-REVISAO.md](docs/05-HANDOFF-REVISAO.md). A autorização direta de 05/10/2026 permite revisão, correções necessárias, commit, merge e publicação técnica sem revisão do Claude. Não representa aceite operacional nem identifica novos recursos cobrados ou fixtures remotas.
 
-Leia primeiro [estado atual](docs/102-M1-R19-ESTADO-E-EVIDENCIAS.md), [handoff/backlog](docs/103-M1-R19-HANDOFF-E-BACKLOG.md) e [tarefa executável](docs/104-M1-R19-TAREFA-CODEX.md).
-
-Revalidação nesta sessão: **1.417 testes Node aprovados**, 35 HTTP em memória; instalação/audit/typecheck padrão, PostgreSQL, navegador e gate não aprovados. O Supabase e o Netlify foram inspecionados somente por metadados. Não houve execução SQL remota, autenticação hospedada ou alteração externa.
-
-R19 consolida documentação e evidências: não adiciona código, testes, comandos ou permissões. O fingerprint executável permanece `66b19776e652a210ebc819e49dac7650bb27eae00c269b8c186ab55e90d84491`. A próxima ação é integrar R10–R18 e executar a validação em ambiente apto, não criar uma nova suíte para substituir esse teste.
+Instalação e auditoria locais passaram; 1.413/1.436 Node passaram no Windows, com 23 falhas preservadas. CI Linux R23: 1.436 Node, 215 SQL e 71 HTTP/browser. Site atual `helpdesk-consultegeo` (ID `9781cd85-7dc1-4ef5-868b-947e389a9d4d`); Supabase HelpDesk com onze migrations e 25 tabelas privadas com RLS habilitada/forçada, por introspecção somente leitura. Homologação hospedada, capacidade, restauração e aceite continuam pendentes.
 
 ## Leitura do histórico
-Os preâmbulos cronológicos anteriores estão preservados integralmente em [histórico de introduções](docs/history/r18-project-introductions-before-r19.md). O documento mestre original abaixo está preservado literalmente; suas datas, números e destinos históricos não são estados atuais. Em especial, as seções 3, 14–16 e 29 exigem confronto com o estado R19. As decisões arquiteturais e as restrições de operações externas permanecem obrigatórias.
+
+O preâmbulo anterior foi preservado em [histórico R23](docs/history/r23-project-introductions.md). O corpo mestre abaixo permanece literalmente preservado como decisões e histórico. Seus números, destinos e pendências antigos devem ser confrontados com o estado R24; em particular, não usar a antiga ausência de lock/migrations/tabelas como estado atual.
 
 ---
 

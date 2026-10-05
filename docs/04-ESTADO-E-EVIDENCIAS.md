@@ -1,9 +1,9 @@
-> **Integração Codex — 02/10/2026:** R10–R19 integrado; CI Linux 1417 Node, 215 PostgreSQL17 e 71 HTTP/browser aprovados. Lock, audit e typecheck aprovados; evidência única verificada. Leia docs/105-M1-R19-INTEGRACAO-CODEX.md. M1 operacional permanece aberto. Autorização atual permite commit, merge e publicação sem Claude; estados e restrições antigos abaixo são históricos.
+# Estado corrente — Help Desk M1-R24 / 05-10-2026
 
-# Estado corrente — Help Desk M1-R19 / 01-10-2026
+Fonte atual: [113-M1-R24-REVISAO-E-ESTADO.md](113-M1-R24-REVISAO-E-ESTADO.md). Base R23 `072287f`, R20–R22 integrados. M1 operacional aberto; M2 não iniciado.
 
-Fonte de estado desta rodada: [102-M1-R19-ESTADO-E-EVIDENCIAS.md](102-M1-R19-ESTADO-E-EVIDENCIAS.md).
+Instalação, audit, typecheck, contratos, segredos, build e conferência das evidências passaram localmente. Node Windows: 1.413 aprovados, 23 falhas, sem skips; Docker/Chromium indisponíveis. CI Linux histórico R23: 1.436 Node, 215 PostgreSQL e 71 HTTP/browser aprovados. Esses estados não se substituem.
 
-**R18 executável, 1.417 Node revalidados, 35 HTTP em memória; 215 SQL pendentes de execução nesta rodada.** Instalação/audit/typecheck padrão, navegador e gate não aprovados. Acumulado não publicado, homologado ou operacional. R9 remoto/Netlify confirmado; Supabase inspecionado só por metadados.
+Site atual `helpdesk-consultegeo`, ID `9781cd85-7dc1-4ef5-868b-947e389a9d4d`; frontend respondeu HTTP 200 e a Function R23 respondeu 503 `release_gate_closed`. Supabase HelpDesk: onze migrations e 25 tabelas privadas com ENABLE/FORCE RLS; `helpdesk_app` sem superuser/BYPASSRLS. A introspecção não comprova TLS/grants/login dentro da Function ou homologação hospedada.
 
-O conteúdo integral antes desta consolidação está preservado em [histórico](history/r18-04-ESTADO-E-EVIDENCIAS.md). Não utilizar contagens históricas como estado atual. Arquitetura e limites de autorização permanecem no documento mestre.
+Registro anterior preservado em [histórico R23](history/r23-04-ESTADO-E-EVIDENCIAS.md).
