@@ -14,6 +14,8 @@ O diff R19 → R23 foi conferido. R20 acrescentou seleção explícita do site n
 
 O problema confirmado nesta rodada foi a divergência dos documentos de entrada: README, documento mestre, estado e handoff ainda direcionavam para R19/R22 e pediam integração já concluída. Foram reconciliados com R23 e com as observações atuais; os textos anteriores foram arquivados em `docs/history/r23-*`. O corpo arquitetural mestre foi preservado literalmente. Nenhuma mudança funcional, SQL, redução de gate ou nova suíte sintética foi necessária nesta revisão.
 
+Um subagente revisor independente conferiu o diff R20–R23 e depois a reconciliação documental, sem achados bloqueantes. Executou 19 testes focais (todos aprovados, zero skips), conferiu fingerprint/logs e os 13 hashes da proveniência R22. Confirmou os históricos e corpo mestre por comparação literal, e os links locais. É revisão automatizada local, não APPROVE humano, pentest ou aceite operacional.
+
 Fingerprint executável: `659e9ad6d69d822888486a59b2c9c6bf5d39c7a3ec1391ee29fd048c0e9a6a82`. A correção documental não modifica seus inputs. As evidências históricas permanecem intactas; não foram renovados timestamps nem editado `latest.json` para simular execução nova.
 
 ## Verificação local e limitações

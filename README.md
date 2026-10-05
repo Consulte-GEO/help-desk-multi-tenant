@@ -25,7 +25,7 @@ npm run test:db:local
 npm run test:ui:local
 ```
 
-A suíte integral exige Linux, OpenSSL, suporte a links simbólicos, Docker local e Chromium/Python preparado. O banco é PostgreSQL 17 novo e descartável; nunca apontar a suíte SQL para o Supabase hospedado. Windows não é o ambiente de referência da homologação integral.
+A suíte integral usa Linux, OpenSSL, suporte a links simbólicos, Docker local (ou PostgreSQL 17 nativo explicitamente configurado) e Chromium/Python preparado. O banco é novo e descartável; nunca apontar a suíte SQL para o Supabase hospedado. Windows não é o ambiente de referência da homologação integral.
 
 ```bash
 npm run homologate:local
