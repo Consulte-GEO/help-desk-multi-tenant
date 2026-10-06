@@ -1,3 +1,5 @@
+> **Estado pós-merge — 06/10/2026:** leia [HD-P01](114-HD-P01-ESTADO-POS-R24.md), que prevalece sobre o histórico abaixo. CI R24 1436/215/71; gate hospedado fechado; M1 operacional aberto.
+
 # Estado corrente — Help Desk M1-R24 / 05-10-2026
 
 Fonte atual: [113-M1-R24-REVISAO-E-ESTADO.md](113-M1-R24-REVISAO-E-ESTADO.md). Base R23 `072287f`, R20–R22 integrados. M1 operacional aberto; M2 não iniciado.

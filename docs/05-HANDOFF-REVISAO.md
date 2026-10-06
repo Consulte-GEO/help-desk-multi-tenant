@@ -1,3 +1,5 @@
+> **Estado pós-merge — 06/10/2026:** leia [HD-P01](114-HD-P01-ESTADO-POS-R24.md), que prevalece sobre o histórico abaixo. CI R24 1436/215/71; gate hospedado fechado; M1 operacional aberto.
+
 # Help Desk M1-R24 — Handoff e backlog
 
 Leia [estado/revisão R24](113-M1-R24-REVISAO-E-ESTADO.md), [documento mestre](../PROJECT_HELP_DESK.md) e [handoff R23](112-M1-R23-REVISAO-MERGE-HANDOFF.md). R20–R22 já integrados; não reaplicar patches nem mesclar a branch auxiliar ops. Base desta revisão: `072287f`.
