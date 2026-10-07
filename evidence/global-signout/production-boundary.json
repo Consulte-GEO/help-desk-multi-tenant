@@ -1,0 +1,100 @@
+{
+  "scope": "production-global-signout-boundary",
+  "checked_at": "2026-10-07T16:06:19.316Z",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac66dae81d3e10008efd24d",
+  "commit": "e6ed434f9bdbde49484838bb1ef5d407f0cd3f6e",
+  "context": "production",
+  "state": "ready",
+  "checks": [
+    {
+      "check": "delivered-source:index.html",
+      "status": 200,
+      "same_source": true,
+      "sha256": "0d1e9c8c5f7dac6744bbca0198b56871b917d9e43f1afc2ab79a30bd3e77efe2"
+    },
+    {
+      "check": "delivered-source:app.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "9a89b938c70911496c1d6713e2f5b4fa7dbdedf80ea7331940f1cdd1a8ed9010"
+    },
+    {
+      "check": "delivered-source:human-auth.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "bffbffbd061721bcb9a210a4e779214642229f3935ac21effa7ceda1045daa2d"
+    },
+    {
+      "check": "delivered-source:human-session.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "ff7eba96987c5d083976768105355158d0361c03d21e5a8c53a49f86d7f9d960"
+    },
+    {
+      "check": "delivered-source:session-fetch.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "f29ce96b8f9622c9d37db5e82219fc130b7c83be610dadcb01ad098dd1c0ebf5"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /workspaces?user_id=forged",
+      "status": 400,
+      "code": "invalid_input"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /public-config",
+      "status": 200,
+      "code": null,
+      "official_auth_url": true,
+      "publishable_key_present": true,
+      "operational": false
+    },
+    {
+      "check": "GET /capabilities",
+      "status": 200,
+      "code": null,
+      "operational": false,
+      "business_capabilities": false
+    },
+    {
+      "check": "GET /me",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "GET /support-contexts",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /contexts/resolve",
+      "status": 503,
+      "code": "release_gate_closed"
+    }
+  ],
+  "human_login_tested": false,
+  "m2m_credentials_tested": false,
+  "business_operations_dispatched": 0,
+  "platform_approved": false
+}
