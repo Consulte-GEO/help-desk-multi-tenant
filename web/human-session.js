@@ -1,5 +1,5 @@
 /** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
-import {HumanAuthError,workspaceId} from './human-auth.js';
+import {HumanAuthError,workspaceId,validatePasswordChange} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
  const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([])});
@@ -54,16 +54,34 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  }
  async function authorization(){
   if(!session)throw new HumanAuthError('session_rejected');
+  if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');
   if(phase==='paused')throw new HumanAuthError('session_paused');
   if(phase==='refreshing')return pending.result;
   if(now()>=refreshAt)return rotate();
   return proof();
  }
- async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='refreshing')return pending.result;return rotate();}
+ async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');if(phase==='refreshing')return pending.result;return rotate();}
+ async function changePassword(currentPassword,password){
+  validatePasswordChange(currentPassword,password);
+  if(typeof transport.changePassword!=='function')throw new HumanAuthError('auth_unavailable');
+  const id=generation,p=await authorization();
+  if(id!==generation||!current(p))throw new HumanAuthError('stale_session');
+  if(phase!=='active')throw new HumanAuthError('password_change_in_progress');
+  const old=session;
+  const op={id,kind:'password',raw:Promise.resolve().then(()=>transport.changePassword(old.accessToken,old.userId,currentPassword,password))};
+  pending=op;phase='changing_password';notify();
+  let failure;
+  try{await op.raw;}catch(error){failure=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');}
+  if(id!==generation)throw new HumanAuthError('stale_session');
+  const logout=await signOut();
+  if(generation!==id+1)throw new HumanAuthError('stale_session');
+  if(failure){failure.logoutUnconfirmed=logout==='unconfirmed';throw failure;}
+  return Object.freeze({changed:true,logout});
+ }
  async function signOut({scope='local'}={}){
   if(!['local','global'].includes(scope))throw new HumanAuthError('invalid_logout_scope');
   if(ending)return ending;
-  const old=session,wait=pending;clear(scope==='global'?'signing_out':'signed_out');
+  const old=session,wait=pending,block=scope==='global'||wait?.kind==='password';clear(block?'signing_out':'signed_out');
   // Await an already-issued login/rotation so the newest returned token is revoked, never installed.
   // Transport has a deadline. The UI is cleared synchronously before this await.
   const finish=(async()=>{
@@ -72,13 +90,13 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
    if(!target)return wait?'unconfirmed':'not_requested';
    try{await transport.signOut(target,scope);return 'confirmed';}catch{return 'unconfirmed';}
   })();
-  if(scope==='local')return finish;
+  if(!block)return finish;
   // A global request can revoke a newly-created provider session. Do not allow login
   // in this page until its bounded result arrives; duplicate requests join it.
   ending=finish;
   try{return await finish;}finally{ending=null;phase='signed_out';notify();}
  }
- function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;clear();return true;}
+ function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;if(pending?.kind==='password'){void signOut();return true;}clear();return true;}
  function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}
- return Object.freeze({state,signIn,selectWorkspace,authorization,resume,signOut,reject,current});
+ return Object.freeze({state,signIn,selectWorkspace,authorization,resume,changePassword,signOut,reject,current});
 }
