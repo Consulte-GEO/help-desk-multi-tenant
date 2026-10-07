@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.20.4",
+    "version": "0.21.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -161,7 +161,7 @@
             }
           }
         },
-        "description": "Somente sessão humana validada no Auth. Sem query/body ou workspace exigido; máximo 50 opções, excesso é 503 sem resultado parcial. Seleção é revalidada em /me e em cada requisição."
+        "description": "Somente sessão humana validada no Auth. Quando há fator verificado, exige AAL2 do mesmo bearer confirmado no Auth; AAL1 retorna403 mfa_required antes dos vínculos. Sem query/body ou workspace exigido; máximo 50 opções, excesso é 503 sem resultado parcial. Seleção é revalidada em /me e em cada requisição."
       }
     },
     "/integration-tokens": {
@@ -2034,7 +2034,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Supabase access token humano ou hd_session_... M2M de curta duração."
+        "description": "Supabase access token humano validado em Auth /user; fatores verificados exigem aal2/sub/exp do mesmo bearer antes dos vínculos. hd_session_... M2M mantém política própria."
       },
       "integrationKey": {
         "type": "http",

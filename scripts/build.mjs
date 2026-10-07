@@ -5,4 +5,5 @@ for(const name of ['index.html','ticket-actions.js','human-auth.js','human-sessi
 await mkdir(new URL('../dist/shared/',import.meta.url),{recursive:true});
 await copyFile(new URL('../shared/instant.js',import.meta.url),new URL('../dist/shared/instant.js',import.meta.url));
 
+await copyFile(new URL('../shared/mfa.js',import.meta.url),new URL('../dist/shared/mfa.js',import.meta.url));
 console.log('Frontend estático criado em dist. O backend deve ser empacotado separadamente pelo Netlify.');

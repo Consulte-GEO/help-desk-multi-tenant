@@ -14,7 +14,7 @@ test('password, refresh, local logout use only dedicated routes; no credentials 
  assert.deepEqual(calls.map(c=>new URL(c.url).pathname+new URL(c.url).search),['/auth/v1/token?grant_type=password','/auth/v1/token?grant_type=refresh_token','/auth/v1/logout?scope=local']);
  assert.equal(JSON.parse(calls[0].init.body).password,' secret password ');assert.equal(JSON.parse(calls[0].init.body).email,'mail@example.test');assert.deepEqual(JSON.parse(calls[1].init.body),{refresh_token:r.refreshToken});assert.equal(calls[2].init.body,undefined);
  for(const c of calls){assert.equal(c.init.redirect,'error');assert.equal(c.init.credentials,'omit');assert.equal(c.init.cache,'no-store');assert.equal(c.init.referrerPolicy,'no-referrer');assert.doesNotMatch(c.url,/secret|opaque-refresh/);}
- assert.deepEqual(Object.keys(r).sort(),['accessToken','expiresAt','refreshToken','userId']);assert.doesNotMatch(JSON.stringify(r),/admin|private_extra/);
+ assert.deepEqual(Object.keys(r).sort(),['accessToken','expiresAt','mfaFactors','refreshToken','userId']);assert.doesNotMatch(JSON.stringify(r),/admin|private_extra/);
 });
 test('invalid credentials are rejected before network; valid unicode password preserved',async()=>{
  let calls=0;const auth=createHumanAuthTransport(config,{now:()=>time,fetcher:async()=>{calls++;return json(payload());}});

@@ -1,7 +1,8 @@
 /** Sends each business request once. A 401 must not trigger automatic mutation replay. */
 import {HumanAuthError} from './human-auth.js';
 export function createSessionFetch(session,fetcher=fetch){
- return async(path,options={})=>{
+ const proofs=new WeakMap();
+ const request=async(path,options={})=>{
   if(typeof path!=='string'||!path.startsWith('/')||path.startsWith('//')||/[\\\r\n#]/.test(path))throw new HumanAuthError('invalid_api_path');
   const url=new URL('/v1'+path,'https://helpdesk.invalid');
   if(!url.pathname.startsWith('/v1/')||url.origin!=='https://helpdesk.invalid')throw new HumanAuthError('invalid_api_path');
@@ -16,6 +17,9 @@ export function createSessionFetch(session,fetcher=fetch){
   const response=await fetcher('/v1'+path,init);
   if(!session.current(proof))throw new HumanAuthError('stale_session');
   if(response.status===401)session.reject(proof);
+  proofs.set(response,proof);
   return response;
  };
+ request.currentResponse=response=>session.sameCredential(proofs.get(response));
+ return request;
 }
