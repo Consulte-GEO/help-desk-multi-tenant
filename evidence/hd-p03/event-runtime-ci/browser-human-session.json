@@ -1,0 +1,25 @@
+{
+  "scope": "synthetic-provider-DOM",
+  "checks": [
+    {
+      "check": "Human page logs in through validated session with password cleared and no persistent token storage",
+      "result": "passed"
+    },
+    {
+      "check": "List refresh renews the human access token without erasing the active draft",
+      "result": "passed"
+    },
+    {
+      "check": "Paused refresh preserves the draft, dispatches no mutation, and requires explicit resubmission after resume",
+      "result": "passed"
+    },
+    {
+      "check": "Unconfirmed provider logout removes local ticket/draft immediately and reports the limitation",
+      "result": "passed"
+    },
+    {
+      "check": "Cancelled login never shows the application and closes the late-returned synthetic provider session",
+      "result": "passed"
+    }
+  ]
+}
