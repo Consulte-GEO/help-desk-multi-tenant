@@ -23,9 +23,9 @@ schemas={
  'Note':obj({'id':identifier,'ticket_id':identifier,'body':text(),'created_at':{'type':'string','format':'date-time'}}),
  'TicketPage':obj({'items':array(ref('Ticket')),'next_cursor':{'type':['string','null']}}),
  'Resolution':obj({'status':{'type':'string','enum':['resolved','ambiguous','no_coverage']},'candidates':array(obj({'coverage_id':identifier,'contract_id':identifier,'contract_version_id':identifier,'contract_version':{'type':'integer','minimum':1},'valid_until':{'type':['string','null'],'format':'date-time'}}))}),
- 'Capabilities':{'type':'object','required':['api_version','release','capabilities'],'properties':{'api_version':{'const':'v1'},'release':{'type':'string'},'capabilities':{'type':'object','additionalProperties':{'type':'boolean'}}}},
+ 'Capabilities':{'type':'object','required':['api_version','release','capabilities'],'properties':{'operational':{'type':'boolean','description':'False enquanto somente autenticação está disponível.'},'api_version':{'const':'v1'},'release':{'type':'string'},'capabilities':{'type':'object','additionalProperties':{'type':'boolean'}}}},
  'Principal':{'type':'object','required':['id','kind','workspace_id','grants','scopes'],'properties':{'id':identifier,'kind':{'enum':['human','integration']},'workspace_id':identifier,'workspace_role':{'type':['string','null']},'grants':{'type':'array','items':{'type':'object'}},'product_instance_ids':array(identifier),'scopes':array({'type':'string'})}},
- 'PublicConfig':obj({'supabase_url':{'type':['string','null']},'publishable_key':{'type':['string','null']}}),
+ 'PublicConfig':obj({'supabase_url':{'type':['string','null']},'publishable_key':{'type':['string','null']},'operational':{'type':'boolean','description':'False enquanto atendimento permanece bloqueado.'}},['supabase_url','publishable_key']),
  'IntegrationToken':obj({'access_token':{'type':'string','pattern':'^hd_session_[A-Za-z0-9_-]{43}$'},'token_type':{'const':'Bearer'},'expires_at':{'type':'string','format':'date-time'},'workspace_id':identifier}),
  'Timeline':{'type':'object','required':['items','next_cursor'],'properties':{'next_cursor':{'type':['string','null']},'items':{'type':'array','items':{'type':'object','required':['id','type','created_at','data'],'properties':{'id':identifier,'type':{'type':'string'},'created_at':{'type':'string','format':'date-time'},'data':{'type':'object'}}}}}}
 }
@@ -65,7 +65,7 @@ def route(path,method,operation,summary,output,body=None,status=200,idem=False,m
  paths.setdefault(path,{})[method]=op
  return op
 route('/capabilities','get','getCapabilities','Capacidades disponíveis; não representa prontidão de produção.',ref('Capabilities'),public=True)
-route('/public-config','get','getPublicConfig','Somente URL Auth e chave publicável.',ref('PublicConfig'),public=True)
+route('/public-config','get','getPublicConfig','URL Auth, chave publicável e indicação opcional de atendimento bloqueado.',ref('PublicConfig'),public=True)
 route('/integration-tokens','post','exchangeIntegrationCredential','Troca server-to-server; não utilizar no navegador.',ref('IntegrationToken'),status=201,token=True)
 revoke=route('/integration-tokens/current','delete','revokeCurrentIntegrationSession','Encerra somente a sessão M2M curta apresentada. Não revoga a credencial nem outras sessões.',{},status=204,public=True)
 revoke['security']=[{'integrationSession':[]}]

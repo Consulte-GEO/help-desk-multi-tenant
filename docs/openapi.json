@@ -64,7 +64,7 @@
     "/public-config": {
       "get": {
         "operationId": "getPublicConfig",
-        "summary": "Somente URL Auth e chave publicável.",
+        "summary": "URL Auth, chave publicável e indicação opcional de atendimento bloqueado.",
         "security": [],
         "parameters": [],
         "responses": {
@@ -2533,6 +2533,10 @@
           "capabilities"
         ],
         "properties": {
+          "operational": {
+            "type": "boolean",
+            "description": "False enquanto somente autenticação está disponível."
+          },
           "api_version": {
             "const": "v1"
           },
@@ -2616,6 +2620,10 @@
               "string",
               "null"
             ]
+          },
+          "operational": {
+            "type": "boolean",
+            "description": "False enquanto atendimento permanece bloqueado."
           }
         },
         "required": [
