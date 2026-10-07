@@ -2,7 +2,7 @@
 import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
- const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([]),mfaFactors:phase==='verifying_mfa'?pending.factors:Object.freeze([]),mfaBusy:phase==='verifying_mfa'&&pending.busy===true});
+ const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([]),mfaFactors:phase==='verifying_mfa'?pending.factors:Object.freeze([]),mfaBusy:phase==='verifying_mfa'&&pending.busy===true,enrollmentFactors:phase==='enrolling_mfa'?pending.factors??Object.freeze([]):Object.freeze([]),enrollmentBusy:phase==='enrolling_mfa'&&pending.busy===true});
  const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
  function clear(nextPhase='signed_out'){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase=nextPhase;workspace=null;session=null;pending=null;refreshAt=0;notify();}
  function install(value){session=value;refreshAt=value.expiresAt-Math.min(60000,Math.floor((value.expiresAt-now())/2));}
@@ -79,6 +79,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  }
  async function authorization(){
   if(!session)throw new HumanAuthError('session_rejected');
+  if(phase==='enrolling_mfa')throw new HumanAuthError('mfa_enrollment_in_progress');
   if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');
   if(phase==='reauthenticating')throw new HumanAuthError('auth_reauthentication_in_progress');
   if(phase==='paused')throw new HumanAuthError('session_paused');
@@ -86,7 +87,29 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   if(now()>=refreshAt)return rotate();
   return proof();
  }
- async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');if(phase==='reauthenticating')throw new HumanAuthError('auth_reauthentication_in_progress');if(phase==='refreshing')return pending.result;return rotate();}
+ async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='enrolling_mfa')throw new HumanAuthError('mfa_enrollment_in_progress');if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');if(phase==='reauthenticating')throw new HumanAuthError('auth_reauthentication_in_progress');if(phase==='refreshing')return pending.result;return rotate();}
+ async function beginMfaEnrollment(){
+  if(typeof transport.enrollFirstMfa!=='function')throw new HumanAuthError('auth_unavailable');
+  const id=generation,p=await authorization();if(id!==generation||!current(p))throw new HumanAuthError('stale_session');if(phase!=='active')throw new HumanAuthError('mfa_enrollment_in_progress');
+  const issued=session,op={id,kind:'enrollment',issued,busy:true,raw:Promise.resolve().then(()=>transport.enrollFirstMfa(issued.accessToken,issued.userId))};pending=op;phase='enrolling_mfa';notify();
+  try{const registration=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');
+   if(!registration||!Array.isArray(registration.factors)||!registration.factors.length)throw new HumanAuthError('auth_response_invalid');
+   op.factors=Object.freeze(registration.factors.map(f=>Object.freeze({...f})));op.raw=Promise.resolve();op.busy=false;notify();return registration;
+  }catch(error){if(id!==generation)throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');
+   if(safe.code==='mfa_enrollment_exists'){pending=null;phase='active';notify();throw safe;}
+   const logout=await signOut();if(generation!==id+1)throw new HumanAuthError('stale_session');safe.logoutUnconfirmed=logout==='unconfirmed';throw safe;
+  }
+ }
+ async function confirmMfaEnrollment(factorId,code){
+  const op=pending,id=generation;if(phase!=='enrolling_mfa'||!op||op.id!==id)throw new HumanAuthError('stale_session');if(op.busy)throw new HumanAuthError('mfa_enrollment_in_progress');
+  if(!op.factors?.some(f=>f.id===factorId)||typeof code!=='string'||!/^\d{6}$/.test(code))throw new HumanAuthError('invalid_mfa');
+  const issued=op.issued;op.busy=true;op.raw=Promise.resolve().then(()=>transport.verifyMfa(issued.accessToken,issued.userId,factorId,code));notify();let failure;
+  try{const value=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value)||value.userId!==issued.userId)throw new HumanAuthError('auth_response_invalid');}
+  catch(error){if(id!==generation)throw new HumanAuthError('stale_session');failure=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');
+   if(['mfa_failed','auth_rate_limited'].includes(failure.code)){op.busy=false;notify();throw failure;}
+  }
+  const logout=await signOut();if(generation!==id+1)throw new HumanAuthError('stale_session');if(failure){failure.logoutUnconfirmed=logout==='unconfirmed';throw failure;}return Object.freeze({confirmed:true,logout});
+ }
  async function reauthenticate(){
   if(typeof transport.reauthenticate!=='function')throw new HumanAuthError('auth_unavailable');
   const id=generation,p=await authorization();
@@ -121,7 +144,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  async function signOut({scope='local'}={}){
   if(!['local','global'].includes(scope))throw new HumanAuthError('invalid_logout_scope');
   if(ending)return ending;
-  const old=session,wait=pending,block=scope==='global'||['password','reauth','mfa'].includes(wait?.kind);clear(block?'signing_out':'signed_out');
+  const old=session,wait=pending,block=scope==='global'||['password','reauth','mfa','enrollment'].includes(wait?.kind);clear(block?'signing_out':'signed_out');
   // Await an already-issued login/rotation so the newest returned token is revoked, never installed.
   // Transport has a deadline. The UI is cleared synchronously before this await.
   const finish=(async()=>{
@@ -136,7 +159,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   ending=finish;
   try{return await finish;}finally{ending=null;phase='signed_out';notify();}
  }
- function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;if(['password','reauth'].includes(pending?.kind)){void signOut();return true;}clear();return true;}
+ function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;if(['password','reauth','enrollment'].includes(pending?.kind)){void signOut();return true;}clear();return true;}
  function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}
- return Object.freeze({state,signIn,selectWorkspace,verifyMfa,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
+ return Object.freeze({state,signIn,selectWorkspace,verifyMfa,beginMfaEnrollment,confirmMfaEnrollment,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
 }

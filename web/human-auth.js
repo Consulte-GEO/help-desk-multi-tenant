@@ -13,6 +13,9 @@ const messages=Object.freeze({
  invalid_mfa:'Escolha seu autenticador e informe o código de seis dígitos.',
  mfa_failed:'O código não foi confirmado. Verifique seu autenticador e tente novamente.',
  mfa_unavailable:'O provedor recusou ou não confirmou a autenticação multifator. A entrada será encerrada; verifique os requisitos de acesso antes de tentar novamente.',
+ mfa_enrollment_exists:'Já há MFA confirmado nesta conta. A gestão de fatores adicionais não está disponível nesta etapa.',
+ mfa_enrollment_rejected:'O provedor recusou o cadastro do autenticador. Verifique os requisitos de acesso.',
+ mfa_enrollment_in_progress:'A configuração do autenticador está em andamento. Conclua ou encerre esta etapa.',
  mfa_required:'Confirme a autenticação multifator ao entrar novamente.',
  unsupported_mfa:'Sua conta exige MFA, mas não há autenticador TOTP confirmado compatível com esta etapa do Help Desk.',
  password_change_in_progress:'A alteração de senha está em andamento. Aguarde o resultado.',
@@ -82,10 +85,24 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
   try{return await Promise.race([deadline,(async()=>{
    const headers={apikey:key,...(body?{'content-type':'application/json'}:{}),...(access?{authorization:'Bearer '+access}:{})};
-   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':operation==='reauth'?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':['reauth','enroll_read'].includes(operation)?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
    if(response.redirected)throw new HumanAuthError('auth_response_invalid');
    if(operation==='logout'){if(response.status!==204)throw new HumanAuthError('auth_logout_unconfirmed');return;}
    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
+   if(['enroll_read','enroll'].includes(operation)){
+    if(response.status===401)throw new HumanAuthError('session_rejected');
+    if([400,403,422].includes(response.status))throw new HumanAuthError('mfa_enrollment_rejected');
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const data=await jsonBody(response,controller.signal);
+    if(operation==='enroll_read'){
+     if(!data||typeof data!=='object'||Array.isArray(data)||typeof data.id!=='string'||data.id.toLowerCase()!==expectedUser)throw new HumanAuthError('auth_response_invalid');
+     let verified;try{verified=verifiedMfaFactors(data.factors);}catch{throw new HumanAuthError('auth_response_invalid');}
+     if(verified.length)throw new HumanAuthError('mfa_enrollment_exists');
+     return Object.freeze((data.factors??[]).filter(f=>f.status==='unverified'&&f.factor_type==='totp').map(f=>Object.freeze({id:f.id.toLowerCase(),type:'totp'})));
+    }
+    if(!data||typeof data!=='object'||Array.isArray(data)||!UUID.test(data.id??'')||data.type!=='totp'||typeof data.totp?.secret!=='string'||!/^\b[A-Z2-7]{16,128}\b$/.test(data.totp.secret))throw new HumanAuthError('auth_response_invalid');
+    return Object.freeze({generated:true,factors:Object.freeze([Object.freeze({id:data.id.toLowerCase(),type:'totp'})]),secret:data.totp.secret});
+   }
    if(operation==='challenge'){
     if(response.status===401)throw new HumanAuthError('session_rejected');
     if([400,403,422].includes(response.status)){
@@ -139,6 +156,12 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async enrollFirstMfa(access,userId){
+   if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
+   const pending=await request('/user',null,access,'enroll_read',userId.toLowerCase());
+   if(pending.length)return Object.freeze({generated:false,factors:pending});
+   return request('/factors',{factor_type:'totp',friendly_name:'Consulte Help Desk',issuer:'Consulte Help Desk'},access,'enroll',userId.toLowerCase());
+  },
   async verifyMfa(access,userId,factorId,code){
    if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId)||typeof factorId!=='string'||!UUID.test(factorId)||typeof code!=='string'||!/^\d{6}$/.test(code))throw new HumanAuthError('invalid_mfa');
    const id=factorId.toLowerCase(),challenge=await request('/factors/'+id+'/challenge',{},access,'challenge');

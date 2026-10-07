@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "scope": "local-m1",
+  "platform_approved": false,
+  "source_sha256": "93d1c159c0022f43e43476860d325981c9c6d99f02507c6ee1ff93302ed8cfb2",
+  "started_at": "2026-10-07T20:05:20.938Z",
+  "completed_at": "2026-10-07T20:08:17.670Z",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/lock.log",
+      "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/install.log",
+      "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/audit.log",
+      "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/application.log",
+      "sha256": "cd1e774986d958831c5f30372dac8c24032ae12334bbc22b9c60f079d0be569f",
+      "tests": {
+        "tests": 1609,
+        "pass": 1609,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/postgres.log",
+      "sha256": "7e6b2197ba5c91744f7176b00e21743b9adbddf4c41b519fd716302ef6ab6747",
+      "tests": {
+        "tests": 229,
+        "pass": 229,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/c70301f1-d896-4169-a109-26550b8a3a79/interface.log",
+      "sha256": "e509ee231f5f2dbd8bf6d1430018befb3e3f88e9a26c8c0056a67bad8d425d0d",
+      "tests": {
+        "tests": 106,
+        "pass": 106,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ]
+}
