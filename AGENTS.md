@@ -1,3 +1,5 @@
+> **Continuidade HD-P03 — diagnóstico de runtime:** probe somente leitura existente delegado a uma Scheduled Function sem rota pública, usando credenciais somente dentro do Netlify. 52 testes focais aprovados; CI/publicação/execução hospedada registrados em [docs/117-HD-P03-DIAGNOSTICO-NO-RUNTIME.md](docs/117-HD-P03-DIAGNOSTICO-NO-RUNTIME.md). Gate e M1 operacional continuam abertos como pendências; não confundir probe com aceite de Auth ou atendimento.
+
 > **Continuidade HD-P03 — produção:** clientes read/Auth/write adaptados a production, três exemplos de site separado removidos e 140 testes focais aprovados. CI Linux run37560232763 aprovado: 1.450 aplicação, 215 PostgreSQL e 79 interface. PR4 integrado em0789dc3 e código publicado em produção (deploy6ac5aaaf); aceite operacional pendente. [Política e evidência](docs/116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
 
 > **HD-P03 — 06/10/2026:** homologação hospedada na mesma base/site HelpDesk, conforme decisão do usuário. CI Linux 1.447/215/79 aprovado; PR4 pronto para revisão. Aceite Auth/Function/base atual permanece pendente. Leia [docs/116-HD-P03-VALIDACAO-EM-PRODUCAO.md](docs/116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
