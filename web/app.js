@@ -38,7 +38,7 @@ const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempot
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 async function login(){s.me=await api('/me');renderWorkspaceChange();if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -352,14 +352,18 @@ $('transition').onclick=()=>run(async()=>{
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
-$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));async function leaveHumanSession(){
+$('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));async function leaveHumanSession(scope='local'){
  loginAttempt++;
  if(s.demo||!humanSession){clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';return;}
- const out=humanSession.signOut(),epoch=s.epoch;
- $('login-status').textContent='Dados locais removidos. Confirmando saída da sessão atual no provedor…';
+ const out=humanSession.signOut({scope}),epoch=s.epoch;
+ $('login-status').textContent=scope==='global'?'Dados locais removidos. Confirmando encerramento de todas as sessões no provedor…':'Dados locais removidos. Confirmando saída da sessão atual no provedor…';
  const result=await out;
  if(epoch!==s.epoch||humanSession.state().phase!=='signed_out')return;
- $('login-status').textContent=result==='confirmed'
+ $('login-status').textContent=scope==='global'
+  ?result==='confirmed'?'Todas as sessões foram encerradas no provedor. Tokens de acesso já emitidos podem continuar válidos até expirar.'
+   :result==='not_requested'?'Nenhuma sessão humana ativa neste navegador. Nenhum encerramento global foi solicitado.'
+   :'Dados locais removidos, mas o encerramento de todas as sessões NÃO foi confirmado. Tokens já emitidos podem continuar válidos até expirar.'
+  :result==='confirmed'
   ?'Sessão atual encerrada no provedor. Outras sessões não foram solicitadas para encerramento.'
   :result==='not_requested'?'Nenhuma sessão humana ativa neste navegador.'
   :'Dados locais removidos, mas a saída no provedor NÃO foi confirmada. Tokens já emitidos podem continuar válidos até expirar.';
@@ -369,7 +373,20 @@ let workspaceChangeChoice=null;
 function renderWorkspaceChange(){
  const available=!s.demo&&!!s.me&&!!humanSession&&['active','paused','refreshing'].includes(humanSession.state().phase);
  $('switch-workspace').hidden=!available;$('switch-workspace-login').hidden=!available||s.config?.operational!==false;
+ $('logout-all').hidden=!available;$('logout-all-login').hidden=!available||s.config?.operational!==false;
 }
+let logoutAllChoice=null;
+function requestLogoutAll(){
+ if(s.demo||!s.me||!humanSession||!['active','paused','refreshing'].includes(humanSession.state().phase))return;
+ logoutAllChoice={epoch:s.epoch,generation:humanSession.state().generation};$('logout-all-dialog').showModal();
+}
+$('logout-all').onclick=()=>run(requestLogoutAll);$('logout-all-login').onclick=()=>run(requestLogoutAll);
+$('cancel-logout-all').onclick=()=>$('logout-all-dialog').close();
+$('logout-all-dialog').addEventListener('close',()=>{if(!$('logout-all-dialog').open)logoutAllChoice=null;});
+$('confirm-logout-all').onclick=()=>run(async()=>{
+ if(!logoutAllChoice||logoutAllChoice.epoch!==s.epoch||logoutAllChoice.generation!==humanSession?.state().generation){$('logout-all-dialog').close();return;}
+ $('logout-all-dialog').close();await leaveHumanSession('global');
+});
 function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel));}
 function requestWorkspaceChange(){
  if(s.demo||!s.me||!humanSession||!['active','paused','refreshing'].includes(humanSession.state().phase))return;
@@ -393,14 +410,14 @@ function humanChanged(value){
  const authenticationOnly=s.config?.operational===false,choosing=value.phase==='selecting_workspace';
  $('workspace-choice-label').hidden=!choosing;$('choose-workspace').hidden=!choosing;
  if(choosing){$('workspace-choice').replaceChildren(option('','Selecione um workspace'),...value.workspaceOptions.map(w=>option(w.id,w.name)));$('login-status').textContent='Identidade validada. Escolha o workspace para confirmar seu acesso.';}
- $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace'].includes(value.phase)&&!(authenticationOnly&&value.phase!=='signed_out');$('cancel-login').textContent=['signing_in','selecting_workspace'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
+ $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace'].includes(value.phase)&&!(authenticationOnly&&!['signed_out','signing_out'].includes(value.phase));$('cancel-login').textContent=['signing_in','selecting_workspace'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
  $('session-banner').hidden=!['paused','refreshing'].includes(value.phase);
  $('retry-session').hidden=value.phase!=='paused';$('retry-session').disabled=value.phase==='refreshing';
  $('session-status').textContent=value.phase==='paused'
   ?'Não foi possível renovar a sessão. Novas requisições estão pausadas; o rascunho permanece somente nesta tela. Tente renovar ou saia.'
   :'Renovando a sessão antes de enviar novas requisições…';
  renderWorkspaceChange();
- if(value.phase==='signed_out'&&previous!=='signed_out'){
+ if(['signed_out','signing_out'].includes(value.phase)&&!['signed_out','signing_out'].includes(previous)){
   clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';
   $('login-status').textContent='Sessão local encerrada. Entre novamente para continuar.';
  }
