@@ -24,3 +24,6 @@ function matchingClaims(token,userId,at){
 export function hasAal2Claims(token,userId,at){return matchingClaims(token,userId,at)?.aal==='aal2';}
 /** Hygiene for own-credential cleanup only; never substitutes authentication. */
 export function sameUserClaims(token,userId,at){return !!matchingClaims(token,userId,at);}
+
+/** Advisory UI snapshot only; parsing does not verify a signature. */
+export function sessionAssuranceLevel(token,userId,at){const aal=matchingClaims(token,userId,at)?.aal;return ['aal1','aal2'].includes(aal)?aal:'unknown';}

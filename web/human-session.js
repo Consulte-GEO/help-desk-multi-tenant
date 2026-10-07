@@ -2,6 +2,8 @@
 import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
+ const securityReads=new WeakMap();
+ const securityStatusCurrent=value=>!!value&&typeof value==='object'&&canDispatch(securityReads.get(value));
  const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([]),mfaFactors:phase==='verifying_mfa'?pending.factors:Object.freeze([]),mfaBusy:phase==='verifying_mfa'&&pending.busy===true,enrollmentFactors:phase==='enrolling_mfa'?pending.factors??Object.freeze([]):Object.freeze([]),enrollmentBusy:phase==='enrolling_mfa'&&pending.busy===true});
  const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
  function clear(nextPhase='signed_out'){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase=nextPhase;workspace=null;session=null;pending=null;refreshAt=0;notify();}
@@ -88,6 +90,13 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   return proof();
  }
  async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='enrolling_mfa')throw new HumanAuthError('mfa_enrollment_in_progress');if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');if(phase==='reauthenticating')throw new HumanAuthError('auth_reauthentication_in_progress');if(phase==='refreshing')return pending.result;return rotate();}
+ async function securityStatus(){
+  if(typeof transport.securityStatus!=='function')throw new HumanAuthError('auth_unavailable');
+  const p=await authorization();if(!canDispatch(p))throw new HumanAuthError('stale_session');
+  const userId=session.userId;
+  try{const value=await transport.securityStatus(p.accessToken,userId);if(!sameCredential(p)||phase!=='active')throw new HumanAuthError('stale_session');securityReads.set(value,p);return value;}
+  catch(error){if(!sameCredential(p)||phase!=='active')throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');if(safe.code==='session_rejected')reject(p);throw safe;}
+ }
  async function beginMfaEnrollment(){
   if(typeof transport.enrollFirstMfa!=='function')throw new HumanAuthError('auth_unavailable');
   const id=generation,p=await authorization();if(id!==generation||!current(p))throw new HumanAuthError('stale_session');if(phase!=='active')throw new HumanAuthError('mfa_enrollment_in_progress');
@@ -161,5 +170,5 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  }
  function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;if(['password','reauth','enrollment'].includes(pending?.kind)){void signOut();return true;}clear();return true;}
  function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}
- return Object.freeze({state,signIn,selectWorkspace,verifyMfa,beginMfaEnrollment,confirmMfaEnrollment,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
+ return Object.freeze({securityStatus,securityStatusCurrent,state,signIn,selectWorkspace,verifyMfa,beginMfaEnrollment,confirmMfaEnrollment,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
 }

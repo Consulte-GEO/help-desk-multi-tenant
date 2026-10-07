@@ -1,0 +1,23 @@
+# HD-P06 — Consulta da segurança da própria conta
+
+A interface oferece “Segurança da minha conta” após autenticação e validação em /me, inclusive com atendimento ainda fechado. Abrir ou atualizar executa apenas GET no /user do Auth configurado com bearer da própria sessão. UUID da pessoa precisa coincidir exatamente; catálogo inteiro é limitado a20 fatores, sem duplicados ou tipos/status inválidos. Nenhum partial success sobre coleção inválida.
+
+O DTO entrega somente ID/tipo/status dos fatores, nível consultivo da sessão e instante observado em memória. Segredos, nomes livres, contatos, metadata, QR/SVG/URI e credenciais são descartados. A interface usa textContent e identifica fatores com tipo/status e prefixo de ID. Fatores confirmados e pendentes ficam distintos; ausência de coleção significa nenhum fator informado, não política administrativa comprovada.
+
+AAL1/AAL2 descrevem claims da sessão cujo bearer foi enviado ao próprio Auth /user. Parsing local nunca verifica assinatura nem substitui autorização; claims incompatíveis/sub divergente/expirado/nível desconhecido aparecem como não identificado. Catálogo e AAL são snapshots: atualizar é explícito. O backend continua validando identidade, MFA e grants vivos a cada operação.
+
+A consulta usa autorização sob demanda, inclusive renovação existente. Resposta só retorna para a mesma geração, credencial e fase ativa. Um recibo opaco em WeakMap privado conserva essa prova até o commit no DOM; o painel revalida também na continuação assíncrona, incluindo o intervalo em que uma renovação pode começar depois do retorno da sessão.401 atual encerra o contexto;401 antigo após rotação não invalida a sessão nova.503/429/catálogo inválido não removem sessão nem repetem a consulta. Nenhum replay de operação de atendimento.
+
+Fechar/Escape/logout limpa o snapshot do DOM e invalida o dono do painel. Atualizar limpa os dados anteriores antes do request; falha não conserva informações antigas como atuais. Resposta tardia não repovoa diálogo fechado. Nenhum local/session storage de catálogo ou credenciais.
+
+## Decisões e limites
+
+O nível é informação consultiva, não nova autorização; pode envelhecer entre consultas. Nomes livres/contatos foram descartados para reduzir exposição e manter validação limitada, ao custo de identificação menos amigável por prefixo. Não há remoção/reset, gestão de fatores adicionais ou recuperação nesta entrega. Não altera política MFA administrativa, config/Auth, schemas, scopes ou gates.
+
+Referência primária consultada: [Supabase AAL](https://supabase.com/docs/reference/javascript/auth-mfa-getauthenticatorassurancelevel) e [listFactors](https://supabase.com/docs/reference/javascript/auth-mfa-listfactors). A implementação segue o adapter limitado existente, sem adicionar SDK.
+
+## Verificação
+
+Dez novos testes transport/session observados RED e GREEN: DTO mínimo, catálogo inteiro inválido, claims inválidos, somente leitura, timeout/refusals, logout/rotação e401 atrasado, falha temporária sem retry. Browser observado RED sem botão;109/109 verificações de interface aprovadas (35HTTP,39 browser de memória,35 sessão humana), incluindo três cenários novos. Typecheck, contratos, lock, migrations, scan e build aprovados. Revisão independente identificou uma corrida entre entrega e DOM: reproduzida RED e corrigida GREEN com recibo opaco e revalidação final. Dois testes adicionais cobrem microtask de refresh e rotação mantendo geração; nenhuma observação minor. Windows1619/1596/23 conserva exatamente as23 limitações anteriores (symlink/POSIX/TLS). CI Linux ainda pendente. Provedor é sintético; nenhum login real, fator/OTP ou escrita remota executado.
+
+API/interface0.22.1, schema0.19.0,12 migrations,25 tabelas e19 operações. Atendimento fechado; M1 operacional e aceite Auth/M2M real/cadastros/capacidade/restore ainda pendentes. Publicação e CI desta fonte pendentes.

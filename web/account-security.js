@@ -37,3 +37,24 @@ export function createMfaEnrollmentPanel({elements:e,getSession,getEpoch,blocked
  e.dialog.addEventListener('close',()=>{if(!e.dialog.open&&choice){const c=choice;clear();if(c.started)void closeStarted(c);}});
  return Object.freeze({open,start,confirm,cancel,clear});
 }
+
+/** Read-only own catalog; closing invalidates late responses and erases the snapshot. */
+export function createSecurityStatusPanel({elements:e,getSession,getEpoch}){
+ let choice=null;
+ const types={totp:'Aplicativo TOTP',phone:'Telefone',webauthn:'WebAuthn',recovery_code:'Código de recuperação'};
+ const current=c=>choice===c&&c.epoch===getEpoch()&&c.session===getSession()&&c.generation===c.session.state().generation;
+ function erase(){e.factors.replaceChildren();e.level.textContent='';e.status.textContent='';}
+ function clear(){choice=null;erase();e.refresh.disabled=false;e.dialog.close();}
+ async function refresh(){
+  const c=choice;if(!c||c.busy||!current(c))return;c.busy=true;e.refresh.disabled=true;erase();e.status.textContent='Consultando a segurança da sua conta…';
+  try{const snapshot=await c.session.securityStatus();if(!current(c))return;if(!c.session.securityStatusCurrent(snapshot)){e.status.textContent='A sessão mudou durante a consulta. Atualize para consultar novamente.';return;}
+   e.level.textContent='Nível informado pela sessão: '+({aal1:'AAL1 — entrada convencional',aal2:'AAL2 — entrada com MFA',unknown:'não identificado'}[snapshot.currentLevel]);
+   e.factors.replaceChildren(...snapshot.factors.map(f=>{const row=document.createElement('li');row.textContent=types[f.type]+' · '+(f.status==='verified'?'Confirmado':'Pendente')+' · '+f.id.slice(0,8);return row;}));
+   e.status.textContent=snapshot.factors.length?'Consulta concluída. Atualize para conferir alterações posteriores.':'Nenhum fator informado pelo provedor nesta consulta.';
+  }catch(error){if(current(c))e.status.textContent=error.code==='stale_session'?'A sessão mudou durante a consulta. Atualize para consultar novamente.':error.message;}
+  finally{if(current(c)){c.busy=false;e.refresh.disabled=false;}}
+ }
+ function open(){const session=getSession(),s=session?.state();if(!s||!['active','paused','refreshing'].includes(s.phase))return;clear();choice={session,epoch:getEpoch(),generation:s.generation,busy:false};e.dialog.showModal();return refresh();}
+ e.dialog.addEventListener('cancel',event=>{event.preventDefault();clear();});e.dialog.addEventListener('close',()=>{if(choice&&!e.dialog.open)clear();});
+ return Object.freeze({open,refresh,clear});
+}
