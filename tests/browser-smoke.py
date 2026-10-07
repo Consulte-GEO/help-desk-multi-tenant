@@ -3,6 +3,7 @@ import json, os, shutil, uuid, re
 from urllib.parse import quote
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+from helpers.browser_ticket_create import verify_create_recovery, verify_pre_dispatch_validation, verify_confirmation_read_failure
 ROOT=Path(__file__).resolve().parents[1]
 checks=[]
 def record(name): checks.append({'check':name,'result':'passed'})
@@ -38,20 +39,26 @@ with sync_playwright() as p:
     expect(page.locator('#notes-status')).to_be_hidden()
     expect(page.locator('#message-form')).to_be_visible()
     record('Six-digit timestamps load authorized list, detail and public conversation without Date validation errors')
+    # Existing controls can remain visible while refresh is in flight. Complete each
+    # read before changing route behavior; otherwise a late read can hide retry.
+    page.wait_for_load_state('networkidle')
     page.unroute(precision_pattern,precise_response)
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_be_visible()
 
     # These DOM tests are written but must not be counted as passed if navigation is blocked.
     page.locator('#note-tab').click()
     page.locator('#message-body').fill('Rascunho interno preservado no refresh.')
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_have_class(re.compile('selected'))
     expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
     record('Refreshing server actions preserves the private composer channel and draft')
     def notes_outage(route): route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
     page.route('**/v1/tickets/*/notes?*',notes_outage)
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#notes-status')).to_contain_text('Notas indisponíveis')
     expect(page.locator('#notes-status')).to_be_visible()
     expect(page.locator('#notes')).to_have_text('')
@@ -355,6 +362,9 @@ with sync_playwright() as p:
     expect(page.locator('#context-choice')).not_to_have_value('')
     record('Late catalog response from another profile cannot replace the current selection')
     page.locator('#cancel-create').click()
+    verify_pre_dispatch_validation(page, record)
+    verify_confirmation_read_failure(page, record)
+    verify_create_recovery(page, record)
     page.set_viewport_size({'width':390,'height':844})
     page.wait_for_timeout(200)
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'

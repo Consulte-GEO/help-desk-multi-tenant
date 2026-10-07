@@ -8,7 +8,7 @@ import {hostedFixture,uuid} from './hosted-acceptance-fixture.ts';
 
 export async function hostedAuthFixture(){
  const base=await hostedFixture();
- const config={schema:1,environment:'homologation',origin:base.config.origin,supabaseUrl:base.config.supabaseUrl,
+ const config={schema:1,environment:'production',origin:base.config.origin,supabaseUrl:base.config.supabaseUrl,
   deploymentCommit:base.config.deploymentCommit,workspaceId:base.config.workspaceId,accountId:base.config.accountA.accountId,
   humanAuthUserId:uuid(9001),humanPrincipalId:base.config.accountA.requesterId,
   integrationPrincipalId:base.config.integrationId,productInstanceId:base.config.accountA.productInstanceId};

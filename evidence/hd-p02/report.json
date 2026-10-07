@@ -1,0 +1,111 @@
+{
+  "scope": "hd-p02-windows-increment",
+  "base_commit": "bc75de7",
+  "source_sha256": "a168181c9a1fdb41db3fe1d52d646c50492f90f1e69dfe8e535ddda2c0f0a3d8",
+  "recorded_at": "2026-10-07T00:07:56.091Z",
+  "platform_approved": false,
+  "local_m1_approved": false,
+  "application": {
+    "tests": 1447,
+    "pass": 1424,
+    "fail": 23,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "focal": {
+    "tests": 14,
+    "pass": 14,
+    "fail": 0
+  },
+  "interface": {
+    "tests": 79,
+    "pass": 79,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "interface_breakdown": {
+    "http_memory": 35,
+    "browser_memory": 39,
+    "human_session_synthetic": 5
+  },
+  "interface_method": "existing test-ui-local suites, temporary Windows runner with absolute bundled Python bootstrap and Chromium151/Playwright1.63; process deadline240s (stock120s exceeded during Windows shutdown)",
+  "existing_windows_failures": [
+    "CI extraction excludes committed historical reports and screenshots without deleting originals",
+    "CI staging preserves a committed file named source.tar without colliding with its temporary archive",
+    "CI staging refuses a symlinked temp parent resolving to a newline path before emitting step outputs",
+    "CI staging refuses source symlinks instead of reading outside the checkout",
+    "CLI refuses symlink without printing file content",
+    "M1-R9 a symbolic execution directory cannot redirect evidence to an older run",
+    "R5 symlinked checkout ancestor cannot redirect file checks",
+    "R5 symlinked package directory is not followed to a matching patch",
+    "R5 symlinked patch is refused even if target bytes match",
+    "destroyed real TLS socket is not current proof of usable secure transport",
+    "diagnostic rejects an encrypted connection whose authorization was disabled in the fixture",
+    "fingerprint refuses symlinked source trees",
+    "migration bytes reject manifest-symlink",
+    "migration bytes reject supabase-symlink",
+    "migration loader rejects symbolic-directory",
+    "migration loader rejects symbolic-file",
+    "native environment cannot inherit production, PG service overrides or Node preload hooks",
+    "real TLS handshake refuses an untrusted self-signed certificate",
+    "real TLS handshake refuses the wrong hostname",
+    "real TLS socket ending its writable side cannot pass the diagnostic",
+    "real loopback TLS with trusted certificate and matching hostname passes",
+    "repeating CI staging creates a new empty evidence root instead of reusing an earlier attempt",
+    "symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files"
+  ],
+  "same_baseline_failure_names": true,
+  "other_checks": {
+    "typecheck": "passed",
+    "contracts": "passed",
+    "migrations": "passed (11 unchanged)",
+    "secrets_heuristic": "passed",
+    "lock": "passed",
+    "build": "passed",
+    "audit": "0 vulnerabilities",
+    "postgres_local": "not executed: Docker unavailable",
+    "postgres_native": "not executed: native configuration unavailable",
+    "new_linux_ci": "not executed",
+    "hosted": "not executed"
+  },
+  "red_green": {
+    "original_browser": "POST201 real local effect then aborted receipt; second resolve no_coverage blocks recovery before fix",
+    "canonical_validation": "Missing expected exception before fix; invalid draft now editable",
+    "receipt_validation": "Missing expected exception for nonoriginal receipt before fix",
+    "confirmed_read_failure": "GET503 after receipt leaves hidden empty notification before fix; now reports read failure separately"
+  },
+  "review": {
+    "critical": 0,
+    "important_fixed": 3,
+    "minor": 0
+  },
+  "artifacts": [
+    {
+      "file": "node-windows.txt",
+      "sha256": "ac172d1b1b3bd22bdaa178c6f355b7f97ba0973c3d9768ecd750189db1a29203"
+    },
+    {
+      "file": "focal.txt",
+      "sha256": "3e20318df0b67d53ac2f5f99ebacf7c1c0541b2189fa5950b730960c61ffd825"
+    },
+    {
+      "file": "interface.txt",
+      "sha256": "d4595647a0016db37513bce5e457d7810978f9e503537935850b86bcc09d15d8"
+    },
+    {
+      "file": "browser.json",
+      "sha256": "7e56ea3cf8cff55040ef0560663f23be8e31d7db9adc93d2940144ba902d9c2a"
+    },
+    {
+      "file": "human-session.json",
+      "sha256": "555842afea5b6b25b09558bd72c37e30832b0943c9a822809ea98da6e13e2c81"
+    },
+    {
+      "file": "interface-mobile.png",
+      "sha256": "b72adddaa677d9e79b1d2f3520660c944b8042b34a9d3d42930230261b0d2bd8"
+    }
+  ]
+}

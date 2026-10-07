@@ -52,7 +52,7 @@ Os três sockets da regressão devem usar apenas `127.0.0.1`, servidor criado pe
 - Não modificar endpoints, scopes, JWT metadata, senha/MFA ou sessões M2M.
 
 ## Após os gates
-Com autorização específica e ambiente isolado, executar os clientes R11/R10/R12 existentes. Sessões encerradas no R11 não podem ser reutilizadas nos demais. Gravações R12 exigem mesmo executionId/chaves na recuperação deliberada. Não gerar chave nova após resultado incerto. Correlacionar efeitos e outbox no banco; intenção não comprova entrega.
+Diretamente em produção, executar os clientes R11/R10/R12 existentes. Sessões encerradas no R11 não podem ser reutilizadas nos demais. Gravações R12 exigem mesmo executionId/chaves na recuperação deliberada. Não gerar chave nova após resultado incerto. Correlacionar efeitos e outbox no banco; intenção não comprova entrega.
 
 ## Entrega
 Atualizar estado/handoff com branch/commit/fingerprint, CI, logs, falhas, riscos e efeitos externos. Diferenciar IMPLEMENTADO, TESTADO_LOCALMENTE, SQL_EXECUTADO, BROWSER_EXECUTADO, DEPLOYADO, HOMOLOGADO e OPERACIONAL. M1 aberto até o aceite real; M2 não iniciado por esta correção.

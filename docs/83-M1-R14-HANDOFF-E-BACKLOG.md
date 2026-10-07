@@ -20,7 +20,7 @@ Aplicar apenas uma variante. Checkout intermediário exige reconciliação, não
 | P0-INTEGRAR | Integrar o conjunto no checkout real | Hashes/diff/base conferidos, alterações concorrentes preservadas | Pendente externo |
 | P0-CI | Executar a toolchain travada e o CI existente | Instalação/audit/typecheck e 1.347 aplicação/209 PostgreSQL/71 HTTP+browser no mesmo fingerprint, sem skips | Pendente |
 | P0-REVIEW | Revisão independente do runtime e suítes R10–R14 | Revisão aceita com riscos identificados, sem relaxar regras | Pendente |
-| P0-AMBIENTE | Preparar homologação separada de produção | Autorização atual; identidade/dados/canais/outbox isolados | Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH | Executar R11/R10 e testar falhas controladas de identidade | Evidência hospedada de sessão/acesso e recuperação; não provocar indisponibilidade em serviço compartilhado | Pendente |
 | P0-WRITE | Executar R12 e correlacionar efeitos no PostgreSQL | Criação/replay/concorrência/atomicidade com provas próprias | Pendente |
 | P0-OPS | TLS/Function, capacidade, restore e segurança operacional | Residência/RPO/RTO e aceite documentados | Pendente |

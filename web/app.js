@@ -10,6 +10,8 @@ const inbox=createTicketListState();
 import {createConversationState} from './conversation-state.js';
 import {createMutationState} from './mutation-state.js';
 import {createSupportCatalogState} from './support-catalog-state.js';
+import {createTicketCreateState,retryCreateIntent,validateCreateInput} from './ticket-create-state.js';
+const creation=createTicketCreateState();
 const conversation=createConversationState(),mutations=createMutationState(),catalog=createSupportCatalogState();
 const $=id=>document.getElementById(id);
 const s={token:'',workspace:'',me:null,tickets:[],ticket:null,actions:null,notesUnavailable:false,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),createPending:null};
@@ -36,7 +38,7 @@ const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempot
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening();conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -254,34 +256,47 @@ function mode(value){s.mode=value;renderComposer();}
 
 const contextKey=v=>JSON.stringify([v.account_id,v.product_instance_id,v.service_code]);
 const environmentLabels={production:'Produção',staging:'Homologação',development:'Desenvolvimento'};
-function resetOpening(){catalog.reset();s.createPending=null;s.createKey=crypto.randomUUID();$('create-form').reset();$('context-choice').replaceChildren(option('','Selecione uma opção'));$('coverage-choice').replaceChildren();$('coverage-label').hidden=true;renderCatalog();}
+function createIdentity(){return s.me?{workspace:s.workspace,principal:s.me.id,session:s.epoch}:null;}
+function unresolvedCreate(){const intent=creation.intent();return !!intent&&intent.status!=='confirmed';}
+function resetOpening(clearIntent=false){
+ if(clearIntent)creation.reset(null);
+ if(unresolvedCreate()){renderCatalog();return;}
+ creation.reset(createIdentity());catalog.reset();s.createPending=null;s.createKey=crypto.randomUUID();$('create-form').reset();$('context-choice').replaceChildren(option('','Selecione uma opção'));$('coverage-choice').replaceChildren();$('coverage-label').hidden=true;renderCatalog();
+}
 function renderCatalog(){
  const status=catalog.status(),choices=catalog.choices(),selected=catalog.selectedKey();
  $('context-choice').replaceChildren(option('',status==='loading'&&!choices.length?'Carregando opções autorizadas…':'Selecione uma opção'),...choices.map(c=>option(contextKey(c),c.account_name+' · '+c.product_name+' ('+environmentLabels[c.environment]+') · '+c.service_name)));
- $('context-choice').value=selected;$('context-choice').disabled=status==='loading'||status==='error'||!choices.length;
+ const locked=unresolvedCreate()||!!s.createPending;
+ $('context-choice').value=selected;$('context-choice').disabled=locked||status==='loading'||status==='error'||!choices.length;
+ for(const id of ['subject','description','priority','coverage-choice'])$(id).disabled=locked;
  $('context-more').hidden=!catalog.next()||status==='error';$('context-more').disabled=status==='loading'||!!s.createPending;
  $('context-retry').hidden=status!=='error';$('context-retry').disabled=!!s.createPending;
  $('context-status').textContent=status==='loading'?'Consultando as opções autorizadas…':status==='error'?'Não foi possível carregar as opções. Tente novamente. As opções são obtidas exclusivamente pela API.':status==='empty'?'Nenhuma opção com cobertura vigente está disponível para este perfil. Solicite à equipe de suporte a revisão dos vínculos e contratos.':status==='ready'?choices.length+' opção(ões) carregada(s). '+(catalog.next()?'Há mais opções disponíveis. ':choices.length===1?'A única opção disponível foi selecionada. ':'Escolha explicitamente a conta e o sistema. ')+'O contrato será revalidado antes de salvar.':'Abra o formulário para consultar as opções disponíveis.';
- $('submit-create').disabled=!catalog.canSubmit()||!!s.createPending;
+ $('submit-create').disabled=(!unresolvedCreate()&&!catalog.canSubmit())||!!s.createPending;
+ $('submit-create').textContent=unresolvedCreate()?'Recuperar abertura':'Validar e abrir chamado';
+ $('create-help').textContent=unresolvedCreate()?'A confirmação desta abertura está pendente. Recupere o pedido original antes de iniciar outro. Fechar o formulário preserva o pedido nesta sessão.':'Sem cobertura contratual vigente, a abertura é bloqueada. Triagem sem contrato está prevista para outra entrega.';
 }
 async function loadCatalog(){
  const op=catalog.begin();if(!op)return;renderCatalog();
  try{const page=await api('/support-contexts?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(!catalog.current(op))return;catalog.accept(op,page);renderCatalog();}
  catch(error){if(catalog.fail(op))renderCatalog();}
 }
-async function startCreate(){resetOpening();$('create-dialog').showModal();$('subject').focus();await loadCatalog();}
+async function startCreate(){resetOpening();$('create-dialog').showModal();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
 $('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
 $('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);
 $('create-form').addEventListener('input',e=>{s.createKey=crypto.randomUUID();if(e.target.id!=='coverage-choice')$('coverage-label').hidden=true;});
 $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- const choice=catalog.selection();if(!catalog.canSubmit()||!choice||s.createPending)return;
+ const choice=catalog.selection();if(s.createPending||!unresolvedCreate()&&(!catalog.canSubmit()||!choice))return;
  const pending=Object.freeze({key:s.createKey,epoch:s.epoch});s.createPending=pending;renderCatalog();
  const key=pending.key,epoch=pending.epoch,unchanged=()=>s.createPending===pending&&epoch===s.epoch&&key===s.createKey&&$('create-dialog').open;
  // A selection is a selector, not permission: resolve and create both revalidate on the server.
- const context={account_id:choice.account_id,product_instance_id:choice.product_instance_id,service_code:choice.service_code};
+ const context=choice?{account_id:choice.account_id,product_instance_id:choice.product_instance_id,service_code:choice.service_code}:null;
  const payload={...context,subject:$('subject').value.trim(),description:$('description').value.trim(),priority:$('priority').value};
  const selected=$('coverage-choice').value,hasSelection=!$('coverage-label').hidden;
+ let operation=null,confirmed=false;
  try{
+ if(!unresolvedCreate()){
+  validateCreateInput(payload);
   const r=await post('/contexts/resolve',context,key);
   if(!unchanged())return;
   if(r.status==='no_coverage')throw Error('Nenhuma cobertura vigente para este contexto. Feche e reabra o formulário para atualizar as opções.');
@@ -290,12 +305,23 @@ $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
    $('coverage-choice').replaceChildren(placeholder,...r.candidates.map(c=>option(c.coverage_id,'Contrato '+c.contract_id.slice(0,12)+' · versão '+c.contract_version)));
    $('coverage-choice').value='';$('coverage-label').hidden=false;notice('Selecione uma das coberturas elegíveis e confirme.');return;
   }
-  const t=await post('/tickets',{...payload,...(r.status==='ambiguous'?{coverage_id:selected}:{})},key);
-  if(!unchanged())return;
-  $('create-dialog').close();await list();
+  creation.prepare({...payload,...(r.status==='ambiguous'?{coverage_id:selected}:{})});
+ }
+  operation=creation.begin();if(!operation)return;renderCatalog();
+  const {path,...request}=retryCreateIntent(operation,createIdentity());
+  const t=await api(path,request);
+  if(!creation.confirm(operation,t))return;
+  confirmed=true;
+  const visible=$('create-dialog').open;
+  if(visible)$('create-dialog').close();else resetOpening();await list();
+  if(!visible)return;
   if(epoch!==s.epoch)return;await detail(t.id);
   if(epoch===s.epoch&&s.ticket?.id===t.id)notice('Chamado aberto. Contrato e histórico preservados.');
- }catch(error){if(unchanged())throw error;}finally{if(s.createPending===pending){s.createPending=null;renderCatalog();}}
+ }catch(error){
+  if(confirmed){if(epoch===s.epoch){error.message='Chamado aberto, mas não foi possível atualizar a leitura. '+error.message;throw error;}}
+  else if(operation){if(creation.fail(operation)){renderCatalog();error.message='A abertura não foi confirmada. Recupere o pedido original. '+(error.message==='invalid_create_receipt'?'Resposta incompatível do servidor.':error.message);throw error;}}
+  else if(unchanged()){if(error.message==='invalid_create_input')error.message='Confira o assunto (3 a 200 caracteres) e a descrição (1 a 12000 caracteres), sem contar os espaços nas pontas.';throw error;}
+ }finally{if(s.createPending===pending){s.createPending=null;renderCatalog();}}
 });};
 $('message-body').oninput=()=>mutations.edit(s.mode,$('message-body').value);
 $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{

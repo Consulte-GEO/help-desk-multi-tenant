@@ -1,0 +1,22 @@
+✔ frozen creation replay after coverage expiry preserves one ticket/event/outbox (explicit=false) (37.9737ms)
+✔ frozen creation replay after coverage expiry preserves one ticket/event/outbox (explicit=true) (5.3698ms)
+✔ revocation before frozen creation replay denies receipt and creates no effect (3.6204ms)
+✔ invalid persistent cache is a 503 and cannot release or replace unknown creation (3.2304ms)
+✔ invalid canonical input never installs a dispatched intent and remains correctable (6.0957ms)
+✔ creation intent copies and freezes complete payload, explicit coverage and session identity (0.2364ms)
+✔ unknown creation retries exact bytes/key without accepting an edited intent (2.0137ms)
+✔ reset to another session discards intent and cannot accept old receipts or replay (0.2553ms)
+✔ invalid or unrelated receipt leaves original intent unknown and retryable (0.3729ms)
+✔ preparation without explicit coverage preserves its absence in retry (0.1688ms)
+✔ a confirmed creation permits a new explicitly prepared intent with a new key (0.1872ms)
+✔ HTTP a future microsecond start produces no_coverage and cannot create side effects (56.0211ms)
+✔ HTTP inconsistent coverage is a safe 503, never a miss, partial candidate or duplicate mutation (46.3049ms)
+✔ HTTP a still-valid microsecond expiry permits creation; replay after expiry keeps the historical snapshot (36.6347ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 434.7367

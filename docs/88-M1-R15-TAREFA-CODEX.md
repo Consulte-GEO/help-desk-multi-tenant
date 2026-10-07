@@ -38,7 +38,7 @@ Esperado: `planned`, `transport:none`,28controles prévios e39verificações de 
 Sem `includeMachineWrites:true`, o comando mantém somente18passos humanos. Não alterar a configuração antiga já aprovada silenciosamente. O novo campo faz parte do hash de consentimento.
 
 ## 4. Execução hospedada — somente sob autorização atual
-Não executar esta seção por inferência de um “continue”. Exige origem imutável, ambiente/dados/canais/outbox isolados, três humanos e integração A pré-provisionados; quatro sessões limitadas ao destino, cobertura explícita e autorização para recursos sintéticos persistentes.
+Não executar esta seção por inferência de um “continue”. Exige origem imutável de produção, registros e efeitos identificáveis, três humanos e integração A pré-provisionados; quatro sessões limitadas ao destino, cobertura explícita e autorização para recursos sintéticos persistentes.
 Copiar o exemplo para arquivo privado de homologação com IDs reais DE TESTE. Manter executionId estável por intenção e revisar hash do plano. Guardar tokens apenas nas variáveis `HELPDESK_TEST_HUMAN_A`, `HELPDESK_TEST_HUMAN_B`, `HELPDESK_TEST_AGENT_A`, `HELPDESK_TEST_M2M_SESSION_A`, obtidas por canal autorizado. Não colar segredos no prompt ou CLI.
 
 ```bash

@@ -37,7 +37,7 @@ Executar PostgreSQL17 descartável e os runners já existentes, nunca usar o Sup
 ## 3. Preparar a fixture — operação remota depende de autorização atual
 Não criar automaticamente pessoas, grants, contratos ou chamados. Solicitar ao responsável pelo ambiente a preparação aprovada ou utilizar uma fixture sintética já existente e revisada. O runtime precisa estar disponível em homologação por uma decisão específica; **não ligar o gate da produção apenas para executar testes**.
 
-Conferir no Netlify o permalink imutável e seu commit; conferir o Supabase efetivo e o isolamento do backend. `environment:homologation` é declaração, não mecanismo de isolamento.
+Conferir no Netlify o permalink imutável e seu commit; conferir o Supabase de produção efetivo e as permissões entre contas/workspaces. `environment:production` é declaração, não mecanismo de isolamento.
 
 A fixture deve conter:
 - Conta/produto A e conta/produto B, com serviço e cobertura vigentes; catálogo `environment:staging` pequeno e com paginação concluída.

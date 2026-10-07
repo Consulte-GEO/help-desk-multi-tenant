@@ -18,7 +18,7 @@ O lock existe e foi preservado. Usar `npm ci --ignore-scripts`; não seguir o `d
 | Instalação/auditoria/typecheck padrão | Bloqueados no ambiente atual | Logs oficiais sem falhas |
 | 215 cenários PostgreSQL | Escritos, não executados nesta sessão | Banco descartável com os seis percursos R17/R18 aprovados |
 | 36 checks browser | Bloqueados no ambiente atual | Chromium permitido, sem interceptações substituindo o destino pretendido |
-| Fixtures hospedadas | Não demonstradas pelos metadados | Alvos, identidades, dados e outbox isolados com autorização |
+| Fixtures hospedadas | Não demonstradas pelos metadados | Recursos e identidades autorizados de produção |
 | Aceitação HTTP/Auth/M2M hospedada | Pendente | Relatórios reais dos clientes existentes |
 | Capacidade/restauração/governança | Pendente | Ensaios, residência/RPO/RTO e aceite |
 | Revisão independente | Pendente | Outro executor revisando diff e evidências |

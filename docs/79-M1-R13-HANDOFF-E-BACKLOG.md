@@ -19,7 +19,7 @@ Aplicar apenas uma variante, após `git apply --check` e conferência dos hashes
 |---|---|---|---|
 | P0-INTEGRAR | Integrar cumulativo R10–R13 no checkout atual | Hashes/base/diff conferidos, trabalho concorrente preservado | Pendente externo |
 | P0-CI | Instalação e homologação da nova fonte | Toolchain travada, audit, typecheck; 1.333 aplicação / 209 PostgreSQL17 / 71 HTTP+browser no mesmo fingerprint, sem skips | Pendente |
-| P0-AMBIENTE | Destino de homologação e outbox/canais isolados | Autorização atual, fixture sintética e backend identificado; permalink não é prova de isolamento | Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH/READ | Executar R11 e R10 | 12 passos de sessão e 28 controles de leitura com evidência real do destino | Clientes locais, não host |
 | P0-WRITE | Executar R12 e correlacionar efeitos no banco | 28 controles + 18 verificações; idempotência, concorrência e atomicidade com provas próprias | Cliente local, não host |
 | P0-AUTH-COMPLETO | Expiração, revogações concorrentes e ciclo da chave longa | Evidência real, sem relaxar perfis | Pendente |

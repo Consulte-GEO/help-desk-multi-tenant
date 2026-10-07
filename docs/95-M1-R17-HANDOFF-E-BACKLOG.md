@@ -14,7 +14,7 @@ A aplicação local passou em1.389 testes;14novos do observador. Há215SQL escri
 | P0-CI | Executar com lock/toolchain oficial | Instalação, audit,typecheck,1.389 aplicação,215PostgreSQL17,71HTTP/browser da mesma fonte |
 | P0-SQL-REVIEW | Conferir os seis cenários novos | Todos executados, nenhum skip; diagnósticos sem conteúdo privado; efeitos/recibos exatos |
 | P0-INDEPENDENTE | Revisar os incrementos | Revisão por outro executor; SQL novo está escrito e não validado pelo banco aqui |
-| P0-DESTINO | Preparar homologação isolada autorizada | Auth/dados/outbox/canais/credenciais de teste e liberação apropriados, sem alterar produção por inferência |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-ACEITACAO | Rodar R10/R11/R12/R15/R16 no destino | Login/M2M,gravações,replay,recusas e efeitos correlacionados com evidência própria |
 | P0-OPS | Function/TLS,concorrência,carga,restore/governança | Aceite operacional,residência,RPO/RTO; não usar flags para simular aceite |
 | M2 | Administração genérica | Somente após fechar M1 por evidências |

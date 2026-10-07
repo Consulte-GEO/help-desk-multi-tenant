@@ -29,7 +29,7 @@ async function fixture({admin,app}:FixtureContext){
  validateDatabaseTestTargets(process.env);
  await assertSafeDatabaseRole(app);
  const account=()=>({accountId:randomUUID(),requesterId:randomUUID(),productInstanceId:randomUUID(),ticketId:randomUUID(),serviceCode:'SUPPORT'});
- const config:HostedFixture={schema:1,environment:'homologation',origin:'https://'+'a'.repeat(24)+'--helpdesk-consultegeo.netlify.app',
+ const config:HostedFixture={schema:1,environment:'production',origin:'https://'+'a'.repeat(24)+'--helpdesk-consultegeo.netlify.app',
   supabaseUrl:'https://'+'a'.repeat(20)+'.supabase.co',deploymentCommit:'b'.repeat(40),workspaceId:randomUUID(),deniedWorkspaceId:randomUUID(),
   agentId:randomUUID(),integrationId:randomUUID(),accountA:account(),accountB:account(),machineTicketId:randomUUID(),machinePublicMessageId:randomUUID(),
   internalNoteId:randomUUID(),internalNoteMarker:'HD_TEST_INTERNAL_'+randomBytes(12).toString('hex'),publicMessageId:randomUUID()};
@@ -45,7 +45,7 @@ async function fixture({admin,app}:FixtureContext){
   contracts.push(contract);
   await admin.query("insert into helpdesk_core.accounts(workspace_id,id,name) values($1,$2,'Synthetic account')",[w,current.accountId]);
   await admin.query("insert into helpdesk_core.products(workspace_id,id,code,name) values($1,$2,$3,'Synthetic product')",[w,productId,'TEST'+index]);
-  await admin.query("insert into helpdesk_core.product_instances(workspace_id,product_id,id,environment) values($1,$2,$3,'staging')",[w,productId,current.productInstanceId]);
+  await admin.query("insert into helpdesk_core.product_instances(workspace_id,product_id,id,environment) values($1,$2,$3,'production')",[w,productId,current.productInstanceId]);
   await admin.query("insert into helpdesk_core.services(workspace_id,product_id,code,name) values($1,$2,'SUPPORT','Support')",[w,productId]);
   await admin.query("insert into helpdesk_core.support_contracts(workspace_id,id,name) values($1,$2,'Synthetic contract')",[w,contract.id]);
   await admin.query("insert into helpdesk_core.contract_versions(workspace_id,contract_id,id,version,published,valid_from,policy) values($1,$2,$3,1,true,'2020-01-01T00:00:00Z',$4::jsonb)",[w,contract.id,contract.versionId,JSON.stringify(contract.policy)]);

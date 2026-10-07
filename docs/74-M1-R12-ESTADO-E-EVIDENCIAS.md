@@ -46,7 +46,7 @@ A revisão identificou: (a) tipo de env da fixture sem propriedade NODE_TEST_CON
 Revisão pelo próprio executor; **sem revisão independente, subagente ou pentest**. Fonte externa RFC 9110 fundamenta If-Match/412, não comprova o resultado de testes; fonte de comportamento de replay é o código existente do Help Desk.
 
 ## Riscos e continuidade
-A origem imutável e environment=homologation são declarações, não prova de isolamento do backend. O operador precisa conferir o Supabase e os canais/consumidores de outbox do ambiente. Recursos sintéticos permanecem para auditoria; não há cleanup ou exclusão automática.
+A origem imutável e environment=production são declarações, não prova de isolamento do backend. O operador precisa conferir o Supabase e os canais/consumidores de outbox do ambiente. Recursos sintéticos permanecem para auditoria; não há cleanup ou exclusão automática.
 
 Nova invocação exige o mesmo JSON lógico, executionId, coverageId, principais e chaves, dentro da janela de idempotência ainda preservada pelo servidor. O cliente não prova que o cache não foi eliminado; após expiração/purga, mudança contratual ou perda de autorização, interromper e reconciliar manualmente antes de outro comando. Não alterar executionId para contornar erro. A resolução atual de cobertura/preflight pode bloquear recuperação após mudança de pré-requisitos; isso não muda o direito de replay histórico do produto.
 
