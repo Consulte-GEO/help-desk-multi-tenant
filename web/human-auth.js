@@ -10,6 +10,10 @@ const messages=Object.freeze({
  password_change_rejected:'O provedor recusou a alteração. Verifique a senha atual e os requisitos da nova senha.',
  password_change_reauthenticate:'O provedor exige nova autenticação. Entre novamente antes de alterar a senha.',
  password_change_requires_mfa:'O provedor exige autenticação com MFA para alterar a senha. Esta jornada de MFA ainda precisa ser concluída no Help Desk.',
+ password_change_nonce_invalid:'O código de confirmação expirou ou foi recusado. Entre novamente e solicite outro código antes de alterar a senha.',
+ invalid_password_nonce:'Informe um código de confirmação válido, sem espaços ou caracteres especiais.',
+ auth_reauthentication_in_progress:'A solicitação de código está em andamento. Aguarde o resultado.',
+ auth_reauthentication_rejected:'O provedor recusou a solicitação de código. Verifique seu canal de contato confirmado e os requisitos de acesso.',
  login_in_progress:'Uma autenticação já está em andamento. Aguarde ou cancele.',
  login_failed:'Não foi possível autenticar. Verifique suas credenciais e a configuração de acesso.',
  auth_unavailable:'Não foi possível renovar ou validar a sessão. Tente novamente.',
@@ -28,7 +32,7 @@ export class HumanAuthError extends Error {
 export function workspaceId(value){if(typeof value!=='string'||!UUID.test(value))throw new HumanAuthError('invalid_login');return value.toLowerCase();}
 const tokenText=(value,max)=>typeof value==='string'&&value.length>0&&value.length<=max&&/^[A-Za-z0-9._~-]+$/.test(value);
 const validText=value=>typeof value==='string'&&value.isWellFormed()&&!value.includes('\0');
-export function validatePasswordChange(current,password){if(!validText(current)||!current.length||current.length>4096||!validText(password)||!password.length||password.length>4096||current===password)throw new HumanAuthError('invalid_password_change');}
+export function validatePasswordChange(current,password,nonce=''){if(!validText(current)||!current.length||current.length>4096||!validText(password)||!password.length||password.length>4096||current===password)throw new HumanAuthError('invalid_password_change');if(typeof nonce!=='string'||(nonce!==''&&!/^[A-Za-z0-9_-]{1,128}$/.test(nonce)))throw new HumanAuthError('invalid_password_nonce');}
 function sessionFrom(value,started,now){
  if(!value||typeof value!=='object'||Array.isArray(value)||value.token_type?.toLowerCase?.()!=='bearer'
  ||!tokenText(value.access_token,8192)||!JWT.test(value.access_token)||!tokenText(value.refresh_token,4096)
@@ -68,14 +72,22 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
   try{return await Promise.race([deadline,(async()=>{
    const headers={apikey:key,...(body?{'content-type':'application/json'}:{}),...(access?{authorization:'Bearer '+access}:{})};
-   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':operation==='reauth'?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
    if(response.redirected)throw new HumanAuthError('auth_response_invalid');
    if(operation==='logout'){if(response.status!==204)throw new HumanAuthError('auth_logout_unconfirmed');return;}
    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
+   if(operation==='reauth'){
+    if(response.status===401)throw new HumanAuthError('session_rejected');
+    if([400,403,422].includes(response.status))throw new HumanAuthError('auth_reauthentication_rejected');
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const data=await jsonBody(response,controller.signal);
+    if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).some(k=>k!=='message_id')||(data.message_id!==undefined&&(!validText(data.message_id)||!data.message_id.length||data.message_id.length>256||/[\u0000-\u001f\u007f]/.test(data.message_id))))throw new HumanAuthError('auth_response_invalid');
+    return;
+   }
    if(operation==='password'){
     if([400,401,403,422].includes(response.status)){
      const error=await jsonBody(response,controller.signal),code=typeof error?.error_code==='string'?error.error_code:typeof error?.code==='string'?error.code:null;
-     throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':'password_change_rejected');
+     throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':['reauthentication_not_valid','otp_expired'].includes(code)?'password_change_nonce_invalid':'password_change_rejected');
     }
     if(response.status!==200)throw new HumanAuthError('auth_unavailable');
     const user=await jsonBody(response,controller.signal);
@@ -90,10 +102,11 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
-  async changePassword(access,userId,current,password){
-   validatePasswordChange(current,password);
+  async reauthenticate(access){if(!tokenText(access,8192)||!JWT.test(access))throw new HumanAuthError('session_rejected');return request('/reauthenticate',null,access,'reauth');},
+  async changePassword(access,userId,current,password,nonce=''){
+   validatePasswordChange(current,password,nonce);
    if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
-   return request('/user',{current_password:current,password},access,'password',userId.toLowerCase());
+   return request('/user',{current_password:current,password,...(nonce?{nonce}:{})},access,'password',userId.toLowerCase());
   },
   async workspaces(access){
    if(!tokenText(access,8192)||!JWT.test(access))throw new HumanAuthError('session_rejected');
