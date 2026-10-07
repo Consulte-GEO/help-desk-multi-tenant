@@ -1,13 +1,14 @@
 import {createHostedPreflight} from '../../src/infrastructure/hosted-preflight.ts';
+import type {DeploySucceededEvent} from '@netlify/functions';
 
 declare const Netlify:{env:{get(name:string):string|undefined}};
 
-// Netlify scheduled functions have no public URL. Run now is provider-authenticated.
-// No body/header can supply credentials, change a database target or open the release gate.
-export default async function handler():Promise<Response>{
- await createHostedPreflight(name=>Netlify.env.get(name),entry=>console.log(JSON.stringify(entry)))();
- return new Response(null,{status:204});
-}
-
-// Monthly bounded read-only monitoring; manual Run now permits the initial acceptance probe.
-export const config={schedule:'0 0 1 * *'};
+// Event handlers have no public route. Only the provider's production deploy event triggers the probe.
+// Event data never supplies credentials or database targets. No cron or release-gate mutation.
+export default {
+ async deploySucceeded(event:DeploySucceededEvent):Promise<void>{
+  const siteId='9781cd85-7dc1-4ef5-868b-947e389a9d4d';
+  if(event?.site?.id!==siteId||event?.deploy?.siteId!==siteId||event.deploy.context!=='production')return;
+  await createHostedPreflight(name=>Netlify.env.get(name),entry=>console.log(JSON.stringify(entry)))();
+ }
+};

@@ -10,7 +10,7 @@ const codes=new Set(['passed','not_executed','invalid_configuration','configurat
  'schema_version_mismatch','unsafe_database_policies','read_only_required','tls_not_verified','rollback_failed','cleanup_failed',
  ...ids.map(id=>id+'_check_failed')]);
 
-/** Provider control-plane/scheduler only; no HTTP handler, selectors or business writes. */
+/** Provider deployment-event only; no HTTP handler, selectors or business writes. */
 export function createHostedPreflight(readEnv:(name:string)=>string|undefined,observe:(entry:unknown)=>void,probe:Probe=runRuntimePreflight){
  return async():Promise<void>=>{
   const started_at=new Date().toISOString();

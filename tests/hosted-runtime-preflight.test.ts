@@ -63,14 +63,29 @@ test('incomplete, duplicate or failed checks cannot advertise a successful probe
  }
 });
 
-test('the Netlify entry point is scheduled with no HTTP path and ignores caller payload',async()=>{
+test('the Netlify entry point subscribes only to deployment events without a public path',async()=>{
  const module=await import('../netlify/functions/runtime-preflight.mts');
- assert.deepEqual(module.config,{schedule:'0 0 1 * *'});
+ assert.deepEqual(Object.keys(module.default),['deploySucceeded']);
  const previous=(globalThis as any).Netlify;const previousLog=console.log;const logs:string[]=[];
  try{
   (globalThis as any).Netlify={env:{get:()=>undefined}};console.log=(message:string)=>{logs.push(message);};
-  const response=await module.default();assert.equal(response.status,204);
-  assert.equal(response.body,null);assert.equal(logs.length,1);
+  const result=await module.default.deploySucceeded({site:{id:'9781cd85-7dc1-4ef5-868b-947e389a9d4d'},
+   deploy:{siteId:'9781cd85-7dc1-4ef5-868b-947e389a9d4d',context:'production',id:'6ac5aff54233380008d0f1eb'}} as any);
+  assert.equal(result,undefined);assert.equal(logs.length,1);
   assert.equal(JSON.parse(logs[0]!).success,false);
  }finally{(globalThis as any).Netlify=previous;console.log=previousLog;}
+});
+
+test('another site, preview or malformed deployment cannot read runtime secrets or run a probe',async()=>{
+ const module=await import('../netlify/functions/runtime-preflight.mts');
+ const previous=(globalThis as any).Netlify;let reads=0;
+ try{
+  (globalThis as any).Netlify={env:{get:()=>{reads++;throw Error('should_not_read');}}};
+  const expected='9781cd85-7dc1-4ef5-868b-947e389a9d4d';
+  for(const event of [undefined,{}, {site:{id:expected},deploy:{siteId:expected,context:'deploy-preview'}},
+   {site:{id:'other'},deploy:{siteId:expected,context:'production'}},
+   {site:{id:expected},deploy:{siteId:'other',context:'production'}}])
+   await module.default.deploySucceeded(event as any);
+  assert.equal(reads,0);
+ }finally{(globalThis as any).Netlify=previous;}
 });
