@@ -40,7 +40,7 @@ RLS desta fundação protege a fronteira de dados; capacidades de cada operaçã
 1. Inspecionar novamente o estado remoto e comparar com o pacote. Não sobrescrever trabalho concorrente.
 2. Revisar arquitetura, contrato HTTP e escopo do incremento; concluir HD-101/102/103 e os gates de segurança pertinentes.
 3. Gerar lockfile auditado em ambiente com registry autorizado; validar o empacotamento real das Functions e a compatibilidade do driver.
-4. Executar migrations e testes em ambiente de homologação aprovado, sem dados reais. Não criar infraestrutura cobrada sem aprovação.
+4. Executar migrations e validação hospedada diretamente em produção, preservando os dados existentes. Não criar infraestrutura cobrada sem aprovação.
 5. Confirmar schemas da Data API, helpers, login da aplicação, pooler e certificados TLS. Não desabilitar verificação TLS para “fazer funcionar”.
 6. Provisionar identidades, grants e configurações de teste por procedimento administrativo, não por endpoint de signup privilegiado.
 7. Executar API com Supabase Auth e PostgreSQL reais, incluindo suspensão/revogação/isolamento/concorrência.
@@ -53,7 +53,7 @@ RLS desta fundação protege a fronteira de dados; capacidades de cada operaçã
 
 `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` podem ser retornados ao frontend; uma chave secret/service não pode ocupar esse campo. A validação inicial aceita apenas chave `sb_publishable_...` e host oficial do projeto. A CSP usa a URL do Help Desk; mudar de projeto exige atualizar a allowlist. Não colocar segredos em prefixos públicos, HTML, fixtures reais ou URLs de suporte.
 
-Preview e homologação não devem compartilhar credenciais e base de clientes com produção. A existência de uma branch Git não cria automaticamente um ambiente de dados isolado. Nenhum scheduler/worker foi configurado neste incremento.
+O site e a base de produção são o destino único de implantação e validação. Branches Git organizam o desenvolvimento do código. Nenhum scheduler/worker foi configurado neste incremento.
 
 ## Procedimentos de incidente
 

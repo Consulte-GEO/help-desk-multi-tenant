@@ -11,12 +11,12 @@ Integrar o código já desenvolvido e produzir evidência real antes de ampliar 
 | P0-3 Persistência | Executar a suíte existente em PostgreSQL 17 descartável | 215/215, incluindo os seis percursos de aceitação e os 16 testes de upgrade |
 | P0-4 Interface | Executar a interface existente | 35 HTTP + 36 browser, sem falsos positivos por mocks ou skips |
 | P0-5 Evidência | Executar `homologate:local` e conferir seus logs | Fonte única, contagens esperadas, hash e gate íntegros; revisão independente |
-| P0-6 Destino | Preparar homologação realmente isolada e autorizada | Projeto/banco, Auth, site, outbox e identidades de teste definidos; produção não alterada |
+| P0-6 Destino | Produção HelpDesk existente | Site helpdesk-consultegeo e base/Auth xaelbntjnvztznnpcvtm |
 | P0-7 Hospedado | Executar leitura, ciclo de sessão e gravações existentes | R10:28; R11:12; R15/R16:28 controles + 43 etapas, com evidência própria de contexto |
 | P0-8 Operação | Conferir Function/TLS, concorrência, capacidade, backup/restore e governança | Evidências do destino e aceite explícito; só então encerrar M1 |
 
 ## Dados mínimos da homologação
-O ambiente de testes precisa de um workspace autorizado e de uma referência de workspace alheio para testes negativos; contas A e B; produtos/instâncias e serviços; contrato publicado e cobertura vigente; solicitantes A/B, agente A e principal de integração A. Usuários Auth e principais internos possuem IDs distintos. Capacidades e grants são independentes e devem ser provisionados pelos caminhos administrativos existentes, sem tornar o login HTTP administrador.
+A validação em produção precisa de um workspace autorizado e de uma referência de workspace alheio para testes negativos; contas A e B; produtos/instâncias e serviços; contrato publicado e cobertura vigente; solicitantes A/B, agente A e principal de integração A. Usuários Auth e principais internos possuem IDs distintos. Capacidades e grants são independentes e devem ser provisionados pelos caminhos administrativos existentes, sem tornar o login HTTP administrador.
 
 O R10 precisa de três chamados prévios: humano A, humano B e integração A, além de mensagens públicas e nota interna controlada. A nota só deve ser lida pelo agente autorizado. O R11 cria/renova/encerra sessões de teste; o R12/R15 efetua cinco gravações válidas e testes negativos. Esses passos não podem ser executados contra produção apenas porque o deploy tem URL imutável.
 

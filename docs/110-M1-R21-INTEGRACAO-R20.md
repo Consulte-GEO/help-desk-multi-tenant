@@ -20,11 +20,11 @@ Exigir na mesma fonte: lock, npm ci, audit, typecheck e verify; 1436 Node, 215 P
 1. Integração do código R20 em branch separada: preparada.
 2. CI R20: pendente de execução/conferência nesta versão do documento.
 3. Revisão independente do R20: pendente.
-4. Site, banco, Auth e outbox de homologação isolados: dependem de autorização específica; nenhum recurso foi criado nesta rodada.
-5. Aceitação hospedada: executar somente após os itens anteriores com identidades e fixtures reais de teste autorizadas; planos com IDs fictícios não constituem provisionamento.
+4. Destino único: site, banco, Auth e outbox do Help Desk em produção.
+5. Aceitação hospedada: executar somente após os itens anteriores com identidades e registros autorizados de produção; planos com IDs fictícios não constituem provisionamento.
 6. Correlação privada no destino, concorrência, capacidade, restore, residência/RPO/RTO e aceite operacional: pendentes.
 
-M1 permanece aberto; M2 não iniciado. API/interface 0.19.0, schema 0.18.0, 11 migrations e lockfile preservados. CI aprovado não autoriza abertura de HELPDESK_RELEASE_APPROVED, uso de produção como laboratório, mutações remotas ou publicação operacional.
+M1 permanece aberto; M2 não iniciado. API/interface 0.19.0, schema 0.18.0, 11 migrations e lockfile preservados. CI aprovado não comprova configuração de runtime, aprovação do gate ou aceite operacional de produção.
 
 
 ## Atualização R22 — 02/10/2026

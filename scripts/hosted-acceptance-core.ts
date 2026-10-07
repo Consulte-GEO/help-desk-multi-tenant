@@ -7,7 +7,7 @@ import {isHostedDeployOrigin,LEGACY_HOSTED_SITE} from './hosted-origin.ts';
 
 type ObjectValue=Record<string,unknown>;
 export type HostedAccount={accountId:string;requesterId:string;productInstanceId:string;ticketId:string;serviceCode:string};
-export type HostedFixture={schema:1;environment:'homologation';origin:string;netlifySiteName?:string;supabaseUrl:string;deploymentCommit:string;
+export type HostedFixture={schema:1;environment:'production';origin:string;netlifySiteName?:string;supabaseUrl:string;deploymentCommit:string;
  workspaceId:string;deniedWorkspaceId:string;agentId:string;integrationId:string;accountA:HostedAccount;accountB:HostedAccount;
  machineTicketId:string;machinePublicMessageId:string;internalNoteId:string;internalNoteMarker:string;publicMessageId:string};
 export type HostedTokens={requesterA:string;requesterB:string;agentA:string;machineA:string};
@@ -27,13 +27,13 @@ function requireCheck(condition:unknown,code:Code='contract_mismatch'):asserts c
 const isObject=(v:unknown):v is ObjectValue=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const exact=(v:ObjectValue,keys:readonly string[])=>Object.keys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
-function invalidConfig():never {throw new Error('Configuração de homologação inválida ou incompatível.');}
+function invalidConfig():never {throw new Error('Configuração de validação em produção inválida ou incompatível.');}
 /** Return a private copy, so caller mutations cannot redirect an in-progress run. */
 function configuration(input:unknown):HostedFixture {
  if(!isObject(input)||!exact(input,['schema','environment','origin','supabaseUrl','deploymentCommit','workspaceId','deniedWorkspaceId',
   'agentId','integrationId','accountA','accountB','machineTicketId','machinePublicMessageId','internalNoteId','internalNoteMarker','publicMessageId',
   ...(Object.hasOwn(input,'netlifySiteName')?['netlifySiteName']:[])]))invalidConfig();
- if(input.schema!==1||input.environment!=='homologation'||typeof input.origin!=='string'
+ if(input.schema!==1||input.environment!=='production'||typeof input.origin!=='string'
   ||!isHostedDeployOrigin(input.origin,Object.hasOwn(input,'netlifySiteName')?input.netlifySiteName:LEGACY_HOSTED_SITE)
   ||typeof input.supabaseUrl!=='string'||!/^https:\/\/[a-z]{20}\.supabase\.co$/.test(input.supabaseUrl)
   ||typeof input.deploymentCommit!=='string'||!/^[a-f0-9]{40}$/.test(input.deploymentCommit)
@@ -107,7 +107,7 @@ function scenarios(c:HostedFixture):Scenario[] {
  };
  const catalog=(x:HostedAccount)=>(v:unknown)=>{
   const items=page(v);requireCheck(items.length>0&&items.every(i=>i.account_id===x.accountId&&i.product_instance_id===x.productInstanceId
-   &&i.service_code===x.serviceCode&&i.environment==='staging'),'fixture_missing');
+   &&i.service_code===x.serviceCode&&i.environment==='production'),'fixture_missing');
  };
  const messages=(ticketId:string,messageId:string)=>(v:unknown)=>{
   const items=page(v);requireCheck(items.some(i=>i.id===messageId),'fixture_missing');

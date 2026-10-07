@@ -16,7 +16,7 @@ A suíte local passou em 1.417 testes, com 28 novos; 215 cenários SQL continuam
 | P0-CI | Usar lock e toolchain oficial | npm ci, audit, typecheck, 1.417 Node, 215 PostgreSQL, 71 HTTP/browser da mesma fonte |
 | P0-SQL | Executar os seis percursos R17 agora com o R18 | Conferir o recibo inicial e os cinco efeitos; replay e perdas HTTP não duplicam dados |
 | P0-REVISÃO | Revisão independente do acumulado | Outro executor, com logs e diff; não simplesmente repetir a conclusão deste handoff |
-| P0-DESTINO | Homologação autorizada e isolada | Auth/contas/outbox/canais sintéticos sem ativar produção por inferência |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-HOSPEDADO | Clientes R10/R11/R12/R15/R16 e banco | Sessões, gravações, isolamento e correlação comprovados no destino |
 | P0-OPERAÇÃO | Function/TLS, concorrência, capacidade, restore e governança | Evidências próprias; residência e RPO/RTO definidos e aceitos |
 | M2 | Administração multiproduto/multicontrato | Somente após fechamento comprovado de M1 |

@@ -9,7 +9,7 @@ import {runHostedAuthAcceptance} from '../scripts/hosted-auth-acceptance-core.ts
 import {runHostedWriteAcceptance} from '../scripts/hosted-write-acceptance-core.ts';
 import {hostedFixture, uuid} from './fixtures/hosted-acceptance-fixture.ts';
 
-const site='helpdesk-consultegeo-hml';
+const site='another-helpdesk';
 const origin='https://'+'a'.repeat(24)+'--'+site+'.netlify.app';
 const legacyOrigin='https://'+'a'.repeat(24)+'--helpdesk-consultegeo.netlify.app';
 async function examples(){
@@ -19,7 +19,7 @@ async function examples(){
   write:JSON.parse(await readFile(new URL('../examples/hosted-write.fixture.json',import.meta.url),'utf8')),
  };
 }
-async function isolated(){
+async function selected(){
  const c=await examples();
  c.read={...c.read,origin,netlifySiteName:site};
  c.auth={...c.auth,origin,netlifySiteName:site};
@@ -35,25 +35,25 @@ async function allReject(c:Awaited<ReturnType<typeof examples>>){
  await assert.rejects(()=>runHostedWriteAcceptance(c.write));
 }
 
-test('R20 legacy configurations preserve their exact confirmation hashes and mutation keys',async()=>{
+test('R20 production configurations preserve their exact confirmation hashes and mutation keys',async()=>{
  const c=await examples();const [r,a,w]=await plans(c);
- assert.equal(r!.config_sha256,'0b928b0f86b45f48fda4e76f06e1472496c767d5253721b13bf5e9c93c53535f');
- assert.equal(a!.config_sha256,'d17cfb4d9571a0ffc574ab3367a06e58596cbc331bf0546dc85aba3d0e601dbb');
- assert.equal(w!.config_sha256,'b1f18cd0829a2f6d8b4b47faf6c06d387f6c23302c1bf0e1a7934def685f8a70');
+ assert.equal(r!.config_sha256,'73b7ee4f6b7c3c7955c0078f252f7b12cf1a0c722570ca8c04b3c81f5afb547e');
+ assert.equal(a!.config_sha256,'4afeabf6530836e8c4d933302de86e60a4571266972b1720a84f47b3ccb67e8d');
+ assert.equal(w!.config_sha256,'691f24e4ff8695a5d3e949e43d8a1214a82ae5eb25713b670eed19acfbf64af0');
  const old=await runHostedWriteAcceptance(c.write);
  assert.equal(old.keys.create,'hd-accept-write:00000000-0000-4000-8000-000000009501:create');
  assert.deepEqual([r!.checks.length,a!.checks.length,w!.checks.length],[28,12,18]);
 });
-test('R20 explicit isolated site is accepted by the read plan without a transport',async()=>{
- const c=await isolated(),p=await runHostedReadAcceptance(c.read);
+test('R20 explicit selected site is accepted by the read plan without a transport',async()=>{
+ const c=await selected(),p=await runHostedReadAcceptance(c.read);
  assert.equal(p.status,'planned');assert.equal(p.origin,origin);assert.equal(p.transport,'none');assert.equal(p.checks.length,28);
 });
-test('R20 explicit isolated site is accepted by the auth plan without credentials',async()=>{
- const c=await isolated(),p=await runHostedAuthAcceptance(c.auth);
+test('R20 explicit selected site is accepted by the auth plan without credentials',async()=>{
+ const c=await selected(),p=await runHostedAuthAcceptance(c.auth);
  assert.equal(p.status,'planned');assert.equal(p.origin,origin);assert.equal(p.transport,'none');assert.equal(p.checks.length,12);
 });
-test('R20 write plan inherits the isolated site and preserves the complete human/M2M journey',async()=>{
- const c=await isolated(),p=await runHostedWriteAcceptance(c.write);
+test('R20 write plan inherits the selected site and preserves the complete human/M2M journey',async()=>{
+ const c=await selected(),p=await runHostedWriteAcceptance(c.write);
  assert.equal(p.status,'planned');assert.equal(p.origin,origin);assert.equal(p.preflight.checks.length,28);assert.equal(p.checks.length,43);
  assert.equal(p.keys.create,'hd-accept-write:00000000-0000-4000-8000-000000009501:create');
  assert.equal(p.machine?.keys.create,'hd-accept-write:00000000-0000-4000-8000-000000009501:machine:create');
@@ -62,10 +62,10 @@ test('R20 another site remains refused when no explicit site name is provided',a
  const c=await examples();c.read.origin=origin;c.auth.origin=origin;c.write.readFixture.origin=origin;await allReject(c);
 });
 test('R20 the declared site cannot authorize an origin belonging to another site',async()=>{
- const c=await isolated();c.read.origin=legacyOrigin;c.auth.origin=legacyOrigin;c.write.readFixture.origin=legacyOrigin;await allReject(c);
+ const c=await selected();c.read.origin=legacyOrigin;c.auth.origin=legacyOrigin;c.write.readFixture.origin=legacyOrigin;await allReject(c);
 });
 test('R20 rejects invalid explicit names rather than silently using the legacy name',async()=>{
- for(const name of [undefined,null,0,true,'','Helpdesk-hml','a.b','*.netlify.app','-a','a-','a/b','a@b','a?b','a#b','a%62','a\\b','á','a\n','a\r','a\t','a '.trimStart(),'x'.repeat(38)]){
+ for(const name of [undefined,null,0,true,'','Uppercase','a.b','*.netlify.app','-a','a-','a/b','a@b','a?b','a#b','a%62','a\\b','á','a\n','a\r','a\t','a '.trimStart(),'x'.repeat(38)]){
   const c=await examples();c.read.netlifySiteName=name;c.auth.netlifySiteName=name;c.write.readFixture.netlifySiteName=name;await allReject(c);
  }
 });
@@ -74,11 +74,11 @@ test('R20 refuses aliases, redirects targets, noncanonical forms and suffix inje
   origin.replace('https:','http:'),origin+'/',origin+'?x=1',origin+'#x',origin+':443',origin+'.evil.invalid',origin+'\n',origin+' ',
   origin.replace('https://','https://user@'),origin.replace(site,site.toUpperCase()),origin.replace('.netlify.app','.netlify.app.'),
   'https://127.0.0.1','https://localhost','https://example.invalid',origin.replace('a'.repeat(24),'a'.repeat(25))];
- for(const host of bad){const c=await isolated();c.read.origin=host;c.auth.origin=host;c.write.readFixture.origin=host;await allReject(c);}
+ for(const host of bad){const c=await selected();c.read.origin=host;c.auth.origin=host;c.write.readFixture.origin=host;await allReject(c);}
 });
 test('R20 valid names at the conservative length boundaries are accepted without normalization',async()=>{
- for(const name of ['a','qa-1','x'.repeat(37)]){
-  const c=await isolated(),host='https://'+'1'.repeat(24)+'--'+name+'.netlify.app';
+ for(const name of ['a','site-1','x'.repeat(37)]){
+  const c=await selected(),host='https://'+'1'.repeat(24)+'--'+name+'.netlify.app';
   c.read.origin=host;c.read.netlifySiteName=name;c.auth.origin=host;c.auth.netlifySiteName=name;
   c.write.readFixture=structuredClone(c.read);
   for(const p of await plans(c))assert.equal(p.origin,host);
@@ -90,7 +90,7 @@ test('R20 explicit site selection changes confirmation hashes even for the legac
  const next=await plans(c);for(let i=0;i<next.length;i++)assert.notEqual(next[i]!.config_sha256,old[i]!.config_sha256);
 });
 test('R20 unknown configuration fields remain rejected',async()=>{
- const c=await isolated();c.read.allowAnySite=true;c.auth.allowAnySite=true;c.write.readFixture.allowAnySite=true;await allReject(c);
+ const c=await selected();c.read.allowAnySite=true;c.auth.allowAnySite=true;c.write.readFixture.allowAnySite=true;await allReject(c);
 });
 test('R20 an inherited site name does not select a new destination',async()=>{
  const c=await examples();Object.setPrototypeOf(c.read,{netlifySiteName:site});c.read.origin=origin;
@@ -98,7 +98,7 @@ test('R20 an inherited site name does not select a new destination',async()=>{
  await assert.rejects(()=>runHostedReadAcceptance(c.read));await assert.rejects(()=>runHostedAuthAcceptance(c.auth));
 });
 test('R20 plan mode never touches supplied secrets or sends network requests',async()=>{
- const c=await isolated();let sent=0;
+ const c=await selected();let sent=0;
  const secrets=new Proxy({}, {get(){throw Error('secret accessed');},ownKeys(){throw Error('secret enumerated');}});
  const fetcher:typeof fetch=async()=>{sent++;throw Error('must not send');};
  for(const p of [await runHostedReadAcceptance(c.read,secrets,{fetcher}),await runHostedAuthAcceptance(c.auth,secrets,{fetcher}),await runHostedWriteAcceptance(c.write,secrets,{fetcher})]){
@@ -106,7 +106,7 @@ test('R20 plan mode never touches supplied secrets or sends network requests',as
  }assert.equal(sent,0);
 });
 test('R20 wrong literal origin or write confirmation hash blocks before transport',async()=>{
- const c=await isolated();let sent=0;const fetcher:typeof fetch=async()=>{sent++;throw Error('must not send');};
+ const c=await selected();let sent=0;const fetcher:typeof fetch=async()=>{sent++;throw Error('must not send');};
  await assert.rejects(()=>runHostedReadAcceptance(c.read,{}, {execute:true,confirmOrigin:legacyOrigin,fetcher}));
  await assert.rejects(()=>runHostedAuthAcceptance(c.auth,{}, {execute:true,allowSessionMutations:true,confirmOrigin:legacyOrigin,confirmAuthOrigin:c.auth.supabaseUrl,fetcher}));
  const p=await runHostedWriteAcceptance(c.write);
@@ -115,11 +115,11 @@ test('R20 wrong literal origin or write confirmation hash blocks before transpor
  assert.equal(sent,0);
 });
 test('R20 mismatching Auth origin still blocks before any network call',async()=>{
- const c=await isolated();let sent=0;const fetcher:typeof fetch=async()=>{sent++;throw Error('must not send');};
+ const c=await selected();let sent=0;const fetcher:typeof fetch=async()=>{sent++;throw Error('must not send');};
  await assert.rejects(()=>runHostedAuthAcceptance(c.auth,{}, {execute:true,allowSessionMutations:true,confirmOrigin:origin,confirmAuthOrigin:'https://'+'b'.repeat(20)+'.supabase.co',fetcher}));
  assert.equal(sent,0);
 });
-test('R20 read journey uses only the isolated origin even if caller config changes mid-run',async()=>{
+test('R20 read journey uses only the selected origin even if caller config changes mid-run',async()=>{
  const f=await hostedFixture(),c={...f.config,origin,netlifySiteName:site};
  const p=await runHostedReadAcceptance(c,f.tokens,{execute:true,confirmOrigin:origin,fetcher:async(input,init)=>{
   c.origin=legacyOrigin;c.netlifySiteName='helpdesk-consultegeo';return f.fetcher(input,init);
@@ -127,7 +127,7 @@ test('R20 read journey uses only the isolated origin even if caller config chang
  assert.equal(p.status,'passed');assert.equal(p.transport,'injected');assert.equal(p.platform_approved,false);
  assert.ok(f.requests.length>=28);assert.ok(f.requests.every(r=>new URL(r.url).origin===origin));
 });
-test('R20 full write journey remains confined to the explicit isolated site',async()=>{
+test('R20 full write journey remains confined to the explicit selected site',async()=>{
  const f=await hostedFixture(),c={schema:1,readFixture:{...f.config,origin,netlifySiteName:site},executionId:uuid(9701),coverageId:uuid(401),includeMachineWrites:true};
  const plan=await runHostedWriteAcceptance(c);
  const p=await runHostedWriteAcceptance(c,f.tokens,{execute:true,allowTicketMutations:true,confirmOrigin:origin,confirmConfigSha256:plan.config_sha256,fetcher:f.fetcher});
@@ -136,7 +136,7 @@ test('R20 full write journey remains confined to the explicit isolated site',asy
  assert.ok(f.requests.every(r=>new URL(r.url).origin===origin));assert.equal(f.db.snapshot().tickets.length,5);
 });
 test('R20 auth client selects the explicit site but does not bypass its runtime release gate',async()=>{
- const c=await isolated();const requests:Request[]=[];
+ const c=await selected();const requests:Request[]=[];
  const p=await runHostedAuthAcceptance(c.auth,{email:'synthetic@example.invalid',password:'synthetic-only',integrationKey:'hd_key_'+'q'.repeat(43)},
   {execute:true,allowSessionMutations:true,confirmOrigin:origin,confirmAuthOrigin:c.auth.supabaseUrl,fetcher:async(input,init)=>{
    const req=new Request(input,init);requests.push(req);
@@ -145,8 +145,8 @@ test('R20 auth client selects the explicit site but does not bypass its runtime 
  assert.equal(requests.length,1);assert.equal(new URL(requests[0]!.url).origin,origin);assert.equal(requests[0]!.headers.has('authorization'),false);
  assert.equal(p.checks[0]!.code,'release_gate_closed');assert.ok(p.checks.slice(1).every(c=>c.status==='blocked'));assert.equal(p.platform_approved,false);
 });
-test('R20 all three existing CLIs produce isolated-site plans without leaking environment secrets',async()=>{
- const c=await isolated(),dir=await mkdtemp(join(tmpdir(),'helpdesk-r20-site-'));
+test('R20 all three existing CLIs produce selected-site plans without leaking environment secrets',async()=>{
+ const c=await selected(),dir=await mkdtemp(join(tmpdir(),'helpdesk-r20-site-'));
  try{
   for(const [name,config] of [['hosted-acceptance',c.read],['hosted-auth-acceptance',c.auth],['hosted-write-acceptance',c.write]] as const){
    const path=join(dir,name+'.json');await writeFile(path,JSON.stringify(config));

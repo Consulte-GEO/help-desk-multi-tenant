@@ -8,7 +8,7 @@ O CI 36592018825 da base aprovou 1202 aplicação,209 PostgreSQL17 e71 HTTP/brow
 ## Escopo escolhido
 Exercitar as rotas HTTP existentes via HTTPS, com quatro sessões previamente provisionadas: solicitante A, solicitante B, agente da conta A e sessão curta M2M restrita à conta/produto A. Utilizar duas contas/produtos sintéticos e chamados/notas/mensagens existentes. Não criar/editar chamados, contratos, usuários ou grants. GET pode incrementar contadores técnicos do rate limiter; somente leitura de domínio não significa ausência de toda escrita SQL.
 
-A alternativa de abrir `HELPDESK_RELEASE_APPROVED` em produção foi descartada. Uma Function de diagnóstico adicional também foi descartada: esta entrega é cliente de testes do contrato existente. A execução completa depende de ambiente de homologação autorizado com runtime habilitado sob governança própria, sem desligar controles do ambiente de produção.
+O único ambiente do Help Desk é produção: site helpdesk-consultegeo e projeto Supabase HelpDesk xaelbntjnvztznnpcvtm. Desenvolvimento, implantação e validação hospedada usam esse destino. Não solicitar ambiente ou credenciais de teste ao usuário. A configuração de runtime e do gate deve ser verificada nesse mesmo destino. Este cliente não cria infraestrutura.
 
 ## Contrato e segurança
 - CLI padrão imprime plano validado e não faz rede nem lê credenciais. Execução exige `--execute`, confirmação literal da origem e autorização atual do operador para o destino.

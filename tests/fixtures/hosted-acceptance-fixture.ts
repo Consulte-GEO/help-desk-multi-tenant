@@ -8,7 +8,7 @@ export const uuid=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'
 const jwt=(name:string)=>`${Buffer.from('{"alg":"TEST"}').toString('base64url')}.${Buffer.from(JSON.stringify({role:'authenticated',fixture:name})).toString('base64url')}.synthetic`;
 export async function hostedFixture(){
  const tokens={requesterA:jwt('requesterA'),requesterB:jwt('requesterB'),agentA:jwt('agentA'),machineA:'hd_session_'+'m'.repeat(43)};
- const config={schema:1,environment:'homologation',origin:'https://'+'a'.repeat(24)+'--helpdesk-consultegeo.netlify.app',
+ const config={schema:1,environment:'production',origin:'https://'+'a'.repeat(24)+'--helpdesk-consultegeo.netlify.app',
   supabaseUrl:'https://'+'a'.repeat(20)+'.supabase.co',deploymentCommit:'b'.repeat(40),workspaceId:uuid(1),deniedWorkspaceId:uuid(2),
   agentId:uuid(13),integrationId:uuid(14),
   accountA:{accountId:uuid(101),requesterId:uuid(11),productInstanceId:uuid(301),ticketId:uuid(501),serviceCode:'SUPPORT'},
@@ -27,7 +27,7 @@ export async function hostedFixture(){
   serviceCode:a.serviceCode,contractId:uuid(701+i),contractVersionId:uuid(801+i),contractVersion:1,contractStatus:'active',enabled:true,published:true,
   validFrom:'2020-01-01T00:00:00Z',validUntil:null,policy:{}}));
  const db=new MemoryUnitOfWork({coverages,supportContexts:accounts.map((a,i)=>({workspaceId:config.workspaceId,accountId:a.accountId,accountName:'Synthetic '+i,
-  productInstanceId:a.productInstanceId,productName:'Product '+i,environment:'staging' as const,serviceCode:a.serviceCode,serviceName:'Support'}))});
+  productInstanceId:a.productInstanceId,productName:'Product '+i,environment:'production' as const,serviceCode:a.serviceCode,serviceName:'Support'}))});
  const service=new HelpdeskService(db);
  for(const [i,a] of accounts.entries()){
   const p=people[i===0?tokens.requesterA:tokens.requesterB]!;

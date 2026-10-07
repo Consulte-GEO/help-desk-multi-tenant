@@ -23,7 +23,7 @@ Validador puro compartilhado com erro seguro; CLI offline/conectada sob opt-in; 
 3. Executar `npm run test:db:local` em PostgreSQL17 descartável, confirmando **204** casos e integridade dos onze SQL. Não usar Supabase hospedado como fallback. Não retirar assertions de grant/rollback.
 4. Executar `npm run test:ui:local`, confirmando 35 HTTP +36 browser; depois `npm run homologate:local` e `npm run check:homologation`. Registrar falhas/skip como bloqueio, nunca alterar logs antigos para acomodar fingerprint.
 5. Após autorização de destino, executar o preflight conectado em ambiente administrativo controlado e com o login restrito real. Não imprimir ambiente ou connection string. Validar TLS/certificado, rollback e encerramento; registrar modo/source/hash e limitações.
-6. Elaborar/executar validação **dentro** da Function e percurso Auth/M2M real em ambiente de homologação autorizado. Este incremento não fornece endpoint interno nem autoriza abri-lo. Não ativar `HELPDESK_RELEASE_APPROVED` em produção apenas para contornar o teste.
+6. Elaborar/executar validação **dentro** da Function e percurso Auth/M2M real diretamente em produção. Este incremento não fornece endpoint interno nem autoriza abri-lo. Não ativar `HELPDESK_RELEASE_APPROVED` em produção apenas para contornar o teste.
 7. Prosseguir com capacidade/abuso, restore, residência, RPO/RTO, revisão independente e aprovação operacional. M2 somente depois do fechamento do M1.
 
 ## Cuidados de integração

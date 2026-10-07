@@ -70,7 +70,7 @@ Sem confirmações, não há execução. O comando utiliza dados sintéticos fix
 
 Guardar o relatório sanitizado em pasta de evidência da rodada. Resultado esperado: `passed`, transporte `https`, 28 controles prévios aprovados e 18 etapas aprovadas, nenhuma mutação unknown. Campos operational/platform_approved/atomicity_verified/contract_snapshot_verified/outbox_delivery_tested/postgres_tested continuam `false`. Não alterar esses campos manualmente.
 
-**Uma execução gera eventos/outbox e pode ativar consumidores já habilitados. Confirmar isolamento dos canais antes do opt-in.** Não ativar `HELPDESK_RELEASE_APPROVED` na produção para destravar o teste; o ambiente homologável precisa de autorização e governança próprias.
+Uma execução gera eventos/outbox no ambiente de produção e pode ativar consumidores habilitados. Identificar esses efeitos no plano e no relatório, preservando dados e configuração do serviço.
 
 ## 7. Falha e recuperação
 Qualquer falha bloqueia novos envios. resultado `unknown` exige revisão do relatório e das chaves. Somente uma nova invocação deliberada, com a MESMA configuração e principais, pode recuperar pela mesma chave enquanto a retenção idempotente estiver intacta. Verificar TTL/limpeza antes. Se houver `idempotency_expired`, purga, alteração de cobertura/acesso ou colisão, parar e reconciliar o recurso; jamais gerar nova chave automaticamente. Não limpar cache ou excluir chamados para fazer o teste passar.

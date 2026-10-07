@@ -44,4 +44,4 @@ A evidência do R9 ou dos testes Node não aprova os215SQL atuais. Produzir logs
 
 Não usar `recovery/source.tar.gz` para sobrescrever o repositório. Ele é somente uma recuperação em pasta nova sem histórico Git, dependências ou evidência de homologação.
 
-Aceitação hospedada exige autorização atual separada e ambiente/fixtures/outbox/canais isolados. Os clientes e seus hashes/intenções não mudaram no R17. Não transformar sua execução em aprovação de Auth real, entrega externa, carga ou restore. Atualizar estado/handoff/backlog com o que foi implementado, testado localmente, executado em PostgreSQL, testado em navegador, publicado, homologado e operacional.
+Aceitação hospedada usa diretamente produção, com registros e efeitos identificáveis. Os clientes e seus hashes/intenções não mudaram no R17. Não transformar sua execução em aprovação de Auth real, entrega externa, carga ou restore. Atualizar estado/handoff/backlog com o que foi implementado, testado localmente, executado em PostgreSQL, testado em navegador, publicado, homologado e operacional.

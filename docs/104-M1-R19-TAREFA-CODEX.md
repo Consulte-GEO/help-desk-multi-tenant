@@ -65,9 +65,9 @@ npm run check:homologation
 O agrupador repete instalação e testes para criar logs de uma mesma execução. Não juntar resultados de runs distintos ou editar metadados para satisfazer o gate. Guarde as falhas anteriores separadamente. Conferir fingerprint, commit, contagens e integridade dos logs. Tipos globais, metadados de banco e scanner heurístico não substituem seus gates correspondentes.
 
 ## 4. Revisão independente e destino hospedado
-Solicitar revisão por outro executor, com diff, logs e decisões. Após autorização atual específica, publicar a branch/PR ou configurar homologação. A preparação hospedada precisa de alvos isolados, quatro identidades, duas contas/produtos, contratos e as fixtures descritas em docs101. Os metadados do projeto remoto não demonstram que esses dados já existam.
+Solicitar revisão por outro executor, com diff, logs e decisões. Após autorização atual específica, publicar a branch/PR ou configurar homologação. A validação hospedada usa produção, com identidades e vínculos autorizados e os cenários descritos em docs101. Os metadados do projeto remoto não demonstram que esses dados já existam.
 
-Não obter credenciais de produção nem gravar senha/chaves em chat, Git ou anexos. Somente em ambiente homologatório autorizado, usar os clientes existentes `test:hosted:read`, `test:hosted:auth`, `test:hosted:write` seguindo os respectivos modos de plano e confirmações. Não alterar `HELPDESK_RELEASE_APPROVED` no site publicado para viabilizar o teste. Não entregar eventos reais a consumidores externos durante a homologação sintética.
+Usar a configuração privada de produção pelos mecanismos existentes, mantendo senhas/chaves fora do chat, Git e anexos. Executar os clientes existentes com as confirmações de destino e efeitos, diretamente em produção.
 
 ## 5. Saída obrigatória
 Entregar diff/commit local, relatório por gate, logs de sucesso e falha, backlog atualizado e bloqueio restante exato. Diferenciar implementado, testado localmente, PostgreSQL real, navegador, deployado, homologado e operacional. Quando a barreira for acesso a registry/Docker/browser, declarar isso sem criar outra camada de código.

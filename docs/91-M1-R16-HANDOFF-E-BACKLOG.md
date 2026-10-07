@@ -17,7 +17,7 @@ R16 corrige uma lacuna de aceitação: quatro GETs ao fim do bloco M2M detectam 
 | P0-INTEGRAR | Integrar R10–R16 no checkout real | HEAD/base/diff/alterações concorrentes conferidos | Pendente externo |
 | P0-CI | Toolchain padrão e CI no código integrado | npm ci/audit/typecheck; 1.375 aplicação, 209 PostgreSQL17, 71 HTTP/browser sem skips; mesma fonte | Pendente |
 | P0-REVIEW | Revisão independente dos incrementos | Nenhuma regressão de escopo/autorização, efeitos, privacidade ou falsos positivos de aceitação | Pendente |
-| P0-AMBIENTE | Homologação isolada autorizada | Auth/dados/outbox/canais isolados; identidades e fixtures explícitas | Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH | Executar R11 e R10 | Sessões reais, identidade/escopos, expiração/revogação e recuperação comprovadas | Clientes locais; destino pendente |
 | P0-WRITE | Executar R12/R15/R16 e correlacionar efeitos SQL | Gravações humanas/M2M, replays/concorrência/atomicidade e tentativas recusadas verificadas | Clientes locais; destino/SQL pendentes |
 | P0-OPS | Function/TLS, carga, backup/restore e governança | Residência/RPO/RTO e aceite documentados | Pendente |

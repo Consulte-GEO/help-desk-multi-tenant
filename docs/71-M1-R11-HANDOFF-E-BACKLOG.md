@@ -14,7 +14,7 @@ Cliente `test:hosted:auth`:12passos básicos humano/M2M com uso explícito de se
 | Prioridade | Trabalho | Critério de saída | Estado |
 |---|---|---|---|
 | P0-INTEGRAR |Integrar a variante correta no checkout real e repetir toolchain/CI |Instalação/audit/typecheck padrão e1.277+ aplicação,209PostgreSQL e71HTTP/browser no mesmo fingerprint |Pendente externo |
-| P0-AMBIENTE |Conferir destino imutável e Supabase efetivo de homologação |Commit/configuração e autorização atual, sem ativar produção para teste |Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH-BASICO |Executar R11 com usuário e conexão de teste existentes |12/12passed com transporte https, encerramentos confirmados, nenhuma criação incerta, revisão humana do relatório |Cliente implementado/testado localmente; destino não executado |
 | P0-READ |Executar R10 com quatro sessões/fixture aprovada |28/28leituras/negações via https com controles positivos |Cliente implementado; destino não executado |
 | P0-AUTH-COMPLETO |Expiração, acessos concorrentes revogados, limites de sessão, ciclo da chave longa |Evidência real e política aprovada sem relaxar MFA/revogação/TLS |Pendente, não coberto integralmente pelo R11 |
@@ -29,6 +29,6 @@ Cliente `test:hosted:auth`:12passos básicos humano/M2M com uso explícito de se
 - `tests/m1-hosted-auth-acceptance.test.ts`: respostas perdidas, credencial privilegiada retornada, metadados não autorizam, indisponibilidade não atesta revogação, socket não atesta host.
 
 ## Limites que não podem desaparecer
-O runtime atual deve estar disponível por governança explícita do ambiente de homologação. Não ligar o gate da produção para satisfazer o teste. A declaração environment=homologation e o permalink não provam isolamento do backend. Commit do relatório é declarado, não atestado. Leitura de claims JWT é filtro de recusa, não autenticação. Um sucesso desta fatia não valida toda autenticação humana, M2M, browser ou produção.
+O único ambiente do Help Desk é produção: site helpdesk-consultegeo e projeto Supabase HelpDesk xaelbntjnvztznnpcvtm. Desenvolvimento, implantação e validação hospedada usam esse destino. Não solicitar ambiente ou credenciais de teste ao usuário. O percurso HTTP e as permissões efetivas precisam ser comprovados; o plano não concede aprovação operacional.
 
 Não fechar M1 ou ligar platform_approved/operational com o resultado deste cliente. Nenhuma autorização histórica é autorização para operações atuais. Não colocar dados reais/senhas/chaves em tickets, chat, zip ou logs.

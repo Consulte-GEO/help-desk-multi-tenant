@@ -1,6 +1,8 @@
-> **HD-P03 — 06/10/2026:** homologação hospedada na mesma base/site HelpDesk, conforme decisão do usuário. CI Linux 1.447/215/79 aprovado; PR4 pronto para revisão. Aceite Auth/Function/base atual permanece pendente. Leia [116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md](116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md).
+> **Continuidade HD-P03 — produção:** clientes read/Auth/write adaptados a production, três exemplos de site separado removidos e140 testes focais aprovados. Nova fonte exige CI próprio antes de integração. [Política e evidência](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
 
-> **Decisão do usuário — 06/10/2026:** homologar no site helpdesk-consultegeo e na mesma base/Auth HelpDesk existentes. Não exigir nem criar ambiente separado. [Política HD-P03](116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md) substitui as exigências anteriores de destino isolado.
+> **HD-P03 — 06/10/2026:** homologação hospedada na mesma base/site HelpDesk, conforme decisão do usuário. CI Linux 1.447/215/79 aprovado; PR4 pronto para revisão. Aceite Auth/Function/base atual permanece pendente. Leia [116-HD-P03-VALIDACAO-EM-PRODUCAO.md](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
+
+> **Decisão do usuário — 06/10/2026:** O único ambiente do Help Desk é produção: site helpdesk-consultegeo e projeto Supabase HelpDesk xaelbntjnvztznnpcvtm. Desenvolvimento, implantação e validação hospedada usam esse destino. Não solicitar ambiente ou credenciais de teste ao usuário.
 
 > **HD-P02 — 06/10/2026:** recuperação da abertura corrigida;14 testes focais e79 verificações de interface aprovados. Windows1447/1424/23 (mesmas falhas anteriores); CI novo/aceite hosted pendentes. Leia [115-HD-P02-RECUPERACAO-DA-ABERTURA.md](115-HD-P02-RECUPERACAO-DA-ABERTURA.md). M1 operacional aberto.
 

@@ -38,7 +38,7 @@ npm run --silent test:hosted:write -- --config examples/hosted-write-m2m.fixture
 Esperado: `planned`, `transport:none`, sem leitura de tokens. Legado: 18 etapas. M2M: 43 etapas e 28 controles prévios. Os quatro últimos IDs são `machine-post-denials-notes`, `machine-post-denials-human-ticket`, `machine-post-denials-human-messages`, `machine-post-denials-human-timeline`; nenhum tem chave de mutação. Flags operacionais permanecem false.
 
 ## 4. Aceitação hospedada, somente sob autorização atual
-Não executar esta seção por inferência de um “continue”. Requer ambiente/fixtures/outbox/canais isolados, identidade humana e integração limitadas, cobertura explícita, origem imutável e confirmação literal do hash do plano. Usar quatro sessões nas variáveis de ambiente documentadas no R10; nunca colar tokens/senhas em prompt, CLI, logs ou artefatos.
+Não executar esta seção por inferência de um “continue”. Requer o ambiente de produção com registros e efeitos identificáveis, identidade humana e integração limitadas, cobertura explícita, origem imutável e confirmação literal do hash do plano. Usar quatro sessões nas variáveis de ambiente documentadas no R10; nunca colar tokens/senhas em prompt, CLI, logs ou artefatos.
 
 ```bash
 npm run --silent test:hosted:write -- --config /CAMINHO/PRIVADO/fixture.json --execute --allow-ticket-mutations --confirm-origin <ORIGEM_IMUTAVEL> --confirm-config-sha256 <HASH_DO_PLANO>

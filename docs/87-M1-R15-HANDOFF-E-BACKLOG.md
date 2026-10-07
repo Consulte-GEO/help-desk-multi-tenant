@@ -17,7 +17,7 @@ A recuperação local tem fingerprint equivalente, não história upstream compl
 | P0-INTEGRAR | Integrar pacote no checkout real | Base/hash/alterações concorrentes conferidos | Pendente externo |
 | P0-CI | Toolchain padrão e CI | npm ci/audit/typecheck,1364aplicação/209SQL/71HTTP+browser sem skips no mesmo código | Pendente |
 | P0-REVIEW | Revisão independente | R10–R15 e runtime revisados sem relaxar controles | Pendente |
-| P0-AMBIENTE | Homologação isolada | Autorização atual; Auth, dados, canais e outbox isolados | Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH | R11 + R10, ciclos completos | Sessões/permissões reais, expiração/revogações e recuperação | Pendente |
 | P0-WRITE | R12/R15 no destino e correlação SQL | Humanas+M2M:replay/concorrência/atomicidade comprovadas separadamente | Suíte pronta localmente; execução pendente |
 | P0-OPS | Function/TLS, capacidade, restore e segurança | Residência/RPO/RTO e aceite | Pendente |

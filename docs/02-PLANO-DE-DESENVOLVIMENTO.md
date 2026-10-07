@@ -98,7 +98,7 @@ npm run test:db
 
 **Prioridade:** P0 · **Risco:** crítico · **Dependência:** HD-101/102.
 
-Usar projeto/ambiente de homologação aprovado, sem dados reais. Qualquer criação de infraestrutura cobrada precisa de autorização de custo; não criar branches Supabase automaticamente. Conferir schemas expostos, donos de helpers, login restrito, conexão/pooler e TLS com certificado válido. Aplicar migrations somente dentro do fluxo autorizado. Reconsultar Advisors e comprovar o tratamento de `public.rls_auto_enable()` sem alterar arbitrariamente seu corpo.
+Usar diretamente o projeto e o ambiente de produção existentes. Qualquer criação de infraestrutura cobrada precisa de autorização de custo; não criar branches Supabase automaticamente. Conferir schemas expostos, donos de helpers, login restrito, conexão/pooler e TLS com certificado válido. Aplicar migrations somente dentro do fluxo autorizado. Reconsultar Advisors e comprovar o tratamento de `public.rls_auto_enable()` sem alterar arbitrariamente seu corpo.
 
 Executar a API real sob Netlify Functions, autenticar uma pessoa no Supabase, revogar seu vínculo, repetir testes de conta e verificar mudança de acesso. Exercitar token M2M, expiração, rotação e revogação. Medir conexões e latência sob concorrência. O gate `HELPDESK_RELEASE_APPROVED` não deve ser ligado apenas para contornar um 503.
 

@@ -1,0 +1,43 @@
+{
+  "scope": "production-client-adaptation-local",
+  "source_sha256": "7d732e463add04e7bf968cdbec861a9de922ff63a4c2945026f08f93b0758f98",
+  "checked_at": "2026-10-07T02:04:37.714Z",
+  "destination": {
+    "environment": "production",
+    "site": "helpdesk-consultegeo",
+    "supabase_project": "xaelbntjnvztznnpcvtm"
+  },
+  "focal": {
+    "tests": 140,
+    "passed": 140,
+    "failed": 0,
+    "skipped": 0
+  },
+  "red": {
+    "tests": 3,
+    "failed": 3,
+    "reason": "production configuration previously rejected"
+  },
+  "windows": {
+    "tests": 1450,
+    "passed": 1427,
+    "failed": 23,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "same_failure_set_as_hd_p02": true,
+    "log": "production-windows-tests.txt",
+    "sha256": "b392560e1e598267a9f50d77178cfe365b40a780a21fddf3238f0e884b16b272"
+  },
+  "typecheck": "passed",
+  "contracts": "passed",
+  "migrations": "passed",
+  "lock": "passed",
+  "secrets": "passed",
+  "build": "passed",
+  "independent_review": "no_actionable_findings",
+  "linux_ci": "pending",
+  "platform_approved": false,
+  "auth_tested": false,
+  "business_operations_dispatched": 0
+}

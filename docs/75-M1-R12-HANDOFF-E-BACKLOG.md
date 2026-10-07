@@ -18,7 +18,7 @@ Nunca aplicar ambos. Checkout só com R10 precisa primeiro reconciliar R11 ou ge
 | Prioridade | Entrega | Critério de saída | Estado |
 | --- | --- | --- | --- |
 | P0-INTEGRAR | Integrar R10–R12 e repetir toolchain/CI | Instalação, auditoria e typecheck padrão; no mínimo 1.320 testes de aplicação, 209 testes PostgreSQL 17 e 71 checks HTTP/browser no mesmo fingerprint | Pendente externo |
-| P0-AMBIENTE | Conferir destino imutável, banco e outbox/canais isolados | Autorização atual e fixture sintética, sem abrir produção | Pendente |
+| P0-PRODUCAO | Validar diretamente em produção | Site e base HelpDesk existentes; isolamento entre contas e workspaces preservado |
 | P0-AUTH/READ | Executar R11 (12) e R10 (28) em HTTPS | Sessões testadas/encerradas, controles positivos e negações | Clientes locais; host não executado |
 | P0-WRITE-BASICO | Executar R12 (28 prévios + 18) em HTTPS | Um recurso por intenção na API; replay histórico;409/412;isolamento;recibos/relatório revisados | Cliente implementado/testado localmente |
 | P0-WRITE-BANCO | Correlacionar efeitos e concorrência reais | Ticket/mensagem/evento/outbox atômicos em PG, perda de confirmação controlada sem duplicação | Não atestado pelo cliente HTTP |
