@@ -54,9 +54,9 @@ BEGIN
     OR receipt.resource_id IS DISTINCT FROM person OR receipt.request_id IS DISTINCT FROM request THEN
    RAISE EXCEPTION 'bootstrap_receipt_conflict' USING ERRCODE='40001';
   END IF;
-  IF member.role<>'admin' OR NOT EXISTS(SELECT 1 FROM helpdesk_auth.human_scope_versions
-    WHERE workspace_id=w AND principal_id=person AND revision=expected+1 AND request_id=request
-    AND reason='Bootstrap inicial: '||(c->>'reason')) THEN
+  IF member.role<>'admin' OR NOT EXISTS(SELECT 1 FROM helpdesk_auth.human_scope_versions proof
+    WHERE proof.workspace_id=w AND proof.principal_id=person AND proof.revision=expected+1 AND proof.request_id=request
+    AND proof.reason='Bootstrap inicial: '||(c->>'reason')) THEN
    RAISE EXCEPTION 'bootstrap_receipt_invalid_or_revoked' USING ERRCODE='42501';
   END IF;
   RETURN; -- Original receipt, no new role write or permission revision.
