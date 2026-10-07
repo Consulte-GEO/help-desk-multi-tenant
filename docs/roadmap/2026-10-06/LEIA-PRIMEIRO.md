@@ -6,6 +6,8 @@
 
 # Help Desk — levantamento e plano de continuidade
 
+> 07/10: [login antes da liberação](../../119-HD-P03-LOGIN-ANTES-DO-ATENDIMENTO.md), PR8 integrado/publicado, CI1510/223/81 aprovado. Login/configuração disponíveis com atendimento bloqueado; verificações HTTP reais aprovadas. Login humano real, M2M e primeiro serviço ainda pendentes. Não repetir bootstrap nem criar clientes/contratos/SLA fictícios.
+
 **Data:** 06/10/2026. **Repositório exclusivo do núcleo:** [Consulte-GEO/help-desk-multi-tenant](https://github.com/Consulte-GEO/help-desk-multi-tenant). Este pacote trata do Help Desk independente; o plano do Financeiro permanece separado.
 
 ## Conclusão
