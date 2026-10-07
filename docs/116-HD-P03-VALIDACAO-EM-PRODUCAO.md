@@ -35,3 +35,11 @@ Os metadados do site indicam banco/CA/chave publicável/HMAC cadastrados; URL Au
 A última consulta agregada observou um workspace e uma pessoa humana; zero contas, coberturas, conexões e tickets. Isso descreve a base observada, não exige outro ambiente ou conjunto de usuários de teste. Cadastros administrativos e validação do percurso real devem ocorrer em produção pelos canais privados existentes, preservando dados e autorizações.
 
 M1 permanece aberto enquanto Auth/Function/TLS/papel restrito, efeitos persistentes e recuperação operacional não forem comprovados. Continuar o desenvolvimento e registrar os limites sem repetir perguntas sobre infraestrutura ou credenciais de teste. Não promover CI ou metadados a aceite operacional.
+
+## CI da adaptação para produção
+
+[Run37560232763](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37560232763), tentativa1, HEAD `0cf925221e6ec7038972307e695a5fac8af1807e`, merge de teste `51fc7357fe130fbfacf0913f737ec50eda62620d`: **1.450 aplicação, 215 PostgreSQL e 79 interface**, todos aprovados, zero falhas/cancelamentos/skips/TODO. Lock, instalação, auditoria e validação da evidência aprovados. Revisão independente sem achados acionáveis; typecheck, contratos, migrations, secrets e build também conferidos.
+
+Artefato `11456298043`, ZIP SHA256 `a38fc4e72b455899477eddc4d193766791842e04447d7cb556c0be5e46dc2257`; fingerprint `7d732e463add04e7bf968cdbec861a9de922ff63a4c2945026f08f93b0758f98`. Download verificado; extração restrita à pasta própria; fonte/commit/run e seis hashes de logs conferidos. Conjunto exato arquivado em [ci-production](../evidence/hd-p03/ci-production/homologation/latest.json) e copiado ao gate canônico. `npm run check:homologation` aprovou a fonte atual; `platform_approved:false` permanece.
+
+Windows: 1.450 testes, 1.427 aprovados e as mesmas23 falhas de plataforma do HD-P02, comparadas pelo conjunto completo dos nomes; nenhum caso novo falhou. [Registro local](../evidence/hd-p03/production-local.json). Os140 testes focais passaram; três regressões foram demonstradas antes da correção e passaram depois.

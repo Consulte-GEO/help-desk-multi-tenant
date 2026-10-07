@@ -1,4 +1,4 @@
-> **Continuidade HD-P03 — produção:** clientes read/Auth/write adaptados a production, três exemplos de site separado removidos e140 testes focais aprovados. Nova fonte exige CI próprio antes de integração. [Política e evidência](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
+> **Continuidade HD-P03 — produção:** clientes read/Auth/write adaptados a production, três exemplos de site separado removidos e 140 testes focais aprovados. CI Linux run37560232763 aprovado: 1.450 aplicação, 215 PostgreSQL e 79 interface. Integração/publicação em andamento; aceite operacional pendente. [Política e evidência](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
 
 > **HD-P03 — 06/10/2026:** homologação hospedada na mesma base/site HelpDesk, conforme decisão do usuário. CI Linux 1.447/215/79 aprovado; PR4 pronto para revisão. Aceite Auth/Function/base atual permanece pendente. Leia [116-HD-P03-VALIDACAO-EM-PRODUCAO.md](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
 
