@@ -41,3 +41,15 @@ CI Linux [37554188619](https://github.com/Consulte-GEO/help-desk-multi-tenant/ac
 Artefato do run falho11453799151: SHA256 `e2689ac290bf371c28947699c3e63d6576d84640ebdc9233ddf4878ff360f972`, conferido no download. O resultado não foi alterado nem promovido a aprovado.
 
 A correção de sincronização passou nas79 verificações de interface locais, preservando os quatro artefatos históricos. Os14 testes focais passaram com transporte loopback habilitado; uma tentativa no sandbox registrou três `fetch failed` por restrição de rede e não foi contada como aprovação. Typecheck, contratos, migrations e lock foram conferidos. [Log próprio da interface](../evidence/hd-p03/interface-synchronized.txt).
+
+## CI Linux final aprovado
+
+[Run 37558111964](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37558111964), tentativa 1, HEAD do PR `7481b0a19ef8ccedac363312604733fe40eb9e5b`; commit de teste de merge `798484f1516f9e4bc14c683fd6a594a968f5df91`. Instalação/lock/audit e gates aprovados: **1.447 aplicação, 215 PostgreSQL e 79 interface**, sem falhas/cancelamentos/skips/TODO. Este run substitui o resultado falho para o novo código, preservando o registro anterior.
+
+Artefato `11455598986`, SHA256 `20985a1b48ebeb43adef257194e042f5a312fd323efc23618bc1fe9f050c9b73`. ZIP, fingerprint `3941d1685cc71858852df2458191ace9c984d2691e8f30588f722a3725da1bf3` e hashes dos seis logs conferidos pelo verificador existente. Evidência mantida em [ci-linux](../evidence/hd-p03/ci-linux/homologation/latest.json); `platform_approved: false`. PR4 pronto para revisão.
+
+## Runtime do site atual
+
+Metadados consultados somente para helpdesk-consultegeo: URL do Supabase coincide com xaelbntjnvztznnpcvtm; variáveis de banco, CA, chave publicável e HMAC cadastradas no contexto production. A API oculta os valores das variáveis secretas; uma tentativa de validar essa representação retornou invalid_configuration antes de qualquer conexão. Isso não é diagnóstico de configuração efetiva inválida: o preflight com os valores reais permanece **não executado**, `secret_value_not_available`, zero operações de negócio. Nenhum segredo foi escrito no relatório e nenhuma variável remota foi modificada.
+
+Pendência concreta para executar read/Auth/write: cadastrar as contas/coberturas/conexões e identidades de teste na base atual, disponibilizar credenciais em canal privado e executar o preflight com os valores reais no runtime. A API publicada permanece com gate fechado até a configuração de teste apropriada nesse mesmo site. Não solicitar outro ambiente como pré-requisito.

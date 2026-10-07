@@ -1,0 +1,79 @@
+{
+  "scope": "existing-site-runtime-read",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "site_name": "helpdesk-consultegeo",
+  "config_present": {
+    "HELPDESK_DATABASE_URL": true,
+    "HELPDESK_DATABASE_CA": true,
+    "SUPABASE_URL": true,
+    "SUPABASE_PUBLISHABLE_KEY": true,
+    "HELPDESK_RATE_LIMIT_HMAC_KEY": true,
+    "HELPDESK_RELEASE_APPROVED": false
+  },
+  "same_supabase_project": true,
+  "release_flag": "closed",
+  "secrets_recorded": false,
+  "remote_configuration_changed": false,
+  "value_types": {
+    "HELPDESK_DATABASE_URL": "string",
+    "HELPDESK_DATABASE_CA": "string",
+    "SUPABASE_URL": "string",
+    "SUPABASE_PUBLISHABLE_KEY": "string",
+    "HELPDESK_RATE_LIMIT_HMAC_KEY": "string",
+    "HELPDESK_RELEASE_APPROVED": "undefined"
+  },
+  "secret_metadata": {
+    "HELPDESK_DATABASE_URL": {
+      "is_secret": true,
+      "opaque_mask": false,
+      "contexts": [
+        "production"
+      ]
+    },
+    "HELPDESK_DATABASE_CA": {
+      "is_secret": false,
+      "opaque_mask": false,
+      "contexts": [
+        "production"
+      ]
+    },
+    "SUPABASE_URL": {
+      "is_secret": false,
+      "opaque_mask": false,
+      "contexts": [
+        "production"
+      ]
+    },
+    "SUPABASE_PUBLISHABLE_KEY": {
+      "is_secret": false,
+      "opaque_mask": false,
+      "contexts": [
+        "production"
+      ]
+    },
+    "HELPDESK_RATE_LIMIT_HMAC_KEY": {
+      "is_secret": true,
+      "opaque_mask": false,
+      "contexts": [
+        "production"
+      ]
+    },
+    "HELPDESK_RELEASE_APPROVED": {
+      "is_secret": false,
+      "opaque_mask": false,
+      "contexts": []
+    }
+  },
+  "database_url": {
+    "has_whitespace": false,
+    "has_query": false,
+    "has_fragment": false,
+    "restricted_username": false
+  },
+  "preflight": {
+    "success": false,
+    "status": "not_executed",
+    "code": "secret_value_not_available",
+    "business_operations_dispatched": 0
+  }
+}
