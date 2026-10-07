@@ -6,6 +6,8 @@
 
 # Help Desk — levantamento e plano de continuidade
 
+> 07/10: [troca segura de workspace](../../121-HD-P05-TROCA-SEGURA-DE-WORKSPACE.md), PR10 integrado/publicado; API0.20.1, CI1536/229/89. Nova autenticação obrigatória, cancelamento preserva rascunho e confirmação limpa contexto; corrigida retenção de motivo/textos antigos. Banco/escopos intactos, atendimento fechado e aceite operacional pendente.
+
 > 07/10: [descoberta/seleção no login](../../120-HD-P05-DESCOBERTA-DE-WORKSPACES.md), PR9 integrado/publicado, CI1536/229/85. UUID opcional, escolha explícita entre vínculos ativos, revalidação emme;012 aplicada preservando escopos/admin e dados existentes. API0.20/schema0.19. Login humano real/M2M e atendimento seguem pendentes; não repetir bootstrap.
 
 > 07/10: [login antes da liberação](../../119-HD-P03-LOGIN-ANTES-DO-ATENDIMENTO.md), PR8 integrado/publicado, CI1510/223/81 aprovado. Login/configuração disponíveis com atendimento bloqueado; verificações HTTP reais aprovadas. Login humano real, M2M e primeiro serviço ainda pendentes. Não repetir bootstrap nem criar clientes/contratos/SLA fictícios.

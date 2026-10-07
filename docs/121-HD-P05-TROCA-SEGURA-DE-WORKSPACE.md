@@ -20,4 +20,6 @@ CI Linux [37634260762](https://github.com/Consulte-GEO/help-desk-multi-tenant/ac
 
 Windows:23 falhas de plataforma já conhecidas e um timeout adicional de subprocesso na suíte geral. O grupo dos dez casos de caminho inseguro passou na reexecução isolada, sem alterar timeout/teste. A aprovação integral é a do CI Linux, não da suíte Windows.
 
-Merge e implantação serão registrados após execução. Esta entrega não comprova Auth/M2M reais, configuração do primeiro atendimento, capacidade ou restore e não encerra M1 ou a administração HD-P05.
+PR10 integrado em `8f3c79728551f8cf42081291c772251d39b72026`, checks finais37635075346/37635065213 aprovados. Deploy de produção `6ac654db58964400070415a7` pronto. [Verificação da entrega](../evidence/workspace-change/production-boundary.json): cinco arquivos iguais à fonte, configuração/capabilities200 com atendimento fechado, me/discovery401 sem identidade, seletor forjado400, sessão M2M recusada na descoberta e quatro rotas de atendimento503. Nenhuma operação de domínio despachada.
+
+Esta entrega não comprova Auth/M2M reais, configuração do primeiro atendimento, capacidade ou restore e não encerra M1 ou a administração HD-P05. Nenhuma mudança no banco: schema0.19.0 e12 migrations mantidos; produção reinspecionada com zero contas/tickets e um admin ativo. Os escopos selecionados anteriormente não foram alterados.
