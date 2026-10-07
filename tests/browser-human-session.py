@@ -20,13 +20,18 @@ INIT=r"""
  window.fetch=async (input,options={})=>{
   const url=String(input);
   if(!url.startsWith('https://syntheticproject.supabase.co/auth/v1/'))return originalFetch(input,options);
-  f.calls.push({url,body:options.body,authorization:new Headers(options.headers).get('authorization')});
+  f.calls.push({url,method:options.method,body:options.body,authorization:new Headers(options.headers).get('authorization')});
   const json=data=>new Response(JSON.stringify(data),{status:200,headers:{'content-type':'application/json'}});
+  if(url.endsWith('/user')&&options.method==='GET')return json({id:'22222222-2222-4222-8222-222222222222',factors:f.factors});
+  if(url.endsWith('/factors')&&options.method==='POST'){
+   const factor={id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'unverified'};f.factors.push(factor);
+   return json({id:factor.id,type:'totp',totp:{secret:'JBSWY3DPEHPK3PXP',qr_code:'<svg><script>private</script></svg>',uri:'otpauth://private'}});
+  }
   if(url.endsWith('/challenge'))return json({id:'99999999-9999-4999-8999-999999999999',type:'totp',expires_at:Math.floor(f.now/1000)+60});
   if(url.endsWith('/verify')){
    if(JSON.parse(options.body).code!=='123456')return new Response(JSON.stringify({code:422,error_code:'mfa_verification_failed'}),{status:422,headers:{'content-type':'application/json'}});
    if(f.holdMfa)return new Promise(resolve=>{f.completeMfa=()=>{resolve(json(issue('aal2')));f.completeMfa=null;};});
-   return json(issue('aal2'));
+   f.factors.forEach(x=>{if(x.factor_type==='totp')x.status='verified';});return json(issue('aal2'));
   }
   if(url.endsWith('/reauthenticate')&&options.method==='GET'){
    const response=()=>f.reauthStatus===200?json({}):new Response('{}',{status:f.reauthStatus,headers:{'content-type':'application/json'}});
@@ -93,6 +98,63 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#configure-mfa-login').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
+    expect(page.locator('#start-mfa-enrollment')).to_be_disabled()
+    assert 'otpauth://private' not in page.locator('body').text_content()
+    assert page.locator('#mfa-enrollment-dialog svg').count()==0
+    page.locator('#mfa-enrollment-code').fill('123456')
+    page.locator('#confirm-mfa-enrollment').click()
+    expect(page.locator('#login-status')).to_contain_text('Autenticador confirmado')
+    expect(page.locator('#mfa-enrollment-dialog')).to_be_hidden()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    expect(page.locator('#mfa-enrollment-code')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/factors')).length")==1
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.includes('/factors')&&x.method==='DELETE')")
+    assert page.evaluate('localStorage.length+sessionStorage.length')==0
+    assert posts==[] and not errors,errors
+    record('Explicit first TOTP setup renders only a manual key, confirms once and clears secret before new login')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'unverified'}]")
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#configure-mfa-login').click()
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-status')).to_contain_text('Já existe TOTP pendente')
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
+    page.locator('#mfa-enrollment-code').fill('123456')
+    page.locator('#confirm-mfa-enrollment').click()
+    expect(page.locator('#login-status')).to_contain_text('Autenticador confirmado')
+    assert not errors,errors
+    record('Owned pending TOTP resumes confirmation without creating another factor or redisplaying the old key')
+    context.close()
+    context,page,errors,posts=prepare(browser)
+    fill_login(page)
+    expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
+    page.locator('#message-body').fill('Rascunho antes da configuração.')
+    page.locator('#configure-mfa').click()
+    page.locator('#cancel-mfa-enrollment').click()
+    expect(page.locator('#message-body')).to_have_value('Rascunho antes da configuração.')
+    page.locator('#configure-mfa').click()
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
+    page.locator('#cancel-mfa-enrollment').click()
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#message-body')).to_have_value('')
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    expect(page.locator('#login-status')).to_contain_text('cadastro poderá permanecer pendente')
+    assert page.evaluate("__authFixture.factors.some(x=>x.status==='unverified')")
+    assert posts==[] and not errors,errors
+    record('Cancellation before setup preserves the draft; after setup it removes local secrets, reports pending factor and logs out without deletion')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     held_config=[]
     page.route('**/v1/public-config',lambda route:held_config.append(route))
