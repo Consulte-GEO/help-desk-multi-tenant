@@ -43,3 +43,11 @@ M1 permanece aberto enquanto Auth/Function/TLS/papel restrito, efeitos persisten
 Artefato `11456298043`, ZIP SHA256 `a38fc4e72b455899477eddc4d193766791842e04447d7cb556c0be5e46dc2257`; fingerprint `7d732e463add04e7bf968cdbec861a9de922ff63a4c2945026f08f93b0758f98`. Download verificado; extração restrita à pasta própria; fonte/commit/run e seis hashes de logs conferidos. Conjunto exato arquivado em [ci-production](../evidence/hd-p03/ci-production/homologation/latest.json) e copiado ao gate canônico. `npm run check:homologation` aprovou a fonte atual; `platform_approved:false` permanece.
 
 Windows: 1.450 testes, 1.427 aprovados e as mesmas23 falhas de plataforma do HD-P02, comparadas pelo conjunto completo dos nomes; nenhum caso novo falhou. [Registro local](../evidence/hd-p03/production-local.json). Os140 testes focais passaram; três regressões foram demonstradas antes da correção e passaram depois.
+
+## Integração e publicação verificadas
+
+PR4 integrado na branch padrão codex/m1-reproducibilidade em `0789dc367045c8770af154f8332c47e4e600542e`. O check final do PR, [run37560601821](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37560601821), confirmou novamente1.450/215/79 e todos os gates. Fonte executável idêntica ao conjunto de evidência aprovado. Checkout local atualizado por fast-forward, sem conflitos.
+
+Deploy de produção `6ac5aaaf1435c30008a538e2`, no site existente, ready/publicado, vinculado ao merge0789dc3. Quatro arquivos servidos conferidos por SHA256; CSP, DENY e nosniff presentes; uma Function api Node22 emus-east-2, rota /v1/*. [Verificação sanitizada](../evidence/hd-p03/production-deploy.json). Public-config retornou503 release_gate_closed, requestId ba990eed-37b4-4b9c-90e5-48fd1a5409b2. Código publicado não significa atendimento operacional liberado.
+
+Reinspeção da base de produção confirmou1workspace/1humano e0contas/coberturas/conexões/tickets. Consulta somente de contagens, sem alteração de dados, Auth, grants, migrations ou configuração de runtime. Prosseguir com os cadastros e fluxos de produção previstos no plano; não voltar a pedir outro ambiente ou credenciais de teste.
