@@ -39,3 +39,9 @@ Resultado hospedado será acrescentado após execução real. A existência dest
 Artefato `11456584212`, ZIP SHA256 `d8f0e7e8fd184848ae281867ef52d25c7fc41e36b6cb1ea636effc6e0548bb29`; fingerprint executável `af3fabc578091b4b88ad659a3820ca8c7c15ed8806326cbe8e88517484a39af3`. Origem/run/attempt, fingerprint e seis hashes de logs verificados. Conjunto exato preservado em `evidence/hd-p03/runtime-ci` e no gate canônico; `platform_approved:false` permanece. O primeiro Deploy Preview falhou pelo conjunto antigo incompatível com a fonte nova, comportamento correto do gate; não reduzir critérios para publicar.
 
 Essa versão usava schedule mensal e Run now. O controle de navegador do painel não ficou acessível; antes de integrar, substituiu-se a agenda por evento de publicação, reutilizando o mesmo probe. Assim o aceite não depende de acesso manual ao painel e não cria rotina periódica nova. A evidência intermediária é histórica; não aprova o fingerprint final.
+
+## CI final do handler por evento
+
+[Run37562949239](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37562949239), tentativa1, merge de teste `9ea3d791a60dcdf8b96c6370f58b282f7399190a`, HEAD `b66a55caf9c371fa46ccc4375ce26683c12b9b30`: **1.458/1.458 aplicação, 215/215 PostgreSQL e 79/79 interface**, zero falhas/skips. Todos os gates e CodeQL aprovados.
+
+Artefato `11458235002`, ZIP SHA256 `529e738df365299c05232335097f47bf7b0d5088955c11bfa1da1874f14a2f70`; fingerprint `2a9aa86e17c92ec3f196a794f0c8ed21c388b6cc58b1ccc285ff75c35f37c249`. Origem, fingerprint e hashes verificados; conjunto integral em `evidence/hd-p03/event-runtime-ci`, inclusive logs preservados byte a byte, e gate canônico atualizado pelo mesmo conjunto. `check:homologation` aprovado. A revisão do handler tipado também não encontrou achados acionáveis. Publicação e resultado privado continuam sendo verificações separadas.

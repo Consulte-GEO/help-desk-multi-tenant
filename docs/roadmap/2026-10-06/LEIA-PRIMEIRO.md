@@ -1,4 +1,4 @@
-> Continuidade executada em06/10: [HD-P01](../../114-HD-P01-ESTADO-POS-R24.md) e [HD-P02](../../115-HD-P02-RECUPERACAO-DA-ABERTURA.md), com matriz atualizada e evidência separada. O levantamento abaixo permanece fotografia inicial.
+> Continuidade executada em06/10: [HD-P01](../../114-HD-P01-ESTADO-POS-R24.md), [HD-P02](../../115-HD-P02-RECUPERACAO-DA-ABERTURA.md) e continuidade HD-P03 com [destino de produção](../../116-HD-P03-VALIDACAO-EM-PRODUCAO.md) e [diagnóstico privado de runtime](../../117-HD-P03-DIAGNOSTICO-NO-RUNTIME.md). P01/02 integrados; aceite operacional M1 ainda pendente. O levantamento abaixo permanece fotografia inicial.
 
 # Help Desk — levantamento e plano de continuidade
 
