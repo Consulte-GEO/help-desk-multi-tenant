@@ -1,0 +1,49 @@
+{
+  "scope": "same-site-deployment-delivery",
+  "checked_at": "2026-10-07T11:37:50.352Z",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac62d277b1d25000811d9a7",
+  "commit": "95c1bfdd3c600d8de9cc83f1f79d13c9510e1049",
+  "origin": "https://6ac62d277b1d25000811d9a7--helpdesk-consultegeo.netlify.app",
+  "context": "production",
+  "state": "ready",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "1bd94efb2574951f89c9f854d6e11b03e10466553fe8c27ed27969cb1427cc89",
+      "same_source": true
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "sha256": "be990ae3a622661e5b753e0fc264f552accef16ae084f0ba00e46337e9f03a3d",
+      "same_source": true
+    },
+    {
+      "path": "ticket-create-state.js",
+      "status": 200,
+      "sha256": "83c749c70bfbb8113e632317843a06269c2fc9afbfd330dfe271392c47bfb4a2",
+      "same_source": true
+    },
+    {
+      "path": "shared/instant.js",
+      "status": 200,
+      "sha256": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+      "same_source": true
+    }
+  ],
+  "public_config": {
+    "status": 503,
+    "code": "release_gate_closed",
+    "request_id": "2cf25cec-5378-4705-a694-e1fbc98208be"
+  },
+  "business_operations_dispatched": 0,
+  "auth_tested": false,
+  "platform_approved": false,
+  "security_headers": {
+    "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+    "frame": "DENY",
+    "nosniff": "nosniff"
+  }
+}

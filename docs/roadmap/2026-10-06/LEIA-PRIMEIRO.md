@@ -2,6 +2,8 @@
 
 > 07/10: PR5/6 integradas/publicadas; CI1458/215/79 aprovado. Dez checks readonly passaram no servidor real, incluindo conexão/TLS/papel restrito e segurança do banco. Auth/M2M e percurso de atendimento continuam pendentes; seguir doc117, sem repetir instalação/diagnóstico já comprovados.
 
+> 07/10: [bootstrap privado inicial](../../118-HD-P03-PRIMEIRO-ADMINISTRADOR.md) aplicado ao usuário escolhido; role admin e dois escopos de leitura preservados, replay sem efeito adicional. PR7 integrado/publicado; CI1482/223/79 aprovado. Não repetir a promoção inicial nem declarar backoffice/M1 completos. Continuar pelos cadastros reais e Auth/M2M.
+
 # Help Desk — levantamento e plano de continuidade
 
 **Data:** 06/10/2026. **Repositório exclusivo do núcleo:** [Consulte-GEO/help-desk-multi-tenant](https://github.com/Consulte-GEO/help-desk-multi-tenant). Este pacote trata do Help Desk independente; o plano do Financeiro permanece separado.
