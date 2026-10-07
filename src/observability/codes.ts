@@ -40,6 +40,7 @@ export const ERROR_CODES=new Set([
  'invalid_status',
  'invalid_transition',
  'membership_required',
+ 'mfa_required',
  'method_not_allowed',
  'no_coverage',
  'not_found',

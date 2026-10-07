@@ -30,6 +30,12 @@ async function api(path,options={}){
   if(epoch!==s.epoch)throw Error('stale_session');
   let b;try{b=r.status===204?null:await r.json();}catch{throw Error('Resposta inesperada do servidor.');}
   if(epoch!==s.epoch)throw Error('stale_session');
+  if(!s.demo&&r.status===403&&b?.code==='mfa_required'&&humanSession){
+   if(!humanFetch.currentResponse(r))throw Error('stale_session');
+   const result=await leaveHumanSession();
+   if(result!==undefined)$('login-status').textContent='Confirme a autenticação multifator ao entrar novamente.'+(result==='unconfirmed'?' Saída no provedor NÃO confirmada.':'');
+   throw Error('stale_session');
+  }
   if(!r.ok){const retry=r.status===429?r.headers.get('retry-after'):null;const error=Error((b?.detail??'Operação não concluída.')+(retry?' Aguarde '+retry+' segundos antes de reenviar.':''));error.status=r.status;error.code=b?.code;throw error;}
   return b;
  }catch(error){if(epoch!==s.epoch)throw Error('stale_session');throw error;}
@@ -463,9 +469,17 @@ $('choose-workspace').onclick=()=>run(()=>humanSession?.selectWorkspace($('works
 function humanChanged(value){
  const previous=lastHumanPhase;lastHumanPhase=value.phase;
  const authenticationOnly=s.config?.operational===false,choosing=value.phase==='selecting_workspace';
+ const verifying=value.phase==='verifying_mfa',selectedFactor=$('mfa-factor').value;
+ $('mfa-panel').hidden=!verifying;$('verify-mfa').disabled=value.mfaBusy;$('mfa-code').disabled=value.mfaBusy;
+ if(verifying){
+  $('mfa-factor').replaceChildren(option('','Selecione seu autenticador'),...value.mfaFactors.map((f,i)=>option(f.id,'Autenticador '+(i+1)+' · '+f.id.slice(0,8))));
+  $('mfa-factor').value=value.mfaFactors.length===1?value.mfaFactors[0].id:value.mfaFactors.some(f=>f.id===selectedFactor)?selectedFactor:'';
+  $('mfa-factor').disabled=value.mfaBusy;
+  if(previous!=='verifying_mfa'){$('login-status').textContent='Senha validada. Confirme seu autenticador para concluir a entrada.';$('mfa-code').focus();}
+ }else{$('mfa-code').value='';$('mfa-factor').replaceChildren();$('mfa-status').textContent='';}
  $('workspace-choice-label').hidden=!choosing;$('choose-workspace').hidden=!choosing;
  if(choosing){$('workspace-choice').replaceChildren(option('','Selecione um workspace'),...value.workspaceOptions.map(w=>option(w.id,w.name)));$('login-status').textContent='Identidade validada. Escolha o workspace para confirmar seu acesso.';}
- $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace'].includes(value.phase)&&!(authenticationOnly&&!['signed_out','signing_out'].includes(value.phase));$('cancel-login').textContent=['signing_in','selecting_workspace'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
+ $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)&&!(authenticationOnly&&!['signed_out','signing_out'].includes(value.phase));$('cancel-login').textContent=['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
  $('session-banner').hidden=!['paused','refreshing'].includes(value.phase);
  $('retry-session').hidden=value.phase!=='paused';$('retry-session').disabled=value.phase==='refreshing';
  $('session-status').textContent=value.phase==='paused'
@@ -477,6 +491,15 @@ function humanChanged(value){
   $('login-status').textContent='Sessão local encerrada. Entre novamente para continuar.';
  }
 }
+async function submitMfa(){
+ if(!humanSession||humanSession.state().phase!=='verifying_mfa'||humanSession.state().mfaBusy)return;
+ const generation=humanSession.state().generation,factor=$('mfa-factor').value,code=$('mfa-code').value.trim();$('mfa-code').value='';$('mfa-status').textContent='Confirmando o código uma única vez…';
+ try{await humanSession.verifyMfa(factor,code);}catch(error){
+  if(humanSession.state().generation===generation&&humanSession.state().phase==='verifying_mfa')$('mfa-status').textContent=error.message;
+ }
+}
+$('verify-mfa').onclick=()=>run(submitMfa);
+$('mfa-code').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run(submitMfa);}});
 $('retry-session').onclick=()=>run(async()=>{
  if(!humanSession)return;const epoch=s.epoch;
  await humanSession.resume();
@@ -503,4 +526,4 @@ $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   else notice(error.message,true);
  }
 });};
-async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged});humanFetch=createSessionFetch(humanSession);}}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
+async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged});humanFetch=createSessionFetch(humanSession);$('submit-login').disabled=false;}}catch{notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);

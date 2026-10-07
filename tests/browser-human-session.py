@@ -14,14 +14,20 @@ def record(name): checks.append({'check':name,'result':'passed'})
 INIT=r"""
 (() => {
  const originalFetch=window.fetch.bind(window);
- const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null,passwordStatus:200,holdPassword:false,completePassword:null,reauthStatus:200,holdReauth:false,completeReauth:null};
+ const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null,passwordStatus:200,holdPassword:false,completePassword:null,reauthStatus:200,holdReauth:false,completeReauth:null,factors:[],holdMfa:false,completeMfa:null};
  Date.now=()=>f.now;
- const issue=()=>({access_token:'aaa.bbb.'+(++f.sequence),refresh_token:'refresh_'+f.sequence,expires_in:120,token_type:'bearer',user:{id:'22222222-2222-4222-8222-222222222222',user_metadata:{role:'admin'}}});
+ const issue=(aal='aal1')=>({access_token:'e30.'+btoa(JSON.stringify({sub:'22222222-2222-4222-8222-222222222222',aal,exp:Math.floor(f.now/1000)+120})).replaceAll('=','').replaceAll('+','-').replaceAll('/','_')+'.synthetic_'+(++f.sequence),refresh_token:'refresh_'+f.sequence,expires_in:120,token_type:'bearer',user:{id:'22222222-2222-4222-8222-222222222222',factors:f.factors,user_metadata:{role:'admin'}}});
  window.fetch=async (input,options={})=>{
   const url=String(input);
   if(!url.startsWith('https://syntheticproject.supabase.co/auth/v1/'))return originalFetch(input,options);
   f.calls.push({url,body:options.body,authorization:new Headers(options.headers).get('authorization')});
   const json=data=>new Response(JSON.stringify(data),{status:200,headers:{'content-type':'application/json'}});
+  if(url.endsWith('/challenge'))return json({id:'99999999-9999-4999-8999-999999999999',type:'totp',expires_at:Math.floor(f.now/1000)+60});
+  if(url.endsWith('/verify')){
+   if(JSON.parse(options.body).code!=='123456')return new Response(JSON.stringify({code:422,error_code:'mfa_verification_failed'}),{status:422,headers:{'content-type':'application/json'}});
+   if(f.holdMfa)return new Promise(resolve=>{f.completeMfa=()=>{resolve(json(issue('aal2')));f.completeMfa=null;};});
+   return json(issue('aal2'));
+  }
   if(url.endsWith('/reauthenticate')&&options.method==='GET'){
    const response=()=>f.reauthStatus===200?json({}):new Response('{}',{status:f.reauthStatus,headers:{'content-type':'application/json'}});
    if(f.holdReauth)return new Promise(resolve=>{f.completeReauth=()=>{resolve(response());f.completeReauth=null;};});
@@ -87,6 +93,71 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    held_config=[]
+    page.route('**/v1/public-config',lambda route:held_config.append(route))
+    page.reload(wait_until='domcontentloaded')
+    page.wait_for_function("typeof document.getElementById('login-form').onsubmit === 'function'")
+    page.wait_for_function("document.getElementById('submit-login') !== null")
+    expect(page.locator('#submit-login')).to_be_disabled()
+    assert held_config
+    held_config[0].fulfill(status=200,content_type='application/json',body=json.dumps({'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest','operational':False}))
+    expect(page.locator('#submit-login')).to_be_enabled()
+    assert not errors,errors
+    record('Human entry waits for configured Auth transport instead of submitting the native form during startup')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'verified'}]")
+    fill_login(page,workspace='')
+    expect(page.locator('#mfa-panel')).to_be_visible()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    expect(page.locator('#app')).to_be_hidden()
+    page.locator('#mfa-code').fill('000000')
+    page.locator('#verify-mfa').click()
+    expect(page.locator('#mfa-status')).to_contain_text('não foi confirmado')
+    expect(page.locator('#mfa-code')).to_have_value('')
+    expect(page.locator('#mfa-panel')).to_be_visible()
+    page.locator('#mfa-code').fill('123456')
+    page.locator('#mfa-code').press('Enter')
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    expect(page.locator('#mfa-panel')).to_be_hidden()
+    expect(page.locator('#mfa-code')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/verify')).length")==2
+    assert page.evaluate('localStorage.length+sessionStorage.length')==0
+    assert posts==[] and not errors,errors
+    record('Verified TOTP is required before workspace discovery; wrong code stays blocked and explicit retry completes login')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'verified'}];__authFixture.holdMfa=true")
+    fill_login(page)
+    expect(page.locator('#mfa-panel')).to_be_visible()
+    page.locator('#mfa-code').fill('123456')
+    page.locator('#verify-mfa').click()
+    page.wait_for_function('typeof __authFixture.completeMfa === "function"')
+    expect(page.locator('#verify-mfa')).to_be_disabled()
+    page.locator('#cancel-login').click()
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    page.evaluate('__authFixture.completeMfa()')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#login-status')).to_contain_text('Sessão atual encerrada no provedor')
+    expect(page.locator('#mfa-code')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.at(-1).url").endswith('/logout?scope=local')
+    assert posts==[] and not errors,errors
+    record('Cancellation during TOTP verification waits for the newest credential and never installs it')
+    context.close()
+    context,page,errors,posts=prepare(browser)
+    fill_login(page)
+    expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
+    page.locator('#message-body').fill('Rascunho removido ao exigir nova MFA.')
+    page.route('**/v1/tickets*',lambda route:route.fulfill(status=403,content_type='application/problem+json',body=json.dumps({'code':'mfa_required','detail':'Confirme a autenticação multifator.'})))
+    page.locator('#refresh').click()
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#message-body')).to_have_value('')
+    expect(page.locator('#login-status')).to_contain_text('multifator')
+    assert posts==[] and not errors,errors
+    record('Server MFA requirement after login clears the prior workspace and requires a new authenticated entry')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     fill_login(page)
     expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')

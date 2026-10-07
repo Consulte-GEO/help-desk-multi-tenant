@@ -1,5 +1,7 @@
 import {readIdentityResponse} from './auth-response.ts';
 import {workspaceOptions} from './workspace-discovery.ts';
+import {verifiedMfaFactors,type MfaFactor} from '../../shared/mfa.js';
+import {requireHumanMfa} from './auth-assurance.ts';
 import {SHORT_SESSION_PATTERN, sessionResult, invalidSessionResult} from './session-lifecycle.ts';
 import {validatePrincipal} from './principal-validation.ts';
 import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';import type {Principal} from '../domain/model.ts';import {HelpdeskError} from '../domain/errors.ts';import {secretHash} from '../domain/canonical.ts';import {uuidIdentifier as identifier} from '../domain/input-values.ts';
@@ -25,9 +27,10 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
     if(result.status>=500||result.status===429)throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');
     throw new HelpdeskError(401,'unauthorized','Sessão inválida ou expirada.');
    }
-   let userId:string;
-   try{const user:unknown=await readIdentityResponse(result,signal);if(!user||typeof user!=='object'||Array.isArray(user))throw Error();userId=identifier((user as {id:unknown}).id);}
+   let userId:string,factors:readonly MfaFactor[];
+   try{const user:unknown=await readIdentityResponse(result,signal);if(!user||typeof user!=='object'||Array.isArray(user))throw Error();userId=identifier((user as {id:unknown}).id);factors=verifiedMfaFactors((user as {factors?:unknown}).factors);}
    catch{throw new HelpdeskError(503,'auth_unavailable','Resposta inválida do serviço de identidade. Acesso não concedido.');}
+   requireHumanMfa(token,userId,factors,clock());
    return userId;
  }
  async function discoverWorkspaces(request:Request){

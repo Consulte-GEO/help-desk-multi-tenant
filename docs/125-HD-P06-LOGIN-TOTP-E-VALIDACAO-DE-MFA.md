@@ -1,0 +1,33 @@
+# HD-P06 — login com autenticador TOTP e validação no backend
+
+Esta fatia permite concluir a entrada usando um **autenticador TOTP já cadastrado e verificado** no Supabase. Depois da senha, a sessão aguarda a escolha do autenticador e o código de seis dígitos; nenhum bearer é instalado para chamadas do Help Desk nem há descoberta de workspace antes da confirmação. O código é removido do campo ao enviar, ao cancelar e ao concluir. Enter e botão acionam o mesmo envio explícito, sem repetição automática.
+
+O transporte chama os endpoints próprios de challenge/verify, com bearer da identidade que iniciou a entrada, fator escolhido entre as opções confirmadas, destino fixo, redirect proibido e sem cookies/storage. Cada request conserva o prazo de cinco segundos e64KiB. Challenge precisa de ID UUID, tipo totp e validade futura. Verify só instala sessão completa da mesma pessoa, compatível com AAL2/sub/exp. A leitura de claims no browser é higiene de protocolo, não validação criptográfica ou autorização.
+
+Código incorreto e challenge expirado permitem somente tentativa explícita; rate limit mantém a recusa. Política rejeitada, TOTP desabilitado, erro desconhecido, resposta incompatível ou falha incerta encerram a entrada. Não apresentar esses casos como mero código errado nem repetir a verificação. Cancelar durante verify aguarda a credencial mais recente recebida, sem reinstalar a identidade, e encerra a sessão local no provedor antes de permitir nova entrada. Se uma resposta200 da mesma pessoa contém bearer válido para cleanup mas não constitui sessão instalável, esse bearer é preservado em WeakMap privado para logout; não fica em propriedades enumeráveis do erro/estado.
+
+## Fronteira no servidor
+
+O backend primeiro valida **o bearer exato** em Auth `/user`, sob a configuração existente, e lê o catálogo atual de fatores. Só depois examina aal/sub/exp desse mesmo token para humanos com fator verificado; AAL1/claims insuficientes retornam403 `mfa_required` antes da consulta de membership ou workspaces. Catálogo inválido/excessivo/duplicado não desativa MFA: retorna503 sem consulta parcial. Ausência de fatores no formato oficial e fatores não verificados mantêm a entrada existente.
+
+`shared/mfa.js` não verifica assinatura. Seu resultado só é usado como requisito de autorização no backend depois da validação por Auth. Claims da própria pessoa, metadata e UUID enviados pelo cliente nunca substituem essa validação ou os vínculos/escopos vivos. AAL2 sem vínculo continua negado; AAL2 com perfil só leitura continua só leitura. M2M conserva sua autenticação própria e não vira pessoa.
+
+Se o servidor passa a exigir MFA durante uma sessão ativa, a interface encerra o contexto e pede nova entrada. A resposta precisa pertencer à credencial atual: uma403 antiga não apaga uma sessão já renovada. A identificação da resposta usa WeakMap privado, sem devolver tokens ao DOM. Renovação com fatores confirmados e token AAL1 não é instalada silenciosamente.
+
+## Política e limites
+
+Seguem-se o [fluxo TOTP do Supabase](https://supabase.com/docs/guides/auth/auth-mfa/totp) e seus endpoints de challenge/verify. Não há cadastro/remoção de fator, QR/secret, códigos de recuperação, SMS, passkey ou recuperação sem sessão nesta fatia. Conta com fatores verificados mas nenhum TOTP compatível falha fechada na interface; não há fallback para acesso AAL1. Outros clientes que já tenham AAL2 validado pelo provedor continuam sujeitos ao mesmo backend e aos vínculos vivos.
+
+Decisões: desafiar fatores TOTP existentes antes do workspace, deixando enrollment/recovery/outros métodos pendentes; aplicar a exigência a humanos com fatores verificados, sem declarar matrícula MFA obrigatória para administradores sem fatores. Custos: a jornada de login não atende fatores exclusivos de outros tipos; a política administrativa completa segue aberta. A identidade escolhida pelo usuário como primeiro administrador foi reinspecionada em leitura: nenhum fator cadastrado; nenhum fator, senha, configuração, grant ou scope foi alterado por esta entrega.
+
+Saída confirmada não promete invalidar instantaneamente JWT copiado nem revogar todos os dispositivos. Resposta de verify perdida continua incerta; cleanup e aviso não são evidência de aceitação do provedor. Não foi usada conta real para completar challenge/verify durante o desenvolvimento. Atendimento permanece bloqueado e M1 operacional aberto.
+
+API/interface0.21.0, schema0.19.0,12 migrations,25 tabelas e19 operações. `shared/mfa.js` acompanha build estático, demonstração e fingerprint; o módulo do servidor usa a mesma validação de catálogo sem expor tabelas Auth.
+
+## Verificação
+
+RED: MFA habilitado/AAL1 e catálogo inválido eram aceitos antes do gate; login não aguardava código; browser não tinha painel. Regressão adicional de resposta antiga falhou antes da associação privada da credencial. GREEN:73 focais,29 cenários de sessão humana no navegador.
+
+Revisão independente encontrou duas falhas importantes: recusas de política/erros desconhecidos tratados como código errado; resposta incompleta descartando bearer recente antes do cleanup. Ambas foram reproduzidas RED e corrigidas com testes usando transporte+sessão. Nenhum achado menor. Entrada nativa durante startup também foi reproduzida RED: botão agora espera a configuração Auth válida, em vez de permitir envio antes da composição.
+
+Windows1600/1577/23 conserva as falhas conhecidas de plataforma. Typecheck, contratos, manifesto, lock, scan e build passaram. Interface completa103/103 aprovada (35HTTP,39 browser de memória,29 sessão humana). CI Linux [37670579245](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37670579245) aprovado:1600/1600 aplicação,229/229 PostgreSQL e103/103 interface, zero falhas/skips. Lock, instalação limpa, audit, typecheck, contratos, migrations, scan e build aprovados. Artefato11504667529, SHA256 `290d37cc1c56347961db7de7e3f888fe3ac847311c8a97159ecd9867d5f728a6`; fonte CI `4418dc08d2cc82051f8329526331839631d952a6`, fingerprint `8c363d65ceebc068532ca3d68c0c62792667f70f0e216214b8d6e733dbb509c1`. Arquivo e seis logs verificados antes de copiar para `evidence/totp-login/ci-green` e evidência canônica. Publicação pendente. Auth, factors, JWTs e respostas dos testes são sintéticos; não comprovam assinatura/OTP real, matrícula MFA, SMTP, recovery ou jornada operacional.

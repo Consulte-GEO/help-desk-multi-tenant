@@ -1,2 +1,3 @@
 import type {HumanSession} from './human-session.js';
-export function createSessionFetch(session:HumanSession,fetcher?:typeof fetch):(path:string,options?:RequestInit)=>Promise<Response>;
+export type SessionFetch=((path:string,options?:RequestInit)=>Promise<Response>)&{currentResponse(response:Response):boolean};
+export function createSessionFetch(session:HumanSession,fetcher?:typeof fetch):SessionFetch;
