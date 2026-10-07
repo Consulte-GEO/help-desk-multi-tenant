@@ -1,0 +1,93 @@
+{
+  "scope": "synthetic-provider-DOM",
+  "checks": [
+    {
+      "check": "Password confirmation mismatch and cancellation dispatch no change and clear password inputs",
+      "result": "passed"
+    },
+    {
+      "check": "Confirmed password change sends once with fields cleared and requires new login without business replay",
+      "result": "passed"
+    },
+    {
+      "check": "Password response loss stays unconfirmed without retry and reports unconfirmed logout",
+      "result": "passed"
+    },
+    {
+      "check": "Password change respects MFA refusal",
+      "result": "passed"
+    },
+    {
+      "check": "Cancelling global logout preserves the current draft and contacts no provider",
+      "result": "passed"
+    },
+    {
+      "check": "Confirmed global logout clears the DOM immediately and blocks new login while revocation is pending",
+      "result": "passed"
+    },
+    {
+      "check": "Failed global logout before service release clears local identity and reports unconfirmed revocation",
+      "result": "passed"
+    },
+    {
+      "check": "Cancelling workspace change preserves the current session and draft",
+      "result": "passed"
+    },
+    {
+      "check": "Confirmed workspace change removes old context and requires new authentication and workspace discovery",
+      "result": "passed"
+    },
+    {
+      "check": "Workspace change before service release preserves honest reporting of unconfirmed provider logout",
+      "result": "passed"
+    },
+    {
+      "check": "Workspace change refuses an in-flight mutation without clearing its draft or replaying the request",
+      "result": "passed"
+    },
+    {
+      "check": "Human page logs in through validated session with password cleared and no persistent token storage",
+      "result": "passed"
+    },
+    {
+      "check": "List refresh renews the human access token without erasing the active draft",
+      "result": "passed"
+    },
+    {
+      "check": "Paused refresh preserves the draft, dispatches no mutation, and requires explicit resubmission after resume",
+      "result": "passed"
+    },
+    {
+      "check": "Unconfirmed provider logout removes local ticket/draft immediately and reports the limitation",
+      "result": "passed"
+    },
+    {
+      "check": "Cancelled login never shows the application and closes the late-returned synthetic provider session",
+      "result": "passed"
+    },
+    {
+      "check": "Authentication-only login validates own profile without requesting business data or displaying an empty ticket list",
+      "result": "passed"
+    },
+    {
+      "check": "Authentication-only signed-in page allows explicit provider logout and a new login",
+      "result": "passed"
+    },
+    {
+      "check": "Login discovers a single authorized workspace without entering its UUID and then validates selected /me",
+      "result": "passed"
+    },
+    {
+      "check": "Multiple authorized workspaces require explicit selection before any /me or business request",
+      "result": "passed"
+    },
+    {
+      "check": "Cancel during workspace choice closes the provider session without confirming a workspace",
+      "result": "passed"
+    },
+    {
+      "check": "A workspace revoked after discovery fails /me and closes the inaccessible human session",
+      "result": "passed"
+    }
+  ]
+}

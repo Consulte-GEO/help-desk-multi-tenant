@@ -1,5 +1,5 @@
 import {loadTicketDetail,hasWriteActions,composerMode} from './ticket-actions.js';
-import {createHumanAuthTransport} from './human-auth.js';
+import {createHumanAuthTransport,validatePasswordChange} from './human-auth.js';
 import {createHumanSession} from './human-session.js';
 import {createSessionFetch} from './session-fetch.js';
 let humanSession=null,humanFetch=null,loginAttempt=0,lastHumanPhase='signed_out';
@@ -38,7 +38,7 @@ const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempot
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 async function login(){s.me=await api('/me');renderWorkspaceChange();if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -374,7 +374,43 @@ function renderWorkspaceChange(){
  const available=!s.demo&&!!s.me&&!!humanSession&&['active','paused','refreshing'].includes(humanSession.state().phase);
  $('switch-workspace').hidden=!available;$('switch-workspace-login').hidden=!available||s.config?.operational!==false;
  $('logout-all').hidden=!available;$('logout-all-login').hidden=!available||s.config?.operational!==false;
+ $('change-password').hidden=!available;$('change-password-login').hidden=!available||s.config?.operational!==false;
 }
+let passwordChoice=null;
+function resetPasswordDialog(){
+ $('password-change-form').reset();$('password-change-status').textContent='';
+ $('submit-password-change').disabled=false;$('cancel-password-change').disabled=false;
+}
+function requestPasswordChange(){
+ if(s.demo||!s.me||!humanSession||!['active','paused','refreshing'].includes(humanSession.state().phase))return;
+ if(workspaceChangeBlocked())throw Error('Conclua ou reconcilie o envio atual antes de alterar a senha.');
+ resetPasswordDialog();passwordChoice={epoch:s.epoch,generation:humanSession.state().generation,busy:false};$('password-change-dialog').showModal();
+}
+$('change-password').onclick=()=>run(requestPasswordChange);$('change-password-login').onclick=()=>run(requestPasswordChange);
+$('cancel-password-change').onclick=()=>{if(!passwordChoice?.busy)$('password-change-dialog').close();};
+$('password-change-dialog').addEventListener('cancel',e=>{if(passwordChoice?.busy)e.preventDefault();});
+$('password-change-dialog').addEventListener('close',()=>{if(!$('password-change-dialog').open){passwordChoice=null;resetPasswordDialog();}});
+$('password-change-form').onsubmit=e=>{e.preventDefault();run(async()=>{
+ const choice=passwordChoice;if(!choice||choice.busy)return;
+ if(choice.epoch!==s.epoch||choice.generation!==humanSession?.state().generation){$('password-change-dialog').close();return;}
+ if(workspaceChangeBlocked())throw Error('Conclua ou reconcilie o envio atual antes de alterar a senha.');
+ const current=$('current-password').value,password=$('new-password').value;
+ try{if(password!==$('confirm-password').value)throw Error('A confirmação deve ser igual à nova senha.');validatePasswordChange(current,password);}
+ catch(error){$('password-change-status').textContent=error.message;return;}
+ choice.busy=true;$('password-change-form').reset();$('submit-password-change').disabled=true;$('cancel-password-change').disabled=true;
+ $('password-change-status').textContent='Enviando a alteração uma única vez. Aguarde a confirmação e a saída da sessão…';
+ try{const result=await humanSession.changePassword(current,password);
+  if(humanSession.state().generation!==choice.generation+1||humanSession.state().phase!=='signed_out')return;
+  $('login-status').textContent='Senha alterada e confirmada pelo provedor. Entre novamente com a nova senha.'+(result.logout==='unconfirmed'?' O encerramento da sessão no provedor NÃO foi confirmado. Tokens emitidos podem continuar válidos até expirar.':'');
+ }catch(error){
+  if(error.code==='stale_session')return;
+  if(humanSession.state().generation!==choice.generation+1||humanSession.state().phase!=='signed_out'){
+   if(passwordChoice===choice){choice.busy=false;$('submit-password-change').disabled=false;$('cancel-password-change').disabled=false;$('password-change-status').textContent=error.message;}return;
+  }
+  const refusal=['password_change_rejected','password_change_reauthenticate','password_change_requires_mfa'].includes(error.code);
+  $('login-status').textContent=(refusal?error.message:'Não foi possível confirmar a alteração de senha. Não repetimos o envio. Entre novamente; a senha anterior ou a nova pode ser necessária.')+(error.logoutUnconfirmed?' O encerramento da sessão no provedor NÃO foi confirmado. Tokens emitidos podem continuar válidos até expirar.':'');
+ }
+});};
 let logoutAllChoice=null;
 function requestLogoutAll(){
  if(s.demo||!s.me||!humanSession||!['active','paused','refreshing'].includes(humanSession.state().phase))return;

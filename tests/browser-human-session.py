@@ -14,7 +14,7 @@ def record(name): checks.append({'check':name,'result':'passed'})
 INIT=r"""
 (() => {
  const originalFetch=window.fetch.bind(window);
- const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null};
+ const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null,passwordStatus:200,holdPassword:false,completePassword:null};
  Date.now=()=>f.now;
  const issue=()=>({access_token:'aaa.bbb.'+(++f.sequence),refresh_token:'refresh_'+f.sequence,expires_in:120,token_type:'bearer',user:{id:'22222222-2222-4222-8222-222222222222',user_metadata:{role:'admin'}}});
  window.fetch=async (input,options={})=>{
@@ -22,6 +22,11 @@ INIT=r"""
   if(!url.startsWith('https://syntheticproject.supabase.co/auth/v1/'))return originalFetch(input,options);
   f.calls.push({url,body:options.body,authorization:new Headers(options.headers).get('authorization')});
   const json=data=>new Response(JSON.stringify(data),{status:200,headers:{'content-type':'application/json'}});
+  if(url.endsWith('/user')&&options.method==='PUT'){
+   const response=()=>f.passwordStatus===200?json({id:'22222222-2222-4222-8222-222222222222'}):new Response(JSON.stringify({code:f.passwordStatus,error_code:f.passwordStatus===401?'insufficient_aal':'unknown',msg:'private provider diagnostic'}),{status:f.passwordStatus,headers:{'content-type':'application/json'}});
+   if(f.holdPassword)return new Promise(resolve=>{f.completePassword=()=>{resolve(response());f.completePassword=null;};});
+   return response();
+  }
   if(url.endsWith('/token?grant_type=password')){
    if(f.holdLogin)return new Promise(resolve=>{f.completeLogin=()=>{resolve(json(issue()));f.completeLogin=null;};});
    return json(issue());
@@ -75,6 +80,69 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser)
+    fill_login(page)
+    expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
+    page.locator('#message-body').fill('Rascunho antes de trocar senha.')
+    page.locator('#change-password').click()
+    page.locator('#current-password').fill(' senha atual ')
+    page.locator('#new-password').fill(' senha nova ')
+    page.locator('#confirm-password').fill(' outra senha ')
+    page.locator('#submit-password-change').click()
+    expect(page.locator('#password-change-status')).to_contain_text('confirmação')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/user'))")
+    page.locator('#cancel-password-change').click()
+    expect(page.locator('#current-password')).to_have_value('')
+    expect(page.locator('#message-body')).to_have_value('Rascunho antes de trocar senha.')
+    record('Password confirmation mismatch and cancellation dispatch no change and clear password inputs')
+    page.evaluate('__authFixture.holdPassword=true;__authFixture.holdLogout=true')
+    page.locator('#change-password').click()
+    page.locator('#current-password').fill(' senha atual ')
+    page.locator('#new-password').fill(' senha nova ')
+    page.locator('#confirm-password').fill(' senha nova ')
+    page.locator('#submit-password-change').click()
+    page.wait_for_function('typeof __authFixture.completePassword === "function"')
+    expect(page.locator('#current-password')).to_have_value('')
+    expect(page.locator('#new-password')).to_have_value('')
+    expect(page.locator('#confirm-password')).to_have_value('')
+    expect(page.locator('#submit-password-change')).to_be_disabled()
+    page.keyboard.press('Escape')
+    expect(page.locator('#password-change-dialog')).to_be_visible()
+    assert posts==[]
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/user')).length")==1
+    assert page.evaluate("JSON.parse(__authFixture.calls.find(x=>x.url.endsWith('/user')).body).password")==' senha nova '
+    page.evaluate('__authFixture.completePassword()')
+    page.wait_for_function('typeof __authFixture.completeLogout === "function"')
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    page.evaluate('__authFixture.completeLogout()')
+    expect(page.locator('#login-status')).to_contain_text('Senha alterada e confirmada')
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#message-body')).to_have_value('')
+    expect(page.locator('#password-change-dialog')).to_be_hidden()
+    assert page.evaluate('localStorage.length + sessionStorage.length')==0
+    assert not errors,errors
+    record('Confirmed password change sends once with fields cleared and requires new login without business replay')
+    context.close()
+    for provider_status in [503,401]:
+        context,page,errors,posts=prepare(browser,authentication_only=True)
+        fill_login(page)
+        expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+        page.evaluate(f'__authFixture.passwordStatus={provider_status};__authFixture.logoutStatus=503')
+        page.locator('#change-password-login').click()
+        page.locator('#current-password').fill(' senha atual ')
+        page.locator('#new-password').fill(' senha nova ')
+        page.locator('#confirm-password').fill(' senha nova ')
+        page.locator('#submit-password-change').click()
+        expect(page.locator('#login-status')).to_contain_text('MFA' if provider_status==401 else 'Não foi possível confirmar')
+        expect(page.locator('#login-status')).to_contain_text('NÃO foi confirmado')
+        expect(page.locator('#app')).to_be_hidden()
+        expect(page.locator('#submit-login')).to_be_enabled()
+        assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/user')).length")==1
+        assert 'private provider diagnostic' not in page.locator('body').text_content()
+        assert not errors,errors
+        record('Password change respects MFA refusal' if provider_status==401 else 'Password response loss stays unconfirmed without retry and reports unconfirmed logout')
+        context.close()
     context,page,errors,posts=prepare(browser)
     fill_login(page)
     expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')

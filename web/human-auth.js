@@ -5,6 +5,11 @@ const messages=Object.freeze({
  invalid_auth_config:'Configuração de autenticação indisponível.',
  invalid_login:'Informe e-mail, senha e um workspace válido.',
  invalid_logout_scope:'Tipo de encerramento de sessão inválido.',
+ invalid_password_change:'Informe a senha atual e uma nova senha diferente, com texto válido.',
+ password_change_in_progress:'A alteração de senha está em andamento. Aguarde o resultado.',
+ password_change_rejected:'O provedor recusou a alteração. Verifique a senha atual e os requisitos da nova senha.',
+ password_change_reauthenticate:'O provedor exige nova autenticação. Entre novamente antes de alterar a senha.',
+ password_change_requires_mfa:'O provedor exige autenticação com MFA para alterar a senha. Esta jornada de MFA ainda precisa ser concluída no Help Desk.',
  login_in_progress:'Uma autenticação já está em andamento. Aguarde ou cancele.',
  login_failed:'Não foi possível autenticar. Verifique suas credenciais e a configuração de acesso.',
  auth_unavailable:'Não foi possível renovar ou validar a sessão. Tente novamente.',
@@ -23,6 +28,7 @@ export class HumanAuthError extends Error {
 export function workspaceId(value){if(typeof value!=='string'||!UUID.test(value))throw new HumanAuthError('invalid_login');return value.toLowerCase();}
 const tokenText=(value,max)=>typeof value==='string'&&value.length>0&&value.length<=max&&/^[A-Za-z0-9._~-]+$/.test(value);
 const validText=value=>typeof value==='string'&&value.isWellFormed()&&!value.includes('\0');
+export function validatePasswordChange(current,password){if(!validText(current)||!current.length||current.length>4096||!validText(password)||!password.length||password.length>4096||current===password)throw new HumanAuthError('invalid_password_change');}
 function sessionFrom(value,started,now){
  if(!value||typeof value!=='object'||Array.isArray(value)||value.token_type?.toLowerCase?.()!=='bearer'
  ||!tokenText(value.access_token,8192)||!JWT.test(value.access_token)||!tokenText(value.refresh_token,4096)
@@ -57,15 +63,25 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
  ||typeof config.publishable_key!=='string'||!/^sb_publishable_[A-Za-z0-9_-]{1,512}$/.test(config.publishable_key)
  ||!Number.isInteger(timeoutMs)||timeoutMs<10||timeoutMs>10000)throw new HumanAuthError('invalid_auth_config');
  const origin=new URL(config.supabase_url).origin,key=config.publishable_key;
- async function request(path,body,access,operation){
+ async function request(path,body,access,operation,expectedUser){
   const started=now(),controller=new AbortController();let timer;
   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
   try{return await Promise.race([deadline,(async()=>{
    const headers={apikey:key,...(body?{'content-type':'application/json'}:{}),...(access?{authorization:'Bearer '+access}:{})};
-   const response=await fetcher(origin+'/auth/v1'+path,{method:'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
    if(response.redirected)throw new HumanAuthError('auth_response_invalid');
    if(operation==='logout'){if(response.status!==204)throw new HumanAuthError('auth_logout_unconfirmed');return;}
    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
+   if(operation==='password'){
+    if([400,401,403,422].includes(response.status)){
+     const error=await jsonBody(response,controller.signal),code=typeof error?.error_code==='string'?error.error_code:typeof error?.code==='string'?error.code:null;
+     throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':'password_change_rejected');
+    }
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const user=await jsonBody(response,controller.signal);
+    if(!user||typeof user!=='object'||Array.isArray(user)||typeof user.id!=='string'||user.id.toLowerCase()!==expectedUser)throw new HumanAuthError('auth_response_invalid');
+    return;
+   }
    if([400,401,403].includes(response.status))throw new HumanAuthError(operation==='login'?'login_failed':'session_rejected');
    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
    return sessionFrom(await jsonBody(response,controller.signal),started,now());
@@ -74,6 +90,11 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async changePassword(access,userId,current,password){
+   validatePasswordChange(current,password);
+   if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
+   return request('/user',{current_password:current,password},access,'password',userId.toLowerCase());
+  },
   async workspaces(access){
    if(!tokenText(access,8192)||!JWT.test(access))throw new HumanAuthError('session_rejected');
    const controller=new AbortController();let timer;
