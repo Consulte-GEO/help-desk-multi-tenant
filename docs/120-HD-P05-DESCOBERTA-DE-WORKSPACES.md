@@ -22,4 +22,8 @@ Antes da implantação: CI de aplicação, PostgreSQL17/upgrade e interface; rev
 
 Testes negativos foram escritos antes da implementação. Cobrem identidade do provedor, M2M, catálogo inválido/vazio, timeout, escolha explícita, cancelamento e expiração. PostgreSQL real verificará vínculos e revogação, grants, escopos ausentes e overflow. Browser usa provedor sintético e testa descoberta, escolha, cancelamento e revogação entre descoberta e `/me`.
 
-CI, revisão e verificações de produção serão registrados após execução. Não afirmar login humano real a partir desses dublês. Não cria workspace, convite ou membros, não altera scopes/MFA e não conclui M1 nem HD-P05 completo.
+CI Linux [37627789163](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37627789163) aprovado: 1.536 aplicação,229 PostgreSQL e85 interface, zero falhas/skips. Inclui upgrade com snapshot antes/depois da012 e discovery pelo login restrito. Lock, instalação limpa, audit, typecheck, migrations, contratos e build aprovados. Artefato11484449717, SHA256 `8d7cfe264f4f907257510eeb822bc41c929234c351bb86c90e367371a0c25520`, source CI `0881f8b8f6e3aabdd6a1498a3b648b31e95da85b`, fingerprint `dbefa18877fe18c7c629c4305d23d2dfdb84792e356f9a16ccd42e97cc3338eb`. Logs íntegros em `evidence/workspace-discovery/ci-green`, canônicos verificados contra a fonte atual.
+
+Revisão independente identificou a012 ausente do setup de upgrade, corrigida antes do CI. Acrescentada comparação de memberships/grants/scope versions e cenário de humano legado. Nenhum outro bloqueante encontrado. Windows manteve as23 falhas de plataforma conhecidas;85 verificações de interface passaram. A aprovação é do CI Linux completo.
+
+Merge, migration e verificações de produção serão registrados após execução. Não afirmar login humano real a partir desses dublês. Não cria workspace, convite ou membros, não altera scopes/MFA e não conclui M1 nem HD-P05 completo.
