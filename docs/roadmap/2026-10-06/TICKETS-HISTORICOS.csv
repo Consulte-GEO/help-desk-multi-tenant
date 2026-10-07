@@ -4,7 +4,7 @@
 "HD-103";"M1";"Supabase e runtime de destino";"Homologação pendente";"Deploy existe; public-config retorna release_gate_closed; clientes preparados";"Executar jornada real sem considerar CI local como aceite hosted";"HD-P03"
 "HD-104";"M1";"Segurança e limites antes do piloto";"Parcial";"Limites e lifecycle codificados; faltam carga/restore e aceite operacional";"Medir abuso/capacidade, recuperar e fechar responsabilidades";"HD-P04/18/29"
 "HD-105";"M1";"Interface e sessão";"Parcial";"71 cenários agregados no CI; Auth sintético e browser local";"Confirmar retomada da criação e homologar jornada com Auth real";"HD-P02/03/06"
-"HD-201";"M2";"Bootstrap do primeiro workspace e administrador";"Não implementado como produto";"Fixtures e papéis não são bootstrap operacional";"Fluxo privado auditado e recuperável";"HD-P05"
+"HD-201";"M2";"Bootstrap do primeiro workspace e administrador";"Parcial";"Bootstrap privado do admin existente aplicado em produção07/10, replay comprovado e mesmos escopos";"Workspace novo e backoffice ainda pendentes; não declarar M2 completo";"HD-P05"
 "HD-202";"M2";"Gestão de membros e acessos";"Parcial";"Autorização e scopes persistidos existem; administração ausente";"Convite/aceite/reset/expiração/revogação ponta a ponta";"HD-P05/06/11"
 "HD-203";"M2";"Política administrativa e MFA";"Não implementado como política aplicada";"Login atual não conclui MFA e recuperação administrativos";"Step-up servidor e recuperação com política aprovada";"HD-P06"
 "HD-204";"M2";"Catálogo de produtos/instâncias/serviços";"Parcial";"Leitura autorizada e resolução já existem";"CRUD auditado e desativação sem apagar histórico";"HD-P08"
