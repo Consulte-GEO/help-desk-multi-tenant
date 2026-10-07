@@ -53,3 +53,9 @@ Artefato `11455598986`, SHA256 `20985a1b48ebeb43adef257194e042f5a312fd323efc2361
 Metadados consultados somente para helpdesk-consultegeo: URL do Supabase coincide com xaelbntjnvztznnpcvtm; variáveis de banco, CA, chave publicável e HMAC cadastradas no contexto production. A API oculta os valores das variáveis secretas; uma tentativa de validar essa representação retornou invalid_configuration antes de qualquer conexão. Isso não é diagnóstico de configuração efetiva inválida: o preflight com os valores reais permanece **não executado**, `secret_value_not_available`, zero operações de negócio. Nenhum segredo foi escrito no relatório e nenhuma variável remota foi modificada.
 
 Pendência concreta para executar read/Auth/write: cadastrar as contas/coberturas/conexões e identidades de teste na base atual, disponibilizar credenciais em canal privado e executar o preflight com os valores reais no runtime. A API publicada permanece com gate fechado até a configuração de teste apropriada nesse mesmo site. Não solicitar outro ambiente como pré-requisito.
+
+## Preparação da integração e publicação
+
+Na continuação, a reinspeção confirmou PR4 aberto, base `b4dd000` e ausência de alteração concorrente. Os checks de qualidade/CodeQL passaram; os checks Netlify falharam porque o gate canônico ainda apontava para a evidência histórica. `npm run check:homologation` reproduziu a recusa localmente.
+
+O conjunto exato do run37558111964 foi copiado para `evidence/homologation`, incluindo os seis logs e os relatórios, preservando os bytes e o arquivo histórico em HD-P03. O verificador existente conferiu fingerprint e hashes antes e depois da cópia; `check:homologation` passou. Nenhum teste foi dispensado, gate removido ou aceite hospedado concedido. A integração/publicação ainda precisa ter seu SHA e resultado registrados após execução.
