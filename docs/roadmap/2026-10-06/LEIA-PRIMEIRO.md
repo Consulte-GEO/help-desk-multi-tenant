@@ -1,3 +1,5 @@
+> Continuidade executada em06/10: [HD-P01](../../114-HD-P01-ESTADO-POS-R24.md) e [HD-P02](../../115-HD-P02-RECUPERACAO-DA-ABERTURA.md), com matriz atualizada e evidência separada. O levantamento abaixo permanece fotografia inicial.
+
 # Help Desk — levantamento e plano de continuidade
 
 **Data:** 06/10/2026. **Repositório exclusivo do núcleo:** [Consulte-GEO/help-desk-multi-tenant](https://github.com/Consulte-GEO/help-desk-multi-tenant). Este pacote trata do Help Desk independente; o plano do Financeiro permanece separado.

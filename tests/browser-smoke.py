@@ -3,6 +3,7 @@ import json, os, shutil, uuid, re
 from urllib.parse import quote
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+from helpers.browser_ticket_create import verify_create_recovery, verify_pre_dispatch_validation, verify_confirmation_read_failure
 ROOT=Path(__file__).resolve().parents[1]
 checks=[]
 def record(name): checks.append({'check':name,'result':'passed'})
@@ -355,6 +356,9 @@ with sync_playwright() as p:
     expect(page.locator('#context-choice')).not_to_have_value('')
     record('Late catalog response from another profile cannot replace the current selection')
     page.locator('#cancel-create').click()
+    verify_pre_dispatch_validation(page, record)
+    verify_confirmation_read_failure(page, record)
+    verify_create_recovery(page, record)
     page.set_viewport_size({'width':390,'height':844})
     page.wait_for_timeout(200)
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
