@@ -1,8 +1,8 @@
-/** Own first-factor setup. Secret exists only in the explicitly opened dialog. */
+/** Own first/additional factor setup. Secret exists only in the explicitly opened dialog. */
 export function createMfaEnrollmentPanel({elements:e,getSession,getEpoch,blocked,onResult}){
  let choice=null;
  function busy(value){e.start.disabled=value||choice?.started===true;e.confirm.disabled=value||!choice?.started;e.factor.disabled=value;e.code.disabled=value;}
- function clear(){choice=null;e.secret.textContent='';e.code.value='';e.factor.replaceChildren();e.provision.hidden=true;e.status.textContent='';e.dialog.close();busy(false);}
+ function clear(){choice=null;e.label.textContent='';e.secret.textContent='';e.code.value='';e.factor.replaceChildren();e.provision.hidden=true;e.status.textContent='';e.dialog.close();busy(false);}
  const current=c=>choice===c&&c.epoch===getEpoch()&&c.generation===getSession()?.state().generation;
  function result(c,message){const s=getSession()?.state();if(s?.generation===c.generation+1&&s.phase==='signed_out')onResult(message);}
  async function closeStarted(c){
@@ -10,17 +10,21 @@ export function createMfaEnrollmentPanel({elements:e,getSession,getEpoch,blocked
   result(c,'Chave e códigos removidos deste navegador. O cadastro poderá permanecer pendente no provedor; nenhum fator foi removido. Entre novamente para continuar.'+(logout==='unconfirmed'?' Saída no provedor NÃO confirmada.':''));
  }
  async function cancel(){const c=choice;clear();if(c?.started)await closeStarted(c);}
- function open(){
+ function open({additional=false}={}){
+  if(typeof additional!=='boolean')throw Error('Configuração de autenticador inválida.');
   const s=getSession()?.state();if(!s||!['active','paused','refreshing'].includes(s.phase))return;
   if(blocked())throw Error('Conclua ou reconcilie o envio atual antes de configurar MFA.');
-  clear();choice={epoch:getEpoch(),generation:s.generation,started:false,working:false};e.dialog.showModal();busy(false);
+  clear();choice={epoch:getEpoch(),generation:s.generation,started:false,working:false,additional};
+  e.title.textContent=additional?'Adicionar outro autenticador':'Configurar meu primeiro autenticador';
+  e.description.textContent=(additional?'Adicione mais um aplicativo à própria conta, mantendo seu autenticador confirmado. É necessário ter entrado com MFA. ':'Cadastro opcional do primeiro autenticador da própria conta. ')+ 'Ao iniciar, novas operações ficam pausadas; ao confirmar ou encerrar, entre novamente. Fechar apaga a chave desta tela e pode deixar cadastro pendente. A aplicação não remove fatores; ao confirmar, o provedor pode limpar outros cadastros não confirmados e encerrar sessões conforme sua política.';
+  e.dialog.showModal();busy(false);
  }
  async function start(){
   const c=choice;if(!c||c.started||c.working||!current(c))return;if(blocked())throw Error('Conclua ou reconcilie o envio atual antes de configurar MFA.');
-  c.started=true;c.working=true;busy(true);e.status.textContent='Consultando seus fatores e preparando o primeiro autenticador…';
-  try{const registration=await getSession().beginMfaEnrollment();if(!current(c))return;
+  c.started=true;c.working=true;busy(true);e.status.textContent=c.additional?'Consultando seus fatores e preparando outro autenticador…':'Consultando seus fatores e preparando o primeiro autenticador…';
+  try{const registration=await getSession().beginMfaEnrollment({additional:c.additional});if(!current(c))return;
    e.factor.replaceChildren(...registration.factors.map((factor,i)=>{const option=document.createElement('option');option.value=factor.id;option.textContent='Autenticador pendente '+(i+1)+' · '+factor.id.slice(0,8);return option;}));
-   e.secret.textContent=registration.secret??'';e.provision.hidden=!registration.generated;
+   e.secret.textContent=registration.secret??'';e.label.textContent=registration.generated?'Consulte Help Desk · '+registration.factors[0].id.slice(0,8):'';e.provision.hidden=!registration.generated;
    e.status.textContent=registration.generated?'Adicione a chave manualmente ao seu aplicativo e confirme o código para ativar.': 'Já existe TOTP pendente. Se você já o configurou no aplicativo, confirme o código. A chave anterior não pode ser exibida; sem ela, será necessária revisão no provedor.';
   }catch(error){if(error.code==='stale_session')return;
    if(current(c)){c.started=false;e.status.textContent=error.message;}else result(c,error.message+' Cadastro não confirmado; poderá haver fator pendente. Nenhum envio foi repetido.'+(error.logoutUnconfirmed?' Saída no provedor NÃO confirmada.':''));
