@@ -2,20 +2,38 @@
 import {HumanAuthError,workspaceId} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0;
- const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null});
+ const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([])});
  const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
- function clear(){generation++;phase='signed_out';workspace=null;session=null;pending=null;refreshAt=0;notify();}
+ function clear(){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase='signed_out';workspace=null;session=null;pending=null;refreshAt=0;notify();}
  function install(value){session=value;refreshAt=value.expiresAt-Math.min(60000,Math.floor((value.expiresAt-now())/2));}
  function proof(){return Object.freeze({accessToken:session.accessToken,workspace,generation});}
  const current=p=>!!session&&p?.generation===generation&&p?.workspace===workspace;
  function usable(value){return value&&typeof value.accessToken==='string'&&typeof value.refreshToken==='string'&&typeof value.userId==='string'&&Number.isFinite(value.expiresAt)&&value.expiresAt>now()+1000;}
  async function signIn(fields){
   if(phase!=='signed_out')throw new HumanAuthError('login_in_progress');
-  const selected=workspaceId(fields.workspace),email=fields.email,password=fields.password;
+  let selected=fields.workspace?workspaceId(fields.workspace):null;
+  if(!selected&&typeof transport.workspaces!=='function')throw new HumanAuthError('invalid_login');
+  const email=fields.email,password=fields.password;
   generation++;const id=generation;phase='signing_in';workspace=selected;notify();
   const op={id,raw:Promise.resolve().then(()=>transport.signIn(email,password)),result:null};pending=op;
-  try{const value=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');install(value);phase='active';notify();}
-  catch(error){if(id!==generation)throw new HumanAuthError('stale_session');clear();throw error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');}
+  let issued;
+  try{const value=await op.raw;issued=value;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');
+   if(!selected){
+    const items=await transport.workspaces(value.accessToken);if(id!==generation)throw new HumanAuthError('stale_session');
+    if(!items.length)throw new HumanAuthError('membership_required');
+    if(items.length===1)selected=workspaceId(items[0].id);
+    else{op.options=Object.freeze(items.map(x=>Object.freeze({...x})));phase='selecting_workspace';
+     const choice=new Promise((resolve,reject)=>{op.choose=resolve;op.rejectChoice=reject;});notify();selected=await choice;
+    }
+   }
+   if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('session_rejected');
+   workspace=selected;install(value);phase='active';notify();
+  }
+  catch(error){if(id!==generation)throw new HumanAuthError('stale_session');clear();
+   const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');
+   if(issued&&typeof issued.accessToken==='string'){try{await transport.signOut(issued.accessToken);}catch{safe.logoutUnconfirmed=true;}}
+   throw safe;
+  }
   finally{if(pending===op)pending=null;}
  }
  function rotate(){
@@ -52,5 +70,6 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   try{await transport.signOut(target);return 'confirmed';}catch{return 'unconfirmed';}
  }
  function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;clear();return true;}
- return Object.freeze({state,signIn,authorization,resume,signOut,reject,current});
+ function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}
+ return Object.freeze({state,signIn,selectWorkspace,authorization,resume,signOut,reject,current});
 }

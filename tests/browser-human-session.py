@@ -32,7 +32,7 @@ INIT=r"""
  };
 })();
 """
-def prepare(browser, authentication_only=False):
+def prepare(browser, authentication_only=False, workspace_options=None):
     context=browser.new_context(viewport={'width':1440,'height':1000})
     context.add_init_script(INIT)
     page=context.new_page()
@@ -43,9 +43,10 @@ def prepare(browser, authentication_only=False):
     def api(route):
         path=urlparse(route.request.url).path
         if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest',**({'operational':False} if authentication_only else {})}
-        elif authentication_only and path!='/v1/me':
+        elif path=='/v1/workspaces': value={'items':workspace_options if workspace_options is not None else [{'id':WS,'name':'Suporte autorizado'}]}
+        elif authentication_only and path not in ['/v1/me','/v1/workspaces']:
             errors.append('Business request before release: '+path);route.fulfill(status=503,body='{}');return
-        elif path=='/v1/me': value={'id':'33333333-3333-4333-8333-333333333333','kind':'human','workspace_id':WS,'workspace_role':None,'grants':[{'account_id':ACCOUNT,'role':'agent'}],'scopes':['tickets:read','tickets:write','notes:read','notes:write','contexts:resolve']}
+        elif path=='/v1/me': value={'id':'33333333-3333-4333-8333-333333333333','kind':'human','workspace_id':route.request.headers.get('x-workspace-id',WS),'workspace_role':None,'grants':[{'account_id':ACCOUNT,'role':'agent'}],'scopes':['tickets:read','tickets:write','notes:read','notes:write','contexts:resolve']}
         elif path=='/v1/tickets': value={'items':[ticket],'next_cursor':None}
         elif path=='/v1/tickets/'+TICKET: value={**ticket,'available_actions':{'ticket_id':TICKET,'version':ticket['version'],'reply':True,'read_notes':True,'add_note':True,'change_priority':True,'claim':True,'release':False,'transitions':[{'to':'triage','requires_reason':False},{'to':'open','requires_reason':False},{'to':'cancelled','requires_reason':False}]}}
         elif path.endswith('/messages'):
@@ -62,10 +63,10 @@ def prepare(browser, authentication_only=False):
     page.goto('http://127.0.0.1:4317/',wait_until='networkidle')
     return context,page,errors,posts
 
-def fill_login(page):
+def fill_login(page, workspace=WS):
     page.locator('#email').fill('synthetic@example.test')
     page.locator('#password').fill(' senha mantida ')
-    page.locator('#workspace').fill(WS)
+    page.locator('#workspace').fill(workspace)
     page.locator('#submit-login').click()
 
 with sync_playwright() as p:
@@ -139,6 +140,59 @@ with sync_playwright() as p:
     expect(page.locator('#cancel-login')).to_be_hidden()
     assert not errors,errors
     record('Authentication-only signed-in page allows explicit provider logout and a new login')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    requests=[]
+    page.on('request',lambda r:requests.append(r))
+    fill_login(page,workspace='')
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    expect(page.locator('#app')).to_be_hidden()
+    assert len([r for r in requests if urlparse(r.url).path=='/v1/workspaces'])==1
+    assert all('x-workspace-id' not in r.headers for r in requests if urlparse(r.url).path=='/v1/workspaces')
+    assert all(r.headers.get('x-workspace-id')==WS for r in requests if urlparse(r.url).path=='/v1/me')
+    assert not errors,errors
+    record('Login discovers a single authorized workspace without entering its UUID and then validates selected /me')
+    context.close()
+    choices=[{'id':WS,'name':'Suporte A'},{'id':'77777777-7777-4777-8777-777777777777','name':'Suporte B'}]
+    context,page,errors,posts=prepare(browser,authentication_only=True,workspace_options=choices)
+    requests=[]
+    page.on('request',lambda r:requests.append(r))
+    fill_login(page,workspace='')
+    expect(page.locator('#choose-workspace')).to_be_visible()
+    assert not [r for r in requests if urlparse(r.url).path=='/v1/me']
+    assert page.locator('#workspace-choice').input_value()==''
+    page.locator('#workspace-choice').select_option(choices[1]['id'])
+    page.locator('#choose-workspace').click()
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    assert all(r.headers.get('x-workspace-id')==choices[1]['id'] for r in requests if urlparse(r.url).path=='/v1/me')
+    assert not errors,errors
+    record('Multiple authorized workspaces require explicit selection before any /me or business request')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True,workspace_options=choices)
+    requests=[]
+    page.on('request',lambda r:requests.append(r))
+    fill_login(page,workspace='')
+    expect(page.locator('#choose-workspace')).to_be_visible()
+    page.locator('#cancel-login').click()
+    expect(page.locator('#login-status')).to_contain_text('Sessão atual encerrada no provedor')
+    expect(page.locator('#workspace-choice-label')).to_be_hidden()
+    expect(page.locator('#submit-login')).to_be_enabled()
+    assert not [r for r in requests if urlparse(r.url).path=='/v1/me']
+    assert not errors,errors
+    record('Cancel during workspace choice closes the provider session without confirming a workspace')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True,workspace_options=choices)
+    fill_login(page,workspace='')
+    expect(page.locator('#choose-workspace')).to_be_visible()
+    page.route('**/v1/me',lambda r:r.fulfill(status=403,content_type='application/problem+json',body=json.dumps({'detail':'Vínculo revogado.','code':'membership_required'})))
+    page.locator('#workspace-choice').select_option(WS)
+    page.locator('#choose-workspace').click()
+    expect(page.locator('#login-status')).to_contain_text('Vínculo revogado')
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#submit-login')).to_be_enabled()
+    page.wait_for_function("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
+    assert not errors,errors
+    record('A workspace revoked after discovery fails /me and closes the inaccessible human session')
     context.close();browser.close()
 (ROOT/'evidence/browser-human-session.json').write_text(json.dumps({'scope':'synthetic-provider-DOM','checks':checks},ensure_ascii=False,indent=2))
 print(json.dumps(checks,ensure_ascii=False,indent=2))

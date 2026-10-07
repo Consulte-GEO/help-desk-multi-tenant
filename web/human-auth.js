@@ -14,9 +14,10 @@ const messages=Object.freeze({
  stale_session:'Operação cancelada por mudança de sessão.',
  auth_logout_unconfirmed:'A saída foi local, mas o encerramento no provedor não foi confirmado.',
  invalid_api_path:'Caminho de API não permitido.'
+ ,membership_required:'Sua identidade não possui vínculo ativo com um workspace.'
 });
 export class HumanAuthError extends Error {
- constructor(code){super(messages[code]??messages.auth_unavailable);this.name='HumanAuthError';this.code=Object.hasOwn(messages,code)?code:'auth_unavailable';this.status=['session_rejected','login_failed'].includes(this.code)?401:this.code.startsWith('invalid_')?400:this.code==='login_in_progress'?409:503;}
+ constructor(code){super(messages[code]??messages.auth_unavailable);this.name='HumanAuthError';this.code=Object.hasOwn(messages,code)?code:'auth_unavailable';this.status=this.code==='membership_required'?403:['session_rejected','login_failed'].includes(this.code)?401:this.code.startsWith('invalid_')?400:this.code==='login_in_progress'?409:503;}
 }
 export function workspaceId(value){if(typeof value!=='string'||!UUID.test(value))throw new HumanAuthError('invalid_login');return value.toLowerCase();}
 const tokenText=(value,max)=>typeof value==='string'&&value.length>0&&value.length<=max&&/^[A-Za-z0-9._~-]+$/.test(value);
@@ -72,6 +73,24 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async workspaces(access){
+   if(!tokenText(access,8192)||!JWT.test(access))throw new HumanAuthError('session_rejected');
+   const controller=new AbortController();let timer;
+   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
+   try{return await Promise.race([deadline,(async()=>{
+    const response=await fetcher('/v1/workspaces',{headers:{authorization:'Bearer '+access},signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+    if(response.status===401)throw new HumanAuthError('session_rejected');
+    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
+    if(response.status!==200||response.redirected)throw new HumanAuthError('auth_unavailable');
+    const data=await jsonBody(response,controller.signal),seen=new Set();
+    if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).length!==1||!Array.isArray(data.items)||data.items.length>50)throw new HumanAuthError('auth_response_invalid');
+    return data.items.map(item=>{
+     if(!item||typeof item!=='object'||Object.keys(item).length!==2||!UUID.test(item.id??'')||!validText(item.name)||!item.name.trim()||item.name.length>160||/[\u0000-\u001f\u007f]/.test(item.name))throw new HumanAuthError('auth_response_invalid');
+     const id=item.id.toLowerCase();if(seen.has(id))throw new HumanAuthError('auth_response_invalid');seen.add(id);return Object.freeze({id,name:item.name});
+    });
+   })()]);}catch(error){throw error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');}
+   finally{clearTimeout(timer);controller.abort();}
+  },
   async signIn(email,password){
    if(!validText(email)||email.length>320||!email.trim()||!email.includes('@')||!validText(password)||!password.length||password.length>4096)throw new HumanAuthError('invalid_login');
    return request('/token?grant_type=password',{email:email.trim(),password},null,'login');

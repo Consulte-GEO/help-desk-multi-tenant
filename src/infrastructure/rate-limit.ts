@@ -38,7 +38,7 @@ export function createPostgresRateLimiter(pool:SqlPool,secret:string):RateLimite
  }
  return {
   async beforeAuthentication(req,context){const ip=normalizeClientIp(context.clientIp);const budgets=[identity('ingress',ip)];
-   if(new URL(req.url).pathname.replace(/\/$/,'')==='/v1/integration-tokens')budgets.push(identity('token_exchange',ip));
+   if(['/v1/integration-tokens','/v1/workspaces'].includes(new URL(req.url).pathname.replace(/\/$/,'')))budgets.push(identity('token_exchange',ip));
    await consume(budgets);
   },
   async afterAuthentication(p){await consume([identity('workspace',p.workspaceId),identity('principal',[p.workspaceId,p.id])]);}
