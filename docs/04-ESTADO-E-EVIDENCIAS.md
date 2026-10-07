@@ -1,3 +1,5 @@
+> **Estado 07/10/2026:** PR9 integrado/publicado; API0.20.0, schema0.19.0,12 migrations/25 tabelas/19 operações, CI1536/229/85 aprovado. Descoberta de workspace no login com UUID opcional; vínculos/scopes preservados. Atendimento fechado e M1 operacional aberto. [Evidência e limites](120-HD-P05-DESCOBERTA-DE-WORKSPACES.md); este checkpoint prevalece sobre os estados históricos abaixo.
+
 > **Continuidade HD-P03 — produção:** clientes read/Auth/write adaptados a production, três exemplos de site separado removidos e 140 testes focais aprovados. CI Linux run37560232763 aprovado: 1.450 aplicação, 215 PostgreSQL e 79 interface. PR4 integrado em0789dc3 e código publicado em produção (deploy6ac5aaaf); aceite operacional pendente. [Política e evidência](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).
 
 > **HD-P03 — 06/10/2026:** homologação hospedada na mesma base/site HelpDesk, conforme decisão do usuário. CI Linux 1.447/215/79 aprovado; PR4 pronto para revisão. Aceite Auth/Function/base atual permanece pendente. Leia [116-HD-P03-VALIDACAO-EM-PRODUCAO.md](116-HD-P03-VALIDACAO-EM-PRODUCAO.md).

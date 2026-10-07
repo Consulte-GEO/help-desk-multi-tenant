@@ -26,4 +26,10 @@ CI Linux [37627789163](https://github.com/Consulte-GEO/help-desk-multi-tenant/ac
 
 Revisão independente identificou a012 ausente do setup de upgrade, corrigida antes do CI. Acrescentada comparação de memberships/grants/scope versions e cenário de humano legado. Nenhum outro bloqueante encontrado. Windows manteve as23 falhas de plataforma conhecidas;85 verificações de interface passaram. A aprovação é do CI Linux completo.
 
-Merge, migration e verificações de produção serão registrados após execução. Não afirmar login humano real a partir desses dublês. Não cria workspace, convite ou membros, não altera scopes/MFA e não conclui M1 nem HD-P05 completo.
+PR9 integrado em `e0d877f0f63725e09aa216d518f88c53e9f83e07`, checks finais37628546880/37628540124 aprovados. Migration012 aplicada por operador no projeto HelpDesk existente, registro remoto20261007133307. Deploy de produção `6ac64a01ff5fe4000819eb8b` pronto.
+
+[Evidência do schema](../evidence/workspace-discovery/production-schema.json): checksum de memberships/grants/human_scope_versions idêntico antes/depois, zero contas/tickets, um admin ativo, revisão2 e mesmos escopos. Helper executável pela aplicação, não pelos papéis clientes; SELECT direto de workspaces continua negado. Consulta privada do operador encontrou uma opção própria para a pessoa já selecionada, com o nome esperado. Essa consulta não é login humano.
+
+[Evidência HTTP](../evidence/workspace-discovery/production-boundary.json): cinco arquivos servidos iguais à fonte, discovery sem bearer401, seletor forjado400 e bearer M2M401; configuração/capabilities200 com atendimento fechado, me sem bearer401 e quatro rotas de domínio503. Zero operações de atendimento despachadas.
+
+Não afirmar login humano real a partir dos dublês ou da consulta privada. Não cria workspace, convite ou membros, não altera scopes/MFA e não conclui M1 nem HD-P05 completo. Troca de workspace durante sessão ativa, administração, MFA e aceite Auth/M2M reais continuam pendentes.
