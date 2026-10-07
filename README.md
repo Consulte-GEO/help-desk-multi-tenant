@@ -1,3 +1,5 @@
+> **Decisão do usuário — 06/10/2026:** homologar no site helpdesk-consultegeo e na mesma base/Auth HelpDesk existentes. Não exigir nem criar ambiente separado. [Política HD-P03](docs/116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md) substitui as exigências anteriores de destino isolado.
+
 > **HD-P02 — 06/10/2026:** recuperação da abertura corrigida;14 testes focais e79 verificações de interface aprovados. Windows1447/1424/23 (mesmas falhas anteriores); CI novo/aceite hosted pendentes. Leia [docs/115-HD-P02-RECUPERACAO-DA-ABERTURA.md](docs/115-HD-P02-RECUPERACAO-DA-ABERTURA.md). M1 operacional aberto.
 
 > **HD-P01 — 06/10/2026:** PR3/R24 integrado em `b4dd000`; CI R24 1436/215/71 aprovado, gate publicado fechado e M1 operacional aberto. Estado corrente e mapa das onze migrations em [docs/114-HD-P01-ESTADO-POS-R24.md](docs/114-HD-P01-ESTADO-POS-R24.md). Números e destinos anteriores abaixo são históricos.
@@ -42,7 +44,7 @@ O primeiro comando produz um conjunto coerente. Não juntar logs de rodadas dife
 
 O site atual é `helpdesk-consultegeo`, ID `9781cd85-7dc1-4ef5-868b-947e389a9d4d`. O site histórico `help-desk-multi-tenant` é outro recurso. O Supabase HelpDesk é `xaelbntjnvztznnpcvtm`; inspeção R24 encontrou onze migrations e 25 tabelas privadas com ENABLE/FORCE RLS. Isso não prova o percurso Function → PostgreSQL nem Auth/M2M.
 
-`npm run demo` usa dados fictícios em memória. Os clientes `test:hosted:read`, `test:hosted:auth` e `test:hosted:write` apresentam plano sem rede por padrão. Os exemplos isolados são fictícios, não recursos provisionados. Execução efetiva requer destino, fixtures, Auth e canais isolados definidos e autorizados. Não incluir credenciais em arquivos ou logs.
+`npm run demo` usa dados fictícios em memória. Os clientes `test:hosted:read`, `test:hosted:auth` e `test:hosted:write` apresentam plano sem rede por padrão. Homologação hospedada ocorre no site helpdesk-consultegeo e na base/Auth HelpDesk existentes. Os exemplos são templates de validação, não infraestrutura a provisionar. Execução efetiva usa dados identificáveis de teste e credenciais nessa mesma base. Não incluir credenciais em arquivos ou logs.
 
 API/interface 0.19.0; schema 0.18.0; onze migrations históricas; 18 operações HTTP. Não abrir `HELPDESK_RELEASE_APPROVED` para contornar a homologação pendente.
 

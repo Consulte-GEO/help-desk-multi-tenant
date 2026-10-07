@@ -1,3 +1,5 @@
+> **Decisão do usuário — 06/10/2026:** homologar no site helpdesk-consultegeo e na mesma base/Auth HelpDesk existentes. Não exigir nem criar ambiente separado. [Política HD-P03](116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md) substitui as exigências anteriores de destino isolado.
+
 > **HD-P02 — 06/10/2026:** recuperação da abertura corrigida;14 testes focais e79 verificações de interface aprovados. Windows1447/1424/23 (mesmas falhas anteriores); CI novo/aceite hosted pendentes. Leia [115-HD-P02-RECUPERACAO-DA-ABERTURA.md](115-HD-P02-RECUPERACAO-DA-ABERTURA.md). M1 operacional aberto.
 
 > **Estado pós-merge — 06/10/2026:** leia [HD-P01](114-HD-P01-ESTADO-POS-R24.md), que prevalece sobre o histórico abaixo. CI R24 1436/215/71; gate hospedado fechado; M1 operacional aberto.

@@ -78,7 +78,7 @@ para commit/merge/publicação e confira os destinos antes de agir.
 |---|---|
 | HD-P01 | Estado corrente reconciliado, links de evidência e próximos gates reais |
 | HD-P02 | Regressão/fix de retomada de abertura, sem alteração arbitrária de contrato |
-| HD-P03 | Clientes hosted read/Auth/write existentes executados no destino e fixtures autorizados |
+| HD-P03 | Clientes hosted read/Auth/write executados no mesmo site/base HelpDesk com dados de teste identificáveis |
 | HD-P04 | Capacidade/restore mínimos, runbook e aceite M1 |
 | HD-P05/06 | Primeira administração com acesso, MFA e recuperação; fatias pequenas |
 | HD-P07–11 | Conta → catálogo → contrato/cobertura → pessoa/conexão configurados por UI |
@@ -99,4 +99,4 @@ Revisões de Claude não são um requisito deste roteiro. A revisão pode ser fe
 
 ## Quando faltarem decisões
 
-Antes de perguntar, concluir a parte independente e preparar opções concretas. Decisões de SLA, retenção, volumes, regiões, provedor, origens de embed e segundo produto devem ser tomadas quando sua entrega depender delas. Não inventar contrato comercial, destinatário, credencial ou ambiente para desbloquear um teste. Falha de infraestrutura deve ser relatada como tal, sem remover verificações do produto.
+Antes de perguntar, concluir a parte independente e preparar opções concretas. Decisões de SLA, retenção, volumes, regiões, provedor, origens de embed e segundo produto devem ser tomadas quando sua entrega depender delas. Não inventar contrato comercial, destinatário, credencial ou identificadores reais para desbloquear um teste. Falha de infraestrutura deve ser relatada como tal, sem remover verificações do produto.

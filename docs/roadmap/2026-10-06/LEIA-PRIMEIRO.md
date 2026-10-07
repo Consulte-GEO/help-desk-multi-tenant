@@ -24,6 +24,6 @@ Os IDs de capacidade `HD-Cxxx` foram criados **neste levantamento**. Não são u
 
 ## Próximo incremento recomendado
 
-Atualizar o estado pós-merge e confirmar por teste uma possível falha na retomada da abertura de ticket após resposta perdida. Em seguida, executar a homologação M1 já preparada, em destino isolado autorizado. Não criar mais ferramentas genéricas de gate como substituto de executar os clientes existentes. Administração M2 vem com seu próprio fluxo de usuário, persistência, autorização e teste, sem considerar que tabelas já existentes constituem backoffice.
+Atualizar o estado pós-merge e confirmar por teste uma possível falha na retomada da abertura de ticket após resposta perdida. Em seguida, executar a homologação M1 já preparada, no site e na base HelpDesk existentes, conforme [decisão HD-P03](../../116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md). Não criar mais ferramentas genéricas de gate como substituto de executar os clientes existentes. Administração M2 vem com seu próprio fluxo de usuário, persistência, autorização e teste, sem considerar que tabelas já existentes constituem backoffice.
 
 Esta rodada inspecionou código, histórico, CI e metadados de infraestrutura e produziu documentação. Não criou usuários, tickets, infraestrutura, segredos, grants ou mensagens, nem abriu o gate publicado.

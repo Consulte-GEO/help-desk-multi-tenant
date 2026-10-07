@@ -1,3 +1,5 @@
+> **Decisão do usuário — 06/10/2026:** homologar no site helpdesk-consultegeo e na mesma base/Auth HelpDesk existentes. Não exigir nem criar ambiente separado. [Política HD-P03](116-HD-P03-HOMOLOGACAO-NA-MESMA-BASE.md) substitui as exigências anteriores de destino isolado.
+
 > **HD-P02 — 06/10/2026:** recuperação da abertura corrigida;14 testes focais e79 verificações de interface aprovados. Windows1447/1424/23 (mesmas falhas anteriores); CI novo/aceite hosted pendentes. Leia [115-HD-P02-RECUPERACAO-DA-ABERTURA.md](115-HD-P02-RECUPERACAO-DA-ABERTURA.md). M1 operacional aberto.
 
 > **Estado pós-merge — 06/10/2026:** leia [HD-P01](114-HD-P01-ESTADO-POS-R24.md), que prevalece sobre o histórico abaixo. CI R24 1436/215/71; gate hospedado fechado; M1 operacional aberto.
@@ -14,13 +16,13 @@ Leia [estado/revisão R24](113-M1-R24-REVISAO-E-ESTADO.md), [documento mestre](.
 | Instalação/lock/audit/typecheck | Aprovados localmente no R24 | Logs preservados; lock inalterado |
 | Suíte integral | Windows 1.413/1.436; 23 falhas documentadas | CI Linux completo sem reduzir gates |
 | PostgreSQL/browser | CI R23 215/71; ambiente Windows local indisponível | Novo CI com evidência coerente |
-| Fixtures e destino hospedado isolado | Não definidos/provisionados nesta rodada | IDs reais de site, banco/Auth, canais e fixtures autorizadas |
+| Fixtures na mesma base/site HelpDesk | Destino definido pelo usuário; sem ambiente adicional | Dados e identidades de teste, runtime e credenciais no site/base atuais |
 | Function/Auth/M2M | Publicação técnica; gate 503 confirmado | TLS/papel/grants/RLS, login/refresh/logout, sessões e privacidade reais |
 | Escritas/concorrência/recuperação | Clientes já implementados; homologação pendente | Correlacionar efeitos/recibos/outbox sem repetir intenção |
 | Capacidade/restauração/governança | Pendente | Limites, residência/RPO/RTO, responsáveis e aceite |
 | M2 | Não iniciado | Fechamento formal de M1 |
 
-Os três exemplos isolados produzem planos sem rede; não contêm IDs de recursos provisionados. Preparar o destino efetivo antes de executar, com segredos somente no ambiente do processo. Não usar PostgreSQL hospedado para os testes destrutivos ou ampliar grants para fazê-los passar.
+Os três clientes produzem planos sem rede. Homologar no site/base existentes, com identificadores reais de teste e segredos somente no ambiente do processo. Exemplos com sites alternativos não autorizam nem exigem provisionamento. Não usar PostgreSQL hospedado para os testes destrutivos ou ampliar grants para fazê-los passar.
 
 A autorização direta do usuário permite commit, merge e publicação técnica sem Claude. Atendimento real continua dependendo de homologação e aceite; não abrir o gate para contornar isso.
 

@@ -94,7 +94,7 @@ Os documentos mestres preservam parágrafos antigos sobre lock ausente, banco va
 
 | Decisão | Entrega | Trabalho que pode continuar sem a decisão |
 |---|---|---|
-| Destino isolado, fixtures, pessoas/contas e efeitos de teste autorizados | HD-P03 | Pré-conferência e testes locais, sem inventar IDs reais |
+| Homologação na mesma base/site definida pelo usuário; preparar pessoas/contas/fixtures e efeitos de teste | HD-P03 | Preflight e clientes existentes; sem exigir outro ambiente ou inventar IDs reais |
 | Região/residência, RPO/RTO, retenção, volumes e custos | HD-P04/24/29/30 | Medir baseline e preparar ensaio; não prometer números |
 | MFA admin, recuperação e revogação de sessão | HD-P05/06 | Matriz de ações e interface revisável; sem alterar Auth real |
 | Catálogo, contas, contratos e política sem cobertura | HD-P07–10 | CRUD/validação com fixtures; sem criar cobertura fictícia |

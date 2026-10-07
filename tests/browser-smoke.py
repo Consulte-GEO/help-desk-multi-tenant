@@ -39,20 +39,26 @@ with sync_playwright() as p:
     expect(page.locator('#notes-status')).to_be_hidden()
     expect(page.locator('#message-form')).to_be_visible()
     record('Six-digit timestamps load authorized list, detail and public conversation without Date validation errors')
+    # Existing controls can remain visible while refresh is in flight. Complete each
+    # read before changing route behavior; otherwise a late read can hide retry.
+    page.wait_for_load_state('networkidle')
     page.unroute(precision_pattern,precise_response)
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_be_visible()
 
     # These DOM tests are written but must not be counted as passed if navigation is blocked.
     page.locator('#note-tab').click()
     page.locator('#message-body').fill('Rascunho interno preservado no refresh.')
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_have_class(re.compile('selected'))
     expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
     record('Refreshing server actions preserves the private composer channel and draft')
     def notes_outage(route): route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
     page.route('**/v1/tickets/*/notes?*',notes_outage)
     page.locator('#refresh').click()
+    page.wait_for_load_state('networkidle')
     expect(page.locator('#notes-status')).to_contain_text('Notas indisponíveis')
     expect(page.locator('#notes-status')).to_be_visible()
     expect(page.locator('#notes')).to_have_text('')

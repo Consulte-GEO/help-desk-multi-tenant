@@ -43,8 +43,8 @@ Revisor Codex encontrou três itens Important, sem Critical/Minor: entrada invá
 | HD-P01 / HD-C001–002 / HD-101–102 | Estado/CI/destino/ledger reconciliados; commit bc75de7 | Runtime restrito hospedado em HD-P03 |
 | HD-P02 / HD-C040 | Recuperação implementada;14 focais/79 interface aprovados;3 achados de revisão corrigidos | CI Linux integral e aceite hospedado |
 | HD-C039 / HD-105 | Replay backend preservado, composição frontend corrigida | Percurso real Auth→Function→banco→UI |
-| HD-P03 | Ajuda dos três clientes existentes executada sem efeitos | Destino isolado, identidades e fixtures reais autorizados |
+| HD-P03 | Ajuda dos três clientes existentes executada sem efeitos | Mesma base/site HelpDesk definidos; preparar identidades e fixtures reais |
 | HD-P04 | Pendente | Capacidade, restore, RPO/RTO e aceite |
 | HD-P05–33 | Backlog preservado | Dependências do plano; M2 não liberado |
 
-Próximo passo: HD-P03, usando os clientes read/Auth/write existentes em modo plano e depois execução no destino/fixtures autorizado. Não criar outro framework de gate nem abrir o gate atual para contornar falta de aceite.
+Próximo passo: HD-P03, usando os clientes read/Auth/write existentes em modo plano e depois execução no site e na base existentes, com fixtures identificáveis. Não criar outro framework de gate nem abrir o gate atual para contornar falta de aceite.

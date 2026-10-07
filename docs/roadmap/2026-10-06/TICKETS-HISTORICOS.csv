@@ -31,7 +31,7 @@
 "HD-503";"M5";"Antimalware e promoção";"Não implementado";"Provedor e pipeline pendentes";"Falha fechada e promoção somente após scan validado";"HD-P23"
 "HD-504";"M5";"Download, TTL e nota interna";"Não implementado";"Nenhum fluxo autorizado composto";"ACL do pai, clean, TTL e negativas de nota privada";"HD-P24"
 "HD-505";"M5";"Órfãos, retenção e inventário";"Não implementado";"Política de negócio pendente";"Inventário e limpeza controlada com referências e preservação";"HD-P24"
-"HD-506";"M5";"Backup e restore de objetos";"Não implementado/homologado";"Backup de banco não prova objetos";"Manifesto, checksum e reconciliação após restore isolado";"HD-P24/29"
+"HD-506";"M5";"Backup e restore de objetos";"Não implementado/homologado";"Backup de banco não prova objetos";"Manifesto, checksum e reconciliação de recuperação preservando a base atual";"HD-P24/29"
 "HD-601";"M6";"Suporte incorporado por pessoa";"Não implementado";"Token M2M não substitui sessão individual";"Token curto com audience/bindings/revogação e identidade externa";"HD-P25"
 "HD-602";"M6";"Conector GeoLab server-side";"Não implementado";"Fixture laboratorial não é conector real";"Jornada no consumidor com contratos, mappings e diagnóstico mínimo";"HD-P26"
 "HD-603";"M6";"Segundo conector";"Não implementado";"Segundo produto ainda por escolher";"Repetir jornada real em domínio distinto sem fork do core";"HD-P27"
