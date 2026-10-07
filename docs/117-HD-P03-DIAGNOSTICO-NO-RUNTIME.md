@@ -31,3 +31,9 @@ Revisão por agente separado: nenhum achado acionável. Nenhuma migration, grant
 5. Tratar a causa de um check falho; probe aprovado não conclui Auth humano, M2M, efeitos, recuperação ou HD-P03/04.
 
 Resultado hospedado será acrescentado após execução real. A existência deste arquivo ou da Function não é prova de conexão nem conclusão de M1.
+
+## CI aprovado desta fonte
+
+[Run37562342502](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37562342502), tentativa1, merge de teste `be9c13f9dc6f37ed9321de5d43fbd44392002a35` do HEAD `a020ed32ba0c4a87998da0e5a73a68b76051ff7b`: **1.457/1.457 aplicação, 215/215 PostgreSQL, 79/79 interface**, zero falhas/skips. Lock/install/audit e validação do conjunto aprovados.
+
+Artefato `11456584212`, ZIP SHA256 `d8f0e7e8fd184848ae281867ef52d25c7fc41e36b6cb1ea636effc6e0548bb29`; fingerprint executável `af3fabc578091b4b88ad659a3820ca8c7c15ed8806326cbe8e88517484a39af3`. Origem/run/attempt, fingerprint e seis hashes de logs verificados. Conjunto exato preservado em `evidence/hd-p03/runtime-ci` e no gate canônico; `platform_approved:false` permanece. O primeiro Deploy Preview falhou pelo conjunto antigo incompatível com a fonte nova, comportamento correto do gate; não reduzir critérios para publicar.
