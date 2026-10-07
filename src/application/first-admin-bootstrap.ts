@@ -51,7 +51,7 @@ BEGIN
  SELECT * INTO receipt FROM helpdesk_audit.audit_events WHERE workspace_id=w AND id=request;
  IF FOUND THEN
   IF receipt.action IS DISTINCT FROM '${action}' OR receipt.principal_id IS DISTINCT FROM person
-    OR receipt.resource_id IS DISTINCT FROM person OR receipt.request_id IS DISTINCT FROM request THEN
+    OR receipt.resource_id IS DISTINCT FROM person OR receipt.request_id IS DISTINCT FROM request::text THEN
    RAISE EXCEPTION 'bootstrap_receipt_conflict' USING ERRCODE='40001';
   END IF;
   IF member.role<>'admin' OR NOT EXISTS(SELECT 1 FROM helpdesk_auth.human_scope_versions proof
@@ -94,7 +94,7 @@ SELECT jsonb_build_object('schema','helpdesk.first-admin-bootstrap.v1','workspac
  'principal_id',a.principal_id,'request_id',a.request_id,'operator_role',v.changed_by,'role',m.role,
  'scope_revision',v.revision,'scopes',v.scopes,'capabilities_changed',false,'human_auth_tested',false) AS receipt
  FROM helpdesk_audit.audit_events a JOIN helpdesk_auth.human_scope_versions v
- ON v.workspace_id=a.workspace_id AND v.principal_id=a.principal_id AND v.request_id=a.request_id
+ ON v.workspace_id=a.workspace_id AND v.principal_id=a.principal_id AND v.request_id::text=a.request_id
  JOIN helpdesk_auth.workspace_memberships m ON m.workspace_id=a.workspace_id AND m.principal_id=a.principal_id
  WHERE a.workspace_id='${p.workspace_id}'::uuid AND a.id='${p.request_id}'::uuid AND a.action='${action}' AND v.revision=${p.expected_scope_revision+1};
 COMMIT;`;
