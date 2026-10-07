@@ -1,5 +1,7 @@
 > Continuidade executada em06/10: [HD-P01](../../114-HD-P01-ESTADO-POS-R24.md), [HD-P02](../../115-HD-P02-RECUPERACAO-DA-ABERTURA.md) e continuidade HD-P03 com [destino de produção](../../116-HD-P03-VALIDACAO-EM-PRODUCAO.md) e [diagnóstico privado de runtime](../../117-HD-P03-DIAGNOSTICO-NO-RUNTIME.md). P01/02 integrados; aceite operacional M1 ainda pendente. O levantamento abaixo permanece fotografia inicial.
 
+> 07/10: PR5/6 integradas/publicadas; CI1458/215/79 aprovado. Dez checks readonly passaram no servidor real, incluindo conexão/TLS/papel restrito e segurança do banco. Auth/M2M e percurso de atendimento continuam pendentes; seguir doc117, sem repetir instalação/diagnóstico já comprovados.
+
 # Help Desk — levantamento e plano de continuidade
 
 **Data:** 06/10/2026. **Repositório exclusivo do núcleo:** [Consulte-GEO/help-desk-multi-tenant](https://github.com/Consulte-GEO/help-desk-multi-tenant). Este pacote trata do Help Desk independente; o plano do Financeiro permanece separado.

@@ -1,0 +1,132 @@
+{
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac5b7f030eb733685fe1c47",
+  "commit": "4cf75ae3c4aa690fb4b772331b535fdf5628169e",
+  "state": "ready",
+  "context": "production",
+  "published": true,
+  "functions": [
+    {
+      "name": "api",
+      "route": [
+        {
+          "p": "/v1/*",
+          "l": null,
+          "e": "^\\/v1(?:\\/(.*))\\/?$",
+          "m": [],
+          "ps": false
+        }
+      ]
+    },
+    {
+      "name": "runtime-preflight",
+      "events": [
+        "deploy_succeeded"
+      ]
+    }
+  ],
+  "logs": [
+    {
+      "ts": 1791342602263,
+      "request_id": "9d2194e0-4945-4090-8c91-01ba97f7e01c",
+      "event": "helpdesk.runtime-preflight",
+      "schema": "helpdesk.hosted-preflight.v1",
+      "success": true,
+      "release_flag": "closed",
+      "started_at": "2026-10-07T03:10:01.780Z",
+      "completed_at": "2026-10-07T03:10:02.263Z",
+      "checks": [
+        {
+          "id": "configuration",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "driver",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "connection",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "tls",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "read_only",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "database_role",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "schema",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "database_security",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "rollback",
+          "status": "passed",
+          "code": "passed"
+        },
+        {
+          "id": "cleanup",
+          "status": "passed",
+          "code": "passed"
+        }
+      ],
+      "operational": false,
+      "auth_tested": false,
+      "business_operations_dispatched": 0
+    }
+  ],
+  "log_status": 200,
+  "log_entries": 2,
+  "log_response_keys": [
+    "logs"
+  ],
+  "log_shapes": [
+    {
+      "type": "string:6",
+      "ts": "number",
+      "level": "string:4",
+      "request_id": "string:36",
+      "netlify_request_id": "string:26",
+      "message": "string:37"
+    },
+    {
+      "type": "string:4",
+      "ts": "number",
+      "level": "string:4",
+      "request_id": "string:36",
+      "netlify_request_id": "string:26",
+      "message": "string:885"
+    }
+  ],
+  "log_markers": [
+    {
+      "type": "report",
+      "ts": 1791342601774,
+      "level": "INFO",
+      "request_id": "9d2194e0-4945-4090-8c91-01ba97f7e01c"
+    },
+    {
+      "type": "line",
+      "ts": 1791342602263,
+      "level": "INFO",
+      "request_id": "9d2194e0-4945-4090-8c91-01ba97f7e01c"
+    }
+  ]
+}
