@@ -9,7 +9,11 @@ export function createSessionFetch(session,fetcher=fetch){
   try{proof=await session.authorization();if(!session.current(proof))throw new HumanAuthError('stale_session');}
   catch(error){const safe=error instanceof HumanAuthError?new HumanAuthError(error.code):new HumanAuthError('auth_unavailable');safe.requestSent=false;throw safe;}
   const headers=new Headers(options.headers);headers.set('authorization','Bearer '+proof.accessToken);headers.set('x-workspace-id',proof.workspace);
-  const response=await fetcher('/v1'+path,{...options,headers,credentials:'omit',redirect:'error',cache:'no-store',referrerPolicy:'no-referrer'});
+  const init={...options,headers,credentials:'omit',redirect:'error',cache:'no-store',referrerPolicy:'no-referrer'};
+  // Acquiring a proof can yield before a sensitive operation reserves the session.
+  // Gate dispatch separately; current() must still recognize already-issued responses.
+  if(!session.canDispatch(proof)){const safe=new HumanAuthError('stale_session');safe.requestSent=false;throw safe;}
+  const response=await fetcher('/v1'+path,init);
   if(!session.current(proof))throw new HumanAuthError('stale_session');
   if(response.status===401)session.reject(proof);
   return response;

@@ -14,7 +14,7 @@ def record(name): checks.append({'check':name,'result':'passed'})
 INIT=r"""
 (() => {
  const originalFetch=window.fetch.bind(window);
- const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null,passwordStatus:200,holdPassword:false,completePassword:null};
+ const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null,passwordStatus:200,holdPassword:false,completePassword:null,reauthStatus:200,holdReauth:false,completeReauth:null};
  Date.now=()=>f.now;
  const issue=()=>({access_token:'aaa.bbb.'+(++f.sequence),refresh_token:'refresh_'+f.sequence,expires_in:120,token_type:'bearer',user:{id:'22222222-2222-4222-8222-222222222222',user_metadata:{role:'admin'}}});
  window.fetch=async (input,options={})=>{
@@ -22,7 +22,14 @@ INIT=r"""
   if(!url.startsWith('https://syntheticproject.supabase.co/auth/v1/'))return originalFetch(input,options);
   f.calls.push({url,body:options.body,authorization:new Headers(options.headers).get('authorization')});
   const json=data=>new Response(JSON.stringify(data),{status:200,headers:{'content-type':'application/json'}});
+  if(url.endsWith('/reauthenticate')&&options.method==='GET'){
+   const response=()=>f.reauthStatus===200?json({}):new Response('{}',{status:f.reauthStatus,headers:{'content-type':'application/json'}});
+   if(f.holdReauth)return new Promise(resolve=>{f.completeReauth=()=>{resolve(response());f.completeReauth=null;};});
+   return response();
+  }
   if(url.endsWith('/user')&&options.method==='PUT'){
+   const nonce=JSON.parse(options.body).nonce;
+   if(nonce&&nonce!=='123456')return new Response(JSON.stringify({code:422,error_code:'reauthentication_not_valid',msg:'private nonce diagnostic'}),{status:422,headers:{'content-type':'application/json'}});
    const response=()=>f.passwordStatus===200?json({id:'22222222-2222-4222-8222-222222222222'}):new Response(JSON.stringify({code:f.passwordStatus,error_code:f.passwordStatus===401?'insufficient_aal':'unknown',msg:'private provider diagnostic'}),{status:f.passwordStatus,headers:{'content-type':'application/json'}});
    if(f.holdPassword)return new Promise(resolve=>{f.completePassword=()=>{resolve(response());f.completePassword=null;};});
    return response();
@@ -80,6 +87,69 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#change-password-login').click()
+    page.locator('#current-password').fill('rascunho de senha atual')
+    page.locator('#password-nonce').fill('000000')
+    page.evaluate('__authFixture.holdReauth=true')
+    page.locator('#request-password-code').click()
+    page.wait_for_function('typeof __authFixture.completeReauth === "function"')
+    expect(page.locator('#current-password')).to_have_value('')
+    expect(page.locator('#password-nonce')).to_have_value('')
+    expect(page.locator('#submit-password-change')).to_be_disabled()
+    expect(page.locator('#request-password-code')).to_be_disabled()
+    page.keyboard.press('Escape')
+    expect(page.locator('#password-change-dialog')).to_be_visible()
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/user'))")
+    page.evaluate('__authFixture.completeReauth()')
+    expect(page.locator('#password-change-status')).to_contain_text('Solicitação confirmada')
+    page.locator('#current-password').fill(' senha atual ')
+    page.locator('#new-password').fill(' senha nova ')
+    page.locator('#confirm-password').fill(' senha nova ')
+    page.locator('#password-nonce').fill('123456')
+    page.locator('#submit-password-change').click()
+    expect(page.locator('#login-status')).to_contain_text('Senha alterada e confirmada')
+    expect(page.locator('#password-nonce')).to_have_value('')
+    assert page.evaluate("JSON.parse(__authFixture.calls.find(x=>x.url.endsWith('/user')).body).nonce")=='123456'
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/reauthenticate')).length")==1
+    assert posts==[] and not errors,errors
+    record('Explicit code request serializes with password change, clears secrets and sends nonce once without business replay')
+    context.close()
+    context,page,errors,posts=prepare(browser)
+    fill_login(page)
+    expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
+    page.locator('#message-body').fill('Rascunho preservado após falha do código.')
+    page.locator('#change-password').click()
+    page.evaluate('__authFixture.reauthStatus=503')
+    page.locator('#request-password-code').click()
+    expect(page.locator('#password-change-status')).to_contain_text('NÃO foi confirmada')
+    expect(page.locator('#request-password-code')).to_be_enabled()
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/reauthenticate')).length")==1
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/user'))")
+    page.locator('#cancel-password-change').click()
+    expect(page.locator('#message-body')).to_have_value('Rascunho preservado após falha do código.')
+    assert not errors,errors
+    record('Unconfirmed code request preserves the current context and never retries or mutates the password')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#change-password-login').click()
+    page.locator('#current-password').fill(' senha atual ')
+    page.locator('#new-password').fill(' senha nova ')
+    page.locator('#confirm-password').fill(' senha nova ')
+    page.locator('#password-nonce').fill('000000')
+    page.locator('#submit-password-change').click()
+    expect(page.locator('#login-status')).to_contain_text('código de confirmação expirou')
+    expect(page.locator('#password-nonce')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/user')).length")==1
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/reauthenticate'))")
+    assert 'private nonce diagnostic' not in page.locator('body').text_content()
+    assert not errors,errors
+    record('Invalid nonce is refused explicitly without provider diagnostics or automatic code/password resend')
+    context.close()
     context,page,errors,posts=prepare(browser)
     fill_login(page)
     expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
