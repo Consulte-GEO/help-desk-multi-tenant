@@ -38,7 +38,7 @@ const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempot
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
+function clearSession(){$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');}
 async function login(){s.me=await api('/me');if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -366,10 +366,13 @@ $('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.t
 }
 $('logout').onclick=()=>run(leaveHumanSession);
 $('cancel-login').onclick=()=>run(leaveHumanSession);
+$('choose-workspace').onclick=()=>run(()=>humanSession?.selectWorkspace($('workspace-choice').value));
 function humanChanged(value){
  const previous=lastHumanPhase;lastHumanPhase=value.phase;
- const authenticationOnly=s.config?.operational===false;
- $('submit-login').disabled=value.phase==='signing_in'||(authenticationOnly&&value.phase!=='signed_out');$('cancel-login').hidden=value.phase!=='signing_in'&&!(authenticationOnly&&value.phase!=='signed_out');$('cancel-login').textContent=value.phase==='signing_in'?'Cancelar entrada':'Encerrar sessão';
+ const authenticationOnly=s.config?.operational===false,choosing=value.phase==='selecting_workspace';
+ $('workspace-choice-label').hidden=!choosing;$('choose-workspace').hidden=!choosing;
+ if(choosing){$('workspace-choice').replaceChildren(option('','Selecione um workspace'),...value.workspaceOptions.map(w=>option(w.id,w.name)));$('login-status').textContent='Identidade validada. Escolha o workspace para confirmar seu acesso.';}
+ $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace'].includes(value.phase)&&!(authenticationOnly&&value.phase!=='signed_out');$('cancel-login').textContent=['signing_in','selecting_workspace'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
  $('session-banner').hidden=!['paused','refreshing'].includes(value.phase);
  $('retry-session').hidden=value.phase!=='paused';$('retry-session').disabled=value.phase==='refreshing';
  $('session-status').textContent=value.phase==='paused'
@@ -402,7 +405,7 @@ $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
    const result=await humanSession.signOut();
    if(attempt!==loginAttempt||humanSession.state().phase!=='signed_out')return;
    $('login-status').textContent=error.message+(result==='unconfirmed'?' Saída no provedor não confirmada.':'');
-  }else if(!s.me){$('login-status').textContent=error.message;}
+  }else if(!s.me){$('login-status').textContent=error.message+(error.logoutUnconfirmed?' Saída no provedor não confirmada.':'');}
   else notice(error.message,true);
  }
 });};

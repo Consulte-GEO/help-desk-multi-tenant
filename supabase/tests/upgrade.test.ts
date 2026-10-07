@@ -14,7 +14,7 @@ import type {Principal} from '../../src/domain/model.ts';
 
 const targets=validateDatabaseTestTargets(process.env);
 const bundle=await loadMigrationBundle(process.cwd());
-if(bundle.schemaVersion!=='0.18.0'||bundle.migrations.length!==11||bundle.migrations[10]?.file!=='20260917001100_conversation_lock.sql'||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
+if(bundle.schemaVersion!=='0.19.0'||bundle.migrations.length!==12||bundle.migrations[11]?.file!=='20261007001200_workspace_discovery.sql'||bundle.migrations[10]?.file!=='20260917001100_conversation_lock.sql'||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
  throw Error('Review the upgrade scenario before changing the candidate migration set.');
 const upgradeUrl=(base:string)=>{const url=new URL(base);url.pathname='/helpdesk_upgrade_test';return url.toString();};
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
@@ -96,12 +96,21 @@ before(async()=>{
  afterLockMeta=(await admin.query(metadataSql)).rows;
  afterLockRows=await captureRows();
  assert.equal((await admin.query('select id from helpdesk_audit.write_effects')).rowCount,0);
+ const discoveryBefore=await captureRows();
+ const accessSql="select jsonb_build_object('memberships',(select coalesce(jsonb_agg(to_jsonb(m) order by workspace_id,principal_id),'[]'::jsonb) from helpdesk_auth.workspace_memberships m),'grants',(select coalesce(jsonb_agg(to_jsonb(g) order by workspace_id,account_id,principal_id),'[]'::jsonb) from helpdesk_auth.account_grants g),'scopes',(select coalesce(jsonb_agg(to_jsonb(s) order by workspace_id,principal_id,revision),'[]'::jsonb) from helpdesk_auth.human_scope_versions s)) as state";
+ const accessBefore=(await admin.query(accessSql)).rows;
+ await admin.query(bundle.migrations[11]!.sql);
+ assert.deepEqual(await captureRows(),discoveryBefore);
+ assert.deepEqual((await admin.query(accessSql)).rows,accessBefore);
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });
 after(async()=>{await app?.end();await admin?.end();await control?.end();});
 test('upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
-test('upgrade exposes schema 0.18.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgrade exposes schema 0.19.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgraded grant-only human discovers its legacy workspace through the restricted login',async()=>{
+ assert.deepEqual((await app.query('select helpdesk_auth.list_human_workspaces($1) as result',[id(1011)])).rows[0]?.result,[{id:id(1),name:'Synthetic upgrade workspace'}]);
+});
 test('legacy ticket receives null assignment without changing its version or policy',async()=>{const ticket=await service.get(requester,id(901));assert.equal(ticket.assignedTo,null);assert.equal(ticket.version,2);assert.deepEqual(ticket.contractSnapshot,original.contractSnapshot);});
 test('legacy idempotency replay retains its old snapshot without synthesizing assignment',async()=>{const result=await service.create(requester,input,key,'synthetic-upgrade');assert.equal(result.replayed,true);assert.deepEqual(result.ticket,original);assert.equal(Object.hasOwn(result.ticket,'assignedTo'),false);});
 test('public conversation remains readable while old internal note is denied to customer',async()=>{assert.equal((await service.messages(requester,id(901)))[0]?.body,'Synthetic public message');await assert.rejects(()=>service.notes(requester,id(901)),{status:403});assert.equal((await service.notes(agent,id(901)))[0]?.body,'Synthetic internal note');});

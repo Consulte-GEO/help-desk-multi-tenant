@@ -10,6 +10,13 @@ import {principal} from './fixtures.ts';
 const secret='s'.repeat(43);
 function db(answer:unknown={allowed:true,retry_after:0}){const calls:{sql:string;values:unknown[]}[]=[];const pool:SqlPool={query:async(sql,values=[])=>{calls.push({sql,values});return {rows:[{decision:answer}],rowCount:1};},connect:async()=>{throw Error('not needed');},end:async()=>{}};return {pool,calls};}
 const request=(path='/v1/tickets',headers:Record<string,string>={})=>new Request('https://helpdesk.test'+path,{headers});
+test('workspace discovery shares the bounded authentication budget with token exchange',async()=>{
+ const f=db(),r=createPostgresRateLimiter(f.pool,secret);
+ await r.beforeAuthentication(request('/v1/workspaces'),{clientIp:'192.0.2.1'});
+ await r.beforeAuthentication(request('/v1/integration-tokens'),{clientIp:'192.0.2.1'});
+ assert.deepEqual(f.calls[0]?.values,f.calls[1]?.values);
+ assert.equal(JSON.parse(String(f.calls[0]?.values[0])).length,2);
+});
 for(const ip of ['127.0.0.1','2001:db8::1','::ffff:192.0.2.1'])test(`accepts trusted client address ${ip}`,()=>assert.ok(normalizeClientIp(ip)));
 for(const ip of [undefined,'','192.0.2.1, 198.51.100.1','attacker.invalid','not an ip',' 192.0.2.1'])test(`rejects absent or invalid trusted address ${ip}`,()=>assert.throws(()=>normalizeClientIp(ip),{code:'trusted_client_ip_required'}));
 test('IPv6 alternative spellings and mapped IPv4 have a single quota identity',()=>{assert.equal(normalizeClientIp('2001:0DB8:0:0:0:0:0:1'),normalizeClientIp('2001:db8::1'));assert.equal(normalizeClientIp('::ffff:192.0.2.1'),normalizeClientIp('192.0.2.1'));});

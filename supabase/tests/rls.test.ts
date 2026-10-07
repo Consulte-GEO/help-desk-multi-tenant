@@ -1,5 +1,6 @@
 import {registerHostedAcceptanceSqlTests} from './hosted-acceptance-scenarios.ts';
 import {registerFirstAdminTests} from './first-admin-scenarios.ts';
+import {registerWorkspaceDiscoveryTests} from './workspace-discovery-scenarios.ts';
 import {probeDatabaseReadOnly} from '../../src/infrastructure/runtime-preflight.ts';
 import test,{before,after,describe} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
@@ -1089,5 +1090,6 @@ test('M1-R6 lost acknowledgement plus throwing release keeps unknown outcome and
 // Registered inside the same guarded describe; no additional runner or remote target.
 registerHostedAcceptanceSqlTests(()=>({admin,app}));
 registerFirstAdminTests(()=>admin,()=>app);
+registerWorkspaceDiscoveryTests(()=>admin,()=>app);
 
 });

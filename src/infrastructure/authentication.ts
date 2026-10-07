@@ -1,4 +1,5 @@
 import {readIdentityResponse} from './auth-response.ts';
+import {workspaceOptions} from './workspace-discovery.ts';
 import {SHORT_SESSION_PATTERN, sessionResult, invalidSessionResult} from './session-lifecycle.ts';
 import {validatePrincipal} from './principal-validation.ts';
 import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';import type {Principal} from '../domain/model.ts';import {HelpdeskError} from '../domain/errors.ts';import {secretHash} from '../domain/canonical.ts';import {uuidIdentifier as identifier} from '../domain/input-values.ts';
@@ -8,7 +9,13 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
   const w=request.headers.get('x-workspace-id');if(!w)throw new HelpdeskError(400,'workspace_required','Informe X-Workspace-Id.');const workspace=identifier(w);const token=match[1]!;let value:unknown;
   if(token.startsWith('hd_key_'))throw new HelpdeskError(401,'session_required','Troque a credencial por uma sessão curta.');
   if(token.startsWith('hd_session_')){if(!SHORT_SESSION_PATTERN.test(token))throw new HelpdeskError(401,'unauthorized','Sessão inválida.');value=(await pool.query('select helpdesk_auth.resolve_session($1,$2) as principal',[secretHash(token),workspace])).rows[0]?.principal;}
-  else{
+  else{const userId=await humanIdentity(token);
+   value=(await pool.query('select helpdesk_auth.resolve_human($1,$2) as principal',[userId,workspace])).rows[0]?.principal;
+  }
+  if(!value||typeof value!=='object')throw new HelpdeskError(403,'membership_required','Acesso não autorizado ao workspace.');
+  return validatePrincipal(value,workspace,token.startsWith('hd_session_')?'integration':'human');
+ }
+ async function humanIdentity(token:string):Promise<string>{
    const signal=AbortSignal.timeout(5000);
    let result:Response;try{result=await fetcher(`${config.supabaseUrl}/auth/v1/user`,{headers:{authorization:`Bearer ${token}`,apikey:config.publishableKey},signal,redirect:'error'});}catch{throw new HelpdeskError(503,'auth_unavailable','Validação de identidade temporariamente indisponível.');}
    if(!result.ok){
@@ -21,10 +28,14 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
    let userId:string;
    try{const user:unknown=await readIdentityResponse(result,signal);if(!user||typeof user!=='object'||Array.isArray(user))throw Error();userId=identifier((user as {id:unknown}).id);}
    catch{throw new HelpdeskError(503,'auth_unavailable','Resposta inválida do serviço de identidade. Acesso não concedido.');}
-   value=(await pool.query('select helpdesk_auth.resolve_human($1,$2) as principal',[userId,workspace])).rows[0]?.principal;
-  }
-  if(!value||typeof value!=='object')throw new HelpdeskError(403,'membership_required','Acesso não autorizado ao workspace.');
-  return validatePrincipal(value,workspace,token.startsWith('hd_session_')?'integration':'human');
+   return userId;
+ }
+ async function discoverWorkspaces(request:Request){
+  const token=/^Bearer ([^\s]{1,8192})$/.exec(request.headers.get('authorization')??'')?.[1];
+  if(!token||token.startsWith('hd_'))throw new HelpdeskError(401,'unauthorized','Sessão humana necessária.');
+  const userId=await humanIdentity(token);
+  const value=(await pool.query('select helpdesk_auth.list_human_workspaces($1) as workspaces',[userId])).rows[0]?.workspaces;
+  return {items:workspaceOptions(value)};
  }
  async function exchangeToken(key:string){
   if(!/^hd_key_[A-Za-z0-9_-]{43,128}$/.test(key))throw new HelpdeskError(401,'unauthorized','Credencial inválida.');
@@ -39,5 +50,5 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
   const result=(await pool.query('select helpdesk_auth.revoke_session($1) as result',[secretHash(token)])).rows[0]?.result;
   if(result!==true)throw invalidSessionResult();
  }
- return {authenticate,exchangeToken,revokeSession};
+ return {authenticate,discoverWorkspaces,exchangeToken,revokeSession};
 }
