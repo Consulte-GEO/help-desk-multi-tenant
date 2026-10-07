@@ -34,3 +34,11 @@ Planos/recibos brutos de produção ficam privados. Evidência pública usa cont
 Typecheck, contratos, lock e onze migrations verificados; dependências e schema0.18 preservados. Aceite SQL/CI e aplicação em produção serão registrados depois da execução. O SQL destrutivo de fixtures permanece limitado ao cluster descartável do CI; nunca executar esse runner no Supabase de produção.
 
 O gate de atendimento permanece fechado. Restam Auth real, M2M, cadastros comerciais/operacionais e percurso de atendimento, capacidade e restore. A escolha do primeiro atendimento é uma decisão separada da identidade do primeiro administrador.
+
+## Evidência real do CI
+
+Primeira execução [37611339338](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37611339338): aplicação1.482 e interface79 aprovadas; SQL218/223. O PostgreSQL identificou a diferença de tipos entre `audit_events.request_id` (texto) e `human_scope_versions.request_id` (UUID), impedindo o recibo. Corrigido convertendo UUID conhecido para texto, sem converter dados de auditoria potencialmente inválidos. A revisão também identificou uma ambiguidade entre variável e coluna `revision` no replay; a consulta foi qualificada. Nenhum teste ou condição de autorização foi removido.
+
+Execução corrigida [37612760558](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37612760558), tentativa1, HEAD `18a63f5051b84246ac2a2c2ca72f09ebb4510a0a`, merge de teste `08971cde11ee264827ed3e115244cb2c9a8608c0`: **1.482/1.482 aplicação, 223/223 PostgreSQL e 79/79 interface**, zero falhas/skips. Lock, instalação, audit e validação de evidência aprovados. Revisão separada final sem novos achados.
+
+Artefato verde `11478500661`, ZIP SHA256 `0dda7bb44bc32e6e0fbd9419066d4c3ff5cc8127a31593c20a885132649f96a1`; fingerprint `5661ad13aa0de843f55f0423d31f50b874a03a78f9a9b10f16f6862073a10c24`. Origem/run/commit/fingerprint e seis logs conferidos. Conjunto exato em `evidence/first-admin/ci-green` e gate canônico. O vermelho é histórico em `evidence/first-admin/ci-red`, ZIP SHA256 `25ef42232532fd306e0facb790e13292c2dbd6f160070d08813d05b2cd7b451d`. `platform_approved:false` permanece em todos os conjuntos; CI não é login humano nem liberação operacional.
