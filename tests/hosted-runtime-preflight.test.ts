@@ -78,14 +78,18 @@ test('the Netlify entry point subscribes only to deployment events without a pub
 
 test('another site, preview or malformed deployment cannot read runtime secrets or run a probe',async()=>{
  const module=await import('../netlify/functions/runtime-preflight.mts');
- const previous=(globalThis as any).Netlify;let reads=0;
+ const previous=(globalThis as any).Netlify;const previousLog=console.log;let reads=0;const logs:string[]=[];
  try{
   (globalThis as any).Netlify={env:{get:()=>{reads++;throw Error('should_not_read');}}};
+  console.log=(message:string)=>{logs.push(message);};
   const expected='9781cd85-7dc1-4ef5-868b-947e389a9d4d';
   for(const event of [undefined,{}, {site:{id:expected},deploy:{siteId:expected,context:'deploy-preview'}},
    {site:{id:'other'},deploy:{siteId:expected,context:'production'}},
    {site:{id:expected},deploy:{siteId:'other',context:'production'}}])
    await module.default.deploySucceeded(event as any);
   assert.equal(reads,0);
- }finally{(globalThis as any).Netlify=previous;}
+  assert.equal(logs.length,5);
+  for(const line of logs){const entry=JSON.parse(line);assert.equal(entry.event,'helpdesk.runtime-preflight.skipped');
+   assert.equal(entry.business_operations_dispatched,0);assert.equal(entry.success,false);assert.equal(entry.credentials_read,false);}
+ }finally{(globalThis as any).Netlify=previous;console.log=previousLog;}
 });

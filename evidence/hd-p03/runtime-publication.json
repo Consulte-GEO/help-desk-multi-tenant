@@ -1,0 +1,52 @@
+{
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac5b35ab718b99e8567b291",
+  "commit": "5a868d56c8651bbdd4ae03cd0c1fe4f7cf8f5a45",
+  "state": "ready",
+  "context": "production",
+  "published": true,
+  "functions": [
+    {
+      "name": "api",
+      "route": [
+        {
+          "p": "/v1/*",
+          "l": null,
+          "e": "^\\/v1(?:\\/(.*))\\/?$",
+          "m": [],
+          "ps": false
+        }
+      ]
+    },
+    {
+      "name": "runtime-preflight",
+      "events": [
+        "deploy_succeeded"
+      ]
+    }
+  ],
+  "logs": [],
+  "log_status": 200,
+  "log_entries": 1,
+  "log_response_keys": [
+    "logs"
+  ],
+  "log_shapes": [
+    {
+      "type": "string:4",
+      "ts": "number",
+      "level": "string:0",
+      "request_id": "string:36",
+      "netlify_request_id": "string:26",
+      "message": "string:0"
+    }
+  ],
+  "log_markers": [
+    {
+      "type": "line",
+      "ts": 1791341426627,
+      "level": "",
+      "request_id": "258c449b-bc89-40a0-8820-131be679f5d3"
+    }
+  ]
+}
