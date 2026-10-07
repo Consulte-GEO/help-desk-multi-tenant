@@ -1,0 +1,127 @@
+{
+  "scope": "production-totp-enrollment-boundary",
+  "checked_at": "2026-10-07T20:38:31.207Z",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac6ad5e39be6b0008846e49",
+  "commit": "912bea238e5d801a350e300cabea24a6ca45957a",
+  "context": "production",
+  "state": "ready",
+  "checks": [
+    {
+      "check": "delivered-source:index.html",
+      "status": 200,
+      "same_source": true,
+      "sha256": "5afc6b4142c103848a6936a04c78bcab247e3d5ee8e79c5145f5d9668b637ba1"
+    },
+    {
+      "check": "delivered-source:account-security.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "13f6295ed561f905a26ee6edd840143911f09d1e7844f30214e266f7f7ca3800"
+    },
+    {
+      "check": "delivered-source:app.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "ec0d8fd1c4307dd7bdda9cd10cf6552132bb8d0b99379373ba62dfe379e48938"
+    },
+    {
+      "check": "delivered-source:human-auth.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "b7374353b1cd37cd86b45fbcb6787e83d0239c2d39825f975ce63f8e4bd47603"
+    },
+    {
+      "check": "delivered-source:human-session.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "09e5f505f49fac94c9dd7ab4404a48cd926b74008679e9d6e9fb544eadf07348"
+    },
+    {
+      "check": "delivered-source:session-fetch.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340"
+    },
+    {
+      "check": "delivered-source:shared/mfa.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "fb2e171bf6a049b6d4cfc5ec54f7ebd2f008a593c3e14db1141f6a051377f9b0"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /workspaces?user_id=forged",
+      "status": 400,
+      "code": "invalid_input"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /public-config",
+      "status": 200,
+      "code": null,
+      "official_auth_url": true,
+      "publishable_key_present": true,
+      "operational": false
+    },
+    {
+      "check": "GET /capabilities",
+      "status": 200,
+      "code": null,
+      "operational": false,
+      "business_capabilities": false
+    },
+    {
+      "check": "GET /me",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "GET /support-contexts",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /contexts/resolve",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "provider GET /reauthenticate without bearer",
+      "status": 401,
+      "authenticated_message_request": false
+    },
+    {
+      "check": "provider POST TOTP challenge without bearer",
+      "status": 401,
+      "authenticated_challenge_requested": false
+    },
+    {
+      "check": "provider POST TOTP enrollment without bearer",
+      "status": 401,
+      "authenticated_enrollment_requested": false
+    }
+  ],
+  "human_login_tested": false,
+  "m2m_credentials_tested": false,
+  "business_operations_dispatched": 0,
+  "platform_approved": false
+}
