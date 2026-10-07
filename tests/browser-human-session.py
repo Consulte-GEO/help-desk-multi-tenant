@@ -32,7 +32,7 @@ INIT=r"""
  };
 })();
 """
-def prepare(browser):
+def prepare(browser, authentication_only=False):
     context=browser.new_context(viewport={'width':1440,'height':1000})
     context.add_init_script(INIT)
     page=context.new_page()
@@ -42,7 +42,9 @@ def prepare(browser):
     page.route('**/demo-config',lambda r:r.fulfill(status=404,body=''))
     def api(route):
         path=urlparse(route.request.url).path
-        if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest'}
+        if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest',**({'operational':False} if authentication_only else {})}
+        elif authentication_only and path!='/v1/me':
+            errors.append('Business request before release: '+path);route.fulfill(status=503,body='{}');return
         elif path=='/v1/me': value={'id':'33333333-3333-4333-8333-333333333333','kind':'human','workspace_id':WS,'workspace_role':None,'grants':[{'account_id':ACCOUNT,'role':'agent'}],'scopes':['tickets:read','tickets:write','notes:read','notes:write','contexts:resolve']}
         elif path=='/v1/tickets': value={'items':[ticket],'next_cursor':None}
         elif path=='/v1/tickets/'+TICKET: value={**ticket,'available_actions':{'ticket_id':TICKET,'version':ticket['version'],'reply':True,'read_notes':True,'add_note':True,'change_priority':True,'claim':True,'release':False,'transitions':[{'to':'triage','requires_reason':False},{'to':'open','requires_reason':False},{'to':'cancelled','requires_reason':False}]}}
@@ -119,6 +121,24 @@ with sync_playwright() as p:
     expect(page.locator('#submit-login')).to_be_enabled()
     assert not errors,errors
     record('Cancelled login never shows the application and closes the late-returned synthetic provider session')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    expect(page.locator('#cancel-login')).to_have_text('Encerrar sessão')
+    expect(page.locator('#password')).to_have_value('')
+    assert page.evaluate('localStorage.length + sessionStorage.length')==0
+    assert not errors,errors
+    assert posts==[]
+    record('Authentication-only login validates own profile without requesting business data or displaying an empty ticket list')
+    page.locator('#cancel-login').click()
+    expect(page.locator('#login-status')).to_contain_text('Sessão atual encerrada no provedor')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#cancel-login')).to_be_hidden()
+    assert not errors,errors
+    record('Authentication-only signed-in page allows explicit provider logout and a new login')
     context.close();browser.close()
 (ROOT/'evidence/browser-human-session.json').write_text(json.dumps({'scope':'synthetic-provider-DOM','checks':checks},ensure_ascii=False,indent=2))
 print(json.dumps(checks,ensure_ascii=False,indent=2))
