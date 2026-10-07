@@ -1,10 +1,10 @@
 /** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
 import {HumanAuthError,workspaceId} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
- let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0;
+ let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
  const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([])});
  const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
- function clear(){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase='signed_out';workspace=null;session=null;pending=null;refreshAt=0;notify();}
+ function clear(nextPhase='signed_out'){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase=nextPhase;workspace=null;session=null;pending=null;refreshAt=0;notify();}
  function install(value){session=value;refreshAt=value.expiresAt-Math.min(60000,Math.floor((value.expiresAt-now())/2));}
  function proof(){return Object.freeze({accessToken:session.accessToken,workspace,generation});}
  const current=p=>!!session&&p?.generation===generation&&p?.workspace===workspace;
@@ -60,14 +60,23 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   return proof();
  }
  async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='refreshing')return pending.result;return rotate();}
- async function signOut(){
-  const old=session,wait=pending;clear();
+ async function signOut({scope='local'}={}){
+  if(!['local','global'].includes(scope))throw new HumanAuthError('invalid_logout_scope');
+  if(ending)return ending;
+  const old=session,wait=pending;clear(scope==='global'?'signing_out':'signed_out');
   // Await an already-issued login/rotation so the newest returned token is revoked, never installed.
   // Transport has a deadline. The UI is cleared synchronously before this await.
-  let target=old?.accessToken;
-  if(wait){try{const value=await wait.raw;if(usable(value))target=value.accessToken;}catch{}}
-  if(!target)return wait?'unconfirmed':'not_requested';
-  try{await transport.signOut(target);return 'confirmed';}catch{return 'unconfirmed';}
+  const finish=(async()=>{
+   let target=old?.accessToken;
+   if(wait){try{const value=await wait.raw;if(usable(value)&&(!old||value.userId===old.userId))target=value.accessToken;}catch{}}
+   if(!target)return wait?'unconfirmed':'not_requested';
+   try{await transport.signOut(target,scope);return 'confirmed';}catch{return 'unconfirmed';}
+  })();
+  if(scope==='local')return finish;
+  // A global request can revoke a newly-created provider session. Do not allow login
+  // in this page until its bounded result arrives; duplicate requests join it.
+  ending=finish;
+  try{return await finish;}finally{ending=null;phase='signed_out';notify();}
  }
  function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;clear();return true;}
  function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}

@@ -4,6 +4,7 @@ const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const messages=Object.freeze({
  invalid_auth_config:'Configuração de autenticação indisponível.',
  invalid_login:'Informe e-mail, senha e um workspace válido.',
+ invalid_logout_scope:'Tipo de encerramento de sessão inválido.',
  login_in_progress:'Uma autenticação já está em andamento. Aguarde ou cancele.',
  login_failed:'Não foi possível autenticar. Verifique suas credenciais e a configuração de acesso.',
  auth_unavailable:'Não foi possível renovar ou validar a sessão. Tente novamente.',
@@ -96,6 +97,6 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
    return request('/token?grant_type=password',{email:email.trim(),password},null,'login');
   },
   async refresh(token){if(!tokenText(token,4096))throw new HumanAuthError('session_rejected');return request('/token?grant_type=refresh_token',{refresh_token:token},null,'refresh');},
-  async signOut(token){if(!tokenText(token,8192)||!JWT.test(token))throw new HumanAuthError('auth_logout_unconfirmed');await request('/logout?scope=local',null,token,'logout');}
+  async signOut(token,scope='local'){if(!['local','global'].includes(scope))throw new HumanAuthError('invalid_logout_scope');if(!tokenText(token,8192)||!JWT.test(token))throw new HumanAuthError('auth_logout_unconfirmed');await request('/logout?scope='+scope,null,token,'logout');}
  });
 }

@@ -14,7 +14,7 @@ def record(name): checks.append({'check':name,'result':'passed'})
 INIT=r"""
 (() => {
  const originalFetch=window.fetch.bind(window);
- const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null};
+ const f=window.__authFixture={now:Date.now(),sequence:0,calls:[],refreshStatus:200,logoutStatus:204,holdLogin:false,completeLogin:null,holdLogout:false,completeLogout:null};
  Date.now=()=>f.now;
  const issue=()=>({access_token:'aaa.bbb.'+(++f.sequence),refresh_token:'refresh_'+f.sequence,expires_in:120,token_type:'bearer',user:{id:'22222222-2222-4222-8222-222222222222',user_metadata:{role:'admin'}}});
  window.fetch=async (input,options={})=>{
@@ -27,7 +27,11 @@ INIT=r"""
    return json(issue());
   }
   if(url.endsWith('/token?grant_type=refresh_token'))return f.refreshStatus===200?json(issue()):new Response('{}',{status:f.refreshStatus,headers:{'content-type':'application/json'}});
-  if(url.endsWith('/logout?scope=local'))return new Response(f.logoutStatus===204?null:'{}',{status:f.logoutStatus});
+  if(url.endsWith('/logout?scope=local')||url.endsWith('/logout?scope=global')){
+   const response=()=>new Response(f.logoutStatus===204?null:'{}',{status:f.logoutStatus});
+   if(f.holdLogout)return new Promise(resolve=>{f.completeLogout=()=>{resolve(response());f.completeLogout=null;};});
+   return response();
+  }
   throw Error('Unexpected synthetic Auth route');
  };
 })();
@@ -71,6 +75,48 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser)
+    fill_login(page)
+    expect(page.locator('#ticket-title')).to_have_text('Chamado sintético da sessão')
+    page.locator('#message-body').fill('Rascunho privado antes de encerrar sessões.')
+    page.locator('#logout-all').click()
+    expect(page.locator('#logout-all-dialog')).to_be_visible()
+    expect(page.locator('#logout-all-dialog')).to_contain_text('até expirar')
+    page.locator('#cancel-logout-all').click()
+    expect(page.locator('#message-body')).to_have_value('Rascunho privado antes de encerrar sessões.')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.includes('/logout?'))")
+    record('Cancelling global logout preserves the current draft and contacts no provider')
+    page.evaluate('__authFixture.holdLogout=true')
+    page.locator('#logout-all').click()
+    page.locator('#confirm-logout-all').click()
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#message-body')).to_have_value('')
+    expect(page.locator('#ticket-title')).to_have_text('')
+    expect(page.locator('#submit-login')).to_be_disabled()
+    page.wait_for_function('typeof __authFixture.completeLogout === "function"')
+    assert page.evaluate('__authFixture.calls.at(-1).url').endswith('/logout?scope=global')
+    page.evaluate('__authFixture.completeLogout()')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#login-status')).to_contain_text('Todas as sessões')
+    expect(page.locator('#login-status')).to_contain_text('até expirar')
+    assert posts==[]
+    assert page.evaluate('localStorage.length + sessionStorage.length')==0
+    assert not errors,errors
+    record('Confirmed global logout clears the DOM immediately and blocks new login while revocation is pending')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.evaluate('__authFixture.logoutStatus=503')
+    page.locator('#logout-all-login').click()
+    page.locator('#confirm-logout-all').click()
+    expect(page.locator('#login-status')).to_contain_text('NÃO foi confirmado')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#app')).to_be_hidden()
+    assert page.evaluate('__authFixture.calls.at(-1).url').endswith('/logout?scope=global')
+    assert not errors,errors
+    record('Failed global logout before service release clears local identity and reports unconfirmed revocation')
+    context.close()
     next_workspace='88888888-8888-4888-8888-888888888888'
     context,page,errors,posts=prepare(browser,workspace_options=[{'id':next_workspace,'name':'Outra operação autorizada'}])
     fill_login(page)
