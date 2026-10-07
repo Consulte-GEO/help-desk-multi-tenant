@@ -22,7 +22,11 @@ INIT=r"""
   if(!url.startsWith('https://syntheticproject.supabase.co/auth/v1/'))return originalFetch(input,options);
   f.calls.push({url,method:options.method,body:options.body,authorization:new Headers(options.headers).get('authorization')});
   const json=data=>new Response(JSON.stringify(data),{status:200,headers:{'content-type':'application/json'}});
-  if(url.endsWith('/user')&&options.method==='GET')return json({id:'22222222-2222-4222-8222-222222222222',factors:f.factors});
+  if(url.endsWith('/user')&&options.method==='GET'){
+   const response=()=>f.securityStatus===503?new Response('{}',{status:503,headers:{'content-type':'application/json'}}):json({id:'22222222-2222-4222-8222-222222222222',factors:f.factors});
+   if(f.holdSecurity)return new Promise(resolve=>{f.completeSecurity=()=>{resolve(response());f.completeSecurity=null;};});
+   return response();
+  }
   if(url.endsWith('/factors')&&options.method==='POST'){
    const factor={id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'unverified'};f.factors.push(factor);
    return json({id:factor.id,type:'totp',totp:{secret:'JBSWY3DPEHPK3PXP',qr_code:'<svg><script>private</script></svg>',uri:'otpauth://private'}});
@@ -98,6 +102,36 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#security-status-login')).to_be_visible()
+    page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'verified',friendly_name:'<img src=x onerror=private>',secret:'private'},{id:'88888888-8888-4888-8888-888888888888',factor_type:'phone',status:'unverified',phone:'private'}]")
+    page.locator('#security-status-login').click()
+    expect(page.locator('#security-factors')).to_contain_text('Confirmado')
+    expect(page.locator('#security-factors')).to_contain_text('Pendente')
+    expect(page.locator('#security-level')).to_contain_text('AAL1')
+    assert page.locator('#security-dialog img').count()==0
+    assert 'private' not in page.locator('#security-dialog').inner_text()
+    assert all(x['method']=='GET' for x in page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/user'))"))
+    assert posts==[]
+    record('Own security panel displays live confirmed/pending factors and advisory AAL without secrets, contact data or writes')
+    page.evaluate('__authFixture.securityStatus=503')
+    page.locator('#refresh-security').click()
+    expect(page.locator('#security-read-status')).to_contain_text('Não foi possível')
+    expect(page.locator('#security-factors')).to_have_text('')
+    expect(page.locator('#security-level')).to_have_text('')
+    assert page.locator('#cancel-login').is_visible()
+    record('Failed security update removes the old snapshot and preserves the authenticated session for explicit retry')
+    page.evaluate('__authFixture.securityStatus=200;__authFixture.holdSecurity=true')
+    page.locator('#refresh-security').click()
+    page.wait_for_function('typeof __authFixture.completeSecurity === "function"')
+    page.locator('#close-security').click()
+    page.evaluate('__authFixture.completeSecurity()')
+    expect(page.locator('#security-dialog')).to_be_hidden()
+    expect(page.locator('#security-factors')).to_have_text('')
+    assert not errors,errors
+    record('Closing own security during a held read cannot repopulate hidden private DOM with the late response')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     fill_login(page)
     expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')

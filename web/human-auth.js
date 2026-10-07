@@ -1,5 +1,5 @@
 /** Bounded adapter for Supabase password/refresh/local-logout. Not an authorization engine. */
-import {verifiedMfaFactors,hasAal2Claims,sameUserClaims} from '../shared/mfa.js';
+import {verifiedMfaFactors,hasAal2Claims,sameUserClaims,sessionAssuranceLevel} from '../shared/mfa.js';
 const mfaCleanup=new WeakMap();
 /** Internal cleanup channel; credentials never become enumerable error properties. */
 export const mfaCleanupCredential=error=>mfaCleanup.get(error);
@@ -85,10 +85,19 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
   try{return await Promise.race([deadline,(async()=>{
    const headers={apikey:key,...(body?{'content-type':'application/json'}:{}),...(access?{authorization:'Bearer '+access}:{})};
-   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':['reauth','enroll_read'].includes(operation)?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':['reauth','enroll_read','security_read'].includes(operation)?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
    if(response.redirected)throw new HumanAuthError('auth_response_invalid');
    if(operation==='logout'){if(response.status!==204)throw new HumanAuthError('auth_logout_unconfirmed');return;}
    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
+   if(operation==='security_read'){
+    if(response.status===401)throw new HumanAuthError('session_rejected');
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const data=await jsonBody(response,controller.signal);
+    if(!data||typeof data!=='object'||Array.isArray(data)||typeof data.id!=='string'||data.id.toLowerCase()!==expectedUser)throw new HumanAuthError('auth_response_invalid');
+    try{verifiedMfaFactors(data.factors);}catch{throw new HumanAuthError('auth_response_invalid');}
+    const observedAt=now();
+    return Object.freeze({factors:Object.freeze((data.factors??[]).map(f=>Object.freeze({id:f.id.toLowerCase(),type:f.factor_type,status:f.status}))),currentLevel:sessionAssuranceLevel(access,expectedUser,observedAt),observedAt});
+   }
    if(['enroll_read','enroll'].includes(operation)){
     if(response.status===401)throw new HumanAuthError('session_rejected');
     if([400,403,422].includes(response.status))throw new HumanAuthError('mfa_enrollment_rejected');
@@ -156,6 +165,10 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async securityStatus(access,userId){
+   if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
+   return request('/user',null,access,'security_read',userId.toLowerCase());
+  },
   async enrollFirstMfa(access,userId){
    if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
    const pending=await request('/user',null,access,'enroll_read',userId.toLowerCase());

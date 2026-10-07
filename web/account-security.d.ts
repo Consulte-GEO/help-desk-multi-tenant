@@ -1,0 +1,1 @@
+export function createSecurityStatusPanel(options:{elements:{dialog:HTMLDialogElement;refresh:HTMLButtonElement;factors:HTMLElement;level:HTMLElement;status:HTMLElement};getSession:()=>import('./human-session.js').HumanSession|null;getEpoch:()=>number}):{open():Promise<void>|undefined;refresh():Promise<void>;clear():void};
