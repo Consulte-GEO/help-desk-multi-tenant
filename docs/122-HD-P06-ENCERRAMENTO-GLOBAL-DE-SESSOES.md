@@ -1,0 +1,23 @@
+# HD-P06 — encerramento de todas as sessões humanas
+
+A interface oferecia somente saída da sessão atual. Esta fatia permite à própria pessoa autenticada solicitar o encerramento de todas as suas sessões no projeto Auth do Help Desk, inclusive em outros dispositivos, por confirmação explícita. O botão aparece após `/me`, também com atendimento bloqueado. Não administra sessões de terceiros.
+
+Cancelar preserva contexto e rascunhos sem chamar o provedor. Confirmar remove imediatamente credenciais em memória e dados/rascunhos de atendimento no DOM. A confirmação revalida epoch e geração. Logout local e troca de workspace continuam usando `scope=local`; somente a nova ação confirmada envia `scope=global`.
+
+Durante o pedido global, o estado `signing_out` impede novo login nesta página: uma revogação global em andamento poderia encerrar uma sessão recém-criada. Pedidos repetidos compartilham o resultado. Rotação em andamento é aguardada sem reinstalar identidade; o bearer mais recente só substitui o anterior se a pessoa for a mesma. O transporte conserva prazo de cinco segundos, destino Auth fixo, ausência de redirects/storage e erros sanitizados.
+
+Sucesso exige HTTP204 do provedor. Falha/timeout mantém os dados locais removidos e informa **encerramento NÃO confirmado**. O prazo limita a espera no navegador, não comprova que o provedor deixou de processar uma solicitação cuja resposta se perdeu. Nenhuma gravação de atendimento é repetida; uma confirmação perdida de operação em andamento permanece desconhecida e exige reconciliação posterior.
+
+Mesmo com confirmação, tokens de acesso já emitidos podem continuar válidos até expirar. A documentação oficial distingue a revogação dos refresh tokens da validade desses JWTs: [Supabase — signing out](https://supabase.com/docs/guides/auth/signout), [sessões](https://supabase.com/docs/guides/auth/sessions). O aviso consta do diálogo e do resultado. Outros dispositivos não têm seu DOM apagado por esta página. Não prometer invalidação instantânea de bearer copiado ou de sessões em outros produtos.
+
+API/interface0.20.2; schema0.19.0,12 migrations,25 tabelas e19 operações permanecem. Sem alteração de grant, scope, cadastro, segredo, senha, fator ou configuração Auth. O administrador escolhido anteriormente mantém seu teto de escopos. Atendimento fechado e M1 operacional aberto.
+
+## Verificação e limites
+
+RED: seis dos oito novos testes Node falharam pela ausência de scope global, validação e bloqueio de entrada; browser falhou pela ausência do botão. GREEN:46 testes focais e92 verificações de interface local (35HTTP,39 browser de memória,18 sessão humana). Suíte Windows1544/1521/23: mesmas falhas de plataforma conhecidas, sem remoção de testes. Typecheck, contratos, manifesto de migrations, lock, scan de segredos e build aprovados.
+
+Revisão independente do diff sem bloqueadores. Duas recomendações menores ficaram registradas: cenário browser específico de confirmação antiga após nova identidade; teste integrado de timeout passando pelo transporte e estado da sessão. As proteções estão implementadas e cobertas separadamente; esses dois cenários combinados seguem pendentes.
+
+Decisões: executar uma fatia preparatória de lifecycle antes de MFA/admin completos, mantendo-os pendentes; permitir saída global explícita mesmo com operação em andamento, seguindo a semântica da saída local, sem sugerir replay automático ou sucesso de recibo perdido. Isso exige reconciliar eventual confirmação de negócio perdida na próxima entrada.
+
+CI Linux [37647961686](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/37647961686) aprovado:1544/1544 aplicação,229/229 PostgreSQL,92/92 interface, zero falhas/skips. Lock/instalação limpa/audit aprovados. Artefato11494769684, SHA256 `ad7fd43b36ee809cfc792f01a59f2d86c72c1db4495c3d7a236eb2f3b57977c5`; fonte CI `a05583523af25459a3342daaf8c18c0a52c3aa50`, fingerprint `9b4862f3bd036b29918e10c8a48ba9e95965cb630363101161c5e685906777db`. Arquivo e seis logs verificados antes de copiar para `evidence/global-signout/ci-green` e evidência canônica. Publicação pendente. Os testes Auth/browser são sintéticos. Nenhuma sessão real foi revogada durante o desenvolvimento; aceite real entre dispositivos, MFA/step-up, senha/recuperação, administração, primeiro atendimento, capacidade e restore continuam pendentes. Esta fatia não encerra HD-P06.
