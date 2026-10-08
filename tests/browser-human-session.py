@@ -32,6 +32,11 @@ INIT=r"""
    return json({id:factor.id,type:'totp',totp:{secret:'JBSWY3DPEHPK3PXP',qr_code:'<svg><script>private</script></svg>',uri:'otpauth://private'}});
   }
   if(url.endsWith('/challenge'))return json({id:'99999999-9999-4999-8999-999999999999',type:'totp',expires_at:Math.floor(f.now/1000)+60});
+  if(url==='https://syntheticproject.supabase.co/auth/v1/verify'){
+   if(f.recoveryStatus===403)return new Response(JSON.stringify({error_code:'otp_expired',msg:'private recovery'}),{status:403,headers:{'content-type':'application/json'}});
+   if(f.holdRecovery)return new Promise(resolve=>{f.completeRecovery=()=>{resolve(json(issue()));f.completeRecovery=null;};});
+   return json(issue());
+  }
   if(url.endsWith('/verify')){
    if(JSON.parse(options.body).code!=='123456')return new Response(JSON.stringify({code:422,error_code:'mfa_verification_failed'}),{status:422,headers:{'content-type':'application/json'}});
    if(f.holdMfa)return new Promise(resolve=>{f.completeMfa=()=>{resolve(json(issue('aal2')));f.completeMfa=null;};});
@@ -102,6 +107,65 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    requests=[]
+    page.on('request',lambda r:requests.append(r))
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.locator('#recover-access').click()
+    page.locator('#recovery-link').fill('https://syntheticproject.supabase.co/auth/v1/verify?type=recovery&token='+'a'*56)
+    page.locator('#verify-recovery-link').click()
+    expect(page.locator('#recovered-password')).to_be_visible()
+    expect(page.locator('#recovery-link')).to_have_value('')
+    assert not [r for r in requests if urlparse(r.url).path in ['/v1/me','/v1/workspaces','/v1/tickets']]
+    page.locator('#recovered-password').fill(' nova senha sintética ')
+    page.locator('#confirm-recovered-password').fill(' nova senha sintética ')
+    page.locator('#submit-recovered-password').click()
+    expect(page.locator('#login-status')).to_contain_text('Senha alterada')
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    expect(page.locator('#recovered-password')).to_have_value('')
+    assert page.evaluate('localStorage.length+sessionStorage.length')==0
+    payload=page.evaluate("JSON.parse(__authFixture.calls.find(x=>x.method==='PUT').body)")
+    assert payload=={'password':' nova senha sintética '}
+    assert not errors,errors
+    assert posts==[]
+    record('Recovery link yields password-only context with no workspace/business access, clears secrets and requires fresh login after update')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'verified'}]")
+    page.locator('#recover-access').click()
+    page.locator('#recovery-link').fill('https://syntheticproject.supabase.co/auth/v1/verify?type=recovery&token='+'a'*56)
+    page.locator('#verify-recovery-link').click()
+    expect(page.locator('#recovery-mfa-step')).to_be_visible()
+    expect(page.locator('#recovery-password-step')).to_be_hidden()
+    assert not page.evaluate("__authFixture.calls.some(x=>x.method==='PUT')")
+    page.locator('#recovery-mfa-code').fill('123456')
+    page.locator('#verify-recovery-mfa').click()
+    expect(page.locator('#recovery-password-step')).to_be_visible()
+    page.locator('#cancel-recovery').click()
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    assert not page.evaluate("__authFixture.calls.some(x=>x.method==='PUT'||x.method==='DELETE')")
+    assert page.evaluate('__authFixture.factors[0].status')=='verified'
+    assert not errors,errors
+    record('Recovery requires owned TOTP before password entry and cancellation neither updates password nor resets the factor')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.evaluate('__authFixture.holdRecovery=true')
+    page.locator('#recover-access').click()
+    page.locator('#recovery-link').fill('https://syntheticproject.supabase.co/auth/v1/verify?type=recovery&token='+'a'*56)
+    page.locator('#verify-recovery-link').click()
+    page.wait_for_function('typeof __authFixture.completeRecovery === "function"')
+    page.locator('#cancel-recovery').click()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    page.evaluate('__authFixture.completeRecovery()')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    expect(page.locator('#recovery-link')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.includes('/logout')).length")==1
+    assert not errors,errors
+    record('Cancelled recovery waits for late credential cleanup and never installs a signed-in workspace or hidden secret')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     page.evaluate("__authFixture.factors=[{id:'88888888-8888-4888-8888-888888888888',factor_type:'totp',status:'verified'}]")
     fill_login(page)

@@ -1,10 +1,10 @@
 /** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
-import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential} from './human-auth.js';
+import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential,validateRecoveredPassword} from './human-auth.js';
 export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
  const securityReads=new WeakMap();
  const securityStatusCurrent=value=>!!value&&typeof value==='object'&&canDispatch(securityReads.get(value));
- const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([]),mfaFactors:phase==='verifying_mfa'?pending.factors:Object.freeze([]),mfaBusy:phase==='verifying_mfa'&&pending.busy===true,enrollmentFactors:phase==='enrolling_mfa'?pending.factors??Object.freeze([]):Object.freeze([]),enrollmentBusy:phase==='enrolling_mfa'&&pending.busy===true});
+ const state=()=>Object.freeze({phase,generation,workspace,expiresAt:session?.expiresAt??null,recoveryReady:phase==='recovering_password'&&pending?.ready===true,recoveryBusy:phase==='recovering_password'&&pending?.busy===true,recoveryFactors:phase==='recovering_password'?pending?.factors??Object.freeze([]):Object.freeze([]),workspaceOptions:phase==='selecting_workspace'?pending.options:Object.freeze([]),mfaFactors:phase==='verifying_mfa'?pending.factors:Object.freeze([]),mfaBusy:phase==='verifying_mfa'&&pending.busy===true,enrollmentFactors:phase==='enrolling_mfa'?pending.factors??Object.freeze([]):Object.freeze([]),enrollmentBusy:phase==='enrolling_mfa'&&pending.busy===true});
  const notify=()=>{try{Promise.resolve(onChange(state())).catch(()=>{});}catch{}};
  function clear(nextPhase='signed_out'){pending?.rejectChoice?.(new HumanAuthError('stale_session'));generation++;phase=nextPhase;workspace=null;session=null;pending=null;refreshAt=0;notify();}
  function install(value){session=value;refreshAt=value.expiresAt-Math.min(60000,Math.floor((value.expiresAt-now())/2));}
@@ -90,6 +90,29 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   return proof();
  }
  async function resume(){if(!session)throw new HumanAuthError('session_rejected');if(phase==='enrolling_mfa')throw new HumanAuthError('mfa_enrollment_in_progress');if(phase==='changing_password')throw new HumanAuthError('password_change_in_progress');if(phase==='reauthenticating')throw new HumanAuthError('auth_reauthentication_in_progress');if(phase==='refreshing')return pending.result;return rotate();}
+ async function recoveryFailure(op,error){
+  if(op.id!==generation)throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');const logout=await signOut();if(generation!==op.id+1)throw new HumanAuthError('stale_session');safe.logoutUnconfirmed=logout==='unconfirmed';throw safe;
+ }
+ async function beginRecovery(link){
+  if(phase!=='signed_out')throw new HumanAuthError('login_in_progress');if(typeof transport.verifyRecovery!=='function')throw new HumanAuthError('auth_unavailable');
+  generation++;const op={id:generation,kind:'recovery',stage:'link',ready:false,busy:true,raw:Promise.resolve().then(()=>transport.verifyRecovery(link))};pending=op;phase='recovering_password';notify();
+  try{const value=await op.raw;if(op.id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');op.issued=value;
+   const factors=value.mfaFactors??[];if(!Array.isArray(factors))throw new HumanAuthError('auth_response_invalid');op.factors=Object.freeze(factors.filter(f=>f.type==='totp').map(f=>Object.freeze({...f})));
+   if(factors.length&&(!op.factors.length||typeof transport.verifyMfa!=='function'))throw new HumanAuthError('unsupported_mfa');op.ready=!factors.length;op.stage=op.ready?'password':'mfa';op.raw=Promise.resolve();op.busy=false;notify();
+  }catch(error){return recoveryFailure(op,error);}
+ }
+ async function verifyRecoveryMfa(factorId,code){
+  const op=pending;if(phase!=='recovering_password'||op?.kind!=='recovery'||op.ready)throw new HumanAuthError('stale_session');if(op.busy)throw new HumanAuthError('login_in_progress');
+  if(!op.factors?.some(f=>f.id===factorId)||typeof code!=='string'||!/^\d{6}$/.test(code))throw new HumanAuthError('invalid_mfa');if(!usable(op.issued))return recoveryFailure(op,new HumanAuthError('session_rejected'));
+  const issued=op.issued;op.busy=true;op.raw=Promise.resolve().then(()=>transport.verifyMfa(issued.accessToken,issued.userId,factorId,code));notify();
+  try{const value=await op.raw;if(op.id!==generation)throw new HumanAuthError('stale_session');if(!usable(value)||value.userId!==issued.userId)throw new HumanAuthError('auth_response_invalid');op.issued=value;op.ready=true;op.stage='password';op.factors=Object.freeze([]);op.raw=Promise.resolve();op.busy=false;notify();}
+  catch(error){if(op.id!==generation)throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');if(['mfa_failed','auth_rate_limited'].includes(safe.code)){op.busy=false;notify();throw safe;}return recoveryFailure(op,safe);}
+ }
+ async function changeRecoveryPassword(password){
+  validateRecoveredPassword(password);const op=pending;if(phase!=='recovering_password'||op?.kind!=='recovery'||!op.ready)throw new HumanAuthError('mfa_required');if(op.busy)throw new HumanAuthError('login_in_progress');if(!usable(op.issued))return recoveryFailure(op,new HumanAuthError('session_rejected'));if(typeof transport.changeRecoveryPassword!=='function')return recoveryFailure(op,new HumanAuthError('auth_unavailable'));
+  const issued=op.issued;op.busy=true;op.stage='password';op.raw=Promise.resolve().then(()=>transport.changeRecoveryPassword(issued.accessToken,issued.userId,password));notify();let failure;
+  try{await op.raw;}catch(error){failure=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');}if(op.id!==generation)throw new HumanAuthError('stale_session');const logout=await signOut();if(generation!==op.id+1)throw new HumanAuthError('stale_session');if(failure){failure.logoutUnconfirmed=logout==='unconfirmed';throw failure;}return Object.freeze({changed:true,logout});
+ }
  async function securityStatus(){
   if(typeof transport.securityStatus!=='function')throw new HumanAuthError('auth_unavailable');
   const p=await authorization();if(!canDispatch(p))throw new HumanAuthError('stale_session');
@@ -155,12 +178,12 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  async function signOut({scope='local'}={}){
   if(!['local','global'].includes(scope))throw new HumanAuthError('invalid_logout_scope');
   if(ending)return ending;
-  const old=session,wait=pending,block=scope==='global'||['password','reauth','mfa','enrollment'].includes(wait?.kind);clear(block?'signing_out':'signed_out');
+  const old=session,wait=pending,block=scope==='global'||['password','reauth','mfa','enrollment','recovery'].includes(wait?.kind);clear(block?'signing_out':'signed_out');
   // Await an already-issued login/rotation so the newest returned token is revoked, never installed.
   // Transport has a deadline. The UI is cleared synchronously before this await.
   const finish=(async()=>{
    let target=old?.accessToken??wait?.issued?.accessToken;const userId=old?.userId??wait?.issued?.userId;
-   if(wait){try{const value=await wait.raw;if(usable(value)&&(!userId||value.userId===userId))target=value.accessToken;}catch(error){const cleanup=mfaCleanupCredential(error);if(cleanup&&userId&&cleanup.userId===userId)target=cleanup.accessToken;}}
+   if(wait){try{const value=await wait.raw;if(usable(value)&&(!userId||value.userId===userId))target=value.accessToken;}catch(error){const cleanup=mfaCleanupCredential(error);if(cleanup&&((userId&&cleanup.userId===userId)||(!userId&&wait.kind==='recovery'&&wait.stage==='link')))target=cleanup.accessToken;}}
    if(!target)return wait?'unconfirmed':'not_requested';
    try{await transport.signOut(target,scope);return 'confirmed';}catch{return 'unconfirmed';}
   })();
@@ -172,5 +195,5 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  }
  function reject(p){if(!current(p)||p.accessToken!==session.accessToken)return false;if(['password','reauth','enrollment'].includes(pending?.kind)){void signOut();return true;}clear();return true;}
  function selectWorkspace(value){if(phase!=='selecting_workspace'||pending?.id!==generation)throw new HumanAuthError('stale_session');const selected=workspaceId(value);if(!pending.options.some(x=>x.id===selected))throw new HumanAuthError('invalid_login');pending.choose(selected);}
- return Object.freeze({securityStatus,securityStatusCurrent,state,signIn,selectWorkspace,verifyMfa,beginMfaEnrollment,confirmMfaEnrollment,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
+ return Object.freeze({beginRecovery,verifyRecoveryMfa,changeRecoveryPassword,securityStatus,securityStatusCurrent,state,signIn,selectWorkspace,verifyMfa,beginMfaEnrollment,confirmMfaEnrollment,authorization,resume,reauthenticate,changePassword,signOut,reject,current,canDispatch,sameCredential});
 }
