@@ -35,7 +35,7 @@ INIT=r"""
   if(url.endsWith('/verify')){
    if(JSON.parse(options.body).code!=='123456')return new Response(JSON.stringify({code:422,error_code:'mfa_verification_failed'}),{status:422,headers:{'content-type':'application/json'}});
    if(f.holdMfa)return new Promise(resolve=>{f.completeMfa=()=>{resolve(json(issue('aal2')));f.completeMfa=null;};});
-   f.factors.forEach(x=>{if(x.factor_type==='totp')x.status='verified';});return json(issue('aal2'));
+   f.factors.forEach(x=>{if(url.includes('/factors/'+x.id+'/verify'))x.status='verified';});return json(issue('aal2'));
   }
   if(url.endsWith('/reauthenticate')&&options.method==='GET'){
    const response=()=>f.reauthStatus===200?json({}):new Response('{}',{status:f.reauthStatus,headers:{'content-type':'application/json'}});
@@ -102,6 +102,63 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    page.evaluate("__authFixture.factors=[{id:'88888888-8888-4888-8888-888888888888',factor_type:'totp',status:'verified'}]")
+    fill_login(page)
+    expect(page.locator('#mfa-panel')).to_be_visible()
+    page.locator('#mfa-code').fill('123456')
+    page.locator('#verify-mfa').click()
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#add-mfa-login').click()
+    expect(page.locator('#mfa-enrollment-title')).to_contain_text('outro')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
+    expect(page.locator('#mfa-enrollment-label')).to_contain_text('77777777')
+    assert page.evaluate('__authFixture.factors.length')==2
+    assert page.evaluate("__authFixture.factors[0].status")=='verified'
+    assert not page.evaluate("__authFixture.calls.some(x=>x.method==='DELETE')")
+    page.locator('#mfa-enrollment-code').fill('123456')
+    page.locator('#confirm-mfa-enrollment').click()
+    expect(page.locator('#login-status')).to_contain_text('Autenticador confirmado')
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    expect(page.locator('#mfa-enrollment-dialog')).to_be_hidden()
+    assert page.evaluate("__authFixture.factors.filter(x=>x.status==='verified').length")==2
+    assert not errors,errors
+    assert posts==[]
+    record('Additional TOTP under AAL2 uses distinct manual label, retains verified factor and requires fresh login after confirmation')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    page.evaluate("__authFixture.factors=[{id:'88888888-8888-4888-8888-888888888888',factor_type:'totp',status:'verified'}]")
+    fill_login(page)
+    expect(page.locator('#mfa-panel')).to_be_visible()
+    page.locator('#mfa-code').fill('123456')
+    page.locator('#verify-mfa').click()
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.evaluate("__authFixture.factors.push({id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'unverified'})")
+    page.locator('#add-mfa-login').click()
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-status')).to_contain_text('Já existe TOTP pendente')
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
+    page.locator('#cancel-mfa-enrollment').click()
+    expect(page.locator('#login-status')).to_contain_text('cadastro poderá permanecer pendente')
+    assert page.evaluate("__authFixture.factors[0].status")=='verified'
+    assert not errors,errors
+    record('Additional setup resumes live pending TOTP after AAL2 without issuing another enrollment or returning its old seed')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#add-mfa-login').click()
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-status')).to_contain_text('primeiro autenticador')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors')||x.url.includes('/logout'))")
+    page.locator('#cancel-mfa-enrollment').click()
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    assert not errors,errors
+    record('Additional setup without verified factor gives first-enrollment guidance and preserves the current authenticated session')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     fill_login(page)
     expect(page.locator('#security-status-login')).to_be_visible()

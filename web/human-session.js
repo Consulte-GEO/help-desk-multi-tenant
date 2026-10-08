@@ -97,15 +97,17 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   try{const value=await transport.securityStatus(p.accessToken,userId);if(!sameCredential(p)||phase!=='active')throw new HumanAuthError('stale_session');securityReads.set(value,p);return value;}
   catch(error){if(!sameCredential(p)||phase!=='active')throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');if(safe.code==='session_rejected')reject(p);throw safe;}
  }
- async function beginMfaEnrollment(){
-  if(typeof transport.enrollFirstMfa!=='function')throw new HumanAuthError('auth_unavailable');
+ async function beginMfaEnrollment({additional=false}={}){
+  if(typeof additional!=='boolean')throw new HumanAuthError('invalid_mfa');
+  const enroll=additional?transport.enrollAdditionalMfa:transport.enrollFirstMfa;
+  if(typeof enroll!=='function')throw new HumanAuthError('auth_unavailable');
   const id=generation,p=await authorization();if(id!==generation||!current(p))throw new HumanAuthError('stale_session');if(phase!=='active')throw new HumanAuthError('mfa_enrollment_in_progress');
-  const issued=session,op={id,kind:'enrollment',issued,busy:true,raw:Promise.resolve().then(()=>transport.enrollFirstMfa(issued.accessToken,issued.userId))};pending=op;phase='enrolling_mfa';notify();
+  const issued=session,op={id,kind:'enrollment',issued,busy:true,raw:Promise.resolve().then(()=>enroll(issued.accessToken,issued.userId))};pending=op;phase='enrolling_mfa';notify();
   try{const registration=await op.raw;if(id!==generation)throw new HumanAuthError('stale_session');
    if(!registration||!Array.isArray(registration.factors)||!registration.factors.length)throw new HumanAuthError('auth_response_invalid');
    op.factors=Object.freeze(registration.factors.map(f=>Object.freeze({...f})));op.raw=Promise.resolve();op.busy=false;notify();return registration;
   }catch(error){if(id!==generation)throw new HumanAuthError('stale_session');const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_unavailable');
-   if(safe.code==='mfa_enrollment_exists'){pending=null;phase='active';notify();throw safe;}
+   if(['mfa_enrollment_exists','mfa_addition_requires_verified','mfa_factor_limit'].includes(safe.code)){pending=null;phase='active';notify();throw safe;}
    const logout=await signOut();if(generation!==id+1)throw new HumanAuthError('stale_session');safe.logoutUnconfirmed=logout==='unconfirmed';throw safe;
   }
  }
