@@ -7,6 +7,9 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const messages=Object.freeze({
  invalid_auth_config:'Configuração de autenticação indisponível.',
+ invalid_recovery_link:'Informe o link direto de recuperação deste provedor, antes de abri-lo. Links já consumidos, PKCE ou credenciais na URL não são usados nesta etapa.',
+ recovery_failed:'O link não foi confirmado. Pode estar inválido, expirado ou já utilizado; obtenha outro pelo provedor.',
+ invalid_recovered_password:'Informe uma nova senha com texto válido.',
  invalid_login:'Informe e-mail, senha e um workspace válido.',
  invalid_logout_scope:'Tipo de encerramento de sessão inválido.',
  invalid_password_change:'Informe a senha atual e uma nova senha diferente, com texto válido.',
@@ -15,7 +18,7 @@ const messages=Object.freeze({
  mfa_unavailable:'O provedor recusou ou não confirmou a autenticação multifator. A entrada será encerrada; verifique os requisitos de acesso antes de tentar novamente.',
  mfa_addition_requires_verified:'Configure e confirme seu primeiro autenticador antes de adicionar outro.',
  mfa_factor_limit:'O catálogo atingiu o limite suportado de fatores. A gestão e remoção precisam de revisão no provedor.',
- mfa_enrollment_exists:'Já há MFA confirmado nesta conta. A gestão de fatores adicionais não está disponível nesta etapa.',
+ mfa_enrollment_exists:'Já há MFA confirmado nesta conta. Use Adicionar outro autenticador para configurar mais um.',
  mfa_enrollment_rejected:'O provedor recusou o cadastro do autenticador. Verifique os requisitos de acesso.',
  mfa_enrollment_in_progress:'A configuração do autenticador está em andamento. Conclua ou encerre esta etapa.',
  mfa_required:'Confirme a autenticação multifator ao entrar novamente.',
@@ -47,6 +50,14 @@ export function workspaceId(value){if(typeof value!=='string'||!UUID.test(value)
 const tokenText=(value,max)=>typeof value==='string'&&value.length>0&&value.length<=max&&/^[A-Za-z0-9._~-]+$/.test(value);
 const validText=value=>typeof value==='string'&&value.isWellFormed()&&!value.includes('\0');
 export function validatePasswordChange(current,password,nonce=''){if(!validText(current)||!current.length||current.length>4096||!validText(password)||!password.length||password.length>4096||current===password)throw new HumanAuthError('invalid_password_change');if(typeof nonce!=='string'||(nonce!==''&&!/^[A-Za-z0-9_-]{1,128}$/.test(nonce)))throw new HumanAuthError('invalid_password_nonce');}
+export function validateRecoveredPassword(password){if(!validText(password)||!password.length||password.length>4096)throw new HumanAuthError('invalid_recovered_password');}
+export function recoveryTokenHash(link,supabaseUrl){
+ try{if(!validText(link)||link.length>4096||/[\u0000-\u001f\u007f]/.test(link))throw Error();const url=new URL(link.trim());
+  if(url.origin!==new URL(supabaseUrl).origin||url.protocol!=='https:'||url.pathname!=='/auth/v1/verify'||url.username||url.password||url.hash)throw Error();
+  const keys=[...url.searchParams.keys()];if(new Set(keys).size!==keys.length||keys.some(k=>!['token','token_hash','type','redirect_to'].includes(k))||url.searchParams.get('type')!=='recovery'||Number(url.searchParams.has('token'))+Number(url.searchParams.has('token_hash'))!==1)throw Error();
+  const token=url.searchParams.get('token')??url.searchParams.get('token_hash');if(!/^[A-Za-z0-9_-]{16,256}$/.test(token??'')||token.startsWith('pkce_'))throw Error();return token;
+ }catch{throw new HumanAuthError('invalid_recovery_link');}
+}
 function sessionFrom(value,started,now){
  if(!value||typeof value!=='object'||Array.isArray(value)||value.token_type?.toLowerCase?.()!=='bearer'
  ||!tokenText(value.access_token,8192)||!JWT.test(value.access_token)||!tokenText(value.refresh_token,4096)
@@ -87,7 +98,7 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new HumanAuthError('auth_unavailable'));},timeoutMs);});
   try{return await Promise.race([deadline,(async()=>{
    const headers={apikey:key,...(body?{'content-type':'application/json'}:{}),...(access?{authorization:'Bearer '+access}:{})};
-   const response=await fetcher(origin+'/auth/v1'+path,{method:operation==='password'?'PUT':['reauth','enroll_read','enroll_add_read','security_read'].includes(operation)?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+   const response=await fetcher(origin+'/auth/v1'+path,{method:['password','recovery_password'].includes(operation)?'PUT':['reauth','enroll_read','enroll_add_read','security_read'].includes(operation)?'GET':'POST',headers,...(body?{body:JSON.stringify(body)}:{}),signal:controller.signal,redirect:'error',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
    if(response.redirected)throw new HumanAuthError('auth_response_invalid');
    if(operation==='logout'){if(response.status!==204)throw new HumanAuthError('auth_logout_unconfirmed');return;}
    if(response.status===429)throw new HumanAuthError('auth_rate_limited');
@@ -154,7 +165,14 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
     if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).some(k=>k!=='message_id')||(data.message_id!==undefined&&(!validText(data.message_id)||!data.message_id.length||data.message_id.length>256||/[\u0000-\u001f\u007f]/.test(data.message_id))))throw new HumanAuthError('auth_response_invalid');
     return;
    }
-   if(operation==='password'){
+   if(operation==='recovery'){
+    if([400,401,403,422].includes(response.status))throw new HumanAuthError('recovery_failed');
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const raw=await jsonBody(response,controller.signal);
+    try{const value=sessionFrom(raw,started,now());if(!sameUserClaims(value.accessToken,value.userId,now()))throw new HumanAuthError('auth_response_invalid');return value;}
+    catch(error){const safe=error instanceof HumanAuthError?error:new HumanAuthError('auth_response_invalid');if(typeof raw?.user?.id==='string'&&UUID.test(raw.user.id)&&tokenText(raw.access_token,8192)&&sameUserClaims(raw.access_token,raw.user.id.toLowerCase(),now()))mfaCleanup.set(safe,Object.freeze({accessToken:raw.access_token,userId:raw.user.id.toLowerCase()}));throw safe;}
+   }
+   if(['password','recovery_password'].includes(operation)){
     if([400,401,403,422].includes(response.status)){
      const error=await jsonBody(response,controller.signal),code=typeof error?.error_code==='string'?error.error_code:typeof error?.code==='string'?error.code:null;
      throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':['reauthentication_not_valid','otp_expired'].includes(code)?'password_change_nonce_invalid':'password_change_rejected');
@@ -174,6 +192,8 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async verifyRecovery(link){return request('/verify',{token_hash:recoveryTokenHash(link,origin),type:'recovery'},null,'recovery');},
+  async changeRecoveryPassword(access,userId,password){validateRecoveredPassword(password);if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');return request('/user',{password},access,'recovery_password',userId.toLowerCase());},
   async securityStatus(access,userId){
    if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');
    return request('/user',null,access,'security_read',userId.toLowerCase());
