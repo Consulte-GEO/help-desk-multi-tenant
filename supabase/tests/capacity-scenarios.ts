@@ -2,6 +2,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID,randomBytes,createHmac} from 'node:crypto';import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';import {runBoundedWorkload,summarizeCapacity,createCapacityLimiter,validateCapacityPool,type Sample} from '../../tests/performance/m1.ts';
 import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';
+import {withCapacityFixture} from '../../tests/performance/fixture.ts';
 import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';import type {Principal} from '../../src/domain/model.ts';
 type Cohort=Sample['cohort'];type Actor={principal:Principal;input:{accountId:string;productInstanceId:string;serviceCode:string;subject:string;description:string;priority:'normal'}};
 export function registerCapacityTests(adminPool:()=>SqlPool){
@@ -47,8 +48,8 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
  }
  async function save(name:string,value:unknown){await mkdir('evidence/capacity',{recursive:true});const tmp='evidence/capacity/'+runId+'.tmp';await writeFile(tmp,JSON.stringify(value,null,2)+'\n');await rename(tmp,'evidence/capacity/'+name);}
  const meta=(source:string)=>({schema:1,run_id:runId,source_sha256:source,environment:'local-disposable-postgres',postgres_major:17,synthetic:true,restricted_role:'helpdesk_app',auth_provider_tested:false,hosted_capacity_tested:false,restore_tested:false,platform_approved:false});
- test('HD-P04 real PostgreSQL single-connection mixed workload measures queue, replay, isolation and complete cursor search',async()=>{
-  const f=await fixture(),source=await fingerprint(),started=new Date().toISOString();try{
+ test('HD-P04 real PostgreSQL single-connection mixed workload measures queue, replay, isolation and complete cursor search',async()=>withCapacityFixture(fingerprint,fixture,async(f,source)=>{
+   const started=new Date().toISOString();
    const key=randomUUID(),original=await f.service.create(f.actors.busy.principal,f.actors.busy.input,key,randomUUID());const ids={} as Record<Cohort,string[]>;for(const c of ['busy','neighbor','other_workspace'] as const)ids[c]=[];
    const jobs=Array.from({length:24},(_,i)=>{const cohort:Cohort=i%6===1?'neighbor':i%6===2?'other_workspace':'busy',a=f.actors[cohort];return {cohort,operation:'create' as const,run:async()=>{const value=await f.service.create(a.principal,{...a.input,subject:'Capacity unique '+i},randomUUID(),randomUUID());ids[cohort].push(value.ticket.id);return 'ok' as const;}};});
    const replay=Array.from({length:8},()=>({cohort:'busy' as const,operation:'replay' as const,run:async()=>{const value=await f.service.create(f.actors.busy.principal,f.actors.busy.input,key,randomUUID());assert.equal(value.ticket.id,original.ticket.id);assert.equal(value.replayed,true);return 'ok' as const;}}));
@@ -58,10 +59,8 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
    const counts=(await f.admin.query("select (select count(*)::int from helpdesk_core.tickets where workspace_id=any($1::uuid[])) as tickets,(select count(*)::int from helpdesk_core.ticket_events where workspace_id=any($1::uuid[]) and type='ticket.created') as events,(select count(*)::int from helpdesk_integration.outbox_events where workspace_id=any($1::uuid[]) and type='ticket.created') as outbox,(select count(*)::int from helpdesk_integration.api_idempotency_keys where workspace_id=any($1::uuid[])) as intents",[f.workspaces])).rows[0];assert.deepEqual(counts,{tickets:25,events:25,outbox:25,intents:25});
    const context=(await f.pool.query("select nullif(current_setting('app.principal_id',true),'') as actor,nullif(current_setting('app.workspace_id',true),'') as workspace")).rows[0];assert.deepEqual(context,{actor:null,workspace:null});validateCapacityPool(f.stats());
    await save('workload.json',{...meta(source),started_at:started,completed_at:new Date().toISOString(),measurement:summarizeCapacity([...writes,...reads,...lists],source,{concurrency:8,pool_max:1}),invariants:{...counts,...f.stats(),authorized_cursor_results:24,denied_cross_account_or_workspace_reads:8,context_cleared:true}});
-  }finally{await f.pool.end();}
- });
- test('HD-P04 real distributed quota bursts are atomic, preserve neighbor semantics and produce only source-bound sanitized evidence',async()=>{
-  const f=await fixture(),source=await fingerprint();try{
+ }));
+ test('HD-P04 real distributed quota bursts are atomic, preserve neighbor semantics and produce only source-bound sanitized evidence',async()=>withCapacityFixture(fingerprint,fixture,async(f,source)=>{
    const profiles=[];for(const policy of ['ingress','token_exchange','principal','workspace'] as const){
     // Avoid interpreting a natural minute reset as broken quota. Never alter the SQL clock/window/policy.
     let window=(await f.admin.query("select floor(extract(epoch from clock_timestamp())/60)::bigint::text as minute,60-mod(extract(epoch from clock_timestamp()),60) as remaining")).rows[0]!;
@@ -81,6 +80,5 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
    }
    const workload=JSON.parse(await readFile('evidence/capacity/workload.json','utf8'));assert.equal(workload.run_id,runId);assert.equal(workload.source_sha256,source);assert.equal(workload.platform_approved,false);validateCapacityPool(f.stats());
    await save('latest.json',{...meta(source),completed_at:new Date().toISOString(),workload,quota_profiles:profiles,invariants:f.stats(),slo_approved:false,rpo_rto_approved:false});
-  }finally{await f.pool.end();}
- });
+ }));
 }
