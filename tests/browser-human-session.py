@@ -32,6 +32,10 @@ INIT=r"""
    return json({id:factor.id,type:'totp',totp:{secret:'JBSWY3DPEHPK3PXP',qr_code:'<svg><script>private</script></svg>',uri:'otpauth://private'}});
   }
   if(url.endsWith('/challenge'))return json({id:'99999999-9999-4999-8999-999999999999',type:'totp',expires_at:Math.floor(f.now/1000)+60});
+  if(url==='https://syntheticproject.supabase.co/auth/v1/recover'){
+   const response=()=>f.recoveryRequestStatus===403?new Response(JSON.stringify({msg:'private recipient state',error_code:'captcha_failed'}),{status:403,headers:{'content-type':'application/json'}}):json({});
+   if(f.holdRecoveryRequest)return new Promise(resolve=>{f.completeRecoveryRequest=()=>{resolve(response());f.completeRecoveryRequest=null;};});return response();
+  }
   if(url==='https://syntheticproject.supabase.co/auth/v1/verify'){
    if(f.recoveryStatus===403)return new Response(JSON.stringify({error_code:'otp_expired',msg:'private recovery'}),{status:403,headers:{'content-type':'application/json'}});
    if(f.holdRecovery)return new Promise(resolve=>{f.completeRecovery=()=>{resolve(json(issue()));f.completeRecovery=null;};});
@@ -107,6 +111,57 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.get_by_role('button',name='Recuperar acesso',exact=True).click()
+    expect(page.locator('#request-recovery-link')).to_be_visible()
+    page.locator('#recovery-email').fill('person@example.test')
+    page.locator('#request-recovery-link').click()
+    expect(page.locator('#login-status')).to_contain_text('Se o provedor processar')
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    expect(page.locator('#recovery-email')).to_have_value('')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    request=page.evaluate("__authFixture.calls.find(x=>x.url.endsWith('/recover'))")
+    assert json.loads(request['body'])=={'email':'person@example.test'}
+    assert request['authorization'] is None
+    assert request['url'].endswith('/recover')
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.includes('/logout')||x.url.includes('/token'))")
+    assert posts==[]
+    assert not errors,errors
+    record('Recovery email request is explicit, email-only and gives conditional delivery/account wording without authenticating or retaining recipient')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.evaluate('__authFixture.holdRecoveryRequest=true')
+    page.locator('#recover-access').click()
+    page.locator('#recovery-email').fill('person@example.test')
+    page.locator('#request-recovery-link').click()
+    page.wait_for_function('typeof __authFixture.completeRecoveryRequest === "function"')
+    page.locator('#cancel-recovery').click()
+    expect(page.locator('#submit-login')).to_be_disabled()
+    page.evaluate('__authFixture.completeRecoveryRequest()')
+    expect(page.locator('#submit-login')).to_be_enabled()
+    expect(page.locator('#login-status')).to_contain_text('não confirma nem cancela')
+    expect(page.locator('#recovery-email')).to_have_value('')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/recover')).length")==1
+    assert not page.evaluate("__authFixture.calls.some(x=>x.url.includes('/logout'))")
+    assert not errors,errors
+    record('Closing during an email request waits, clears recipient, never repeats mail or claims to retract delivery, and performs no fake logout')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    expect(page.locator('#recover-access')).to_be_enabled()
+    page.evaluate('__authFixture.recoveryRequestStatus=403')
+    page.locator('#recover-access').click()
+    page.locator('#recovery-email').fill('person@example.test')
+    page.locator('#request-recovery-link').click()
+    expect(page.locator('#login-status')).to_contain_text('não confirmou')
+    assert 'person@example.test' not in page.locator('#login-status').inner_text()
+    assert 'private' not in page.locator('#login-status').inner_text()
+    expect(page.locator('#submit-login')).to_be_enabled()
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/recover')).length")==1
+    assert not errors,errors
+    record('Provider captcha/refusal remains sanitized with no existence claim, configuration bypass or automatic resend')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     requests=[]
     page.on('request',lambda r:requests.append(r))

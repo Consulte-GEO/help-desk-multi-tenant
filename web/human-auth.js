@@ -7,6 +7,11 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const messages=Object.freeze({
  invalid_auth_config:'Configuração de autenticação indisponível.',
+ invalid_recovery_email:'Informe um e-mail cadastrado com texto válido.',
+ recovery_request_unconfirmed:'O provedor retornou uma confirmação incompatível. A entrega não está confirmada; nenhum envio foi repetido.',
+ recovery_request_unavailable:'Não foi possível confirmar a solicitação agora. A entrega pode estar pendente; nenhum envio foi repetido.',
+ recovery_request_rejected:'O provedor não confirmou a solicitação. Verifique os requisitos de acesso ou use o canal de suporte; nenhuma entrega foi confirmada.',
+ recovery_password_rejected:'O provedor recusou a nova senha. Verifique os requisitos da recuperação e da política de senha.',
  invalid_recovery_link:'Informe o link direto de recuperação deste provedor, antes de abri-lo. Links já consumidos, PKCE ou credenciais na URL não são usados nesta etapa.',
  recovery_failed:'O link não foi confirmado. Pode estar inválido, expirado ou já utilizado; obtenha outro pelo provedor.',
  invalid_recovered_password:'Informe uma nova senha com texto válido.',
@@ -50,6 +55,7 @@ export function workspaceId(value){if(typeof value!=='string'||!UUID.test(value)
 const tokenText=(value,max)=>typeof value==='string'&&value.length>0&&value.length<=max&&/^[A-Za-z0-9._~-]+$/.test(value);
 const validText=value=>typeof value==='string'&&value.isWellFormed()&&!value.includes('\0');
 export function validatePasswordChange(current,password,nonce=''){if(!validText(current)||!current.length||current.length>4096||!validText(password)||!password.length||password.length>4096||current===password)throw new HumanAuthError('invalid_password_change');if(typeof nonce!=='string'||(nonce!==''&&!/^[A-Za-z0-9_-]{1,128}$/.test(nonce)))throw new HumanAuthError('invalid_password_nonce');}
+export function validateRecoveryEmail(email){if(!validText(email)||email.length>320||/[\u0000-\u001f\u007f]/.test(email)||! /^[^\s@]+@[^\s@]+$/.test(email.trim()))throw new HumanAuthError('invalid_recovery_email');return email.trim();}
 export function validateRecoveredPassword(password){if(!validText(password)||!password.length||password.length>4096)throw new HumanAuthError('invalid_recovered_password');}
 export function recoveryTokenHash(link,supabaseUrl){
  try{if(!validText(link)||link.length>4096||/[\u0000-\u001f\u007f]/.test(link))throw Error();const url=new URL(link.trim());
@@ -165,6 +171,11 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
     if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).some(k=>k!=='message_id')||(data.message_id!==undefined&&(!validText(data.message_id)||!data.message_id.length||data.message_id.length>256||/[\u0000-\u001f\u007f]/.test(data.message_id))))throw new HumanAuthError('auth_response_invalid');
     return;
    }
+   if(operation==='recovery_request'){
+    if([400,401,403,422].includes(response.status))throw new HumanAuthError('recovery_request_rejected');
+    if(response.status!==200)throw new HumanAuthError('auth_unavailable');
+    const data=await jsonBody(response,controller.signal);if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).length)throw new HumanAuthError('auth_response_invalid');return;
+   }
    if(operation==='recovery'){
     if([400,401,403,422].includes(response.status))throw new HumanAuthError('recovery_failed');
     if(response.status!==200)throw new HumanAuthError('auth_unavailable');
@@ -175,7 +186,7 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
    if(['password','recovery_password'].includes(operation)){
     if([400,401,403,422].includes(response.status)){
      const error=await jsonBody(response,controller.signal),code=typeof error?.error_code==='string'?error.error_code:typeof error?.code==='string'?error.code:null;
-     throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':['reauthentication_not_valid','otp_expired'].includes(code)?'password_change_nonce_invalid':'password_change_rejected');
+     throw new HumanAuthError(code==='reauthentication_needed'?'password_change_reauthenticate':code==='insufficient_aal'?'password_change_requires_mfa':['reauthentication_not_valid','otp_expired'].includes(code)?'password_change_nonce_invalid':operation==='recovery_password'?'recovery_password_rejected':'password_change_rejected');
     }
     if(response.status!==200)throw new HumanAuthError('auth_unavailable');
     const user=await jsonBody(response,controller.signal);
@@ -192,6 +203,7 @@ export function createHumanAuthTransport(config,{fetcher=fetch,now=()=>Date.now(
   finally{clearTimeout(timer);controller.abort();}
  }
  return Object.freeze({
+  async requestRecovery(email){const address=validateRecoveryEmail(email);try{return await request('/recover',{email:address},null,'recovery_request');}catch(error){if(error.code==='auth_response_invalid')throw new HumanAuthError('recovery_request_unconfirmed');if(error.code==='auth_unavailable')throw new HumanAuthError('recovery_request_unavailable');throw error;}},
   async verifyRecovery(link){return request('/verify',{token_hash:recoveryTokenHash(link,origin),type:'recovery'},null,'recovery');},
   async changeRecoveryPassword(access,userId,password){validateRecoveredPassword(password);if(!tokenText(access,8192)||!JWT.test(access)||typeof userId!=='string'||!UUID.test(userId))throw new HumanAuthError('session_rejected');return request('/user',{password},access,'recovery_password',userId.toLowerCase());},
   async securityStatus(access,userId){
