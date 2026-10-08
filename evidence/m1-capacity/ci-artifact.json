@@ -1,0 +1,63 @@
+{
+  "run_id": "37843524455",
+  "run_attempt": 1,
+  "artifact_id": "11579011485",
+  "archive_sha256": "726234159fc76e216751ce418cedc8fd916ccae6020c301c5221470b291f6736",
+  "source_commit": "ea93a1aa19519723dc5e617cbbe6b30063fcc0bf",
+  "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 1679,
+        "pass": 1679,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 231,
+        "pass": 231,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 123,
+        "pass": 123,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "capacity_run_id": "6bc6aeff-2f00-494a-a992-42ba67248dcc",
+  "platform_approved": false
+}
