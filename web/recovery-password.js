@@ -1,3 +1,4 @@
+import {validateRecoveryEmail} from './human-auth.js';
 /** Credentials arriving in a navigation are never adopted by this manual recovery flow. */
 export function discardRecoveryNavigation(location,history){
  const url=new URL(location.href),fragment=new URLSearchParams(url.hash.slice(1));
@@ -9,17 +10,22 @@ export function discardRecoveryNavigation(location,history){
 export function createRecoveryPanel({elements:e,getSession,getEpoch,onResult}){
  let choice=null;
  const current=c=>choice===c&&c.session===getSession()&&c.generation===c.session.state().generation&&c.epoch===getEpoch();
- function clear(){choice=null;for(const n of [e.link,e.code,e.password,e.confirm])n.value='';e.factors.replaceChildren();e.status.textContent='';e.mfa.hidden=true;e.passwordStep.hidden=true;e.dialog.close();e.start.disabled=false;}
+ function clear(){choice=null;for(const n of [e.email,e.link,e.code,e.password,e.confirm])n.value='';e.factors.replaceChildren();e.status.textContent='';e.mailStep.hidden=false;e.mfa.hidden=true;e.passwordStep.hidden=true;e.dialog.close();e.start.disabled=false;}
  function sync(state){
   e.entry.disabled=state.phase!=='signed_out';const c=choice;if(!c)return;
   if(!current(c))return;const busy=c.working||state.recoveryBusy;
-  e.start.disabled=c.started||busy;e.link.disabled=c.started;e.verify.disabled=busy;e.code.disabled=busy;e.submit.disabled=busy||!state.recoveryReady;e.password.disabled=busy;e.confirm.disabled=busy;
+  e.mailStep.hidden=c.started;e.request.disabled=c.started||busy;e.email.disabled=c.started||busy;e.start.disabled=c.started||busy;e.link.disabled=c.started;e.verify.disabled=busy;e.code.disabled=busy;e.submit.disabled=busy||!state.recoveryReady;e.password.disabled=busy;e.confirm.disabled=busy;
   e.mfa.hidden=state.phase!=='recovering_password'||state.recoveryReady||!state.recoveryFactors.length;e.passwordStep.hidden=state.phase!=='recovering_password'||!state.recoveryReady;
   const selected=e.factors.value;e.factors.replaceChildren(...state.recoveryFactors.map((f,i)=>{const n=document.createElement('option');n.value=f.id;n.textContent='Autenticador '+(i+1)+' · '+f.id.slice(0,8);return n;}));if(state.recoveryFactors.some(f=>f.id===selected))e.factors.value=selected;
  }
  function result(c,message){const s=getSession()?.state();if(c.session===getSession()&&s?.generation===c.generation+1&&s.phase==='signed_out')onResult(message);}
  function open(){const session=getSession(),state=session?.state();if(state?.phase!=='signed_out')return;clear();choice={session,epoch:getEpoch(),generation:state.generation,started:false,working:false};e.dialog.showModal();sync(state);}
- async function cancel(){const c=choice;clear();if(c?.started){const logout=await c.session.signOut();result(c,'Recuperação encerrada. Entre novamente para continuar.'+(logout==='unconfirmed'?' Saída no provedor NÃO confirmada.':''));}}
+ async function cancel(){const c=choice;clear();if(c?.started){const logout=await c.session.signOut();result(c,c.intent==='request'?'Solicitação encerrada. Fechar não confirma nem cancela a entrega de e-mail já despachada.':'Recuperação encerrada. Entre novamente para continuar.'+(logout==='unconfirmed'?' Saída no provedor NÃO confirmada.':''));}}
+ async function request(){const c=choice;if(!c||c.started||c.working||!current(c))return;const email=e.email.value;e.email.value='';try{validateRecoveryEmail(email);}catch(error){e.status.textContent=error.message;return;}c.intent='request';c.started=true;c.generation++;c.working=true;e.status.textContent='Solicitando um link uma única vez…';
+  try{await c.session.requestRecovery(email);result(c,'Se o provedor processar a solicitação e houver conta elegível nesse e-mail, você poderá receber um link. Confira sua caixa de entrada e spam; copie o link direto antes de abri-lo e use Recuperar acesso. Esta resposta não confirma entrega nem existência da conta.');}
+  catch(error){if(error.code==='stale_session')return;result(c,error.message+' Nenhum envio foi repetido.');}
+  finally{if(current(c)){c.working=false;sync(c.session.state());}}
+ }
  async function start(){const c=choice;if(!c||c.started||c.working||!current(c))return;const link=e.link.value;e.link.value='';c.started=true;c.generation++;c.working=true;e.status.textContent='Validando o link uma única vez…';
   try{await c.session.beginRecovery(link);if(current(c))e.status.textContent=c.session.state().recoveryReady?'Link confirmado. Informe sua nova senha.':'Link confirmado. Confirme seu autenticador antes de informar a nova senha.';}
   catch(error){if(error.code==='stale_session')return;result(c,error.message+' Nenhuma senha foi enviada nesta etapa.'+(error.logoutUnconfirmed?' Saída no provedor NÃO confirmada.':''));}
@@ -36,5 +42,5 @@ export function createRecoveryPanel({elements:e,getSession,getEpoch,onResult}){
   finally{if(current(c)){c.working=false;sync(c.session.state());}}
  }
  e.dialog.addEventListener('cancel',event=>{event.preventDefault();void cancel();});e.dialog.addEventListener('close',()=>{if(!e.dialog.open&&choice)void cancel();});
- return Object.freeze({open,start,verify,submit,cancel,clear,sync});
+ return Object.freeze({open,request,start,verify,submit,cancel,clear,sync});
 }
