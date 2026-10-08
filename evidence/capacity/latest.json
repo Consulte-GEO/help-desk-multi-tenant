@@ -1,0 +1,835 @@
+{
+  "schema": 1,
+  "run_id": "6bc6aeff-2f00-494a-a992-42ba67248dcc",
+  "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+  "environment": "local-disposable-postgres",
+  "postgres_major": 17,
+  "synthetic": true,
+  "restricted_role": "helpdesk_app",
+  "auth_provider_tested": false,
+  "hosted_capacity_tested": false,
+  "restore_tested": false,
+  "platform_approved": false,
+  "completed_at": "2026-10-08T21:01:37.769Z",
+  "workload": {
+    "schema": 1,
+    "run_id": "6bc6aeff-2f00-494a-a992-42ba67248dcc",
+    "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+    "environment": "local-disposable-postgres",
+    "postgres_major": 17,
+    "synthetic": true,
+    "restricted_role": "helpdesk_app",
+    "auth_provider_tested": false,
+    "hosted_capacity_tested": false,
+    "restore_tested": false,
+    "platform_approved": false,
+    "started_at": "2026-10-08T21:01:37.234Z",
+    "completed_at": "2026-10-08T21:01:37.577Z",
+    "measurement": {
+      "schema": 1,
+      "environment": "local-disposable-postgres",
+      "platform_approved": false,
+      "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+      "profile": {
+        "concurrency": 8,
+        "pool_max": 1
+      },
+      "samples": 47,
+      "errors": 0,
+      "operation_ms": {
+        "min": 1.935,
+        "p50": 51.718,
+        "p95": 78.687,
+        "p99": 81.452,
+        "max": 81.452
+      },
+      "groups": [
+        {
+          "cohort": "busy",
+          "operation": "create",
+          "samples": 16,
+          "ok": 16,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 11.387,
+            "p50": 76.952,
+            "p95": 78.687,
+            "p99": 78.687,
+            "max": 78.687
+          },
+          "admission_wait_ms": {
+            "min": 0.059,
+            "p50": 42.327,
+            "p95": 158.591,
+            "p99": 158.591,
+            "max": 158.591
+          },
+          "end_to_end_ms": {
+            "min": 11.446,
+            "p50": 119.51,
+            "p95": 235.503,
+            "p99": 235.503,
+            "max": 235.503
+          }
+        },
+        {
+          "cohort": "busy",
+          "operation": "replay",
+          "samples": 8,
+          "ok": 8,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 25.509,
+            "p50": 45.349,
+            "p95": 70.818,
+            "p99": 70.818,
+            "max": 70.818
+          },
+          "admission_wait_ms": {
+            "min": 168.188,
+            "p50": 196.848,
+            "p95": 235.506,
+            "p99": 235.506,
+            "max": 235.506
+          },
+          "end_to_end_ms": {
+            "min": 239.006,
+            "p50": 248.566,
+            "p95": 261.016,
+            "p99": 261.016,
+            "max": 261.016
+          }
+        },
+        {
+          "cohort": "busy",
+          "operation": "read",
+          "samples": 4,
+          "ok": 4,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 1.935,
+            "p50": 6.052,
+            "p95": 10.723,
+            "p99": 10.723,
+            "max": 10.723
+          },
+          "admission_wait_ms": {
+            "min": 0.004,
+            "p50": 0.094,
+            "p95": 3.568,
+            "p99": 3.568,
+            "max": 3.568
+          },
+          "end_to_end_ms": {
+            "min": 1.939,
+            "p50": 6.146,
+            "p95": 14.292,
+            "p99": 14.292,
+            "max": 14.292
+          }
+        },
+        {
+          "cohort": "busy",
+          "operation": "list",
+          "samples": 1,
+          "ok": 1,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 42.994,
+            "p50": 42.994,
+            "p95": 42.994,
+            "p99": 42.994,
+            "max": 42.994
+          },
+          "admission_wait_ms": {
+            "min": 0.003,
+            "p50": 0.003,
+            "p95": 0.003,
+            "p99": 0.003,
+            "max": 0.003
+          },
+          "end_to_end_ms": {
+            "min": 42.997,
+            "p50": 42.997,
+            "p95": 42.997,
+            "p99": 42.997,
+            "max": 42.997
+          }
+        },
+        {
+          "cohort": "neighbor",
+          "operation": "create",
+          "samples": 4,
+          "ok": 4,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 21.746,
+            "p50": 76.267,
+            "p95": 81.452,
+            "p99": 81.452,
+            "max": 81.452
+          },
+          "admission_wait_ms": {
+            "min": 0.109,
+            "p50": 0.174,
+            "p95": 119.531,
+            "p99": 119.531,
+            "max": 119.531
+          },
+          "end_to_end_ms": {
+            "min": 21.855,
+            "p50": 81.626,
+            "p95": 196.844,
+            "p99": 196.844,
+            "max": 196.844
+          }
+        },
+        {
+          "cohort": "neighbor",
+          "operation": "read",
+          "samples": 4,
+          "ok": 0,
+          "denied": 4,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 3.508,
+            "p50": 7.603,
+            "p95": 11.617,
+            "p99": 11.617,
+            "max": 11.617
+          },
+          "admission_wait_ms": {
+            "min": 0.059,
+            "p50": 0.103,
+            "p95": 4.464,
+            "p99": 4.464,
+            "max": 4.464
+          },
+          "end_to_end_ms": {
+            "min": 3.566,
+            "p50": 7.705,
+            "p95": 15.838,
+            "p99": 15.838,
+            "max": 15.838
+          }
+        },
+        {
+          "cohort": "neighbor",
+          "operation": "list",
+          "samples": 1,
+          "ok": 1,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 21.802,
+            "p50": 21.802,
+            "p95": 21.802,
+            "p99": 21.802,
+            "max": 21.802
+          },
+          "admission_wait_ms": {
+            "min": 0.123,
+            "p50": 0.123,
+            "p95": 0.123,
+            "p99": 0.123,
+            "max": 0.123
+          },
+          "end_to_end_ms": {
+            "min": 21.925,
+            "p50": 21.925,
+            "p95": 21.925,
+            "p99": 21.925,
+            "max": 21.925
+          }
+        },
+        {
+          "cohort": "other_workspace",
+          "operation": "create",
+          "samples": 4,
+          "ok": 4,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 31.969,
+            "p50": 76.195,
+            "p95": 79.599,
+            "p99": 79.599,
+            "max": 79.599
+          },
+          "admission_wait_ms": {
+            "min": 0.123,
+            "p50": 11.48,
+            "p95": 129.153,
+            "p99": 129.153,
+            "max": 129.153
+          },
+          "end_to_end_ms": {
+            "min": 32.092,
+            "p50": 91.079,
+            "p95": 206.287,
+            "p99": 206.287,
+            "max": 206.287
+          }
+        },
+        {
+          "cohort": "other_workspace",
+          "operation": "read",
+          "samples": 4,
+          "ok": 0,
+          "denied": 4,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 4.379,
+            "p50": 8.431,
+            "p95": 10.673,
+            "p99": 10.673,
+            "max": 10.673
+          },
+          "admission_wait_ms": {
+            "min": 0.083,
+            "p50": 0.113,
+            "p95": 6.148,
+            "p99": 6.148,
+            "max": 6.148
+          },
+          "end_to_end_ms": {
+            "min": 4.462,
+            "p50": 8.544,
+            "p95": 16.662,
+            "p99": 16.662,
+            "max": 16.662
+          }
+        },
+        {
+          "cohort": "other_workspace",
+          "operation": "list",
+          "samples": 1,
+          "ok": 1,
+          "denied": 0,
+          "limited": 0,
+          "errors": 0,
+          "operation_ms": {
+            "min": 25.237,
+            "p50": 25.237,
+            "p95": 25.237,
+            "p99": 25.237,
+            "max": 25.237
+          },
+          "admission_wait_ms": {
+            "min": 0.144,
+            "p50": 0.144,
+            "p95": 0.144,
+            "p99": 0.144,
+            "max": 0.144
+          },
+          "end_to_end_ms": {
+            "min": 25.381,
+            "p50": 25.381,
+            "p95": 25.381,
+            "p99": 25.381,
+            "max": 25.381
+          }
+        }
+      ]
+    },
+    "invariants": {
+      "tickets": 25,
+      "events": 25,
+      "outbox": 25,
+      "intents": 25,
+      "max_active_leases": 1,
+      "active_leases": 0,
+      "distinct_backends_observed": 1,
+      "authorized_cursor_results": 24,
+      "denied_cross_account_or_workspace_reads": 8,
+      "context_cleared": true
+    }
+  },
+  "quota_profiles": [
+    {
+      "policy": "ingress",
+      "fixture": "near-limit-existing-bucket",
+      "maximum": 120,
+      "measurement": {
+        "schema": 1,
+        "environment": "local-disposable-postgres",
+        "platform_approved": false,
+        "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+        "profile": {
+          "concurrency": 8,
+          "pool_max": 1
+        },
+        "samples": 24,
+        "errors": 0,
+        "operation_ms": {
+          "min": 4.109,
+          "p50": 7.36,
+          "p95": 10.173,
+          "p99": 11.169,
+          "max": 11.169
+        },
+        "groups": [
+          {
+            "cohort": "busy",
+            "operation": "quota",
+            "samples": 16,
+            "ok": 1,
+            "denied": 0,
+            "limited": 15,
+            "errors": 0,
+            "operation_ms": {
+              "min": 4.109,
+              "p50": 7.36,
+              "p95": 10.173,
+              "p99": 10.173,
+              "max": 10.173
+            },
+            "admission_wait_ms": {
+              "min": 0.004,
+              "p50": 7.729,
+              "p95": 19.072,
+              "p99": 19.072,
+              "max": 19.072
+            },
+            "end_to_end_ms": {
+              "min": 4.113,
+              "p50": 15.4,
+              "p95": 25.492,
+              "p99": 25.492,
+              "max": 25.492
+            }
+          },
+          {
+            "cohort": "neighbor",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 5.086,
+              "p50": 6.961,
+              "p95": 11.169,
+              "p99": 11.169,
+              "max": 11.169
+            },
+            "admission_wait_ms": {
+              "min": 0.274,
+              "p50": 0.529,
+              "p95": 15.402,
+              "p99": 15.402,
+              "max": 15.402
+            },
+            "end_to_end_ms": {
+              "min": 5.36,
+              "p50": 11.698,
+              "p95": 22.363,
+              "p99": 22.363,
+              "max": 22.363
+            }
+          },
+          {
+            "cohort": "other_workspace",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 6.18,
+              "p50": 7.017,
+              "p95": 8.629,
+              "p99": 8.629,
+              "max": 8.629
+            },
+            "admission_wait_ms": {
+              "min": 0.338,
+              "p50": 4.116,
+              "p95": 16.241,
+              "p99": 16.241,
+              "max": 16.241
+            },
+            "end_to_end_ms": {
+              "min": 6.518,
+              "p50": 12.745,
+              "p95": 23.258,
+              "p99": 23.258,
+              "max": 23.258
+            }
+          }
+        ]
+      }
+    },
+    {
+      "policy": "token_exchange",
+      "fixture": "near-limit-existing-bucket",
+      "maximum": 10,
+      "measurement": {
+        "schema": 1,
+        "environment": "local-disposable-postgres",
+        "platform_approved": false,
+        "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+        "profile": {
+          "concurrency": 8,
+          "pool_max": 1
+        },
+        "samples": 24,
+        "errors": 0,
+        "operation_ms": {
+          "min": 1.353,
+          "p50": 6.996,
+          "p95": 7.422,
+          "p99": 7.51,
+          "max": 7.51
+        },
+        "groups": [
+          {
+            "cohort": "busy",
+            "operation": "quota",
+            "samples": 16,
+            "ok": 1,
+            "denied": 0,
+            "limited": 15,
+            "errors": 0,
+            "operation_ms": {
+              "min": 1.353,
+              "p50": 6.939,
+              "p95": 7.219,
+              "p99": 7.219,
+              "max": 7.219
+            },
+            "admission_wait_ms": {
+              "min": 0.003,
+              "p50": 4.239,
+              "p95": 14.957,
+              "p99": 14.957,
+              "max": 14.957
+            },
+            "end_to_end_ms": {
+              "min": 1.356,
+              "p50": 11.283,
+              "p95": 21.663,
+              "p99": 21.663,
+              "max": 21.663
+            }
+          },
+          {
+            "cohort": "neighbor",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 2.302,
+              "p50": 7.083,
+              "p95": 7.51,
+              "p99": 7.51,
+              "max": 7.51
+            },
+            "admission_wait_ms": {
+              "min": 0.082,
+              "p50": 0.264,
+              "p95": 11.284,
+              "p99": 11.284,
+              "max": 11.284
+            },
+            "end_to_end_ms": {
+              "min": 2.383,
+              "p50": 7.774,
+              "p95": 18.367,
+              "p99": 18.367,
+              "max": 18.367
+            }
+          },
+          {
+            "cohort": "other_workspace",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 3.288,
+              "p50": 7.225,
+              "p95": 7.422,
+              "p99": 7.422,
+              "max": 7.422
+            },
+            "admission_wait_ms": {
+              "min": 0.108,
+              "p50": 1.358,
+              "p95": 12.111,
+              "p99": 12.111,
+              "max": 12.111
+            },
+            "end_to_end_ms": {
+              "min": 3.396,
+              "p50": 8.78,
+              "p95": 19.336,
+              "p99": 19.336,
+              "max": 19.336
+            }
+          }
+        ]
+      }
+    },
+    {
+      "policy": "principal",
+      "fixture": "near-limit-existing-bucket",
+      "maximum": 120,
+      "measurement": {
+        "schema": 1,
+        "environment": "local-disposable-postgres",
+        "platform_approved": false,
+        "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+        "profile": {
+          "concurrency": 8,
+          "pool_max": 1
+        },
+        "samples": 24,
+        "errors": 0,
+        "operation_ms": {
+          "min": 1.218,
+          "p50": 7.075,
+          "p95": 12.587,
+          "p99": 12.793,
+          "max": 12.793
+        },
+        "groups": [
+          {
+            "cohort": "busy",
+            "operation": "quota",
+            "samples": 16,
+            "ok": 1,
+            "denied": 0,
+            "limited": 15,
+            "errors": 0,
+            "operation_ms": {
+              "min": 1.218,
+              "p50": 7.014,
+              "p95": 12.587,
+              "p99": 12.587,
+              "max": 12.587
+            },
+            "admission_wait_ms": {
+              "min": 0.003,
+              "p50": 4.074,
+              "p95": 14.836,
+              "p99": 14.836,
+              "max": 14.836
+            },
+            "end_to_end_ms": {
+              "min": 1.221,
+              "p50": 11.148,
+              "p95": 27.145,
+              "p99": 27.145,
+              "max": 27.145
+            }
+          },
+          {
+            "cohort": "neighbor",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 2.185,
+              "p50": 7.075,
+              "p95": 7.502,
+              "p99": 7.502,
+              "max": 7.502
+            },
+            "admission_wait_ms": {
+              "min": 0.058,
+              "p50": 0.145,
+              "p95": 11.15,
+              "p99": 11.15,
+              "max": 11.15
+            },
+            "end_to_end_ms": {
+              "min": 2.243,
+              "p50": 7.647,
+              "p95": 18.225,
+              "p99": 18.225,
+              "max": 18.225
+            }
+          },
+          {
+            "cohort": "other_workspace",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 3.156,
+              "p50": 7.423,
+              "p95": 12.793,
+              "p99": 12.793,
+              "max": 12.793
+            },
+            "admission_wait_ms": {
+              "min": 0.077,
+              "p50": 1.223,
+              "p95": 11.983,
+              "p99": 11.983,
+              "max": 11.983
+            },
+            "end_to_end_ms": {
+              "min": 3.233,
+              "p50": 8.65,
+              "p95": 24.776,
+              "p99": 24.776,
+              "max": 24.776
+            }
+          }
+        ]
+      }
+    },
+    {
+      "policy": "workspace",
+      "fixture": "near-limit-existing-bucket",
+      "maximum": 1800,
+      "measurement": {
+        "schema": 1,
+        "environment": "local-disposable-postgres",
+        "platform_approved": false,
+        "source_sha256": "a310e7e106af2c42a5ea3a0bf78d5c6af46d43292b20c5c809cbd458f8da134a",
+        "profile": {
+          "concurrency": 8,
+          "pool_max": 1
+        },
+        "samples": 24,
+        "errors": 0,
+        "operation_ms": {
+          "min": 1.232,
+          "p50": 6.912,
+          "p95": 7.282,
+          "p99": 7.34,
+          "max": 7.34
+        },
+        "groups": [
+          {
+            "cohort": "busy",
+            "operation": "quota",
+            "samples": 16,
+            "ok": 1,
+            "denied": 0,
+            "limited": 15,
+            "errors": 0,
+            "operation_ms": {
+              "min": 1.232,
+              "p50": 6.889,
+              "p95": 7.282,
+              "p99": 7.282,
+              "max": 7.282
+            },
+            "admission_wait_ms": {
+              "min": 0.003,
+              "p50": 3.895,
+              "p95": 14.523,
+              "p99": 14.523,
+              "max": 14.523
+            },
+            "end_to_end_ms": {
+              "min": 1.235,
+              "p50": 10.785,
+              "p95": 21.11,
+              "p99": 21.11,
+              "max": 21.11
+            }
+          },
+          {
+            "cohort": "neighbor",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 0,
+            "denied": 0,
+            "limited": 4,
+            "errors": 0,
+            "operation_ms": {
+              "min": 2.009,
+              "p50": 6.97,
+              "p95": 7.091,
+              "p99": 7.091,
+              "max": 7.091
+            },
+            "admission_wait_ms": {
+              "min": 0.057,
+              "p50": 0.147,
+              "p95": 10.787,
+              "p99": 10.787,
+              "max": 10.787
+            },
+            "end_to_end_ms": {
+              "min": 2.066,
+              "p50": 7.238,
+              "p95": 17.826,
+              "p99": 17.826,
+              "max": 17.826
+            }
+          },
+          {
+            "cohort": "other_workspace",
+            "operation": "quota",
+            "samples": 4,
+            "ok": 4,
+            "denied": 0,
+            "limited": 0,
+            "errors": 0,
+            "operation_ms": {
+              "min": 2.994,
+              "p50": 7.058,
+              "p95": 7.34,
+              "p99": 7.34,
+              "max": 7.34
+            },
+            "admission_wait_ms": {
+              "min": 0.076,
+              "p50": 1.237,
+              "p95": 11.654,
+              "p99": 11.654,
+              "max": 11.654
+            },
+            "end_to_end_ms": {
+              "min": 3.07,
+              "p50": 8.295,
+              "p95": 18.817,
+              "p99": 18.817,
+              "max": 18.817
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "invariants": {
+    "max_active_leases": 1,
+    "active_leases": 0,
+    "distinct_backends_observed": 1
+  },
+  "slo_approved": false,
+  "rpo_rto_approved": false
+}
