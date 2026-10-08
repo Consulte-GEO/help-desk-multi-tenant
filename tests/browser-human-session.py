@@ -270,6 +270,10 @@ with sync_playwright() as p:
     assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
     page.locator('#start-mfa-enrollment').click()
     expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
+    expect(page.locator('#mfa-enrollment-qr')).to_be_visible()
+    assert page.locator('#mfa-enrollment-qr').evaluate('(c)=>c.width>0&&c.height===c.width')
+    assert page.locator('#mfa-enrollment-qr').get_attribute('src') is None
+    assert page.locator('#mfa-enrollment-qr').get_attribute('data-secret') is None
     expect(page.locator('#mfa-enrollment-label')).to_contain_text('77777777')
     assert page.evaluate('__authFixture.factors.length')==2
     assert page.evaluate("__authFixture.factors[0].status")=='verified'
@@ -354,6 +358,7 @@ with sync_playwright() as p:
     page.locator('#start-mfa-enrollment').click()
     expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
     expect(page.locator('#start-mfa-enrollment')).to_be_disabled()
+    expect(page.locator('#mfa-enrollment-qr')).to_be_visible()
     assert 'otpauth://private' not in page.locator('body').text_content()
     assert page.locator('#mfa-enrollment-dialog svg').count()==0
     page.locator('#mfa-enrollment-code').fill('123456')
@@ -362,11 +367,28 @@ with sync_playwright() as p:
     expect(page.locator('#mfa-enrollment-dialog')).to_be_hidden()
     expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
     expect(page.locator('#mfa-enrollment-code')).to_have_value('')
+    assert page.locator('#mfa-enrollment-qr').evaluate('(c)=>c.width===0&&c.height===0&&c.hidden')
     assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/factors')).length")==1
     assert not page.evaluate("__authFixture.calls.some(x=>x.url.includes('/factors')&&x.method==='DELETE')")
     assert page.evaluate('localStorage.length+sessionStorage.length')==0
     assert posts==[] and not errors,errors
-    record('Explicit first TOTP setup renders only a manual key, confirms once and clears secret before new login')
+    record('Explicit first TOTP setup renders local provisioning, confirms once and clears secrets before new login')
+    record('New TOTP QR is rendered in local canvas without URI/seed attributes and raster is erased on confirmation')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#configure-mfa-login').click()
+    page.evaluate('HTMLCanvasElement.prototype.getContext=()=>null')
+    page.locator('#start-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('JBSWY3DPEHPK3PXP')
+    expect(page.locator('#mfa-enrollment-status')).to_contain_text('QR indisponível')
+    assert page.locator('#mfa-enrollment-qr').evaluate('(c)=>c.width===0&&c.height===0&&c.hidden')
+    assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/factors')).length")==1
+    page.locator('#cancel-mfa-enrollment').click()
+    expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    assert posts==[] and not errors,errors
+    record('Unavailable canvas preserves the manual key with clear guidance, no second enrollment and no leftover raster')
     context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'unverified'}]")
@@ -376,6 +398,7 @@ with sync_playwright() as p:
     page.locator('#start-mfa-enrollment').click()
     expect(page.locator('#mfa-enrollment-status')).to_contain_text('Já existe TOTP pendente')
     expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
+    assert page.locator('#mfa-enrollment-qr').evaluate('(c)=>c.width===0&&c.height===0&&c.hidden')
     assert not page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/factors'))")
     page.locator('#mfa-enrollment-code').fill('123456')
     page.locator('#confirm-mfa-enrollment').click()
@@ -398,6 +421,7 @@ with sync_playwright() as p:
     expect(page.locator('#message-body')).to_have_value('')
     expect(page.locator('#mfa-enrollment-secret')).to_have_text('')
     expect(page.locator('#login-status')).to_contain_text('cadastro poderá permanecer pendente')
+    assert page.locator('#mfa-enrollment-qr').evaluate('(c)=>c.width===0&&c.height===0&&c.hidden')
     assert page.evaluate("__authFixture.factors.some(x=>x.status==='unverified')")
     assert posts==[] and not errors,errors
     record('Cancellation before setup preserves the draft; after setup it removes local secrets, reports pending factor and logs out without deletion')
