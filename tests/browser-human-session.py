@@ -72,7 +72,7 @@ INIT=r"""
  };
 })();
 """
-def prepare(browser, authentication_only=False, workspace_options=None):
+def prepare(browser, authentication_only=False, workspace_options=None, recovery_fragment=""):
     context=browser.new_context(viewport={'width':1440,'height':1000})
     context.add_init_script(INIT)
     page=context.new_page()
@@ -100,7 +100,7 @@ def prepare(browser, authentication_only=False, workspace_options=None):
             route.fulfill(status=404,content_type='application/json',body='{}');return
         route.fulfill(status=200,content_type='application/json',body=json.dumps(value))
     page.route('**/v1/**',api)
-    page.goto('http://127.0.0.1:4317/',wait_until='networkidle')
+    page.goto('http://127.0.0.1:4317/'+recovery_fragment,wait_until='networkidle')
     return context,page,errors,posts
 
 def fill_login(page, workspace=WS):
@@ -111,6 +111,43 @@ def fill_login(page, workspace=WS):
 
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+    context,page,errors,posts=prepare(browser,authentication_only=True,recovery_fragment='#type=recovery&token_hash='+'a'*56)
+    expect(page.locator('#recovery-dialog')).to_be_visible()
+    expect(page.locator('#recovery-navigation-note')).to_be_visible()
+    assert '#' not in page.url
+    expect(page.locator('#recovery-link')).to_have_value('')
+    assert page.evaluate('__authFixture.calls.length')==0
+    assert page.evaluate('localStorage.length+sessionStorage.length')==0
+    page.locator('#verify-recovery-link').click()
+    expect(page.locator('#recovery-password-step')).to_be_visible()
+    payload=page.evaluate("JSON.parse(__authFixture.calls.find(x=>x.url.endsWith('/verify')).body)")
+    assert payload=={'token_hash':'a'*56,'type':'recovery'}
+    page.locator('#cancel-recovery').click()
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    assert not errors,errors
+    assert posts==[]
+    record('Compatible recovery fragment is cleared before boot, stays outside DOM/storage and validates once only after explicit confirmation')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True,recovery_fragment='#type=recovery&token_hash='+'a'*56)
+    expect(page.locator('#recovery-dialog')).to_be_visible()
+    page.locator('#cancel-recovery').click()
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    assert page.evaluate('__authFixture.calls.length')==0
+    page.locator('#recover-access').click()
+    expect(page.locator('#recovery-navigation-note')).to_be_hidden()
+    expect(page.locator('#recovery-link')).to_have_value('')
+    assert not errors,errors
+    record('Cancelling offered navigation before validation destroys hash without consuming provider token or resurrecting it on reopen')
+    context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True,recovery_fragment='#type=recovery&access_token=private&refresh_token=private')
+    expect(page.locator('#recover-access')).to_be_enabled()
+    expect(page.locator('#recovery-dialog')).to_be_hidden()
+    expect(page.locator('#login-status')).to_contain_text('não foram utilizadas')
+    assert '#' not in page.url
+    assert page.evaluate('__authFixture.calls.length')==0
+    assert not errors,errors
+    record('Bearer/refresh navigation remains discarded and never becomes signed-in or recovery context')
+    context.close()
     context,page,errors,posts=prepare(browser,authentication_only=True)
     expect(page.locator('#recover-access')).to_be_enabled()
     page.get_by_role('button',name='Recuperar acesso',exact=True).click()
