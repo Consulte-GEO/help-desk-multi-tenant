@@ -1,0 +1,146 @@
+{
+  "scope": "production-own-m1-capacity-boundary",
+  "checked_at": "2026-10-08T21:15:33.274Z",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac80765a7a2130007930890",
+  "commit": "ad7806f7786c6a82c9f3fe99f8f877763bc1d157",
+  "context": "production",
+  "state": "ready",
+  "checks": [
+    {
+      "check": "delivered-source:totp-qr.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "187e17488e2e549097168768c0acacfc65b725ac51a6e01593119f340e821c19"
+    },
+    {
+      "check": "delivered-source:vendor/qrcodegen.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "3c6b6da401e3725c2853e70d1dff080a3920ec06054c51d3a78fa391e611b706"
+    },
+    {
+      "check": "delivered-source:styles.css",
+      "status": 200,
+      "same_source": true,
+      "sha256": "d58f2a883fe90375af0c375eeaca00a897fab5362aad5c315fc767faa88c9c69"
+    },
+    {
+      "check": "delivered-source:index.html",
+      "status": 200,
+      "same_source": true,
+      "sha256": "e2ab3342577eda924ce7c7a948761a35230a68797c81ca50b18d2139748e93fe"
+    },
+    {
+      "check": "delivered-source:recovery-password.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "3870e93595ebb59f5379c84126d72226799264ec775a2bf36c0aebcd3f1305d2"
+    },
+    {
+      "check": "delivered-source:account-security.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "9cc0d7f495909c79b069b493438b665dc6ea7380e43fafe516485f407ed19852"
+    },
+    {
+      "check": "delivered-source:app.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "d53867068646c9cc3cb0c4a01bb825676a80b4df24e48ab20002e317f2343347"
+    },
+    {
+      "check": "delivered-source:human-auth.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "dc9aa1dc0552e926b0d67aa6364e23ac55c598f2b6048ed08c7c3ae0d18df491"
+    },
+    {
+      "check": "delivered-source:human-session.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "5a52225456cff56f7f7cc554cdd88abde183053470bf0ae92e1cf6307264692a"
+    },
+    {
+      "check": "delivered-source:session-fetch.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340"
+    },
+    {
+      "check": "delivered-source:shared/mfa.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /workspaces?user_id=forged",
+      "status": 400,
+      "code": "invalid_input"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /public-config",
+      "status": 200,
+      "code": null,
+      "official_auth_url": true,
+      "publishable_key_present": true,
+      "operational": false
+    },
+    {
+      "check": "GET /capabilities",
+      "status": 200,
+      "code": null,
+      "operational": false,
+      "business_capabilities": false
+    },
+    {
+      "check": "GET /me",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "GET /support-contexts",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /contexts/resolve",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "provider GET /user without bearer",
+      "status": 401,
+      "authenticated_catalog_requested": false
+    },
+    {
+      "check": "provider POST /recover without email",
+      "status": 400,
+      "actual_email_recipient_supplied": false
+    }
+  ],
+  "human_login_tested": false,
+  "m2m_credentials_tested": false,
+  "business_operations_dispatched": 0,
+  "platform_approved": false
+}

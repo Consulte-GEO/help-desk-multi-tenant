@@ -2,7 +2,7 @@
 
 Recorte preparatório do plano: [perfil, execução e pendências](operations/M1-CAPACIDADE-E-RECUPERACAO.md). Medidor limitado/sanitizado e dois cenários PostgreSQL reais no runner existente; nenhum novo runner remoto, endpoint, política, índice, migration, SLO ou liberação operacional.
 
-Estado:10 focais e CI1679/231/123 aprovados; medição PostgreSQL e artefato source-bound verificados abaixo. Checks finais/merge/publicação pendentes. Docker local não disponível; nenhum substituto em Supabase de produção foi usado. API/interface0.27.0/schema0.19.0,12 migrations e19 operações preservados.
+Estado:10 focais e CI1679/231/123 aprovados; medição PostgreSQL e artefato source-bound verificados abaixo. Checks finais aprovados, PR22 integrado/publicado e fronteira do site verificada. Docker local não disponível; nenhum substituto em Supabase de produção foi usado. API/interface0.27.0/schema0.19.0,12 migrations e19 operações preservados.
 
 Revisão independente corrigiu um Important: quotas precisavam do wrapper transacional do runtime.2 regressões RED provaram ausência de BEGIN e rollback/lease; helper agora compõe withControlTransactions e10 focais GREEN aprovados. Sem Critical. Dois Minors registrados: movimento regressivo entre tarefas de relógio customizado (default performance.now monotônico) e falha de fingerprint antes do finally pode atrasar fechamento do pool descartável. Sem nova revisão da correção; tipos/contratos/scan/build aprovados.
 
@@ -36,4 +36,6 @@ Operação inclui espera do pool e múltiplas queries/transações conforme a op
 | principal | 1/15 | 4/0 | 4/0 |
 | workspace | 1/15 | 0/4 | 4/0 |
 
-Quotas medidas próximas ao limite por fixtures; não são1800 requests reais nem disputa SQL entre múltiplas instâncias. API/runtime/schema/config/scopes intactos. Checks finais/merge/publicação e prova de fronteira do site pendentes.
+Quotas medidas próximas ao limite por fixtures; não são1800 requests reais nem disputa SQL entre múltiplas instâncias. API/runtime/schema/config/scopes intactos. Checks finais/merge/publicação concluídos no PR22, fronteira do site verificada abaixo.
+
+[PR22](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/22) integrado pelo merge `ad7806f7786c6a82c9f3fe99f8f877763bc1d157`, após checks finais37844545816/37844537701, CodeQL e preview aprovados. Produção Netlify `6ac80765a7a2130007930890` pronta para esse merge. [Prova de fronteira](../evidence/m1-capacity/production-boundary.json):11 arquivos byte a byte e23 verificações totais, API0.27.0 e operationalfalse preservados. Config/capabilities200; me/discovery401, consulta forjada400, sessão M2M recusada401 e quatro rotas de atendimento503. Auth sem bearer401 e recover sem destinatário400, sem e-mail real. Scopes revision2 continuam contexts:resolve/tickets:read; contas/tickets/fatores selecionados0. O deploy publica o código/evidência do ensaio; não é medição de capacidade hospedada. Piloto/HD-P03/SLO/múltiplas instâncias/retenção/restore/RPO/RTO permanecem pendentes; M1 aberto e atendimento fechado.
