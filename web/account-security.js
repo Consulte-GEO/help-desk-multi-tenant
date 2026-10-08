@@ -1,8 +1,10 @@
 /** Own first/additional factor setup. Secret exists only in the explicitly opened dialog. */
+import {drawTotpQr} from './totp-qr.js';
 export function createMfaEnrollmentPanel({elements:e,getSession,getEpoch,blocked,onResult}){
  let choice=null;
+ function eraseQr(){if(e.qr){e.qr.hidden=true;e.qr.width=e.qr.height=0;}}
  function busy(value){e.start.disabled=value||choice?.started===true;e.confirm.disabled=value||!choice?.started;e.factor.disabled=value;e.code.disabled=value;}
- function clear(){choice=null;e.label.textContent='';e.secret.textContent='';e.code.value='';e.factor.replaceChildren();e.provision.hidden=true;e.status.textContent='';e.dialog.close();busy(false);}
+ function clear(){choice=null;eraseQr();e.label.textContent='';e.secret.textContent='';e.code.value='';e.factor.replaceChildren();e.provision.hidden=true;e.status.textContent='';e.dialog.close();busy(false);}
  const current=c=>choice===c&&c.epoch===getEpoch()&&c.generation===getSession()?.state().generation;
  function result(c,message){const s=getSession()?.state();if(s?.generation===c.generation+1&&s.phase==='signed_out')onResult(message);}
  async function closeStarted(c){
@@ -24,8 +26,10 @@ export function createMfaEnrollmentPanel({elements:e,getSession,getEpoch,blocked
   c.started=true;c.working=true;busy(true);e.status.textContent=c.additional?'Consultando seus fatores e preparando outro autenticador…':'Consultando seus fatores e preparando o primeiro autenticador…';
   try{const registration=await getSession().beginMfaEnrollment({additional:c.additional});if(!current(c))return;
    e.factor.replaceChildren(...registration.factors.map((factor,i)=>{const option=document.createElement('option');option.value=factor.id;option.textContent='Autenticador pendente '+(i+1)+' · '+factor.id.slice(0,8);return option;}));
-   e.secret.textContent=registration.secret??'';e.label.textContent=registration.generated?'Consulte Help Desk · '+registration.factors[0].id.slice(0,8):'';e.provision.hidden=!registration.generated;
-   e.status.textContent=registration.generated?'Adicione a chave manualmente ao seu aplicativo e confirme o código para ativar.': 'Já existe TOTP pendente. Se você já o configurou no aplicativo, confirme o código. A chave anterior não pode ser exibida; sem ela, será necessária revisão no provedor.';
+   e.secret.textContent=registration.secret??'';e.label.textContent=registration.generated?'Consulte Help Desk · '+registration.factors[0].id:'';e.provision.hidden=!registration.generated;
+   eraseQr();let qrReady=false;
+   if(registration.generated&&e.qr){try{drawTotpQr(e.qr,registration.secret,registration.factors[0].id);qrReady=true;}catch{eraseQr();}}
+   e.status.textContent=registration.generated?(qrReady?'Leia o QR ou adicione a chave manualmente ao aplicativo. Confirme o código para ativar.':'QR indisponível. Adicione a chave manualmente ao seu aplicativo e confirme o código para ativar.'): 'Já existe TOTP pendente. Se você já o configurou no aplicativo, confirme o código. A chave anterior não pode ser exibida; sem ela, será necessária revisão no provedor.';
   }catch(error){if(error.code==='stale_session')return;
    if(current(c)){c.started=false;e.status.textContent=error.message;}else result(c,error.message+' Cadastro não confirmado; poderá haver fator pendente. Nenhum envio foi repetido.'+(error.logoutUnconfirmed?' Saída no provedor NÃO confirmada.':''));
   }finally{if(current(c)){c.working=false;busy(false);}}
