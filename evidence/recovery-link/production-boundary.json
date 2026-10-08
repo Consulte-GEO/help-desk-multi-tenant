@@ -1,0 +1,128 @@
+{
+  "scope": "production-own-recovery-link-boundary",
+  "checked_at": "2026-10-08T11:37:02.237Z",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deploy_id": "6ac77fa05789c80008ad9dd9",
+  "commit": "d9932d46cae1b2c6f2fae172fd1723a728bd1592",
+  "context": "production",
+  "state": "ready",
+  "checks": [
+    {
+      "check": "delivered-source:index.html",
+      "status": 200,
+      "same_source": true,
+      "sha256": "ea051db20cbe30eab89c276666ec0d8b16a4b76cbb50e636777f4be2d5965ba7"
+    },
+    {
+      "check": "delivered-source:recovery-password.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "e75a29c9bf490f33414febc2eef65bdeb0cc96560b9c2ea525f2bad15cbd8039"
+    },
+    {
+      "check": "delivered-source:account-security.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "a4e717c1c45d3d1789c846ba49398066667cdd3c0ffd5b553ac437e65773efa0"
+    },
+    {
+      "check": "delivered-source:app.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "e489fee05b18d429810156e6f71078c17b440fcc2918d8285525717aad1f0b56"
+    },
+    {
+      "check": "delivered-source:human-auth.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "b03b0069fbec80d22708b6b0600c1cde76b6e240a66b7a43590252b40dc4ba85"
+    },
+    {
+      "check": "delivered-source:human-session.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "2ec2a33304b193bc50e1c4e9b2938625174b4d9268ccb5409d654fc7b1ba3ec6"
+    },
+    {
+      "check": "delivered-source:session-fetch.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340"
+    },
+    {
+      "check": "delivered-source:shared/mfa.js",
+      "status": 200,
+      "same_source": true,
+      "sha256": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /workspaces?user_id=forged",
+      "status": 400,
+      "code": "invalid_input"
+    },
+    {
+      "check": "GET /workspaces",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /public-config",
+      "status": 200,
+      "code": null,
+      "official_auth_url": true,
+      "publishable_key_present": true,
+      "operational": false
+    },
+    {
+      "check": "GET /capabilities",
+      "status": 200,
+      "code": null,
+      "operational": false,
+      "business_capabilities": false
+    },
+    {
+      "check": "GET /me",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "check": "GET /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /tickets",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "GET /support-contexts",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "POST /contexts/resolve",
+      "status": 503,
+      "code": "release_gate_closed"
+    },
+    {
+      "check": "provider GET /user without bearer",
+      "status": 401,
+      "authenticated_catalog_requested": false
+    },
+    {
+      "check": "provider POST /verify without token/type",
+      "status": 400,
+      "actual_recovery_token_supplied": false
+    }
+  ],
+  "human_login_tested": false,
+  "m2m_credentials_tested": false,
+  "business_operations_dispatched": 0,
+  "platform_approved": false
+}
