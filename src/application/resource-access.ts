@@ -32,6 +32,9 @@ export interface ResourceAccessAuthority {
 declare const resourceScopeBrand:unique symbol;
 /** In-process, resolver-owned handle. JSON serialization is NOT authorization. */
 export type VerifiedRequestScope = Readonly<{[resourceScopeBrand]:true}>;
+declare const activeResourceScopeBrand:unique symbol;
+/** Lexical lease, valid only during the awaited consumer callback. Never serializable authority. */
+export type ActiveResourceScope = Readonly<{[activeResourceScopeBrand]:true}>;
 export type ResourceScopeContext = Readonly<{
   principalId:string; workspaceId:string; accountId:string; bindingId:string;
   bindingRevision:string; accessRevision:string; manifestFingerprint:string;
@@ -140,6 +143,8 @@ export function createResourceAccessResolver(options:Options) {
     timeout=options.timeoutMs,clock=options.clock??(()=>new Date().toISOString()),
     read=options.authority.readAccess.bind(options.authority);
   const owned=new WeakMap<object,Owned>();
+  const active=new WeakMap<object,{principal:Principal; personHash:string; context:ResourceScopeContext;
+    original:ResourceScopeContext; last:bigint; signal:AbortSignal|undefined}>();
   function now(previous?:bigint):Tick {
     try{const text=instant(clock()),value=micros(text);if(previous!==undefined&&value<previous)throw unavailable();return {text,value};}
     catch{throw unavailable();}
@@ -200,7 +205,7 @@ export function createResourceAccessResolver(options:Options) {
     return proof;
   }
   async function withResourceScope<T>(p:Principal,refs:readonly ExternalResourceRef[],op:string,proof:unknown,
-    work:(context:ResourceScopeContext)=>Promise<T>,signal?:AbortSignal):Promise<T> {
+    work:(context:ResourceScopeContext,lease:ActiveResourceScope)=>Promise<T>,signal?:AbortSignal):Promise<T> {
     const record=proof&&typeof proof==='object'?owned.get(proof):undefined;
     if(!record)throw denied();
     // Reserve once before the first await. Failure, mismatch, abort and lost responses
@@ -218,7 +223,29 @@ export function createResourceAccessResolver(options:Options) {
     if(record.decision.stamp!==checked.stamp||micros(checked.context.asOf)<micros(record.decision.context.asOf)
       ||requestHash(caller(p))!==requestHash(person))throw denied();
     if(signal?.aborted)throw unavailable();
-    return work(checked.context);
+    const lease=Object.freeze(Object.create(null)) as ActiveResourceScope;
+    active.set(lease,{principal:p,personHash:requestHash(person),context:checked.context,
+      original:record.decision.context,last:dispatched.value,signal});
+    try{return await work(checked.context,lease);}finally{active.delete(lease);}
   }
-  return Object.freeze({resolveResourceScope,withResourceScope});
+  /** Local dispatch precondition only. Does not replace live SQL ACL/revision locks.
+   * No extra network read and no timer retaining the lease after callback cleanup.
+   * A changed/expired/cancelled lease is permanently lost even if the caller catches denial.
+   */
+  function assertResourceScopeCurrent(p:Principal,context:ResourceScopeContext,lease:unknown):void {
+    const record=lease&&typeof lease==='object'?active.get(lease):undefined;
+    if(!record)throw denied();
+    try {
+      if(record.principal!==p||record.context!==context||requestHash(caller(p))!==record.personHash)throw denied();
+      if(record.signal?.aborted)throw unavailable();
+      const at=now(record.last);
+      fresh(record.original.asOf,record.original.expiresAt,at.value);
+      fresh(record.context.asOf,record.context.expiresAt,at.value);
+      record.last=at.value;
+    }catch(error){
+      active.delete(lease as object);
+      throw error instanceof HelpdeskError?error:unavailable();
+    }
+  }
+  return Object.freeze({resolveResourceScope,withResourceScope,assertResourceScopeCurrent});
 }

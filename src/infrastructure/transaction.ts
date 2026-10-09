@@ -2,6 +2,21 @@ import type {SqlClient, SqlPool, SqlResult} from './sql.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 
 type Identity = {workspaceId:string; id:string};
+/** Optional SERVER precondition, checked synchronously; never a client assertion. */
+export type TransactionAdmission = () => void;
+const identityChanged = () => new HelpdeskError(403,'transaction_identity_changed',
+ 'O contexto da transação foi alterado. Nenhuma confirmação foi enviada.');
+function identitySnapshot(value:Identity|undefined):Identity|undefined {
+ if(value===undefined)return undefined;
+ try {
+  if(!value||typeof value!=='object')throw identityChanged();
+  const workspace=Object.getOwnPropertyDescriptor(value,'workspaceId');
+  const person=Object.getOwnPropertyDescriptor(value,'id');
+  if(!workspace||!person||!Object.hasOwn(workspace,'value')||!Object.hasOwn(person,'value')
+    ||typeof workspace.value!=='string'||typeof person.value!=='string')throw identityChanged();
+  return {workspaceId:workspace.value,id:person.value};
+ }catch{throw identityChanged();}
+}
 const discardReason = () => new Error('Transaction state unconfirmed; discard connection');
 const unavailable = () => new HelpdeskError(503,'database_unavailable','Conexão ao banco temporariamente indisponível.');
 const unconfirmed = () => new HelpdeskError(503,'transaction_outcome_unknown',
@@ -38,12 +53,33 @@ function observeClient(client:SqlClient):ClientHealth{
  * No mutation is retried here: a lost acknowledgement may follow a real commit.
  */
 export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefined,
- work:(client:SqlClient)=>Promise<T>):Promise<T> {
+ work:(client:SqlClient)=>Promise<T>, admission?:TransactionAdmission):Promise<T> {
+ // Capture before waiting for the pool. A mutable caller cannot retarget app.*.
+ const identityAtStart=identitySnapshot(identity);
+ let admissionFailure:{error:unknown}|undefined;
+ const assertAdmission=()=>{
+  if(admissionFailure)throw admissionFailure.error;
+  try {
+   const current=identitySnapshot(identity);
+   if(current?.workspaceId!==identityAtStart?.workspaceId||current?.id!==identityAtStart?.id)throw identityChanged();
+   if(admission!==undefined&&typeof admission!=='function')throw unavailable();
+   const result:unknown=admission?.();
+   if(result!==undefined){
+    // An async function is assignable to () => void in TS, but cannot authorize a dispatch.
+    if(result instanceof Promise)void result.catch(()=>{});
+    throw unavailable();
+   }
+  }catch(error){
+   const safe=error instanceof HelpdeskError?error:unavailable();
+   admissionFailure={error:safe};throw safe;
+  }
+ };
+ assertAdmission();
  let client:SqlClient;
  try { client=await pool.connect(); }
  catch { throw unavailable(); }
  let broken:Error|undefined,health:ClientHealth|undefined;
- let commitRequested=false,commitConfirmed=false,callbackActive=false;
+ let beginRequested=false,commitRequested=false,callbackActive=false,commitConfirmed=false;
  const requireConnection=()=>{
   if(health?.failed){broken=discardReason();throw commitRequested?unconfirmed():unavailable();}
  };
@@ -55,19 +91,28 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
  // Stores may retain this object, but never get ownership of the pooled physical client.
  const borrowed:SqlClient={query:async(sql,values)=>{
   if(!callbackActive)throw unavailable();
-  return query(sql,values);
+  assertAdmission();
+  const result=await query(sql,values);
+  assertAdmission();
+  return result;
  },release:()=>{throw unavailable();}};
  try {
   health=observeClient(client);
+  assertAdmission(); // Includes the time spent waiting for the owned connection.
+  beginRequested=true;
   const begun=await query('BEGIN');
   if(begun.command!=='BEGIN') { broken=discardReason();throw unconfirmed(); }
+  assertAdmission();
   // Empty identity for auth/bootstrap queries. Never inherit previous app.* values.
   await query("select set_config('app.workspace_id',$1,true),set_config('app.principal_id',$2,true),set_config('statement_timeout','8000',true),set_config('lock_timeout','2000',true),set_config('idle_in_transaction_session_timeout','10000',true),set_config('transaction_timeout','15000',true)",
-   [identity?.workspaceId??'',identity?.id??'']);
+   [identityAtStart?.workspaceId??'',identityAtStart?.id??'']);
+  assertAdmission();
   let value:T;
   callbackActive=true;
   try{value=await work(borrowed);}finally{callbackActive=false;}
   requireConnection(); // An error during application work must not dispatch COMMIT.
+  assertAdmission(); // Even a swallowed precondition failure forces rollback.
+  // Once dispatched, preserve confirmed/unknown COMMIT semantics, not a late refusal.
   commitRequested=true;
   const committed=await query('COMMIT');
   if(committed.command!=='COMMIT') { broken=discardReason();throw unconfirmed(); }
@@ -77,7 +122,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
   callbackActive=false;
   // Even a later successful ROLLBACK cannot prove that a lost COMMIT did not commit.
   if(commitRequested||health?.failed) broken=discardReason();
-  if(!health?.failed){
+  if(beginRequested&&!health?.failed){
    try {
     const rolledBack=await query('ROLLBACK');
     if(rolledBack.command!=='ROLLBACK') broken=discardReason();
