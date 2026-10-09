@@ -47,7 +47,7 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
    const service=new HelpdeskService(new PostgresUnitOfWork(pool));
    const input={accountId:account,productInstanceId:instance,serviceCode:'SUPPORT',subject:'CG03d synthetic',description:'Synthetic scope fixture',priority:'normal' as const};
    const tickets={} as Record<string,string>,keys={} as Record<string,string>;
-   for(const name of ['A','B','C','AB','AC','tenantB','zero','unmarked','legacy']){
+   for(const name of ['A','B','C','AB','AC','tenantB','zero','numeric','unmarked','legacy']){
     keys[name]=randomUUID();tickets[name]=(await service.create(people.requester,{...input,productInstanceId:name==='legacy'?legacyInstance:instance,subject:'CG03d '+name},keys[name]!,randomUUID())).ticket.id;
    }
    await service.addNote(people.agent,tickets.C!,'CG03d private C',randomUUID(),randomUUID());
@@ -71,7 +71,7 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
      for(const id of ['A','B','0001'])await admin.query("insert into helpdesk_auth.cg_resource_grant_refs(workspace_id,account_id,binding_id,principal_id,operation,resource_type,resource_id) values($1,$2,$3,$4,$5,'work',$6)",[w,account,binding,p.id,op,id]);
      await admin.query('update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and binding_id=$2 and principal_id=$3 and operation=$4',[w,binding,p.id,op]);
     }
-    const sets:Record<string,string[]>={A:['A'],B:['B'],C:['C'],AB:['A','B'],AC:['A','C'],tenantB:['A'],zero:['0001']};
+    const sets:Record<string,string[]>={A:['A'],B:['B'],C:['C'],AB:['A','B'],AC:['A','C'],tenantB:['A'],zero:['0001'],numeric:['1']};
     for(const [name,refs] of Object.entries(sets)){
      await admin.query('insert into helpdesk_core.cg_ticket_resource_sets(workspace_id,account_id,ticket_id,binding_id,expected_count) values($1,$2,$3,$4,$5)',[w,account,tickets[name],name==='tenantB'?otherBinding:binding,refs.length]);
      for(const id of refs)await admin.query("insert into helpdesk_core.cg_ticket_resource_refs(workspace_id,account_id,ticket_id,resource_type,resource_id) values($1,$2,$3,'work',$4)",[w,account,tickets[name],id]);
@@ -143,6 +143,43 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
     assert.deepEqual((await rowsAs(p,'select id from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2',[w,tickets.A])).rows,[]);
     const receipt=(await rowsAs(p,'select helpdesk_auth.lookup_idempotency($1,$2) as receipt',['notes.create:'+tickets.A,key])).rows[0]?.receipt as {denied?:boolean;result?:unknown};
     assert.equal(receipt.denied,undefined);assert.ok(receipt.result);
+   });
+   await t.test('source IDs preserve leading zeroes: 0001 is granted but 1 is denied',async()=>{
+    assert.equal((await visible(people.manager,tickets.zero!)).rows.length,1);
+    assert.deepEqual((await visible(people.manager,tickets.numeric!)).rows,[]);
+   });
+   await t.test('the old generic create command cannot bypass required resource metadata',async()=>{
+    const before=await admin.query('select count(*)::int as n from helpdesk_core.tickets where workspace_id=$1',[w]);
+    await assert.rejects(service.create(people.requester,input,randomUUID(),randomUUID()));
+    assert.deepEqual((await admin.query('select count(*)::int as n from helpdesk_core.tickets where workspace_id=$1',[w])).rows,before.rows);
+   });
+   await t.test('current resource read grant cannot substitute for a revoked resource write grant',async()=>{
+    await admin.query("update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and principal_id=$2 and operation='tickets.write'",[w,people.manager.id]);
+    try{
+     assert.equal((await visible(people.manager,tickets.A!)).rows.length,1);
+     assert.equal((await rowsAs(people.manager,"update helpdesk_core.tickets set status='open',version=version+1,updated_at=clock_timestamp() where workspace_id=$1 and id=$2",[w,tickets.A])).rowCount,0);
+    }finally{await admin.query("update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and principal_id=$2 and operation='tickets.write'",[w,people.manager.id]);}
+   });
+   await t.test('inactive or undeletable connection cannot downgrade protected tickets into legacy',async()=>{
+    await admin.query('update helpdesk_auth.cg_resource_connections set active=false where workspace_id=$1 and id=$2',[w,connection]);
+    try{
+     assert.deepEqual((await visible(people.manager,tickets.A!)).rows,[]);
+     assert.equal((await visible(people.manager,tickets.legacy!)).rows.length,1);
+     await assert.rejects(admin.query('delete from helpdesk_auth.cg_resource_connections where workspace_id=$1 and id=$2',[w,connection]),{code:'23514'});
+    }finally{await admin.query('update helpdesk_auth.cg_resource_connections set active=true where workspace_id=$1 and id=$2',[w,connection]);}
+   });
+   await t.test('partial staging cannot be sealed or become visible',async()=>{
+    await admin.query('insert into helpdesk_core.cg_ticket_resource_sets(workspace_id,account_id,ticket_id,binding_id,expected_count) values($1,$2,$3,$4,2)',[w,account,tickets.unmarked,binding]);
+    await admin.query("insert into helpdesk_core.cg_ticket_resource_refs(workspace_id,account_id,ticket_id,resource_type,resource_id) values($1,$2,$3,'work','A')",[w,account,tickets.unmarked]);
+    await assert.rejects(admin.query('update helpdesk_core.cg_ticket_resource_sets set sealed=true where workspace_id=$1 and ticket_id=$2',[w,tickets.unmarked]),{code:'23514'});
+    assert.deepEqual((await visible(people.manager,tickets.unmarked!)).rows,[]);
+   });
+   await t.test('resource bindings reject cross-account and cross-product references',async()=>{
+    const otherAccount=randomUUID(),bad=randomUUID();
+    await admin.query("insert into helpdesk_core.accounts(workspace_id,id,name) values($1,$2,'CG03d sibling')",[w,otherAccount]);
+    await admin.query("insert into helpdesk_auth.cg_resource_bindings(workspace_id,account_id,id,connection_id,tenant_id) values($1,$2,$3,$4,'tenant-sibling')",[w,otherAccount,bad,connection]);
+    await assert.rejects(admin.query("insert into helpdesk_auth.cg_resource_grant_sets(workspace_id,account_id,binding_id,principal_id,operation,source_revision,as_of,expires_at,expected_count) values($1,$2,$3,$4,$5,$6,clock_timestamp(),clock_timestamp()+interval '1 hour',0)",[w,account,bad,people.manager.id,'tickets.read','synthetic']),{code:'23503'});
+    await assert.rejects(admin.query('insert into helpdesk_core.cg_ticket_resource_sets(workspace_id,account_id,ticket_id,binding_id,expected_count) values($1,$2,$3,$4,1)',[w,account,tickets.legacy,binding]),{code:'23514'});
    });
    await t.test('source child edit invalidates the entire grant snapshot',async()=>{
     await admin.query("delete from helpdesk_auth.cg_resource_grant_refs where workspace_id=$1 and principal_id=$2 and operation='tickets.read' and resource_id='B'",[w,people.requester.id]);
