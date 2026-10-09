@@ -1,0 +1,44 @@
+{
+  "synthetic": true,
+  "providerContractVerified": false,
+  "purpose": "test-design-only; CG03 resolver not implemented here",
+  "requesterA": {
+    "tenant": "synthetic-tenant-A",
+    "allowedWorks": [
+      "A",
+      "B"
+    ],
+    "forbiddenWorks": [
+      "C"
+    ]
+  },
+  "managerA": {
+    "tenant": "synthetic-tenant-A",
+    "allowedWorks": [
+      "A",
+      "B"
+    ],
+    "forbiddenWorks": [
+      "C"
+    ]
+  },
+  "references": [
+    {
+      "connection": "synthetic-connection-1",
+      "tenant": "synthetic-tenant-A",
+      "type": "work",
+      "id": "0001"
+    },
+    {
+      "connection": "synthetic-connection-1",
+      "tenant": "synthetic-tenant-B",
+      "type": "work",
+      "id": "0001"
+    }
+  ],
+  "multiworkRequest": [
+    "A",
+    "C"
+  ],
+  "multiworkExpected": "deny entire request"
+}
