@@ -7,7 +7,9 @@ test('CG02 secret warning covers QR, manual key and screenshots before provision
  const source=await html(),warning=/<p\b([^>]*\bid="mfa-secret-warning"[^>]*)>([\s\S]*?)<\/p>/.exec(source);
  assert.ok(warning,'A visible warning for both provisioning secrets must exist');
  assert.doesNotMatch(warning[1]!,/\bhidden\b|aria-hidden="true"/);
- const text=warning[2]!.replace(/<[^>]*>/g,'');
+ // Compare the exact static markup; this test does not sanitize HTML.
+ const text=warning[2]!;
+ assert.equal(text,'<strong>Chave e QR são secretos.</strong> Eles permitem gerar seus códigos de acesso. Não compartilhe nem envie capturas de tela. A equipe de suporte não precisa desses dados.');
  for(const meaning of [/chave/i,/\bQR\b/,/n[aã]o compartilhe/i,/capturas de tela/i,/suporte n[aã]o precisa/i])assert.match(text,meaning);
  assert.ok(source.indexOf('id="mfa-provision"')<warning.index!);
  assert.ok(warning.index!<source.indexOf('id="mfa-enrollment-qr"'));
