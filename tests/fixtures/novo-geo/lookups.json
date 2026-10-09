@@ -1,0 +1,25 @@
+{
+  "synthetic": true,
+  "providerContractVerified": false,
+  "purpose": "test-design-only; not an API response schema",
+  "cases": [
+    {
+      "case": "unauthorized-work",
+      "expected": "deny without returning label"
+    },
+    {
+      "case": "malformed-response",
+      "expected": "deny without partial adoption"
+    },
+    {
+      "case": "late-response-after-revocation",
+      "expected": "do not restore authorization"
+    },
+    {
+      "case": "leading-zero-source-id",
+      "sourceId": "0001",
+      "expected": "preserve opaque source identifier"
+    }
+  ],
+  "cnpjSourceRepresentation": "unverified; confirm numeric and alphanumeric source support"
+}

@@ -19,7 +19,7 @@ async function freshDemo(work){
 }
 try{
  let count=0;
- for(const suite of [{name:'HTTP em memória',command:[process.execPath,'scripts/smoke-local-http.mjs']},{name:'Navegador em memória',command:['python','tests/browser-smoke.py']},{name:'Sessão humana no navegador (provedor sintético)',command:['python','tests/browser-human-session.py']}]){
+ for(const suite of [{name:'HTTP em memória',command:[process.execPath,'scripts/smoke-local-http.mjs']},{name:'Navegador em memória',command:['python','tests/browser-smoke.py']},{name:'Sessão humana no navegador (provedor sintético)',command:['python','tests/browser-human-session.py']},{name:'Recuperação explícita de notas (memória)',command:['python','tests/browser-note-recovery.py']}]){
   const result=await freshDemo(()=>runCommand({command:suite.command,cwd:root,timeoutMs:120_000}));
   if(result.exit_code!==0||result.signal){console.error(result.output);throw Error(suite.name+': não aprovado.');}
   const json=JSON.parse(result.stdout),checks=Array.isArray(json)?json:json.checks;

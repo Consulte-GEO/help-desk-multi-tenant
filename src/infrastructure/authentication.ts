@@ -8,15 +8,31 @@ import {randomBytes} from 'node:crypto';import type {SqlPool} from './sql.ts';im
 /** Server-only, non-serializable proof. It does NOT grant an administrative capability. */
 declare const administrativeAssuranceBrand:unique symbol;
 export type VerifiedAdministrativeAssurance=Readonly<{[administrativeAssuranceBrand]:true}>;
-const administrativeProofs=new WeakMap<object,{principal:Principal;snapshot:string;current:()=>boolean}>();
+const administrativeProofs=new WeakMap<object,{principal:Principal;snapshot:Principal;current:()=>boolean}>();
 const administrativeDenied=()=>new HelpdeskError(403,'administrative_assurance_required','Esta ação administrativa exige identidade e autenticação multifator confirmadas.');
+/** Compare the validated data itself, without executing toJSON or property getters.
+ * Expected is a private clone made immediately after validatePrincipal. Its finite,
+ * shallow shape bounds recursion; caller-added fields/prototypes are never adopted.
+ */
+function sameAdministrativeData(value:unknown,expected:unknown):boolean{
+ if(expected===null||typeof expected!=='object')return value===expected;
+ if(value===null||typeof value!=='object'||Object.getPrototypeOf(value)!==Object.getPrototypeOf(expected))return false;
+ const keys=Reflect.ownKeys(expected);
+ if(Reflect.ownKeys(value).length!==keys.length)return false;
+ return keys.every(key=>{
+  const current=Object.getOwnPropertyDescriptor(value,key);
+  const original=Object.getOwnPropertyDescriptor(expected,key)!;
+  return !!current&&Object.hasOwn(current,'value')&&current.enumerable===original.enumerable
+   &&sameAdministrativeData(current.value,original.value);
+ });
+}
 /** The future command must ALSO check its live capability and resource grants in its transaction. */
 export function assertAdministrativeAssurance(principal:Principal,proof:unknown):asserts proof is VerifiedAdministrativeAssurance{
  let valid=false;
  try{
   const record=proof&&typeof proof==='object'?administrativeProofs.get(proof):undefined;
   if(record&&record.principal===principal){
-   valid=record.snapshot===JSON.stringify(principal)&&record.current();
+   valid=sameAdministrativeData(principal,record.snapshot)&&record.current();
    if(!valid)administrativeProofs.delete(proof as object);
   }
  }catch{
@@ -88,7 +104,7 @@ export function createAuthentication(pool:SqlPool,config:{supabaseUrl:string;pub
   if(principal.kind!=='human'||principal.workspaceRole!=='admin'||!userId)throw administrativeDenied();
   const proof=Object.freeze(Object.create(null)) as VerifiedAdministrativeAssurance;
   let lastChecked=started;
-  administrativeProofs.set(proof,{principal,snapshot:JSON.stringify(principal),current:()=>{
+  administrativeProofs.set(proof,{principal,snapshot:structuredClone(principal),current:()=>{
    const at=administrativeNow();
    if(at<lastChecked||!hasAal2Claims(token,userId,at))return false;
    lastChecked=at;return true;
