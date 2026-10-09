@@ -1,6 +1,7 @@
 import {isIP} from 'node:net';
 import {requestHash} from '../../domain/canonical.ts';
 import {HelpdeskError} from '../../domain/errors.ts';
+import {isPersistableText} from '../../domain/input-values.ts';
 
 /** Proposed local envelope, NOT the Novo GEO API or an operational approval. */
 export type IntegrationManifestCandidate=Readonly<{
@@ -46,7 +47,7 @@ function list(input:unknown,max:number):unknown[]{
  return result;
 }
 function text(value:unknown,max:number,pattern:RegExp):string{
- if(typeof value!=='string'||!value.length||value.length>max||!value.isWellFormed()||value.trim()!==value||!pattern.test(value))throw invalid();
+ if(!isPersistableText(value)||!value.length||value.length>max||value.trim()!==value||!pattern.test(value))throw invalid();
  return value;
 }
 const ref=(value:unknown)=>text(value,160,/^[A-Za-z0-9][A-Za-z0-9._:/-]*$/);
