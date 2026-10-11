@@ -5,3 +5,15 @@ test('C12 GET callback does not process an event',async()=>{const x=await f();as
 test('C12 oversized callback is denied before verifier or ledger',async()=>{const x=await f();assert.equal((await x.handler(x.request('POST','a'.repeat(32769)))).status,413);assert.equal(x.calls.length,0);});
 test('C12 compressed or non-JSON callback cannot change the bytes contract',async()=>{const x=await f();for(const h of [{'content-encoding':'gzip'},{'content-type':'text/plain'}])assert.equal((await x.handler(x.request('POST','x',h))).status,415);assert.equal(x.calls.length,0);});
 test('C12 query-string selectors are not used as delivery identity',async()=>{const x=await f(),r=x.request();assert.equal((await x.handler(new Request(r.url+'?recipient=other',r))).status,400);assert.equal(x.calls.length,0);});
+test('C12 overdue body is refused before the delivery verifier even when the timer has not run',async t=>{
+ const x=await f();let monotonic=0;
+ t.mock.method(performance,'now',()=>monotonic);
+ const body=new ReadableStream<Uint8Array>({pull(controller){
+  monotonic=5001;controller.enqueue(new TextEncoder().encode('{}'));controller.close();
+ }},{highWaterMark:0});
+ const request=new Request('https://support.example.invalid/v1/delivery-events',{
+  method:'POST',headers:{'content-type':'application/json'},body,duplex:'half',
+ } as RequestInit);
+ assert.equal((await x.handler(request)).status,408);
+ assert.equal(x.calls.length,0);
+});

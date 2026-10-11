@@ -116,6 +116,31 @@ export function registerResourcePublicationSqlTests(adminPool:()=>SqlPool){
     }),{status:503,code:'transaction_statement_failed'});
     assert.deepEqual(await f.counts(),{grants:0,refs:0,observations:0,receipts:0});
    });
+   async function refusesUnsafePublisher(){
+    const f=await fixture();
+    await assert.rejects(f.publish(),{code:'resource_publication_publisher_denied'});
+    // Also call the SECURITY DEFINER helper directly, bypassing the adapter gate.
+    await assert.rejects(pool.query('select helpdesk_auth.cg_publication_open($1,$2)',
+     [canonicalJson(f.target),randomUUID()]),{code:'PGR02'});
+    assert.deepEqual(await f.counts(),{grants:0,refs:0,observations:0,receipts:0});
+   }
+   await t.test('replication publisher is denied by both the adapter and SQL helper',async()=>{
+    await admin.query('alter role helpdesk_resource_publisher replication');
+    try{await refusesUnsafePublisher();}finally{await admin.query('alter role helpdesk_resource_publisher noreplication');}
+   });
+   await t.test('private schema ownership denies the publisher before any publication',async()=>{
+    const restore=(await admin.query("select format('alter schema helpdesk_auth owner to %I',pg_get_userbyid(nspowner)) as command from pg_namespace where nspname='helpdesk_auth'")).rows[0]?.command;
+    assert.equal(typeof restore,'string');
+    await admin.query('alter schema helpdesk_auth owner to helpdesk_resource_publisher');
+    try{await refusesUnsafePublisher();}finally{await admin.query(String(restore));}
+   });
+   await t.test('private function ownership denies the publisher before any publication',async()=>{
+    await admin.query("create function helpdesk_auth.cg_publication_ownership_probe() returns boolean language sql as 'select false'");
+    try{
+     await admin.query('alter function helpdesk_auth.cg_publication_ownership_probe() owner to helpdesk_resource_publisher');
+     await refusesUnsafePublisher();
+    }finally{await admin.query('drop function helpdesk_auth.cg_publication_ownership_probe()');}
+   });
    await t.test('normal request login cannot use publication helpers or the private adapter',async()=>{
     const f=await fixture(app);await assert.rejects(f.publish());
     await assert.rejects(app.query('select helpdesk_auth.cg_publication_open($1,$2)',[canonicalJson(f.target),randomUUID()]),{code:'42501'});assert.equal((await f.counts())?.grants,0);

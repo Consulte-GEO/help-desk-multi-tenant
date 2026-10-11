@@ -27,7 +27,7 @@ function transport(){
  const client=Object.assign(new EventEmitter(),{query:async(sql:string,params?:unknown[])=>{
   const stage=sql==='BEGIN'||sql==='COMMIT'||sql==='ROLLBACK'?sql:sql.includes('set_config')?'context':sql.includes('pg_roles')?'role':sql.includes('cg_publication_open')?'open':sql.includes('cg_publication_replace')?'replace':sql.includes('cg_publication_append')?'append':'UNEXPECTED';
   events.push(stage);values.push(params??[]);assert.notEqual(stage,'UNEXPECTED',sql);
-  const r:SqlResult=['BEGIN','COMMIT','ROLLBACK'].includes(stage)?{command:stage,rows:[],rowCount:null}:{command:'SELECT',rowCount:1,rows:[stage==='role'?{role:'helpdesk_resource_publisher',login:'helpdesk_resource_publisher',superuser:false,bypass_rls:false,create_role:false,create_db:false,inherit:false,member_of_role:false,owns_private_objects:false}:stage==='open'?{publication:{receipt:null,current:{revision:'0',snapshot:null}}}:stage==='replace'?{publication:{revision:'4',snapshotHash:plan().snapshotHash}}:stage==='append'?{publication:true}:{}]};
+  const r:SqlResult=['BEGIN','COMMIT','ROLLBACK'].includes(stage)?{command:stage,rows:[],rowCount:null}:{command:'SELECT',rowCount:1,rows:[stage==='role'?{role:'helpdesk_resource_publisher',login:'helpdesk_resource_publisher',superuser:false,bypass_rls:false,create_role:false,create_db:false,inherit:false,replication:false,member_of_role:false,owns_private_objects:false,owns_objects:false}:stage==='open'?{publication:{receipt:null,current:{revision:'0',snapshot:null}}}:stage==='replace'?{publication:{revision:'4',snapshotHash:plan().snapshotHash}}:stage==='append'?{publication:true}:{}]};
   return respond?respond(stage,r):r;
  },release:(error?:Error)=>{events.push('release');releases.push(error);}}) as SqlClient;
  const pool:SqlPool={connect:async()=>{connections++;events.push('connect');return client;},query:async()=>{throw Error('pool.query must not be used');},end:async()=>{ends++;}};
@@ -57,7 +57,7 @@ test('CG03g historical receipt replay dispatches no replacement or append',async
  const got=await f.store.runPublication(target(),key,()=>{},async tx=>await tx.findReceipt());
  assert.deepEqual(got,receipt());assert.deepEqual(f.events,['connect','BEGIN','context','role','open','COMMIT','release']);
 });
-for(const [field,value] of [['role','helpdesk_app'],['login','postgres'],['superuser',true],['bypass_rls',true],['create_role',true],['create_db',true],['inherit',true],['member_of_role',true],['owns_private_objects',true]] as const)test('CG03g denies unsafe publisher role '+field,async()=>{
+for(const [field,value] of [['role','helpdesk_app'],['login','postgres'],['superuser',true],['bypass_rls',true],['create_role',true],['create_db',true],['inherit',true],['member_of_role',true],['owns_private_objects',true],['replication',true],['owns_objects',true]] as const)test('CG03g denies unsafe publisher role '+field,async()=>{
  const f=await fixture();f.hook((s,r)=>s==='role'?{...r,rows:[{...r.rows[0],[field]:value}]}:r);
  await assert.rejects(publish(f),{code:'resource_publication_publisher_denied'});assert.ok(!f.events.includes('open'));assert.ok(!f.events.includes('COMMIT'));
 });

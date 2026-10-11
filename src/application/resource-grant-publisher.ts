@@ -104,14 +104,19 @@ export function createResourceGrantPublisher(options:Options){
  const read=options.source.readCompleteCoverage.bind(options.source),run=options.store.runPublication.bind(options.store);
  const manifest=options.manifestFingerprint,maxAge=options.maxAgeMicros,timeout=options.timeoutMs,clock=options.clock??(()=>new Date().toISOString());
  async function source(target:ResourceGrantTarget,signal?:AbortSignal):Promise<unknown>{
+  const deadline=performance.now()+timeout;
   const owned=new AbortController();let timer:ReturnType<typeof setTimeout>|undefined;let cancel=()=>{};
   const stopped=new Promise<never>((_resolve,reject)=>{
    cancel=()=>{owned.abort();reject(failure('resource_publication_source_unavailable'));};
    timer=setTimeout(cancel,timeout);signal?.addEventListener('abort',cancel,{once:true});
   });
   try{
-   const value=await Promise.race([Promise.resolve().then(()=>{if(owned.signal.aborted||signal?.aborted)throw failure('resource_publication_source_unavailable');return read(target,owned.signal);}),stopped]);
-   if(owned.signal.aborted||signal?.aborted)throw failure('resource_publication_source_unavailable');return value;
+   const value=await Promise.race([Promise.resolve().then(()=>{
+    if(owned.signal.aborted||signal?.aborted||performance.now()>=deadline){owned.abort();throw failure('resource_publication_source_unavailable');}
+    return read(target,owned.signal);
+   }),stopped]);
+   // Microtasks may beat an overdue timer after a synchronous source blocks.
+   if(owned.signal.aborted||signal?.aborted||performance.now()>=deadline){owned.abort();throw failure('resource_publication_source_unavailable');}return value;
   }catch{
    if(signal?.aborted)throw failure('resource_publication_cancelled',409);
    throw failure('resource_publication_source_unavailable');

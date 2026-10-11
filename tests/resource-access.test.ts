@@ -10,6 +10,17 @@ const ref=(name='A',tenant='T1')=>({connectionId:C,tenantId:tenant,type:'work',i
 const person=(role:'requester'|'account_manager'|'agent'='requester'):Principal=>({id:P,kind:'human',workspaceId:W,workspaceRole:null,grants:[{accountId:A,role}],scopes:['contexts:resolve','tickets:read','tickets:write']});
 const snapshot=(p=person())=>({operation:'tickets.read',principal:structuredClone(p),binding:{id:B,accountId:A,workspaceId:W,connectionId:C,tenantId:'T1',revision:'binding-r1',active:true},manifestFingerprint:M,accessRevision:'access-r1',asOf:T,expiresAt:'2026-10-09T10:00:02.000000Z',resources:[ref('A'),ref('B')]});
 const denied={status:403,code:'resource_scope_denied'},unavailable={status:503,code:'resource_scope_unavailable'};
+test('resource lookup refuses an overdue source even before its timeout callback runs',async t=>{
+ let monotonic=0; t.mock.method(performance,'now',()=>monotonic);
+ const create=await factory(); let sourceSignal:AbortSignal|undefined;
+ const resolver=create({manifestFingerprint:M,maxAgeMicros:1_000_000n,timeoutMs:50,clock:()=>T,
+  authority:{readAccess:async(_query:unknown,signal:AbortSignal)=>{
+   sourceSignal=signal;monotonic=51;return snapshot();
+  }}});
+ await assert.rejects(resolver.resolveResourceScope(person(),[ref()],'tickets.read'),unavailable);
+ assert.equal(sourceSignal?.aborted,true);
+});
+
 async function factory(){
  const path='../src/application/resource-access.ts';
  const api=await import(path).catch((e:unknown)=>{if((e as {code?:string}).code==='ERR_MODULE_NOT_FOUND')return {};throw e;});

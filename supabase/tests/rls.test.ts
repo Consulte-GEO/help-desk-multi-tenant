@@ -158,14 +158,14 @@ async function lifecycleFixture(workspace=1,account=101,instance=401){
  const request=(token:string)=>new Request('https://hd.test/v1/me',{headers:{authorization:'Bearer '+token,'x-workspace-id':id(workspace)}});
  return {auth,key,credentialId,connectionId,principalId,request};
 }
-test('M1c actual PostgreSQL COMMIT after a swallowed SQL error is not business success',async()=>{
+test('M1c swallowed server SQL error is refused before COMMIT and its prior write rolls back',async()=>{
  const messageId=randomUUID();
  await assert.rejects(()=>runTransaction(app,agent,async client=>{
   await client.query("insert into helpdesk_core.ticket_messages(workspace_id,account_id,ticket_id,id,actor_id,actor_type,body,created_at) values($1,$2,$3,$4,$5,'human_agent','Uncommitted probe',now())",[id(1),id(101),ticketId,messageId,agent.id]);
   // Deliberately swallow a server-side statement failure to reproduce an aborted transaction.
   try{await client.query('select 1/0');}catch(error){assert.equal((error as {code:string}).code,'22012');}
   return {mustNotReturn:true};
- }),{status:503,code:'transaction_outcome_unknown'});
+ }),{status:503,code:'transaction_statement_failed'});
  assert.equal((await admin.query('select id from helpdesk_core.ticket_messages where id=$1',[messageId])).rows.length,0);
 });
 test('M1c control statements see the real server timeouts and empty identity selectors',async()=>{

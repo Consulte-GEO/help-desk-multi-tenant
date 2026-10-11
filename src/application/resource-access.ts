@@ -155,6 +155,7 @@ export function createResourceAccessResolver(options:Options) {
   }
   async function lookup(query:ResourceAccessQuery, signal?:AbortSignal):Promise<unknown> {
     if(signal?.aborted)throw unavailable();
+    const deadline=performance.now()+timeout;
     const controller=new AbortController();let timer:ReturnType<typeof setTimeout>|undefined;
     let abort=()=>{};
     const stop=new Promise<never>((_resolve,reject)=>{
@@ -164,9 +165,11 @@ export function createResourceAccessResolver(options:Options) {
     try{
       // A source that ignores abort may finish later, but can never issue a decision.
       const value=await Promise.race([Promise.resolve().then(()=>{
-        if(controller.signal.aborted)throw unavailable();return read(query,controller.signal);
+        if(controller.signal.aborted||performance.now()>=deadline){controller.abort();throw unavailable();}
+        return read(query,controller.signal);
       }),stop]);
-      if(controller.signal.aborted||signal?.aborted)throw unavailable();
+      // A blocked event loop can settle the source before an overdue timer runs.
+      if(controller.signal.aborted||signal?.aborted||performance.now()>=deadline){controller.abort();throw unavailable();}
       return value;
     }catch{throw unavailable();}
     finally{clearTimeout(timer);signal?.removeEventListener('abort',abort);}

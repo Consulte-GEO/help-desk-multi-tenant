@@ -13,7 +13,7 @@ begin
  if exists(select 1 from pg_roles where rolname='helpdesk_resource_publisher') then
   raise exception 'Use a fresh cluster; existing publication role is not adopted' using errcode='42501';
  end if;
- create role helpdesk_resource_publisher nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
+ create role helpdesk_resource_publisher nologin nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls;
 end $candidate$;
 
 -- The migration/test administrator alone provisions a qualified source connection.
@@ -55,9 +55,11 @@ declare v jsonb;k text;r record;
 begin
  if session_user<>'helpdesk_resource_publisher' or not exists(
   select 1 from pg_roles p where p.rolname=session_user and not p.rolsuper and not p.rolbypassrls
-   and not p.rolcreaterole and not p.rolcreatedb and not p.rolinherit
+   and not p.rolcreaterole and not p.rolcreatedb and not p.rolinherit and not p.rolreplication
    and not exists(select 1 from pg_auth_members m where m.member=p.oid)
    and not exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where c.relowner=p.oid and n.nspname like 'helpdesk_%')
+   and not exists(select 1 from pg_namespace n where n.nspowner=p.oid and n.nspname like 'helpdesk_%')
+   and not exists(select 1 from pg_proc f join pg_namespace n on n.oid=f.pronamespace where f.proowner=p.oid and n.nspname like 'helpdesk_%')
  ) then raise exception 'Publisher not authorized' using errcode='PGR02'; end if;
  if target_text is null or octet_length(target_text)>8192 or intent is null or intent !~ '^[A-Za-z0-9._:-]{16,128}$' then
   raise exception 'Invalid publication target' using errcode='PGR03'; end if;
@@ -163,7 +165,7 @@ begin
    raise exception 'Invalid publication instant' using errcode='PGR03'; end if;
   -- Roundtrip prevents Date-style rollover; the database retains microseconds.
   if to_char((n->>k)::timestamptz at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"')<>
-   case when length(n->>k)=24 then left(n->>k,23)||'000Z' else n->>k end then
+   (case when length(n->>k)=24 then left(n->>k,23)||'000Z' else n->>k end) then
    raise exception 'Invalid publication instant' using errcode='PGR03'; end if;
  end loop;
  start_at:=(n->>'asOf')::timestamptz;end_at:=(n->>'expiresAt')::timestamptz;

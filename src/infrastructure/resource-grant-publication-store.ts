@@ -43,11 +43,13 @@ function databaseFailure(error:unknown):HelpdeskError{
  return invalid();
 }
 const roleSql=`select current_user::text as role,session_user::text as login,
- r.rolsuper as superuser,r.rolbypassrls as bypass_rls,r.rolcreaterole as create_role,r.rolcreatedb as create_db,r.rolinherit as inherit,
+ r.rolsuper as superuser,r.rolbypassrls as bypass_rls,r.rolcreaterole as create_role,r.rolcreatedb as create_db,r.rolinherit as inherit,r.rolreplication as replication,
  exists(select 1 from pg_auth_members m where m.member=r.oid) as member_of_role,
- exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where c.relowner=r.oid and n.nspname like 'helpdesk_%') as owns_private_objects
+ exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where c.relowner=r.oid and n.nspname like 'helpdesk_%') as owns_private_objects,
+ (exists(select 1 from pg_namespace n where n.nspowner=r.oid and n.nspname like 'helpdesk_%')
+  or exists(select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where p.proowner=r.oid and n.nspname like 'helpdesk_%')) as owns_objects
  from pg_roles r where r.rolname=current_user`;
-const roleKeys=['role','login','superuser','bypass_rls','create_role','create_db','inherit','member_of_role','owns_private_objects'] as const;
+const roleKeys=['role','login','superuser','bypass_rls','create_role','create_db','inherit','replication','member_of_role','owns_private_objects','owns_objects'] as const;
 
 /** Private publication adapter, not the normal request pool and not a source authenticator.
  * Requires the reviewed CG03g SQL helpers and an explicitly provisioned restricted

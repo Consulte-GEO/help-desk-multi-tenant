@@ -114,6 +114,14 @@ test('CG03f timeout ignores a source response that arrives after the deadline',a
  await started;t.mock.timers.tick(50);await rejected;finish(snapshot());await Promise.resolve();
  assert.equal(signal?.aborted,true);assert.equal(f.store.counts().transactions,0);
 });
+
+test('publication refuses an overdue source before opening the durable store',async t=>{
+ let monotonic=0;t.mock.method(performance,'now',()=>monotonic);
+ const f=await fixture();let sourceSignal:AbortSignal|undefined;
+ f.sourceHook(async(_target,signal)=>{sourceSignal=signal;monotonic=51;return snapshot();});
+ await assert.rejects(f.publish(),{code:'resource_publication_source_unavailable'});
+ assert.equal(f.store.counts().transactions,0);assert.equal(sourceSignal?.aborted,true);
+});
 test('CG03f pre-aborted calls do not read source or open a transaction',async()=>{
  const f=await fixture(),c=new AbortController();c.abort();await assert.rejects(f.publish('0',key,target(),c.signal));
  assert.equal(f.sourceCalls(),0);assert.equal(f.store.counts().transactions,0);
