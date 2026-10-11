@@ -129,10 +129,9 @@ export function registerResourcePublicationSqlTests(adminPool:()=>SqlPool){
     try{await refusesUnsafePublisher();}finally{await admin.query('alter role helpdesk_resource_publisher noreplication');}
    });
    await t.test('private schema ownership denies the publisher before any publication',async()=>{
-    const restore=(await admin.query("select format('alter schema helpdesk_auth owner to %I',pg_get_userbyid(nspowner)) as command from pg_namespace where nspname='helpdesk_auth'")).rows[0]?.command;
-    assert.equal(typeof restore,'string');
-    await admin.query('alter schema helpdesk_auth owner to helpdesk_resource_publisher');
-    try{await refusesUnsafePublisher();}finally{await admin.query(String(restore));}
+    // A separate private namespace tests ownership without changing helper ACLs.
+    await admin.query('create schema helpdesk_publication_ownership_probe authorization helpdesk_resource_publisher');
+    try{await refusesUnsafePublisher();}finally{await admin.query('drop schema helpdesk_publication_ownership_probe');}
    });
    await t.test('private function ownership denies the publisher before any publication',async()=>{
     await admin.query("create function helpdesk_auth.cg_publication_ownership_probe() returns boolean language sql as 'select false'");

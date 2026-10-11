@@ -128,7 +128,7 @@ end$$;
 
 create function helpdesk_auth.cg_publication_replace(target_text text,intent text,expected text,snapshot_text text,snapshot_hash text) returns jsonb
 language plpgsql volatile security definer set search_path='' as $$
-declare v jsonb;opened jsonb;old_snapshot jsonb;n jsonb;j jsonb;k text;start_at timestamptz;end_at timestamptz;
+declare v jsonb;opened jsonb;old_snapshot jsonb;n jsonb;v_ref jsonb;k text;start_at timestamptz;end_at timestamptz;
  count_refs integer;old_revision bigint;new_revision bigint;configured_fingerprint text;command_digest text;target_digest text;
 begin
  v:=helpdesk_auth.cg_publication_target(target_text,intent);
@@ -173,12 +173,12 @@ begin
   raise exception 'Publication snapshot not current' using errcode='PGR01'; end if;
  count_refs:=jsonb_array_length(n->'resources');
  if count_refs>1000 or (n->>'state'='revoked' and count_refs<>0) then raise exception 'Invalid complete coverage' using errcode='PGR03'; end if;
- for j in select * from jsonb_array_elements(n->'resources') loop
-  if jsonb_typeof(j)<>'object' or (select count(*) from jsonb_object_keys(j))<>4
-   or j->'connectionId' is distinct from v->'connectionId' or j->'tenantId' is distinct from v->'tenantId'
-   or jsonb_typeof(j->'type') is distinct from 'string' or j->>'type' !~ '^[a-z][a-z0-9_]{0,31}$'
-   or jsonb_typeof(j->'id') is distinct from 'string' or length(j->>'id') not between 1 and 256
-   or btrim(j->>'id')<>j->>'id' or j->>'id' ~ '[[:cntrl:]]' then
+ for v_ref in select * from jsonb_array_elements(n->'resources') loop
+  if jsonb_typeof(v_ref)<>'object' or (select count(*) from jsonb_object_keys(v_ref))<>4
+   or v_ref->'connectionId' is distinct from v->'connectionId' or v_ref->'tenantId' is distinct from v->'tenantId'
+   or jsonb_typeof(v_ref->'type') is distinct from 'string' or v_ref->>'type' !~ '^[a-z][a-z0-9_]{0,31}$'
+   or jsonb_typeof(v_ref->'id') is distinct from 'string' or length(v_ref->>'id') not between 1 and 256
+   or btrim(v_ref->>'id')<>v_ref->>'id' or v_ref->>'id' ~ '[[:cntrl:]]' then
    raise exception 'Invalid coverage reference' using errcode='PGR03'; end if;
  end loop;
  if (select count(*) from (select distinct j->>'type',j->>'id' from jsonb_array_elements(n->'resources') j) x)<>count_refs then
