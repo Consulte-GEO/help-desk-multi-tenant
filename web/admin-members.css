@@ -1,0 +1,18 @@
+/* Scoped candidate styles; no fonts or third-party resources. */
+.admin-members { font-family: system-ui, sans-serif; color: #182735; max-width: 1100px; margin: 1.5rem auto; padding: 1rem; box-sizing: border-box; }
+.admin-members h1 { font-size: 1.7rem; margin: 0 0 .6rem; }
+.admin-members p { line-height: 1.5; }
+.admin-members-toolbar, .admin-members-actions { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
+.admin-members button { font: inherit; border: 1px solid #526778; border-radius: .3rem; background: #fff; color: inherit; padding: .55rem .8rem; cursor: pointer; }
+.admin-members button:disabled { cursor: not-allowed; opacity: .5; }
+.admin-members :focus-visible { outline: 3px solid #165e91; outline-offset: 2px; }
+.admin-members [hidden] { display: none !important; }
+.admin-members-table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid #ccd4da; margin: 1rem 0; }
+.admin-members table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.admin-members th, .admin-members td { text-align: left; padding: .8rem; border-bottom: 1px solid #ccd4da; vertical-align: top; overflow-wrap: anywhere; }
+.admin-members th { background: #edf2f5; }
+.admin-members dialog { width: min(32rem, calc(100% - 2rem)); box-sizing: border-box; border: 1px solid #526778; border-radius: .4rem; padding: 1.5rem; color: inherit; }
+.admin-members dialog::backdrop { background: rgb(15 25 35 / 50%); }
+.admin-member-field { display: grid; gap: .3rem; margin: 1rem 0; }
+.admin-member-field input, .admin-member-field textarea, .admin-member-field select { width: 100%; box-sizing: border-box; padding: .6rem; font: inherit; border: 1px solid #526778; border-radius: .3rem; }
+@media (max-width: 640px) { .admin-members { margin: .5rem 0; padding: .6rem; } .admin-members table { min-width: 610px; } .admin-members-toolbar button { flex: 1 1 auto; } }

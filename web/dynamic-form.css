@@ -1,0 +1,10 @@
+/* Optional component styles; not yet included in the runtime asset whitelist. */
+.dynamic-field { display: grid; gap: .45rem; margin-block: 1rem; min-width: 0; }
+.dynamic-field label, .dynamic-field legend { font-weight: 600; }
+.dynamic-field input:not([type=checkbox]), .dynamic-field textarea, .dynamic-field select { box-sizing: border-box; width: 100%; min-height: 2.75rem; padding: .65rem; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: .35rem; }
+.dynamic-field textarea { min-height: 6rem; resize: vertical; }
+.dynamic-field fieldset { min-width: 0; padding: 1rem; border: 1px solid currentColor; }
+.dynamic-field button { min-height: 2.75rem; padding: .65rem 1rem; width: fit-content; }
+.dynamic-field :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.dynamic-field [disabled] { opacity: .6; cursor: not-allowed; }
+@media (max-width: 42rem) { .dynamic-field button { width: 100%; } .dynamic-field fieldset { padding: .6rem; } }

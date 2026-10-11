@@ -1,0 +1,16 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {createServer} from 'node:net';import {mkdtemp,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
+async function fixture(response='stream: OK\0',changedDefinitions=false){
+ let versions=0;
+ const path='../src/integrations/files/clamd-scanner.ts',m=await import(path).catch(()=>({}));assert.equal(typeof m.createClamdScanner,'function');
+ const dir=await mkdtemp(join(tmpdir(),'helpdesk-clamd-test-')),sock=join(dir,'clamd.sock'),received:Buffer[]=[];const clients=new Set<any>();
+ const server=createServer(s=>{clients.add(s);s.on('error',()=>{});s.on('close',()=>clients.delete(s));let b=Buffer.alloc(0),stream=false;s.on('data',chunk=>{b=Buffer.concat([b,typeof chunk==='string'?Buffer.from(chunk):chunk]);if(!stream){const n=b.indexOf(0);if(n<0)return;const command=b.subarray(0,n).toString();b=b.subarray(n+1);if(command==='zVERSION'){s.end('ClamAV 1.4.3/'+(++versions>1&&changedDefinitions?'27601':'27600')+'/Sat Oct 10 10:00:00 2026\0');return;}assert.equal(command,'zINSTREAM');stream=true;}while(b.length>=4){const size=b.readUInt32BE();if(b.length<4+size)return;const data=b.subarray(4,4+size);b=b.subarray(4+size);if(!size){s.end(response);return;}received.push(data);}});});
+ await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(sock,resolve);});
+ return {scanner:m.createClamdScanner({socketPath:sock,maxBytes:1024,timeoutMs:300}),received,close:async()=>{for(const c of clients)c.destroy();await new Promise<void>(r=>server.close(()=>r()));await rm(dir,{recursive:true,force:true});}};
+}
+async function* stream(){yield Buffer.from('test ');yield Buffer.from('content');}
+test('C09 ClamD client sends real INSTREAM framing over an owned local socket',async()=>{const f=await fixture();try{const r=await f.scanner.scan(stream(),new AbortController().signal);assert.equal(r.verdict,'clean');assert.equal(r.engine,'ClamAV_1.4.3');assert.equal(r.definitions,'27600');assert.equal(Buffer.concat(f.received).toString(),'test content');}finally{await f.close();}});
+test('C09 FOUND is rejection and never exposes the provider signature text',async()=>{const f=await fixture('stream: Private.Signature FOUND\0');try{const r=await f.scanner.scan(stream(),new AbortController().signal);assert.equal(r.verdict,'infected');assert.ok(!JSON.stringify(r).includes('Private'));}finally{await f.close();}});
+for(const r of ['stream: ignored ERROR\0','INSTREAM size limit exceeded. ERROR\0','OK\0','stream: OK\n'])test('C09 refuses incomplete or incompatible daemon reply '+JSON.stringify(r),async()=>{const f=await fixture(r);try{await assert.rejects(f.scanner.scan(stream(),new AbortController().signal));}finally{await f.close();}});
+test('C09 scanner cancellation does not send another request',async()=>{const f=await fixture();try{const a=new AbortController();a.abort();await assert.rejects(f.scanner.scan(stream(),a.signal));assert.equal(f.received.length,0);}finally{await f.close();}});
+
+test('C09 scanner definition change during scanning cannot stamp an old definition receipt',async()=>{const f=await fixture('stream: OK\0',true);try{await assert.rejects(f.scanner.scan(stream(),new AbortController().signal));}finally{await f.close();}});

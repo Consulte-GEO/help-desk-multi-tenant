@@ -1,0 +1,18 @@
+{
+  "synthetic": true,
+  "providerContractVerified": false,
+  "manifest": {
+    "schemaVersion": 1,
+    "status": "candidate",
+    "system": "NOVO_GEO",
+    "issuer": "https://identity.example.invalid/Realm-A",
+    "clientId": "Synthetic-BFF-Client",
+    "redirectUri": "https://helpdesk.example.invalid/auth/callback",
+    "apiOrigin": "https://api.example.invalid",
+    "hosts": ["https://identity.example.invalid", "https://helpdesk.example.invalid", "https://api.example.invalid"],
+    "scopes": ["openid", "synthetic:access:read"],
+    "schemaHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+    "ownerRefs": {"identity": "SYNTHETIC-IDENTITY", "api": "SYNTHETIC-API", "support": "SYNTHETIC-SUPPORT", "security": "SYNTHETIC-SECURITY"},
+    "accessRevision": {"strategy": "per_request", "contractRef": "SYNTHETIC-ACCESS-CONTRACT-V1"}
+  }
+}

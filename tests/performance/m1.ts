@@ -30,7 +30,9 @@ export function summarizeCapacity(samples:unknown,sourceSha256:unknown,profile:{
 export async function runBoundedWorkload(input:unknown,{concurrency:parallelism,clock=()=>performance.now()}:{concurrency:number;clock?:()=>number}):Promise<Sample[]>{
  concurrency(parallelism);if(!Array.isArray(input)||!input.length||input.length>256)throw Error('Synthetic workload must contain1 to256 tasks.');
  for(const raw of input){const t=raw as Task;if(!t||typeof t!=='object'||Array.isArray(t)||Object.keys(t).length!==3||!cohorts.includes(t.cohort)||!operations.includes(t.operation)||typeof t.run!=='function')throw Error('Invalid synthetic task.');}
- const tasks=input as Task[],now=()=>{let n:unknown;try{n=clock();}catch{throw Error('Invalid monotonic measurement clock.');}if(!validNumber(n))throw Error('Invalid monotonic measurement clock.');return n;};
+ // Shared by this workload's workers: every observed tick must be nondecreasing.
+ let previousTick:number|undefined;
+ const tasks=input as Task[],now=()=>{let n:unknown;try{n=clock();}catch{throw Error('Invalid monotonic measurement clock.');}if(!validNumber(n)||(previousTick!==undefined&&n<previousTick))throw Error('Invalid monotonic measurement clock.');previousTick=n;return n;};
  const admitted=now(),results:Sample[]=new Array(tasks.length);let next=0,fatal=false;
  const workers=Array.from({length:Math.min(parallelism,tasks.length)},async()=>{
   try{while(!fatal&&next<tasks.length){const index=next++,task=tasks[index]!,start=now();if(start<admitted)throw Error('Invalid monotonic measurement clock.');let outcome:Sample['outcome']='error';

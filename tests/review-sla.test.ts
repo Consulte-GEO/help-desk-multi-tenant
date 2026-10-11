@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {projectClocks} from '../src/domain/sla-clock.ts';
+const at='2026-10-10T10:00:00.000000Z';
+function f(type='approval_granted',from='triage',to='open',actorKind='human_agent'){
+ const t:any={id:'ticket1',workspaceId:'w1',profileVersionId:'p1',slaPolicyVersionId:'s1',version:2,status:to};
+ const p:any={versionId:'s1',status:'published',profileVersionId:'p1',calendar:{versionId:'c1',timeZone:'America/Sao_Paulo',from:'2026-10-10T00:00:00.000000Z',until:'2026-10-11T00:00:00.000000Z',intervals:[['2026-10-10T08:00:00.000000Z','2026-10-10T18:00:00.000000Z']]},firstResponseMicros:'60000000',solutionMicros:'600000000',startStates:['open'],pausedSolutionStates:['waiting_customer','triage']};
+ const e:any=[{ticketId:'ticket1',workspaceId:'w1',profileVersionId:'p1',sequence:1,at,type:'created',actorId:'human1',actorKind:'customer',from:null,to:from},{ticketId:'ticket1',workspaceId:'w1',profileVersionId:'p1',sequence:2,at,type,actorId:'human2',actorKind,from,to}];return {t,p,e};
+}
+for(const [type,from,to] of [['approval_granted','triage','open'],['approval_rejected','triage','waiting_customer'],['form_revised','waiting_customer','open'],['form_revised','waiting_customer','triage']])test('C11 SLA consumes '+type+' without inventing first human response',()=>{const x=f(type,from,to),r=projectClocks(x.t,x.e,x.p,at);assert.equal(r.firstResponse.completed,false);assert.equal(r.solution.completed,false);assert.equal(r.firstResponse.started,to==='open');});
+for(const [type,from,to,actor] of [['approval_granted','open','open','customer'],['approval_rejected','triage','resolved','human_agent'],['form_revised','open','open','customer'],['form_revised','waiting_customer','open','automation'],['approval_granted','triage','open','integration']])test('C11 malformed review event cannot alter clocks '+[type,from,to,actor],()=>{const x=f(type,from,to,actor);assert.throws(()=>projectClocks(x.t,x.e,x.p,at),{code:'invalid_sla_projection'});});

@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "f60baed8022b28e067a702b3dd51031e86983017",
+  "scope": "candidate-package-only",
+  "files": [
+    {
+      "path": "docs/auth/POLITICA-DE-ACESSO.md",
+      "sha256": "3d4890743e3b9542b0026dfa876d795f0189fa1f11f05ce48a5f62f53b6493dc"
+    },
+    {
+      "path": "docs/integrations/NOVO-GEO-MANIFESTO-CANDIDATO.md",
+      "sha256": "aca0ea794ae74069a23e51d505be39da4b5058fe5553934705257ace505884f8"
+    },
+    {
+      "path": "docs/integrations/NOVO-GEO-QUALIFICACAO-PENDENTE.md",
+      "sha256": "b6e203935ddc8b73422aaf5cf52083d281d7b9ff73bee2caae7422dcf8e0ec51"
+    },
+    {
+      "path": "docs/operations/CG-REV01-2026-10-09.md",
+      "sha256": "65899c41676dfd3e03b68ae773e09703b343696a28a62ae61bd19e38019da210"
+    },
+    {
+      "path": "docs/operations/CG03A-SELECAO-DE-RECURSOS-2026-10-09.md",
+      "sha256": "ed0329c126ca824da492cad0f76cc14507951ec29e454576a31e9348ee48faee"
+    },
+    {
+      "path": "docs/operations/CG03B-RESOLUCAO-E-REVALIDACAO-2026-10-09.md",
+      "sha256": "e8247cbc56e6880374b9b1b1d6b0fa297e00155d03c89dbaa54ff94389e9708a"
+    },
+    {
+      "path": "docs/operations/CG03C-ADMISSAO-TRANSACIONAL-2026-10-09.md",
+      "sha256": "10134dbae70411d2467cb11ddd945634e47160b9062eb2ecf5b50d1207416a04"
+    },
+    {
+      "path": "docs/operations/CG03D-CANDIDATO-SQL-2026-10-09.md",
+      "sha256": "a6363e293a8b895c496c8461b0a7fba21d8ce91fbca486cda8e8ca67277c1a12"
+    },
+    {
+      "path": "docs/operations/CG03E-STORE-E-OBSERVACAO-2026-10-09.md",
+      "sha256": "b04ae40fda51b879aa001d7de0f25d32b0ca58ec8a1a916ed3e1a711512a7289"
+    },
+    {
+      "path": "docs/operations/CG03F-PUBLICACAO-VERSIONADA-LOCAL-2026-10-09.md",
+      "sha256": "7bc425c65761483519ecf322880796328c09537d3618efbceefb4066dd120f3c"
+    },
+    {
+      "path": "docs/operations/CG03G-PERSISTENCIA-DA-PUBLICACAO-LOCAL-2026-10-09.md",
+      "sha256": "87c90469f7b19c7cbdc6ec8f46494680f665c39d4b676a4797f22fc2e1dd0994"
+    },
+    {
+      "path": "docs/operations/CG03H-COMPOSICAO-E-CONSULTAS-PENDENTES-2026-10-09.md",
+      "sha256": "941fb0d6cdc0e1e7af100c3ea092af1eb11e779193b4cc6fb693b67c2a44fd66"
+    },
+    {
+      "path": "docs/operations/CG03I-TRANSACOES-RECUSADAS-LOCAL-2026-10-09.md",
+      "sha256": "5b57bf04e229899f471c8ba4935b7bba1a0eec1c08fecc9105d5a351f0524cc8"
+    },
+    {
+      "path": "docs/operations/CONSULTE-GEO-CG02A.md",
+      "sha256": "29b92f50503007b1a50fbdc1ae8eae2771a44f0d34cea301062c5c44f7a14706"
+    },
+    {
+      "path": "docs/operations/CONSULTE-GEO-CG02B.md",
+      "sha256": "c6d06a82d12211d6d122236aca7a08f654a9b73f4491c59151608248d13b2195"
+    },
+    {
+      "path": "docs/operations/CONSULTE-GEO-CONTINGENCIA-DE-ACESSO.md",
+      "sha256": "2f05640542b17d820bed88b100cace9b6babb370fa522af87034a158675ac797"
+    },
+    {
+      "path": "docs/operations/CONSULTE-GEO-PILOTO-MANIFEST.md",
+      "sha256": "d0ea5baa4664e832239fe7cd01d6c3c02bb8ab28017dfb419c86475f41d05bb5"
+    },
+    {
+      "path": "scripts/test-ui-local.mjs",
+      "sha256": "51fe93648d4c17e534fa121198c99a8f1c1702ac682180f99a37526d43ba55be"
+    },
+    {
+      "path": "src/application/resource-access.ts",
+      "sha256": "233bcc72283b22ca92690e38d960c23e291c96f4213ef49fdf816360e0fa3184"
+    },
+    {
+      "path": "src/application/resource-grant-publisher.ts",
+      "sha256": "cbc9fa92bd85759bab62e6921e5ea0c496f20510235916c675bbca23d9b3e5c9"
+    },
+    {
+      "path": "src/connectors/novo-geo/contract.ts",
+      "sha256": "a26795dc3aaad225d1816c97c633bb2541c23c9aa954ccc0dd0cca9a921c7fd7"
+    },
+    {
+      "path": "src/domain/external-resource.ts",
+      "sha256": "69947fcedd1400c624664a23594f2972235afad1bf564cd37179bf7d86b572eb"
+    },
+    {
+      "path": "src/domain/resource-publication.ts",
+      "sha256": "f41a2a1cfd4a07711c70217c6bbac545827c60d95c73ef2a36313b7994bed395"
+    },
+    {
+      "path": "src/infrastructure/authentication.ts",
+      "sha256": "0f91d3e0fb550a16fe153b679397ae8f388f01c0206972855ffe4dd28a56d607"
+    },
+    {
+      "path": "src/infrastructure/resource-access-store.ts",
+      "sha256": "33fe6fad259f8e7e7e5c3d25b2d1bc93bbd845dca7ed7a0e68ab6ec55be18b62"
+    },
+    {
+      "path": "src/infrastructure/resource-grant-publication-store.ts",
+      "sha256": "0b32d260645586ce4c9d7139531fae6fff77f1336806bf6c7659b197c81a42b9"
+    },
+    {
+      "path": "src/infrastructure/resource-transaction.ts",
+      "sha256": "3bbe8cb42452365422643fb00392712b76a093339e11f7a5a8fd9ea19b43d3ca"
+    },
+    {
+      "path": "src/infrastructure/transaction.ts",
+      "sha256": "a6cdbcce7e83dd3e463c93f3fa891b4436508b7a33c770ef30f5b785772ecc87"
+    },
+    {
+      "path": "supabase/candidates/cg_resource_observation.sql",
+      "sha256": "b3fd7bddcdc352e738615c20eaa7377eaebe16985f262ddf7e08fab8682c1fe3"
+    },
+    {
+      "path": "supabase/candidates/cg_resource_publication.sql",
+      "sha256": "0388004e7294ab97b06fdd4eae257f79b29e197b7ce1e80b3466d67ff40669d9"
+    },
+    {
+      "path": "supabase/candidates/cg_resource_scope.sql",
+      "sha256": "6e95aaba83e9411e11addc7f734c9f28f0713b81f3756d666fe000efd7d3e3c7"
+    },
+    {
+      "path": "supabase/tests/capacity-scenarios.ts",
+      "sha256": "e90392ca0d87bf4d95fdc48aea33d01790d7841ddb1a260affbccd1efb5201a1"
+    },
+    {
+      "path": "supabase/tests/capacity-workload-scenarios.ts",
+      "sha256": "b7c539e27bcabea440ae3adc542507bd0dfdc2f7872e6fb66d134da66a18fed7"
+    },
+    {
+      "path": "supabase/tests/resource-access-scenarios.ts",
+      "sha256": "a92d139f3aedcae7c2f56dce2936e143b4f72d687d4d54f936a500494c32796e"
+    },
+    {
+      "path": "supabase/tests/resource-publication-scenarios.ts",
+      "sha256": "2a37edc805bdfbf956824d73a9e5b7dbfddd12de612dfaa72745aa7862c403bd"
+    },
+    {
+      "path": "supabase/tests/resource-scope-store-scenarios.ts",
+      "sha256": "94df957004ddcade1588a9ae86aedd9089411e8718e036b3b1acac3b1a733f15"
+    },
+    {
+      "path": "tests/administrative-assurance.test.ts",
+      "sha256": "5e2c0d26b1849bd48b1b1554db339778c8b65176098faf6e7ea8b10774da7a0f"
+    },
+    {
+      "path": "tests/administrative-data-proof.test.ts",
+      "sha256": "c55517aa895ab9796a9a840e2e5470ba1abad666abfb01aa5d22420d08720c80"
+    },
+    {
+      "path": "tests/browser-note-recovery.py",
+      "sha256": "8181fe9f6d611740b1ed89211b390bc46d6a7cb2cfbcba3ca7af434bb5a0857e"
+    },
+    {
+      "path": "tests/capacity-clock.test.ts",
+      "sha256": "bcb71bbfde40bf2e0f8272072c9014925c51712f78512b42f4f32fba436d1b17"
+    },
+    {
+      "path": "tests/capacity-fixture.test.ts",
+      "sha256": "68970f9201b9554e09a3e365e55e54f0601020e30963acd409a8517f72bf1e31"
+    },
+    {
+      "path": "tests/external-resource.test.ts",
+      "sha256": "bb6ab7113b4e27df5d10274ad1bd2597409f5c5fb32bef0fb3463245ac4ce275"
+    },
+    {
+      "path": "tests/fixtures/novo-geo/access.json",
+      "sha256": "b6784cc996ffdca2980ac6f1eba41623196090353a65173035dfc5752360c2c4"
+    },
+    {
+      "path": "tests/fixtures/novo-geo/identity.json",
+      "sha256": "7fb231c569ff4a559551a88f4b04560f3d0e16f8cff6189817a65760d2283205"
+    },
+    {
+      "path": "tests/fixtures/novo-geo/lookups.json",
+      "sha256": "bd5485858e8e40e6b4629982773373d722a2f22a55dfdc0271bbf8575738deba"
+    },
+    {
+      "path": "tests/fixtures/novo-geo/manifest.json",
+      "sha256": "24363675c70c5f3a0bf89bfe3dcfb8fbbe4da5dbe2a7410ac75f1d08bb7d30a1"
+    },
+    {
+      "path": "tests/mfa-secret-warning.test.ts",
+      "sha256": "f6966e88efe0c6f6606a5fd4f43c94b64df0a235638ec2bce2caa5a2fd290646"
+    },
+    {
+      "path": "tests/novo-geo-contract.test.ts",
+      "sha256": "8df91bf513ba07b5f6f378e0a8c1680e797412b425d0d35b297afb4bd3b54ab7"
+    },
+    {
+      "path": "tests/performance/fixture.ts",
+      "sha256": "60463e23a2b6457515f07f9b14dd8874f04a95aa34e96c0c6e12000696483602"
+    },
+    {
+      "path": "tests/performance/m1.ts",
+      "sha256": "29020f18c30e624023ad91a9abb23a4bd1364a6e49b3d3d102103ad467b44bbe"
+    },
+    {
+      "path": "tests/resource-access-store.test.ts",
+      "sha256": "2a26f9a424f540f5364d966f20c1c548e5d4a5e77ce2b9556c4a6e8bb7d9d118"
+    },
+    {
+      "path": "tests/resource-access.test.ts",
+      "sha256": "c91407bcb2e716791f9a096498bb6e207a72d04bff4706289302aacec771ae91"
+    },
+    {
+      "path": "tests/resource-grant-publication-store.test.ts",
+      "sha256": "d2e795339849dd85d1f05b7a668c5c83d7c8a5f5d619b14ceef4e0e0957a8431"
+    },
+    {
+      "path": "tests/resource-grant-publisher.test.ts",
+      "sha256": "824f16062cef6991e38d88a608a5a8f01f8b3b9ea077bd99c09fd7a4216995c5"
+    },
+    {
+      "path": "tests/resource-publication.test.ts",
+      "sha256": "4d90f3f27d90b77217b54191e1bcadc43cf3797b6d5821481c66a81ecc4c3c20"
+    },
+    {
+      "path": "tests/resource-transaction.test.ts",
+      "sha256": "ac6a13f6ed68363dfe4f32d57f0b919dfea69d360aedf38ba777b01a214ba123"
+    },
+    {
+      "path": "tests/transaction-admission.test.ts",
+      "sha256": "955ad73e7ea57010e5706c52ae4e5fee82e8bce3e57da862baca7d2f690f1a15"
+    },
+    {
+      "path": "tests/transaction-query-lifecycle.test.ts",
+      "sha256": "94a522d9492d314590e1f40ff29054ad0dee85bc8f7959d272bb6be38f12fc80"
+    },
+    {
+      "path": "tests/transaction-statement-failure.test.ts",
+      "sha256": "f7d3c06ad7a97bbfcd388ec0a830d9605b6ca8f58f0185aff3891667b0fddb59"
+    },
+    {
+      "path": "web/index.html",
+      "sha256": "c37d34b24835fbf571afcccb5b54b63fc2857607be0a30495b27e2fb060d91a5"
+    }
+  ],
+  "migrations": [
+    {
+      "file": "20260915000100_restrict_existing_definer.sql",
+      "sha256": "b98618ba0c23b1f126119e159324ad4576358798d8fb6e6fb09553ffdc7f3607"
+    },
+    {
+      "file": "20260915000200_helpdesk_foundation.sql",
+      "sha256": "ede5ab9756781e396e0065c0124f5bf1c698ea53fc72aef067582221b65b7ccc"
+    },
+    {
+      "file": "20260915000300_m1_authorization.sql",
+      "sha256": "aee3c4a82c791c0519719884e2e0ad0fe15f7fbff4afe0e9f552559959ae279c"
+    },
+    {
+      "file": "20260915000400_m1_resource_limits.sql",
+      "sha256": "3448a0c925bac1477183b01858180c12bce44dd4999f23122db0bae2c2185f11"
+    },
+    {
+      "file": "20260916000500_m1_session_lifecycle.sql",
+      "sha256": "cc862fb5f5259344be73c606a94b816a5dd964915a2a7397fbdd3003c27f0a32"
+    },
+    {
+      "file": "20260916000600_support_catalog.sql",
+      "sha256": "f5c30d4fce3c7671c4b946704e57bbd0139c10936e93e48dcbc77b2c214cb979"
+    },
+    {
+      "file": "20260916000700_ticket_priority.sql",
+      "sha256": "4d8065d139c66d7256d555cac0c56a32d1a0ee027d6471bbcddcbb77399cf637"
+    },
+    {
+      "file": "20260916000800_ticket_assignment.sql",
+      "sha256": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348"
+    },
+    {
+      "file": "20260917000900_human_scope_versions.sql",
+      "sha256": "016562a019a745b8e8953aa32a232fda8b06163b02cb9ca5c40a5536fff064cd"
+    },
+    {
+      "file": "20260917001000_transaction_effects.sql",
+      "sha256": "8672037df0d7ae62593aefc865d82e6f7994d12a087f9ef40232d54b241a0d9c"
+    },
+    {
+      "file": "20260917001100_conversation_lock.sql",
+      "sha256": "14191c072a5d101ab644eeaa0dfc6cbed61dfa25a9eaaf92870ea5b413337166"
+    },
+    {
+      "file": "20261007001200_workspace_discovery.sql",
+      "sha256": "9e080628937d47ff23d27a1169e67c9464ec694522c0f4ad1337e901575fa21d"
+    }
+  ],
+  "requiredPaths": [
+    "package.json",
+    "package-lock.json",
+    "AGENTS.md",
+    "PROJECT_HELP_DESK.md",
+    "README.md",
+    "scripts/homologate-local.mjs",
+    "scripts/check-homologation.mjs",
+    "scripts/test-db-native.mjs",
+    "scripts/test-db-local.mjs",
+    "scripts/check-migrations.ts",
+    "scripts/verify-lock.mjs",
+    "scripts/test-ui-local.mjs",
+    "supabase/tests/rls.test.ts",
+    "supabase/tests/upgrade.test.ts",
+    "src/infrastructure/postgres.ts"
+  ],
+  "dependencies": {
+    "pg": "8.16.3",
+    "typescript": "5.8.3",
+    "@types/node": "22.15.30",
+    "@types/pg": "8.15.4",
+    "@netlify/functions": "6.0.0"
+  },
+  "commands": [
+    "npm run check:lock",
+    "npm run check:migrations",
+    "npm run homologate:local",
+    "npm run check:homologation"
+  ]
+}

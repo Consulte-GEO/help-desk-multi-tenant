@@ -1,0 +1,32 @@
+{
+  "synthetic": true,
+  "providerContractVerified": false,
+  "purpose": "test-design-only; not an API response schema",
+  "cases": [
+    {
+      "case": "same-email-different-issuer",
+      "people": [
+        {
+          "issuer": "https://identity.example.invalid/Realm-A",
+          "subject": "synthetic-sub-A",
+          "email": "same@example.invalid"
+        },
+        {
+          "issuer": "https://identity.example.invalid/Realm-B",
+          "subject": "synthetic-sub-A",
+          "email": "same@example.invalid"
+        }
+      ],
+      "expectedRelationship": "distinct identities; do not join by email"
+    },
+    {
+      "case": "pairwise-subjects",
+      "samePersonConfirmed": false,
+      "subjects": [
+        "synthetic-client-A-sub",
+        "synthetic-client-B-sub"
+      ],
+      "expectedRelationship": "no automatic association"
+    }
+  ]
+}

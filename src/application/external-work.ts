@@ -1,0 +1,21 @@
+import {copyFormData,freezeFormData} from '../../shared/form-rules.js';import {uuidIdentifier} from '../domain/input-values.ts';import {requestHash} from '../domain/canonical.ts';import {HelpdeskError} from '../domain/errors.ts';
+export type WorkEvent={id:string;connectionId:string;externalId:string;sequence:number;status:'planned'|'in_progress'|'done';release:null|{environment:'staging'|'production';version:string;affectedVersion:string;evidenceRef:string}};
+export type WorkLink={id:string;ticketId:string;connectionId:string;externalId:string;revision:number;sequence:number;eventHash:string|null;state:string;release:WorkEvent['release']};
+export type WorkReceipt={eventId:string;eventHash:string;outcome:'applied'|'stale';requiresHumanValidation:boolean;ticketMutation:'none'};
+export interface ExternalWorkStore{withLink<T>(id:string,work:(tx:{read():Promise<WorkLink|null>;readEvent(eventId:string):Promise<WorkReceipt|null>;commit(next:WorkLink,receipt:WorkReceipt,expectedRevision:number):Promise<void>})=>Promise<T>):Promise<T>}
+export interface ExternalWorkVerifier{/** Qualify GTC contract, signature, connection, time and release provenance. No default or trust of `verified:true` from HTTP. */verify(raw:unknown):Promise<unknown>}
+const fail=(code='external_work_unavailable',status=503)=>new HelpdeskError(status,code,'Evento externo não pode ser aplicado ao trabalho vinculado.');
+function parse(raw:unknown):WorkEvent{try{const e=copyFormData(raw) as WorkEvent;if(!e||Object.keys(e).length!==6||typeof e.id!=='string'||!/^[A-Za-z0-9._:-]{1,160}$/.test(e.id)||typeof e.externalId!=='string'||!/^[A-Za-z0-9._:-]{1,160}$/.test(e.externalId)||!Number.isSafeInteger(e.sequence)||e.sequence<1||!['planned','in_progress','done'].includes(e.status))throw Error();uuidIdentifier(e.connectionId);if(e.release!==null){const r=e.release;if(!r||Object.keys(r).length!==4||!['staging','production'].includes(r.environment)||![r.version,r.affectedVersion,r.evidenceRef].every(v=>typeof v==='string'&&/^[A-Za-z0-9._:/-]{1,160}$/.test(v)))throw Error();}return e;}catch{throw fail('invalid_external_event',400);}}
+/** A normalized verified event can update only its private link ledger. Even a
+ * production release is NOT a ticket resolution, human answer, or approval. */
+export function createExternalWork(o:{store:ExternalWorkStore;verifier:ExternalWorkVerifier}){
+ return Object.freeze({async acceptExternalWorkEvent(linkId:string,raw:unknown):Promise<WorkReceipt>{uuidIdentifier(linkId);let verified:unknown;try{verified=await o.verifier.verify(raw);}catch{throw fail('external_event_unverified',403);}if(!verified)throw fail('external_event_unverified',403);const e=parse(verified),hash=requestHash(e);
+  return o.store.withLink(linkId,async tx=>{const l=await tx.read();if(!l||l.id!==linkId||l.connectionId!==e.connectionId||l.externalId!==e.externalId)throw fail('external_link_mismatch',403);if(!Number.isSafeInteger(l.revision)||l.revision<1||l.revision===Number.MAX_SAFE_INTEGER||!Number.isSafeInteger(l.sequence)||l.sequence<0)throw fail();const prior=await tx.readEvent(e.id);if(prior){if(prior.eventHash!==hash)throw fail('external_event_conflict',409);const saved=copyFormData(prior) as WorkReceipt;if(!saved||Object.keys(saved).length!==5||saved.eventId!==e.id||saved.ticketMutation!=='none'||!['applied','stale'].includes(saved.outcome)||typeof saved.requiresHumanValidation!=='boolean'||saved.outcome==='stale'&&saved.requiresHumanValidation)throw fail();return freezeFormData({eventId:saved.eventId,eventHash:hash,outcome:saved.outcome,requiresHumanValidation:saved.requiresHumanValidation,ticketMutation:'none' as const});}
+   if(e.sequence<l.sequence)return {eventId:e.id,eventHash:hash,outcome:'stale',requiresHumanValidation:false,ticketMutation:'none'};
+   if(e.sequence===l.sequence)throw fail('external_event_conflict',409);
+   const candidate=e.status==='done'&&e.release?.environment==='production',state=candidate?'awaiting_human_validation':e.status==='done'?'waiting_release':'waiting_internal';
+   const receipt:WorkReceipt=freezeFormData({eventId:e.id,eventHash:hash,outcome:'applied',requiresHumanValidation:!!candidate,ticketMutation:'none'});
+   await tx.commit(freezeFormData({...l,revision:l.revision+1,sequence:e.sequence,eventHash:hash,state,release:e.release}),receipt,l.revision);return receipt;
+  });
+ }});
+}

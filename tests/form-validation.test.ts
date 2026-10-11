@@ -1,0 +1,21 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {createResourceAccessResolver} from '../src/application/resource-access.ts';
+import {requestHash} from '../src/domain/canonical.ts';
+const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');const NOW='2026-10-09T10:00:00.000000Z',LATER='2026-10-09T10:01:00.000000Z';
+const field=(key:string,type:string,config:unknown)=>({key,type,label:key,required:true,public:true,config});
+async function fixture(){const path='../src/domain/form-validation.ts';const m=await import(path).catch(e=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof m.createScopedFormValidator,'function','C07 scoped form validator missing');
+ const p:any={id:id(2),workspaceId:id(1),kind:'human',workspaceRole:null,grants:[{accountId:id(3),role:'requester'}],scopes:['tickets:read','tickets:write']},refs=[{connectionId:id(4),tenantId:'T1',type:'work',id:'A'}];let time=NOW,calls=0;
+ const resolver=createResourceAccessResolver({authority:{readAccess:async(q)=>({principal:p,binding:{id:id(5),accountId:id(3),workspaceId:id(1),connectionId:id(4),tenantId:'T1',revision:'1',active:true},operation:q.operation,manifestFingerprint:'a'.repeat(64),accessRevision:'1',asOf:NOW,expiresAt:LATER,resources:refs})},manifestFingerprint:'a'.repeat(64),maxAgeMicros:60000000n,timeoutMs:5000,clock:()=>time});
+ const controls={edit:(rows:any[])=>rows,after:()=>{}};
+ const api=m.createScopedFormValidator({resolver,clock:()=>time,timeoutMs:100,evidence:{verify:async(qs:any[])=>{calls++;const rows=qs.map(q=>({queryHash:requestHash(q),status:q.kind==='file'?'clean':'verified',expiresAt:LATER}));controls.after();return controls.edit(rows);}}});
+ const s={id:id(701),version:1,status:'published',title:'Synthetic',fields:[field('work','lookup',{resolver:'work'}),field('file','file',{maxItems:1})]};
+ const use=async(run:any):Promise<any>=>{const proof=await resolver.resolveResourceScope(p,refs,'tickets.write');return resolver.withResourceScope(p,refs,'tickets.write',proof,(ctx,lease)=>run(ctx,lease));};
+ return {p,resolver,api,s,controls,calls:()=>calls,setTime:(t:string)=>time=t,use,validate:(ctx:any,lease:any,answers:any={work:'A',file:['receipt-1']})=>api.validateForm(p,s,answers,ctx,lease,{id:id(8),revision:1})};
+}
+test('C07 checks lookup and clean receipt against the full draft/scope binding',async()=>{const f=await fixture(),r=await f.use(f.validate);assert.equal(f.calls(),1);assert.equal(r.formVersion,1);assert.equal(r.draftRevision,1);assert.equal(r.commitAuthorized,false);assert.deepEqual(r.answers,{work:'A',file:['receipt-1']});});
+for(const change of [(r:any[])=>[],(r:any[])=>[r[0],r[0]],(r:any[])=>r.map(x=>({...x,queryHash:'b'.repeat(64)})),(r:any[])=>r.map(x=>({...x,status:'pending'})),(r:any[])=>r.map(x=>({...x,expiresAt:NOW})),(r:any[])=>r.map(x=>({...x,extra:'secret'}))])test('C07 evidence mismatch never returns normalized accepted content '+change.toString(),async()=>{const f=await fixture();f.controls.edit=change;await assert.rejects(f.use(f.validate),{code:'form_evidence_unavailable'});});
+test('C07 forged lease fails before verifying evidence',async()=>{const f=await fixture();await assert.rejects(f.validate({},{}));assert.equal(f.calls(),0);});
+test('C07 invalid values fail before any lookup or scan confirmation',async()=>{const f=await fixture();await assert.rejects(f.use((ctx:any,lease:any)=>f.validate(ctx,lease,{work:'A'})),{code:'invalid_form_values'});assert.equal(f.calls(),0);});
+test('C07 expired resource lease after evidence query is not revived by a clean receipt',async()=>{const f=await fixture();f.controls.after=()=>f.setTime(LATER);await assert.rejects(f.use(f.validate),{code:'resource_scope_denied'});});
+test('C07 published schema must be explicitly loaded; drafts cannot authorize submission',async()=>{const f=await fixture();f.s.status='draft';await assert.rejects(f.use(f.validate),{code:'form_not_published'});});
+test('C07 requirement result IDs from another request are never accepted by count alone',async()=>{const f=await fixture();f.controls.edit=rows=>rows.reverse();const r=await f.use(f.validate);assert.equal(r.formVersion,1);});

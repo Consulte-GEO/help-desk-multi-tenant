@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+test('C04 member browser suite remains connected to the existing UI runner',async()=>{const runner=await readFile(new URL('../scripts/test-ui-local.mjs',import.meta.url),'utf8');assert.match(runner,/tests\/browser-admin-members\.py/);for(const preserved of ['smoke-local-http.mjs','browser-smoke.py','browser-human-session.py','browser-note-recovery.py'])assert.ok(runner.includes(preserved));assert.match(runner,/ownsFixture/);});

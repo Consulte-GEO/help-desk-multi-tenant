@@ -1,0 +1,17 @@
+export type FormType='text'|'textarea'|'integer'|'decimal'|'boolean'|'date'|'cnpj'|'select'|'multiselect'|'repeater'|'table_paste'|'lookup'|'file'|'info'|'download';
+export type FormField=Readonly<{key:string;type:FormType;label:string;required:boolean;public:boolean;config:Readonly<Record<string,unknown>>;when?:Readonly<{field:string;equals:string|boolean}>}>;
+export type FormVersion=Readonly<{id:string;version:number;status:'draft'|'published';title:string;fields:readonly FormField[]}>;
+export type FormRequirement=Readonly<{kind:'lookup'|'file';path:string;key:string;values:readonly string[]}>;
+export type FormResult=Readonly<{valid:boolean;answers:Readonly<Record<string,unknown>>;publicAnswers:Readonly<Record<string,unknown>>;issues:readonly {path:string;code:string;message:string}[];requirements:readonly FormRequirement[]}>;
+export type FormRegistry=Readonly<{types:readonly string[];lookups:readonly string[];files:boolean;downloads:readonly string[];units?:readonly string[]}>;
+export const FORM_TYPES:readonly FormType[];
+export const FORM_LIMITS:Readonly<{bytes:number;fields:number;rows:number;cells:number;depth:number;issues:number}>;
+export function formError(code?:string):Error&{code:string};
+export function copyFormData(value:unknown):unknown;
+export function freezeFormData<T>(value:T):Readonly<T>;
+export function decimalValue(v:unknown,scale?:number):{normalized:string;scaled:bigint};
+export function parseFormVersion(raw:unknown):FormVersion;
+export function validateFormValues(schema:unknown,answers:unknown,options?:{audience?:'customer'|'internal'}):FormResult;
+export function fieldIsVisible(field:FormField,answers:Record<string,unknown>,audience?:'customer'|'internal'):boolean;
+export function parseTablePaste(field:unknown,value:unknown):readonly Readonly<Record<string,unknown>>[];
+export function assertFormPublishable(schema:unknown,registry:FormRegistry):FormVersion;
