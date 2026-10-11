@@ -15,8 +15,8 @@ type Resolver=ReturnType<typeof createResourceAccessResolver>;
  */
 export function runResourceTransaction<T>(pool:SqlPool,resolver:Resolver,p:Principal,
  refs:readonly ExternalResourceRef[],operation:string,proof:unknown,
- work:(client:SqlClient,context:ResourceScopeContext)=>Promise<T>,signal?:AbortSignal):Promise<T> {
+ work:(client:SqlClient,context:ResourceScopeContext)=>Promise<T>,signal?:AbortSignal,additionalAdmission?:()=>void):Promise<T> {
  return resolver.withResourceScope(p,refs,operation,proof,(context,lease)=>
   runTransaction(pool,p,client=>work(client,context),
-   ()=>resolver.assertResourceScopeCurrent(p,context,lease)),signal);
+   ()=>{resolver.assertResourceScopeCurrent(p,context,lease);additionalAdmission?.();}),signal);
 }

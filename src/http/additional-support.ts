@@ -1,0 +1,25 @@
+import {createHash,randomUUID} from 'node:crypto';import type {Principal} from '../domain/model.ts';import {uuidIdentifier} from '../domain/input-values.ts';
+import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-limit.ts';import type {VerifiedAdministrativeAssurance} from '../infrastructure/authentication.ts';
+import type {createPackageDelivery} from '../application/package-delivery.ts';import type {createCsatService} from '../application/csat.ts';import type {createKnowledge} from '../application/knowledge.ts';
+import {controlledJson,privateJson,httpFailure} from './controlled-json.ts';
+export function createAdditionalSupportHandler(o:{origin:string;authenticate:(r:Request)=>Promise<Principal>;rateLimiter:RateLimiter;limitInvitation:(tokenHash:string)=>Promise<void>;csat?:ReturnType<typeof createCsatService>;packages?:ReturnType<typeof createPackageDelivery>;knowledge?:ReturnType<typeof createKnowledge>;withAdmin?:<T>(r:Request,work:(p:Principal,proof:VerifiedAdministrativeAssurance)=>Promise<T>)=>Promise<T>}){
+ if(!o.origin.startsWith('https://')||new URL(o.origin).origin!==o.origin)throw Error('Configure an exact application origin.');
+ return async(req:Request,context:TrustedRequestContext={}):Promise<Response>=>{const requestId=randomUUID();try{
+  await o.rateLimiter.beforeAuthentication(req,context);const u=new URL(req.url);if(u.origin!==o.origin)throw httpFailure(403,'origin_required');
+  if(u.pathname==='/v1/csat'){
+   if(u.search)throw httpFailure(400,'unknown_parameter');if(!o.csat)throw httpFailure(503,'csat_not_configured');
+   if(req.method==='GET'||req.method==='HEAD')return req.method==='HEAD'?new Response(null,{status:200,headers:{'cache-control':'no-store'}}):privateJson({title:'Avalie o atendimento',submission:'explicit_post',authorization:'rating_and_comment_only'});
+   if(req.method!=='POST')return privateJson({code:'method_not_allowed'},405,{allow:'GET, HEAD, POST'});if(req.headers.get('origin')!==o.origin)throw httpFailure(403,'origin_required');
+   const b=await controlledJson(req,8192);if(Object.keys(b).length!==3||typeof b.token!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(b.token))throw httpFailure(400,'invalid_csat_input');await o.limitInvitation(createHash('sha256').update(b.token).digest('hex'));
+   return privateJson(await o.csat.submitCsat(b.token,{rating:b.rating,comment:b.comment},req.headers.get('idempotency-key')??''));
+  }
+  const publication=u.pathname==='/v1/knowledge/publications';const pack=/^\/v1\/tickets\/([a-f0-9-]+)\/closure-packages(?:\/([a-f0-9-]+)\/download)?$/.exec(u.pathname),macro=/^\/v1\/tickets\/([a-f0-9-]+)\/macros\/([a-f0-9-]+)\/preview$/.exec(u.pathname);
+  if(u.pathname!=='/v1/knowledge'&&!publication&&!pack&&!macro)throw httpFailure(404,'not_found');const expected=u.pathname==='/v1/knowledge'?'GET':'POST';if(req.method!==expected)return privateJson({code:'method_not_allowed'},405,{allow:expected});
+  if(expected==='POST'&&(req.headers.get('origin')!==o.origin||u.search))throw httpFailure(403,'origin_required');
+  if(publication){if(!o.knowledge||!o.withAdmin)throw httpFailure(503,'knowledge_not_configured');const body=await controlledJson(req,32768);return await o.withAdmin(req,async(p,proof)=>{await o.rateLimiter.afterAuthentication(p);return privateJson(await o.knowledge!.publishArticle(p,proof,body,req.headers.get('idempotency-key')??''));});}
+  const p=await o.authenticate(req);await o.rateLimiter.afterAuthentication(p);
+  if(pack){if(!o.packages)throw httpFailure(503,'packages_not_configured');const b=await controlledJson(req,2048);if(pack[2]){if(Object.keys(b).length)throw httpFailure(400,'invalid_package_input');return privateJson(await o.packages.authorizePackageDownload(p,uuidIdentifier(pack[1]),uuidIdentifier(pack[2])));}if(Object.keys(b).length!==1||typeof b.sourcePackageId!=='string')throw httpFailure(400,'invalid_package_input');return privateJson(await o.packages.registerSourcePackage(p,uuidIdentifier(pack[1]),b.sourcePackageId,req.headers.get('idempotency-key')??''));}
+  if(!o.knowledge)throw httpFailure(503,'knowledge_not_configured');if(macro){const b=await controlledJson(req,1024);if(Object.keys(b).length!==1||!Number.isSafeInteger(b.version))throw httpFailure(400,'invalid_macro_input');return privateJson(await o.knowledge.previewMacro(p,uuidIdentifier(macro[1]),uuidIdentifier(macro[2]),Number(b.version)));}
+  for(const k of u.searchParams.keys())if(k!=='query'||u.searchParams.getAll(k).length!==1)throw httpFailure(400,'unknown_parameter');return privateJson(await o.knowledge.searchArticles(p,u.searchParams.get('query')??'',20));
+ }catch(e){let code='additional_support_unavailable',status=503;try{const c=Object.getOwnPropertyDescriptor(e??{},'code')?.value,s=Object.getOwnPropertyDescriptor(e??{},'status')?.value;if(typeof c==='string'&&/^[a-z_]{1,100}$/.test(c)&&Number.isInteger(s)&&s>=400&&s<=599){code=c;status=s;}}catch{}return privateJson({code,detail:'Não foi possível concluir esta solicitação.',request_id:requestId},status);}};
+}

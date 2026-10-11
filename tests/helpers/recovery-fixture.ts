@@ -1,0 +1,6 @@
+import {newDeliveryRecord,claimNotification,startNotificationSend,finishNotificationSend,applyProviderDelivery,createNotificationIntent} from '../../src/domain/notification-delivery.ts';
+import {u,AT,BEFORE,UNTIL,digest} from './release-fixtures.ts';
+export function pending(){return newDeliveryRecord(createNotificationIntent({id:u(101),workspaceId:u(1),accountId:u(2),ticketId:u(3),eventId:u(4),recipientId:u(5),channelId:'synthetic-mail',templateId:'created',templateVersion:1,templateHash:digest(),kind:'support.created',sourceVersion:1,resourceHash:digest('b'),protocol:'CG-10001',invitationId:null,createdAt:BEFORE,expiresAt:UNTIL}),BEFORE);}
+export const policy={maxAttempts:3,backoffMicros:['1000000'],leaseMicros:'2000000',sendTimeoutMs:100};
+export function sending(){return startNotificationSend(claimNotification(pending(),'synthetic-worker',u(102),'2026-10-10T17:00:02.000000Z',BEFORE),u(102),digest('c'),BEFORE);}
+export function delivered(){return applyProviderDelivery(sending(),{intentId:u(101),channelId:'synthetic-mail',idempotencyKey:pending().intent.idempotencyKey,recipientId:u(5),providerMessageId:'synthetic-provider-1',sequence:1,outcome:'delivered',occurredAt:'2026-10-10T17:01:00.000000Z'},AT);}

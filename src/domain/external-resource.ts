@@ -117,3 +117,9 @@ export function requireCompleteResourceCoverage(requested: unknown, coverage: un
   if (selection.some(ref => !keys.has(key(ref)))) throw denied();
   return selection;
 }
+
+/** Complete source coverage, including an explicit empty set. Never a ticket selection
+ * or a source-authentication proof. Parsing preserves all entries; no truncation. */
+export function parseExternalResourceCoverage(value: unknown): readonly ExternalResourceRef[] {
+  try { return readSelection(value, COVERAGE_LIMIT, true); } catch { throw unavailable(); }
+}

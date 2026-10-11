@@ -1,0 +1,8 @@
+/* Optional components inherit the host's approved colors, fonts and spacing. */
+.support-portal { max-width: 76rem; margin-inline: auto; padding: 1rem; }
+.support-portal section { display: grid; grid-template-columns: repeat(auto-fit,minmax(12rem,1fr)); gap: 1rem; }
+.support-portal ul { list-style: none; padding: 0; }
+.support-portal li { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-block: 1rem; border-bottom: 1px solid currentColor; }
+.support-portal button { font: inherit; min-height: 2.75rem; overflow-wrap: anywhere; text-align: start; }
+.support-portal button:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+@media (max-width: 40rem) { .support-portal li { flex-direction: column; } }

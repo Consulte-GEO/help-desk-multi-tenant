@@ -10,3 +10,14 @@ console.log('Frontend estático criado em dist. O backend deve ser empacotado se
 
 await mkdir(new URL('../dist/vendor/',import.meta.url),{recursive:true});
 await copyFile(new URL('../web/vendor/qrcodegen.js',import.meta.url),new URL('../dist/vendor/qrcodegen.js',import.meta.url));
+
+// Optional form components: copying assets does not mount or authorize the feature.
+for(const name of ['dynamic-form.js','admin-forms.js','dynamic-form.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['form-rules.js','cnpj.js'])await copyFile(new URL('../shared/'+name,import.meta.url),new URL('../dist/shared/'+name,import.meta.url));
+// Optional C09/C10 components. Copying does not mount Storage, scanner or intake.
+for(const name of ['attachments.js','support-intake.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+// Optional C11/C12 panels. Copying never mounts endpoints or enables delivery.
+for(const name of ['review-state.js','approvals.js','form-review.js','delivery-operations.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+
+// Optional C13/C14 surfaces; copying does not enable routes, providers or cohort.
+for(const name of ['portal-state.js','customer-portal.js','support-queue.js','ticket-detail.js','reports.js','portal.css','optional-support.js','portal-format.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
