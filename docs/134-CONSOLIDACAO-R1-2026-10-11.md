@@ -1,6 +1,6 @@
 # Consolidação e revisão R1 — 11/10/2026
 
-Este checkpoint prevalece sobre os estados históricos de CG03 e dos 18 ciclos. A consolidação técnica passou pela homologação integral; merge e publicação estão na etapa final. O atendimento operacional permanece fechado. API/interface 0.27.0 e schema 0.19.0. Os módulos novos são candidatos cuja existência e testes não equivalem a integração operacional.
+Este checkpoint prevalece sobre os estados históricos de CG03 e dos 18 ciclos. A consolidação técnica foi homologada, integrada e publicada. O atendimento operacional permanece fechado. API/interface 0.27.0 e schema 0.19.0. Os módulos novos são candidatos cuja existência e testes não equivalem a integração operacional.
 
 ## Pedido, autorização e fontes
 
@@ -81,6 +81,16 @@ Homologação GREEN: [38146833123/1](https://github.com/Consulte-GEO/help-desk-m
 - Fingerprint integral executável: `555ee128db53787afebf320928fc12e883e15bfa79e16c16c9408c635b096b00`.
 - `evidence/homologation/latest.json` e seus seis logs da mesma execução `e686e75a-db24-46e5-b910-1a29fe42ecb3` importados sem edição; hashes e contagens conferidos. `evidence/ci/source.json` original e recibo `evidence/consolidacao-r1/ci-receipt.json` preservam a origem. `npm run check:homologation` passou no checkout atual.
 
-Revisão final independente das correções: sem pendências acionáveis dentro da cobertura. SQL e fixture revistos após o segundo RED. Merge do PR26 e verificação do deploy serão registrados no encerramento. O relatório mantém `platform_approved:false`; sucesso técnico não declara treinamento, restore, SLO ou aceite humano.
+Revisão final independente das correções e do relatório: sem pendências acionáveis dentro da cobertura. SQL e fixture revistos após o segundo RED. O relatório mantém `platform_approved:false`; sucesso técnico não declara treinamento, restore, SLO ou aceite humano.
+
+### Integração e publicação verificadas
+
+O head `1b5eed70aa91b02ef9b033219761c3cc88af850f` recebeu somente documentação/evidência após a fonte homologada. Os CIs [38147370822](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38147370822) e [38147374332](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38147374332) e o CodeQL passaram. Preview `6acb9d3d2ec43900086cc203` pronto, com `verify:release` e secrets scanning reais aprovados; log completo recuperado (21593 mensagens).
+
+O [PR26](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/26) foi integrado em `87ef35bba616feaef706c95f46e729d2c2aee165`, em 11/10/2026 às 14:33:55 UTC, após reconsultar head/base e usar match-head. O GitHub reconheceu PRs23/25 como integrados pela mesma ancestralidade. PR24, cujo alvo era a branch de PR23, foi encerrado como incorporado ao PR26; seu commit é ancestral da fonte publicada, sem segundo merge ou exclusão das branches.
+
+Publicação inicial verificada: produção `6acb9e5515dedb00080b78d0`, commit `87ef35bba616feaef706c95f46e729d2c2aee165`, estado ready, publicado às 14:34:44 UTC pelo Git/CD existente. [Site](https://helpdesk-consultegeo.netlify.app). O registro desta conclusão gera um commit documental posterior, com o mesmo fingerprint executável; o recibo desta primeira publicação permanece histórico e íntegro.
+
+Smoke de 14:35:31 UTC: **38 assets** publicados iguais ao build local por SHA-256; CSP restrita, DENY, nosniff e no-referrer conferidos. `/v1/public-config` e `/v1/capabilities` retornaram200 com operational=false; `/v1/me` e `/v1/workspaces` retornaram401 sem bearer; quatro leituras de atendimento retornaram503/release_gate_closed. Zero mutações de negócio. A Function foi exercitada efetivamente nesses GETs; não foi executada jornada com usuário real, escrita de atendimento, envio de mensagens ou restore. Evidência literal em `evidence/consolidacao-r1/production-smoke-initial.json`.
 
 Destino autorizado: site Netlify `helpdesk-consultegeo`, ID `9781cd85-7dc1-4ef5-868b-947e389a9d4d`, e projeto Supabase HelpDesk já existente. Publicação por Git/CD com `verify:release`; sem bypass por upload de dist, ambiente paralelo ou ampliação de permissões.
