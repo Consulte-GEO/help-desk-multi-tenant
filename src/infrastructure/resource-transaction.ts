@@ -18,5 +18,5 @@ export function runResourceTransaction<T>(pool:SqlPool,resolver:Resolver,p:Princ
  work:(client:SqlClient,context:ResourceScopeContext)=>Promise<T>,signal?:AbortSignal,additionalAdmission?:()=>void):Promise<T> {
  return resolver.withResourceScope(p,refs,operation,proof,(context,lease)=>
   runTransaction(pool,p,client=>work(client,context),
-   ()=>{resolver.assertResourceScopeCurrent(p,context,lease);additionalAdmission?.();}),signal);
+   ()=>{resolver.assertResourceScopeCurrent(p,context,lease);return additionalAdmission?.();}),signal);
 }

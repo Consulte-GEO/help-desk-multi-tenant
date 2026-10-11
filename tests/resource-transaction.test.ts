@@ -36,6 +36,14 @@ async function runner(){
 async function use(f:ReturnType<typeof fixture>,proof:unknown,work:(c:any,ctx:any)=>Promise<any>,signal?:AbortSignal){
  const run=await runner();return run(f.pool,f.a,f.p,refs,'tickets.write',proof,work,signal);
 }
+for(const kind of ['resolved async','rejected async','non-void sync'] as const)test('CG03c rejects '+kind+' additional admission before acquiring the pool',async()=>{
+ const f=fixture(),proof=await f.resolve();let acquired=0,work=0;
+ f.acquire(()=>{acquired++;});
+ const guard=kind==='resolved async'?async()=>false:kind==='rejected async'?async()=>{throw Error('Synthetic admission failure');}:()=>false;
+ const run=await runner() as (...args:any[])=>Promise<unknown>;
+ await assert.rejects(run(f.pool,f.a,f.p,refs,'tickets.write',proof,async()=>{work++;},undefined,guard),{code:'database_unavailable'});
+ assert.equal(acquired,0);assert.equal(work,0);assert.deepEqual(f.calls,[]);
+});
 const within=(f:ReturnType<typeof fixture>,proof:unknown,fn:(ctx:any,lease:any)=>Promise<any>,signal?:AbortSignal)=>
  (f.a.withResourceScope as any)(f.p,refs,'tickets.write',proof,fn,signal);
 
