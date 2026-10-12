@@ -16,6 +16,8 @@ const messages=Object.freeze({
  recovery_failed:'O link não foi confirmado. Pode estar inválido, expirado ou já utilizado; obtenha outro pelo provedor.',
  invalid_recovered_password:'Informe uma nova senha com texto válido.',
  invalid_login:'Informe e-mail, senha e um workspace válido.',
+ simple_workspace_required:'Seu acesso precisa de uma operação única definida. Procure o administrador.',
+ simple_mfa_required:'Esta conta exige autenticação adicional. O acesso simples não está disponível para ela.',
  invalid_logout_scope:'Tipo de encerramento de sessão inválido.',
  invalid_password_change:'Informe a senha atual e uma nova senha diferente, com texto válido.',
  invalid_mfa:'Escolha seu autenticador e informe o código de seis dígitos.',
