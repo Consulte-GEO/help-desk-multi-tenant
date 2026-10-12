@@ -11,3 +11,5 @@ Regressão real do navegador antes da correção: `/me` aceito, `#app` ainda hid
 Suite corrente: 17 checks de DOM/provedor sintético, sem skips. Tipos, contratos, 12 migrations, build e 33 testes focais aprovados. Screenshots pós-login inspecionadas. Revisão independente somente leitura sem bloqueadores; CI integral e publicação serão registrados após verificação.
 
 A correção abre a área autenticada; criação/consulta de chamados e demais operações continuam dependentes da preparação operacional, cadastros e autorização efetiva já documentados. Não foram criados dados de atendimento fictícios em produção.
+
+CI inicial 38246527760/38246522218: aplicação3741 e PostgreSQL294 passaram; navegador demonstrativo39 e fluxo atual17 também passaram. A etapa avançada preservada falhou porque o rótulo do workspace passou a ser genérico e deixou de refletir a seleção dessa fixture. Corrigido apenas o ramo avançado para manter seu rótulo anterior; o modo simples continua sem UUID na apresentação. A execução vermelha não foi importada como homologação aprovada.

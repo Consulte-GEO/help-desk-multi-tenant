@@ -72,7 +72,7 @@ async function login(){
  if(!serviceAvailable()&&ADVANCED_ACCESS){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}
  $('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));
  $('identity-name').textContent=s.me.workspace_role==='admin'?'Administrador':s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';
- $('workspace-label').textContent=s.demo?'Consulte · demonstração':'Operação autorizada';
+ $('workspace-label').textContent=s.demo?'Consulte · demonstração':ADVANCED_ACCESS?s.workspace:'Operação autorizada';
  $('login-status').textContent='';$('login-screen').hidden=true;$('app').hidden=false;
  render();if(serviceAvailable())await list(true,true);
 }
