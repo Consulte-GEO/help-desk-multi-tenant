@@ -27,3 +27,9 @@ Revisão independente somente leitura: sem bloqueadores residuais; encontrados e
 Para reativar recursos, revisar os módulos e mudar a opção de código, executar novamente as suítes atuais e preservadas e gerar nova evidência de fonte. A seleção de operação e as exigências do provedor não devem ser ignoradas para contornar recusas.
 
 O atendimento operacional, qualificação Novo GEO, curadoria, custódia, contratos/cadastros, capacidade/restore e aceites reais continuam com as pendências das entregas anteriores. Simplificação do login não abre o gate operacional.
+
+## CI canônico aprovado
+
+[CI38239727638/1](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38239727638):3741/3741aplicação,294/294PostgreSQL e152/152interface, zero falhas/skips/cancelamentos/TODO. Instalação limpa, audit, tipos, contratos, migrations, scanner e build aprovados. CI push38239721224 também aprovado; CodeQL passou.
+
+Artefato11742112946,598772bytes, SHA25695910e65e009fcabc9e2fc40d3640ed65417a41bc90b2c07e32ead8d39b37830 conferido antes da extração. Fonte PRc717355ebe4d193fae058400b75dc4f6d22b2bd4, head048af122; fingerprint45358c9d710d9ce917a909f8e47ad3be0e35fbfa2a27256a59a2f4e8b5bf0985 igual ao checkout atual. Relatório e seis logs originais da execução94670989-f921-4d8c-993a-2c7e2bd20ea9 importados sem edição; check:homologation passou no checkout. [Recibo](../evidence/simple-access/ci-receipt.json), [checks da UI corrente](../evidence/simple-access/browser-simple-access.json) e screenshots desktop/mobile no mesmo diretório.
