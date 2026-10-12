@@ -33,7 +33,9 @@
     "integration:check": "node scripts/check-integration.mjs",
     "test:hosted:read": "node --experimental-strip-types scripts/hosted-acceptance.ts",
     "test:hosted:auth": "node --experimental-strip-types scripts/hosted-auth-acceptance.ts",
-    "test:hosted:write": "node --experimental-strip-types scripts/hosted-write-acceptance.ts"
+    "test:hosted:write": "node --experimental-strip-types scripts/hosted-write-acceptance.ts",
+    "knowledge:audit": "node scripts/knowledge-source-audit.mjs",
+    "knowledge:review": "node scripts/knowledge-editorial-review.mjs"
   },
   "dependencies": {
     "pg": "8.16.3"

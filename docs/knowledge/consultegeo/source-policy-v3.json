@@ -1,0 +1,503 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "consultegeo-wiki-v3",
+  "revision": 1,
+  "status": "draft",
+  "sources": [
+    {
+      "path": "AGENTE.md",
+      "sha256": "f130862fb99cd1a9631c472616b643479b3696c0cde3bf2b8cd30d4b04c2696a",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "738396e80dea6b20939ab19b53328eb7c4f5c63cc3e50660a9e9c07b842e599b",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "a9ae9b0c0d7d7066a44a572a1ef7c7589029650471f37c888879ea643b8731c5",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "treinamento"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "CONVENCOES.md",
+      "sha256": "4d9a69030177d68ea19a6f65363f87e20046cdc3258c5cdcdc41e523f60dcb95",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "DIAGNOSTICO-E-PLANO.md",
+      "sha256": "33eec190ec73221a316674a341be56f43b168381faa4752321eb0b556b123987",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "ESTADO-ATUAL.md",
+      "sha256": "57e95deb6949a84501035c9a66cf0167d6013b6689f256ff99b71f598c087b9b",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "GLOSSARIO.md",
+      "sha256": "0212c7b1e964de3f59f57a1ecc9ccd5ae207c70390a2789cc07b7565b3a3bcee",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "INDEX.md",
+      "sha256": "65e26039e338119ac2d7e90e9a3a7367b066ec5b6be07ddced828346bf79e8aa",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "ORIENTACOES-IMPLANTACAO-WIKI-V3.md",
+      "sha256": "945285c761eb8cb91cf25232af244d4783077ff410dc072235ea5cbde59a873c",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "README.md",
+      "sha256": "9a27bdd7d51c24c1d8bee4cfee6a20b78d0870ff40d6f0befadf72afe7932e09",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "REGRAS-DE-NEGOCIO.md",
+      "sha256": "2c7ef80746314e8566cd1e9563a0e993b3858ebfdb6d64f542b757b00312485d",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "REVISAO-V3.md",
+      "sha256": "9485f08bf9a8bfc149f90c734a718302d956f15738581d8863bc22b17e4782c8",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "VISAO-GERAL.md",
+      "sha256": "064386b5c31bca2603f3fd7b223dfc5c1976eaf9d2a095f8a6bb92dd0674ad4c",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "operacao/aplicativo-campo.md",
+      "sha256": "a65648618b2e09bb14d0878321e6a9df94a24d28579f0920332352e23d62a521",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/emails-e-notificacoes.md",
+      "sha256": "7d274ce73d2dd72e4fd0644e387780ef1dc0a285f63b670281345fcc8ac25fad",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/faq.md",
+      "sha256": "ea1cbbb53285cb34a63412a060c10ce88ad956426241e32f5b744dc2d67b36a1",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "faq"
+    },
+    {
+      "path": "operacao/fluxo-concreto.md",
+      "sha256": "38e58bd6b7b66c0e1134fd856bdf3c1e412830f4b846e55a08fe5c3593526907",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/grids-relatorios-visoes-dashboards.md",
+      "sha256": "ab07665ffc60326cb62c5398ed6c71baf67a3818167b21fdc8db196216c76463",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/ia-nota-fiscal.md",
+      "sha256": "a56e81a22db03e041389a8645cf3e79483695ca08c7fe1b240bef4d6d6d85155",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/implantacao.md",
+      "sha256": "94831cd373953e88eac2beaecbac2c8912c49de9e63617cfce9828f48e1a5e84",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/laboratorio.md",
+      "sha256": "25977f5f2d0b4a2be69d5167846590693b526e6a0b20888708436f3177275607",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/limites-atuais.md",
+      "sha256": "ac68a8cffd4b13a6bafe20a4581095b744060bea923912a62653f496bda67c71",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "table"
+    },
+    {
+      "path": "operacao/multimaterial-alvenaria.md",
+      "sha256": "df7c438c109239bfb9bca7abada4bd839f8aca0e438a1916cb5f1b921099053f",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/nao-conformidade.md",
+      "sha256": "281535561c0f12d0d141764e3e6388952916b9d8a3d6339cb9ea1fc4863618d5",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/papeis-e-rotinas.md",
+      "sha256": "d11f6986d9bcbb7e9c2b725dfc06f381fecd1c32d8fe5c773f015b6be518274f",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/pendencias-aprovacao-auditoria.md",
+      "sha256": "6bc4919a9db946c15c054c0f6c43335d4935f913f3635c49319e9190b1a781e4",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "operacao/rastreabilidade-croqui.md",
+      "sha256": "4dc4a39b43271ac7b968ca780b47eeb70bc952ca7689e5b29b5591471d8324c8",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada",
+        "treinamento",
+        "demonstracao"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/DOCPLAN.md",
+      "sha256": "60176698dba6324f436f7061a16ada231fd41f44b0f83891e79c0b25d320a664",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "DOCPLAN.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/EXTREMELY-LARGE-MANUAL.md",
+      "sha256": "c906a2444d7b77c034e53a63823128f0021c438debe895d8af83ad5ddc53db2a",
+      "classification": "legacy",
+      "generation": "LEGADO",
+      "basis": [
+        "wiki_herdada",
+        "demonstracao"
+      ],
+      "target": "EXTREMELY-LARGE-MANUAL.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/PROMPT-DELTA.md",
+      "sha256": "2ea87d1c13ef3b80548d60cddcb35d0f117653d014ed0ce718240bee38d35923",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "PROMPT-DELTA.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/README.md",
+      "sha256": "7ef7321462590afb3c065ec5e391386408e0e264cece110948973aeede2a64fb",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/novo-geo/INFRA.md",
+      "sha256": "464d04062d82db3762760c756b002a0733f304b794fb7cbfa4d98b2efd31316d",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "novo-geo/INFRA.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/novo-geo/QUESTIONS.md",
+      "sha256": "c42747f4e38847fc7f0963f964aeb5dce64b38ab2dd489936a5fcf3e187d936b",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "novo-geo/QUESTIONS.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/novo-geo/concreto/entidades.md",
+      "sha256": "18f24dd5559577c43729ebf432372aaaa32e138fbfbb3525e474b903c8bde4c7",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "novo-geo/concreto/entidades.md",
+      "units": "none"
+    },
+    {
+      "path": "patches/arquivos-sanitizados/novo-geo/gestao/auth.md",
+      "sha256": "32362cf576861133418203513413f04a5dc17d278a26743fd75c757096d661a4",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": "novo-geo/gestao/auth.md",
+      "units": "none"
+    },
+    {
+      "path": "referencia/enums-e-status.md",
+      "sha256": "7e2889d6c65cee3e3e53dfd8b4d4c7119a46791644dedf2531b0110fe03aa354",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "referencia/grid-e-componentes.md",
+      "sha256": "6dba32fb5f180077d7cb04a3ac96837d856ba5658a73481036f5725ed53cafaf",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "referencia/mensagens-e-erros.md",
+      "sha256": "67a06432b26310663e7bd2d25e8d0aad1c16ebc7423fcc5ba350241ba7579307",
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "sections"
+    },
+    {
+      "path": "referencia/permissoes.md",
+      "sha256": "c3d344e0522db74524691faae82aea4c4a81c8e7e4032887424465511757bb3f",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "referencia/rotas-e-telas.md",
+      "sha256": "9f0318ef5903dd7b17f0d251455e33889084e4f3f7dd218de432963fd8c2ff70",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    },
+    {
+      "path": "seguranca/higiene-de-segredos.md",
+      "sha256": "c3b58996e743d84d1423e6da12526149073fe029aad443219b459f63505c05d9",
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "target": null,
+      "units": "none"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "base": "d38cfad95eb8e0e92ec626ae5a1506cbb33ddb2c",
+  "imported_focal_host": {
+    "skipped": 0,
+    "tests": 155,
+    "fail": 8,
+    "pass": 147,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "scope": "windows-local-not-homologation",
+  "notes": [
+    "Baseline includes unavailable symlinks, sockets, OpenSSL, local fetch and subprocess timeouts. See exact failure names.",
+    "Original focal results precede fixes and include six EPERM symlinks and two timeouts.",
+    "CI Linux Node22/PostgreSQL17/Chromium remains canonical; no tests were skipped to obtain approval."
+  ],
+  "schema": 1,
+  "node": "24.20.0",
+  "platform_approved": false,
+  "baseline": {
+    "skipped": 0,
+    "tests": 3574,
+    "fail": 116,
+    "pass": 3458,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "regressions": {
+    "skipped": 0,
+    "tests": 7,
+    "fail": 0,
+    "pass": 7,
+    "cancelled": 0,
+    "todo": 0
+  }
+}

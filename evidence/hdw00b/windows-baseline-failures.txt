@@ -1,0 +1,116 @@
+not ok 278 - C01 CLI reports ready inputs without approving SQL or CI
+not ok 282 - C01 CLI does not consult or reveal a hosted database URL
+not ok 283 - C01 CLI changed candidate returns no execution commands
+not ok 303 - C01 source symlink is refused without following it
+not ok 304 - C01 symlinked parent directory cannot escape the checkout
+not ok 316 - C09 ClamD client sends real INSTREAM framing over an owned local socket
+not ok 317 - C09 FOUND is rejection and never exposes the provider signature text
+not ok 318 - C09 refuses incomplete or incompatible daemon reply "stream: ignored ERROR\\u0000"
+not ok 319 - C09 refuses incomplete or incompatible daemon reply "INSTREAM size limit exceeded. ERROR\\u0000"
+not ok 320 - C09 refuses incomplete or incompatible daemon reply "OK\\u0000"
+not ok 321 - C09 refuses incomplete or incompatible daemon reply "stream: OK\\n"
+not ok 322 - C09 scanner cancellation does not send another request
+not ok 323 - C09 scanner definition change during scanning cannot stamp an old definition receipt
+not ok 906 - HTTP synthetic provider -> backend Auth mapping -> ticket creation; rotated identity never inherits JWT metadata role
+not ok 907 - HTTP revoked live membership stays forbidden after refresh, without silently replaying a POST
+not ok 908 - HTTP transient refresh failure sends no business mutation; explicit resume then same key creates once
+not ok 909 - HTTP local logout clears client and rotates no more, but does not claim immediate access JWT invalidation
+not ok 910 - HTTP failed logout never claims provider confirmation and does not keep usable browser state
+not ok 1050 - R14 native fetch closes unfinished HTTP 401 body without waiting for provider completion
+not ok 1051 - R14 native fetch closes unfinished HTTP 429 body without waiting for provider completion
+not ok 1052 - R14 native fetch closes unfinished HTTP 503 body without waiting for provider completion
+not ok 1055 - CI extraction excludes committed historical reports and screenshots without deleting originals
+not ok 1056 - repeating CI staging creates a new empty evidence root instead of reusing an earlier attempt
+not ok 1057 - CI staging refuses tracked source changes not present in the tested commit
+not ok 1058 - CI staging refuses untracked source changes not present in the tested commit
+not ok 1059 - CI staging rejects a different commit and hostile run identifiers
+not ok 1060 - CI staging refuses source symlinks instead of reading outside the checkout
+not ok 1061 - archive export-ignore cannot silently remove required source from a CI run
+not ok 1062 - CI staging rejects a temp parent inside the checkout
+not ok 1067 - CI staging preserves a committed file named source.tar without colliding with its temporary archive
+not ok 1068 - CI staging refuses a symlinked temp parent resolving to a newline path before emitting step outputs
+not ok 1073 - M1-R9 report refuses otherwise passing checks from different execution directories
+not ok 1075 - M1-R9 file verification rejects a mixed run even when all hashes and counts match
+not ok 1078 - M1-R9 release gate CLI rejects mixed execution logs with valid hashes and current source fingerprint
+not ok 1079 - M1-R9 a symbolic execution directory cannot redirect evidence to an older run
+not ok 1112 - R10 HTTP socket integration uses the real handler but is labeled injected, not hosted
+not ok 1147 - R11 local socket tests the real HTTP/Auth modules but remains marked injected
+not ok 1183 - R15 explicit machine scenario runs through native HTTP loopback without hosted claims
+not ok 1232 - R12 real loopback HTTP sockets exercise the new journey without claiming hosted authentication
+not ok 1246 - R5 valid preimages and patch pass read-only inspection, not homologation
+not ok 1247 - R5 explicit after inspection accepts final bytes and refuses replay against an applied checkout
+not ok 1248 - R5 concurrent source changes outside the patch invalidate the whole source fingerprint
+not ok 1249 - R5 document-only conflict is caught even outside source fingerprint roots
+not ok 1250 - R5 modified patch cannot pass by borrowing a previous manifest hash
+not ok 1251 - R5 mismatched declared patch paths cannot pass even with recomputed patch hash
+not ok 1252 - R5 unsafe manifest path is rejected: ../escape
+not ok 1253 - R5 unsafe manifest path is rejected: /absolute
+not ok 1254 - R5 unsafe manifest path is rejected: src/../../escape
+not ok 1256 - R5 unsafe manifest path is rejected: src/.git/config
+not ok 1257 - R5 unsafe manifest path is rejected: src/CON.ts
+not ok 1258 - R5 unsafe manifest path is rejected: src/file.
+not ok 1259 - R5 unsafe manifest path is rejected: src/file:stream
+not ok 1260 - R5 unsafe manifest path is rejected: src//file
+not ok 1261 - R5 unsafe manifest path is rejected: src/%2e%2e/file
+not ok 1262 - R5 symlinked patch is refused even if target bytes match
+not ok 1263 - R5 symlinked checkout ancestor cannot redirect file checks
+not ok 1264 - R5 duplicate and case-colliding paths are rejected before filesystem access
+not ok 1265 - R5 duplicate variant names are not resolved by taking the first one
+not ok 1266 - R5 invalid JSON never discloses raw content or stack
+not ok 1267 - R5 unsupported deletion or executable-mode patch is rejected
+not ok 1268 - R5 semantic hunk mismatch is caught by git apply --check without applying
+not ok 1269 - R5 refuses unknown or duplicate CLI switches; never accepts apply mode
+not ok 1270 - R5 new files require absence before and exact content after
+not ok 1271 - R5 manifest size is bounded before parsing
+not ok 1272 - R5 final hashes are verified rather than trusting a matching source fingerprint
+not ok 1273 - R5 null manifest entries and missing variants fail closed
+not ok 1274 - R5 symlinked package directory is not followed to a matching patch
+not ok 1306 - real loopback TLS with trusted certificate and matching hostname passes
+not ok 1307 - real TLS handshake refuses an untrusted self-signed certificate
+not ok 1308 - real TLS handshake refuses the wrong hostname
+not ok 1309 - diagnostic rejects an encrypted connection whose authorization was disabled in the fixture
+not ok 1310 - destroyed real TLS socket is not current proof of usable secure transport
+not ok 1311 - real TLS socket ending its writable side cannot pass the diagnostic
+not ok 1403 - CLI defaults to offline configuration with a source-bound report and no operational approval
+not ok 1404 - CLI does not discover or load a .env file from the current directory
+not ok 1405 - CLI rejects unknown or conflicting flags without echoing them: --connect
+not ok 1406 - CLI rejects unknown or conflicting flags without echoing them: --connect
+not ok 1408 - CLI rejects unknown or conflicting flags without echoing them: --database-url=PRIVATE_FIXTURE
+not ok 1409 - CLI rejects unknown or conflicting flags without echoing them: --connect=true
+not ok 1410 - CLI --connect with missing configuration fails before a driver/connection probe
+not ok 1466 - failed release cannot reactivate the borrowed callback connection
+not ok 1470 - hostile non-Error release payload is never inspected or serialized
+not ok 1521 - fingerprint refuses symlinked source trees
+not ok 1693 - loopback response and diagnostic share a normalized request ID, without request secrets
+not ok 1694 - loopback reports a real ingress refusal with its safe code and Retry-After
+not ok 1695 - loopback startup failure has one safe diagnostic correlated to problem response
+not ok 1696 - offline CLI summarizes actual loopback observations without retaining their identifiers
+not ok 1699 - native environment cannot inherit production, PG service overrides or Node preload hooks
+not ok 1706 - abort signal terminates only its owned child promptly, without waiting for the normal timeout
+not ok 1708 - symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files
+not ok 1927 - migration loader rejects symbolic-file
+not ok 1928 - migration loader rejects symbolic-directory
+not ok 1940 - migration bytes reject manifest-symlink
+not ok 1941 - migration bytes reject supabase-symlink
+not ok 1982 - C04 actual HTTP loopback exercises list and explicit revocation
+not ok 2986 - socket replay blocks mismatched private content with a safe error and no new writes
+not ok 2987 - socket inconsistent creation cache blocks duplicate creation and valid recovery preserves the first response
+not ok 2988 - socket historical priority replay remains original and cannot embed current-action hints
+not ok 3098 - C03 actual HTTP loopback denies resource C before the business executor
+not ok 3280 - socket detail loader isolates a notes outage and does not retain the previously loaded note
+not ok 3281 - socket read-only operator does not request notes and cannot use modified hints to send a message
+not ok 3282 - socket refresh recalculates actions after scope revocation without changing ticket version
+not ok 3382 - CLI refuses symlink without printing file content
+not ok 3422 - HTTP event omitted silently: no success, no partial state, explicit retry only
+not ok 3423 - HTTP outbox omitted silently: no success, no partial state, explicit retry only
+not ok 3424 - HTTP orphaned note produces no private data or success and no external delivery
+not ok 3471 - HTTP messages: all 75 instants within one millisecond remain reachable
+not ok 3472 - HTTP notes: all 75 instants within one millisecond remain reachable
+not ok 3473 - HTTP timeline: all 75 instants within one millisecond remain reachable
+not ok 3474 - HTTP list microsecond cursor keeps filters, full precision and authorization
+not ok 3492 - HTTP note-only operator can create/replay a receipt but cannot read notes or write public messages
+not ok 3493 - HTTP zero-row cache INSERT rolls back the note before COMMIT; explicit retry creates once
+not ok 3494 - HTTP invalid acknowledgement at the first INSERT cannot reach the event, cache or COMMIT
+not ok 3543 - HTTP a future microsecond start produces no_coverage and cannot create side effects
+not ok 3544 - HTTP inconsistent coverage is a safe 503, never a miss, partial candidate or duplicate mutation
+not ok 3545 - HTTP a still-valid microsecond expiry permits creation; replay after expiry keeps the historical snapshot
