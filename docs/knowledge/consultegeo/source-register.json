@@ -1,0 +1,5811 @@
+{
+  "schemaVersion": 1,
+  "kind": "knowledge_source_registry",
+  "corpusId": "consultegeo-wiki-v3",
+  "policyRevision": 1,
+  "policySha256": "5d75d65f22c782bc9cbb3203e5d42615262eca480675bfdc78cc4e022966a64a",
+  "sourceSetSha256": "797e33819006ad1fdab2e1f57dbb0af3696e6489f34a62a4ae513d5885a1b3ac",
+  "observedAt": "2026-10-11T22:28:26.736Z",
+  "status": "blocked",
+  "complete": true,
+  "publicationAllowed": false,
+  "operational": false,
+  "secretScan": "heuristic_not_a_clearance",
+  "sourceReadOnly": true,
+  "summary": {
+    "configuredSources": 41,
+    "inspectedSources": 41,
+    "effectiveDocuments": 40,
+    "supersededSources": 0,
+    "quarantinedSources": 5,
+    "unlistedSources": 0,
+    "bytesRead": 1757199,
+    "linkOccurrences": 452,
+    "missingRelativeLinks": 121,
+    "candidateLocators": 300
+  },
+  "rootFindings": [],
+  "unlisted": [],
+  "documents": [
+    {
+      "id": "KBS-d7a2f1c335bad9416e301b82",
+      "path": "AGENTE.md",
+      "logicalPath": "AGENTE.md",
+      "expectedSha256": "f130862fb99cd1a9631c472616b643479b3696c0cde3bf2b8cd30d4b04c2696a",
+      "sha256": "f130862fb99cd1a9631c472616b643479b3696c0cde3bf2b8cd30d4b04c2696a",
+      "bytes": 13575,
+      "lineCount": 101,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "instruction_document",
+          "severity": "review",
+          "startLine": null,
+          "endLine": null,
+          "column": null
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 243,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0bc95354e4ee958753f5eaee"
+        },
+        {
+          "line": 3,
+          "column": 286,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 7,
+          "column": 552,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-f3ee07dfc7f4273db20bbda6"
+        },
+        {
+          "line": 24,
+          "column": 175,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 25,
+          "column": 52,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 26,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 27,
+          "column": 98,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 27,
+          "column": 147,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 27,
+          "column": 193,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 27,
+          "column": 243,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-84cbdb3c4c6cd66ab539df64"
+        },
+        {
+          "line": 27,
+          "column": 289,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 27,
+          "column": 351,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-834a5ed446ef7d66ab27900b"
+        },
+        {
+          "line": 27,
+          "column": 391,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 27,
+          "column": 469,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 27,
+          "column": 519,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 27,
+          "column": 579,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 27,
+          "column": 665,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 28,
+          "column": 53,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 29,
+          "column": 49,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 30,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 31,
+          "column": 50,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 32,
+          "column": 45,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a7bbd8055ed38315107fdf37"
+        },
+        {
+          "line": 32,
+          "column": 105,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 33,
+          "column": 49,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-20f2d60229eeac7bc9731b7a"
+        },
+        {
+          "line": 34,
+          "column": 82,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 36,
+          "column": 47,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        },
+        {
+          "line": 38,
+          "column": 122,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 38,
+          "column": 165,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 38,
+          "column": 251,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 64,
+          "column": 115,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 83,
+          "column": 450,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 99,
+          "column": 6,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 99,
+          "column": 44,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-df07b4ee3e705f83f89ed5fe",
+      "path": "CHANGELOG.md",
+      "logicalPath": "CHANGELOG.md",
+      "expectedSha256": "738396e80dea6b20939ab19b53328eb7c4f5c63cc3e50660a9e9c07b842e599b",
+      "sha256": "738396e80dea6b20939ab19b53328eb7c4f5c63cc3e50660a9e9c07b842e599b",
+      "bytes": 33302,
+      "lineCount": 123,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 339,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-a8499bb8776580e9de9e0723",
+      "path": "CLAUDE.md",
+      "logicalPath": "CLAUDE.md",
+      "expectedSha256": "a9ae9b0c0d7d7066a44a572a1ef7c7589029650471f37c888879ea643b8731c5",
+      "sha256": "a9ae9b0c0d7d7066a44a572a1ef7c7589029650471f37c888879ea643b8731c5",
+      "bytes": 2437,
+      "lineCount": 18,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "instruction_document",
+          "severity": "review",
+          "startLine": null,
+          "endLine": null,
+          "column": null
+        }
+      ],
+      "links": [
+        {
+          "line": 5,
+          "column": 11,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 6,
+          "column": 36,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0bc95354e4ee958753f5eaee"
+        },
+        {
+          "line": 7,
+          "column": 195,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 12,
+          "column": 81,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 13,
+          "column": 257,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 16,
+          "column": 29,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        }
+      ],
+      "markers": [
+        "training"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-6f9489be932b8d2167efeb6c",
+      "path": "CONVENCOES.md",
+      "logicalPath": "CONVENCOES.md",
+      "expectedSha256": "4d9a69030177d68ea19a6f65363f87e20046cdc3258c5cdcdc41e523f60dcb95",
+      "sha256": "4d9a69030177d68ea19a6f65363f87e20046cdc3258c5cdcdc41e523f60dcb95",
+      "bytes": 9192,
+      "lineCount": 95,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 250,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 7,
+          "column": 156,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        },
+        {
+          "line": 8,
+          "column": 181,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 59,
+          "column": 21,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 64,
+          "column": 184,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 66,
+          "column": 210,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 91,
+          "column": 38,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 91,
+          "column": 109,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-3a10dbc81f3e24f336913e11",
+      "path": "DIAGNOSTICO-E-PLANO.md",
+      "logicalPath": "DIAGNOSTICO-E-PLANO.md",
+      "expectedSha256": "33eec190ec73221a316674a341be56f43b168381faa4752321eb0b556b123987",
+      "sha256": "33eec190ec73221a316674a341be56f43b168381faa4752321eb0b556b123987",
+      "bytes": 14533,
+      "lineCount": 115,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        },
+        {
+          "code": "relative_outside_root",
+          "severity": "block",
+          "startLine": 78,
+          "endLine": 78,
+          "column": null
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 409,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 9,
+          "column": 486,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 11,
+          "column": 290,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 14,
+          "column": 254,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0bc95354e4ee958753f5eaee"
+        },
+        {
+          "line": 43,
+          "column": 80,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 78,
+          "column": 33,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 91,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 126,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 248,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 300,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 336,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 388,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 78,
+          "column": 489,
+          "kind": "inline",
+          "inCode": true,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "relative_outside_root",
+          "targetSourceId": null
+        },
+        {
+          "line": 107,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-4c8b2daf99f807eb448fc95e"
+        },
+        {
+          "line": 107,
+          "column": 99,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-836c9c97fbb9778686236484"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-c5d7c6472d964cdc5e11fcea",
+      "path": "ESTADO-ATUAL.md",
+      "logicalPath": "ESTADO-ATUAL.md",
+      "expectedSha256": "57e95deb6949a84501035c9a66cf0167d6013b6689f256ff99b71f598c087b9b",
+      "sha256": "57e95deb6949a84501035c9a66cf0167d6013b6689f256ff99b71f598c087b9b",
+      "bytes": 35824,
+      "lineCount": 300,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 221,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        }
+      ],
+      "markers": [
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-a11f18740955c9c916e59639",
+      "path": "GLOSSARIO.md",
+      "logicalPath": "GLOSSARIO.md",
+      "expectedSha256": "0212c7b1e964de3f59f57a1ecc9ccd5ae207c70390a2789cc07b7565b3a3bcee",
+      "sha256": "0212c7b1e964de3f59f57a1ecc9ccd5ae207c70390a2789cc07b7565b3a3bcee",
+      "bytes": 49550,
+      "lineCount": 202,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 5,
+          "column": 261,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 5,
+          "column": 375,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 198,
+          "column": 56,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 198,
+          "column": 257,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-0bc95354e4ee958753f5eaee",
+      "path": "INDEX.md",
+      "logicalPath": "INDEX.md",
+      "expectedSha256": "65e26039e338119ac2d7e90e9a3a7367b066ec5b6be07ddced828346bf79e8aa",
+      "sha256": "65e26039e338119ac2d7e90e9a3a7367b066ec5b6be07ddced828346bf79e8aa",
+      "bytes": 12011,
+      "lineCount": 89,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 292,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 9,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a8499bb8776580e9de9e0723"
+        },
+        {
+          "line": 10,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 11,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-f3ee07dfc7f4273db20bbda6"
+        },
+        {
+          "line": 12,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 13,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        },
+        {
+          "line": 14,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-4c8b2daf99f807eb448fc95e"
+        },
+        {
+          "line": 15,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-836c9c97fbb9778686236484"
+        },
+        {
+          "line": 21,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 22,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        },
+        {
+          "line": 28,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 29,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 35,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 36,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 37,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 38,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 39,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-84cbdb3c4c6cd66ab539df64"
+        },
+        {
+          "line": 40,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 41,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-834a5ed446ef7d66ab27900b"
+        },
+        {
+          "line": 42,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 43,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 44,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 45,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 46,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 47,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 48,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 54,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 55,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a7bbd8055ed38315107fdf37"
+        },
+        {
+          "line": 56,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 57,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-20f2d60229eeac7bc9731b7a"
+        },
+        {
+          "line": 58,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 64,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 65,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 66,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 67,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 68,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 68,
+          "column": 64,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-aed701a9b1e12512bb630d05"
+        },
+        {
+          "line": 68,
+          "column": 113,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 69,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 69,
+          "column": 88,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 69,
+          "column": 153,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 69,
+          "column": 250,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 69,
+          "column": 323,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 70,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 70,
+          "column": 80,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 70,
+          "column": 141,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 71,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 71,
+          "column": 60,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 71,
+          "column": 107,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 71,
+          "column": 154,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 71,
+          "column": 191,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 71,
+          "column": 240,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 72,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 72,
+          "column": 66,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 72,
+          "column": 112,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 72,
+          "column": 166,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 73,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 73,
+          "column": 66,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 74,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 74,
+          "column": 68,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 75,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 76,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 76,
+          "column": 62,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 82,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d003afdd7e777a71075a7bfe"
+        },
+        {
+          "line": 83,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-2d5084d64b138b55f9552db6"
+        },
+        {
+          "line": 83,
+          "column": 30,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c11ba22f7c5774e3012e197f"
+        },
+        {
+          "line": 84,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 85,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 86,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-7b9331f2ef88f7d4638146b9"
+        },
+        {
+          "line": 87,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-836c9c97fbb9778686236484",
+      "path": "ORIENTACOES-IMPLANTACAO-WIKI-V3.md",
+      "logicalPath": "ORIENTACOES-IMPLANTACAO-WIKI-V3.md",
+      "expectedSha256": "945285c761eb8cb91cf25232af244d4783077ff410dc072235ea5cbde59a873c",
+      "sha256": "945285c761eb8cb91cf25232af244d4783077ff410dc072235ea5cbde59a873c",
+      "bytes": 12806,
+      "lineCount": 138,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 192,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-4c8b2daf99f807eb448fc95e"
+        },
+        {
+          "line": 3,
+          "column": 240,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        },
+        {
+          "line": 42,
+          "column": 65,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        },
+        {
+          "line": 63,
+          "column": 151,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-1b4e5f33501738503b7fb8d0",
+      "path": "README.md",
+      "logicalPath": "README.md",
+      "expectedSha256": "9a27bdd7d51c24c1d8bee4cfee6a20b78d0870ff40d6f0befadf72afe7932e09",
+      "sha256": "9a27bdd7d51c24c1d8bee4cfee6a20b78d0870ff40d6f0befadf72afe7932e09",
+      "bytes": 3206,
+      "lineCount": 35,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 9,
+          "column": 17,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a8499bb8776580e9de9e0723"
+        },
+        {
+          "line": 9,
+          "column": 70,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 9,
+          "column": 95,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0bc95354e4ee958753f5eaee"
+        },
+        {
+          "line": 10,
+          "column": 24,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-f3ee07dfc7f4273db20bbda6"
+        },
+        {
+          "line": 10,
+          "column": 59,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 10,
+          "column": 102,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 11,
+          "column": 27,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 11,
+          "column": 64,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-20f2d60229eeac7bc9731b7a"
+        },
+        {
+          "line": 11,
+          "column": 133,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 12,
+          "column": 31,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 12,
+          "column": 84,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 12,
+          "column": 147,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 12,
+          "column": 206,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 13,
+          "column": 28,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 13,
+          "column": 61,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        },
+        {
+          "line": 13,
+          "column": 112,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 13,
+          "column": 183,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-836c9c97fbb9778686236484"
+        },
+        {
+          "line": 31,
+          "column": 145,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 32,
+          "column": 153,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-99a45ecfcc8e248dfa082584",
+      "path": "REGRAS-DE-NEGOCIO.md",
+      "logicalPath": "REGRAS-DE-NEGOCIO.md",
+      "expectedSha256": "2c7ef80746314e8566cd1e9563a0e993b3858ebfdb6d64f542b757b00312485d",
+      "sha256": "2c7ef80746314e8566cd1e9563a0e993b3858ebfdb6d64f542b757b00312485d",
+      "bytes": 65534,
+      "lineCount": 218,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 269,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 318,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-4c8b2daf99f807eb448fc95e",
+      "path": "REVISAO-V3.md",
+      "logicalPath": "REVISAO-V3.md",
+      "expectedSha256": "9485f08bf9a8bfc149f90c734a718302d956f15738581d8863bc22b17e4782c8",
+      "sha256": "9485f08bf9a8bfc149f90c734a718302d956f15738581d8863bc22b17e4782c8",
+      "bytes": 9785,
+      "lineCount": 85,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 127,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-836c9c97fbb9778686236484"
+        },
+        {
+          "line": 3,
+          "column": 228,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        },
+        {
+          "line": 61,
+          "column": 19,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        }
+      ],
+      "markers": [
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-f3ee07dfc7f4273db20bbda6",
+      "path": "VISAO-GERAL.md",
+      "logicalPath": "VISAO-GERAL.md",
+      "expectedSha256": "064386b5c31bca2603f3fd7b223dfc5c1976eaf9d2a095f8a6bb92dd0674ad4c",
+      "sha256": "064386b5c31bca2603f3fd7b223dfc5c1976eaf9d2a095f8a6bb92dd0674ad4c",
+      "bytes": 7403,
+      "lineCount": 47,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 181,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0bc95354e4ee958753f5eaee"
+        },
+        {
+          "line": 20,
+          "column": 154,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 20,
+          "column": 213,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 24,
+          "column": 316,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 24,
+          "column": 393,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 33,
+          "column": 228,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        },
+        {
+          "line": 37,
+          "column": 276,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 37,
+          "column": 359,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-df07b4ee3e705f83f89ed5fe"
+        },
+        {
+          "line": 41,
+          "column": 465,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 45,
+          "column": 166,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a8499bb8776580e9de9e0723"
+        },
+        {
+          "line": 45,
+          "column": 234,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d7a2f1c335bad9416e301b82"
+        },
+        {
+          "line": 45,
+          "column": 415,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        }
+      ],
+      "markers": [
+        "training",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-956f42c70204cb541aef4eaa",
+      "path": "operacao/aplicativo-campo.md",
+      "logicalPath": "operacao/aplicativo-campo.md",
+      "expectedSha256": "a65648618b2e09bb14d0878321e6a9df94a24d28579f0920332352e23d62a521",
+      "sha256": "a65648618b2e09bb14d0878321e6a9df94a24d28579f0920332352e23d62a521",
+      "bytes": 5898,
+      "lineCount": 53,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 130,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 3,
+          "column": 217,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-b4a0212afcb7a65a76283f2a",
+      "path": "operacao/emails-e-notificacoes.md",
+      "logicalPath": "operacao/emails-e-notificacoes.md",
+      "expectedSha256": "7d274ce73d2dd72e4fd0644e387780ef1dc0a285f63b670281345fcc8ac25fad",
+      "sha256": "7d274ce73d2dd72e4fd0644e387780ef1dc0a285f63b670281345fcc8ac25fad",
+      "bytes": 17994,
+      "lineCount": 101,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "personal_data_marker",
+          "severity": "review",
+          "startLine": 73,
+          "endLine": 73,
+          "column": 380
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 570,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 640,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 733,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 802,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 3,
+          "column": 874,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 3,
+          "column": 918,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 3,
+          "column": 952,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 90,
+          "column": 161,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-cbcd64d44f0b03d388e9118e",
+      "path": "operacao/faq.md",
+      "logicalPath": "operacao/faq.md",
+      "expectedSha256": "ea1cbbb53285cb34a63412a060c10ce88ad956426241e32f5b744dc2d67b36a1",
+      "sha256": "ea1cbbb53285cb34a63412a060c10ce88ad956426241e32f5b744dc2d67b36a1",
+      "bytes": 50290,
+      "lineCount": 261,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 738,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 828,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 9,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 9,
+          "column": 58,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 24,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 24,
+          "column": 57,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 34,
+          "column": 192,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 49,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 49,
+          "column": 57,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 72,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-84cbdb3c4c6cd66ab539df64"
+        },
+        {
+          "line": 91,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-834a5ed446ef7d66ab27900b"
+        },
+        {
+          "line": 91,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 102,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-834a5ed446ef7d66ab27900b"
+        },
+        {
+          "line": 102,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 119,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 119,
+          "column": 86,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 137,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 151,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 151,
+          "column": 58,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 170,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 173,
+          "column": 343,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 185,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 198,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 214,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 233,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 241,
+          "column": 153,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 245,
+          "column": 13,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 245,
+          "column": 48,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 259,
+          "column": 239,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-5c4b87b6a8decb1518ee4b1f",
+      "path": "operacao/fluxo-concreto.md",
+      "logicalPath": "operacao/fluxo-concreto.md",
+      "expectedSha256": "38e58bd6b7b66c0e1134fd856bdf3c1e412830f4b846e55a08fe5c3593526907",
+      "sha256": "38e58bd6b7b66c0e1134fd856bdf3c1e412830f4b846e55a08fe5c3593526907",
+      "bytes": 19712,
+      "lineCount": 120,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 4,
+          "column": 199,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 4,
+          "column": 291,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 5,
+          "column": 101,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d4266ec7e5eb45e91e86e6b5"
+        },
+        {
+          "line": 43,
+          "column": 179,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 45,
+          "column": 361,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 54,
+          "column": 195,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-84cbdb3c4c6cd66ab539df64"
+        },
+        {
+          "line": 67,
+          "column": 192,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 85,
+          "column": 229,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 103,
+          "column": 156,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 103,
+          "column": 529,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 105,
+          "column": 114,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 106,
+          "column": 95,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        }
+      ],
+      "markers": [
+        "training",
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-5bd1709918c2d2e1b752f667",
+      "path": "operacao/grids-relatorios-visoes-dashboards.md",
+      "logicalPath": "operacao/grids-relatorios-visoes-dashboards.md",
+      "expectedSha256": "ab07665ffc60326cb62c5398ed6c71baf67a3818167b21fdc8db196216c76463",
+      "sha256": "ab07665ffc60326cb62c5398ed6c71baf67a3818167b21fdc8db196216c76463",
+      "bytes": 18223,
+      "lineCount": 113,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 546,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 3,
+          "column": 652,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 717,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 786,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 826,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 3,
+          "column": 898,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 3,
+          "column": 942,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 49,
+          "column": 246,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 58,
+          "column": 250,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 80,
+          "column": 135,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-84cbdb3c4c6cd66ab539df64",
+      "path": "operacao/ia-nota-fiscal.md",
+      "logicalPath": "operacao/ia-nota-fiscal.md",
+      "expectedSha256": "a56e81a22db03e041389a8645cf3e79483695ca08c7fe1b240bef4d6d6d85155",
+      "sha256": "a56e81a22db03e041389a8645cf3e79483695ca08c7fe1b240bef4d6d6d85155",
+      "bytes": 5022,
+      "lineCount": 42,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 217,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-60456eb32b2321ea608ad589"
+        },
+        {
+          "line": 39,
+          "column": 325,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-2aef900cee08647fb1ef39e3"
+        }
+      ],
+      "markers": [
+        "training"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-8f51fe619498723fca3346b6",
+      "path": "operacao/implantacao.md",
+      "logicalPath": "operacao/implantacao.md",
+      "expectedSha256": "94831cd373953e88eac2beaecbac2c8912c49de9e63617cfce9828f48e1a5e84",
+      "sha256": "94831cd373953e88eac2beaecbac2c8912c49de9e63617cfce9828f48e1a5e84",
+      "bytes": 23269,
+      "lineCount": 135,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 393,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 452,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 3,
+          "column": 488,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 3,
+          "column": 548,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 590,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 630,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 3,
+          "column": 674,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 3,
+          "column": 730,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 3,
+          "column": 789,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 17,
+          "column": 129,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 21,
+          "column": 118,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 35,
+          "column": 151,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 68,
+          "column": 382,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 96,
+          "column": 364,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-0b426643af173826f40cadb8"
+        },
+        {
+          "line": 123,
+          "column": 174,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        }
+      ],
+      "markers": [
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-834a5ed446ef7d66ab27900b",
+      "path": "operacao/laboratorio.md",
+      "logicalPath": "operacao/laboratorio.md",
+      "expectedSha256": "25977f5f2d0b4a2be69d5167846590693b526e6a0b20888708436f3177275607",
+      "sha256": "25977f5f2d0b4a2be69d5167846590693b526e6a0b20888708436f3177275607",
+      "bytes": 15721,
+      "lineCount": 93,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 391,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 458,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 3,
+          "column": 516,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 558,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 52,
+          "column": 98,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 52,
+          "column": 141,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 62,
+          "column": 123,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 62,
+          "column": 169,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 67,
+          "column": 151,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        }
+      ],
+      "markers": [
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-d4266ec7e5eb45e91e86e6b5",
+      "path": "operacao/limites-atuais.md",
+      "logicalPath": "operacao/limites-atuais.md",
+      "expectedSha256": "ac68a8cffd4b13a6bafe20a4581095b744060bea923912a62653f496bda67c71",
+      "sha256": "ac68a8cffd4b13a6bafe20a4581095b744060bea923912a62653f496bda67c71",
+      "bytes": 13137,
+      "lineCount": 67,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 378,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cbcd64d44f0b03d388e9118e"
+        },
+        {
+          "line": 3,
+          "column": 396,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 436,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 3,
+          "column": 480,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-84cbdb3c4c6cd66ab539df64"
+        },
+        {
+          "line": 3,
+          "column": 520,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 3,
+          "column": 577,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 3,
+          "column": 659,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 65,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 65,
+          "column": 66,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 65,
+          "column": 100,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 65,
+          "column": 154,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 65,
+          "column": 226,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 65,
+          "column": 306,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-834a5ed446ef7d66ab27900b"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-d936040e4b48501f372dc14e",
+      "path": "operacao/multimaterial-alvenaria.md",
+      "logicalPath": "operacao/multimaterial-alvenaria.md",
+      "expectedSha256": "df7c438c109239bfb9bca7abada4bd839f8aca0e438a1916cb5f1b921099053f",
+      "sha256": "df7c438c109239bfb9bca7abada4bd839f8aca0e438a1916cb5f1b921099053f",
+      "bytes": 7884,
+      "lineCount": 49,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 247,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 337,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 11,
+          "column": 479,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [
+        "training",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-d6d071ee3213f1f44fcea061",
+      "path": "operacao/nao-conformidade.md",
+      "logicalPath": "operacao/nao-conformidade.md",
+      "expectedSha256": "281535561c0f12d0d141764e3e6388952916b9d8a3d6339cb9ea1fc4863618d5",
+      "sha256": "281535561c0f12d0d141764e3e6388952916b9d8a3d6339cb9ea1fc4863618d5",
+      "bytes": 18750,
+      "lineCount": 126,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 410,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 460,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 521,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 3,
+          "column": 598,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 3,
+          "column": 666,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-20f2d60229eeac7bc9731b7a"
+        },
+        {
+          "line": 3,
+          "column": 750,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a7bbd8055ed38315107fdf37"
+        },
+        {
+          "line": 3,
+          "column": 816,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 856,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-e2e509467cdf208b198b4253"
+        },
+        {
+          "line": 3,
+          "column": 928,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 95,
+          "column": 352,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-0b426643af173826f40cadb8",
+      "path": "operacao/papeis-e-rotinas.md",
+      "logicalPath": "operacao/papeis-e-rotinas.md",
+      "expectedSha256": "d11f6986d9bcbb7e9c2b725dfc06f381fecd1c32d8fe5c773f015b6be518274f",
+      "sha256": "d11f6986d9bcbb7e9c2b725dfc06f381fecd1c32d8fe5c773f015b6be518274f",
+      "bytes": 16723,
+      "lineCount": 93,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "personal_data_marker",
+          "severity": "review",
+          "startLine": 72,
+          "endLine": 72,
+          "column": 61
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 288,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 3,
+          "column": 348,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 404,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 3,
+          "column": 440,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 485,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 525,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-956f42c70204cb541aef4eaa"
+        },
+        {
+          "line": 3,
+          "column": 569,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-fe61b7840eb948d3685daec1"
+        },
+        {
+          "line": 3,
+          "column": 625,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 3,
+          "column": 684,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 20,
+          "column": 70,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        },
+        {
+          "line": 40,
+          "column": 162,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5bd1709918c2d2e1b752f667"
+        },
+        {
+          "line": 41,
+          "column": 135,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d936040e4b48501f372dc14e"
+        },
+        {
+          "line": 50,
+          "column": 102,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-8f51fe619498723fca3346b6"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-e2e509467cdf208b198b4253",
+      "path": "operacao/pendencias-aprovacao-auditoria.md",
+      "logicalPath": "operacao/pendencias-aprovacao-auditoria.md",
+      "expectedSha256": "6bc4919a9db946c15c054c0f6c43335d4935f913f3635c49319e9190b1a781e4",
+      "sha256": "6bc4919a9db946c15c054c0f6c43335d4935f913f3635c49319e9190b1a781e4",
+      "bytes": 18114,
+      "lineCount": 126,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 310,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 3,
+          "column": 370,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        },
+        {
+          "line": 3,
+          "column": 442,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6b210ae7b61afdd4e6f8bd55"
+        },
+        {
+          "line": 3,
+          "column": 533,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-cf1628c47c6357c1a828275e"
+        },
+        {
+          "line": 3,
+          "column": 603,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a7bbd8055ed38315107fdf37"
+        },
+        {
+          "line": 3,
+          "column": 719,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        },
+        {
+          "line": 3,
+          "column": 788,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d6d071ee3213f1f44fcea061"
+        },
+        {
+          "line": 3,
+          "column": 843,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-b4a0212afcb7a65a76283f2a"
+        },
+        {
+          "line": 47,
+          "column": 44,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-5c4b87b6a8decb1518ee4b1f"
+        }
+      ],
+      "markers": [
+        "legacy",
+        "training",
+        "unconfirmed",
+        "wiki"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-fe61b7840eb948d3685daec1",
+      "path": "operacao/rastreabilidade-croqui.md",
+      "logicalPath": "operacao/rastreabilidade-croqui.md",
+      "expectedSha256": "4dc4a39b43271ac7b968ca780b47eeb70bc952ca7689e5b29b5591471d8324c8",
+      "sha256": "4dc4a39b43271ac7b968ca780b47eeb70bc952ca7689e5b29b5591471d8324c8",
+      "bytes": 4156,
+      "lineCount": 35,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "demonstracao",
+        "treinamento",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 130,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-99a45ecfcc8e248dfa082584"
+        }
+      ],
+      "markers": [
+        "training"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-2d5084d64b138b55f9552db6",
+      "path": "patches/arquivos-sanitizados/DOCPLAN.md",
+      "logicalPath": "DOCPLAN.md",
+      "expectedSha256": "60176698dba6324f436f7061a16ada231fd41f44b0f83891e79c0b25d320a664",
+      "sha256": "60176698dba6324f436f7061a16ada231fd41f44b0f83891e79c0b25d320a664",
+      "bytes": 62375,
+      "lineCount": 369,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "instruction_document",
+          "severity": "review",
+          "startLine": null,
+          "endLine": null,
+          "column": null
+        }
+      ],
+      "links": [
+        {
+          "line": 362,
+          "column": 183,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-7b9331f2ef88f7d4638146b9",
+      "path": "patches/arquivos-sanitizados/EXTREMELY-LARGE-MANUAL.md",
+      "logicalPath": "EXTREMELY-LARGE-MANUAL.md",
+      "expectedSha256": "c906a2444d7b77c034e53a63823128f0021c438debe895d8af83ad5ddc53db2a",
+      "sha256": "c906a2444d7b77c034e53a63823128f0021c438debe895d8af83ad5ddc53db2a",
+      "bytes": 682757,
+      "lineCount": 9324,
+      "classification": "legacy",
+      "generation": "LEGADO",
+      "basis": [
+        "demonstracao",
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6830,
+          "endLine": 6830,
+          "column": 63
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6866,
+          "endLine": 6866,
+          "column": 92
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6906,
+          "endLine": 6906,
+          "column": 83
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6940,
+          "endLine": 6940,
+          "column": 29
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6971,
+          "endLine": 6971,
+          "column": 37
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6982,
+          "endLine": 6982,
+          "column": 38
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 6998,
+          "endLine": 6998,
+          "column": 25
+        },
+        {
+          "code": "personal_data_marker",
+          "severity": "review",
+          "startLine": 8497,
+          "endLine": 8497,
+          "column": 44
+        },
+        {
+          "code": "url_credentials",
+          "severity": "block",
+          "startLine": 8617,
+          "endLine": 8617,
+          "column": 50
+        }
+      ],
+      "links": [
+        {
+          "line": 1540,
+          "column": 663,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1540,
+          "column": 762,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 4780,
+          "column": 160,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 7706,
+          "column": 29,
+          "kind": "reference",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "reference_not_defined",
+          "targetSourceId": null
+        },
+        {
+          "line": 7939,
+          "column": 26,
+          "kind": "reference",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "reference_not_defined",
+          "targetSourceId": null
+        },
+        {
+          "line": 8932,
+          "column": 780,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 8932,
+          "column": 826,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 9020,
+          "column": 172,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 9310,
+          "column": 115,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-c11ba22f7c5774e3012e197f",
+      "path": "patches/arquivos-sanitizados/PROMPT-DELTA.md",
+      "logicalPath": "PROMPT-DELTA.md",
+      "expectedSha256": "2ea87d1c13ef3b80548d60cddcb35d0f117653d014ed0ce718240bee38d35923",
+      "sha256": "2ea87d1c13ef3b80548d60cddcb35d0f117653d014ed0ce718240bee38d35923",
+      "bytes": 7259,
+      "lineCount": 102,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "instruction_document",
+          "severity": "review",
+          "startLine": null,
+          "endLine": null,
+          "column": null
+        }
+      ],
+      "links": [],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-0802dd59525032438276cf77",
+      "path": "patches/arquivos-sanitizados/README.md",
+      "logicalPath": "patches/arquivos-sanitizados/README.md",
+      "expectedSha256": "7ef7321462590afb3c065ec5e391386408e0e264cece110948973aeede2a64fb",
+      "sha256": "7ef7321462590afb3c065ec5e391386408e0e264cece110948973aeede2a64fb",
+      "bytes": 1218,
+      "lineCount": 15,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "excluded",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "overlay_not_declared",
+          "severity": "review",
+          "startLine": null,
+          "endLine": null,
+          "column": null
+        }
+      ],
+      "links": [],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-80ae4bb9ee7c598d85174b5a",
+      "path": "patches/arquivos-sanitizados/novo-geo/INFRA.md",
+      "logicalPath": "novo-geo/INFRA.md",
+      "expectedSha256": "464d04062d82db3762760c756b002a0733f304b794fb7cbfa4d98b2efd31316d",
+      "sha256": "464d04062d82db3762760c756b002a0733f304b794fb7cbfa4d98b2efd31316d",
+      "bytes": 24311,
+      "lineCount": 329,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "personal_data_marker",
+          "severity": "review",
+          "startLine": 231,
+          "endLine": 231,
+          "column": 69
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 314,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 196,
+          "column": 254,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 314,
+          "column": 26,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-d003afdd7e777a71075a7bfe"
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-d003afdd7e777a71075a7bfe",
+      "path": "patches/arquivos-sanitizados/novo-geo/QUESTIONS.md",
+      "logicalPath": "novo-geo/QUESTIONS.md",
+      "expectedSha256": "c42747f4e38847fc7f0963f964aeb5dce64b38ab2dd489936a5fcf3e187d936b",
+      "sha256": "c42747f4e38847fc7f0963f964aeb5dce64b38ab2dd489936a5fcf3e187d936b",
+      "bytes": 149999,
+      "lineCount": 1735,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 145,
+          "column": 128,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 157,
+          "column": 178,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 733,
+          "column": 213,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 733,
+          "column": 250,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 733,
+          "column": 290,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 756,
+          "column": 243,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 758,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 765,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 780,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 805,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 812,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 819,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 826,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 843,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 850,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 857,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 864,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 871,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 878,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 912,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 919,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 926,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 931,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 941,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 948,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 955,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 962,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 969,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 976,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 983,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 990,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 997,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1004,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1039,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1046,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1077,
+          "column": 556,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1079,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1086,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1093,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1100,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1107,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1117,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1134,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1150,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1157,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1167,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1174,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1186,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1193,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1200,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1207,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1223,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1230,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1237,
+          "column": 551,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1239,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 1239,
+          "column": 66,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1264,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1271,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1278,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1283,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1290,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1293,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1298,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1305,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1310,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1317,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1328,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1333,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1338,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1343,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-28e2e70340e0d1080d24cd8f"
+        },
+        {
+          "line": 1704,
+          "column": 22,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-aed701a9b1e12512bb630d05",
+      "path": "patches/arquivos-sanitizados/novo-geo/concreto/entidades.md",
+      "logicalPath": "novo-geo/concreto/entidades.md",
+      "expectedSha256": "18f24dd5559577c43729ebf432372aaaa32e138fbfbb3525e474b903c8bde4c7",
+      "sha256": "18f24dd5559577c43729ebf432372aaaa32e138fbfbb3525e474b903c8bde4c7",
+      "bytes": 33781,
+      "lineCount": 490,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 3,
+          "column": 120,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 3,
+          "column": 165,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-7b9331f2ef88f7d4638146b9"
+        },
+        {
+          "line": 90,
+          "column": 241,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 126,
+          "column": 132,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 149,
+          "column": 176,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 213,
+          "column": 442,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 240,
+          "column": 192,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 264,
+          "column": 144,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 280,
+          "column": 37,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 286,
+          "column": 240,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 336,
+          "column": 199,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 421,
+          "column": 46,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 470,
+          "column": 20,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 471,
+          "column": 29,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 472,
+          "column": 25,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 473,
+          "column": 15,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 474,
+          "column": 18,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-28e2e70340e0d1080d24cd8f",
+      "path": "patches/arquivos-sanitizados/novo-geo/gestao/auth.md",
+      "logicalPath": "novo-geo/gestao/auth.md",
+      "expectedSha256": "32362cf576861133418203513413f04a5dc17d278a26743fd75c757096d661a4",
+      "sha256": "32362cf576861133418203513413f04a5dc17d278a26743fd75c757096d661a4",
+      "bytes": 25732,
+      "lineCount": 375,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "cryptographic_literal",
+          "severity": "block",
+          "startLine": 115,
+          "endLine": 116,
+          "column": 17
+        },
+        {
+          "code": "personal_data_marker",
+          "severity": "review",
+          "startLine": 329,
+          "endLine": 329,
+          "column": 14
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 301,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 3,
+          "column": 352,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-7b9331f2ef88f7d4638146b9"
+        },
+        {
+          "line": 3,
+          "column": 418,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 65,
+          "column": 198,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 132,
+          "column": 109,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 147,
+          "column": 469,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 173,
+          "column": 97,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 239,
+          "column": 55,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 291,
+          "column": 106,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 352,
+          "column": 108,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 369,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 370,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 371,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "missing_in_overlay",
+          "targetSourceId": null
+        },
+        {
+          "line": 372,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-80ae4bb9ee7c598d85174b5a"
+        },
+        {
+          "line": 375,
+          "column": 3,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-7b9331f2ef88f7d4638146b9"
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-6b210ae7b61afdd4e6f8bd55",
+      "path": "referencia/enums-e-status.md",
+      "logicalPath": "referencia/enums-e-status.md",
+      "expectedSha256": "7e2889d6c65cee3e3e53dfd8b4d4c7119a46791644dedf2531b0110fe03aa354",
+      "sha256": "7e2889d6c65cee3e3e53dfd8b4d4c7119a46791644dedf2531b0110fe03aa354",
+      "bytes": 50026,
+      "lineCount": 524,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [
+        {
+          "line": 7,
+          "column": 25,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-a11f18740955c9c916e59639"
+        },
+        {
+          "line": 11,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 12,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 13,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 14,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 15,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 16,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 17,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 18,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 19,
+          "column": 4,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 20,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 21,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 22,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 23,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 24,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 25,
+          "column": 5,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": true,
+          "fragmentVerified": false,
+          "status": "anchor_not_verified",
+          "targetSourceId": null
+        },
+        {
+          "line": 73,
+          "column": 280,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 214,
+          "column": 162,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        },
+        {
+          "line": 327,
+          "column": 271,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-c5d7c6472d964cdc5e11fcea"
+        }
+      ],
+      "markers": [
+        "legacy"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-60456eb32b2321ea608ad589",
+      "path": "referencia/grid-e-componentes.md",
+      "logicalPath": "referencia/grid-e-componentes.md",
+      "expectedSha256": "6dba32fb5f180077d7cb04a3ac96837d856ba5658a73481036f5725ed53cafaf",
+      "sha256": "6dba32fb5f180077d7cb04a3ac96837d856ba5658a73481036f5725ed53cafaf",
+      "bytes": 41890,
+      "lineCount": 204,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "unsafe_link",
+          "severity": "block",
+          "startLine": 26,
+          "endLine": 26,
+          "column": null
+        }
+      ],
+      "links": [
+        {
+          "line": 26,
+          "column": 247,
+          "kind": "html",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "unsafe_link",
+          "targetSourceId": null
+        }
+      ],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-20f2d60229eeac7bc9731b7a",
+      "path": "referencia/mensagens-e-erros.md",
+      "logicalPath": "referencia/mensagens-e-erros.md",
+      "expectedSha256": "67a06432b26310663e7bd2d25e8d0aad1c16ebc7423fcc5ba350241ba7579307",
+      "sha256": "67a06432b26310663e7bd2d25e8d0aad1c16ebc7423fcc5ba350241ba7579307",
+      "bytes": 46464,
+      "lineCount": 264,
+      "classification": "editorial",
+      "generation": "MIXED",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-cf1628c47c6357c1a828275e",
+      "path": "referencia/permissoes.md",
+      "logicalPath": "referencia/permissoes.md",
+      "expectedSha256": "c3d344e0522db74524691faae82aea4c4a81c8e7e4032887424465511757bb3f",
+      "sha256": "c3d344e0522db74524691faae82aea4c4a81c8e7e4032887424465511757bb3f",
+      "bytes": 27089,
+      "lineCount": 171,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-a7bbd8055ed38315107fdf37",
+      "path": "referencia/rotas-e-telas.md",
+      "logicalPath": "referencia/rotas-e-telas.md",
+      "expectedSha256": "9f0318ef5903dd7b17f0d251455e33889084e4f3f7dd218de432963fd8c2ff70",
+      "sha256": "9f0318ef5903dd7b17f0d251455e33889084e4f3f7dd218de432963fd8c2ff70",
+      "bytes": 92890,
+      "lineCount": 534,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [],
+      "links": [],
+      "markers": [],
+      "publicationAllowed": false
+    },
+    {
+      "id": "KBS-2aef900cee08647fb1ef39e3",
+      "path": "seguranca/higiene-de-segredos.md",
+      "logicalPath": "seguranca/higiene-de-segredos.md",
+      "expectedSha256": "c3b58996e743d84d1423e6da12526149073fe029aad443219b459f63505c05d9",
+      "sha256": "c3b58996e743d84d1423e6da12526149073fe029aad443219b459f63505c05d9",
+      "bytes": 7357,
+      "lineCount": 61,
+      "classification": "internal",
+      "generation": "UNKNOWN",
+      "basis": [
+        "wiki_herdada"
+      ],
+      "verification": "not_verified",
+      "selection": "active",
+      "inspection": "inspected",
+      "findings": [
+        {
+          "code": "credential_literal",
+          "severity": "block",
+          "startLine": 57,
+          "endLine": 57,
+          "column": 14
+        }
+      ],
+      "links": [
+        {
+          "line": 3,
+          "column": 188,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "resolved_in_corpus",
+          "targetSourceId": "KBS-6f9489be932b8d2167efeb6c"
+        },
+        {
+          "line": 3,
+          "column": 250,
+          "kind": "inline",
+          "inCode": false,
+          "fragmentPresent": false,
+          "fragmentVerified": false,
+          "status": "target_quarantined",
+          "targetSourceId": "KBS-3a10dbc81f3e24f336913e11"
+        }
+      ],
+      "markers": [
+        "unconfirmed"
+      ],
+      "publicationAllowed": false
+    }
+  ]
+}

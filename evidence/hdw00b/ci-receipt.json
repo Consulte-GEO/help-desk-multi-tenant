@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "scope": "verified-ci-import-not-operational-acceptance",
+  "run_id": 38233948714,
+  "run_attempt": 1,
+  "url": "https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38233948714",
+  "head_commit": "92fac584f5b4e3435e5750ab5313b48df4688009",
+  "tested_commit": "9ce945e694a1ff286ff83139c65e301c6fb1912c",
+  "artifact_id": 11740027138,
+  "artifact_sha256": "befa70a2510bf875dd11d640db674ff9cbdd4ac4a96ed57de11d41f56b1ce5eb",
+  "source_sha256": "4c4ca8098607eb24da5f6b7dde6cebb912ee591438bdaed17889b6cec97cb678",
+  "run_directory": "4fe12687-97a8-4c4f-bb14-ce62a2d8842e",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 3736,
+        "pass": 3736,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 294,
+        "pass": 294,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 139,
+        "pass": 139,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "imported_bytes_unchanged": true,
+  "platform_approved": false
+}
