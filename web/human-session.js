@@ -1,6 +1,6 @@
 /** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
 import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential,validateRecoveredPassword,validateRecoveryEmail} from './human-auth.js';
-export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}}={}){
+export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{},passwordOnly=false}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
  const securityReads=new WeakMap();
  const securityStatusCurrent=value=>!!value&&typeof value==='object'&&canDispatch(securityReads.get(value));
@@ -15,6 +15,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
  function usable(value){return value&&typeof value.accessToken==='string'&&typeof value.refreshToken==='string'&&typeof value.userId==='string'&&Number.isFinite(value.expiresAt)&&value.expiresAt>now()+1000;}
  async function signIn(fields){
   if(phase!=='signed_out')throw new HumanAuthError('login_in_progress');
+  if(passwordOnly&&fields.workspace)throw new HumanAuthError('invalid_login');
   let selected=fields.workspace?workspaceId(fields.workspace):null;
   if(!selected&&typeof transport.workspaces!=='function')throw new HumanAuthError('invalid_login');
   const email=fields.email,password=fields.password;
@@ -24,6 +25,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   try{let value=await op.raw;issued=value;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');op.issued=value;
    const factors=value.mfaFactors??[];if(!Array.isArray(factors))throw new HumanAuthError('auth_response_invalid');
    if(factors.length){
+    if(passwordOnly)throw new HumanAuthError('simple_mfa_required');
     op.kind='mfa';op.factors=Object.freeze(factors.filter(f=>f.type==='totp').map(f=>Object.freeze({...f})));
     if(!op.factors.length||typeof transport.verifyMfa!=='function')throw new HumanAuthError('unsupported_mfa');
     const completed=new Promise((resolve,reject)=>{op.choose=resolve;op.rejectChoice=reject;});phase='verifying_mfa';notify();
@@ -34,7 +36,8 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
     const items=await transport.workspaces(value.accessToken);if(id!==generation)throw new HumanAuthError('stale_session');
     if(!items.length)throw new HumanAuthError('membership_required');
     if(items.length===1)selected=workspaceId(items[0].id);
-    else{op.options=Object.freeze(items.map(x=>Object.freeze({...x})));phase='selecting_workspace';
+    else{if(passwordOnly)throw new HumanAuthError('simple_workspace_required');
+     op.options=Object.freeze(items.map(x=>Object.freeze({...x})));phase='selecting_workspace';
      const choice=new Promise((resolve,reject)=>{op.choose=resolve;op.rejectChoice=reject;});notify();selected=await choice;
     }
    }

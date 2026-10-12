@@ -1,0 +1,57 @@
+{
+  "scope": "current-password-only-UI-synthetic-provider",
+  "checks": [
+    {
+      "check": "Current initial access exposes exactly email, password and Entrar",
+      "result": "passed"
+    },
+    {
+      "check": "Advanced access controls are hidden and inert in the current mode",
+      "result": "passed"
+    },
+    {
+      "check": "Password-only login discovers the sole operation and respects the service release gate",
+      "result": "passed"
+    },
+    {
+      "check": "Basic login sends the exact password once without extra account-management requests",
+      "result": "passed"
+    },
+    {
+      "check": "Password and credentials stay out of DOM fields and persistent browser storage after login",
+      "result": "passed"
+    },
+    {
+      "check": "Simple Sair clears the session and returns to the same two-field login",
+      "result": "passed"
+    },
+    {
+      "check": "Mobile login retains the two fields without horizontal overflow",
+      "result": "passed"
+    },
+    {
+      "check": "Invalid credentials report only email/password and never mention a missing workspace control",
+      "result": "passed"
+    },
+    {
+      "check": "Ambiguous operations fail clearly and clean the session without hidden selection or arbitrary access",
+      "result": "passed"
+    },
+    {
+      "check": "Enrolled MFA is never bypassed and cannot leave a basic login waiting on a hidden field",
+      "result": "passed"
+    },
+    {
+      "check": "Recovery URL material is discarded without opening or executing the disabled flow",
+      "result": "passed"
+    },
+    {
+      "check": "Concurrent form submissions dispatch the password only once",
+      "result": "passed"
+    },
+    {
+      "check": "An identity without membership never becomes a Help Desk login",
+      "result": "passed"
+    }
+  ]
+}

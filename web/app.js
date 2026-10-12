@@ -1,3 +1,6 @@
+import {ADVANCED_ACCESS} from './access-mode.js';
+// Somente a opção de código permite reativar os fluxos avançados preservados.
+for(const node of document.querySelectorAll('[data-advanced-access]')){node.hidden=!ADVANCED_ACCESS;node.inert=!ADVANCED_ACCESS;}
 import {createRecoveryPanel,captureRecoveryNavigation} from './recovery-password.js';
 const recoveryNavigationIntake=captureRecoveryNavigation(location,history);
 const recoveryNavigationDiscarded=recoveryNavigationIntake.discarded;
@@ -49,7 +52,7 @@ const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 function clearSession(){recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
-async function login(){s.me=await api('/me');renderWorkspaceChange();if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
+async function login(){s.me=await api('/me');renderWorkspaceChange();if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent=ADVANCED_ACCESS?'Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.':'Você está conectado. O atendimento ainda não está disponível.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
 async function list(reset=true,selectFirst=false){
@@ -381,6 +384,7 @@ $('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.t
 }
 let workspaceChangeChoice=null;
 function renderWorkspaceChange(){
+ if(!ADVANCED_ACCESS)return; // Gestão da conta/workspace temporariamente desativada.
  const available=!s.demo&&!!s.me&&!!humanSession&&['active','paused','refreshing'].includes(humanSession.state().phase);
  $('switch-workspace').hidden=!available;$('switch-workspace-login').hidden=!available||s.config?.operational!==false;
  $('logout-all').hidden=!available;$('logout-all-login').hidden=!available||s.config?.operational!==false;
@@ -390,12 +394,19 @@ function renderWorkspaceChange(){
  $('change-password').hidden=!available;$('change-password-login').hidden=!available||s.config?.operational!==false;
 }
 const recoveryPanel=createRecoveryPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,onResult:message=>$('login-status').textContent=message,elements:{navigationNote:$('recovery-navigation-note'),email:$('recovery-email'),mailStep:$('recovery-request-step'),request:$('request-recovery-link'),entry:$('recover-access'),dialog:$('recovery-dialog'),link:$('recovery-link'),start:$('verify-recovery-link'),mfa:$('recovery-mfa-step'),factors:$('recovery-mfa-factor'),code:$('recovery-mfa-code'),verify:$('verify-recovery-mfa'),passwordStep:$('recovery-password-step'),password:$('recovered-password'),confirm:$('confirm-recovered-password'),submit:$('submit-recovered-password'),status:$('recovery-status')}});
+if(ADVANCED_ACCESS){ // Recuperação: ativação desativada pela opção de código.
 $('request-recovery-link').onclick=()=>run(recoveryPanel.request);$('recover-access').onclick=()=>run(recoveryPanel.open);$('verify-recovery-link').onclick=()=>run(recoveryPanel.start);$('verify-recovery-mfa').onclick=()=>run(recoveryPanel.verify);$('submit-recovered-password').onclick=()=>run(recoveryPanel.submit);$('cancel-recovery').onclick=()=>run(recoveryPanel.cancel);
+}
 const securityPanel=createSecurityStatusPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,elements:{dialog:$('security-dialog'),refresh:$('refresh-security'),factors:$('security-factors'),level:$('security-level'),status:$('security-read-status')}});
+if(ADVANCED_ACCESS){ // Consulta da conta e cadastro de MFA preservados.
 $('security-status').onclick=()=>run(securityPanel.open);$('security-status-login').onclick=()=>run(securityPanel.open);$('refresh-security').onclick=()=>run(securityPanel.refresh);$('close-security').onclick=securityPanel.clear;
+}
+function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel));}
 const enrollmentPanel=createMfaEnrollmentPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,blocked:workspaceChangeBlocked,onResult:message=>$('login-status').textContent=message,elements:{title:$('mfa-enrollment-title'),description:$('mfa-enrollment-description'),label:$('mfa-enrollment-label'),dialog:$('mfa-enrollment-dialog'),start:$('start-mfa-enrollment'),confirm:$('confirm-mfa-enrollment'),factor:$('mfa-enrollment-factor'),code:$('mfa-enrollment-code'),secret:$('mfa-enrollment-secret'),qr:$('mfa-enrollment-qr'),provision:$('mfa-provision'),status:$('mfa-enrollment-status')}});
+if(ADVANCED_ACCESS){
 $('add-mfa').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));$('add-mfa-login').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));
 $('configure-mfa').onclick=()=>run(enrollmentPanel.open);$('configure-mfa-login').onclick=()=>run(enrollmentPanel.open);$('start-mfa-enrollment').onclick=()=>run(enrollmentPanel.start);$('confirm-mfa-enrollment').onclick=()=>run(enrollmentPanel.confirm);$('cancel-mfa-enrollment').onclick=()=>run(enrollmentPanel.cancel);
+}
 let passwordChoice=null;
 function passwordDialogBusy(value){for(const id of ['submit-password-change','cancel-password-change','request-password-code'])$(id).disabled=value;}
 function resetPasswordDialog(){
@@ -407,6 +418,7 @@ function requestPasswordChange(){
  if(workspaceChangeBlocked())throw Error('Conclua ou reconcilie o envio atual antes de alterar a senha.');
  resetPasswordDialog();passwordChoice={epoch:s.epoch,generation:humanSession.state().generation,busy:false};$('password-change-dialog').showModal();
 }
+if(ADVANCED_ACCESS){ // Alteração de senha, logout global e troca de operação desativados.
 $('change-password').onclick=()=>run(requestPasswordChange);$('change-password-login').onclick=()=>run(requestPasswordChange);
 $('cancel-password-change').onclick=()=>{if(!passwordChoice?.busy)$('password-change-dialog').close();};
 $('password-change-dialog').addEventListener('cancel',e=>{if(passwordChoice?.busy)e.preventDefault();});
@@ -462,7 +474,7 @@ $('confirm-logout-all').onclick=()=>run(async()=>{
  if(!logoutAllChoice||logoutAllChoice.epoch!==s.epoch||logoutAllChoice.generation!==humanSession?.state().generation){$('logout-all-dialog').close();return;}
  $('logout-all-dialog').close();await leaveHumanSession('global');
 });
-function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel));}
+
 function requestWorkspaceChange(){
  if(s.demo||!s.me||!humanSession||!['active','paused','refreshing'].includes(humanSession.state().phase))return;
  if(workspaceChangeBlocked())throw Error('Conclua ou reconcilie o envio atual antes de trocar workspace.');
@@ -477,9 +489,10 @@ $('confirm-workspace-change').onclick=()=>run(async()=>{
  $('workspace-change-dialog').close();$('workspace').value='';const result=await leaveHumanSession();
  if(result==='confirmed')$('login-status').textContent='Sessão atual encerrada no provedor. Entre novamente para escolher outro workspace.';
 });
+}
 $('logout').onclick=()=>run(leaveHumanSession);
 $('cancel-login').onclick=()=>run(leaveHumanSession);
-$('choose-workspace').onclick=()=>run(()=>humanSession?.selectWorkspace($('workspace-choice').value));
+if(ADVANCED_ACCESS)$('choose-workspace').onclick=()=>run(()=>humanSession?.selectWorkspace($('workspace-choice').value));
 function humanChanged(value){recoveryPanel.sync(value);
  const previous=lastHumanPhase;lastHumanPhase=value.phase;
  const authenticationOnly=s.config?.operational===false,choosing=value.phase==='selecting_workspace';
@@ -493,7 +506,8 @@ function humanChanged(value){recoveryPanel.sync(value);
  }else{$('mfa-code').value='';$('mfa-factor').replaceChildren();$('mfa-status').textContent='';}
  $('workspace-choice-label').hidden=!choosing;$('choose-workspace').hidden=!choosing;
  if(choosing){$('workspace-choice').replaceChildren(option('','Selecione um workspace'),...value.workspaceOptions.map(w=>option(w.id,w.name)));$('login-status').textContent='Identidade validada. Escolha o workspace para confirmar seu acesso.';}
- $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)&&!(authenticationOnly&&!['signed_out','signing_out'].includes(value.phase));$('cancel-login').textContent=['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)?'Cancelar entrada':'Encerrar sessão';
+ $('submit-login').disabled=value.phase!=='signed_out';$('cancel-login').hidden=!['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)&&!(authenticationOnly&&!['signed_out','signing_out'].includes(value.phase));$('cancel-login').textContent=['signing_in','selecting_workspace','verifying_mfa'].includes(value.phase)?'Cancelar entrada':ADVANCED_ACCESS?'Encerrar sessão':'Sair';
+ if(!ADVANCED_ACCESS){$('login-form').hidden=authenticationOnly&&['active','paused','refreshing'].includes(value.phase);$('cancel-login').hidden=!authenticationOnly||!['active','paused','refreshing'].includes(value.phase);}
  $('session-banner').hidden=!['paused','refreshing'].includes(value.phase);
  $('retry-session').hidden=value.phase!=='paused';$('retry-session').disabled=value.phase==='refreshing';
  $('session-status').textContent=value.phase==='paused'
@@ -512,8 +526,10 @@ async function submitMfa(){
   if(humanSession.state().generation===generation&&humanSession.state().phase==='verifying_mfa')$('mfa-status').textContent=error.message;
  }
 }
+if(ADVANCED_ACCESS){ // Confirmação MFA interativa desativada no modo simples.
 $('verify-mfa').onclick=()=>run(submitMfa);
 $('mfa-code').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run(submitMfa);}});
+}
 $('retry-session').onclick=()=>run(async()=>{
  if(!humanSession)return;const epoch=s.epoch;
  await humanSession.resume();
@@ -522,8 +538,8 @@ $('retry-session').onclick=()=>run(async()=>{
 $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
  if(s.demo||!humanSession)throw Error('Ambiente ainda não configurado para login.');
  if(humanSession.state().phase!=='signed_out')return;
- const fields={email:$('email').value,password:$('password').value,workspace:$('workspace').value.trim()};
- const attempt=++loginAttempt;clearSession();$('password').value='';$('login-status').textContent='Validando identidade e acesso ao workspace…';
+ const fields={email:$('email').value,password:$('password').value,workspace:ADVANCED_ACCESS?$('workspace').value.trim():''};
+ const attempt=++loginAttempt;clearSession();$('password').value='';$('login-status').textContent='Entrando…';
  const pending=humanSession.signIn(fields),generation=humanSession.state().generation;
  try{
   await pending;if(attempt!==loginAttempt||generation!==humanSession.state().generation)return;
@@ -531,13 +547,15 @@ $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   if(attempt===loginAttempt&&s.config?.operational!==false)$('login-status').textContent='';
  }catch(error){
   if(attempt!==loginAttempt||error.code==='stale_session'||error.message==='stale_session')return;
+  const message=!ADVANCED_ACCESS&&error.code==='invalid_login'?'Informe um e-mail e uma senha válidos.':error.message;
   // A valid provider identity without a successful /me is not a Help Desk login.
   if(!s.me&&humanSession.state().generation===generation&&humanSession.state().phase!=='signed_out'){
    const result=await humanSession.signOut();
    if(attempt!==loginAttempt||humanSession.state().phase!=='signed_out')return;
-   $('login-status').textContent=error.message+(result==='unconfirmed'?' Saída no provedor não confirmada.':'');
-  }else if(!s.me){$('login-status').textContent=error.message+(error.logoutUnconfirmed?' Saída no provedor não confirmada.':'');}
+   $('login-status').textContent=message+(result==='unconfirmed'?' Saída no provedor não confirmada.':'');
+  }else if(!s.me){$('login-status').textContent=message+(error.logoutUnconfirmed?' Saída no provedor não confirmada.':'');}
   else notice(error.message,true);
  }
 });};
-async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){recoveryNavigationIntake.clear();$('recover-access').hidden=true;$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged});humanFetch=createSessionFetch(humanSession);$('submit-login').disabled=false;$('recover-access').disabled=false;if(recoveryNavigationIntake.hasLink()){const link=recoveryNavigationIntake.takeLink(s.config.supabase_url);if(link)recoveryPanel.offerNavigation(link);}else if(recoveryNavigationDiscarded)$('login-status').textContent='Credenciais recebidas pela URL não foram utilizadas. Use um link direto de recuperação ainda não aberto nesta etapa.';}else recoveryNavigationIntake.clear();}catch{recoveryNavigationIntake.clear();notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
+async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){recoveryNavigationIntake.clear();$('recover-access').hidden=true;$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged,passwordOnly:!ADVANCED_ACCESS});humanFetch=createSessionFetch(humanSession);$('submit-login').disabled=false;$('recover-access').disabled=false;if(!ADVANCED_ACCESS){recoveryNavigationIntake.clear();}
+ else if(recoveryNavigationIntake.hasLink()){const link=recoveryNavigationIntake.takeLink(s.config.supabase_url);if(link)recoveryPanel.offerNavigation(link);}else if(recoveryNavigationDiscarded)$('login-status').textContent='Credenciais recebidas pela URL não foram utilizadas. Use um link direto de recuperação ainda não aberto nesta etapa.';}else recoveryNavigationIntake.clear();}catch{recoveryNavigationIntake.clear();notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
