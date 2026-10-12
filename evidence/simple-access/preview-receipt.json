@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "scope": "verified-preview-not-operational-acceptance",
+  "deploy_id": "6accbf4c98b4a189fd9b8be1",
+  "commit": "79977c898d19098eeb8a186ecc8852681ef0c0d8",
+  "messages": 22591,
+  "verification_lines": [
+    {
+      "ts": 1791803220317,
+      "message": "> npm run check:lock && npm run check:homologation && npm run verify && npm audit --audit-level=high"
+    },
+    {
+      "ts": 1791803220505,
+      "message": "> @consulte-geo/helpdesk@0.27.0 check:homologation"
+    },
+    {
+      "ts": 1791803220600,
+      "message": "Evidências locais verificadas para este código. Este relatório não autoriza publicação nem comprova Supabase/Netlify reais."
+    },
+    {
+      "ts": 1791803237390,
+      "message": "# tests 3741"
+    },
+    {
+      "ts": 1791803237391,
+      "message": "# pass 3741"
+    },
+    {
+      "ts": 1791803239647,
+      "message": "found 0 vulnerabilities"
+    },
+    {
+      "ts": 1791803240484,
+      "message": "\u001b[36mSecrets scanning complete. 2088 file(s) scanned. No secrets detected in build output or repo code!\u001b[39m"
+    },
+    {
+      "ts": 1791803240486,
+      "message": "\u001b[90m(Secrets scanning completed in 370ms)\u001b[39m"
+    },
+    {
+      "ts": 1791803246399,
+      "message": "Finished processing build request in 32.164s"
+    }
+  ],
+  "platform_approved": false
+}

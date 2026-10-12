@@ -33,3 +33,13 @@ O atendimento operacional, qualificação Novo GEO, curadoria, custódia, contra
 [CI38239727638/1](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38239727638):3741/3741aplicação,294/294PostgreSQL e152/152interface, zero falhas/skips/cancelamentos/TODO. Instalação limpa, audit, tipos, contratos, migrations, scanner e build aprovados. CI push38239721224 também aprovado; CodeQL passou.
 
 Artefato11742112946,598772bytes, SHA25695910e65e009fcabc9e2fc40d3640ed65417a41bc90b2c07e32ead8d39b37830 conferido antes da extração. Fonte PRc717355ebe4d193fae058400b75dc4f6d22b2bd4, head048af122; fingerprint45358c9d710d9ce917a909f8e47ad3be0e35fbfa2a27256a59a2f4e8b5bf0985 igual ao checkout atual. Relatório e seis logs originais da execução94670989-f921-4d8c-993a-2c7e2bd20ea9 importados sem edição; check:homologation passou no checkout. [Recibo](../evidence/simple-access/ci-receipt.json), [checks da UI corrente](../evidence/simple-access/browser-simple-access.json) e screenshots desktop/mobile no mesmo diretório.
+
+## Merge e publicação verificados
+
+[PR28](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/28) mesclado em `87e2a45bde389c452824800a41b8c4f673ef9f9f`, em 12/10/2026 às 11:12:35 UTC, após head/base conferidos e match-head. Os CIs finais 38240572889 e 38240567320, CodeQL e preview `6accbf4c98b4a189fd9b8be1` passaram. Log do preview confirmou verify:release real, 3.741 testes e scanner de segredos aprovado. [Recibo](../evidence/simple-access/preview-receipt.json).
+
+Produção pelo Git/CD existente, com 39 assets iguais ao build atualizado por SHA-256 e headers de segurança conferidos. public-config/capabilities200 com operational=false, me/workspaces401 sem bearer e atendimento503/release_gate_closed. Zero mutações de negócio. [Smoke](../evidence/simple-access/production-smoke-initial.json).
+
+Tela publicada verificada com DOM real em desktop1440px e mobile390px: exatamente e-mail, senha e Entrar; todos os grupos avançados hidden/inert, sem overflow horizontal ou erros de página. Nenhuma credencial real submetida. [Verificação](../evidence/simple-access/production-ui-initial.json) e screenshots production-desktop/mobile.png no mesmo diretório. A espera por networkidle do primeiro teste visual expirou; a validação foi concluída aguardando DOM e controles prontos, sem alterar políticas do navegador.
+
+Este encerramento gera commit documental posterior, com o mesmo fingerprint executável, também publicado pelo Git/CD. O recibo da publicação inicial permanece histórico; atendimento operacional continua com seu gate separado.

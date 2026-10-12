@@ -1,0 +1,33 @@
+{
+  "scope": "published-login-DOM-readonly",
+  "origin": "https://helpdesk-consultegeo.netlify.app",
+  "real_credentials_submitted": false,
+  "checks": [
+    {
+      "viewport": "desktop",
+      "visible_fields": [
+        "email",
+        "password"
+      ],
+      "visible_buttons": [
+        "submit-login"
+      ],
+      "advanced_controls_hidden_inert": true,
+      "overflow": false,
+      "page_errors": 0
+    },
+    {
+      "viewport": "mobile",
+      "visible_fields": [
+        "email",
+        "password"
+      ],
+      "visible_buttons": [
+        "submit-login"
+      ],
+      "advanced_controls_hidden_inert": true,
+      "overflow": false,
+      "page_errors": 0
+    }
+  ]
+}
