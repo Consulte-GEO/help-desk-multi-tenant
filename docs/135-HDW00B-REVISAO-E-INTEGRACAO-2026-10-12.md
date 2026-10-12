@@ -44,3 +44,13 @@ HDW-00 requer tratamento/decisão do custodiante e revisão da allowlist/editori
 HDW-01 requer API/IdP qualificados do Novo GEO, commit/schema, identidade, revisão de acesso, mapeamentos e leituras autorizadas. [Roteiro](integrations/HDW01-QUALIFICACAO-DOCUMENTAL-NOVO-GEO.md). Sem fonte não criar endpoints/adapters fictícios.
 
 M1 operacional permanece aberto: jornada humana/M2M e atendimento reais, cadastros/contratos, montagem conjunta, custódia/SMTP/recuperação quando aplicáveis, capacidade/SLO, restore e aceite humano. A publicação técnica não encerra esses critérios nem abre `HELPDESK_RELEASE_APPROVED`.
+
+## Homologação canônica aprovada
+
+[CI38233948714/1](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38233948714): **3.736/3.736 aplicação, 294/294 PostgreSQL e 139/139 interface**, sem falhas, skips, cancelamentos ou TODO. Instalação limpa, audit, typecheck, contratos, migrations, scanner e build aprovados. O CI de push38233940026 também passou. CodeQL aprovado.
+
+Head92fac584f5b4e3435e5750ab5313b48df4688009; fonte testada pelo evento PR9ce945e694a1ff286ff83139c65e301c6fb1912c. Fingerprint4c4ca8098607eb24da5f6b7dde6cebb912ee591438bdaed17889b6cec97cb678, igual ao checkout atual. ZIP oficial555728bytes, artefato11740027138, SHA256befa70a2510bf875dd11d640db674ff9cbdd4ac4a96ed57de11d41f56b1ce5eb, calculado e conferido antes da extração.
+
+Relatório e seis logs originais da execução4fe12687-97a8-4c4f-bb14-ce62a2d8842e importados sem edição. source.json preserva o commit/run da origem. `npm run check:homologation` aprovou o vínculo e os hashes no checkout atual. [Recibo](../evidence/hdw00b/ci-receipt.json). Relatórios HTTP/browser copiados literalmente; screenshots desktop/mobile inspecionadas, sem nova regressão visual observada nas telas exercitadas. Fixtures sintéticas não equivalem a jornada humana real.
+
+Reinspeção Supabase antes da publicação: projeto HelpDesk ACTIVE_HEALTHY, PostgreSQL17, 12 migrations existentes e 25 tabelas privadas com RLS habilitado. Não houve leitura de dados de pessoas, alteração de Auth/scopes ou SQL remoto. Isso não comprova FORCE RLS nem todos os grants de produção; não ampliar a conclusão além da consulta realizada.
