@@ -1,3 +1,5 @@
+> **Painel após login — 12/10/2026:** corrigido retorno que ocultava a aplicação após /me válido. Modo simples abre painel, menus e saída desktop/mobile; disponibilidade do atendimento fica explícita, sem consultas prematuras nem contagens fictícias. PR29 integrado/publicado, CI3741/294/156 aprovado e39assets conferidos. Backend/gate preservados. [Correção e evidências](docs/137-PAINEL-APOS-LOGIN-2026-10-12.md).
+
 > **Acesso simples — 12/10/2026:** UI temporária apenas e-mail/senha/Entrar; operação única descoberta automaticamente. Recursos avançados preservados, hidden/inert e com reativação comentada em web/access-mode.js. PR28 integrado/publicado; CI3741/294/152 sem skips e39assets conferidos. API0.27.0/schema0.19.0, atendimento fechado. [Comportamento, reativação e evidências](docs/136-ACESSO-SIMPLES-2026-10-12.md).
 
 # Help Desk independente — API/interface 0.27.0
