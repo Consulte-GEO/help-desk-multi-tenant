@@ -54,3 +54,11 @@ Head92fac584f5b4e3435e5750ab5313b48df4688009; fonte testada pelo evento PR9ce945
 Relatório e seis logs originais da execução4fe12687-97a8-4c4f-bb14-ce62a2d8842e importados sem edição. source.json preserva o commit/run da origem. `npm run check:homologation` aprovou o vínculo e os hashes no checkout atual. [Recibo](../evidence/hdw00b/ci-receipt.json). Relatórios HTTP/browser copiados literalmente; screenshots desktop/mobile inspecionadas, sem nova regressão visual observada nas telas exercitadas. Fixtures sintéticas não equivalem a jornada humana real.
 
 Reinspeção Supabase antes da publicação: projeto HelpDesk ACTIVE_HEALTHY, PostgreSQL17, 12 migrations existentes e 25 tabelas privadas com RLS habilitado. Não houve leitura de dados de pessoas, alteração de Auth/scopes ou SQL remoto. Isso não comprova FORCE RLS nem todos os grants de produção; não ampliar a conclusão além da consulta realizada.
+
+## Merge e publicação verificados
+
+[PR27](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/27) mesclado em `2d6f54c8f4d42881cf2b92d780002f75c19d67c5`, em12/10/2026 às10:19:38UTC, após reconsultar base/head e usar match-head. Os checks do último head34c3c38 passaram: CI38235014484 e38235007999, CodeQL e preview6accb2e31e3092dae17b5fdc. Preview teve verify:release real, 3.736 testes e scanner de segredos aprovado;22565mensagens de log recuperadas. O preview inicial falhou no check:homologation pela evidência antiga, confirmado no log, sem publicação.
+
+Produção inicial6accb43cd8191db6e84a896f, commit2d6f54c, ready pelo Git/CD existente. [Site](https://helpdesk-consultegeo.netlify.app). Smoke:38assets iguais ao build por SHA256; CSP, DENY, nosniff e no-referrer conferidos. public-config/capabilities200 e operational=false; me/workspaces401; quatro leituras de atendimento503/release_gate_closed. Três URLs de registro/plano/CLI privados retornaram404. Zero mutações de negócio ou jornada Auth real. [Evidência](../evidence/hdw00b/production-smoke-initial.json) e [recibo do preview](../evidence/hdw00b/preview-receipt.json).
+
+Este registro gera um commit documental posterior com o mesmo fingerprint executável. A primeira publicação acima permanece histórica e íntegra; o commit documental também será publicado pelo Git/CD, sem nova função de produto. HDW-00/01 e M1 operacional continuam com as pendências declaradas.
