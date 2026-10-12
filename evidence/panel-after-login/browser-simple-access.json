@@ -1,0 +1,73 @@
+{
+  "scope": "current-password-only-UI-synthetic-provider",
+  "checks": [
+    {
+      "check": "Current initial access exposes exactly email, password and Entrar",
+      "result": "passed"
+    },
+    {
+      "check": "Advanced access controls are hidden and inert in the current mode",
+      "result": "passed"
+    },
+    {
+      "check": "Verified simple login opens the panel even before service release, with unavailable actions and unknown counts explicit",
+      "result": "passed"
+    },
+    {
+      "check": "Basic login sends the exact password once without extra account-management requests",
+      "result": "passed"
+    },
+    {
+      "check": "Authenticated panel navigation works while service actions remain unavailable",
+      "result": "passed"
+    },
+    {
+      "check": "Password and credentials stay out of DOM fields and persistent browser storage after login",
+      "result": "passed"
+    },
+    {
+      "check": "Simple Sair clears the session and returns to the same two-field login",
+      "result": "passed"
+    },
+    {
+      "check": "Mobile login retains the two fields without horizontal overflow",
+      "result": "passed"
+    },
+    {
+      "check": "Verified mobile login opens the responsive panel before service release",
+      "result": "passed"
+    },
+    {
+      "check": "Mobile panel exposes a working Sair action without the hidden desktop sidebar footer",
+      "result": "passed"
+    },
+    {
+      "check": "Invalid credentials report only email/password and never mention a missing workspace control",
+      "result": "passed"
+    },
+    {
+      "check": "Ambiguous operations fail clearly and clean the session without hidden selection or arbitrary access",
+      "result": "passed"
+    },
+    {
+      "check": "Enrolled MFA is never bypassed and cannot leave a basic login waiting on a hidden field",
+      "result": "passed"
+    },
+    {
+      "check": "Recovery URL material is discarded without opening or executing the disabled flow",
+      "result": "passed"
+    },
+    {
+      "check": "Concurrent form submissions dispatch the password only once",
+      "result": "passed"
+    },
+    {
+      "check": "An identity without membership never becomes a Help Desk login",
+      "result": "passed"
+    },
+    {
+      "check": "Provider password success without a verified Help Desk profile cannot open the panel",
+      "result": "passed"
+    }
+  ]
+}

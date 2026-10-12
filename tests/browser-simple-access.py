@@ -25,12 +25,16 @@ with sync_playwright() as p:
     record('Advanced access controls are hidden and inert in the current mode')
     page.screenshot(path=str(ROOT/'evidence/simple-login-desktop.png'),full_page=True)
     password_login(page)
-    expect(page.locator('#login-status')).to_contain_text('Você está conectado')
-    expect(page.locator('#login-form')).to_be_hidden()
-    expect(page.locator('#cancel-login')).to_have_text('Sair')
-    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#app')).to_be_visible()
+    expect(page.locator('#login-screen')).to_be_hidden()
+    expect(page.locator('#operational-status')).to_be_visible()
+    expect(page.locator('#logout')).to_be_visible()
+    expect(page.locator('#new-ticket')).to_be_disabled()
+    expect(page.locator('#refresh')).to_be_disabled()
+    expect(page.locator('#stat-total')).to_have_text('—')
+    assert page.locator('#ticket-filters input:enabled,#ticket-filters select:enabled,#ticket-filters button:enabled').count()==0
     assert not posts and not errors,errors
-    record('Password-only login discovers the sole operation and respects the service release gate')
+    record('Verified simple login opens the panel even before service release, with unavailable actions and unknown counts explicit')
     calls=page.evaluate('__authFixture.calls')
     password_calls=[x for x in calls if x['url'].endswith('/token?grant_type=password')]
     assert len(password_calls)==1 and json.loads(password_calls[0]['body'])=={'email':'synthetic@example.test','password':' senha mantida '}
@@ -38,8 +42,14 @@ with sync_playwright() as p:
     record('Basic login sends the exact password once without extra account-management requests')
     assert page.evaluate('localStorage.length+sessionStorage.length')==0
     expect(page.locator('#password')).to_have_value('')
+    page.screenshot(path=str(ROOT/'evidence/panel-after-login-desktop.png'),full_page=True)
+    page.locator('[data-view=guide]').click()
+    expect(page.locator('#guide-view')).to_be_visible()
+    page.locator('[data-view=tickets]').click()
+    expect(page.locator('#tickets-view')).to_be_visible()
+    record('Authenticated panel navigation works while service actions remain unavailable')
     record('Password and credentials stay out of DOM fields and persistent browser storage after login')
-    page.locator('#cancel-login').click()
+    page.locator('#logout').click()
     expect(page.locator('#login-form')).to_be_visible()
     expect(page.locator('#submit-login')).to_be_enabled()
     assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/logout?scope=local')).length")==1
@@ -54,6 +64,18 @@ with sync_playwright() as p:
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     page.screenshot(path=str(ROOT/'evidence/simple-login-mobile.png'),full_page=True)
     record('Mobile login retains the two fields without horizontal overflow')
+    password_login(page)
+    expect(page.locator('#app')).to_be_visible()
+    expect(page.locator('#login-screen')).to_be_hidden()
+    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+    page.screenshot(path=str(ROOT/'evidence/panel-after-login-mobile.png'),full_page=True)
+    assert not errors and not posts,errors
+    record('Verified mobile login opens the responsive panel before service release')
+    expect(page.locator('#logout-mobile')).to_be_visible()
+    page.locator('#logout-mobile').click()
+    expect(page.locator('#login-screen')).to_be_visible()
+    expect(page.locator('#app')).to_be_hidden()
+    record('Mobile panel exposes a working Sair action without the hidden desktop sidebar footer')
     context.close()
 
     context,page,errors,posts=ready(browser)
@@ -104,7 +126,8 @@ with sync_playwright() as p:
     page.locator('#login-form').evaluate('(f)=>f.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true}))')
     assert page.evaluate("__authFixture.calls.filter(x=>x.url.endsWith('/token?grant_type=password')).length")==1
     page.evaluate('__authFixture.completeLogin()')
-    expect(page.locator('#login-status')).to_contain_text('Você está conectado')
+    expect(page.locator('#app')).to_be_visible()
+    expect(page.locator('#login-screen')).to_be_hidden()
     assert not errors and not posts,errors
     record('Concurrent form submissions dispatch the password only once')
     context.close()
@@ -116,6 +139,17 @@ with sync_playwright() as p:
     assert page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
     assert not errors and not posts,errors
     record('An identity without membership never becomes a Help Desk login')
+    context.close()
+
+    context,page,errors,posts=ready(browser)
+    page.route('**/v1/me',lambda r:r.fulfill(status=403,content_type='application/json',body=json.dumps({'code':'forbidden','detail':'Acesso não autorizado.'})))
+    password_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Acesso não autorizado')
+    expect(page.locator('#app')).to_be_hidden()
+    expect(page.locator('#login-screen')).to_be_visible()
+    assert page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
+    assert not errors and not posts,errors
+    record('Provider password success without a verified Help Desk profile cannot open the panel')
     context.close();browser.close()
 
 (ROOT/'evidence/browser-simple-access.json').write_text(json.dumps({'scope':'current-password-only-UI-synthetic-provider','checks':checks},ensure_ascii=False,indent=2))

@@ -52,10 +52,34 @@ const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 function clearSession(){recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
-async function login(){s.me=await api('/me');renderWorkspaceChange();if(s.config?.operational===false){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent=ADVANCED_ACCESS?'Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.':'Você está conectado. O atendimento ainda não está disponível.';return;}$('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));$('login-screen').hidden=true;$('app').hidden=false;$('identity-name').textContent=s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';$('workspace-label').textContent=s.demo?'Consulte · demonstração':s.workspace;await list(true,true);}
+const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
+function renderServiceAvailability(){
+ const available=serviceAvailable();
+ $('operational-status').hidden=available||!s.me;
+ $('new-ticket').disabled=!available;$('refresh').disabled=!available;
+ $('empty-detail').querySelector('h2').textContent=available?'Todo atendimento começa com uma boa conversa.':'Chamados e conversas';
+ $('empty-detail').querySelector('p').textContent=available?'Selecione um chamado para consultar o histórico ou abra uma nova solicitação.':'Quando a consulta estiver disponível, selecione um chamado para acompanhar suas mensagens e seu histórico.';
+ for(const control of $('ticket-filters').querySelectorAll('input,select,button'))control.disabled=!available;
+ if(!available){
+  for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='—';
+  $('list-count').textContent='Consulta ainda não disponível';
+  $('list-status').textContent='Seu acesso foi confirmado. A consulta de chamados será habilitada com o atendimento.';
+ }
+}
+async function login(){
+ s.me=await api('/me');renderWorkspaceChange();
+ // The preserved advanced flow keeps its existing authentication-only screen.
+ if(!serviceAvailable()&&ADVANCED_ACCESS){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}
+ $('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));
+ $('identity-name').textContent=s.me.workspace_role==='admin'?'Administrador':s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';
+ $('workspace-label').textContent=s.demo?'Consulte · demonstração':ADVANCED_ACCESS?s.workspace:'Operação autorizada';
+ $('login-status').textContent='';$('login-screen').hidden=true;$('app').hidden=false;
+ render();if(serviceAvailable())await list(true,true);
+}
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
 async function list(reset=true,selectFirst=false){
+ if(!serviceAvailable()){render();return;}
  if(reset)inbox.restart();const op=inbox.begin();if(!op)return;
  const detailGeneration=s.detail;syncInbox();
  try{const b=await api(op.path);if(!inbox.accept(op,b))return;syncInbox();}
@@ -71,7 +95,7 @@ function render(){
   bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id)));
   n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);
  }
- if(!items.length)$('ticket-list').append(el('p','list-empty',phase==='loading'?'Consultando chamados autorizados…':phase==='error'?'Não foi possível carregar os chamados. Tente novamente.':phase==='idle'?'Aplique a consulta para carregar chamados.':'Nenhum chamado encontrado para os filtros aplicados e suas permissões.'));
+ if(!items.length)$('ticket-list').append(el('p','list-empty',!serviceAvailable()?'Os chamados serão exibidos aqui quando a consulta estiver disponível.':phase==='loading'?'Consultando chamados autorizados…':phase==='error'?'Não foi possível carregar os chamados. Tente novamente.':phase==='idle'?'Aplique a consulta para carregar chamados.':'Nenhum chamado encontrado para os filtros aplicados e suas permissões.'));
  $('stat-total').textContent=items.length;$('stat-open').textContent=items.filter(t=>['received','in_progress'].includes(t.status)).length;
  $('stat-wait').textContent=items.filter(t=>t.status==='waiting_for_you').length;$('stat-done').textContent=items.filter(t=>t.status==='resolved').length;
  $('nav-count').textContent=items.length;$('list-count').textContent=items.length+' carregado(s)'+(s.next?' · há mais resultados':'');
@@ -80,6 +104,7 @@ function render(){
  const applied=inbox.filters(),names=[];if(applied.q)names.push('Busca por assunto/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);if(applied.assignment)names.push(applied.assignment==='mine'?'Meus atendimentos':'Sem responsável');
  $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+'. Contagens referem-se somente aos itens carregados.';
  $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
+ renderServiceAvailability();
 }
 function applyFilters(){
  const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value,assignment=$('assignment-filter').value;
@@ -491,6 +516,7 @@ $('confirm-workspace-change').onclick=()=>run(async()=>{
 });
 }
 $('logout').onclick=()=>run(leaveHumanSession);
+$('logout-mobile').onclick=()=>run(leaveHumanSession);
 $('cancel-login').onclick=()=>run(leaveHumanSession);
 if(ADVANCED_ACCESS)$('choose-workspace').onclick=()=>run(()=>humanSession?.selectWorkspace($('workspace-choice').value));
 function humanChanged(value){recoveryPanel.sync(value);
