@@ -13,6 +13,13 @@ BEGIN
   OR to_regprocedure('helpdesk_auth.schema_version()') IS NULL THEN RAISE EXCEPTION 'Reviewed migration operator required' USING ERRCODE='HDU01';END IF;
  PERFORM pg_advisory_xact_lock(hashtextextended('Consulte GEO schema upgrade',0));
  IF helpdesk_auth.schema_version() IS DISTINCT FROM '0.19.0' THEN RAISE EXCEPTION 'Exact prior schema required' USING ERRCODE='HDU02';END IF;
+ -- Owner defaults can grant new objects even when existing service rights are empty.
+ -- Qualified bodies explicitly revoke built-in PUBLIC function EXECUTE. No other
+ -- non-owner automatic grant is adopted, globally or in these private schemas.
+ IF EXISTS(SELECT 1 FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) a
+  WHERE d.defaclrole=who AND (d.defaclnamespace=0 OR d.defaclnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit')))
+   AND a.grantee<>who AND NOT (a.grantee=0 AND d.defaclobjtype='f' AND a.privilege_type='EXECUTE'))
+ THEN RAISE EXCEPTION 'Incompatible operator defaults refused' USING ERRCODE='HDU05';END IF;
  IF (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') AND c.relkind='r')<>25
   OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname LIKE 'helpdesk_%' AND c.relname ~ '^(cg_|hdn_)')
   OR EXISTS(SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname LIKE 'helpdesk_%' AND p.proname ~ '^(cg_|hdn_)') THEN RAISE EXCEPTION 'Partial or incompatible installation refused' USING ERRCODE='HDU03';END IF;
@@ -1742,5 +1749,25 @@ DO $m05_worker$ DECLARE ns text;BEGIN
   EXECUTE format('REVOKE ALL ON ALL FUNCTIONS IN SCHEMA %I FROM helpdesk_notification_worker',ns);
  END LOOP;
 END $m05_worker$;
+-- Validate EFFECTIVE service boundaries before publishing the schema marker.
+DO $m05_final$
+DECLARE role_name text;role_oid oid;role_row record;ns record;obj record;allowed boolean;
+BEGIN
+ FOREACH role_name IN ARRAY ARRAY['helpdesk_resource_publisher','helpdesk_notification_worker'] LOOP
+  SELECT * INTO role_row FROM pg_roles WHERE rolname=role_name;IF NOT FOUND THEN RAISE EXCEPTION 'Service boundary unavailable' USING ERRCODE='HDU06';END IF;role_oid:=role_row.oid;
+  IF role_row.rolsuper OR role_row.rolbypassrls OR role_row.rolcreaterole OR role_row.rolcreatedb OR role_row.rolreplication OR role_row.rolinherit OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=role_oid OR roleid=role_oid) THEN RAISE EXCEPTION 'Service boundary unsafe' USING ERRCODE='HDU06';END IF;
+  FOR ns IN SELECT * FROM pg_namespace WHERE nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') LOOP
+   allowed:=role_name='helpdesk_resource_publisher' AND ns.nspname='helpdesk_auth';
+   IF ns.nspowner=role_oid OR has_schema_privilege(role_oid,ns.oid,'USAGE') IS DISTINCT FROM allowed OR has_schema_privilege(role_oid,ns.oid,'CREATE,USAGE WITH GRANT OPTION') THEN RAISE EXCEPTION 'Service schema boundary unsafe' USING ERRCODE='HDU06';END IF;
+  END LOOP;
+  FOR obj IN SELECT c.* FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') AND c.relkind='r' LOOP
+   IF obj.relowner=role_oid OR has_table_privilege(role_oid,obj.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN') OR has_any_column_privilege(role_oid,obj.oid,'SELECT,INSERT,UPDATE,REFERENCES') THEN RAISE EXCEPTION 'Service table boundary unsafe' USING ERRCODE='HDU06';END IF;
+  END LOOP;
+  FOR obj IN SELECT p.*,n.nspname||'.'||p.proname||'('||oidvectortypes(p.proargtypes)||')' AS signature FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') LOOP
+   allowed:=role_name='helpdesk_resource_publisher' AND obj.signature IN ('helpdesk_auth.cg_publication_open(text, text)','helpdesk_auth.cg_publication_replace(text, text, text, text, text)','helpdesk_auth.cg_publication_append(text, text, text)');
+   IF obj.proowner=role_oid OR has_function_privilege(role_oid,obj.oid,'EXECUTE') IS DISTINCT FROM allowed OR has_function_privilege(role_oid,obj.oid,'EXECUTE WITH GRANT OPTION') THEN RAISE EXCEPTION 'Service function boundary unsafe' USING ERRCODE='HDU06';END IF;
+  END LOOP;
+ END LOOP;
+END $m05_final$;
 CREATE OR REPLACE FUNCTION helpdesk_auth.schema_version() RETURNS text LANGUAGE sql IMMUTABLE SET search_path='' AS $$SELECT '0.20.0'::text$$;
 COMMIT;
