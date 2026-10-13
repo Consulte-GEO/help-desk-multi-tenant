@@ -50,6 +50,11 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
    const opened=await service.transition(p,tickets[name],'open',claimed.ticket.version,'HDN owned fixture start',randomUUID(),randomUUID());
    assert.equal(opened.ticket.assignedTo,who);assert.equal(opened.ticket.status,'open');
    await service.addNote(p,tickets[name],'Synthetic execution statement',randomUUID(),randomUUID());
+   if(name==='SAME_STATE'){
+    // Model an already resolved legacy ticket before resource/checklist binding.
+    const current=await service.get(p,tickets[name]);
+    await service.transition(p,tickets[name],'resolved',current.version,'HDN pre-existing resolved fixture',randomUUID(),randomUUID());
+   }
    notes[name]=String((await admin.query('select id from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 order by created_at limit 1',[w,tickets[name]])).rows[0]?.id);
   }
   await admin.query('insert into helpdesk_auth.cg_resource_connections(workspace_id,id,product_instance_id) values($1,$2,$3)',[w,conn,instance]);
@@ -103,7 +108,7 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
    await corruptSnapshot(d=>{d.entries[0].actorId=customer;});
   });
   await t.test('resolution denies a note newer than its marking by one microsecond',async()=>{
-   const before=(await admin.query(`select to_char(created_at-interval '1 microsecond' AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as at from helpdesk_core.internal_notes where workspace_id=$1 and id=$2`,[w,notes.A])).rows[0]?.at;
+   const before=(await admin.query(`select to_char((created_at-interval '1 microsecond') AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as at from helpdesk_core.internal_notes where workspace_id=$1 and id=$2`,[w,notes.A])).rows[0]?.at;
    assert.equal(typeof before,'string');await corruptSnapshot(d=>{d.entries[0].at=before;});
   });
   await t.test('new evidence reader also denies requester and A+C',async()=>{
@@ -158,8 +163,7 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
    assert.equal(result.ticket.status,'resolved');assert.equal(result.ticket.version,old.version+1);
   });
   await t.test('a same-state message on a resolved bound ticket is not a new completion',async()=>{
-   await admin.query("update helpdesk_core.tickets set status='resolved',version=version+1,updated_at=clock_timestamp() where workspace_id=$1 and id=$2",[w,tickets.SAME_STATE]);
-   const before=await service.get(p,tickets.SAME_STATE!);
+   const before=await service.get(p,tickets.SAME_STATE!);assert.equal(before.status,'resolved');
    await service.addMessage(p,tickets.SAME_STATE!,'Synthetic follow-up, not another completion',randomUUID(),randomUUID());
    const after=await service.get(p,tickets.SAME_STATE!);assert.equal(after.status,'resolved');assert.equal(after.version,before.version+1);
   });
@@ -218,7 +222,7 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
 
   await t.test('current note permission revocation denies the helper as well',async()=>{await admin.query("update helpdesk_auth.account_grants set role='requester' where workspace_id=$1 and principal_id=$2",[w,who]);try{await assert.rejects(view(),{code:'checklist_forbidden'});}finally{await admin.query("update helpdesk_auth.account_grants set role='agent' where workspace_id=$1 and principal_id=$2",[w,who]);}});
   await t.test('all tables FORCE RLS and PUBLIC cannot execute candidate functions',async()=>{const rows=(await admin.query("select relrowsecurity,relforcerowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='helpdesk_core' and relname like 'hdn_execution_%' and relkind='r'")).rows;assert.equal(rows.length,5);assert.ok(rows.every(r=>r.relrowsecurity&&r.relforcerowsecurity));const acl=await admin.query("select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace cross join lateral aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where n.nspname='helpdesk_auth' and p.proname like 'hdn_%' and a.grantee=0 and a.privilege_type='EXECUTE'");assert.equal(acl.rows.length,0);});
-  await t.test('ticket revision change cannot inherit completed entries',async()=>{await admin.query('update helpdesk_core.tickets set version=version+1,updated_at=clock_timestamp() where workspace_id=$1 and id=$2',[w,tickets.A]);const r=await view();assert.equal(r.context.ticketVersion,tv+1);assert.equal(r.snapshot,null);assert.equal((await admin.query('select count(*)::int as n from helpdesk_core.hdn_execution_snapshots where workspace_id=$1 and ticket_version=$2',[w,tv])).rows[0]?.n,1);});
+  await t.test('ticket revision change cannot inherit completed entries',async()=>{await service.addMessage(p,tickets.A!,'HDN authenticated revision change',randomUUID(),randomUUID());const r=await view();assert.equal(r.context.ticketVersion,tv+1);assert.equal(r.snapshot,null);assert.equal((await admin.query('select count(*)::int as n from helpdesk_core.hdn_execution_snapshots where workspace_id=$1 and ticket_version=$2',[w,tv])).rows[0]?.n,1);});
   // HDN01e: additional real-SQL scenarios; executed only by the guarded runner.
   const evidencePage=async(before:{id:string;at:string}|null=null)=>use(async store=>{
    const r=await store.read(tickets.A!);
