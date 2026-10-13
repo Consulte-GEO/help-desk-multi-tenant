@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** Registered only from the existing fresh-PG17 rls.test.ts chain. No top-level
  * network/SQL and no hosted target. These scenarios are NOT executed by unit tests. */
 import test from 'node:test';import assert from 'node:assert/strict';
@@ -15,8 +16,7 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
  const targetPath='../../scripts/database-target.ts';const {validateDatabaseTestTargets}=await import(targetPath);
  const {appUrl}=validateDatabaseTestTargets(process.env),admin=adminPool();
  assert.equal((await admin.query("select current_database() as db")).rows[0]?.db,'helpdesk_test');
- const install=await admin.connect();try{await install.query('BEGIN');await install.query("select set_config('app.hdn01b_candidate','disposable-pg17',true)");await install.query(await readFile(new URL('../candidates/hdn_execution_checklist.sql',import.meta.url),'utf8'));await install.query('COMMIT');}
- catch(e){await install.query('ROLLBACK');throw e;}finally{install.release();}
+ await assertPromotedM05Module(admin,'helpdesk_auth.hdn_mark_execution_checklist(uuid,jsonb,text,text,uuid)');
  const pgName='pg',pg=await import(pgName) as {Pool:new(o:Record<string,unknown>)=>SqlPool};
  const pool=new pg.Pool({connectionString:appUrl,max:3,connectionTimeoutMillis:5000});
  try{

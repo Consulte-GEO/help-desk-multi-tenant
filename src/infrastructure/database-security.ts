@@ -10,6 +10,7 @@ export const DATABASE_SECURITY_QUERY = `with
  expected_triggers as (select * from pg_catalog.jsonb_to_recordset((select doc->'triggers' from contract)) as x("table" text,name text,"function" text,type integer,deferred boolean)),
  expected_constraints as (select * from pg_catalog.jsonb_to_recordset((select doc->'constraints' from contract)) as x("table" text,name text,type text)),
  expected_policies as (select * from pg_catalog.jsonb_to_recordset((select doc->'policies' from contract)) as x("table" text,name text,permissive boolean,command text)),
+ expected_roles as (select * from pg_catalog.jsonb_to_recordset((select doc->'roles' from contract)) as x(name text,schemas text[],functions text[])),
  schemas as (select * from pg_catalog.pg_namespace where nspname=any($2::text[])),
  tables as (select c.*,n.nspname||'.'||c.relname as full_name from pg_catalog.pg_class c join schemas n on n.oid=c.relnamespace where c.relkind in ('r','p','v','m','f','S')),
  functions as (select p.*,r.rolsuper,r.rolbypassrls,r.rolname as owner_name,
@@ -79,6 +80,13 @@ export const DATABASE_SECURITY_QUERY = `with
    left join pg_catalog.pg_policy p on p.polrelid=t.oid and p.polname=e.name where p.oid is null
     or p.polpermissive is distinct from e.permissive or p.polcmd::text<>e.command
     or p.polroles is distinct from array[(select oid from app)]::oid[])) as policy_contract_ok,
+ ((select count(*) from expected_roles)=2 and not exists(select 1 from expected_roles e left join pg_catalog.pg_roles r on r.rolname=e.name where r.oid is null
+   or r.rolsuper or r.rolbypassrls or r.rolcreaterole or r.rolcreatedb or r.rolreplication or r.rolinherit
+   or exists(select 1 from pg_catalog.pg_auth_members m where m.member=r.oid or m.roleid=r.oid)
+   or exists(select 1 from schemas n where n.nspowner=r.oid or pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE') is distinct from (n.nspname=any(e.schemas)) or pg_catalog.has_schema_privilege(r.oid,n.oid,'CREATE,USAGE WITH GRANT OPTION'))
+   or exists(select 1 from tables t where t.relowner=r.oid or pg_catalog.has_table_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN') or pg_catalog.has_any_column_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,REFERENCES'))
+   or exists(select 1 from functions p where p.proowner=r.oid or pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE') is distinct from (p.signature=any(e.functions)) or pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE WITH GRANT OPTION'))
+ )) as reserved_roles_ok,
  (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999
   and pg_catalog.current_setting('row_security')='on'
   and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok`;
@@ -86,7 +94,7 @@ export const DATABASE_SECURITY_QUERY = `with
 export const READINESS_FLAGS = Object.freeze([
  'schema_contract_ok','table_contract_ok','table_privileges_ok','column_privileges_ok',
  'client_object_privileges_ok','helper_contract_ok','helper_privileges_ok','helper_settings_ok',
- 'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok'
+ 'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok','reserved_roles_ok'
 ] as const);
 
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{

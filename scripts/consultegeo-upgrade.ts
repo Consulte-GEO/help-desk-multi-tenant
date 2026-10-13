@@ -79,7 +79,7 @@ COMMIT;
 export function compileConsulteGeoUpgrade(components:readonly {file:string;sha256:string;sql:string}[]):string{try{
  if(!Array.isArray(components)||components.length!==6||Reflect.ownKeys(components).length!==7)throw failure();
  const bodies=components.map((c,i)=>{const qualified=QUALIFIED_UPGRADE_COMPONENTS[i]!;if(!c||c.file!==qualified.file||c.sha256!==qualified.sha256||typeof c.sql!=='string'||Buffer.byteLength(c.sql)>2*1024*1024||digest(c.sql)!==qualified.sha256)throw failure();
-  const guard=/\bDO\s+\$(candidate|guard)\$[\s\S]*?END\s+\$\1\$;/i.exec(c.sql);if(!guard||c.sql.slice(0,guard.index).split('\n').some(line=>line.trim()&&!line.trim().startsWith('--')))throw failure();
+  const guard=/\bDO\s+\$(candidate|guard)\$[\s\S]*?END\s+\$\1\$;/i.exec(c.sql);if(!guard||c.sql.slice(0,guard.index).split('\n').some((line:string)=>line.trim()&&!line.trim().startsWith('--')))throw failure();
   const body=c.sql.slice(guard.index+guard[0].length).trim();if(!body)throw failure();return '-- SOURCE '+qualified.file+' SHA256 '+qualified.sha256+'\n'+body+'\n';
  });return prelude+'\n'+bodies.join('\n')+epilogue;
 }catch{throw failure();}}

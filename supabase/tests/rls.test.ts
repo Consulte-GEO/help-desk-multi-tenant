@@ -1,3 +1,4 @@
+import {captureM05SecurityInventory} from './m05-security-inventory.ts';
 import {registerHostedAcceptanceSqlTests} from './hosted-acceptance-scenarios.ts';
 import {registerFirstAdminTests} from './first-admin-scenarios.ts';
 import {registerWorkspaceDiscoveryTests} from './workspace-discovery-scenarios.ts';
@@ -27,6 +28,7 @@ before(async()=>{const moduleName='pg';const driver=await import(moduleName) as 
  const version=Number((await admin.query("select current_setting('server_version_num') as version")).rows[0]?.version);if(version<170000||version>=180000)throw Error('This suite requires PostgreSQL 17.');
  const existing=await admin.query("select 1 from pg_namespace where nspname like 'helpdesk_%'");if(existing.rows.length)throw Error('Use a FRESH helpdesk_test database. This test never drops existing schemas.');
  for(const migration of migrationBundle.migrations)await admin.query(migration.sql);
+ await captureM05SecurityInventory(admin);
  const password=decodeURIComponent(new URL(appUrl).password);const command=(await admin.query("select format('alter role helpdesk_app login password %L',$1::text) as command",[password])).rows[0]!.command;await admin.query(String(command));
  await admin.query(`insert into helpdesk_core.workspaces(id,name) values($1,'Workspace A'),($2,'Workspace B')`,[id(1),id(2)]);
  for(const who of [11,12,13,14])await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[id(who),id(1000+who)]);

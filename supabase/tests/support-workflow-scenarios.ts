@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** M02: only registered by the existing fresh, owned PG17 runner after HDN.
  * No top-level connection, no hosted target, no skip/fallback to memory.
  * New scenarios are WRITTEN, not certified by their presence in this file. */
@@ -20,13 +21,7 @@ export function registerSupportWorkflowSqlTests(adminPool:()=>SqlPool){
   const {validateDatabaseTestTargets}=await import(targets);
   const {appUrl}=validateDatabaseTestTargets(process.env),admin=adminPool();
   assert.equal((await admin.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
-  const installer=await admin.connect();
-  try{
-   await installer.query('BEGIN');
-   await installer.query("select set_config('app.hdn_workflow_candidate','disposable-pg17',true)");
-   await installer.query(await readFile(new URL('../candidates/hdn_support_workflow.sql',import.meta.url),'utf8'));
-   await installer.query('COMMIT');
-  }catch(error){await installer.query('ROLLBACK');throw error;}finally{installer.release();}
+  await assertPromotedM05Module(admin,'helpdesk_auth.hdn_commit_support_workflow(uuid,jsonb)');
   const pgName='pg',pg=await import(pgName) as {Pool:new(o:Record<string,unknown>)=>SqlPool};
   const pool=new pg.Pool({connectionString:appUrl,max:4,connectionTimeoutMillis:5000});
   try{

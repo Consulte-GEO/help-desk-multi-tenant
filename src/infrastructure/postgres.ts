@@ -1,4 +1,5 @@
 import {assertLegacyTerminalUpdateAllowed} from './legacy-transition-guard.ts';
+import {DATABASE_SECURITY_CONTRACT} from './database-security-contract.ts';
 import {assertSingleWrite} from './write-result.ts';
 import {canonicalInstant} from '../../shared/instant.js';
 import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
@@ -29,7 +30,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.19.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!==DATABASE_SECURITY_CONTRACT.schemaVersion)throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 export {assertDatabaseSecurity} from './database-security.ts';
 export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{

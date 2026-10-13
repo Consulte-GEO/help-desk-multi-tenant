@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** Candidate SQL runs only when registered by the existing, opted-in fresh PG17 suite.
  * Never a hosted runner. Synthetic identities are ordinary existing Supabase humans,
  * not fabricated external identities. No top-level SQL or network.
@@ -54,12 +55,10 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
    await service.addNote(people.agent,tickets.A!,'CG03d private A',randomUUID(),randomUUID());
    await service.addMessage(people.requester,tickets.C!,'CG03d public but scoped C',randomUUID(),randomUUID());
    const original=await admin.query('select id,version,contract_snapshot from helpdesk_core.tickets where workspace_id=$1 order by id',[w]);
-   const sql=await readFile(new URL('../candidates/cg_resource_scope.sql',import.meta.url),'utf8');
    // The existing fresh-db guard and runner own this database; no DSN is accepted from a request.
-   const install=await admin.connect();
-   try{await install.query('BEGIN');await install.query("select set_config('app.cg03d_candidate','disposable-pg17',true)");await install.query(sql);await install.query('COMMIT');}
-   catch(error){await install.query('ROLLBACK');throw error;}finally{install.release();}
+   await assertPromotedM05Module(admin,'helpdesk_auth.cg_ticket_resource_allowed(uuid,uuid,uuid,text)');
    const ready=(await admin.query("select to_regclass('helpdesk_auth.cg_resource_bindings') is not null as ready")).rows[0]?.ready===true;
+   assert.equal(ready,true);
    const connection=randomUUID(),binding=randomUUID(),otherBinding=randomUUID();
    // During RED the exact existing application/SQL still runs. No fake denial fallback.
    // Setup is conditional only to expose the pre-implementation visibility bug, not a missing-table error.

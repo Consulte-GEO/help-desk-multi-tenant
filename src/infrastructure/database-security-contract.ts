@@ -1,9 +1,9 @@
-/** Reviewed catalogue contract for schema 0.19.0.
+/** Reviewed catalogue contract for schema 0.20.0.
  * Metadata checks do NOT attest to function/policy/constraint expressions.
  * Not generated at runtime, not accepted from HTTP, never used for auto-repair.
  */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.19.0",
+  "schemaVersion": "0.20.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
