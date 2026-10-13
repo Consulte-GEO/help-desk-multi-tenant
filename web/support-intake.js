@@ -7,10 +7,10 @@ export function createSupportIntakeState(options){let draft=freezeFormData(copyF
  const snapshot=()=>freezeFormData({phase,revision,answers:copyFormData(data.answers),preview:previewValue,receipt});
  const changed=()=>{try{options.onChange?.(snapshot());}catch{/* observer does not grant access */}};
  function edit(input){if(!['editing','saved','review'].includes(phase))throw Error('Conclua a intenção atual.');const v=copyFormData(input);if(!v||Object.keys(v).sort().join(',')!=='answers,coverageId,description,subject'||typeof v.subject!=='string'||typeof v.description!=='string')throw Error('Dados inválidos.');data=v;previewValue=null;intent=null;phase='editing';changed();}
- async function send(){const stamp=epoch,active=intent;controller=new AbortController();phase=active.op==='save'?'saving':'sending';changed();try{
+ async function send(){const reconciling=phase==='unknown',stamp=epoch,active=intent;controller=new AbortController();phase=active.op==='save'?'saving':'sending';changed();try{
   const result=active.op==='save'?await options.api.save(active.payload,active.expectedRevision,controller.signal):await options.api.create(active.payload,active.key,controller.signal);
   if(stamp!==epoch)return;
-  if(result?.kind==='rejected'){phase='editing';intent=null;previewValue=null;return;}
+  if(result?.kind==='rejected'){if(reconciling){phase='unknown';return;}phase='editing';intent=null;previewValue=null;return;}
   if(result?.kind!=='confirmed')throw Error('Confirmação desconhecida.');
   if(active.op==='save'){if(result.value?.id!==draft.id||result.value?.revision!==active.expectedRevision+1)throw Error('Revisão incompatível.');revision=result.value.revision;phase='saved';}
   else{if(typeof result.value?.ticketId!=='string'||typeof result.value?.protocol!=='string'||!/^CG-[1-9]\d{4,17}$/.test(result.value.protocol)||result.value.notification!=='pending')throw Error('Recibo incompatível.');receipt=freezeFormData({ticketId:result.value.ticketId,protocol:result.value.protocol,notification:'pending'});phase='confirmed';data={answers:{},subject:'',description:'',coverageId:null};}
