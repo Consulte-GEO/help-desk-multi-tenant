@@ -14,6 +14,6 @@
 - [x] Revisar módulos e corrigir achados demonstrados com testes negativos antes da mudança.
 - [x] Executar scripts originais e CI38391144674/1 Linux/Node22/PostgreSQL17/Chromium: 4246/326/168, incluindo31SQLHDN e browser, sem skips.
 - [x] Conferir artifact/digest/commit/fingerprint/logs; importar evidência canônica da mesma fonte, preservar gates.
-- [ ] Atualizar estado, handoff e PR30; confirmar fonte remota antes de merge e verificar publicação técnica/recursos estáticos/fronteira operacional.
+- [x] Atualizar estado, handoff e PR30; confirmar SHA/base, mergebd2b114 e produção6ace1a859f0cf43f342d770a; 44assets e fronteira readonly verificados, atendimento fechado.
 
 **Foco de revisão:** replay após revogação, prazos e recusa antes de COMMIT, validação de evidência privada, retenção no DOM, dependências de build/fingerprint. Falhas de plataforma local são registradas; não alteram requisitos dos testes.

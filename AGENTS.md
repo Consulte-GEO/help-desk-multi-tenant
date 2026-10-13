@@ -1,4 +1,4 @@
-> **HDN-01l — revisão de 13/10/2026:** cumulativo integrado, correções de fingerprint/build/recusas/browser e revisão independente concluídas. CI4246/326/168 aprovado sem skips; evidência canônica verificada. Publicação em confirmação; atendimento fechado. [Estado e limites](docs/138-REVISAO-HDN01L-2026-10-13.md).
+> **HDN-01l — revisão de 13/10/2026:** cumulativo integrado, correções de fingerprint/build/recusas/browser e revisão independente concluídas. CI4246/326/168 aprovado sem skips; evidência canônica verificada. PR30 mesclado/publicado, 44 assets de produção e fronteira readonly conferidos; atendimento fechado. [Estado e limites](docs/138-REVISAO-HDN01L-2026-10-13.md).
 
 > **Painel após login — 12/10/2026:** corrigido retorno que ocultava a aplicação após /me válido. Modo simples abre painel, menus e saída desktop/mobile; disponibilidade do atendimento fica explícita, sem consultas prematuras nem contagens fictícias. PR29 integrado/publicado, CI3741/294/156 aprovado e39assets conferidos. Backend/gate preservados. [Correção e evidências](docs/137-PAINEL-APOS-LOGIN-2026-10-12.md).
 
