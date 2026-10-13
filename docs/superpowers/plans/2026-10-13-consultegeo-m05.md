@@ -42,9 +42,9 @@
 
 **Interfaces:** contrato 0.20.0 completo; `assertDatabaseSecurity` mantém assinatura/consulta metadata; flags incluem papéis separados. Instalação dos cenários exige a migration, não fallback de candidato.
 
-- [ ] Escrever RED dos papéis e schema novo; adaptar cenários para exigir objetos promovidos. Acrescentar cenários nativos de rollback/reaplicação/seed zero/papel perigoso e captura revisável do inventário.
-- [ ] Atualizar contrato explícito e readiness/fixtures, preservando todos os checks anteriores. Provar instalação fresca + upgrade com dados antigos pelo CI original PG17; corrigir falhas pela causa; commit.
-- [ ] Rodar aplicação/tipos/contratos/build e CI integral; observar GREEN sem skips.
+- [x] Escrever RED dos papéis e schema novo; adaptar cenários para exigir objetos promovidos. Acrescentar cenários nativos de rollback/reaplicação/seed zero/papel perigoso e captura revisável do inventário.
+- [x] Atualizar contrato explícito e readiness/fixtures, preservando todos os checks anteriores. Provar instalação fresca + upgrade com dados antigos pelo CI original PG17; corrigir falhas pela causa; commit.
+- [x] Rodar aplicação/tipos/contratos/build e CI integral; observar GREEN sem skips.
 
 ### Task 3 — revisão e entrega
 
@@ -52,8 +52,8 @@
 
 **Interfaces:** PR31 cumulativo em draft; report e logs do mesmo source fingerprint; pacote sobre base392fdd2 com hashes verificados.
 
-- [ ] Solicitar revisão independente do delta M05 após testes; corrigir Critical/Important com regressões e qualificar a fonte final.
-- [ ] Registrar procedimento de promoção/retorno, ausência de instalação hospedada e próximos M06/M08/M11; atualizar PR31, evidências e pacote; verificar source/hash/ZIP.
+- [x] Solicitar revisão independente do delta M05 após testes; corrigir Critical/Important com regressões e qualificar a fonte final.
+- [x] Registrar procedimento de promoção/retorno, ausência de instalação hospedada e próximos M06/M08/M11; atualizar PR31, evidências e pacote; verificar source/hash/ZIP.
 
 ## Ledger
 
@@ -64,3 +64,8 @@ Task1: CLI criou 20261013181408_consultegeo_m05_upgrade.sql.18 negativos/positiv
 
 
 Retificação Task1: a63f351 foi registrado antes de ler um erro residual de callback implicit-any; corrigido em09ddf56, tipos reexecutados e aprovados. Task2: primeiro CI38448101051 instalou a migration e capturou inventário0.20, mas aprovou4378/4384app e351/370PG por contrato/expectativas anteriores ainda incompatíveis; não é homologação final. Extensão revisada contra o baseline:48 tabelas,94 funções,39 triggers,257 constraints,38 policies;23 tabelas novas sem DML direto,20 helpers novos executáveis pelo app e dez policies adicionais restritivas. Todos os privilégios/helpers/triggers/policies/constraints anteriores comparados e preservados.126 focais atuais aprovados, tipos/checks offline aprovados. Ruling: preservar a ordem declarada das colunas de UPDATE do baseline, comparando o conjunto contra catálogo nativo; não usar ordem física de coluna como mudança de permissão. Native M05 acrescenta rollback de instalação, reaplicação, partial/wrong-schema/papel inseguro, preservação de LOGIN/credencial e sessão real de worker sem autoridade de domínio; aguardando CI.
+
+
+Fechamento Task2/Task3: CI38453749955 / febce83 aprovou4384 aplicação,385PG17 e184interface, zero skips. Fingerprint cffaa123ce2f9f1ed2c1594a49b083863efe6fb0d43c2f1075ae15afb64d3457; importado e check:homologation aprovado. I1 defaultACL observado RED4277dba/CI38452159544 (382/384PG): antigo upgrade aceitou o default incompatível. Corrigidos admissão de defaults e limites efetivos antes do marcador; novos negativos HDU05/HDU06 e todos os outros casos passaram no PG17. Revisão final sem Critical/Important restantes. Migration final163253bytes/hash23aae798d34cf5c4d6e96478761dfb2e5208dc071fd886f2ab56d78e12d83b1a. Checkpoints locais126focais e54após correção; tipos/recipe/manifest aprovados. Relatório141 e pacote próprioM05 registram procedimento, evidência e próximos blocos; PR31 mantido draft. Nenhuma aplicação hospedada ou entrega real.
+
+Ruling: contagem de tabelas CG amplia seis→dez na composição promovida, mantendo FORCE RLS/PUBLIC denial em todas; o fixture checklist sem workflow deve recusar mensagem genérica HDW07 e comprovar rollback, conforme writerM02. Não foi removido o guard para reproduzir o comportamento de um checkpoint parcial. Ruling: defaults automáticos não-owner recusam admissão; efetivos de publicador/worker conferidos novamente antes do marker/COMMIT, sem auto-reparo do default.

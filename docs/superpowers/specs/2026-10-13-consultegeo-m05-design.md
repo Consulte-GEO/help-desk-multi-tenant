@@ -31,3 +31,6 @@ O workflow original Linux/Node22 executa aplicação, PostgreSQL17 e interface; 
 ## Fronteira desta etapa
 
 Preparação e homologação da migration, manifest, readiness e papéis. Não há aplicação hospedada, merge/deploy de produção, segredo/LOGIN provisionado, mudança do gate, concessão a pessoas, envio de e-mail ou gravação no GEO. M06 monta runtime e projeção pública; M08 qualifica origem/registry; M11 implementa Storage/relógios/worker/webhook. Schema 0.20.0 deve ser instalado junto com o código compatível em uma promoção futura, mantendo atendimento fechado até seu aceite.
+
+
+Ajuste da revisão: recusar grants automáticos não-owner globais/privados na admissão (PUBLIC EXECUTE padrão de função revogado pelos corpos qualificados), e conferir fronteiras efetivas dos dois papéis antes do marcador/COMMIT. Default configurado não é reparado silenciosamente. PG17 provou defaults incompatíveis e excesso EXECUTE tardio com rollback integral.

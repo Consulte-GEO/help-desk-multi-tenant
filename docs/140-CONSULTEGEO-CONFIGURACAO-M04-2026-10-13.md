@@ -1,5 +1,7 @@
 # Consulte GEO — configuração e publicação M04
 
+> Checkpoint M04 preservado. O upgrade M05 foi desenvolvido e homologado na mesma branch; o [relatório M05](141-CONSULTEGEO-UPGRADE-M05-2026-10-13.md) descreve o estado mais recente. A instalação hospedada e a montagem M06 continuam próprias da promoção futura.
+
 Data: 13/10/2026. Base do incremento: `fe1ecad950dce5b3a8c89d61f7cacfb1f8e45858`. Branch `codex/consultegeo-m02`; [PR31 em draft](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/31). Esta etapa implementa configuração, prévia e publicação versionada de formulários, workflow, checklist e SLA para a Consulte GEO, sobre o writer M02/M03. A publicação foi ensaiada em PostgreSQL 17 descartável; a instalação e montagem hospedadas pertencem a M05/M06.
 
 ## Conjunto publicado
