@@ -1,0 +1,192 @@
+{
+  "schema": 1,
+  "status": "draft",
+  "source": {
+    "document": "Requisitos Help Desk.md",
+    "sha256": "54c1ff3ced454ae587cf88bc116d26b7e64e1b597592ec8858a3b0b853858482",
+    "requirements": [
+      "RF-CEN-07",
+      "RF-CEN-11",
+      "RF-PRJ-03"
+    ]
+  },
+  "automaticPublication": false,
+  "templates": [
+    {
+      "schema": 1,
+      "id": "cadastro-usuario",
+      "version": 1,
+      "status": "draft",
+      "items": [
+        {
+          "id": "identidade",
+          "label": "Conferir a ação pedida e a pessoa identificada pela origem; não associar por e-mail.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "grupo",
+          "label": "Conferir grupo autorizado, materiais e descrição das permissões.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "obras",
+          "label": "Conferir o conjunto completo e atual de obras; não inferir acesso de “todas”.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "emails",
+          "label": "Conferir preferências de e-mail aplicáveis à solicitação.",
+          "required": true,
+          "allowNotApplicable": true,
+          "evidenceRequired": false,
+          "risk": "ordinary"
+        },
+        {
+          "id": "acesso",
+          "label": "Registrar o resultado do envio de acesso quando solicitado; aceitação não é entrega.",
+          "required": true,
+          "allowNotApplicable": true,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "id": "cadastro-traco",
+      "version": 1,
+      "status": "draft",
+      "items": [
+        {
+          "id": "equivalente",
+          "label": "Conferir se já existe traço equivalente na construtora antes de criar ou vincular.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "impacto",
+          "label": "Conferir impacto integral da alteração e aprovação técnica aplicável.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "sensitive"
+        },
+        {
+          "id": "moldagem",
+          "label": "Conferir ensaios, idades, quantidades, unidades e tolerâncias com a qualidade; sem idade universal.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "vinculos",
+          "label": "Conferir obras e materiais vinculados e registrar a referência de execução na origem.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "id": "cadastro-usina",
+      "version": 1,
+      "status": "draft",
+      "items": [
+        {
+          "id": "identificacao",
+          "label": "Conferir identificadores da usina/filial e vínculo existente na origem.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "materiais",
+          "label": "Conferir obras e materiais fornecidos no escopo do pedido.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "programacao",
+          "label": "Conferir responsáveis e endereços aprovados para programação, sem disparo de teste.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "tracos",
+          "label": "Conferir os traços cujo vínculo foi expressamente solicitado.",
+          "required": true,
+          "allowNotApplicable": true,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "id": "cadastro-laboratorio",
+      "version": 1,
+      "status": "draft",
+      "items": [
+        {
+          "id": "empresa",
+          "label": "Conferir identificação e contato do laboratório para as obras selecionadas.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "ensaios",
+          "label": "Conferir materiais e ensaios atendidos conforme o vínculo aprovado.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "integracao",
+          "label": "Confirmar se o laboratório é integrado; “não sei” não é confirmação de integração.",
+          "required": true,
+          "allowNotApplicable": false,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "usuarios",
+          "label": "Conferir necessidade de pessoas e acessos individuais, sem criar por e-mail.",
+          "required": true,
+          "allowNotApplicable": true,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        },
+        {
+          "id": "comunicacao",
+          "label": "Registrar a comunicação solicitada e o estado conhecido da entrega.",
+          "required": true,
+          "allowNotApplicable": true,
+          "evidenceRequired": true,
+          "risk": "ordinary"
+        }
+      ]
+    }
+  ]
+}

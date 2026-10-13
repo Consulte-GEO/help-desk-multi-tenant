@@ -40,6 +40,19 @@ test('fingerprint refuses symlinked source trees',async()=>{
  try{await writeFile(join(root,'target'),'code');await symlink(join(root,'target'),join(root,'src'));await assert.rejects(()=>m.sourceFingerprint(root));}
  finally{await rm(root,{recursive:true,force:true});}
 });
+test('fingerprint binds draft checklist profiles to evidence across add, edit and removal',async()=>{
+ const m=await module(),root=await mkdtemp(join(tmpdir(),'helpdesk-profile-fingerprint-'));
+ try{
+  await writeFile(join(root,'package.json'),'{}');const absent=await m.sourceFingerprint(root);
+  await mkdir(join(root,'profiles','consultegeo'),{recursive:true});
+  const path=join(root,'profiles','consultegeo','execution-checklists.draft.json');
+  await writeFile(path,'{"status":"draft","templates":[]}');const original=await m.sourceFingerprint(root);
+  assert.notEqual(original,absent,'adding a tested profile must invalidate previous evidence');
+  await writeFile(path,'{"status":"draft","templates":[{"id":"changed"}]}');
+  assert.notEqual(await m.sourceFingerprint(root),original,'editing a tested profile must invalidate evidence');
+  await rm(path);assert.equal(await m.sourceFingerprint(root),absent,'removing the profile changes its fingerprint');
+ }finally{await rm(root,{recursive:true,force:true});}
+});
 test('log digest mismatch rejects evidence even when report claims all stages passed',async()=>{
  const m=await module(),r=await good(),root=await mkdtemp(join(tmpdir(),'helpdesk-evidence-'));
  try{await mkdir(join(root,'runs','fixture'),{recursive:true});for(const s of r.checks)await writeFile(join(root,s.artifact),'tampered');await assert.rejects(()=>m.verifyLogs(r,root));}

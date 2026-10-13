@@ -72,6 +72,8 @@ export function runResourceTicketTransaction<T>(pool:SqlPool,resolver:ReturnType
    let code:unknown;
    try{code=error&&typeof error==='object'?Object.getOwnPropertyDescriptor(error,'code')?.value:undefined;}
    catch{throw unavailable();}
+   if(code==='release_gate_closed')throw new HelpdeskError(503,code,'O atendimento foi desabilitado antes da confirmação.');
+   if(code==='request_cancelled')throw new HelpdeskError(409,code,'A requisição foi cancelada antes da confirmação.');
    if(code==='resource_scope_denied')throw new HelpdeskError(403,code,'A autorização dos recursos foi recusada.');
    if(code==='resource_scope_unavailable')throw new HelpdeskError(503,code,'Não foi possível confirmar a autorização dos recursos.');
    if(code==='transaction_identity_changed')throw new HelpdeskError(403,code,'A identidade da transação foi alterada.');

@@ -1,0 +1,52 @@
+/* Optional internal panel. No global selectors, scripts, fonts or external assets. */
+.execution-checklist{--ck-border:#cbd5e1;--ck-surface:#fff;--ck-text:#1e293b;--ck-muted:#526275;--ck-action:#115e59;color:var(--ck-text);background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:12px;padding:24px;box-sizing:border-box;max-width:100%;font:inherit}
+.execution-checklist [hidden]{display:none!important}
+.execution-checklist *{box-sizing:border-box;min-width:0}
+.execution-checklist h2,.execution-checklist h3,.execution-checklist p{margin-top:0}
+.execution-checklist h2{font-size:1.5rem;margin-bottom:8px;line-height:1.3}
+.execution-checklist h3{font-size:1.08rem;line-height:1.45;margin-bottom:7px;overflow-wrap:anywhere}
+.checklist__heading,.checklist__summary,.checklist__actions,.checklist__item{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.checklist__heading{align-items:flex-start}
+.checklist__eyebrow{font-size:.78rem;letter-spacing:.045em;font-weight:700;color:var(--ck-action);margin-bottom:7px}
+.checklist__description{max-width:74ch;line-height:1.6;color:var(--ck-muted)}
+.checklist__summary{flex-wrap:wrap;border-top:1px solid var(--ck-border);border-bottom:1px solid var(--ck-border);padding:15px 0;margin:20px 0 14px}
+.checklist__summary p{margin:0}
+.checklist__summary [data-checklist-progress]{font-weight:700}
+.checklist__muted,.checklist__hint{color:var(--ck-muted);font-size:.88rem;line-height:1.55}
+.checklist__status{line-height:1.5;overflow-wrap:anywhere}
+.checklist__items{list-style:none;counter-reset:ck;padding:0;margin:18px 0}
+.checklist__item{border-top:1px solid var(--ck-border);padding:20px 0;align-items:flex-start}
+.checklist__item:first-child{border-top:0}
+.checklist__item-content{flex:1}
+.checklist__tags{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.83rem;color:var(--ck-muted);margin-bottom:0}
+.checklist__badge{display:inline-block;border:1px solid var(--ck-border);border-radius:5px;padding:3px 9px;font-weight:600;white-space:nowrap;color:var(--ck-text)}
+.execution-checklist button{font:inherit;font-weight:600;cursor:pointer;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid var(--ck-action);border-radius:6px;white-space:normal;line-height:1.4}
+.execution-checklist button:disabled{cursor:default;opacity:.52}
+.execution-checklist :focus-visible{outline:3px solid #d97706;outline-offset:3px}
+.checklist__primary{background:var(--ck-action);color:#fff}
+.checklist__secondary{background:var(--ck-surface);color:var(--ck-action)}
+.checklist__dialog{border:1px solid var(--ck-border);border-radius:12px;background:var(--ck-surface);color:var(--ck-text);width:min(610px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
+.checklist__dialog::backdrop{background:rgb(15 23 42 / .55)}
+.checklist__dialog h3{font-size:1.3rem;margin-bottom:12px}
+.checklist__field{margin:16px 0}
+.checklist__field label{display:block;font-weight:600;margin-bottom:6px}
+.checklist__field input,.checklist__field textarea,.checklist__field select{display:block;width:100%;font:inherit;color:inherit;background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:5px;padding:10px;line-height:1.4}
+.checklist__field textarea{resize:vertical;min-height:76px;overflow-wrap:anywhere}
+.checklist__hint{margin:6px 0 0}
+.checklist__risk{background:#fff7ed;color:#7c2d12;border-left:4px solid #c2410c;border-radius:4px;padding:12px 14px;font-size:.93rem;line-height:1.6}
+.checklist__risk p{margin-bottom:12px}
+.checklist__ack{display:flex;align-items:flex-start;gap:10px}
+.checklist__ack input{margin:5px 0 0;width:20px;height:20px;flex-shrink:0}
+.checklist__ack label{font-weight:600}
+.checklist__actions{justify-content:flex-end;flex-wrap:wrap;margin-top:24px}
+.checklist__review dt{font-weight:700;margin-top:16px}
+.checklist__review dd{margin:5px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55}
+.checklist__review .checklist__risk{margin-top:20px}
+@media(max-width:520px){.execution-checklist{padding:16px}.checklist__heading{flex-direction:column}.checklist__heading button{align-self:stretch}.checklist__item{flex-direction:column;gap:12px}.checklist__item button{width:100%}.checklist__dialog{padding:18px}.checklist__actions button{flex:1 1 120px}}
+@media(prefers-reduced-motion:reduce){.execution-checklist *{scroll-behavior:auto!important}}
+
+.checklist__evidence-options{max-height:260px;overflow:auto;margin:12px 0}
+.checklist__evidence-option{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--ck-border)}
+.checklist__evidence-option input[type=checkbox]{width:20px;height:20px;flex:0 0 20px;padding:0;margin:4px 0 0}
+.checklist__evidence-option label{font-weight:400;overflow-wrap:anywhere}
+.checklist__evidence-selected p{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.88rem}

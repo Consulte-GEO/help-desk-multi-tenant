@@ -2,6 +2,8 @@
 
 > **Acesso simples — 12/10/2026:** UI temporária apenas e-mail/senha/Entrar; operação única descoberta automaticamente. Recursos avançados preservados, hidden/inert e com reativação comentada em web/access-mode.js. PR28 integrado/publicado; CI3741/294/152 sem skips e39assets conferidos. API0.27.0/schema0.19.0, atendimento fechado. [Comportamento, reativação e evidências](docs/136-ACESSO-SIMPLES-2026-10-12.md).
 
+> **HDN-01l — revisão de 13/10/2026:** cumulativo integrado à fonte da PR30; corrigidos fingerprint dos modelos, assets de build e classificação de recusas de acesso na UI. Revisão independente concluída; CI integral/publicação em validação. Atendimento fechado. [Estado e limites](docs/138-REVISAO-HDN01L-2026-10-13.md).
+
 # Help Desk independente — API/interface 0.27.0
 
 O código consolidado R1 está na principal `codex/m1-reproducibilidade`. O atendimento operacional permanece fechado; os módulos opcionais continuam candidatos até a montagem e os aceites próprios. Schema 0.19.0, 12 migrations históricas e 19 operações HTTP.
