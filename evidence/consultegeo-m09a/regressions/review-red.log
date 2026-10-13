@@ -1,0 +1,111 @@
+✔ C07 renderer uses labeled safe DOM controls and the same shared validation (8.4533ms)
+✔ C07 conditional fields are removed and detached secret inputs are scrubbed (0.4807ms)
+✔ C07 hidden private field is not rendered or retained in customer answers (0.6199ms)
+✔ C07 repeater allows bounded rows and required child validation (0.7835ms)
+✔ C07 table paste is atomic with exact headers and no partial adoption (1.6261ms)
+✔ C07 late lookup reply after audience change is discarded (0.8279ms)
+✔ C07 lookup/file providers only return opaque references and never bypass server evidence (1.3775ms)
+✔ C07 missing lookup/file/download providers remain visibly unavailable (0.4502ms)
+✔ C07 multiselect produces bounded arrays and information is text only (0.6857ms)
+✔ C07 destroy clears fields, including detached controls, and refuses later edits (0.3133ms)
+✖ M09a discarded conditional lookup choice cannot reappear after hiding and showing the field (1.031ms)
+✖ M09a discarded conditional file choice cannot reappear after hiding and showing the field (0.3781ms)
+✔ C10 UI cannot confirm before a saved draft and explicit review (7.6375ms)
+✔ C10 UI saves then previews without creating and requires explicit confirmation (2.8876ms)
+✔ C10 UI changes invalidate an earlier preview (0.3847ms)
+✔ C10 unknown commit preserves key and frozen payload for explicit reconciliation (0.5466ms)
+✔ C10 unknown draft save reconciles the same revision instead of incrementing blindly (0.4208ms)
+✔ C10 preview remains advisory and cannot be declared committed by a server field (0.3631ms)
+✔ C10 expired/stale preview response does not overwrite cleared audience (0.5387ms)
+✔ C10 late commit receipt after logout is not displayed in another audience (0.2674ms)
+✔ C10 rejected submission clears the intention and requires refreshed preview (0.3017ms)
+✔ C10 no double confirmation while a request is pending (0.3753ms)
+✔ C10 draft revision returned from another draft is not adopted (0.2912ms)
+✖ M09a a rejected reconciliation attempt preserves an earlier unknown creation (0.8811ms)
+✖ M09a a denied unknown draft save preserves the original revision for reconciliation (0.3986ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 21
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 209.1116
+
+✖ failing tests:
+
+test at tests\dynamic-form.test.ts:16:37
+✖ M09a discarded conditional lookup choice cannot reappear after hiding and showing the field (1.031ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'discarded-person'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/dynamic-form.test.ts:16:835)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'discarded-person',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\dynamic-form.test.ts:16:37
+✖ M09a discarded conditional file choice cannot reappear after hiding and showing the field (0.3781ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'discarded-file'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/dynamic-form.test.ts:16:835)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'discarded-file',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\support-intake-ui.test.ts:14:1
+✖ M09a a rejected reconciliation attempt preserves an earlier unknown creation (0.8811ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'editing'
+  - 'unknown'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/support-intake-ui.test.ts:14:372)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'editing',
+    expected: 'unknown',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\support-intake-ui.test.ts:15:1
+✖ M09a a denied unknown draft save preserves the original revision for reconciliation (0.3986ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'editing'
+  - 'unknown'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/support-intake-ui.test.ts:15:281)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'editing',
+    expected: 'unknown',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
