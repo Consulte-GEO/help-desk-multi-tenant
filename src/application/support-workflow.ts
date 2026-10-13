@@ -10,6 +10,7 @@ import type {createResourceAccessResolver,ResourceScopeContext} from './resource
 import type {ExternalResourceRef} from '../domain/external-resource.ts';
 import type {SqlPool,SqlClient} from '../infrastructure/sql.ts';
 import {runResourceTicketTransaction} from '../infrastructure/resource-access-store.ts';
+import {assertExecutionChecklistComplete,type ExecutionChecklistCompletion} from '../domain/execution-checklist.ts';
 export type SupportTransitionReceipt=Readonly<{ticketId:string;workspaceId:string;accountId:string;actorId:string;profileVersionId:string;version:number;status:SupportTicket['status'];eventId:string;replayed:boolean}>;
 export interface SupportWorkflowTransaction {
  /** Lock ticket and pinned profile; the private reader is still subject to base RLS. */
@@ -18,15 +19,23 @@ export interface SupportWorkflowTransaction {
  readReceipt(key:string):Promise<unknown>;
  /** Current operator + COMPLETE resource coverage, bound to workflowScopeKey. */
  verifyAssignee(id:string,context:ResourceScopeContext):Promise<unknown>;
+ /** Required whenever the pinned profile declares executionChecklist. Read the
+  * complete private template/snapshot; hold its rows through ticket/checklist CAS
+  * and COMMIT on this same client. Missing adapter is a denial, not a fallback.
+  * Marking endpoints must authenticate actors and audit every state revision.
+  */
+ readExecutionChecklist?(ticketId:string):Promise<unknown>;
  /** CAS + event + audit + optional minimal outbox + receipt: one transaction/client.
+  * If audit.executionChecklist is present, assert its snapshot revision/digest
+  * is still current; never release those rows before the ticket CAS.
   * No COMMIT/ROLLBACK/pool acquisition here. No service-role or network inside this adapter.
   */
  commitDecision(expectedVersion:number,decision:WorkflowDecision,audit:Readonly<Record<string,unknown>>,outbox:Readonly<Record<string,unknown>>|null,receipt:Readonly<{key:string;hash:string;result:SupportTransitionReceipt}>):Promise<void>;
 }
 export function workflowScopeKey(scope:ResourceScopeContext){return requestHash({workspaceId:scope.workspaceId,accountId:scope.accountId,bindingId:scope.bindingId,bindingRevision:scope.bindingRevision,accessRevision:scope.accessRevision,refs:scope.refs});}
 const fail=(code='workflow_store_unavailable',status=503)=>new HelpdeskError(status,code,'Não foi possível confirmar a operação de atendimento.');
-const allowed:Record<string,number>={workflow_forbidden:403,workflow_profile_mismatch:409,workflow_version_conflict:412,workflow_time_conflict:409,invalid_workflow_command:400,workflow_approval_required:409,workflow_transition_forbidden:409,workflow_resolution_required:409,workflow_reopen_window_expired:409,workflow_assignee_denied:403,workflow_idempotency_conflict:409,
- resource_scope_denied:403,resource_scope_unavailable:503,resource_scope_database_mismatch:403,resource_scope_database_unavailable:503,transaction_outcome_unknown:503,transaction_identity_changed:403,transaction_work_incomplete:503,transaction_statement_failed:503,workflow_store_unavailable:503,workflow_not_found:404};
+const allowed:Record<string,number>={checklist_evidence_denied:403,checklist_store_invalid:503,checklist_store_unavailable:503,checklist_binding_required:409,checklist_forbidden:403,workflow_forbidden:403,workflow_profile_mismatch:409,workflow_version_conflict:412,workflow_time_conflict:409,invalid_workflow_command:400,workflow_approval_required:409,workflow_transition_forbidden:409,workflow_resolution_required:409,workflow_reopen_window_expired:409,workflow_assignee_denied:403,workflow_idempotency_conflict:409,
+ resource_scope_denied:403,resource_scope_unavailable:503,resource_scope_database_mismatch:403,resource_scope_database_unavailable:503,transaction_outcome_unknown:503,transaction_identity_changed:403,transaction_work_incomplete:503,transaction_statement_failed:503,workflow_store_unavailable:503,workflow_not_found:404,workflow_checklist_unavailable:503,workflow_checklist_required:409,workflow_checklist_mismatch:409,workflow_checklist_confirmation_required:409};
 function safe(e:unknown){try{if(e instanceof HelpdeskError){const c=Object.getOwnPropertyDescriptor(e,'code')?.value;if(typeof c==='string'&&Object.hasOwn(allowed,c))return fail(c,allowed[c]);}}catch{}return fail();}
 /** Optional application composition. Real directory/command store + runtime wiring
  * remain required. Preserves the existing transaction and opaque resource proof;
@@ -52,12 +61,22 @@ export function createSupportWorkflow(o:{pool:SqlPool;resolver:ReturnType<typeof
      uuidIdentifier(r.eventId);return freezeFormData({...r,replayed:true});
     }
     const profile=await store.readProfile(t.profileVersionId),at=clock(),decision=decideSupportTransition(p,t,profile,command,at);
+    let checklistCompletion:ExecutionChecklistCompletion|undefined;
     for(const requirement of decision.requirements){
+     if(requirement.kind==='execution_checklist'){
+      if(typeof store.readExecutionChecklist!=='function')throw fail('workflow_checklist_unavailable');
+      const snapshot=await store.readExecutionChecklist(ticketId);
+      checklistCompletion=assertExecutionChecklistComplete(snapshot,{
+       workspaceId:t.workspaceId,accountId:t.accountId,ticketId,ticketVersion:t.version,
+       profileVersionId:t.profileVersionId,reference:requirement.reference
+      },at);
+      continue;
+     }
      const a=copyFormData(await store.verifyAssignee(requirement.principalId,scope)) as Record<string,unknown>;
      if(!a||Object.keys(a).length!==6||a.principalId!==requirement.principalId||a.workspaceId!==p.workspaceId||a.accountId!==scope.accountId||a.scopeKey!==workflowScopeKey(scope)||a.active!==true||a.operator!==true)throw fail('workflow_assignee_denied',403);
     }
     const eventId=randomUUID(),result=freezeFormData({ticketId,workspaceId:p.workspaceId,accountId:t.accountId,actorId:p.id,profileVersionId:t.profileVersionId,version:decision.after.version,status:decision.after.status,eventId,replayed:false});
-    const audit=freezeFormData({id:eventId,workspaceId:p.workspaceId,ticketId,actorId:p.id,requestId,at,action:decision.audit.action,reason:decision.audit.reason,from:t.status,to:decision.after.status,version:decision.after.version});
+    const audit=freezeFormData({id:eventId,workspaceId:p.workspaceId,ticketId,actorId:p.id,requestId,at,action:decision.audit.action,reason:decision.audit.reason,from:t.status,to:decision.after.status,version:decision.after.version,...(checklistCompletion?{executionChecklist:checklistCompletion}:{})});
     // Notification is an intent only. Do not export private reasons, note bodies,
     // complete forms or delegated tokens. Recipient ACL/delivery belongs to CG12.
     const outbox=decision.event.type==='assigned'?null:freezeFormData({id:eventId,workspaceId:p.workspaceId,accountId:t.accountId,ticketId,type:'support.'+decision.event.type,version:result.version,requestId,createdAt:at});

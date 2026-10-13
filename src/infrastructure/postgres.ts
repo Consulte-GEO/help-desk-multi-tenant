@@ -1,3 +1,4 @@
+import {assertLegacyTerminalUpdateAllowed} from './legacy-transition-guard.ts';
 import {assertSingleWrite} from './write-result.ts';
 import {canonicalInstant} from '../../shared/instant.js';
 import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
@@ -88,7 +89,14 @@ class PostgresStore implements Store{
   const r=await this.c.query('update helpdesk_core.tickets set priority=$1,version=$2,updated_at=$3 where workspace_id=$4 and account_id=$5 and id=$6 and version=$7',[t.priority,t.version,t.updatedAt,t.workspaceId,t.accountId,t.id,expectedVersion]);
   assertSingleWrite(r,'UPDATE');
  }
- async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[t.status,t.version,t.updatedAt,t.workspaceId,t.id,expectedVersion]);assertSingleWrite(r,'UPDATE');}
+ async updateTicket(t:Ticket,expectedVersion:number):Promise<void>{
+  // Capture once before the optional HDN check waits. The checked target must
+  // be the same target written afterwards, even if an internal caller mutates t.
+  const change=Object.freeze({id:t.id,workspaceId:t.workspaceId,accountId:t.accountId,status:t.status,version:t.version,updatedAt:t.updatedAt});
+  await assertLegacyTerminalUpdateAllowed(this.c,this.p,change,expectedVersion);
+  const r=await this.c.query('update helpdesk_core.tickets set status=$1,version=$2,updated_at=$3 where workspace_id=$4 and id=$5 and version=$6',[change.status,change.version,change.updatedAt,change.workspaceId,change.id,expectedVersion]);
+  assertSingleWrite(r,'UPDATE');
+ }
  async lockIdempotency(operation:string,key:string):Promise<void>{await this.c.query('select pg_advisory_xact_lock(hashtextextended($1,0))',[JSON.stringify([this.p.workspaceId,this.p.id,operation,key])]);}
  async getIdempotency(operation:string,key:string):Promise<StoredResult|null>{
   const rows=(await this.c.query('select helpdesk_auth.lookup_idempotency($1,$2) as record',[operation,key])).rows;

@@ -21,3 +21,6 @@ for(const name of ['review-state.js','approvals.js','form-review.js','delivery-o
 
 // Optional C13/C14 surfaces; copying does not enable routes, providers or cohort.
 for(const name of ['portal-state.js','customer-portal.js','support-queue.js','ticket-detail.js','reports.js','portal.css','optional-support.js','portal-format.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+// Optional internal checklist assets. Draft templates, SQL and fixtures stay private.
+for(const name of ['execution-checklist.js','execution-checklist-state.js','execution-checklist-contract.js','execution-checklist.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+await copyFile(new URL('../shared/checklist-evidence.js',import.meta.url),new URL('../dist/shared/checklist-evidence.js',import.meta.url));
