@@ -5,9 +5,10 @@ This suite never accepts a hosted base URL, credential, database or file target.
 import json
 import os
 from pathlib import Path
-import select
+from queue import Queue, Empty
 import shutil
 import subprocess
+from threading import Thread
 from playwright.sync_api import sync_playwright, expect
 
 root = Path(__file__).resolve().parents[1]
@@ -19,10 +20,13 @@ env = {**os.environ, 'HELPDESK_OWNED_CHECKLIST_BROWSER': 'synthetic-loopback'}
 process = subprocess.Popen(['node', '--experimental-strip-types', 'tests/fixtures/checklist/browser-server.ts'], cwd=root, env=env,
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 try:
-    ready, _, _ = select.select([process.stdout], [], [], 10)
-    if not ready:
-        raise RuntimeError('Owned checklist fixture did not become ready')
-    line = process.stdout.readline()
+    # select() only accepts sockets on Windows; this is an owned process pipe.
+    ready = Queue()
+    Thread(target=lambda: ready.put(process.stdout.readline()), daemon=True).start()
+    try:
+        line = ready.get(timeout=10)
+    except Empty:
+        raise RuntimeError('Owned checklist fixture did not become ready') from None
     if not line:
         raise RuntimeError('Owned checklist fixture exited before ready: '+process.stderr.read()[:1200])
     base = json.loads(line)['url']
