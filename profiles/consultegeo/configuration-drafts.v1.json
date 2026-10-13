@@ -1,0 +1,1088 @@
+{
+  "schema": 1,
+  "product": "CONSULTE_GEO",
+  "status": "draft",
+  "automaticPublication": false,
+  "calendarReviewRequired": true,
+  "definitions": [
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000810",
+      "version": 1,
+      "service": "user_access",
+      "title": "Acesso de usuário",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "include",
+          "priority": "normal",
+          "form": {
+            "id": "bf5a887a-84f0-408c-8251-8be400e19715",
+            "version": 1,
+            "status": "draft",
+            "title": "Acesso de usuário · include",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "A equipe executará a ação no GEO após conferir identidade, grupo e todas as obras autorizadas."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "person_name",
+                "type": "text",
+                "label": "Nome completo da pessoa",
+                "config": {
+                  "maxLength": 160
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "person_email",
+                "type": "text",
+                "label": "E-mail para o acesso",
+                "config": {
+                  "maxLength": 254
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "requested_group",
+                "type": "text",
+                "label": "Grupo e permissões solicitadas",
+                "config": {
+                  "maxLength": 500
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-bf5a887a-84f0-408c-8251-8be400e19715",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        },
+        {
+          "action": "change",
+          "priority": "normal",
+          "form": {
+            "id": "7de1f04b-f092-4480-8241-62a253093797",
+            "version": 1,
+            "status": "draft",
+            "title": "Acesso de usuário · change",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "A equipe executará a ação no GEO após conferir identidade, grupo e todas as obras autorizadas."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "beneficiary",
+                "type": "lookup",
+                "label": "Pessoa no Consulte GEO",
+                "config": {
+                  "resolver": "consultegeo_people"
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "requested_group",
+                "type": "text",
+                "label": "Grupo e permissões solicitadas",
+                "config": {
+                  "maxLength": 500
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-7de1f04b-f092-4480-8241-62a253093797",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        },
+        {
+          "action": "disable",
+          "priority": "normal",
+          "form": {
+            "id": "0d6e9f2e-b5fb-4ea1-824b-524df800ab6d",
+            "version": 1,
+            "status": "draft",
+            "title": "Acesso de usuário · disable",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "A equipe executará a ação no GEO após conferir identidade, grupo e todas as obras autorizadas."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "beneficiary",
+                "type": "lookup",
+                "label": "Pessoa no Consulte GEO",
+                "config": {
+                  "resolver": "consultegeo_people"
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "confirmed",
+                "type": "boolean",
+                "label": "Confirme a solicitação de desativação",
+                "config": {},
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-0d6e9f2e-b5fb-4ea1-824b-524df800ab6d",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "sensitive"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        },
+        {
+          "action": "resend_access",
+          "priority": "normal",
+          "form": {
+            "id": "db8a7f9a-e8c2-4fbe-8d76-aa3b6baf6cf1",
+            "version": 1,
+            "status": "draft",
+            "title": "Acesso de usuário · resend_access",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "A equipe executará a ação no GEO após conferir identidade, grupo e todas as obras autorizadas."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "beneficiary",
+                "type": "lookup",
+                "label": "Pessoa no Consulte GEO",
+                "config": {
+                  "resolver": "consultegeo_people"
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-db8a7f9a-e8c2-4fbe-8d76-aa3b6baf6cf1",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        },
+        {
+          "action": "grant_work_access",
+          "priority": "normal",
+          "form": {
+            "id": "4f138147-143e-423d-81ec-2b3baec83d4d",
+            "version": 1,
+            "status": "draft",
+            "title": "Acesso de usuário · grant_work_access",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "A equipe executará a ação no GEO após conferir identidade, grupo e todas as obras autorizadas."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "beneficiary",
+                "type": "lookup",
+                "label": "Pessoa no Consulte GEO",
+                "config": {
+                  "resolver": "consultegeo_people"
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "requested_group",
+                "type": "text",
+                "label": "Grupo e permissões solicitadas",
+                "config": {
+                  "maxLength": 500
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-4f138147-143e-423d-81ec-2b3baec83d4d",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000811",
+      "version": 1,
+      "service": "questions",
+      "title": "Dúvidas",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "request",
+          "priority": "normal",
+          "form": {
+            "id": "d1b774d8-a164-4b1f-80a6-27b0f41b4054",
+            "version": 1,
+            "status": "draft",
+            "title": "Dúvidas · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-d1b774d8-a164-4b1f-80a6-27b0f41b4054",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000812",
+      "version": 1,
+      "service": "backup",
+      "title": "Solicitação de backup",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "request",
+          "priority": "normal",
+          "form": {
+            "id": "73358bca-6a4f-476d-8ace-097db8c06ce4",
+            "version": 1,
+            "status": "draft",
+            "title": "Solicitação de backup · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-73358bca-6a4f-476d-8ace-097db8c06ce4",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 30
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000813",
+      "version": 1,
+      "service": "new_work",
+      "title": "Implantação de nova obra",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "request",
+          "priority": "normal",
+          "form": {
+            "id": "f74f9e20-da44-4771-88ef-92df7e17b470",
+            "version": 1,
+            "status": "draft",
+            "title": "Implantação de nova obra · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "spreadsheets",
+                "type": "file",
+                "label": "Planilha de implantação XLSX ou CSV",
+                "config": {
+                  "maxItems": 3
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-f74f9e20-da44-4771-88ef-92df7e17b470",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 8,
+          "resolutionHours": 70
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000814",
+      "version": 1,
+      "service": "structure_adjustment",
+      "title": "Ajuste de estrutura",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "request",
+          "priority": "normal",
+          "form": {
+            "id": "3e99ed0a-5e58-4086-818a-54291212b748",
+            "version": 1,
+            "status": "draft",
+            "title": "Ajuste de estrutura · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              },
+              {
+                "key": "spreadsheets",
+                "type": "file",
+                "label": "Planilha de implantação XLSX ou CSV",
+                "config": {
+                  "maxItems": 3
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-3e99ed0a-5e58-4086-818a-54291212b748",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 30
+        }
+      ]
+    },
+    {
+      "schema": 1,
+      "product": "CONSULTE_GEO",
+      "id": "00000000-0000-4000-8000-000000000815",
+      "version": 1,
+      "service": "problem",
+      "title": "Relatar problema",
+      "calendar": {
+        "startDate": "2026-10-13",
+        "endDate": "2027-10-13",
+        "holidays": []
+      },
+      "entries": [
+        {
+          "action": "request",
+          "priority": "urgent",
+          "form": {
+            "id": "5a581203-b77a-44ca-832f-1da5f3e1e931",
+            "version": 1,
+            "status": "draft",
+            "title": "Relatar problema · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-5a581203-b77a-44ca-832f-1da5f3e1e931",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 1,
+          "resolutionHours": 10
+        },
+        {
+          "action": "request",
+          "priority": "high",
+          "form": {
+            "id": "dde53a22-3aa1-4794-8240-6e39bf783bd0",
+            "version": 1,
+            "status": "draft",
+            "title": "Relatar problema · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-dde53a22-3aa1-4794-8240-6e39bf783bd0",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 2,
+          "resolutionHours": 10
+        },
+        {
+          "action": "request",
+          "priority": "normal",
+          "form": {
+            "id": "0ee69095-9c57-49f6-8aec-840225d67400",
+            "version": 1,
+            "status": "draft",
+            "title": "Relatar problema · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-0ee69095-9c57-49f6-8aec-840225d67400",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 4,
+          "resolutionHours": 10
+        },
+        {
+          "action": "request",
+          "priority": "low",
+          "form": {
+            "id": "b4a4c28b-2af5-4fc5-83d6-119bb1998f4e",
+            "version": 1,
+            "status": "draft",
+            "title": "Relatar problema · request",
+            "fields": [
+              {
+                "key": "orientation",
+                "type": "info",
+                "label": "Orientação",
+                "config": {
+                  "text": "Descreva a solicitação e selecione somente as obras autorizadas no contexto do portal."
+                },
+                "required": false,
+                "public": true
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Descrição e informações para atendimento",
+                "config": {
+                  "maxLength": 12000
+                },
+                "required": true,
+                "public": true
+              }
+            ]
+          },
+          "checklist": {
+            "schema": 1,
+            "id": "cg-exec-b4a4c28b-2af5-4fc5-83d6-119bb1998f4e",
+            "version": 1,
+            "status": "draft",
+            "items": [
+              {
+                "id": "scope",
+                "label": "Conferir ação, beneficiário e conjunto completo de obras autorizadas.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "execution",
+                "label": "Registrar a execução manual na origem e a evidência correspondente.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              },
+              {
+                "id": "review",
+                "label": "Conferir o resultado e registrar a devolutiva pública.",
+                "required": true,
+                "allowNotApplicable": false,
+                "evidenceRequired": true,
+                "risk": "ordinary"
+              }
+            ]
+          },
+          "reopenDays": 7,
+          "firstResponseHours": 8,
+          "resolutionHours": 30
+        }
+      ]
+    }
+  ]
+}
