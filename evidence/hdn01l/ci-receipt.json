@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "repository": "Consulte-GEO/help-desk-multi-tenant",
+  "run_id": "38391144674",
+  "run_attempt": "1",
+  "run_url": "https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38391144674",
+  "branch_commit": "b75bd6b3bd6467254fadc96c275468599b66e0fc",
+  "source_commit": "1ef91fa2158fba77ee2f0ecd71fc0d04198a15bd",
+  "source_tree": "532aa2ecd8b8a60a5c3cb29bf9403a582e100634",
+  "artifact_id": "11808808463",
+  "artifact_name": "helpdesk-homologation-1ef91fa2158fba77ee2f0ecd71fc0d04198a15bd-38391144674-1",
+  "artifact_sha256": "36ab84506633c3454ddc2a335feb0f0b7108c10a4ef589bf65540a12ef650491",
+  "artifact_bytes": 855923,
+  "run_conclusion": "success",
+  "recovered_at": "2026-10-13T11:39:22.860Z",
+  "platform_approved": false,
+  "source_sha256": "a0106c2a52fa6233bd3322832ef71afe872130e31c55271f5a37713ae561f1f6",
+  "tests": [
+    {
+      "id": "application",
+      "tests": 4246,
+      "pass": 4246,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "id": "postgres",
+      "tests": 326,
+      "pass": 326,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "id": "interface",
+      "tests": 168,
+      "pass": 168,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  ]
+}
