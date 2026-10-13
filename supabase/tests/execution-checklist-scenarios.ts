@@ -42,7 +42,13 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
   const service=new HelpdeskService(new PostgresUnitOfWork(pool)),tickets:Record<string,string>={},notes:Record<string,string>={};
   for(const name of ['A','C','AC','LEGACY','SAME_STATE']){
    tickets[name]=(await service.create(p,{accountId:a,productInstanceId:instance,serviceCode:'SUPPORT',subject:'HDN '+name,description:'Synthetic execution',priority:'normal'},randomUUID(),randomUUID())).ticket.id;
-   await admin.query("update helpdesk_core.tickets set assigned_to=$1,status='open',version=version+1,updated_at=clock_timestamp() where workspace_id=$2 and id=$3",[who,w,tickets[name]]);
+   // Assignment is an authorized command, not an administrator fixture shortcut.
+   // The existing trigger deliberately rejects attribution without an app actor
+   // and rejects combining assignment with a status change in the same UPDATE.
+   const created=await service.get(p,tickets[name]);
+   const claimed=await service.changeAssignment(p,tickets[name],'claim',created.version,'HDN owned fixture claim',randomUUID(),randomUUID());
+   const opened=await service.transition(p,tickets[name],'open',claimed.ticket.version,'HDN owned fixture start',randomUUID(),randomUUID());
+   assert.equal(opened.ticket.assignedTo,who);assert.equal(opened.ticket.status,'open');
    await service.addNote(p,tickets[name],'Synthetic execution statement',randomUUID(),randomUUID());
    notes[name]=String((await admin.query('select id from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 order by created_at limit 1',[w,tickets[name]])).rows[0]?.id);
   }
