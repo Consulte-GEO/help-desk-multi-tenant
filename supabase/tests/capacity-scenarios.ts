@@ -6,6 +6,7 @@ import {registerResourceScopeStoreSqlTests} from './resource-scope-store-scenari
 import {registerResourcePublicationSqlTests} from './resource-publication-scenarios.ts';
 import {registerExecutionChecklistSqlTests} from './execution-checklist-scenarios.ts';
 import {registerSupportWorkflowSqlTests} from './support-workflow-scenarios.ts';
+import {registerConsulteGeoConfigurationSqlTests} from './consultegeo-configuration-scenarios.ts';
 export function registerCapacityTests(adminPool:()=>SqlPool){
  registerCapacityWorkloadTests(adminPool);
  registerResourceAccessSqlCandidateTests(adminPool);
@@ -13,4 +14,5 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
  registerResourcePublicationSqlTests(adminPool);
  registerExecutionChecklistSqlTests(adminPool);
  registerSupportWorkflowSqlTests(adminPool);
+ registerConsulteGeoConfigurationSqlTests(adminPool);
 }
