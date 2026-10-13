@@ -8,7 +8,7 @@ const sql=()=>readFile(path,'utf8');
 test('scope migration and runtime catalogue name the same private version table',async()=>{
  assert.ok(contract.tables.some(x=>x.name==='helpdesk_auth.human_scope_versions'));
  assert.match(await sql(),/create table helpdesk_auth\.human_scope_versions/i);
- assert.equal(contract.schemaVersion,'0.19.0');
+ assert.equal(contract.schemaVersion,'0.20.0');
 });
 test('scope writes remain outside HTTP role and private table is FORCE RLS with no runtime policy',async()=>{
  const text=await sql();assert.match(text,/human_scope_versions enable row level security/i);assert.match(text,/human_scope_versions force row level security/i);
@@ -35,7 +35,7 @@ test('note receipt needs current write but not general note read',async()=>{
  assert.match(lookup,/principal_id=helpdesk_auth\.actor_id\(\)/);
 });
 test('manifest extends rather than alters the eight earlier migrations',async()=>{
- const b=await loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,12);assert.equal(b.schemaVersion,'0.19.0');
+ const b=await loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,13);assert.equal(b.schemaVersion,'0.20.0');
  const old=JSON.parse(await readFile('tests/fixtures/migration-baselines/v015.json','utf8'));
  assert.deepEqual(b.migrations.slice(0,8).map(x=>({file:x.file,sha256:x.sha256})),old.migrations);
 });

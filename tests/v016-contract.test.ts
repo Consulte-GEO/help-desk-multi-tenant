@@ -6,7 +6,7 @@ import {loadMigrationBundle} from '../scripts/migration-files.ts';
 const path='supabase/migrations/20260917001000_transaction_effects.sql';
 const functions=['record_ticket_effect','record_conversation_effect','bind_effect_event','bind_effect_outbox','require_write_effect'];
 test('write effects have a private table in the runtime inventory',()=>{
- const t=c.tables.find(x=>x.name==='helpdesk_audit.write_effects');assert.ok(t);assert.equal(t.read,false);assert.equal(t.insert,false);assert.deepEqual(t.updates,[]);assert.equal(c.schemaVersion,'0.19.0');
+ const t=c.tables.find(x=>x.name==='helpdesk_audit.write_effects');assert.ok(t);assert.equal(t.read,false);assert.equal(t.insert,false);assert.deepEqual(t.updates,[]);assert.equal(c.schemaVersion,'0.20.0');
 });
 test('write effect trigger functions are never callable by the application',()=>{
  for(const name of functions){const f=c.functions.find(x=>x.signature===`helpdesk_audit.${name}()`);assert.ok(f);assert.equal(f.definer,true);assert.equal(f.execute,false);}
@@ -19,7 +19,7 @@ test('readiness requires both receipt uniqueness indexes',()=>{
  assert.match(DATABASE_SECURITY_QUERY,/write_effect_revision/);assert.match(DATABASE_SECURITY_QUERY,/write_effect_source/);
 });
 test('migration010 extends the nine originals without replacing their hashes',async()=>{
- const b=await loadMigrationBundle(process.cwd());assert.equal(b.schemaVersion,'0.19.0');assert.equal(b.migrations.length,12);
+ const b=await loadMigrationBundle(process.cwd());assert.equal(b.schemaVersion,'0.20.0');assert.equal(b.migrations.length,13);
  const old=JSON.parse(await readFile('tests/fixtures/migration-baselines/v016.json','utf8'));
  assert.deepEqual(b.migrations.slice(0,9).map(m=>({file:m.file,sha256:m.sha256})),old.migrations);
 });

@@ -1,4 +1,5 @@
 import {captureM05SecurityInventory} from './m05-security-inventory.ts';
+import {registerM05UpgradeTests} from './m05-upgrade-scenarios.ts';
 import {registerHostedAcceptanceSqlTests} from './hosted-acceptance-scenarios.ts';
 import {registerFirstAdminTests} from './first-admin-scenarios.ts';
 import {registerWorkspaceDiscoveryTests} from './workspace-discovery-scenarios.ts';
@@ -1094,6 +1095,7 @@ test('M1-R6 lost acknowledgement plus throwing release keeps unknown outcome and
 registerHostedAcceptanceSqlTests(()=>({admin,app}));
 registerFirstAdminTests(()=>admin,()=>app);
 registerWorkspaceDiscoveryTests(()=>admin,()=>app);
+registerM05UpgradeTests(()=>admin);
 registerCapacityTests(()=>admin);
 
 });
