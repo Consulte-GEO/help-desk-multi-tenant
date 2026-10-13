@@ -111,9 +111,9 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
     for(const table of ['cg_resource_connections','cg_resource_bindings','cg_resource_grant_sets','cg_resource_grant_refs'])await assert.rejects(rowsAs(people.admin,'select * from helpdesk_auth.'+table),{code:'42501'});
     await assert.rejects(rowsAs(people.admin,"update helpdesk_auth.cg_resource_grant_sets set active=true"),{code:'42501'});
    });
-   await t.test('all six candidate tables FORCE RLS and helpers deny PUBLIC execute',async()=>{
+   await t.test('all ten promoted CG tables FORCE RLS and helpers deny PUBLIC execute',async()=>{
     const r=await admin.query("select c.relname,c.relrowsecurity,c.relforcerowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('helpdesk_core','helpdesk_auth') and c.relname like 'cg_%' and c.relkind='r'");
-    assert.equal(r.rows.length,6);assert.ok(r.rows.every(v=>v.relrowsecurity&&v.relforcerowsecurity));
+    assert.equal(r.rows.length,10);assert.ok(r.rows.every(v=>v.relrowsecurity&&v.relforcerowsecurity));
     assert.equal((await admin.query("select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace cross join lateral aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where n.nspname in ('helpdesk_core','helpdesk_auth') and p.proname like 'cg_%' and a.grantee=0 and a.privilege_type='EXECUTE'")).rows.length,0);
    });
    await t.test('missing/expired/unpublished grant never becomes all-resource permission',async()=>{
