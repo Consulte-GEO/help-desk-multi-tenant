@@ -1,9 +1,6 @@
-/** Reviewed catalogue contract for schema 0.20.0, promoted Consulte GEO modules.
- * Metadata checks do NOT attest to function/policy/constraint expressions.
- * Not generated at runtime, not accepted from HTTP, never used for auto-repair.
- */
+/** Reviewed metadata for schema 0.21.0; expressions require native qualification. */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.20.0",
+  "schemaVersion": "0.21.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -593,6 +590,16 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": true
     },
     {
+      "signature": "helpdesk_auth.hdn_public_events(uuid, boolean, timestamp with time zone, uuid, integer)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdn_public_messages(uuid, timestamp with time zone, uuid, integer)",
+      "definer": true,
+      "execute": true
+    },
+    {
       "signature": "helpdesk_auth.hdn_read_support_workflow(uuid)",
       "definer": true,
       "execute": true
@@ -609,6 +616,11 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "signature": "helpdesk_auth.hdn_support_workflow_receipt(uuid, text)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdn_ticket_directory(uuid)",
       "definer": true,
       "execute": true
     },

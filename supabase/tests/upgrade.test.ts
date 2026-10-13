@@ -14,7 +14,7 @@ import type {Principal} from '../../src/domain/model.ts';
 
 const targets=validateDatabaseTestTargets(process.env);
 const bundle=await loadMigrationBundle(process.cwd());
-if(bundle.schemaVersion!=='0.20.0'||bundle.migrations.length!==13||bundle.migrations[12]?.file!=='20261013181408_consultegeo_m05_upgrade.sql'||bundle.migrations[11]?.file!=='20261007001200_workspace_discovery.sql'||bundle.migrations[10]?.file!=='20260917001100_conversation_lock.sql'||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
+if(bundle.schemaVersion!=='0.21.0'||bundle.migrations.length!==14||bundle.migrations[12]?.file!=='20261013181408_consultegeo_m05_upgrade.sql'||bundle.migrations[11]?.file!=='20261007001200_workspace_discovery.sql'||bundle.migrations[10]?.file!=='20260917001100_conversation_lock.sql'||bundle.migrations[9]?.file!=='20260917001000_transaction_effects.sql'||bundle.migrations[8]?.file!=='20260917000900_human_scope_versions.sql'||bundle.migrations[7]?.file!=='20260916000800_ticket_assignment.sql')
  throw Error('Review the upgrade scenario before changing the candidate migration set.');
 const upgradeUrl=(base:string)=>{const url=new URL(base);url.pathname='/helpdesk_upgrade_test';return url.toString();};
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
@@ -106,12 +106,13 @@ before(async()=>{
  await admin.query(bundle.migrations[12]!.sql);
  assert.deepEqual(await captureRows(),beforeM05);
  assert.deepEqual((await admin.query(accessSql)).rows,accessBefore);
+ await admin.query(bundle.migrations[13]!.sql);
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });
 after(async()=>{await app?.end();await admin?.end();await control?.end();});
 test('upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date',()=>{assert.deepEqual(afterRows,beforeRows);});
-test('upgrade exposes schema 0.20.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
+test('upgrade exposes schema 0.21.0 to a restricted real request login',async()=>{await assertSafeDatabaseRole(app);await assertSchemaCompatibility(app);await assertDatabaseSecurity(app);});
 test('upgraded grant-only human discovers its legacy workspace through the restricted login',async()=>{
  assert.deepEqual((await app.query('select helpdesk_auth.list_human_workspaces($1) as result',[id(1011)])).rows[0]?.result,[{id:id(1),name:'Synthetic upgrade workspace'}]);
 });

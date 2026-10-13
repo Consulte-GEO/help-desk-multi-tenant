@@ -32,8 +32,12 @@ const unconfirmed = () => new HelpdeskError(503,'transaction_outcome_unknown',
  * transaction. No error payload, public flag, database GUC or physical connection
  * is used as authority. This API can only reject; it cannot authorize or reset.
  */
-type ValidationState={active:boolean;rejected:boolean};
+type ValidationState={active:boolean;rejected:boolean;identity:string};
 const transactionValidations=new WeakMap<SqlClient,ValidationState>();
+export function assertBorrowedTransactionIdentity(client:SqlClient,identity:Identity):void{
+ const state=transactionValidations.get(client);
+ if(!state?.active||state.identity!==JSON.stringify(identity))rejectTransactionValidation(client,identityChanged());
+}
 /** Mark a MANDATORY server validation as failed, then propagate the same error.
  * Catching the error in work must not let earlier staged writes commit. The runner
  * emits a safe local failure if work swallows it. An unowned/expired client still
@@ -117,7 +121,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
  // A driver-side failure may leave PostgreSQL's transaction usable. Remember
  // failures after promises settle, even if work catches them or uses allSettled.
  // Recovery through SAVEPOINT is not part of this unit-of-work contract.
- const validation:ValidationState={active:false,rejected:false};
+ const validation:ValidationState={active:false,rejected:false,identity:JSON.stringify(identity)};
  const requireValidation=()=>{if(validation.rejected)throw validationRejected();};
  let statementFailed=false;
  const requireStatements=()=>{if(statementFailed)throw statementRejected();};

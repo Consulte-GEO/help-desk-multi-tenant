@@ -1,3 +1,4 @@
+import type {TransactionAdmission} from '../infrastructure/transaction.ts';
 import type {Principal} from '../domain/model.ts';
 import {requestHash} from '../domain/canonical.ts';import {uuidIdentifier} from '../domain/input-values.ts';import {isCanonicalInstant,compareInstants} from '../../shared/instant.js';
 import {formRecord,formRevision} from '../domain/form-schema.ts';import {copyFormData,freezeFormData,type FormRegistry} from '../../shared/form-rules.js';
@@ -36,13 +37,13 @@ export function parseConsulteGeoConfigurationCommand(raw:unknown):ConsulteGeoCon
  const definition=action==='save'?parseConsulteGeoConfiguration(x.definition):undefined;
  return freezeFormData({action,expectedRevision:formRevision(x.expectedRevision),expectedEntityRevision:formRevision(x.expectedEntityRevision,action==='save'?0:1),reason:x.reason,...(definition?{definition}:{}),id:definition?.id??uuidIdentifier(x.id),version:definition?.version??formRevision(x.version)}) as ConsulteGeoConfigurationCommand;
 }catch{throw fail();}}
-const codes:Record<string,number>={invalid_consultegeo_configuration:400,consultegeo_configuration_not_publishable:409,consultegeo_configuration_version_conflict:412,consultegeo_configuration_immutable:409,consultegeo_configuration_identity_immutable:409,consultegeo_configuration_idempotency_conflict:409,consultegeo_configuration_not_found:404,consultegeo_configuration_unavailable:503,administrative_assurance_required:403,administrative_capability_required:403,invalid_administrative_state:503};
+const codes:Record<string,number>={release_gate_closed:503,request_cancelled:409,invalid_consultegeo_configuration:400,consultegeo_configuration_not_publishable:409,consultegeo_configuration_version_conflict:412,consultegeo_configuration_immutable:409,consultegeo_configuration_identity_immutable:409,consultegeo_configuration_idempotency_conflict:409,consultegeo_configuration_not_found:404,consultegeo_configuration_unavailable:503,administrative_assurance_required:403,administrative_capability_required:403,invalid_administrative_state:503};
 function safe(error:unknown){const code=error&&typeof error==='object'?Object.getOwnPropertyDescriptor(error,'code')?.value:undefined;return typeof code==='string'&&Object.hasOwn(codes,code)?fail(code,codes[code]):unavailable();}
 export function createConsulteGeoConfigurationAdministration(o:{store:ConsulteGeoConfigurationStore;clock?:()=>string}){
  const clock=o.clock??(()=>new Date().toISOString());
- async function authorized<T>(p:Principal,proof:VerifiedAdministrativeAssurance,cap:AdministrativeCapability,work:(tx:ConsulteGeoConfigurationTransaction,state:{workspaceId:string;revision:number;records:ConsulteGeoConfigurationRecord[]},check:()=>void)=>Promise<T>){
+ async function authorized<T>(p:Principal,proof:VerifiedAdministrativeAssurance,cap:AdministrativeCapability,work:(tx:ConsulteGeoConfigurationTransaction,state:{workspaceId:string;revision:number;records:ConsulteGeoConfigurationRecord[]},check:()=>void)=>Promise<T>,admission?:TransactionAdmission){
   assertAdministrativeAssurance(p,proof);let bound:{close():void}|undefined;
-  const check=()=>{assertAdministrativeAssurance(p,proof);if(bound)requireAdministrativeCapability(p,cap,proof);};
+  const check=()=>{admission?.();assertAdministrativeAssurance(p,proof);if(bound)requireAdministrativeCapability(p,cap,proof);};
   try{return await o.store.transaction(p,check,async tx=>{check();bound=bindAdministrativeCapabilities(p,proof,parseAdminWorkspace(await tx.readWorkspace()),clock);check();const raw=configurationObject(await tx.readState(),['workspaceId','revision','records']);if(raw.workspaceId!==p.workspaceId||!Array.isArray(raw.records)||raw.records.length>500||Reflect.ownKeys(raw.records).length!==raw.records.length+1)throw unavailable();const records=Array.from({length:raw.records.length},(_,i)=>{const descriptor=Object.getOwnPropertyDescriptor(raw.records,String(i));if(!descriptor||!Object.hasOwn(descriptor,'value')||!descriptor.enumerable)throw unavailable();return parseConsulteGeoConfigurationRecord(descriptor.value);});if(records.some(r=>r.workspaceId!==p.workspaceId)||new Set(records.map(r=>r.id+':'+r.version)).size!==records.length)throw unavailable();return work(tx,{workspaceId:p.workspaceId,revision:formRevision(raw.revision),records},check);});}finally{bound?.close();}
  }
  function receipt(raw:unknown,p:Principal,expected?:{revision:number;id:string;version:number;status:string}):ConsulteGeoConfigurationReceipt{
@@ -50,7 +51,7 @@ export function createConsulteGeoConfigurationAdministration(o:{store:ConsulteGe
   if(x.workspaceId!==p.workspaceId||x.actorId!==p.id||record.workspaceId!==p.workspaceId||x.replayed!==false||expected&&(x.revision!==expected.revision||record.id!==expected.id||record.version!==expected.version||record.status!==expected.status||record.status==='published'&&record.publishedBy!==p.id))throw unavailable();
   return freezeFormData({workspaceId:p.workspaceId,actorId:p.id,revision:formRevision(x.revision),record,auditId:uuidIdentifier(x.auditId),replayed:false});
  }
- async function execute(p:Principal,proof:VerifiedAdministrativeAssurance,raw:unknown,key:string):Promise<ConsulteGeoConfigurationReceipt>{let prepared=false;try{
+ async function execute(p:Principal,proof:VerifiedAdministrativeAssurance,raw:unknown,key:string,admission?:TransactionAdmission):Promise<ConsulteGeoConfigurationReceipt>{let prepared=false;try{
   const command=parseConsulteGeoConfigurationCommand(raw);if(typeof key!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw fail();const hash=requestHash({workspaceId:p.workspaceId,actorId:p.id,command});
   return await authorized(p,proof,command.action==='publish'?'forms.publish':'forms.write',async(tx,s,check)=>{
    const cached=await tx.getReceipt(key);check();if(cached!==null){const c=formRecord(cached,['key','hash','result']);if(c.key!==key||typeof c.hash!=='string'||!/^[a-f0-9]{64}$/.test(c.hash))throw unavailable();if(c.hash!==hash)throw fail('consultegeo_configuration_idempotency_conflict',409);const r=receipt(c.result,p);if(r.record.id!==command.id||r.revision>s.revision||!s.records.some(x=>x.id===r.record.id&&x.version===r.record.version&&x.revision>=r.record.revision))throw unavailable();return freezeFormData({...r,replayed:true});}
@@ -63,10 +64,10 @@ export function createConsulteGeoConfigurationAdministration(o:{store:ConsulteGe
    if(command.action==='restore'&&old!.status!=='published')throw fail('consultegeo_configuration_not_publishable',409);
    const value=command.action==='publish'?compileConsulteGeoConfiguration(old!.definition,await tx.readRegistry()):null;check();
    const result=receipt(await tx.commitCommand(command,key,hash,value),p,{revision:s.revision+1,id:command.id,version:command.action==='restore'?latest+1:command.version,status:command.action==='publish'?'published':'draft'});check();prepared=true;return result;
-  });
+  },admission);
  }catch(e){const code=e&&typeof e==='object'?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined;if(prepared&&!(typeof code==='string'&&Object.hasOwn(codes,code)))throw fail('consultegeo_configuration_outcome_unknown',503);throw safe(e);}}
- async function read(p:Principal,proof:VerifiedAdministrativeAssurance,id:string,version:number){try{uuidIdentifier(id);formRevision(version);return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{const record=s.records.find(r=>r.id===id&&r.version===version);if(!record)throw fail('consultegeo_configuration_not_found',404);check();return {revision:s.revision,record};});}catch(e){throw safe(e);}}
- async function list(p:Principal,proof:VerifiedAdministrativeAssurance){try{return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{check();return {revision:s.revision,records:s.records.map(({definition,artifacts,...metadata})=>({...metadata,service:definition.service,title:definition.title}))};});}catch(e){throw safe(e);}}
+ async function read(p:Principal,proof:VerifiedAdministrativeAssurance,id:string,version:number,admission?:TransactionAdmission){try{uuidIdentifier(id);formRevision(version);return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{const record=s.records.find(r=>r.id===id&&r.version===version);if(!record)throw fail('consultegeo_configuration_not_found',404);check();return {revision:s.revision,record};},admission);}catch(e){throw safe(e);}}
+ async function list(p:Principal,proof:VerifiedAdministrativeAssurance,admission?:TransactionAdmission){try{return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{check();return {revision:s.revision,records:s.records.map(({definition,artifacts,...metadata})=>({...metadata,service:definition.service,title:definition.title}))};},admission);}catch(e){throw safe(e);}}
  return Object.freeze({execute,read,list});
 }
 /** For a trusted, locked intake snapshot; not a grant or a customer-facing reader. */

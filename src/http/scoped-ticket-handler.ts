@@ -119,10 +119,10 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
  if(!Number.isInteger(d.directoryTimeoutMs)||d.directoryTimeoutMs<1||d.directoryTimeoutMs>5000||typeof d.enabled!=='function'||typeof d.execute!=='function'||!d.rateLimiter)throw unavailable();
  const streamTimeoutMs=d.streamTimeoutMs??5000;if(!Number.isInteger(streamTimeoutMs)||streamTimeoutMs<1||streamTimeoutMs>5000)throw unavailable();
  return async(req,context={})=>{
-  const requestId=randomUUID();
+  const requestId=randomUUID();let refusal:HelpdeskError|undefined;const admission=()=>{if(refusal)throw refusal;try{if(d.enabled()!==true)refusal=fail(503,'release_gate_closed','Atendimento ainda não liberado.');else if(req.signal.aborted)refusal=canceled();}catch{refusal=unavailable();}if(refusal)throw refusal;};
   try{
    if(d.enabled()!==true)throw fail(503,'release_gate_closed','Atendimento ainda não liberado.');
-   await d.rateLimiter.beforeAuthentication(req,context);
+   await d.rateLimiter.beforeAuthentication(req,context);admission();
    const url=new URL(req.url),path=url.pathname.replace(/\/$/,'');
    if(path==='/v1/tickets')throw fail(503,'scoped_collection_not_ready','Coleção e abertura aguardam integração completa.');
    const m=/^\/v1\/tickets\/([^/]+)(?:\/(messages|notes|timeline|transitions|assignments))?$/.exec(path);
@@ -134,11 +134,11 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
    const p=structuredClone(await d.authenticate(req));
    for(const grant of p.grants)Object.freeze(grant);Object.freeze(p.grants);Object.freeze(p.scopes);
    if(p.productInstanceIds)Object.freeze(p.productInstanceIds);Object.freeze(p);
-   await d.rateLimiter.afterAuthentication(p);
+   await d.rateLimiter.afterAuthentication(p);admission();
    await validateRequest(req,url,action,streamTimeoutMs);
    if(req.signal.aborted)throw canceled();
    const mapping=await ownedLookup(d,p,ticketId,req.signal);
-   const proof=await d.resolver.resolveResourceScope(p,mapping.refs,operation,req.signal);
+   admission();const proof=await d.resolver.resolveResourceScope(p,mapping.refs,operation,req.signal);
    return await runResourceTicketTransaction(d.pool,d.resolver,p,ticketId,mapping.refs,operation,proof,async(client,scope)=>{
     if(scope.accountId!==mapping.accountId)throw fail(403,'resource_scope_denied','Conta do chamado alterada.');
     const response=await d.execute(client,p,req);
@@ -150,7 +150,7 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
     const headers=new Headers({'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId});
     for(const key of ['etag','location','idempotency-replayed']){const value=response.headers.get(key);if(value!==null)headers.set(key,value);}
     return new Response(data,{status:response.status,headers});
-   },req.signal);
+   },req.signal,admission);
   }catch(error){return problem(error,requestId);}
  };
 }

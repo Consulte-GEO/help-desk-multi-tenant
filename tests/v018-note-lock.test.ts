@@ -41,5 +41,5 @@ test('new migration narrows the internal conversation lock without changing appl
  assert.ok(m,'An append-only migration is required for the trigger lock change');
  assert.match(m.sql,/create or replace function helpdesk_audit\.record_conversation_effect\(\)/i);
  assert.match(m.sql,/for no key update/i);assert.doesNotMatch(m.sql,/grant\s+(?:select|update|insert|delete)|create policy|alter policy/i);
- assert.equal(b.schemaVersion,'0.20.0');
+ assert.equal(b.schemaVersion,'0.21.0');
 });
