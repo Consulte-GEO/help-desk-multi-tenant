@@ -23,8 +23,28 @@ const incomplete = () => new HelpdeskError(503,'transaction_work_incomplete',
  'A operação terminou sem aguardar todas as consultas. Nenhuma confirmação foi enviada.');
 const statementRejected = () => new HelpdeskError(503,'transaction_statement_failed',
  'Uma consulta falhou durante a operação. Nenhuma confirmação foi enviada.');
+const validationRejected = () => new HelpdeskError(503,'transaction_validation_failed',
+ 'Uma validação obrigatória falhou durante a operação. Nenhuma confirmação foi enviada.');
 const unconfirmed = () => new HelpdeskError(503,'transaction_outcome_unknown',
  'Confirmação da transação indisponível. Consulte o recurso ou reenvie com a mesma chave de idempotência.');
+
+/** Only the exact borrowed client from an active callback can invalidate its
+ * transaction. No error payload, public flag, database GUC or physical connection
+ * is used as authority. This API can only reject; it cannot authorize or reset.
+ */
+type ValidationState={active:boolean;rejected:boolean};
+const transactionValidations=new WeakMap<SqlClient,ValidationState>();
+/** Mark a MANDATORY server validation as failed, then propagate the same error.
+ * Catching the error in work must not let earlier staged writes commit. The runner
+ * emits a safe local failure if work swallows it. An unowned/expired client still
+ * throws but cannot affect another callback or a COMMIT already dispatched.
+ * Pass the exact borrowed client; spreading/proxying it loses this association.
+ */
+export function rejectTransactionValidation(client:SqlClient,error:unknown):never{
+ const state=transactionValidations.get(client);
+ if(state?.active)state.rejected=true;
+ throw error;
+}
 
 type CommitState='not_requested'|'unknown'|'confirmed';
 /** Cleanup is not a transaction result. Only a closed, best-effort diagnostic is emitted. */
@@ -97,12 +117,14 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
  // A driver-side failure may leave PostgreSQL's transaction usable. Remember
  // failures after promises settle, even if work catches them or uses allSettled.
  // Recovery through SAVEPOINT is not part of this unit-of-work contract.
+ const validation:ValidationState={active:false,rejected:false};
+ const requireValidation=()=>{if(validation.rejected)throw validationRejected();};
  let statementFailed=false;
  const requireStatements=()=>{if(statementFailed)throw statementRejected();};
  const borrowed:SqlClient={query:(sql,values)=>{
   const operation=(async()=>{
    if(!callbackActive)throw unavailable();
-   assertAdmission();requireStatements();
+   assertAdmission();requireStatements();requireValidation();
    let result:SqlResult;
    try{result=await query(sql,values);}catch(error){statementFailed=true;throw error;}
    assertAdmission();
@@ -114,6 +136,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
   void operation.then(()=>pendingQueries.delete(operation),()=>pendingQueries.delete(operation));
   return operation;
  },release:()=>{throw unavailable();}};
+ transactionValidations.set(borrowed,validation);
  try {
   health=observeClient(client);
   assertAdmission(); // Includes the time spent waiting for the owned connection.
@@ -126,11 +149,11 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
    [identityAtStart?.workspaceId??'',identityAtStart?.id??'']);
   assertAdmission();
   let value!:T,workFailed=false,workError:unknown,unfinished=false;
-  callbackActive=true;
+  callbackActive=true;validation.active=true;
   try{value=await work(borrowed);}
   catch(error){workFailed=true;workError=error;}
   finally{
-   callbackActive=false;
+   callbackActive=false;validation.active=false;
    // All statements, including their post-response admission checks, must settle
    // before COMMIT or cleanup is dispatched. Do not queue a COMMIT behind a
    // discarded query and assume driver FIFO also orders application validation.
@@ -142,6 +165,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
   requireConnection(); // An error during application work must not dispatch COMMIT.
   assertAdmission(); // Even a swallowed precondition failure forces rollback.
   requireStatements(); // Settled does not imply successful: never commit a failed batch.
+  requireValidation(); // A successful SQL response is not a successful mandatory validation.
   // Once dispatched, preserve confirmed/unknown COMMIT semantics, not a late refusal.
   commitRequested=true;
   const committed=await query('COMMIT');
@@ -162,7 +186,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
   if(health?.failed) throw unavailable();
   throw error;
  } finally {
-  callbackActive=false;
+  callbackActive=false;validation.active=false;transactionValidations.delete(borrowed);
   if(broken&&health)health.failed=true;
   // A later idle error does not undo a COMMIT already acknowledged above.
   // Keep the client's stable listener installed so asynchronous disposal cannot crash Node.
