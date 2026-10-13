@@ -6,6 +6,8 @@ O pedido atual autoriza desenvolver a próxima etapa do plano V5 nesta conversa.
 
 Integrar e verificar o writer PostgreSQL M02, fechar compatibilidades M03 e entregar política Consulte GEO e transporte/renderer de e-mail reutilizáveis. A aplicação preserva identidade, conta e obras autorizadas já existentes, sem introduzir novas abstrações de produto. Publisher, origem Novo GEO, montagem hospedada e piloto seguem os próximos blocos do V5.
 
+M06 ainda precisa unir o histórico core aos eventos semânticos públicos pelo mesmo ID e revisão, com projeção autorizada. Devolutiva, retorno em aguardando cliente e resolução que mudam status conservam seus textos em `hdn_workflow_commits.public_event`; o leitor atual de `ticket_messages` não os apresenta. Esta pendência impede montar o candidato no runtime. Não liberar SELECT do ledger privado para contorná-la. Transferência já é compatível com o serializer e a timeline existentes, mantendo o evento privado.
+
 ## Decisões de operação
 
 - Atendimento de segunda a sexta, 08h–18h, America/Sao_Paulo. Um dia útil corresponde a dez horas de atendimento. Feriados são lista explícita de datas no calendário publicado; a ausência de calendário qualificado não produz vencimento fictício.
