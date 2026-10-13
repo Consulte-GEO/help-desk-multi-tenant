@@ -19,6 +19,7 @@ export function problemResponse(error:unknown,requestId:string):Response{const e
  if(!e&&['PHD01','PHD02'].includes(pgcode??'')){status=429;code=pgcode==='PHD01'?'session_quota_exceeded':'idempotency_quota_exceeded';detail='Limite temporário de recursos atingido.';}
  if(!e&&pgcode==='PHD03'){status=409;code='coverage_configuration_limit';detail='Configuração de coberturas excedeu o limite suportado. Contate a administração.';}
  if(!e&&pgcode==='42501'){status=403;code='forbidden';detail='Operação não autorizada.';}
+ if(!e&&pgcode==='HDW03'){status=409;code='structured_workflow_required';detail='Use o fluxo de atendimento deste chamado para registrar a alteração.';}
  const retry=(error as {retryAfterSeconds?:number})?.retryAfterSeconds;
  const response=jsonResponse({type:'about:blank',title:status>=500?'Serviço indisponível':'Requisição não concluída',status,code,detail,request_id:requestId},status,{'content-type':'application/problem+json; charset=utf-8','x-request-id':requestId,...(status===503?{'retry-after':'2'}:status===429?{'retry-after':String(Number.isInteger(retry)&&Number(retry)>=1&&Number(retry)<=60?retry:60)}:{})});
  problemCodes.set(response,code);return response;

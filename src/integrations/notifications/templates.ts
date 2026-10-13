@@ -16,6 +16,14 @@ export function renderNotification(raw:NotificationIntent,source:unknown,portalO
   const subject=text(t.subject,160),title=text(t.title,200),intro=text(t.introduction,1500),label=text(t.actionLabel,80);
   const path=intent.kind==='support.approval_requested'?'/support/approvals/'+intent.invitationId:'/support/tickets/'+intent.ticketId;
   const href=portalOrigin+path,notice=intent.kind==='support.approval_requested'?'Abrir este link não registra aprovação. Entre com sua conta e confirme a decisão no portal.':'Entre com sua conta para consultar o atendimento autorizado.';
-  return freezeFormData({subject,text:[title,intro,notice,label+': '+href].join('\n\n'),html:'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>'+escape(subject)+'</title></head><body><h1>'+escape(title)+'</h1><p>'+escape(intro)+'</p><p>'+escape(notice)+'</p><p><a href="'+escape(href)+'">'+escape(label)+'</a></p></body></html>'});
+  const why='Você recebeu este e-mail porque participa deste chamado na Consulte GEO.';
+  const html='<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+escape(subject)+'</title></head>'+
+   '<body style="margin:0;background:#faf9f7;color:#16213e;font-family:Arial,Helvetica,sans-serif"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all">'+escape(intro)+'</div>'+
+   '<table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:24px 12px"><table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e6e1d6;border-radius:8px">'+
+   '<tr><td style="padding:24px;background:#182863;background:linear-gradient(135deg,#182863,#3E2D71 55%,#C5117E);color:#ffffff"><strong style="font-size:22px">Consulte GEO</strong><div style="font-size:12px;margin-top:8px">Atendimento · '+escape(intent.protocol)+'</div></td></tr>'+
+   '<tr><td style="padding:32px 24px"><h1 style="font-size:24px;line-height:1.3;margin:0 0 20px">'+escape(title)+'</h1><p style="font-size:16px;line-height:1.6;margin:0 0 20px">'+escape(intro)+'</p><p style="font-size:14px;line-height:1.6;color:#5c5648">'+escape(notice)+'</p>'+
+   '<table role="presentation" cellspacing="0" cellpadding="0"><tr><td bgcolor="#182863" style="border-radius:6px"><a href="'+escape(href)+'" style="display:inline-block;line-height:44px;min-height:44px;padding:0 24px;background:#182863;color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;border-radius:6px">'+escape(label)+'</a></td></tr></table></td></tr>'+
+   '<tr><td style="padding:24px;background:#faf9f7;color:#5c5648;font-size:12px;line-height:1.6;border-top:1px solid #e6e1d6"><strong>Consulte GEO · Equipe de Atendimento</strong><p style="margin:8px 0 0">'+escape(why)+'</p></td></tr></table></td></tr></table></body></html>';
+  return freezeFormData({subject,text:['Consulte GEO · '+intent.protocol,title,intro,notice,label+': '+href,why].join('\n\n'),html});
  }catch{throw unavailable();}
 }

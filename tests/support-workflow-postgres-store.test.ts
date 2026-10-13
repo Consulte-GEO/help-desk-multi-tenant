@@ -28,6 +28,24 @@ function setup(){
  },release(){assert.fail('borrowed client must not be released');}};
  return {client,calls,setTicket(v:SupportTicket){source=v;},setProfile(v:SupportWorkflowProfile){definition=v;},setRow(v:unknown){row=v;},setOverride(v:typeof override){override=v;}};
 }
+
+test('closed workflow reopens through the structured writer within its window',async()=>{
+ const f=setup(),closed={...t,status:'closed' as const,closedAt:AT,resolution:'Solução anterior'};f.setTicket(closed);
+ const s=(await factory())(f.client,p);await s.readTicket(t.id);const cmd={action:'reopen',expectedVersion:t.version,reason:'Problema voltou.'},decision=decideSupportTransition(p,closed,profile,cmd,AT),eventId=id(80);
+ const result={ticketId:t.id,workspaceId:p.workspaceId,accountId:t.accountId,actorId:p.id,profileVersionId:'P1',version:t.version+1,status:'open' as const,eventId,replayed:false as const};
+ const audit={id:eventId,workspaceId:p.workspaceId,ticketId:t.id,actorId:p.id,requestId:id(90),at:AT,action:'reopen',reason:cmd.reason,from:'closed',to:'open',version:t.version+1};
+ const outbox={id:eventId,workspaceId:p.workspaceId,accountId:t.accountId,ticketId:t.id,type:'support.reopened',version:t.version+1,requestId:id(90),createdAt:AT};
+ await s.commitDecision(t.version,decision,audit,outbox,{key:'closed-reopening-intent-01',hash:requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId:t.id,command:cmd}),result});assert.equal(f.calls.filter(c=>c.sql.includes('hdn_commit_support_workflow')).length,1);
+});
+
+test('qualified transfer uses a private scoped assignee proof and no external outbox',async()=>{
+ const cmd={action:'transfer',expectedVersion:t.version,targetPrincipalId:id(77),reason:'Atendimento especializado'},decision=decideSupportTransition(p,t,profile,cmd,AT),eventId=id(80);
+ const f=setup(),s=(await factory())(f.client,p);await s.readTicket(t.id);
+ const result={ticketId:t.id,workspaceId:p.workspaceId,accountId:t.accountId,actorId:p.id,profileVersionId:'P1',version:t.version+1,status:t.status,eventId,replayed:false as const};
+ const audit={id:eventId,workspaceId:p.workspaceId,ticketId:t.id,actorId:p.id,requestId:id(90),at:AT,action:'transfer',reason:cmd.reason,from:t.status,to:t.status,version:t.version+1};
+ await s.commitDecision(t.version,decision,audit,null,{key:'scoped-transfer-intent-01',hash:requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId:t.id,command:cmd}),result});
+ const call=f.calls.find(c=>c.sql.includes('hdn_commit_support_workflow'));assert.equal((call?.values[1] as any).command.targetPrincipalId,id(77));
+});
 function operation(ticket=t,definition=profile,action='resolve'){
  const command=action==='resolve'?{action,expectedVersion:ticket.version,body:'Cadastro executado e conferido.'}:{action,expectedVersion:ticket.version,body:'Favor informar os dados faltantes.'};
  const decision=decideSupportTransition(p,ticket,definition,command,AT),eventId=id(80);
@@ -74,13 +92,13 @@ test('a closure later than the recorded history is rejected',async()=>{
  const f=setup();f.setTicket({...t,status:'closed',resolution:'Concluído',closedAt:'2026-10-13T12:00:00.000001Z'});
  await assert.rejects((await factory())(f.client,p).readTicket(t.id),{code:'workflow_store_unavailable'});
 });
-test('unqualified customer return is refused before SQL mutation while preserving current core rules',async()=>{
+test('qualified customer return reaches the structured SQL writer with one event',async()=>{
  const customer:Principal={...p,workspaceRole:null,grants:[{accountId:t.accountId,role:'requester'}]};
  const f=setup(),ticket={...t,status:'waiting_customer' as const},cmd={action:'customer_reply',expectedVersion:t.version,body:'Dados complementados.'};
  f.setTicket(ticket);const s=(await factory())(f.client,customer);await s.readTicket(t.id);
  const d=decideSupportTransition(customer,ticket,profile,cmd,AT),eid=id(80),audit={id:eid,workspaceId:p.workspaceId,ticketId:t.id,actorId:p.id,requestId:id(90),at:AT,action:'customer_reply',reason:null,from:'waiting_customer',to:'open',version:t.version+1};
  const result={ticketId:t.id,workspaceId:p.workspaceId,accountId:t.accountId,actorId:p.id,profileVersionId:'P1',version:t.version+1,status:'open' as const,eventId:eid,replayed:false as const};
  const outbox={id:eid,workspaceId:p.workspaceId,accountId:t.accountId,ticketId:t.id,type:'support.customer_reply',version:t.version+1,requestId:id(90),createdAt:AT};
- await assert.rejects(s.commitDecision(t.version,d,audit,outbox,{key:'limited-customer-return-01',hash:requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId:t.id,command:cmd}),result}),{code:'workflow_transition_forbidden'});
- assert.equal(f.calls.length,1);
+ await s.commitDecision(t.version,d,audit,outbox,{key:'limited-customer-return-01',hash:requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId:t.id,command:cmd}),result});
+ assert.equal(f.calls.filter(c=>c.sql.includes('hdn_commit_support_workflow')).length,1);
 });

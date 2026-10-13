@@ -6,7 +6,8 @@ import {requestHash} from '../domain/canonical.ts';
 import {canReadTicket,isOperator} from '../domain/policy.ts';
 import {decideSupportTransition,type SupportTicket,type SupportWorkflowProfile,type WorkflowDecision} from '../domain/support-workflow.ts';
 import {parseExecutionChecklistReference,assertExecutionChecklistComplete} from '../domain/execution-checklist.ts';
-import type {SupportWorkflowTransaction,SupportTransitionReceipt} from '../application/support-workflow.ts';
+import {workflowScopeKey,type SupportWorkflowTransaction,type SupportTransitionReceipt} from '../application/support-workflow.ts';
+import type {ResourceScopeContext} from '../application/resource-access.ts';
 import type {SqlClient} from './sql.ts';
 import {rejectTransactionValidation} from './transaction.ts';
 import {createPostgresExecutionChecklistStore} from './execution-checklist-store.ts';
@@ -18,7 +19,7 @@ const failure=(code='workflow_store_unavailable',status=503)=>new HelpdeskError(
 const mapped:Readonly<Record<string,readonly [string,number]>>=Object.freeze({
  HDW01:['workflow_forbidden',403],HDW02:['workflow_version_conflict',412],HDW03:['workflow_transition_forbidden',409],
  HDW04:['workflow_checklist_required',409],HDW05:['workflow_idempotency_conflict',409],HDW06:['invalid_workflow_command',400],
- HDW07:['workflow_profile_mismatch',409],HDW08:['workflow_time_conflict',409],
+ HDW07:['workflow_profile_mismatch',409],HDW08:['workflow_time_conflict',409],HDW09:['workflow_assignee_denied',403],HDW10:['workflow_reopen_window_expired',409],
  HD001:['checklist_forbidden',403],HD004:['checklist_evidence_denied',403],HD007:['checklist_binding_required',409],
 });
 function object(value:unknown,keys:readonly string[]):Record<string,unknown>{
@@ -68,6 +69,7 @@ function commandFor(d:WorkflowDecision,a:Record<string,unknown>,expected:number)
  if(['reply','customer_reply','request_customer','resolve'].includes(action as string))c.body=d.event.body;
  else if(action==='handoff'){c.target=d.after.status==='waiting_internal'?'internal':'third_party';c.reason=a.reason;}
  else if(['reopen','cancel'].includes(action as string))c.reason=a.reason;
+ else if(action==='transfer'){c.targetPrincipalId=d.after.assignedTo;c.reason=a.reason;}
  else if(!['start','triage','close'].includes(action as string))throw failure('workflow_transition_forbidden',409);
  return c;
 }
@@ -76,8 +78,8 @@ function commandFor(d:WorkflowDecision,a:Record<string,unknown>,expected:number)
  * The companion CANDIDATE SQL implements the storage contract and independently
  * authorizes each operation. It is not installed by this module. No pool, COMMIT,
  * source-GEO write, synthetic directory, automatic retry, or secret is introduced.
- * Transfers are deliberately denied until the target-assignee policy is qualified;
- * the original authenticated claim/release commands are not replaced here.
+ * Qualified transfers use the same locked scope and independently revalidate the
+ * target in SQL; original unbound claim/release commands remain available.
  */
 export function createPostgresSupportWorkflowStore(client:SqlClient,principal:Principal):SupportWorkflowTransaction{
  const p=freezeFormData(copyFormData(principal)) as Principal;
@@ -114,12 +116,18 @@ export function createPostgresSupportWorkflowStore(client:SqlClient,principal:Pr
    const r=object(value,['key','hash','result']);if(r.key!==key||typeof r.hash!=='string'||!/^[a-f0-9]{64}$/.test(r.hash))throw failure();
    const saved=storedResult(r.result,p,t);if(saved.version>t.version)throw failure();return value;
   }),
-  verifyAssignee:required(async(_id:string,_scope:unknown)=>{current();throw failure('workflow_assignee_denied',403);}),
+  verifyAssignee:required(async(id:string,scope:ResourceScopeContext)=>{
+   const {t}=current(),destination=uuidIdentifier(id);
+   if(!scope||scope.principalId!==p.id||scope.workspaceId!==p.workspaceId||scope.accountId!==t.accountId||scope.operation!=='tickets.write'||!Array.isArray(scope.refs)||!scope.refs.length)throw failure('workflow_assignee_denied',403);
+   const scopeKey=workflowScopeKey(scope);
+   const value=object(await query('select helpdesk_auth.hdn_verify_workflow_assignee($1,$2,$3) as result',[t.id,destination,scopeKey]),['principalId','workspaceId','accountId','scopeKey','active','operator']);
+   if(value.principalId!==destination||value.workspaceId!==p.workspaceId||value.accountId!==t.accountId||value.scopeKey!==scopeKey||value.active!==true||value.operator!==true)throw failure('workflow_assignee_denied',403);
+   return freezeFormData(value);
+  }),
   commitDecision:required(async(expected:number,rawDecision:WorkflowDecision,rawAudit:Readonly<Record<string,unknown>>,rawOutbox:Readonly<Record<string,unknown>>|null,rawReceipt:Readonly<{key:string;hash:string;result:SupportTransitionReceipt}>)=>{
    const {t,d}=current();if(rev(expected)!==t.version)throw failure('workflow_version_conflict',412);
    const decision=copyFormData(rawDecision) as WorkflowDecision,audit=copyFormData(rawAudit) as Record<string,unknown>,receipt=object(copyFormData(rawReceipt),['key','hash','result']);
    const at=when(audit.at),cmd=commandFor(decision,audit,expected),recomputed=decideSupportTransition(p,t,d,cmd,at);equal(recomputed,decision);
-   if(cmd.action==='reopen'&&t.status==='closed'||cmd.action==='customer_reply'&&t.status==='waiting_customer'&&!isOperator(p,t.workspaceId,t.accountId))throw failure('workflow_transition_forbidden',409);
    const result=storedResult(receipt.result,p,t);if(result.version!==expected+1||result.status!==decision.after.status)throw failure();
    const expectedAudit:Record<string,unknown>={id:result.eventId,workspaceId:p.workspaceId,ticketId:t.id,actorId:p.id,requestId:uuidIdentifier(audit.requestId),at,action:decision.audit.action,reason:decision.audit.reason,from:t.status,to:decision.after.status,version:decision.after.version};
    if(decision.requirements.some(r=>r.kind==='execution_checklist')){
@@ -128,7 +136,7 @@ export function createPostgresSupportWorkflowStore(client:SqlClient,principal:Pr
     expectedAudit.executionChecklist=assertExecutionChecklistComplete(snapshot,{workspaceId:t.workspaceId,accountId:t.accountId,ticketId:t.id,ticketVersion:t.version,profileVersionId:t.profileVersionId,reference:d.executionChecklist!},at);
    }
    equal(expectedAudit,audit);
-   const minimal={id:result.eventId,workspaceId:p.workspaceId,accountId:t.accountId,ticketId:t.id,type:'support.'+decision.event.type,version:result.version,requestId:audit.requestId,createdAt:at};
+   const minimal=decision.event.type==='assigned'?null:{id:result.eventId,workspaceId:p.workspaceId,accountId:t.accountId,ticketId:t.id,type:'support.'+decision.event.type,version:result.version,requestId:audit.requestId,createdAt:at};
    equal(minimal,copyFormData(rawOutbox));
    if(typeof receipt.key!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(receipt.key))throw failure();
    const hash=requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId:t.id,command:cmd});if(receipt.hash!==hash)throw failure('workflow_idempotency_conflict',409);

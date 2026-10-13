@@ -40,7 +40,7 @@ CREATE TABLE helpdesk_audit.hdn_workflow_commits(
  workspace_id uuid NOT NULL,account_id uuid NOT NULL,ticket_id uuid NOT NULL,event_id uuid NOT NULL,
  actor_id uuid NOT NULL REFERENCES helpdesk_auth.principals(id),profile_version_id text NOT NULL,
  from_version integer NOT NULL CHECK(from_version>0),to_version integer NOT NULL CHECK(to_version=from_version+1),
- from_status text NOT NULL,to_status text NOT NULL,core_type text NOT NULL CHECK(core_type IN ('ticket.status_changed','message.created')),
+ from_status text NOT NULL,to_status text NOT NULL,core_type text NOT NULL CHECK(core_type IN ('ticket.status_changed','message.created','ticket.assignment_changed')),
  transaction_id xid8 NOT NULL DEFAULT pg_current_xact_id(),
  intent_key text NOT NULL CHECK(intent_key ~ '^[A-Za-z0-9._:-]{16,128}$'),intent_hash text NOT NULL CHECK(intent_hash ~ '^[a-f0-9]{64}$'),
  command jsonb NOT NULL,public_event jsonb NOT NULL,audit jsonb NOT NULL,result jsonb NOT NULL,at timestamptz NOT NULL,
@@ -183,12 +183,13 @@ END$$;
 CREATE FUNCTION helpdesk_auth.hdn_guard_workflow_transition() RETURNS trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 BEGIN
- IF NEW.status IS NOT DISTINCT FROM OLD.status THEN RETURN NEW;END IF;
+ -- Every version/assignment/status update of a bound ticket needs its private command, including same-state replies.
  IF EXISTS(SELECT 1 FROM helpdesk_core.hdn_workflow_state WHERE (workspace_id,account_id,ticket_id)=(OLD.workspace_id,OLD.account_id,OLD.id)) THEN
   IF NOT EXISTS(SELECT 1 FROM helpdesk_audit.hdn_workflow_commits c WHERE
    (c.workspace_id,c.account_id,c.ticket_id,c.actor_id,c.from_version,c.to_version,c.from_status,c.to_status)=
    (OLD.workspace_id,OLD.account_id,OLD.id,helpdesk_auth.actor_id(),OLD.version,NEW.version,OLD.status,NEW.status)
-   AND c.transaction_id=pg_current_xact_id()) THEN RAISE EXCEPTION 'Structured writer required' USING ERRCODE='HDW03';END IF;
+   AND c.transaction_id=pg_current_xact_id()
+   AND (NEW.assigned_to IS NOT DISTINCT FROM OLD.assigned_to OR (c.command->>'action'='transfer' AND c.command->>'targetPrincipalId'=NEW.assigned_to::text))) THEN RAISE EXCEPTION 'Structured writer required' USING ERRCODE='HDW03';END IF;
  ELSIF NEW.status IN ('resolved','closed') AND EXISTS(SELECT 1 FROM helpdesk_core.hdn_execution_bindings WHERE
   (workspace_id,account_id,ticket_id)=(OLD.workspace_id,OLD.account_id,OLD.id)) THEN
   RAISE EXCEPTION 'Workflow binding required' USING ERRCODE='HDW07';
@@ -200,18 +201,20 @@ CREATE TRIGGER hdn_guard_workflow_transition BEFORE UPDATE ON helpdesk_core.tick
 CREATE FUNCTION helpdesk_auth.hdn_require_workflow_commit() RETURNS trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
 BEGIN
- IF NOT EXISTS(SELECT 1 FROM helpdesk_core.ticket_events e JOIN helpdesk_integration.outbox_events o
+ IF NOT EXISTS(SELECT 1 FROM helpdesk_core.ticket_events e LEFT JOIN helpdesk_integration.outbox_events o
   ON (o.workspace_id,o.account_id,o.ticket_id,o.id,o.type)=(e.workspace_id,e.account_id,e.ticket_id,e.id,e.type)
   JOIN helpdesk_audit.write_effects f ON (f.workspace_id,f.event_id)=(e.workspace_id,e.id)
   WHERE (e.workspace_id,e.account_id,e.ticket_id,e.id,e.actor_id,e.type)=
    (NEW.workspace_id,NEW.account_id,NEW.ticket_id,NEW.event_id,NEW.actor_id,NEW.core_type)
-   AND f.transaction_id=NEW.transaction_id AND f.ticket_version=NEW.to_version AND f.applied)
+   AND f.transaction_id=NEW.transaction_id AND f.ticket_version=NEW.to_version AND f.applied
+   AND ((NEW.core_type='ticket.assignment_changed' AND o.id IS NULL) OR (NEW.core_type<>'ticket.assignment_changed' AND o.id IS NOT NULL)))
   OR NOT EXISTS(SELECT 1 FROM helpdesk_core.hdn_workflow_state s JOIN helpdesk_core.tickets t
     ON (t.workspace_id,t.account_id,t.id)=(s.workspace_id,s.account_id,s.ticket_id)
     WHERE (s.workspace_id,s.account_id,s.ticket_id,s.profile_version_id)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id,NEW.profile_version_id)
      AND t.version>=NEW.to_version AND s.last_event_at>=NEW.at) THEN
   RAISE EXCEPTION 'Incomplete structured commit' USING ERRCODE='23514';
  END IF;
+ IF NEW.command->>'action'='transfer' THEN PERFORM helpdesk_auth.hdn_verify_workflow_assignee(NEW.ticket_id,(NEW.command->>'targetPrincipalId')::uuid,NULL);END IF;
  RETURN NULL;
 END$$;
 CREATE CONSTRAINT TRIGGER hdn_complete_workflow_commit AFTER INSERT ON helpdesk_audit.hdn_workflow_commits
@@ -241,9 +244,10 @@ BEGIN
   IF (SELECT count(*) FROM jsonb_object_keys(cmd))<>3 OR NOT cmd ?& ARRAY['action','expectedVersion','body']
    OR jsonb_typeof(cmd->'body') IS DISTINCT FROM 'string' THEN RAISE EXCEPTION 'Body required' USING ERRCODE='HDW06';END IF;
   body:=cmd->>'body';IF body !~ '[^[:space:]]' OR length(btrim(body))=0 OR length(body)>12000 OR body~'[\x01-\x08\x0b\x0c\x0e-\x1f\x7f]' THEN RAISE EXCEPTION 'Invalid body' USING ERRCODE='HDW06';END IF;
- ELSIF action IN ('reopen','cancel','handoff') THEN
-  IF (SELECT count(*) FROM jsonb_object_keys(cmd))<>CASE WHEN action='handoff' THEN 4 ELSE 3 END
+ ELSIF action IN ('reopen','cancel','handoff','transfer') THEN
+  IF (SELECT count(*) FROM jsonb_object_keys(cmd))<>(CASE WHEN action IN ('handoff','transfer') THEN 4 ELSE 3 END)
    OR NOT cmd ?& ARRAY['action','expectedVersion','reason'] OR jsonb_typeof(cmd->'reason') IS DISTINCT FROM 'string' THEN RAISE EXCEPTION 'Reason required' USING ERRCODE='HDW06';END IF;
+  IF action='transfer' AND (NOT cmd ? 'targetPrincipalId' OR jsonb_typeof(cmd->'targetPrincipalId') IS DISTINCT FROM 'string' OR NOT pg_input_is_valid(cmd->>'targetPrincipalId','uuid')) THEN RAISE EXCEPTION 'Target required' USING ERRCODE='HDW06';END IF;
   reason:=cmd->>'reason';IF reason !~ '[^[:space:]]' OR length(btrim(reason))=0 OR length(reason)>12000 OR reason~'[\x01-\x08\x0b\x0c\x0e-\x1f\x7f]' THEN RAISE EXCEPTION 'Invalid reason' USING ERRCODE='HDW06';END IF;
  ELSIF action NOT IN ('start','triage','close') OR (SELECT count(*) FROM jsonb_object_keys(cmd))<>2 OR NOT cmd ?& ARRAY['action','expectedVersion'] THEN
   RAISE EXCEPTION 'Unsupported command' USING ERRCODE='HDW03';
@@ -276,9 +280,6 @@ BEGIN
  WHEN 'customer_reply' THEN
   IF prior_status NOT IN ('open','waiting_customer','waiting_internal','waiting_third_party') THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;
   IF prior_status='waiting_customer' THEN
-   -- Existing core guard disallows requester waiting_customer -> open. Do not
-   -- weaken it silently: this compatibility step needs its own reviewed change.
-   IF NOT operator THEN RAISE EXCEPTION 'Customer return integration required' USING ERRCODE='HDW03';END IF;
    next_status:='open';
   END IF;
  WHEN 'request_customer' THEN IF prior_status NOT IN ('triage','open') THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;next_status:='waiting_customer';kind:='devolutiva';
@@ -289,8 +290,12 @@ BEGIN
   IF profile ? 'executionChecklist' THEN proof:=helpdesk_auth.hdn_workflow_completion(target,profile->>'versionId',profile->'executionChecklist',stamp);END IF;
  WHEN 'close' THEN IF prior_status<>'resolved' OR length(btrim(coalesce(t->>'resolution','')))=0 THEN RAISE EXCEPTION 'Resolution required' USING ERRCODE='HDW03';END IF;next_status:='closed';kind:='closed';
  WHEN 'reopen' THEN
-  -- Core has no closed -> open transition. Keep it denied until qualified.
-  IF prior_status<>'resolved' THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;next_status:='open';kind:='reopened';
+  IF prior_status NOT IN ('resolved','closed') THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;
+  IF stamp-coalesce((t->>'closedAt')::timestamptz,(t->>'lastEventAt')::timestamptz) > (profile->>'reopenWindowMicros')::numeric * interval '1 microsecond' THEN RAISE EXCEPTION 'Reopening window expired' USING ERRCODE='HDW10';END IF;
+  next_status:='open';kind:='reopened';
+ WHEN 'transfer' THEN
+  IF prior_status NOT IN ('triage','open','waiting_customer','waiting_internal','waiting_third_party') OR length(reason)>2000 OR reason~'[[:cntrl:]]' OR cmd->>'targetPrincipalId' IS NOT DISTINCT FROM t->>'assignedTo' THEN RAISE EXCEPTION 'Transfer conflict' USING ERRCODE='HDW03';END IF;
+  PERFORM helpdesk_auth.hdn_verify_workflow_assignee(target,(cmd->>'targetPrincipalId')::uuid,NULL);kind:='assigned';
  WHEN 'cancel' THEN IF prior_status NOT IN ('new','triage','open','waiting_customer','waiting_internal','waiting_third_party') THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;next_status:='cancelled';kind:='cancelled';
  ELSE RAISE EXCEPTION 'Unsupported command' USING ERRCODE='HDW03';
  END CASE;
@@ -300,7 +305,7 @@ BEGIN
  IF payload->'audit' IS DISTINCT FROM aud OR payload->'receipt' IS DISTINCT FROM result THEN RAISE EXCEPTION 'Decision mismatch' USING ERRCODE='HDW06';END IF;
  ev:=jsonb_build_object('ticketId',target,'workspaceId',w,'profileVersionId',profile->>'versionId','sequence',next_version,'at',at_text,'type',kind,'actorId',who,'actorKind',CASE WHEN operator THEN 'human_agent' ELSE 'customer' END,'from',prior_status,'to',next_status);
  IF body IS NOT NULL THEN ev:=ev||jsonb_build_object('body',body);END IF;
- core_type:=CASE WHEN next_status<>prior_status THEN 'ticket.status_changed' ELSE 'message.created' END;
+ core_type:=CASE WHEN action='transfer' THEN 'ticket.assignment_changed' WHEN next_status<>prior_status THEN 'ticket.status_changed' ELSE 'message.created' END;
  INSERT INTO helpdesk_audit.hdn_workflow_commits(workspace_id,account_id,ticket_id,event_id,actor_id,profile_version_id,from_version,to_version,from_status,to_status,core_type,intent_key,intent_hash,command,public_event,audit,result,at)
  VALUES(w,a,target,event_id,who,profile->>'versionId',expected,next_version,prior_status,next_status,core_type,payload->>'key',payload->>'hash',cmd,ev,aud,result,stamp);
  GET DIAGNOSTICS count_rows=ROW_COUNT;IF count_rows<>1 THEN RAISE EXCEPTION 'Commit record missing' USING ERRCODE='23514';END IF;
@@ -310,7 +315,7 @@ BEGIN
    VALUES(message_id,w,a,target,who,CASE WHEN operator THEN 'human_agent' ELSE 'customer' END,body,stamp);
   GET DIAGNOSTICS count_rows=ROW_COUNT;IF count_rows<>1 THEN RAISE EXCEPTION 'Message missing' USING ERRCODE='23514';END IF;
  END IF;
- UPDATE helpdesk_core.tickets SET status=next_status,version=next_version,updated_at=stamp WHERE workspace_id=w AND account_id=a AND id=target AND version=expected;
+ UPDATE helpdesk_core.tickets SET status=next_status,assigned_to=CASE WHEN action='transfer' THEN (cmd->>'targetPrincipalId')::uuid ELSE assigned_to END,version=next_version,updated_at=stamp WHERE workspace_id=w AND account_id=a AND id=target AND version=expected;
  GET DIAGNOSTICS count_rows=ROW_COUNT;IF count_rows<>1 THEN RAISE EXCEPTION 'CAS conflict' USING ERRCODE='HDW02';END IF;
  UPDATE helpdesk_core.hdn_workflow_state SET last_event_at=stamp,
   resolution=CASE WHEN action='resolve' THEN body ELSE resolution END,
@@ -320,18 +325,206 @@ BEGIN
  -- Never put private handoff/cancel reasons in the public core event. The body
  -- and semantic event live in the selectively readable workflow ledger.
  INSERT INTO helpdesk_core.ticket_events(id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,created_at)
- VALUES(event_id,w,a,target,who,core_type,true,
-  CASE WHEN core_type='message.created' THEN jsonb_build_object('messageId',message_id,'actorType',CASE WHEN operator THEN 'human_agent' ELSE 'customer' END)
+ VALUES(event_id,w,a,target,who,core_type,core_type<>'ticket.assignment_changed',
+  CASE WHEN core_type='ticket.assignment_changed' THEN jsonb_build_object('action','transfer','from',t->'assignedTo','to',cmd->'targetPrincipalId','reason',reason,'version',next_version)
+  WHEN core_type='message.created' THEN jsonb_build_object('messageId',message_id,'actorType',CASE WHEN operator THEN 'human_agent' ELSE 'customer' END)
   ELSE jsonb_build_object('from',prior_status,'to',next_status,'reason','Atendimento atualizado pelo fluxo estruturado.') END,stamp);
  GET DIAGNOSTICS count_rows=ROW_COUNT;IF count_rows<>1 THEN RAISE EXCEPTION 'Event missing' USING ERRCODE='23514';END IF;
+ IF core_type<>'ticket.assignment_changed' THEN
  INSERT INTO helpdesk_integration.outbox_events(id,workspace_id,account_id,ticket_id,type,payload,request_id,created_at)
  VALUES(event_id,w,a,target,core_type,jsonb_build_object('specversion','1.0','id',event_id,'source','helpdesk/workspaces/'||w::text,
   'type','com.helpdesk.'||core_type||'.v1','subject','tickets/'||target::text,'datacontenttype','application/json','time',at_text,
   'data',jsonb_build_object('ticket_id',target,'version',next_version)),request_id,stamp);
  GET DIAGNOSTICS count_rows=ROW_COUNT;IF count_rows<>1 THEN RAISE EXCEPTION 'Outbox missing' USING ERRCODE='23514';END IF;
+ END IF;
  RETURN result;
 EXCEPTION WHEN data_exception THEN RAISE EXCEPTION 'Invalid workflow data' USING ERRCODE='HDW06';
 END$$;
+
+-- Qualified compatibility: a private same-transaction decision is the authority;
+-- raw caller/GUC values cannot manufacture the Boolean used by original guards.
+CREATE FUNCTION helpdesk_auth.hdn_scoped_workflow_commit(w uuid,a uuid,target uuid,before_version integer,after_version integer,prior text,next_status text,destination uuid) RETURNS boolean
+LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
+BEGIN
+ IF session_user<>'helpdesk_app' OR w IS DISTINCT FROM helpdesk_auth.workspace_id() OR NOT coalesce(helpdesk_auth.is_human(),false)
+ OR NOT coalesce(helpdesk_auth.has_scope(w,'tickets:read') AND helpdesk_auth.has_scope(w,'tickets:write'),false)
+ OR NOT coalesce(helpdesk_auth.cg_ticket_resource_allowed(w,a,target,'tickets.write'),false) THEN RETURN false;END IF;
+ RETURN EXISTS(SELECT 1 FROM helpdesk_audit.hdn_workflow_commits c WHERE
+ (c.workspace_id,c.account_id,c.ticket_id,c.actor_id,c.from_version,c.to_version,c.from_status,c.to_status)=
+ (w,a,target,helpdesk_auth.actor_id(),before_version,after_version,prior,next_status)
+ AND c.transaction_id=pg_current_xact_id() AND
+ ((c.command->>'action'='customer_reply' AND prior='waiting_customer' AND next_status='open')
+ OR (c.command->>'action'='reopen' AND prior='closed' AND next_status='open')
+ OR (c.command->>'action'='transfer' AND prior=next_status AND c.command->>'targetPrincipalId'=destination::text)));
+END$$;
+
+CREATE FUNCTION helpdesk_auth.hdn_verify_workflow_assignee(target uuid,candidate uuid,expected_scope text) RETURNS jsonb
+LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
+DECLARE v jsonb;s jsonb;key text;w uuid:=helpdesk_auth.workspace_id();a uuid;op text;r record;role_ok boolean;
+BEGIN
+ v:=helpdesk_auth.hdn_read_support_workflow(target);a:=(v->'ticket'->>'accountId')::uuid;
+ IF NOT coalesce(helpdesk_auth.is_operator(w,a),false) OR candidate IS NULL THEN RAISE EXCEPTION 'Assignee denied' USING ERRCODE='HDW09';END IF;
+ s:=helpdesk_auth.cg_lock_ticket_scope(target,'tickets.write');
+ key:=helpdesk_auth.hdn_workflow_digest(jsonb_build_object('workspaceId',s->'workspaceId','accountId',s->'accountId','bindingId',s->'bindingId','bindingRevision',s->'bindingRevision','accessRevision',s->'accessRevision','refs',s->'refs'));
+ IF s IS NULL OR (expected_scope IS NOT NULL AND expected_scope IS DISTINCT FROM key) THEN RAISE EXCEPTION 'Scope differs' USING ERRCODE='HDW09';END IF;
+ PERFORM 1 FROM helpdesk_auth.principals WHERE id=candidate AND active AND kind='human' FOR SHARE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Inactive assignee' USING ERRCODE='HDW09';END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended('helpdesk-human-scopes:'||w::text||':'||candidate::text,0));
+ IF NOT ARRAY['tickets:read','tickets:write']::text[] <@ helpdesk_auth.human_scopes(w,candidate) THEN RAISE EXCEPTION 'Assignee scopes denied' USING ERRCODE='HDW09';END IF;
+ PERFORM 1 FROM helpdesk_auth.account_grants WHERE workspace_id=w AND account_id=a AND principal_id=candidate AND active AND role='agent' FOR SHARE;
+ role_ok:=FOUND;
+ IF NOT role_ok THEN PERFORM 1 FROM helpdesk_auth.workspace_memberships WHERE workspace_id=w AND principal_id=candidate AND active AND role IN ('agent','admin') FOR SHARE;role_ok:=FOUND;END IF;
+ IF NOT role_ok THEN RAISE EXCEPTION 'Assignee role denied' USING ERRCODE='HDW09';END IF;
+ FOREACH op IN ARRAY ARRAY['tickets.read','tickets.write'] LOOP
+  SELECT g.expected_count,g.as_of,g.expires_at INTO r FROM helpdesk_auth.cg_resource_grant_sets g
+  JOIN helpdesk_auth.cg_resource_observations o ON (o.workspace_id,o.account_id,o.binding_id,o.principal_id,o.operation,o.grant_revision)=
+   (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.revision)
+  AND o.access_revision=g.source_revision AND o.as_of=g.as_of AND o.expires_at=g.expires_at AND o.expected_count=g.expected_count
+  AND o.binding_revision=s->>'bindingRevision' AND o.manifest_fingerprint=s->>'manifestFingerprint'
+  WHERE g.workspace_id=w AND g.account_id=a AND g.binding_id=(s->>'bindingId')::uuid AND g.principal_id=candidate AND g.operation=op AND g.active
+  FOR SHARE OF g,o;
+  IF NOT FOUND OR r.as_of>clock_timestamp() OR r.expires_at<=clock_timestamp()
+   OR (SELECT count(*) FROM helpdesk_auth.cg_resource_grant_refs g WHERE g.workspace_id=w AND g.account_id=a AND g.binding_id=(s->>'bindingId')::uuid AND g.principal_id=candidate AND g.operation=op)<>r.expected_count
+   OR EXISTS(SELECT 1 FROM helpdesk_core.cg_ticket_resource_refs x WHERE x.workspace_id=w AND x.account_id=a AND x.ticket_id=target AND NOT EXISTS(
+    SELECT 1 FROM helpdesk_auth.cg_resource_grant_refs g WHERE g.workspace_id=w AND g.account_id=a AND g.binding_id=(s->>'bindingId')::uuid AND g.principal_id=candidate AND g.operation=op AND g.resource_type=x.resource_type AND g.resource_id=x.resource_id))
+  THEN RAISE EXCEPTION 'Assignee resource coverage denied' USING ERRCODE='HDW09';END IF;
+ END LOOP;
+ RETURN jsonb_build_object('principalId',candidate,'workspaceId',w,'accountId',a,'scopeKey',key,'active',true,'operator',true);
+END$$;
+
+CREATE FUNCTION helpdesk_auth.hdn_guard_workflow_message() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $$
+BEGIN
+ IF EXISTS(SELECT 1 FROM helpdesk_core.hdn_workflow_state s WHERE (s.workspace_id,s.account_id,s.ticket_id)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id))
+ AND NOT EXISTS(SELECT 1 FROM helpdesk_audit.hdn_workflow_commits c WHERE
+ (c.workspace_id,c.account_id,c.ticket_id,c.actor_id,c.event_id)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id,NEW.actor_id,NEW.id)
+ AND c.transaction_id=pg_current_xact_id() AND c.core_type='message.created' AND c.command->>'body'=NEW.body)
+ THEN RAISE EXCEPTION 'Structured conversation required' USING ERRCODE='HDW03';END IF;
+ RETURN NEW;
+END$$;
+CREATE TRIGGER hdn_guard_structured_message BEFORE INSERT ON helpdesk_core.ticket_messages FOR EACH ROW EXECUTE FUNCTION helpdesk_auth.hdn_guard_workflow_message();
+
+create or replace function helpdesk_core.guard_ticket_transition() returns trigger
+language plpgsql set search_path='' as $$
+declare allowed text[];
+begin
+ if new.status=old.status then return new; end if;
+ if ((old.status='waiting_customer' and new.status='open') or (old.status='closed' and new.status='open')) and helpdesk_auth.hdn_scoped_workflow_commit(old.workspace_id,old.account_id,old.id,old.version,new.version,old.status,new.status,new.assigned_to) then return new;end if;
+ if not helpdesk_auth.is_operator(old.workspace_id,old.account_id) then
+  if old.status<>'resolved' or new.status not in ('open','closed') then
+   raise exception 'Transition not authorized' using errcode='42501';
+  end if;
+ else
+  allowed:=case old.status
+   when 'new' then array['triage','open','cancelled']
+   when 'triage' then array['open','waiting_customer','cancelled']
+   when 'open' then array['waiting_customer','waiting_internal','waiting_third_party','resolved','cancelled']
+   when 'waiting_customer' then array['open','resolved','cancelled']
+   when 'waiting_internal' then array['open','resolved','cancelled']
+   when 'waiting_third_party' then array['open','resolved','cancelled']
+   when 'resolved' then array['open','closed'] else array[]::text[] end;
+  if not(new.status=any(allowed)) then raise exception 'Invalid transition' using errcode='23514'; end if;
+ end if;
+ return new;
+end$$;
+create or replace function helpdesk_core.guard_ticket_assignment() returns trigger
+language plpgsql security definer set search_path='' as $$
+begin
+ if tg_op='INSERT' then
+  if new.assigned_to is not null then raise exception 'Initial assignment not allowed' using errcode='23514'; end if;
+  return new;
+ end if;
+ if new.assigned_to is not distinct from old.assigned_to then return new; end if;
+ if helpdesk_auth.hdn_scoped_workflow_commit(old.workspace_id,old.account_id,old.id,old.version,new.version,old.status,new.status,new.assigned_to) then return new;end if;
+ if not coalesce(helpdesk_auth.is_operator(old.workspace_id,old.account_id)
+   and helpdesk_auth.has_scope(old.workspace_id,'tickets:read')
+   and helpdesk_auth.has_scope(old.workspace_id,'tickets:write'),false) then
+  raise exception 'Assignment not authorized' using errcode='42501';
+ end if;
+ if old.status in ('closed','cancelled') or new.status is distinct from old.status
+    or new.priority is distinct from old.priority then
+  raise exception 'Assignment must be an isolated nonterminal change' using errcode='23514';
+ end if;
+ if new.assigned_to is not null then
+  if old.assigned_to is not null or new.assigned_to is distinct from helpdesk_auth.actor_id() then
+   raise exception 'Only an unassigned ticket may be claimed by self' using errcode='42501';
+  end if;
+ elsif old.assigned_to is distinct from helpdesk_auth.actor_id() and not exists(
+  select 1 from helpdesk_auth.workspace_memberships m
+   where m.workspace_id=old.workspace_id and m.principal_id=helpdesk_auth.actor_id() and m.active and m.role='admin'
+ ) then
+  raise exception 'Only owner or workspace administrator may release' using errcode='42501';
+ end if;
+ return new;
+end$$;
+create or replace function helpdesk_audit.record_ticket_effect() returns trigger
+language plpgsql security definer set search_path='' as $$
+declare k text; d jsonb; matched uuid; changes integer;
+begin
+ if new.workspace_id is distinct from helpdesk_auth.workspace_id() or helpdesk_auth.actor_id() is null then
+  raise exception 'Ticket write requires authenticated transaction context' using errcode='23514';
+ end if;
+ if tg_op='INSERT' then
+  if new.created_by is distinct from helpdesk_auth.actor_id() or new.version<>1 or new.status<>'new' or new.assigned_to is not null then
+   raise exception 'Invalid initial ticket effect' using errcode='23514';
+  end if;
+  k:='ticket.created';d:=jsonb_build_object('version',1);
+ else
+  -- Existing immutable, version, authorization and workflow guards still execute.
+  changes:=(new.status is distinct from old.status)::integer+(new.priority is distinct from old.priority)::integer+
+   (new.assigned_to is distinct from old.assigned_to)::integer;
+  if changes>1 then raise exception 'One ticket operation per version required' using errcode='23514';end if;
+  if new.subject is distinct from old.subject or new.description is distinct from old.description then
+   raise exception 'Unsupported ticket field mutation' using errcode='23514';end if;
+  if new.status is distinct from old.status then
+   k:='ticket.status_changed';d:=jsonb_build_object('from',old.status,'to',new.status);
+  elsif new.priority is distinct from old.priority then
+   k:='ticket.priority_changed';d:=jsonb_build_object('from',old.priority,'to',new.priority,'version',new.version);
+  elsif new.assigned_to is distinct from old.assigned_to then
+   k:='ticket.assignment_changed';d:=jsonb_build_object('action',case when exists(select 1 from helpdesk_audit.hdn_workflow_commits c where c.workspace_id=new.workspace_id and c.account_id=new.account_id and c.ticket_id=new.id and c.actor_id=helpdesk_auth.actor_id() and c.transaction_id=pg_current_xact_id() and c.to_version=new.version and c.command->>'action'='transfer') then 'transfer' when new.assigned_to is null then 'release' else 'claim' end,
+    'from',old.assigned_to,'to',new.assigned_to,'version',new.version);
+  else
+   -- A public message is inserted BEFORE its parent version advances. No empty version bumps.
+   update helpdesk_audit.write_effects set applied=true
+    where workspace_id=new.workspace_id and account_id=new.account_id and ticket_id=new.id
+      and ticket_version=new.version and kind='message.created' and actor_id=helpdesk_auth.actor_id()
+      and transaction_id=pg_current_xact_id() and not applied returning id into matched;
+   if not found then raise exception 'Version bump requires a new matching message' using errcode='23514';end if;
+   return null;
+  end if;
+ end if;
+ insert into helpdesk_audit.write_effects(workspace_id,account_id,ticket_id,actor_id,kind,ticket_version,expected_data,applied)
+  values(new.workspace_id,new.account_id,new.id,helpdesk_auth.actor_id(),k,new.version,d,true);
+ return null;
+end$$;
+create or replace function helpdesk_core.require_assignment_event() returns trigger
+language plpgsql security definer set search_path='' as $$begin
+ if not exists(select 1 from helpdesk_core.ticket_events e
+  where (e.workspace_id,e.account_id,e.ticket_id)=(new.workspace_id,new.account_id,new.id)
+   and e.type='ticket.assignment_changed' and not e.customer_visible
+   and e.actor_id=helpdesk_auth.actor_id() and e.data->>'version'=new.version::text
+   and (e.data->>'from') is not distinct from old.assigned_to::text
+   and (e.data->>'to') is not distinct from new.assigned_to::text
+   and e.data->>'action'=case when helpdesk_auth.hdn_scoped_workflow_commit(old.workspace_id,old.account_id,old.id,old.version,new.version,old.status,new.status,new.assigned_to) then 'transfer' when new.assigned_to is null then 'release' else 'claim' end
+ ) then raise exception 'Assignment update requires matching private event' using errcode='23514'; end if;
+ return null;
+end$$;
+alter table helpdesk_core.ticket_events drop constraint assignment_event_shape;
+alter table helpdesk_core.ticket_events add constraint assignment_event_shape check(
+ type<>'ticket.assignment_changed' or coalesce(
+  jsonb_typeof(data)='object' and (data-array['action','from','to','reason','version'])='{}'::jsonb
+  and data ?& array['action','from','to','reason','version']
+  and jsonb_typeof(data->'reason')='string' and length(btrim(data->>'reason')) between 1 and 2000
+  and length(data->>'reason')<=2000 and (data->>'reason') !~ '[[:cntrl:]]'
+  and ((data->>'action'='claim' and data->'from'='null'::jsonb and jsonb_typeof(data->'to')='string'
+      and data->>'to'=actor_id::text)
+   or (data->>'action'='release' and data->'to'='null'::jsonb and jsonb_typeof(data->'from')='string'
+      and (data->>'from') ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+   or (data->>'action'='transfer' and (data->'from'='null'::jsonb or (data->>'from') ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$') and (data->>'to') ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' and data->'from' is distinct from data->'to'))
+  and case when jsonb_typeof(data->'version')='number' then
+   (data->>'version')::numeric between 2 and 9007199254740991
+    and (data->>'version')::numeric=trunc((data->>'version')::numeric) else false end,false));
+
 
 DO $privileges$
 DECLARE obj text;r text;
@@ -345,7 +538,8 @@ BEGIN
  END LOOP;
  FOREACH obj IN ARRAY ARRAY['hdn_workflow_canonical(jsonb)','hdn_workflow_digest(jsonb)','hdn_workflow_iso(timestamptz)',
   'hdn_read_support_workflow(uuid)','hdn_support_workflow_receipt(uuid,text)','hdn_workflow_completion(uuid,text,jsonb,timestamptz)',
-  'hdn_guard_workflow_state()','hdn_guard_workflow_transition()','hdn_require_workflow_commit()','hdn_commit_support_workflow(uuid,jsonb)'] LOOP
+  'hdn_guard_workflow_state()','hdn_guard_workflow_transition()','hdn_require_workflow_commit()','hdn_commit_support_workflow(uuid,jsonb)',
+  'hdn_verify_workflow_assignee(uuid,uuid,text)','hdn_scoped_workflow_commit(uuid,uuid,uuid,integer,integer,text,text,uuid)','hdn_guard_workflow_message()'] LOOP
   EXECUTE 'REVOKE ALL ON FUNCTION helpdesk_auth.'||obj||' FROM PUBLIC,helpdesk_app';
   FOREACH r IN ARRAY ARRAY['anon','authenticated','service_role','helpdesk_maintenance'] LOOP
    IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname=r) THEN EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.%s FROM %I',obj,r);END IF;
@@ -353,3 +547,5 @@ BEGIN
  END LOOP;
 END $privileges$;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_read_support_workflow(uuid),helpdesk_auth.hdn_support_workflow_receipt(uuid,text),helpdesk_auth.hdn_commit_support_workflow(uuid,jsonb) TO helpdesk_app;
+
+GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_verify_workflow_assignee(uuid,uuid,text),helpdesk_auth.hdn_scoped_workflow_commit(uuid,uuid,uuid,integer,integer,text,text,uuid) TO helpdesk_app;

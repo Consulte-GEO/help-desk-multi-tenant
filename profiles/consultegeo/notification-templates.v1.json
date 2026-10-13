@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "product": "CONSULTE_GEO",
+  "status": "draft_for_publication",
+  "templates": [
+    {"id":"consultegeo-created","version":1,"kind":"support.created","subject":"Recebemos seu chamado {{protocol}}","title":"Chamado recebido","introduction":"Seu chamado {{protocol}} foi registrado. A equipe Consulte GEO irá analisar a solicitação. Você pode acompanhar o atendimento e os próximos passos pelo portal.","actionLabel":"Acompanhar chamado"},
+    {"id":"consultegeo-devolutiva","version":1,"kind":"support.devolutiva","subject":"Precisamos de informações no chamado {{protocol}}","title":"Precisamos de mais informações","introduction":"A equipe solicitou um complemento para continuar o atendimento do chamado {{protocol}}. Abra o portal para consultar a orientação e enviar as informações pedidas.","actionLabel":"Consultar e responder"},
+    {"id":"consultegeo-resolved","version":1,"kind":"support.resolved","subject":"Solução registrada no chamado {{protocol}}","title":"A solução foi registrada","introduction":"A equipe registrou a solução do chamado {{protocol}}. Consulte os detalhes no portal. Se o mesmo problema continuar, você pode solicitar a reabertura com um motivo dentro de sete dias corridos.","actionLabel":"Consultar solução"}
+  ]
+}

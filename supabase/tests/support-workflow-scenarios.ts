@@ -33,7 +33,7 @@ export function registerSupportWorkflowSqlTests(adminPool:()=>SqlPool){
    const appPath='../../src/application/helpdesk.ts',postgresPath='../../src/infrastructure/postgres.ts';
    const {HelpdeskService}=await import(appPath),{PostgresUnitOfWork,assertSafeDatabaseRole}=await import(postgresPath);
    await assertSafeDatabaseRole(pool);
-   const w=randomUUID(),a=randomUUID(),product=randomUUID(),instance=randomUUID(),contract=randomUUID(),cv=randomUUID(),who=randomUUID(),customer=randomUUID(),conn=randomUUID(),binding=randomUUID();
+   const w=randomUUID(),a=randomUUID(),product=randomUUID(),instance=randomUUID(),contract=randomUUID(),cv=randomUUID(),who=randomUUID(),customer=randomUUID(),analyst=randomUUID(),conn=randomUUID(),binding=randomUUID();
    await admin.query("insert into helpdesk_core.workspaces(id,name) values($1,'M02 synthetic')",[w]);
    await admin.query("insert into helpdesk_core.accounts(workspace_id,id,name) values($1,$2,'M02 account')",[w,a]);
    await admin.query("insert into helpdesk_core.products(workspace_id,id,code,name) values($1,$2,$3,'M02 product')",[w,product,product]);
@@ -43,23 +43,24 @@ export function registerSupportWorkflowSqlTests(adminPool:()=>SqlPool){
    await admin.query("insert into helpdesk_core.contract_versions(workspace_id,contract_id,id,version,published,valid_from,policy) values($1,$2,$3,1,true,'2020-01-01','{}')",[w,contract,cv]);
    await admin.query("insert into helpdesk_core.coverages(workspace_id,account_id,product_id,product_instance_id,service_code,contract_version_id,id) values($1,$2,$3,$4,'SUPPORT',$5,$6)",[w,a,product,instance,cv,randomUUID()]);
    const scopes=['tickets:read','tickets:write','notes:read','notes:write'];
-   for(const [person,role] of [[who,'agent'],[customer,'requester']]){
+   for(const [person,role] of [[who,'agent'],[customer,'requester'],[analyst,'agent']]){
     await admin.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[person,randomUUID()]);
     await admin.query('insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,$4)',[w,a,person,role]);
     await admin.query('select helpdesk_auth.set_human_scopes($1,$2,$3,0,$4,$5)',[w,person,scopes,'M02 owned fixture only',randomUUID()]);
    }
    const p:Principal={id:who,workspaceId:w,kind:'human',workspaceRole:null,grants:[{accountId:a,role:'agent'}],scopes};
    const outsider:Principal={...p,id:customer,grants:[{accountId:a,role:'requester'}]};
+   const colleague:Principal={...p,id:analyst};
    const service=new HelpdeskService(new PostgresUnitOfWork(pool));
    await admin.query('insert into helpdesk_auth.cg_resource_connections(workspace_id,id,product_instance_id) values($1,$2,$3)',[w,conn,instance]);
    await admin.query("insert into helpdesk_auth.cg_resource_bindings(workspace_id,account_id,id,connection_id,tenant_id) values($1,$2,$3,$4,'M02-Tenant')",[w,a,binding,conn]);
-   for(const op of ['tickets.read','tickets.write','notes.read','notes.write']){
-    await admin.query("insert into helpdesk_auth.cg_resource_grant_sets(workspace_id,account_id,binding_id,principal_id,operation,source_revision,as_of,expires_at,expected_count) values($1,$2,$3,$4,$5,'M02-A1',clock_timestamp()-interval '1 minute',clock_timestamp()+interval '1 hour',1)",[w,a,binding,who,op]);
-    await admin.query("insert into helpdesk_auth.cg_resource_grant_refs(workspace_id,account_id,binding_id,principal_id,operation,resource_type,resource_id) values($1,$2,$3,$4,$5,'work','A')",[w,a,binding,who,op]);
-    await admin.query('update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and binding_id=$2 and operation=$3',[w,binding,op]);
+   for(const op of ['tickets.read','tickets.write','notes.read','notes.write'])for(const person of [who,customer,analyst]){
+    await admin.query("insert into helpdesk_auth.cg_resource_grant_sets(workspace_id,account_id,binding_id,principal_id,operation,source_revision,as_of,expires_at,expected_count) values($1,$2,$3,$4,$5,'M02-A1',clock_timestamp()-interval '1 minute',clock_timestamp()+interval '1 hour',1)",[w,a,binding,person,op]);
+    await admin.query("insert into helpdesk_auth.cg_resource_grant_refs(workspace_id,account_id,binding_id,principal_id,operation,resource_type,resource_id) values($1,$2,$3,$4,$5,'work','A')",[w,a,binding,person,op]);
+    await admin.query('update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and binding_id=$2 and operation=$3 and principal_id=$4',[w,binding,op,person]);
     await admin.query(`insert into helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count)
      select workspace_id,account_id,binding_id,principal_id,operation,revision,'M02-B1',source_revision,$5,as_of,expires_at,expected_count
-     from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2 and principal_id=$3 and operation=$4`,[w,binding,who,op,'a'.repeat(64)]);
+     from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2 and principal_id=$3 and operation=$4`,[w,binding,person,op,'a'.repeat(64)]);
    }
    const template=parseExecutionChecklistTemplate({schema:1,id:'M02-checklist',version:1,status:'published',items:[{id:'conferir',label:'Conferência sintética',required:true,allowNotApplicable:false,evidenceRequired:true,risk:'ordinary'}]});
    const reference={id:template.id,version:1,sha256:requestHash(template)};
@@ -70,26 +71,27 @@ export function registerSupportWorkflowSqlTests(adminPool:()=>SqlPool){
    const refs=[{connectionId:conn,tenantId:'M02-Tenant',type:'work',id:'A'}];
    // Synthetic source authority bound to real persisted fixture observations. It
    // is not a Novo GEO adapter and is never mounted in the product runtime.
-   const resolver=createResourceAccessResolver({manifestFingerprint:'a'.repeat(64),maxAgeMicros:3_600_000_000n,timeoutMs:5000,authority:{async readAccess(q){
+   const makeResolver=(principal:Principal)=>createResourceAccessResolver({manifestFingerprint:'a'.repeat(64),maxAgeMicros:3_600_000_000n,timeoutMs:5000,authority:{async readAccess(q){
     const g=(await admin.query(`select source_revision as rev,
      to_char(as_of AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as start,
      to_char(expires_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as finish
-     from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2 and principal_id=$3 and operation=$4 and active`,[w,binding,p.id,q.operation])).rows[0];
+     from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2 and principal_id=$3 and operation=$4 and active`,[w,binding,principal.id,q.operation])).rows[0];
     if(!g)return null;
-    return {principal:structuredClone(p),operation:q.operation,binding:{id:binding,accountId:a,workspaceId:w,connectionId:conn,tenantId:'M02-Tenant',revision:'M02-B1',active:true},manifestFingerprint:'a'.repeat(64),accessRevision:g.rev,asOf:g.start,expiresAt:g.finish,resources:refs};
+    return {principal:structuredClone(principal),operation:q.operation,binding:{id:binding,accountId:a,workspaceId:w,connectionId:conn,tenantId:'M02-Tenant',revision:'M02-B1',active:true},manifestFingerprint:'a'.repeat(64),accessRevision:g.rev,asOf:g.start,expiresAt:g.finish,resources:refs};
    }}});
-   async function createTicket(works=['A'],complete=false){
-    const created=await service.create(p,{accountId:a,productInstanceId:instance,serviceCode:'SUPPORT',subject:'M02 user request',description:'Synthetic request',priority:'normal'},randomUUID(),randomUUID());
+   const resolver=makeResolver(p);
+   async function createTicket(works=['A'],complete=false,owner=p,initialStatus='open',definition=profile){
+    const created=await service.create(owner,{accountId:a,productInstanceId:instance,serviceCode:'SUPPORT',subject:'M02 user request',description:'Synthetic request',priority:'normal'},randomUUID(),randomUUID());
     const tid=created.ticket.id,current=await service.get(p,tid);
     const claimed=await service.changeAssignment(p,tid,'claim',current.version,'M02 fixture claim',randomUUID(),randomUUID());
-    await service.transition(p,tid,'open',claimed.ticket.version,'M02 fixture start',randomUUID(),randomUUID());
+    if(initialStatus==='open')await service.transition(p,tid,'open',claimed.ticket.version,'M02 fixture start',randomUUID(),randomUUID());
     await service.addNote(p,tid,'M02 internal execution declaration',randomUUID(),randomUUID());
     const note=String((await admin.query('select id from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2',[w,tid])).rows[0]?.id);
     await admin.query('insert into helpdesk_core.cg_ticket_resource_sets(workspace_id,account_id,ticket_id,binding_id,expected_count) values($1,$2,$3,$4,$5)',[w,a,tid,binding,works.length]);
     for(const x of works)await admin.query("insert into helpdesk_core.cg_ticket_resource_refs(workspace_id,account_id,ticket_id,resource_type,resource_id) values($1,$2,$3,'work',$4)",[w,a,tid,x]);
     await admin.query('update helpdesk_core.cg_ticket_resource_sets set sealed=true where workspace_id=$1 and ticket_id=$2',[w,tid]);
-    await admin.query('insert into helpdesk_core.hdn_execution_bindings(workspace_id,account_id,ticket_id,profile_version_id,template_id,template_version,template_sha256) values($1,$2,$3,$4,$5,1,$6)',[w,a,tid,profile.versionId,template.id,reference.sha256]);
-    await admin.query("insert into helpdesk_core.hdn_workflow_state(workspace_id,account_id,ticket_id,profile_version_id,approval,last_event_at) select workspace_id,account_id,id,$3,'not_required',updated_at from helpdesk_core.tickets where workspace_id=$1 and id=$2",[w,tid,profile.versionId]);
+    await admin.query('insert into helpdesk_core.hdn_execution_bindings(workspace_id,account_id,ticket_id,profile_version_id,template_id,template_version,template_sha256) values($1,$2,$3,$4,$5,1,$6)',[w,a,tid,definition.versionId,template.id,reference.sha256]);
+    await admin.query("insert into helpdesk_core.hdn_workflow_state(workspace_id,account_id,ticket_id,profile_version_id,approval,last_event_at) select workspace_id,account_id,id,$3,'not_required',updated_at from helpdesk_core.tickets where workspace_id=$1 and id=$2",[w,tid,definition.versionId]);
     if(complete)await runTransaction(pool,p,async c=>{const s=createPostgresExecutionChecklistStore(c),r=await s.read(tid);const cmd={action:'mark' as const,itemId:'conferir',status:'done' as const,expectedTicketVersion:r.context.ticketVersion,expectedChecklistRevision:0,evidenceRefs:['note:'+note],reason:null,acknowledgeRisk:false};await s.mark(tid,cmd,requestHash(cmd),randomUUID(),randomUUID());});
     return tid as string;
    }
@@ -99,11 +101,29 @@ export function registerSupportWorkflowSqlTests(adminPool:()=>SqlPool){
     const at=await sqlNow(),flow=createDurablePostgresSupportWorkflow({pool:usedPool,resolver,clock:()=>at});
     return flow.execute(p,tid,refs,{action:'resolve',expectedVersion:before.version,body:'Execução confirmada pela equipe.'},key,randomUUID());
    }
+   async function command(tid:string,action:Record<string,unknown>,principal=p,key=randomUUID()){
+    const before=await runTransaction(pool,principal,c=>createPostgresSupportWorkflowStore(c,principal).readTicket(tid));assert.ok(before);
+    const flow=createDurablePostgresSupportWorkflow({pool,resolver:makeResolver(principal),clock:()=>new Date().toISOString()});
+    return flow.execute(principal,tid,refs,{...action,expectedVersion:before.version},key,randomUUID());
+   }
    const counts=async(tid:string)=>(await admin.query(`select
     (select count(*) from helpdesk_audit.hdn_workflow_commits where workspace_id=$1 and ticket_id=$2) as ledger,
     (select count(*) from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2) as events,
     (select count(*) from helpdesk_integration.outbox_events where workspace_id=$1 and ticket_id=$2) as outbox,
     (select count(*) from helpdesk_audit.write_effects where workspace_id=$1 and ticket_id=$2) as effects`,[w,tid])).rows;
+
+   await suite.test('M03 triage and start persist their semantic command with one core event',async()=>{const tid=await createTicket(['A'],false,p,'new');await command(tid,{action:'triage'});const r=await command(tid,{action:'start'});assert.equal(r.status,'open');assert.equal((await admin.query('select count(*) as n from helpdesk_audit.hdn_workflow_commits where ticket_id=$1',[tid])).rows[0]?.n,'2');});
+   await suite.test('M03 customer return resumes work and preserves the responsible analyst',async()=>{const tid=await createTicket(['A'],false,outsider);await command(tid,{action:'request_customer',body:'Complete os dados.'});const r=await command(tid,{action:'customer_reply',body:'Dados complementados.'},outsider);assert.equal(r.status,'open');assert.equal((await current(tid))?.assignedTo,who);const event=(await admin.query('select public_event from helpdesk_audit.hdn_workflow_commits where event_id=$1',[r.eventId])).rows[0]?.public_event as any;assert.equal(event.body,'Dados complementados.');assert.equal(event.actorKind,'customer');});
+   await suite.test('M03 reply and handoff keep public response separate from the private reason',async()=>{const tid=await createTicket();await command(tid,{action:'reply',body:'Recebemos os dados.'});const r=await command(tid,{action:'handoff',target:'internal',reason:'Diagnóstico privado'});assert.equal(r.status,'waiting_internal');const row=(await admin.query('select public_event,audit from helpdesk_audit.hdn_workflow_commits where event_id=$1',[r.eventId])).rows[0] as any;assert.equal(row.public_event.body,undefined);assert.equal(row.audit.reason,'Diagnóstico privado');});
+   await suite.test('M03 resolved close and closed reopening preserve solution and history',async()=>{const tid=await createTicket(['A'],true);await resolve(tid);await command(tid,{action:'close'});const r=await command(tid,{action:'reopen',reason:'Problema voltou.'});assert.equal(r.status,'open');assert.equal((await current(tid))?.resolution,'Execução confirmada pela equipe.');});
+   await suite.test('M03 transfer requires a live fully scoped colleague and generates no outbox',async()=>{const tid=await createTicket(),before=await counts(tid);const r=await command(tid,{action:'transfer',targetPrincipalId:analyst,reason:'Especialista da equipe'});assert.equal((await current(tid))?.assignedTo,analyst);const after=await counts(tid);assert.equal((after[0] as any).outbox,(before[0] as any).outbox);const event=(await admin.query('select type,customer_visible,data from helpdesk_core.ticket_events where id=$1',[r.eventId])).rows[0] as any;assert.equal(event.type,'ticket.assignment_changed');assert.equal(event.customer_visible,false);assert.equal(event.data.action,'transfer');});
+   await suite.test('M03 requester target and missing colleague scope are refused without partial effects',async()=>{const tid=await createTicket(),before=await counts(tid);await assert.rejects(command(tid,{action:'transfer',targetPrincipalId:customer,reason:'Não é operador'}),{code:'workflow_assignee_denied'});assert.deepEqual(await counts(tid),before);await assert.rejects(command(tid,{action:'transfer',targetPrincipalId:randomUUID(),reason:'Pessoa inexistente'}),{code:'workflow_assignee_denied'});assert.deepEqual(await counts(tid),before);});
+   await suite.test('M03 old public message path cannot bypass structured approval or state',async()=>{const tid=await createTicket(),before=await counts(tid);await assert.rejects(service.addMessage(p,tid,'Bypass antigo',randomUUID(),randomUUID()));assert.deepEqual(await counts(tid),before);});
+   await suite.test('M03 forged approval GUC cannot insert a public message directly',async()=>{const tid=await createTicket(),before=await counts(tid);await assert.rejects(runTransaction(pool,p,async c=>{await c.query("select set_config('app.workflow_approved','true',true)");await c.query("insert into helpdesk_core.ticket_messages(id,workspace_id,account_id,ticket_id,actor_id,actor_type,body) values($1,$2,$3,$4,$5,'human_agent','Bypass direto')",[randomUUID(),w,a,tid,who]);}));assert.deepEqual(await counts(tid),before);});
+   await suite.test('M03 requester cannot answer a colleague ticket even with the same work grant',async()=>{const tid=await createTicket(),before=await counts(tid);await assert.rejects(command(tid,{action:'customer_reply',body:'Dados de terceiro'},outsider));assert.deepEqual(await counts(tid),before);});
+   await suite.test('M03 pending approval blocks the structured and old reply paths',async()=>{const tid=await createTicket();await admin.query("update helpdesk_core.hdn_workflow_state set approval='pending' where ticket_id=$1",[tid]);const before=await counts(tid);await assert.rejects(command(tid,{action:'reply',body:'Resposta prematura'}),{code:'workflow_approval_required'});await assert.rejects(service.addMessage(p,tid,'Resposta antiga',randomUUID(),randomUUID()));assert.deepEqual(await counts(tid),before);});
+   await suite.test('M03 direct reopening cannot bypass the pinned expiry policy',async()=>{const zero={...profile,versionId:'M03-zero-window',reopenWindowMicros:'0'};await admin.query('insert into helpdesk_core.hdn_workflow_profiles(workspace_id,version_id,document) values($1,$2,$3)',[w,zero.versionId,zero]);const tid=await createTicket(['A'],true,p,'open',zero);await resolve(tid);await command(tid,{action:'close'});const old=await current(tid);assert.ok(old);const cmd={action:'reopen',expectedVersion:old.version,reason:'Fora da janela'},before=await counts(tid),at=await sqlNow();const payload={schema:1,profileVersionId:zero.versionId,command:cmd,at,requestId:randomUUID(),eventId:randomUUID(),key:randomUUID(),hash:requestHash({workspaceId:w,actorId:who,ticketId:tid,command:cmd}),audit:{},receipt:{}};await assert.rejects(runTransaction(pool,p,c=>c.query('select helpdesk_auth.hdn_commit_support_workflow($1,$2)',[tid,payload])));assert.deepEqual(await counts(tid),before);assert.equal((await current(tid))?.status,'closed');});
+   await suite.test('M03 cancellation records the reason privately without resolving the ticket',async()=>{const tid=await createTicket(),r=await command(tid,{action:'cancel',reason:'Solicitação duplicada'});assert.equal(r.status,'cancelled');assert.equal((await current(tid))?.resolution,null);});
    await suite.test('writer and workflow commit with core event effect outbox and bound receipt',async()=>{
     const tid=await createTicket(['A'],true),r=await resolve(tid);
     const saved=await current(tid);assert.equal(saved?.status,'resolved');assert.equal(saved?.resolution,'Execução confirmada pela equipe.');assert.equal(saved?.version,r.version);

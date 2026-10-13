@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "product": "CONSULTE_GEO",
+  "version": 1,
+  "status": "draft_for_publication",
+  "calendar": {"timeZone": "America/Sao_Paulo", "weekdays": [1, 2, 3, 4, 5], "start": "08:00", "end": "18:00", "hoursPerDay": 10},
+  "reopenWindowMicros": "604800000000",
+  "roles": {"requester": "requester", "customerManager": "account_manager", "support": "agent", "administrator": "admin"},
+  "userActions": ["include", "change", "disable", "resend_access", "grant_work_access"],
+  "transfer": {"requireReason": true, "requireActiveOperator": true, "requireCompleteResourceCoverage": true},
+  "implementationSpreadsheets": {"extensions": [".xlsx", ".csv"], "mimeTypes": ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/csv"], "maxBytes": 15728640},
+  "services": {
+    "user_access": {"firstResponseHours": 4, "resolutionHours": 10},
+    "questions": {"firstResponseHours": 4, "resolutionHours": 10},
+    "backup": {"firstResponseHours": 4, "resolutionHours": 30},
+    "new_work": {"firstResponseHours": 8, "resolutionHours": 70},
+    "structure_adjustment": {"firstResponseHours": 4, "resolutionHours": 30},
+    "problem": {
+      "urgent": {"firstResponseHours": 1, "resolutionHours": 10},
+      "high": {"firstResponseHours": 2, "resolutionHours": 10},
+      "normal": {"firstResponseHours": 4, "resolutionHours": 10},
+      "low": {"firstResponseHours": 8, "resolutionHours": 30}
+    }
+  }
+}
