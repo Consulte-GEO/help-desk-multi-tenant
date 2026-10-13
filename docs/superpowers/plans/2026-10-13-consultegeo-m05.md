@@ -1,0 +1,63 @@
+# Consulte GEO M05 Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: usar superpowers:executing-plans nesta conversa; TDD por tarefa, uma revisão independente final.
+
+**Goal:** upgrade transacional, íntegro e homologado do schema Consulte GEO 0.19.0 para 0.20.0.
+
+**Architecture:** migration única criada pela CLI e compilada dos seis candidatos com receita de origem; contrato estático de catálogo e papéis estendido; cenários nativos exercitam a migration promovida.
+
+**Tech Stack:** Node22/TypeScript, pg existente, PostgreSQL17 descartável, Supabase CLI2.120.0 oficial com checksum verificado. Nenhuma dependência nova no produto.
+
+**Spec:** docs/superpowers/specs/2026-10-13-consultegeo-m05-design.md.
+
+## Global Constraints
+
+- Base392fdd2, branch codex/consultegeo-m02, PR31 draft e worktree existente.
+- Preservar doze migrations/candidatos byte a byte; adicionar a migration criada pela CLI em supabase/migrations.
+- Schema0.20.0, API/interface0.27.0; sem runtime novo, hosted, segredos, grant a pessoas ou envio real.
+- Seis componentes na ordem scope → observation → publication → checklist → workflow → configuration.
+- Tudo transacional; zero dados iniciais de negócio, rollback em falha; worker reservado sem operações de entrega.
+
+## Review Focus
+
+- Instalação parcial ou concorrente deve recusar/serializar, sem mudar marcador antecipadamente.
+- Papel existente inseguro deve recusar; papel seguro existente conserva LOGIN/credencial.
+- Dados antigos e ACL/scopes devem permanecer exatos após upgrade, inclusive recibos históricos.
+- Readiness deve rejeitar permissões por coluna/role/helper e drift de objetos, sem auto-reparo.
+- Fonte de candidato alterada não pode gerar evidência válida para a migration antiga.
+
+### Task 1 — receita e migration
+
+**Files:** scripts/consultegeo-upgrade.ts, tests/consultegeo-upgrade.test.ts, supabase/consultegeo-upgrade.manifest.json, supabase/migrations.manifest.json, nova migration da CLI.
+
+**Interfaces:** `compileConsulteGeoUpgrade(components: readonly {file:string;sha256:string;sql:string}[]): string`; `verifyConsulteGeoUpgrade(root:string): Promise<{schemaVersion:string;file:string;sha256:string}>`. Recebem somente arquivos locais qualificados e retornam SQL/recibo, sem executar SQL ou auto-reparar.
+
+- [x] Escrever negativos/positivo do compiler/verifier: seis componentes completos e ordenados, guard exato, hash/arquivo adulterado, prefixo12, versão013 e SQL esperado; observar RED.
+- [x] Gerar o arquivo vazio com CLI migration new consultegeo_m05_upgrade; registrar nome exato no ledger. Implementar transformação fechada, prólogo/epílogo transacional e receita; preencher arquivo/manifest e observar GREEN.
+- [x] Conferir check:migrations, tipos e diffs/hashes; commit.
+
+### Task 2 — readiness e homologação nativa
+
+**Files:** src/infrastructure/database-security-contract.ts, database-security.ts, postgres.ts, portal-read-store.ts; tests/m1i-readiness.test.ts e fixtures pertinentes; supabase/tests/rls.test.ts, upgrade.test.ts e cenários CG/HDN/M02/M04.
+
+**Interfaces:** contrato 0.20.0 completo; `assertDatabaseSecurity` mantém assinatura/consulta metadata; flags incluem papéis separados. Instalação dos cenários exige a migration, não fallback de candidato.
+
+- [ ] Escrever RED dos papéis e schema novo; adaptar cenários para exigir objetos promovidos. Acrescentar cenários nativos de rollback/reaplicação/seed zero/papel perigoso e captura revisável do inventário.
+- [ ] Atualizar contrato explícito e readiness/fixtures, preservando todos os checks anteriores. Provar instalação fresca + upgrade com dados antigos pelo CI original PG17; corrigir falhas pela causa; commit.
+- [ ] Rodar aplicação/tipos/contratos/build e CI integral; observar GREEN sem skips.
+
+### Task 3 — revisão e entrega
+
+**Files:** docs/141-CONSULTEGEO-UPGRADE-M05-2026-10-13.md, AGENTS.md, README.md, evidence/consultegeo-m05, evidence/homologation, entrega local M05.
+
+**Interfaces:** PR31 cumulativo em draft; report e logs do mesmo source fingerprint; pacote sobre base392fdd2 com hashes verificados.
+
+- [ ] Solicitar revisão independente do delta M05 após testes; corrigir Critical/Important com regressões e qualificar a fonte final.
+- [ ] Registrar procedimento de promoção/retorno, ausência de instalação hospedada e próximos M06/M08/M11; atualizar PR31, evidências e pacote; verificar source/hash/ZIP.
+
+## Ledger
+
+Pré-flight: branch limpa em392fdd2; M04 qualificou4360/370/184, source8e6c9170, e ambos CIs finais392fdd2 aprovados. CLI oficial2.120.0 em.local/m05-cli, checksum da release verificado; migration new --help conferido. Skill Supabase/changelog/docs consultados. Continuidade autorizada e decisões de produto delegadas: execução inline do recorte M05 acima, sem novo pedido de autorização do mesmo desenvolvimento.
+
+
+Task1: CLI criou 20261013181408_consultegeo_m05_upgrade.sql.18 negativos/positivos observados RED→GREEN; check:migrations13/schema0.20 e check:consultegeo-upgrade aprovados; typecheck aprovado após corrigir inferência dos arrays frozen. Migration gerada159934bytes/hash6fb5bf249a9ff64dfcd55cb6cca80f6f8f25af3a85f640ab4bf8c3289e321f95. CLI precisou executar fora da restrição de filesystem para seu arquivo normal de estado/telemetria, sem destino SQL remoto. Ruling: papéis existentes com direitos privados extras também recusam o upgrade; não remover concessões existentes silenciosamente — evita adotar identidades inseguras e preserva credencial/LOGIN do papel seguro.

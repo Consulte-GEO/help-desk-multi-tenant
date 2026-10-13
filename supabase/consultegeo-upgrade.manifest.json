@@ -1,0 +1,93 @@
+{
+  "format": 1,
+  "product": "CONSULTE_GEO",
+  "baseSchema": "0.19.0",
+  "targetSchema": "0.20.0",
+  "file": "20261013181408_consultegeo_m05_upgrade.sql",
+  "sha256": "6fb5bf249a9ff64dfcd55cb6cca80f6f8f25af3a85f640ab4bf8c3289e321f95",
+  "generatedBy": {
+    "tool": "Supabase CLI",
+    "version": "2.120.0",
+    "command": "supabase migration new consultegeo_m05_upgrade"
+  },
+  "qualifiedBase": {
+    "commit": "392fdd2bf3b9bafdd574dce5df66483e13127c0a",
+    "sourceSha256": "8e6c91705a7d79350247d3c550f2aabe01816c0f9a9f28778ad5e6c4ab597320"
+  },
+  "components": [
+    {
+      "file": "cg_resource_scope.sql",
+      "sha256": "6e95aaba83e9411e11addc7f734c9f28f0713b81f3756d666fe000efd7d3e3c7"
+    },
+    {
+      "file": "cg_resource_observation.sql",
+      "sha256": "b3fd7bddcdc352e738615c20eaa7377eaebe16985f262ddf7e08fab8682c1fe3"
+    },
+    {
+      "file": "cg_resource_publication.sql",
+      "sha256": "09d610deec654d5c9d52d2e08f35d85728fb78ba7dd6a7e045d77132c028593c"
+    },
+    {
+      "file": "hdn_execution_checklist.sql",
+      "sha256": "7b7baab705549e0b706fbd1aaf76cb80558e68a53784718cf7029f1f62ec77bd"
+    },
+    {
+      "file": "hdn_support_workflow.sql",
+      "sha256": "35b92d19ece3b94653f442d3396e735ec1fe391d97be4661992043ed29684979"
+    },
+    {
+      "file": "hdn_consultegeo_configuration.sql",
+      "sha256": "b6080ff019fb80b795a81f9b4e303856a290f0117a6f38d253b12784e72a5dcd"
+    }
+  ],
+  "baseline": [
+    {
+      "file": "20260915000100_restrict_existing_definer.sql",
+      "sha256": "b98618ba0c23b1f126119e159324ad4576358798d8fb6e6fb09553ffdc7f3607"
+    },
+    {
+      "file": "20260915000200_helpdesk_foundation.sql",
+      "sha256": "ede5ab9756781e396e0065c0124f5bf1c698ea53fc72aef067582221b65b7ccc"
+    },
+    {
+      "file": "20260915000300_m1_authorization.sql",
+      "sha256": "aee3c4a82c791c0519719884e2e0ad0fe15f7fbff4afe0e9f552559959ae279c"
+    },
+    {
+      "file": "20260915000400_m1_resource_limits.sql",
+      "sha256": "3448a0c925bac1477183b01858180c12bce44dd4999f23122db0bae2c2185f11"
+    },
+    {
+      "file": "20260916000500_m1_session_lifecycle.sql",
+      "sha256": "cc862fb5f5259344be73c606a94b816a5dd964915a2a7397fbdd3003c27f0a32"
+    },
+    {
+      "file": "20260916000600_support_catalog.sql",
+      "sha256": "f5c30d4fce3c7671c4b946704e57bbd0139c10936e93e48dcbc77b2c214cb979"
+    },
+    {
+      "file": "20260916000700_ticket_priority.sql",
+      "sha256": "4d8065d139c66d7256d555cac0c56a32d1a0ee027d6471bbcddcbb77399cf637"
+    },
+    {
+      "file": "20260916000800_ticket_assignment.sql",
+      "sha256": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348"
+    },
+    {
+      "file": "20260917000900_human_scope_versions.sql",
+      "sha256": "016562a019a745b8e8953aa32a232fda8b06163b02cb9ca5c40a5536fff064cd"
+    },
+    {
+      "file": "20260917001000_transaction_effects.sql",
+      "sha256": "8672037df0d7ae62593aefc865d82e6f7994d12a087f9ef40232d54b241a0d9c"
+    },
+    {
+      "file": "20260917001100_conversation_lock.sql",
+      "sha256": "14191c072a5d101ab644eeaa0dfc6cbed61dfa25a9eaaf92870ea5b413337166"
+    },
+    {
+      "file": "20261007001200_workspace_discovery.sql",
+      "sha256": "9e080628937d47ff23d27a1169e67c9464ec694522c0f4ad1337e901575fa21d"
+    }
+  ]
+}
