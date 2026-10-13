@@ -103,7 +103,16 @@ BEGIN
  'data',(CASE WHEN helpdesk_auth.is_operator(t.workspace_id,t.account_id) THEN data WHEN type='ticket.status_changed' THEN jsonb_build_object('to',data->'to') WHEN type='ticket.priority_changed' THEN jsonb_build_object('from',data->'from','to',data->'to','version',data->'version') ELSE '{}'::jsonb END)||CASE WHEN interaction IS NULL THEN '{}'::jsonb ELSE jsonb_build_object('public_interaction',interaction) END,'createdAt',helpdesk_auth.hdn_workflow_iso(created_at)) ORDER BY created_at DESC,id DESC),'[]'::jsonb) INTO answer FROM limited;
  RETURN answer;
 END $$;
-REVOKE ALL ON FUNCTION helpdesk_auth.hdn_ticket_directory(uuid),helpdesk_auth.hdn_public_messages(uuid,timestamptz,uuid,integer),helpdesk_auth.hdn_public_events(uuid,boolean,timestamptz,uuid,integer) FROM PUBLIC,anon,authenticated,helpdesk_resource_publisher,helpdesk_notification_worker;
+REVOKE ALL ON FUNCTION helpdesk_auth.hdn_ticket_directory(uuid),helpdesk_auth.hdn_public_messages(uuid,timestamptz,uuid,integer),helpdesk_auth.hdn_public_events(uuid,boolean,timestamptz,uuid,integer) FROM PUBLIC,helpdesk_resource_publisher,helpdesk_notification_worker;
+DO $m06_clients$
+DECLARE r text;signature text;
+BEGIN
+ FOREACH r IN ARRAY ARRAY['anon','authenticated','service_role','helpdesk_maintenance'] LOOP
+  IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname=r) THEN
+   FOREACH signature IN ARRAY ARRAY['hdn_ticket_directory(uuid)','hdn_public_messages(uuid,timestamptz,uuid,integer)','hdn_public_events(uuid,boolean,timestamptz,uuid,integer)'] LOOP EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.%s FROM %I',signature,r);END LOOP;
+  END IF;
+ END LOOP;
+END $m06_clients$;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_ticket_directory(uuid),helpdesk_auth.hdn_public_messages(uuid,timestamptz,uuid,integer),helpdesk_auth.hdn_public_events(uuid,boolean,timestamptz,uuid,integer) TO helpdesk_app;
 DO $m05_final$
 DECLARE role_name text;role_oid oid;role_row record;ns record;obj record;allowed boolean;

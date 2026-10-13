@@ -1,7 +1,9 @@
 import type {SqlClient, SqlPool, SqlResult} from './sql.ts';
 import {HelpdeskError} from '../domain/errors.ts';
+import {copyFormData} from '../../shared/form-rules.js';
 
 type Identity = {workspaceId:string; id:string};
+function completeIdentity(value:Identity|undefined):string{try{return value===undefined?'':JSON.stringify(copyFormData(value));}catch{throw identityChanged();}}
 /** Optional SERVER precondition, checked synchronously; never a client assertion. */
 export type TransactionAdmission = () => void;
 const identityChanged = () => new HelpdeskError(403,'transaction_identity_changed',
@@ -36,7 +38,7 @@ type ValidationState={active:boolean;rejected:boolean;identity:string};
 const transactionValidations=new WeakMap<SqlClient,ValidationState>();
 export function assertBorrowedTransactionIdentity(client:SqlClient,identity:Identity):void{
  const state=transactionValidations.get(client);
- if(!state?.active||state.identity!==JSON.stringify(identity))rejectTransactionValidation(client,identityChanged());
+ if(!state?.active||state.identity!==completeIdentity(identity))rejectTransactionValidation(client,identityChanged());
 }
 /** Mark a MANDATORY server validation as failed, then propagate the same error.
  * Catching the error in work must not let earlier staged writes commit. The runner
@@ -84,6 +86,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
  work:(client:SqlClient)=>Promise<T>, admission?:TransactionAdmission):Promise<T> {
  // Capture before waiting for the pool. A mutable caller cannot retarget app.*.
  const identityAtStart=identitySnapshot(identity);
+ const identityRecord=completeIdentity(identity); // No hooks/getters and no acquired client yet.
  let admissionFailure:{error:unknown}|undefined;
  const assertAdmission=()=>{
   if(admissionFailure)throw admissionFailure.error;
@@ -121,7 +124,7 @@ export async function runTransaction<T>(pool:SqlPool, identity:Identity|undefine
  // A driver-side failure may leave PostgreSQL's transaction usable. Remember
  // failures after promises settle, even if work catches them or uses allSettled.
  // Recovery through SAVEPOINT is not part of this unit-of-work contract.
- const validation:ValidationState={active:false,rejected:false,identity:JSON.stringify(identity)};
+ const validation:ValidationState={active:false,rejected:false,identity:identityRecord};
  const requireValidation=()=>{if(validation.rejected)throw validationRejected();};
  let statementFailed=false;
  const requireStatements=()=>{if(statementFailed)throw statementRejected();};
