@@ -1,0 +1,37 @@
+{
+  "fixture": "owned_https_synthetic_identity_and_state",
+  "checks": [
+    {
+      "check": "1440 owned fixture layout",
+      "result": "passed"
+    },
+    {
+      "check": "1440 public body and privacy via handler",
+      "result": "passed"
+    },
+    {
+      "check": "1440 same intent reconciles once",
+      "result": "passed"
+    },
+    {
+      "check": "1440 closed gate causes no mutation",
+      "result": "passed"
+    },
+    {
+      "check": "390 owned fixture layout",
+      "result": "passed"
+    },
+    {
+      "check": "390 public body and privacy via handler",
+      "result": "passed"
+    },
+    {
+      "check": "390 same intent reconciles once",
+      "result": "passed"
+    },
+    {
+      "check": "390 closed gate causes no mutation",
+      "result": "passed"
+    }
+  ]
+}

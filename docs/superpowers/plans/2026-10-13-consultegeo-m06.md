@@ -32,9 +32,9 @@
 
 **Interfaces:** `createPostgresPublicWorkflowReader(client, principal)` com messages/events paginados; `createPostgresTicketResourceDirectory(pool)` metadata bounded; PostgreSQL `hdn_public_messages(uuid,timestamptz,uuid,integer)`, `hdn_public_events(uuid,boolean,timestamptz,uuid,integer)`, `hdn_ticket_directory(uuid)`. UOW normal/emprestada usa os leitores, preservando interfaces Store/Page.
 
-- [ ] Escrever negativos de DTO/ACK/cursor/identity/privacidade e observar RED; criar arquivo CLI e baseline13, registrar nome no ledger.
-- [ ] Implementar helpers/projeção/adapters e versão/contrato, manter prefixoM05 verificado na extensão; observar GREEN focais/tipos.
-- [ ] Acrescentar/executar PG17: interações públicas por evento, legacy/dedupe/cursor/ACL/revogação/zero grants; commit.
+- [x] Escrever negativos de DTO/ACK/cursor/identity/privacidade e observar RED; criar arquivo CLI e baseline13, registrar nome no ledger.
+- [x] Implementar helpers/projeção/adapters e versão/contrato, manter prefixoM05 verificado na extensão; observar GREEN focais/tipos.
+- [x] Acrescentar/executar PG17: interações públicas por evento, legacy/dedupe/cursor/ACL/revogação/zero grants; commit.
 
 ### Task2 — handlers e runtime
 
@@ -42,16 +42,16 @@
 
 **Interfaces:** `createSupportWorkflowHttpHandler(options)`; `createConsulteGeoRuntimeHandlers({pool,authentication,rateLimiter,origin,flags,source?})`; fontes server-only com resolver+directory; runtime dispatcher recebe handler antigo somente para suas rotas, novas rotas sempre possuem dono.
 
-- [ ] Escrever RED de flags/gate/portas/ETag/key/origin/MFA/admissão e confirmação incerta; implementar composição real sem pools/transações aninhados.
-- [ ] Publicar contrato OpenAPI/capabilities de API0.28 e verificar montagem no handler Netlify, tipos/contratos/build; commit.
-- [ ] Exercitar HTTP integrado e browser próprio, CI integral original sem skips; corrigir pela causa.
+- [x] Escrever RED de flags/gate/portas/ETag/key/origin/MFA/admissão e confirmação incerta; implementar composição real sem pools/transações aninhados.
+- [x] Publicar contrato OpenAPI/capabilities de API0.28 e verificar montagem no handler Netlify, tipos/contratos/build; commit.
+- [x] Exercitar HTTP integrado e browser próprio, CI integral original sem skips; corrigir pela causa.
 
 ### Task3 — revisão e entrega
 
 **Files:** docs/142-CONSULTEGEO-RUNTIME-M06-2026-10-13.md, AGENTS/README/handoff, evidence/consultegeo-m06 e homologation, pacote local.
 
-- [ ] Revisão independente do delta; corrigir Critical/Important com negativos comprovados.
-- [ ] Qualificar a fonte final, registrar limites/origem/promoção, atualizar PR31 e pacote com hashes.
+- [x] Revisão independente do delta; corrigir Critical/Important com negativos comprovados.
+- [x] Qualificar a fonte final, registrar limites/origem/promoção, atualizar PR31 e pacote com hashes.
 
 ## Ledger
 
@@ -66,3 +66,5 @@ CI2:e5e7cd1/38464343896 app4412/4412; PG381/389. Causa: timestamp6 com últimos3
 Revisão independente única sobrea930874..3eebb33:1Important(directory sem CG),1Minor(MFA503),nenhumCritical. Final Ruling: MFA reclassificadoImportant, pois503 impede o fluxo existente de step-up e sugere retry a uma recusa403 acionável; negativo reproduziu503vs403 e fixpreserva403/zeroefeitos. Final Ruling: directory passa a exigir escopo CG atual antes de metadata; refresh do M08 deverá preceder lookup por canal privado de publicação, custo: requests recusados até snapshot atualizado. As exclusões M08/jornadaM09M10/M11/piloto são limites aceitos do incremento, sem prontidão de produção inferida. Fix pass único em andamento; negativo nativo directory acrescentado antes do fixSQL.
 
 Final fix pass: nativo RED a99b3e6/38468447046 reproduziu Missing expected rejection para directory incompleto (PG388/390; app4418/4418 eUI192/192). Agora guard CG atual é acrescentado antes da projeção metadata; mesmos negativos revogado/expirado/incompleto seguem no runner. Evidência RED bruta/hash em evidence/consultegeo-m06/regressions. Source privada/ownerADMIN confirmada e auto-review permitiu atualização restrita após checagem, sem alteração de destino ou produção.
+
+Task1 complete: SQL014/projeções/adapters/prefixo13 e catálogo97 qualificados, mesmoSQLscopedwrite/COMMIT. Task2 complete: factories reais/admissão/contrato26/browserHTTPS8 e CI integral, contagens exatas4418+390+192=5000, semfalhas/skips, commit47bee4e/fingerprintd424f1a200192c10f081c503fa99214034c01e5edd3748b9043e97eea7d64a20. Task3 complete: revisão única/fix pass ambosImportant resolvidos (directoryREDnativo→GREEN; MFA REDlocal→GREENintegral), evidência importada/rawhashverificado, relatório142/PR31draft/empacotamento. Não há minors deferred após reclassificação/solução. Não houve merge/deploy/operador remoto.
