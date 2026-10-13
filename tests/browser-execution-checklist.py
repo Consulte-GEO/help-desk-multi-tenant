@@ -110,9 +110,12 @@ try:
             assert second['attempts'][0] == second['attempts'][1]
             record('Lost acknowledgement reconciles the same key/body, without a second write')
 
-            reset('conflict')
+            # The private-directory fault also refuses GET/evidence requests.
+            # Prepare the visible revision first, then lose admission before POST.
+            reset()
             edit('grupo'); fill_evidence()
             page.get_by_role('button', name='Revisar marcação', exact=True).click()
+            assert page.request.post(base+'/_test/mode?value=conflict').ok
             page.get_by_role('button', name='Confirmar marcação', exact=True).click()
             expect(page.locator('[data-checklist-status]')).to_contain_text('Marcação recusada')
             assert counts()['writes'] == 0 and len(counts()['attempts']) == 1
