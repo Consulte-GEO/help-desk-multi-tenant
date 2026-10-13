@@ -22,7 +22,8 @@ DECLARE t helpdesk_core.tickets%rowtype;answer jsonb;expected integer;
 BEGIN
  SELECT * INTO t FROM helpdesk_core.tickets WHERE workspace_id=helpdesk_auth.workspace_id() AND id=target;
  IF NOT FOUND OR NOT coalesce(helpdesk_auth.is_human(),false) OR NOT coalesce(helpdesk_auth.has_scope(t.workspace_id,'tickets:read'),false)
- OR NOT coalesce(helpdesk_auth.can_read_ticket(t.workspace_id,t.account_id,t.product_instance_id,t.created_by),false) THEN RAISE EXCEPTION 'Denied' USING ERRCODE='42501'; END IF;
+ OR NOT coalesce(helpdesk_auth.can_read_ticket(t.workspace_id,t.account_id,t.product_instance_id,t.created_by),false)
+ OR NOT coalesce(helpdesk_auth.cg_ticket_resource_allowed(t.workspace_id,t.account_id,t.id,'tickets.read'),false) THEN RAISE EXCEPTION 'Denied' USING ERRCODE='42501'; END IF;
  SELECT jsonb_build_object('ticketId',t.id,'workspaceId',t.workspace_id,'accountId',t.account_id,'refs',
  (SELECT coalesce(jsonb_agg(jsonb_build_object('connectionId',c.id,'tenantId',b.tenant_id,'type',r.resource_type,'id',r.resource_id) ORDER BY r.resource_type COLLATE "C",r.resource_id COLLATE "C"),'[]'::jsonb)
  FROM helpdesk_core.cg_ticket_resource_refs r WHERE r.workspace_id=t.workspace_id AND r.account_id=t.account_id AND r.ticket_id=t.id)),s.expected_count

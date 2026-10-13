@@ -12,7 +12,7 @@ Devolutiva, retorno do cliente e resolução com mudança de estado têm texto p
 
 ## SQL e autorização
 
-Migration criada pela CLI adiciona três helpers privados: diretório de recursos do ticket (base relation, somente metadata interna), mensagens públicas paginadas e eventos paginados com projeção pública. Schema 0.20→0.21, quatorze migrations; preservar os treze arquivos anteriores e os seis candidatos. Sem novas tabelas ou dados automáticos. Contrato estático passa de 94 para 97 funções; permissões do publicador/worker permanecem iguais.
+Migration criada pela CLI adiciona três helpers privados: diretório de recursos do ticket (relação base + cobertura CG atual, somente metadata interna), mensagens públicas paginadas e eventos paginados com projeção pública. Schema 0.20→0.21, quatorze migrations; preservar os treze arquivos anteriores e os seis candidatos. Sem novas tabelas ou dados automáticos. Contrato estático passa de 94 para 97 funções; permissões do publicador/worker permanecem iguais.
 
 Helpers de leitura exigem workspace/ator/scope/conta/produto/ticket e escopo CG atuais, antes de ordenar/LIMIT. include_internal só vale para operador com notes.read e escopo completo de notas. Ledger nunca recebe SELECT para o app/cliente/publicador/worker. Resultados são mínimos e não são dumps de audit/command/result. Helpers são SECURITY DEFINER somente para esta projeção privada, search_path vazio e execução exclusiva do app. Admissão de migration conserva o operador/version/defaults qualificados e confere permissões antes do marcador.
 
@@ -29,3 +29,5 @@ Diretório tem limite de tempo, sinal e formato exato; não retorna refs escolhi
 TDD dos leitores/serializers, malformed ACK, cursor, dedupe, privacidade, rota/config/flag/admissão/cancelamento, ausência de origem e montagem. PG17 real comprova texto público de request_customer/customer_reply/resolve, legado, ID/revisão, ACL/revogação, notas/reasons fora da projeção, cursor e nenhuma concessão a clientes/publicador/worker. HTTP composto com stores reais no cluster próprio e navegador com fixture explicitamente sintética; provar handler/montagem sem afirmar origem/produção reais.
 
 API/interface 0.28.0 para as rotas novas e schema esperado0.21.0; OpenAPI/capabilities/fixtures acompanhados. Verificação M05 continua protegendo seu prefixo de treze migrations dentro da cadeia estendida, sem reescrever 013. CI original Linux/Node22/PG17, revisão independente final e evidências da fonte exata. Relatório142/pacote M06/PR31 atualizado. Sem e-mail, gravação no GEO, grant a pessoas, aplicação remota, merge ou deploy de produção nesta etapa. Jornada M09/M10, origem M08, operação SLA/Storage/e-mail M11 e piloto M12 permanecem seguintes.
+
+Decisão após revisão: directory exige também cg_ticket_resource_allowed antes de retornar IDs. Refresh M08 ocorre por publicação privada anterior ao lookup; snapshot vencido não fornece metadata para ampliar a seleção.
