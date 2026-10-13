@@ -19,3 +19,10 @@ export function parseConsulteGeoCustomerConfiguration(raw){try{
   return e;
  });return freezeFormData(d);
  }catch{throw Object.assign(new Error('Formulários Consulte GEO indisponíveis ou incompatíveis.'),{code:'consultegeo_customer_configuration_invalid'});}}
+/** Selectors only; caller must obtain them from the authorized server context. */
+export function parseConsulteGeoRequestContext(raw){try{
+ const c=exact(copyFormData(raw),['workspaceId','principalId','accountId','refs','coverageId']);
+ if(![c.workspaceId,c.principalId,c.accountId].every(uuid)||c.coverageId!==null&&!uuid(c.coverageId)||!Array.isArray(c.refs)||c.refs.length<1||c.refs.length>100)throw Error();
+ const keys=new Set();for(const v of c.refs){exact(v,['connectionId','tenantId','type','id']);if(!uuid(v.connectionId)||typeof v.type!=='string'||!/^[a-z][a-z0-9_]{0,31}$/.test(v.type)||[v.tenantId,v.id].some(x=>typeof x!=='string'||!x.length||x.length>256||x.trim()!==x||/[\p{Cc}]/u.test(x)))throw Error();const k=JSON.stringify([v.connectionId,v.tenantId,v.type,v.id]);if(keys.has(k)||v.connectionId!==c.refs[0].connectionId||v.tenantId!==c.refs[0].tenantId)throw Error();keys.add(k);}
+ return freezeFormData(c);
+ }catch{throw new Error('Contexto Consulte GEO indisponível.');}}

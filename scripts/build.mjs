@@ -26,3 +26,6 @@ for(const name of ['execution-checklist.js','execution-checklist-state.js','exec
 await copyFile(new URL('../shared/checklist-evidence.js',import.meta.url),new URL('../dist/shared/checklist-evidence.js',import.meta.url));
 // Optional Consulte GEO configuration editor; no publication/runtime is enabled by copying.
 for(const name of ['consultegeo-configuration.js','consultegeo-configuration.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+// M09a journey assets; catalog/source/persistence readiness still gates mounting.
+for(const name of ['consultegeo-request.js','consultegeo-request.css','consultegeo-intake-api.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+await copyFile(new URL('../shared/consultegeo-request.js',import.meta.url),new URL('../dist/shared/consultegeo-request.js',import.meta.url));

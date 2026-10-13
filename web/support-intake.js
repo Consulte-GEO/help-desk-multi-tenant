@@ -39,8 +39,8 @@ export function mountSupportIntake(root,options){const doc=root.ownerDocument,n=
   status.textContent=s.phase==='unknown'?'Confirmação desconhecida. Não abra outra intenção; concilie esta mesma solicitação.':s.phase==='confirmed'?'Solicitação registrada: '+s.receipt.protocol+'. Notificação pendente.':s.phase==='saving'?'Salvando rascunho…':s.phase==='previewing'?'Conferindo fontes e anexos…':s.phase==='sending'?'Confirmando abertura…':'';
   if(s.phase==='confirmed'||s.phase==='cleared'){subject.value='';description.value='';dynamic?.destroy();}
  }
- const state=createSupportIntakeState({...options,onChange:draw});
- dynamic=mountDynamicForm(formRoot,{schema:options.schema,answers:options.answers,chooseFiles:options.chooseFiles,chooseLookup:options.chooseLookup});
+ const state=createSupportIntakeState({...options,onChange:s=>{draw(s);options.onChange?.(s);}});
+ dynamic=mountDynamicForm(formRoot,{schema:options.schema,answers:options.answers,chooseFiles:options.chooseFiles,chooseLookup:options.chooseLookup,canEdit:()=>['editing','saved','review'].includes(state.snapshot().phase),onChange:answers=>{state.edit({answers,subject:subject.value,description:description.value,coverageId:options.coverageId??null});}});
  const sync=()=>{state.edit({answers:dynamic.draftAnswers(),subject:subject.value,description:description.value,coverageId:options.coverageId??null});};
  const safe=(f)=>()=>{try{Promise.resolve(f()).catch(()=>{if(!cleared)status.textContent='Revise os dados e as evidências antes de continuar.';});}catch{if(!cleared)status.textContent='Conclua a intenção atual antes de alterar.';}};
  buttons.save.addEventListener('click',safe(async()=>{sync();await state.save();}));buttons.preview.addEventListener('click',safe(()=>state.preview()));buttons.confirm.addEventListener('click',safe(()=>state.confirm()));buttons.reconcile.addEventListener('click',safe(()=>state.reconcile()));
