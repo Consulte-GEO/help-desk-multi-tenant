@@ -1,6 +1,6 @@
 import type {Principal,PublicMessage,TicketEvent} from '../domain/model.ts';
 import type {SqlClient,SqlPool} from './sql.ts';import type {PageWindow} from '../application/pagination.ts';
-import {uuidIdentifier,isPersistableText} from '../domain/input-values.ts';import {isCanonicalInstant} from '../../shared/instant.js';
+import {uuidIdentifier,isPersistableText} from '../domain/input-values.ts';import {isCanonicalInstant,canonicalInstant} from '../../shared/instant.js';
 import {HelpdeskError} from '../domain/errors.ts';import {formRecord} from '../domain/form-schema.ts';
 import {parseExternalResourceSelection} from '../domain/external-resource.ts';
 import {copyFormData,freezeFormData} from '../../shared/form-rules.js';
@@ -21,7 +21,7 @@ export function createPostgresPublicWorkflowReader(client:SqlClient,principal:Pr
    if(x.workspaceId!==p.workspaceId||x.ticketId!==id||ids.has(String(x.id))||!isCanonicalInstant(x.createdAt))throw fail();ids.add(String(x.id));
    if(events){if(!['ticket.created','message.created','note.created','ticket.status_changed','ticket.priority_changed','ticket.assignment_changed'].includes(x.type as string)||typeof x.customerVisible!=='boolean'||!internal&&!x.customerVisible||!x.data||typeof x.data!=='object'||Array.isArray(x.data))throw fail();const d=x.data as Record<string,unknown>;if(Object.hasOwn(d,'public_interaction')){if(x.type!=='ticket.status_changed'||x.customerVisible!==true)throw fail();publicInteraction(d.public_interaction);}}
    else if(!['customer','human_agent','integration'].includes(x.actorType as string)||!isPersistableText(x.body)||!x.body.trim()||x.body.length>24000||[...x.body].length>12000)throw fail();
-   return freezeFormData(copyFormData(x));});return rows;
+   return freezeFormData(copyFormData({...x,createdAt:canonicalInstant(x.createdAt)}));});return rows;
  }catch{return rejectTransactionValidation(client,fail());}}
  return Object.freeze({messages:async(id:string,w:PageWindow)=>await read(id,w,undefined) as PublicMessage[],events:async(id:string,internal:boolean,w:PageWindow)=>await read(id,w,internal) as TicketEvent[]});
 }
