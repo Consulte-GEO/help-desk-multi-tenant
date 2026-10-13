@@ -291,7 +291,7 @@ BEGIN
  WHEN 'close' THEN IF prior_status<>'resolved' OR length(btrim(coalesce(t->>'resolution','')))=0 THEN RAISE EXCEPTION 'Resolution required' USING ERRCODE='HDW03';END IF;next_status:='closed';kind:='closed';
  WHEN 'reopen' THEN
   IF prior_status NOT IN ('resolved','closed') THEN RAISE EXCEPTION 'State conflict' USING ERRCODE='HDW03';END IF;
-  IF stamp-coalesce((t->>'closedAt')::timestamptz,(t->>'lastEventAt')::timestamptz) > (profile->>'reopenWindowMicros')::numeric * interval '1 microsecond' THEN RAISE EXCEPTION 'Reopening window expired' USING ERRCODE='HDW10';END IF;
+  IF extract(epoch FROM clock_timestamp()-coalesce((t->>'closedAt')::timestamptz,(t->>'lastEventAt')::timestamptz))*1000000 > (profile->>'reopenWindowMicros')::numeric THEN RAISE EXCEPTION 'Reopening window expired' USING ERRCODE='HDW10';END IF;
   next_status:='open';kind:='reopened';
  WHEN 'transfer' THEN
   IF prior_status NOT IN ('triage','open','waiting_customer','waiting_internal','waiting_third_party') OR length(reason)>2000 OR reason~'[[:cntrl:]]' OR cmd->>'targetPrincipalId' IS NOT DISTINCT FROM t->>'assignedTo' THEN RAISE EXCEPTION 'Transfer conflict' USING ERRCODE='HDW03';END IF;
@@ -373,7 +373,7 @@ BEGIN
  IF NOT ARRAY['tickets:read','tickets:write']::text[] <@ helpdesk_auth.human_scopes(w,candidate) THEN RAISE EXCEPTION 'Assignee scopes denied' USING ERRCODE='HDW09';END IF;
  PERFORM 1 FROM helpdesk_auth.account_grants WHERE workspace_id=w AND account_id=a AND principal_id=candidate AND active AND role='agent' FOR SHARE;
  role_ok:=FOUND;
- IF NOT role_ok THEN PERFORM 1 FROM helpdesk_auth.workspace_memberships WHERE workspace_id=w AND principal_id=candidate AND active AND role IN ('agent','admin') FOR SHARE;role_ok:=FOUND;END IF;
+ IF NOT role_ok THEN PERFORM 1 FROM helpdesk_auth.workspace_memberships WHERE workspace_id=w AND principal_id=candidate AND active AND role='admin' FOR SHARE;role_ok:=FOUND;END IF;
  IF NOT role_ok THEN RAISE EXCEPTION 'Assignee role denied' USING ERRCODE='HDW09';END IF;
  FOREACH op IN ARRAY ARRAY['tickets.read','tickets.write'] LOOP
   SELECT g.expected_count,g.as_of,g.expires_at INTO r FROM helpdesk_auth.cg_resource_grant_sets g

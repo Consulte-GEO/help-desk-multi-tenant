@@ -3,7 +3,7 @@ import {deliveryFailure,notificationRef} from '../../domain/notification-deliver
 const endpoint='https://api.resend.com/emails';
 const invalidConfig=()=>deliveryFailure('resend_configuration_required');
 const unknown=()=>deliveryFailure('resend_delivery_unknown');
-const safeText=(s:unknown,max:number)=>typeof s==='string'&&s.length>0&&s.length<=max&&!/[\p{Cc}\p{Cs}]/u.test(s);
+const safeText=(s:unknown,max:number)=>typeof s==='string'&&s.trim().length>0&&s.length<=max&&!/[\p{Cc}\p{Cs}]/u.test(s);
 const email=(s:unknown)=>safeText(s,254)&&/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}$/.test(s as string);
 const providerId=(s:unknown)=>typeof s==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(s);
 async function responseJson(response:Response):Promise<Record<string,unknown>>{
@@ -30,9 +30,9 @@ export function createResendNotificationChannel(input:{id:string;apiKey:string;f
    let response:Response;try{response=await transport(endpoint,{method:'POST',redirect:'error',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json','Idempotency-Key':message.idempotencyKey},body:JSON.stringify({from,to:[message.to],subject:message.subject,text:message.text,html:message.html}),signal});}catch{throw unknown();}
    if(signal.aborted||response.status>=500||response.status===409)throw unknown();
    const body=await responseJson(response);if(signal.aborted)throw unknown();
-   if(response.ok&&providerId(body.id))return Object.freeze({state:'accepted',providerMessageId:(body.id as string).toLowerCase()});
+   if(response.ok&&providerId(body.id)&&Object.keys(body).length===1)return Object.freeze({state:'accepted',providerMessageId:(body.id as string).toLowerCase()});
    if(response.status===429&&body.name==='rate_limit_exceeded'&&!Object.hasOwn(body,'id'))return Object.freeze({state:'not_accepted',retryable:true,reason:'rate_limited'});
-   if([400,401,403,422].includes(response.status)&&['validation_error','missing_api_key','invalid_api_key','restricted_api_key'].includes(String(body.name))&&!Object.hasOwn(body,'id'))return Object.freeze({state:'not_accepted',retryable:false,reason:'rejected'});
+   if([400,401,403,422].includes(response.status)&&typeof body.name==='string'&&['validation_error','missing_api_key','invalid_api_key','restricted_api_key'].includes(body.name)&&!Object.hasOwn(body,'id'))return Object.freeze({state:'not_accepted',retryable:false,reason:'rejected'});
    throw unknown();
   },
   async lookup(intent,signal){if(signal.aborted)throw unknown();return evidence?await evidence(intent,signal):null;}

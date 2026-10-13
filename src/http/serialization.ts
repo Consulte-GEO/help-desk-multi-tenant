@@ -11,7 +11,7 @@ export function eventDto(p:Principal,e:TicketEvent){
  if(e.type==='ticket.assignment_changed'){
   if(!operator||e.customerVisible)throw Error('Internal assignment event not authorized');
   const {action,reason,version}=e.data;
-  if((action!=='claim'&&action!=='release')||typeof reason!=='string'||!reason.trim()||[...reason].length>2000||/[\p{Cc}\p{Cs}]/u.test(reason)||!Number.isSafeInteger(version)||Number(version)<2)throw Error('Invalid assignment event');
+  if((action!=='claim'&&action!=='release'&&action!=='transfer')||typeof reason!=='string'||!reason.trim()||[...reason].length>2000||/[\p{Cc}\p{Cs}]/u.test(reason)||!Number.isSafeInteger(version)||Number(version)<2)throw Error('Invalid assignment event');
   data={action,reason,version};
  }else if(e.type==='ticket.priority_changed'){
   const {from,to,version,reason}=e.data;
