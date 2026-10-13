@@ -1,5 +1,7 @@
 # Consulte GEO workflow e comunicação do Help Desk
 
+> Checkpoint M02/M03 preservado. A configuração/publicação M04 foi desenvolvida na mesma branch; consulte o [relatório M04](140-CONSULTEGEO-CONFIGURACAO-M04-2026-10-13.md) para o estado mais recente. As contagens e pendências abaixo descrevem este checkpoint anterior.
+
 Data: 13/10/2026. Base: `604478e2d05ed019baac6d92a9a04db236fafb82`. Branch: `codex/consultegeo-m02`. O incremento desenvolve o writer PostgreSQL M02, compatibilidades M03, política operacional Consulte GEO e o transporte Resend com a identidade do Email Kit fornecido. Instalação hospedada e atendimento operacional continuam nas etapas seguintes.
 
 Código para revisão: [PR31 em draft](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/31), direcionado a `codex/m1-reproducibilidade`. O fechamento documental não muda o fingerprint da fonte homologada.
