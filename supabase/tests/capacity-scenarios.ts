@@ -5,10 +5,12 @@ import {registerResourceAccessSqlCandidateTests} from './resource-access-scenari
 import {registerResourceScopeStoreSqlTests} from './resource-scope-store-scenarios.ts';
 import {registerResourcePublicationSqlTests} from './resource-publication-scenarios.ts';
 import {registerExecutionChecklistSqlTests} from './execution-checklist-scenarios.ts';
+import {registerSupportWorkflowSqlTests} from './support-workflow-scenarios.ts';
 export function registerCapacityTests(adminPool:()=>SqlPool){
  registerCapacityWorkloadTests(adminPool);
  registerResourceAccessSqlCandidateTests(adminPool);
  registerResourceScopeStoreSqlTests(adminPool);
  registerResourcePublicationSqlTests(adminPool);
  registerExecutionChecklistSqlTests(adminPool);
+ registerSupportWorkflowSqlTests(adminPool);
 }
