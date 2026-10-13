@@ -12,7 +12,7 @@ import type {SupportWorkflowProfile,SupportWorkflowEvent} from '../domain/suppor
 import {assertCleanAttachment,type AttachmentRecord,type SealedAttachmentObject,type AttachmentBinding} from '../domain/attachment.ts';
 import {checkedDraft,type DraftForm,type DraftDirectory} from './form-draft.ts';
 import {runIntakeTransaction,intakeFailure as fail,safeIntakeError,type ScopedDraftStore,type IntakeExpiry} from './intake-context.ts';
-export type IntakeProfile=Readonly<{profileVersionId:string;status:'published';form:FormVersion;productInstanceId:string;serviceCode:string;impactField:string;priorityPolicy:unknown;workflow:SupportWorkflowProfile;initialState:'new'|'triage';approvalRequired:boolean;sla:PublishedSlaPolicy}>;
+export type IntakeProfile=Readonly<{profileVersionId:string;status:'published';form:FormVersion;productInstanceId:string;serviceCode:string;impactField:string;priorityPolicy:unknown;fixedPriority?:Ticket['priority'];workflow:SupportWorkflowProfile;initialState:'new'|'triage';approvalRequired:boolean;sla:PublishedSlaPolicy}>;
 export type IntakeRequest=Readonly<{draftId:string;expectedDraftRevision:number;subject:string;description:string;coverageId:string|null;previewHash?:string}>;
 export type SupportRequestReceipt=Readonly<{ticketId:string;protocol:string;sequence:string;workspaceId:string;accountId:string;actorId:string;requesterId:string;draftId:string;draftRevision:number;version:1;profileVersionId:string;formId:string;formVersion:number;priority:Ticket['priority'];createdAt:string;notification:'pending';replayed:boolean}>;
 export type IntakeBundle=Readonly<{draftId:string;resourceScope:ResourceScopeContext;ticket:Ticket;requesterId:string;participants:readonly {principalId:string;role:'requester'}[];protocol:string;sequence:string;form:Readonly<Record<string,unknown>>;workflow:Readonly<Record<string,unknown>>;event:SupportWorkflowEvent;delegation:Readonly<Record<string,unknown>>|null;clocks:ReturnType<typeof projectClocks>;audit:Readonly<Record<string,unknown>>;outbox:Readonly<Record<string,unknown>>}>;
@@ -45,7 +45,7 @@ function parseInput(raw:unknown,commit:boolean):IntakeRequest{
 }
 function validateProfile(raw:IntakeProfile,d:DraftForm):IntakeProfile{
  const p=copyFormData(raw) as IntakeProfile,s=parseFormVersion(p.form);
- if(p.status!=='published'||s.status!=='published'||s.id!==d.formId||s.version!==d.formVersion||requestHash(s)!==d.schemaHash||p.workflow.status!=='published'||p.workflow.versionId!==p.profileVersionId||p.sla.profileVersionId!==p.profileVersionId||!['new','triage'].includes(p.initialState)||typeof p.approvalRequired!=='boolean'||p.approvalRequired&&p.initialState!=='triage'||typeof p.impactField!=='string'||typeof p.serviceCode!=='string'||!p.serviceCode.length||p.serviceCode.length>80)throw fail('form_schema_changed',409);
+ if(p.status!=='published'||s.status!=='published'||s.id!==d.formId||s.version!==d.formVersion||requestHash(s)!==d.schemaHash||p.workflow.status!=='published'||p.workflow.versionId!==p.profileVersionId||p.sla.profileVersionId!==p.profileVersionId||!['new','triage'].includes(p.initialState)||typeof p.approvalRequired!=='boolean'||p.approvalRequired&&p.initialState!=='triage'||p.fixedPriority!==undefined&&!['low','normal','high','urgent'].includes(p.fixedPriority)||typeof p.impactField!=='string'||typeof p.serviceCode!=='string'||!p.serviceCode.length||p.serviceCode.length>80)throw fail('form_schema_changed',409);
  uuidIdentifier(p.productInstanceId);return freezeFormData(p);
 }
 function coverageFrom(raw:Coverage[],scope:ResourceScopeContext,p:IntakeProfile,id:string|null,at:string):Coverage{
@@ -63,9 +63,9 @@ export function createSupportIntake(o:{pool:SqlPool;resolver:ReturnType<typeof c
  function beneficiary(p:Principal,proof:unknown):IntakeBeneficiary{if(!o.beneficiaries)throw fail('intake_delegation_denied',403);return o.beneficiaries.inspect(p,proof);}
  async function checkBeneficiary(tx:SupportIntakeTransaction,scope:ResourceScopeContext,expires:IntakeExpiry,b:IntakeBeneficiary|null){if(!b)return;expires(b.expiresAt,'intake_delegation_denied');if(scope.accountId!==b.accountId||externalResourceSelectionKey(scope.refs)!==externalResourceSelectionKey(b.refs)||!tx.lockBeneficiary||requestHash(copyFormData(await tx.lockBeneficiary(b,scope)))!==requestHash(b))throw fail('intake_delegation_denied',403);}
 
- async function inScope<T>(p:Principal,input:IntakeRequest,work:(tx:SupportIntakeTransaction,scope:ResourceScopeContext,expires:IntakeExpiry)=>Promise<T>,signal?:AbortSignal){
+ async function inScope<T>(p:Principal,input:IntakeRequest,work:(tx:SupportIntakeTransaction,scope:ResourceScopeContext,expires:IntakeExpiry)=>Promise<T>,signal?:AbortSignal,admission?:()=>void){
   const located=await o.directory.locateDraft(p,input.draftId,signal);if(!located)throw fail('draft_not_found',404);const refs=parseExternalResourceSelection(located.refs);
-  return runIntakeTransaction({...o,clock},p,refs,'tickets.write',async(tx,scope,expires)=>{if(scope.accountId!==located.accountId)throw fail('draft_forbidden',403);return work(tx,scope,expires);},signal);
+  return runIntakeTransaction({...o,clock},p,refs,'tickets.write',async(tx,scope,expires)=>{if(scope.accountId!==located.accountId)throw fail('draft_forbidden',403);return work(tx,scope,expires);},signal,admission);
  }
  async function prepare(tx:SupportIntakeTransaction,p:Principal,input:IntakeRequest,scope:ResourceScopeContext,expires:IntakeExpiry,b:IntakeBeneficiary|null=null){
   const d=checkedDraft(await tx.readDraft(input.draftId),p,input.draftId,scope.refs,clock(),expires);
@@ -84,18 +84,18 @@ export function createSupportIntake(o:{pool:SqlPool;resolver:ReturnType<typeof c
     if(!r||r.queryHash!==queryHash||r.status!=='verified')throw fail('intake_evidence_invalid',409);expires(r.expiresAt as string,'intake_evidence_invalid');evidence.push({path:requirement.path,id:value,hash:queryHash});
    }
   }
-  const priority=derivePriority(values.answers[profile.impactField],profile.priorityPolicy),at=clock();
+  const priority=profile.fixedPriority??derivePriority(values.answers[profile.impactField],profile.priorityPolicy),at=clock();
   const candidate:Ticket={id:d.id,workspaceId:p.workspaceId,accountId:d.accountId,productInstanceId:profile.productInstanceId,serviceCode:profile.serviceCode,createdBy:p.id,assignedTo:null,subject:input.subject,description:input.description,status:profile.initialState,priority,version:1,coverageId:cover.id,contractVersionId:cover.contractVersionId,contractSnapshot:{contractId:cover.contractId,version:cover.contractVersion,policy:cover.policy},createdAt:at,updatedAt:at};
   const event:SupportWorkflowEvent={ticketId:d.id,workspaceId:p.workspaceId,profileVersionId:profile.profileVersionId,sequence:1,at,type:'created',actorId:p.id,actorKind:'customer',from:null,to:profile.initialState};
   const clocks=projectClocks({...candidate,profileVersionId:profile.profileVersionId,slaPolicyVersionId:profile.sla.versionId},[event],profile.sla,at);
   const previewHash=requestHash({draftId:d.id,draftRevision:d.revision,answers:values.answers,subject:input.subject,description:input.description,profile,coverage:cover,evidence,...(b?{beneficiary:{beneficiaryId:b.beneficiaryId,accountId:b.accountId,refsKey:externalResourceSelectionKey(b.refs),revision:b.revision}}:{})});
   return {d,profile,values,cover,evidence,priority,at,candidate,event,clocks,previewHash};
  }
- async function preview(person:Principal,raw:unknown,b:IntakeBeneficiary|null,signal?:AbortSignal){try{
+ async function preview(person:Principal,raw:unknown,b:IntakeBeneficiary|null,signal?:AbortSignal,admission?:()=>void){try{
   const p=freezeFormData(copyFormData(person)) as Principal,input=parseInput(raw,false);
-  return await inScope(p,input,async(tx,scope,expires)=>{await checkBeneficiary(tx,scope,expires,b);const v=await prepare(tx,p,input,scope,expires,b);return freezeFormData({valid:true,commitAuthorized:false,draftId:v.d.id,draftRevision:v.d.revision,previewHash:v.previewHash,subject:input.subject,priority:v.priority,clocks:v.clocks,attachmentCount:v.evidence.length});},signal);
+  return await inScope(p,input,async(tx,scope,expires)=>{await checkBeneficiary(tx,scope,expires,b);const v=await prepare(tx,p,input,scope,expires,b);return freezeFormData({valid:true,commitAuthorized:false,draftId:v.d.id,draftRevision:v.d.revision,previewHash:v.previewHash,subject:input.subject,priority:v.priority,clocks:v.clocks,attachmentCount:v.evidence.length});},signal,admission);
  }catch(e){throw safeIntakeError(e);}}
- async function create(person:Principal,raw:unknown,key:string,requestId:string,b:IntakeBeneficiary|null,signal?:AbortSignal):Promise<SupportRequestReceipt>{try{
+ async function create(person:Principal,raw:unknown,key:string,requestId:string,b:IntakeBeneficiary|null,signal?:AbortSignal,admission?:()=>void):Promise<SupportRequestReceipt>{try{
   const p=freezeFormData(copyFormData(person)) as Principal,input=parseInput(raw,true);keyOf(key);uuidIdentifier(requestId);const hash=requestHash({workspaceId:p.workspaceId,actorId:p.id,input,...(b?{beneficiaryId:b.beneficiaryId}:{})});
   return await inScope(p,input,async(tx,scope,expires)=>{
    await checkBeneficiary(tx,scope,expires,b);const requesterId=b?.beneficiaryId??p.id;
@@ -111,12 +111,12 @@ export function createSupportIntake(o:{pool:SqlPool;resolver:ReturnType<typeof c
    const result:SupportRequestReceipt=freezeFormData({ticketId:id,protocol,sequence,workspaceId:p.workspaceId,accountId:scope.accountId,actorId:p.id,requesterId,draftId:v.d.id,draftRevision:v.d.revision,version:1,profileVersionId:v.profile.profileVersionId,formId:v.d.formId,formVersion:v.d.formVersion,priority:v.priority,createdAt:v.at,notification:'pending',replayed:false});
    const bundle:IntakeBundle=freezeFormData({draftId:v.d.id,resourceScope:scope,ticket,requesterId,participants:b?[{principalId:requesterId,role:'requester'}]:[],protocol,sequence,form:{formId:v.d.formId,formVersion:v.d.formVersion,schemaHash:v.d.schemaHash,answers:v.values.answers,publicAnswers:v.values.publicAnswers,evidence:v.evidence},workflow:{profileVersionId:v.profile.profileVersionId,slaPolicyVersionId:v.profile.sla.versionId,calendarVersionId:v.profile.sla.calendar.versionId,approval:v.profile.approvalRequired?'pending':'not_required'},event,delegation:b?{type:'request.delegated',actorId:p.id,beneficiaryId:requesterId,beneficiaryRevision:b.revision,ticketId:id,at:v.at}:null,clocks:{...v.clocks,ticketId:id},audit:{id:eventId,actorId:p.id,requestId,at:v.at,action:'support.created',draftId:v.d.id,ticketId:id},outbox:{id:eventId,workspaceId:p.workspaceId,accountId:scope.accountId,ticketId:id,type:'support.created',version:1,requestId,createdAt:v.at}});
    await tx.commitRequest(bundle,v.d.revision,{key,hash,result});return result;
-  },signal);
+  },signal,admission);
  }catch(e){throw safeIntakeError(e);}}
  return Object.freeze({
-  previewSupportRequest:(p:Principal,r:unknown,s?:AbortSignal)=>preview(p,r,null,s),
-  createSupportRequest:(p:Principal,r:unknown,k:string,id:string,s?:AbortSignal)=>create(p,r,k,id,null,s),
-  previewOnBehalfRequest:(p:Principal,r:unknown,proof:unknown,s?:AbortSignal)=>Promise.resolve().then(()=>preview(p,r,beneficiary(p,proof),s)),
-  createOnBehalfRequest:(p:Principal,r:unknown,proof:unknown,k:string,id:string,s?:AbortSignal)=>Promise.resolve().then(()=>create(p,r,k,id,beneficiary(p,proof),s))
+  previewSupportRequest:(p:Principal,r:unknown,s?:AbortSignal,a?:()=>void)=>preview(p,r,null,s,a),
+  createSupportRequest:(p:Principal,r:unknown,k:string,id:string,s?:AbortSignal,a?:()=>void)=>create(p,r,k,id,null,s,a),
+  previewOnBehalfRequest:(p:Principal,r:unknown,proof:unknown,s?:AbortSignal,a?:()=>void)=>Promise.resolve().then(()=>preview(p,r,beneficiary(p,proof),s,a)),
+  createOnBehalfRequest:(p:Principal,r:unknown,proof:unknown,k:string,id:string,s?:AbortSignal,a?:()=>void)=>Promise.resolve().then(()=>create(p,r,k,id,beneficiary(p,proof),s,a))
  });
 }

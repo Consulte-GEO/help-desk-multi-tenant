@@ -23,7 +23,7 @@ export function checkedDraft(raw:DraftForm|null,p:Principal,id:string,refs:reado
 }
 export function createFormDraftService(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:DraftDirectory;createStore:(c:SqlClient,p:Principal)=>FormDraftTransaction;draftTtlSeconds:number;clock?:()=>string}){
  const clock=o.clock??(()=>new Date().toISOString());if(!Number.isSafeInteger(o.draftTtlSeconds)||o.draftTtlSeconds<1||o.draftTtlSeconds>604800)throw fail();
- async function saveFormDraft(person:Principal,raw:unknown,expectedRevision:number,signal?:AbortSignal):Promise<DraftForm>{try{
+ async function saveFormDraft(person:Principal,raw:unknown,expectedRevision:number,signal?:AbortSignal,admission?:()=>void):Promise<DraftForm>{try{
   const p=freezeFormData(copyFormData(person)) as Principal,input=formRecord(raw,['id','accountId','refs','formId','formVersion','answers']),id=uuidIdentifier(input.id),accountId=uuidIdentifier(input.accountId),refs=parseExternalResourceSelection(input.refs),formId=uuidIdentifier(input.formId),formVersion=formRevision(input.formVersion),expected=formRevision(expectedRevision,0),answers=copyFormData(input.answers) as Record<string,unknown>;
   if(!answers||typeof answers!=='object'||Array.isArray(answers)||expected===Number.MAX_SAFE_INTEGER)throw fail('invalid_intake_input',400);
   const sourceHash=requestHash({id,accountId,refsKey:externalResourceSelectionKey(refs),formId,formVersion,answers});
@@ -37,11 +37,11 @@ export function createFormDraftService(o:{pool:SqlPool;resolver:ReturnType<typeo
    // Incomplete ordinary values may be saved. Saving never means they are valid for submission.
    const d:DraftForm=freezeFormData({id,ownerId:p.id,workspaceId:p.workspaceId,accountId,refs,formId,formVersion,schemaHash:requestHash(schema),revision:expected+1,expiresAt:current?.expiresAt??formatMicros(instantMicros(clock())+BigInt(o.draftTtlSeconds)*1000000n),answers,status:'editing',ticketId:null,sourceHash});
    expires(d.expiresAt,'draft_expired');await tx.saveDraft(d,expected);return d;
-  },signal);
+  },signal,admission);
  }catch(e){throw safeIntakeError(e);}}
- async function readFormDraft(person:Principal,rawId:string,signal?:AbortSignal){try{
+ async function readFormDraft(person:Principal,rawId:string,signal?:AbortSignal,admission?:()=>void){try{
   const p=freezeFormData(copyFormData(person)) as Principal,id=uuidIdentifier(rawId),located=await o.directory.locateDraft(p,id,signal);if(!located)throw fail('draft_not_found',404);const refs=parseExternalResourceSelection(located.refs);
-  return await runIntakeTransaction({...o,clock},p,refs,'tickets.read',async(tx,scope,expires)=>{const d=checkedDraft(await tx.readDraft(id),p,id,refs,clock(),expires);if(scope.accountId!==d.accountId||located.accountId!==d.accountId)throw fail('draft_forbidden',403);return d;},signal);
+  return await runIntakeTransaction({...o,clock},p,refs,'tickets.read',async(tx,scope,expires)=>{const d=checkedDraft(await tx.readDraft(id),p,id,refs,clock(),expires);if(scope.accountId!==d.accountId||located.accountId!==d.accountId)throw fail('draft_forbidden',403);return d;},signal,admission);
  }catch(e){throw safeIntakeError(e);}}
  return Object.freeze({saveFormDraft,readFormDraft});
 }
