@@ -26,7 +26,7 @@ export function consulteGeoFormId(id:string,action:string,priority:string):strin
 }
 function date(x:unknown):string{if(typeof x!=='string'||!/^(?!0000)\d{4}-\d{2}-\d{2}$/.test(x)||new Date(x+'T00:00:00Z').toISOString().slice(0,10)!==x)throw configurationFailure();return x;}
 export function parseConsulteGeoConfiguration(raw:unknown):ConsulteGeoConfiguration{try{
- const d=formRecord(raw,['schema','product','id','version','service','title','calendar','entries']);if(d.schema!==1||d.product!=='CONSULTE_GEO')throw configurationFailure();
+ const d=formRecord(raw,['schema','product','id','version','service','title','calendar','entries']);if(d.schema!==1||d.product!=='CONSULTE_GEO'||Buffer.byteLength(JSON.stringify(d),'utf8')>65536)throw configurationFailure();
  const id=uuidIdentifier(d.id),version=number(d.version,1,2147483647),service=d.service as ConsulteGeoService,expected=consulteGeoConfigurationActions(service),title=text(d.title,200);
  const c=formRecord(d.calendar,['startDate','endDate','holidays']),startDate=date(c.startDate),endDate=date(c.endDate),days=(Date.parse(endDate)-Date.parse(startDate))/86400000;
  if(days<1||days>366||!Array.isArray(c.holidays)||c.holidays.length>366)throw configurationFailure();const holidays=c.holidays.map(date);

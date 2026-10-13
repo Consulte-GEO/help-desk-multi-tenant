@@ -1,6 +1,7 @@
 import type {Principal} from '../domain/model.ts';
 import {requestHash} from '../domain/canonical.ts';import {uuidIdentifier} from '../domain/input-values.ts';import {isCanonicalInstant,compareInstants} from '../../shared/instant.js';
 import {formRecord,formRevision} from '../domain/form-schema.ts';import {copyFormData,freezeFormData,type FormRegistry} from '../../shared/form-rules.js';
+import {configurationObject} from '../domain/support-configuration.ts';
 import {createBusinessCalendar} from '../domain/business-calendar.ts';
 import {assertAdministrativeAssurance,type VerifiedAdministrativeAssurance} from '../infrastructure/authentication.ts';
 import {parseAdminWorkspace,bindAdministrativeCapabilities,requireAdministrativeCapability,type AdministrativeCapability} from '../domain/admin-policy.ts';
@@ -42,7 +43,7 @@ export function createConsulteGeoConfigurationAdministration(o:{store:ConsulteGe
  async function authorized<T>(p:Principal,proof:VerifiedAdministrativeAssurance,cap:AdministrativeCapability,work:(tx:ConsulteGeoConfigurationTransaction,state:{workspaceId:string;revision:number;records:ConsulteGeoConfigurationRecord[]},check:()=>void)=>Promise<T>){
   assertAdministrativeAssurance(p,proof);let bound:{close():void}|undefined;
   const check=()=>{assertAdministrativeAssurance(p,proof);if(bound)requireAdministrativeCapability(p,cap,proof);};
-  try{return await o.store.transaction(p,check,async tx=>{check();bound=bindAdministrativeCapabilities(p,proof,parseAdminWorkspace(await tx.readWorkspace()),clock);check();const raw=formRecord(await tx.readState(),['workspaceId','revision','records']);if(raw.workspaceId!==p.workspaceId||!Array.isArray(raw.records)||raw.records.length>500)throw unavailable();const records=raw.records.map(parseConsulteGeoConfigurationRecord);if(records.some(r=>r.workspaceId!==p.workspaceId)||new Set(records.map(r=>r.id+':'+r.version)).size!==records.length)throw unavailable();return work(tx,{workspaceId:p.workspaceId,revision:formRevision(raw.revision),records},check);});}finally{bound?.close();}
+  try{return await o.store.transaction(p,check,async tx=>{check();bound=bindAdministrativeCapabilities(p,proof,parseAdminWorkspace(await tx.readWorkspace()),clock);check();const raw=configurationObject(await tx.readState(),['workspaceId','revision','records']);if(raw.workspaceId!==p.workspaceId||!Array.isArray(raw.records)||raw.records.length>500||Reflect.ownKeys(raw.records).length!==raw.records.length+1)throw unavailable();const records=Array.from({length:raw.records.length},(_,i)=>{const descriptor=Object.getOwnPropertyDescriptor(raw.records,String(i));if(!descriptor||!Object.hasOwn(descriptor,'value')||!descriptor.enumerable)throw unavailable();return parseConsulteGeoConfigurationRecord(descriptor.value);});if(records.some(r=>r.workspaceId!==p.workspaceId)||new Set(records.map(r=>r.id+':'+r.version)).size!==records.length)throw unavailable();return work(tx,{workspaceId:p.workspaceId,revision:formRevision(raw.revision),records},check);});}finally{bound?.close();}
  }
  function receipt(raw:unknown,p:Principal,expected?:{revision:number;id:string;version:number;status:string}):ConsulteGeoConfigurationReceipt{
   const x=formRecord(raw,['workspaceId','actorId','revision','record','auditId','replayed']),record=parseConsulteGeoConfigurationRecord(x.record);
@@ -65,7 +66,7 @@ export function createConsulteGeoConfigurationAdministration(o:{store:ConsulteGe
   });
  }catch(e){const code=e&&typeof e==='object'?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined;if(prepared&&!(typeof code==='string'&&Object.hasOwn(codes,code)))throw fail('consultegeo_configuration_outcome_unknown',503);throw safe(e);}}
  async function read(p:Principal,proof:VerifiedAdministrativeAssurance,id:string,version:number){try{uuidIdentifier(id);formRevision(version);return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{const record=s.records.find(r=>r.id===id&&r.version===version);if(!record)throw fail('consultegeo_configuration_not_found',404);check();return {revision:s.revision,record};});}catch(e){throw safe(e);}}
- async function list(p:Principal,proof:VerifiedAdministrativeAssurance){try{return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{check();return {revision:s.revision,records:s.records};});}catch(e){throw safe(e);}}
+ async function list(p:Principal,proof:VerifiedAdministrativeAssurance){try{return await authorized(p,proof,'forms.read',async(_tx,s,check)=>{check();return {revision:s.revision,records:s.records.map(({definition,artifacts,...metadata})=>({...metadata,service:definition.service,title:definition.title}))};});}catch(e){throw safe(e);}}
  return Object.freeze({execute,read,list});
 }
 /** For a trusted, locked intake snapshot; not a grant or a customer-facing reader. */
