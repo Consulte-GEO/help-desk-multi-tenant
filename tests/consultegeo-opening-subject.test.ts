@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {intakeFixture} from './helpers/intake-fixture.ts';
+test('opening preview applies the same three Unicode character minimum as core ticket persistence',async()=>{const f=await intakeFixture();await f.save();const input=f.input();await assert.rejects(f.intake.previewSupportRequest(f.p,{...input,subject:'😀a'}),{code:'invalid_intake_input'});});

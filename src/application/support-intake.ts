@@ -39,7 +39,7 @@ export interface SupportIntakeTransaction extends ScopedDraftStore{
 const keyOf=(v:string)=>{if(typeof v!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(v))throw fail('invalid_intake_input',400);return v;};
 function parseInput(raw:unknown,commit:boolean):IntakeRequest{
  const r=formRecord(raw,['draftId','expectedDraftRevision','subject','description','coverageId',...(commit?['previewHash']:[])]);
- for(const [key,max] of [['subject',200],['description',12000]] as const)if(typeof r[key]!=='string'||(r[key] as string).trim().length<(key==='subject'?3:1)||(r[key] as string).length>max)throw fail('invalid_intake_input',400);
+ for(const [key,max] of [['subject',200],['description',12000]] as const)if(typeof r[key]!=='string'||Array.from((r[key] as string).trim()).length<(key==='subject'?3:1)||(r[key] as string).length>max)throw fail('invalid_intake_input',400);
  if(commit&&(typeof r.previewHash!=='string'||!/^[a-f0-9]{64}$/.test(r.previewHash)))throw fail('invalid_intake_input',400);
  return freezeFormData({draftId:uuidIdentifier(r.draftId),expectedDraftRevision:formRevision(r.expectedDraftRevision),subject:r.subject as string,description:r.description as string,coverageId:r.coverageId===null?null:uuidIdentifier(r.coverageId),...(commit?{previewHash:r.previewHash as string}:{})});
 }
