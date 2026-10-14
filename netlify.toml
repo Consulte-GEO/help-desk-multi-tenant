@@ -7,6 +7,16 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["pg"]
+[[redirects]]
+  from = "/wiki"
+  to = "https://wiki-consultegeo.netlify.app/wiki/"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/wiki/*"
+  to = "https://wiki-consultegeo.netlify.app/wiki/:splat"
+  status = 200
+  force = true
 [[headers]]
   for = "/*"
   [headers.values]
