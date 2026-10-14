@@ -38,10 +38,10 @@ $$;
 -- Context is compared with current native rows, never treated as a bearer credential.
 -- Every RPC repeats this check, including after waits and at deferred COMMIT validation.
 CREATE FUNCTION helpdesk_auth.hdni_lock_scope(ctx jsonb) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
-DECLARE w uuid:=helpdesk_auth.workspace_id();who uuid:=helpdesk_auth.actor_id();a uuid;binding_uuid uuid;conn uuid;tenant text;op text;r record;x jsonb;refs jsonb:=ctx->'refs';n int;
+DECLARE w uuid:=helpdesk_auth.workspace_id();who uuid:=helpdesk_auth.actor_id();a uuid;binding_uuid uuid;conn uuid;tenant text;op text;r record;ref_value jsonb;refs jsonb:=ctx->'refs';n int;
 BEGIN
  IF NOT coalesce(helpdesk_auth.hdn_cfg_object(ctx,ARRAY['principalId','workspaceId','accountId','bindingId','bindingRevision','accessRevision','manifestFingerprint','operation','asOf','expiresAt','refs']),false)
- OR ctx->>'workspaceId' IS DISTINCT FROM w::text OR ctx->>'principalId' IS DISTINCT FROM who::text OR NOT coalesce(helpdesk_auth.is_human(),false) THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
+ OR EXISTS(SELECT 1 FROM jsonb_each(ctx) e WHERE e.key<>'refs' AND jsonb_typeof(e.value)<>'string') OR ctx->>'workspaceId' IS DISTINCT FROM w::text OR ctx->>'principalId' IS DISTINCT FROM who::text OR NOT coalesce(helpdesk_auth.is_human(),false) THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
  a:=(ctx->>'accountId')::uuid;binding_uuid:=(ctx->>'bindingId')::uuid;op:=ctx->>'operation';
  PERFORM pg_advisory_xact_lock_shared(hashtextextended('helpdesk-human-scopes:'||w::text||':'||who::text,0));
  PERFORM 1 FROM helpdesk_auth.principals WHERE id=who AND active AND kind='human' FOR SHARE;IF NOT FOUND THEN RAISE EXCEPTION 'Actor denied' USING ERRCODE='HDI01';END IF;
@@ -52,10 +52,10 @@ BEGIN
  OR NOT coalesce(helpdesk_auth.has_account(w,a),false) OR jsonb_typeof(refs) IS DISTINCT FROM 'array' THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
  n:=jsonb_array_length(refs);IF n NOT BETWEEN 1 AND 100 THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
  conn:=(refs->0->>'connectionId')::uuid;tenant:=refs->0->>'tenantId';
- FOR x IN SELECT value FROM jsonb_array_elements(refs) LOOP
-  IF NOT coalesce(helpdesk_auth.hdn_cfg_object(x,ARRAY['connectionId','tenantId','type','id']),false) OR x->>'connectionId' IS DISTINCT FROM conn::text OR x->>'tenantId' IS DISTINCT FROM tenant
-  OR jsonb_typeof(x->'type') IS DISTINCT FROM 'string' OR x->>'type' !~ '^[a-z][a-z0-9_]{0,31}$'
-  OR NOT helpdesk_auth.hdni_resource_text(x->>'id') OR NOT helpdesk_auth.hdni_resource_text(x->>'tenantId') THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
+ FOR ref_value IN SELECT value FROM jsonb_array_elements(refs) LOOP
+  IF NOT coalesce(helpdesk_auth.hdn_cfg_object(ref_value,ARRAY['connectionId','tenantId','type','id']),false) OR EXISTS(SELECT 1 FROM jsonb_each(ref_value) e WHERE jsonb_typeof(e.value)<>'string') OR ref_value->>'connectionId' IS DISTINCT FROM conn::text OR ref_value->>'tenantId' IS DISTINCT FROM tenant
+  OR jsonb_typeof(ref_value->'type') IS DISTINCT FROM 'string' OR ref_value->>'type' !~ '^[a-z][a-z0-9_]{0,31}$'
+  OR NOT helpdesk_auth.hdni_resource_text(ref_value->>'id') OR NOT helpdesk_auth.hdni_resource_text(ref_value->>'tenantId') THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
  END LOOP;
  IF (SELECT count(DISTINCT value) FROM jsonb_array_elements(refs))<>n THEN RAISE EXCEPTION 'Duplicate selection denied' USING ERRCODE='HDI01';END IF;
  SELECT c.product_instance_id,o.binding_revision,o.access_revision,o.manifest_fingerprint,g.as_of,g.expires_at,g.expected_count INTO r
@@ -67,7 +67,7 @@ BEGIN
  OR (ctx->>'asOf')::timestamptz IS DISTINCT FROM r.as_of OR (ctx->>'expiresAt')::timestamptz IS DISTINCT FROM r.expires_at
  OR NOT coalesce(helpdesk_auth.product_allowed(w,r.product_instance_id),false)
  OR (SELECT count(*) FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation)=(w,a,binding_uuid,who,op))<>r.expected_count
- OR EXISTS(SELECT 1 FROM jsonb_array_elements(refs) x WHERE NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.resource_type,g.resource_id)=(w,a,b,who,op,x->>'type',x->>'id'))) THEN RAISE EXCEPTION 'Scope changed' USING ERRCODE='HDI01';END IF;
+ OR EXISTS(SELECT 1 FROM jsonb_array_elements(refs) x WHERE NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.resource_type,g.resource_id)=(w,a,binding_uuid,who,op,x->>'type',x->>'id'))) THEN RAISE EXCEPTION 'Scope changed' USING ERRCODE='HDI01';END IF;
  RETURN ctx; -- only after native comparison; preserves canonical resolver timestamps/order.
 EXCEPTION WHEN invalid_text_representation OR datetime_field_overflow THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';
 END$$;
@@ -135,7 +135,9 @@ DECLARE d helpdesk_core.hdni_drafts%rowtype;ctx jsonb;
 BEGIN
  SELECT * INTO d FROM helpdesk_core.hdni_drafts WHERE workspace_id=helpdesk_auth.workspace_id() AND id=target AND owner_id=helpdesk_auth.actor_id();IF NOT FOUND THEN RETURN NULL;END IF;
  SELECT jsonb_build_object('principalId',helpdesk_auth.actor_id(),'workspaceId',d.workspace_id,'accountId',d.account_id,'bindingId',b.id,'bindingRevision',o.binding_revision,'accessRevision',o.access_revision,'manifestFingerprint',o.manifest_fingerprint,'operation','tickets.read','asOf',helpdesk_auth.hdn_workflow_iso(o.as_of),'expiresAt',helpdesk_auth.hdn_workflow_iso(o.expires_at),'refs',d.document->'refs') INTO ctx
- FROM helpdesk_auth.cg_resource_bindings b JOIN helpdesk_auth.cg_resource_observations o ON (o.workspace_id,o.account_id,o.binding_id,o.principal_id,o.operation)=(b.workspace_id,b.account_id,b.id,d.owner_id,'tickets.read')
+ FROM helpdesk_auth.cg_resource_bindings b
+ JOIN helpdesk_auth.cg_resource_grant_sets g ON (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation)=(b.workspace_id,b.account_id,b.id,d.owner_id,'tickets.read') AND g.active
+ JOIN helpdesk_auth.cg_resource_observations o ON (o.workspace_id,o.account_id,o.binding_id,o.principal_id,o.operation,o.grant_revision,o.access_revision,o.as_of,o.expires_at,o.expected_count)=(g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.revision,g.source_revision,g.as_of,g.expires_at,g.expected_count)
  WHERE (b.workspace_id,b.account_id,b.connection_id,b.tenant_id)=(d.workspace_id,d.account_id,(d.document->'refs'->0->>'connectionId')::uuid,d.document->'refs'->0->>'tenantId');
  PERFORM helpdesk_auth.hdni_lock_scope(ctx);IF d.expires_at<=clock_timestamp() THEN RAISE EXCEPTION 'Draft expired' USING ERRCODE='HDI06';END IF;
  RETURN jsonb_build_object('accountId',d.account_id,'refs',d.document->'refs');
