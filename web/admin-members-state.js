@@ -45,13 +45,13 @@ export function createMemberAdminController(options){
  function cancelDialog(){if(destroyed||state.busy||state.uncertain)return false;state.dialog=null;emit();return true;}
  async function submit(){
   if(!pending||state.busy||destroyed)return false;
-  const token=generation,intent=pending;active=new AbortController();state.busy=true;state.message='Enviando solicitação…';emit();
+  const token=generation,intent=pending,reconciling=state.uncertain;active=new AbortController();state.busy=true;state.message='Enviando solicitação…';emit();
   let message='';
   try{
    const response=await options.request(intent.path,{method:intent.method,headers:{...intent.headers},body:intent.body,signal:active.signal});
    if(token!==generation||destroyed)return false;
    if(!response.ok){
-    if(response.status>=500){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a solicitação antes de iniciar outra.';}
+    if(response.status>=500||reconciling){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a solicitação antes de iniciar outra.';}
     else{pending=null;state.uncertain=false;state.dialog=null;clearRows();state.message='Solicitação recusada. Atualize a lista e suas permissões antes de tentar novamente.';}
     return false;
    }

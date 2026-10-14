@@ -27,9 +27,9 @@ export function createReviewState(options){let context=freezeFormData(copyFormDa
    preview=freezeFormData(copyFormData(r));draft=command;phase='review';
   }catch{if(generation===epoch){preview=null;draft=null;phase='error';throw Error('Recarregue e confira o rascunho.');}}finally{controller.abort();if(active===controller)active=null;if(generation===epoch)change();}
  }
- async function send(){const generation=epoch,saved=intent,controller=new AbortController();active=controller;phase='submitting';change();
+ async function send(){const generation=epoch,saved=intent,reconciling=phase==='unknown',controller=new AbortController();active=controller;phase='submitting';change();
   try{const result=await options.api.commit(saved.op,saved.payload,saved.key,controller.signal);if(generation!==epoch)return;
-   if(result?.kind==='rejected'){phase='error';intent=null;challenge=null;preview=null;draft=null;return;}
+   if(result?.kind==='rejected'){if(reconciling){phase='unknown';return;}phase='error';intent=null;challenge=null;preview=null;draft=null;return;}
    const r=result?.value;if(result?.kind!=='confirmed'||r?.ticketId!==context.ticketId||r.version!==context.version+1||r.formRevision!==context.formRevision+(saved.op==='revision'?1:0)||r.notification!=='pending')throw Error();
    receipt=freezeFormData({ticketId:r.ticketId,version:r.version,formRevision:r.formRevision,notification:'pending'});intent=null;challenge=null;preview=null;draft=null;phase='confirmed';
   }catch{if(generation===epoch)phase='unknown';}finally{controller.abort();if(active===controller)active=null;if(generation===epoch)change();}

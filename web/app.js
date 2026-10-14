@@ -160,7 +160,7 @@ async function older(kind){
 }
 async function detail(id,{navigate=false}={}){
  // Navigation never discards a request still in flight or an unresolved creation.
- if(navigate&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
+ if(navigate&&id!==s.ticket?.id&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
  const uxRead=inboxUX?.beginDetail(id,navigate);
  // Lock controls while the current GET and required conversation are being refreshed.
  s.actions=null;s.notesUnavailable=false;
@@ -254,6 +254,7 @@ function renderAssignment(){
  if(draft){try{$('assignment-reason').value=JSON.parse(draft).reason;}catch{$('assignment-status').textContent='Rascunho inválido. Reabra o chamado.';}}
  else $('assignment-reason').value='';
  $('claim-ticket').disabled=busy||!s.actions?.claim;$('release-ticket').disabled=busy||!s.actions?.release;$('assignment-reload').disabled=busy;
+ $('assignment-reason').disabled=mutations.unresolved('assignment');
 }
 function editAssignment(action,rebase=false){
  if(!s.ticket)return;let previous=null;try{previous=JSON.parse(mutations.draft('assignment'));}catch{}
@@ -273,7 +274,7 @@ $('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.v
   $('assignment-status').textContent=d.action==='claim'?'Atendimento assumido. Registro somente no histórico interno.':'Atendimento liberado. Nenhuma permissão de acesso foi modificada.';
   await detail(t.id);if(mutations.current(op))await list();
  }catch(error){
-  if(mutations.finish(op,false).current||mutations.current(op)){
+  if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op)){
    const conflict=error.status===412||error.code==='assignment_conflict'||error.code==='assignment_release_forbidden';
    $('assignment-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':conflict?'Responsabilidade ou versão alterada. Atualize o chamado e revise antes de confirmar novamente.':(error.status===503||!Number.isInteger(error.status))?'Resultado ainda não confirmado. Não crie outra operação: repita sem alterar os campos ou atualize o chamado para verificar.':error.message;
    $('assignment-reload').hidden=!conflict;
@@ -292,6 +293,7 @@ function renderPriority(){
  if(draft){try{const d=JSON.parse(draft);$('ticket-priority').value=d.priority;$('priority-reason').value=d.reason;}catch{$('priority-status').textContent='Rascunho de prioridade inválido. Reabra o chamado.';}}
  else{$('ticket-priority').value=t.priority;$('priority-reason').value='';}
  $('save-priority').disabled=mutations.busy('priority');
+ $('ticket-priority').disabled=$('priority-reason').disabled=mutations.unresolved('priority');
 }
 function editPriority(){if(!s.ticket)return;mutations.edit('priority',JSON.stringify({priority:$('ticket-priority').value,reason:$('priority-reason').value,version:s.ticket.version}));}
 $('ticket-priority').onchange=editPriority;$('priority-reason').oninput=editPriority;
@@ -304,7 +306,7 @@ $('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   $('priority-status').textContent=draft.priority===t.priority?'A prioridade já era a selecionada. Nenhuma alteração foi registrada.':'Prioridade salva. Motivo registrado somente no histórico interno.';
   await detail(t.id);if(mutations.current(op))await list();
  }catch(error){
-  if(mutations.finish(op,false).current||mutations.current(op)){
+  if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op)){
    $('priority-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':error.status===412?'Outro atendimento modificou este chamado. Atualize a versão, revise a prioridade e confirme novamente.':(error.status===503||!Number.isInteger(error.status))?'Não foi possível confirmar a gravação. Repita sem alterar os campos para reutilizar a mesma chave ou atualize o chamado antes de decidir.':error.message;
    $('priority-reload').hidden=error.status!==412;
   }
@@ -322,15 +324,16 @@ function renderComposer(){
  $('message-form').hidden=!publicAllowed&&!internalAllowed;
  $('message-body').value=mutations.draft(s.mode);
  const enabled=s.mode==='internal'?internalAllowed:publicAllowed;
- $('message-body').disabled=!enabled;
+ $('message-body').disabled=!enabled||mutations.unresolved(s.mode);
  $('send-message').disabled=!enabled||mutations.busy(s.mode)||!s.ticket;
  $('transition').disabled=mutations.busy('transition')||!s.ticket||!a?.transitions.length;
+ $('next-status').disabled=$('transition-reason').disabled=mutations.unresolved('transition');
  $('message-form').classList.toggle('internal',s.mode==='internal');
  for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===s.mode);
  $('composer-label').textContent=s.mode==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';
  $('message-body').placeholder=s.mode==='internal'?'Escreva uma nota interna para a equipe…':'Escreva uma resposta para esta conversa…';
  $('visibility-help').textContent=s.mode==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';
- $('send-message').textContent=s.mode==='internal'?'Salvar nota interna':'Enviar resposta';
+ $('send-message').textContent=mutations.unresolved(s.mode)?'Conciliar envio anterior':s.mode==='internal'?'Salvar nota interna':'Enviar resposta';
 }
 function mode(value){s.mode=value;renderComposer();}
 
@@ -362,7 +365,8 @@ async function loadCatalog(){
  try{const page=await api('/support-contexts?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(!catalog.current(op))return;catalog.accept(op,page);renderCatalog();}
  catch(error){if(catalog.fail(op))renderCatalog();}
 }
-async function startCreate(){resetOpening();$('create-dialog').showModal();openingUX?.open();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
+async function startCreate(){
+ if(ticketMutationBlocked()){notice('Conclua ou recupere o envio atual antes de abrir outro chamado.',true);return;}resetOpening();$('create-dialog').showModal();openingUX?.open();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
 $('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
 $('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);
 $('create-form').addEventListener('input',e=>{s.createKey=crypto.randomUUID();if(e.target.id!=='coverage-choice')$('coverage-label').hidden=true;});
@@ -414,7 +418,7 @@ $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   const result=mutations.finish(op,true);if(!result.current)return;renderComposer();
   await detail(id);
   if(mutations.current(op))notice(channel==='internal'?'Nota salva apenas para a equipe.':'Resposta adicionada à conversa. Sem envio de e-mail nesta versão.');
- }catch(error){if(mutations.finish(op,false).current||mutations.current(op))throw error;}
+ }catch(error){if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op))throw error;}
  finally{renderComposer();}
 });};
 $('transition').onclick=()=>run(async()=>{
@@ -424,12 +428,12 @@ $('transition').onclick=()=>run(async()=>{
  mutations.edit('transition',JSON.stringify({...body,version:t.version}));
  const op=mutations.begin('transition');if(!op)return;renderComposer();
  try{
-  await post('/tickets/'+t.id+'/transitions',body,op.key,{'if-match':'"'+t.version+'"'});
+  const original=JSON.parse(op.body);await post('/tickets/'+t.id+'/transitions',{to:original.to,reason:original.reason},op.key,{'if-match':'"'+original.version+'"'});
   if(!mutations.finish(op,true).current)return;
   if($('transition-reason').value===body.reason)$('transition-reason').value='';
   await list();if(!mutations.current(op))return;await detail(t.id);
   if(mutations.current(op))notice('Estado atualizado com controle de versão.');
- }catch(error){if(mutations.finish(op,false).current||mutations.current(op))throw error;}
+ }catch(error){if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op))throw error;}
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
@@ -469,7 +473,9 @@ const securityPanel=createSecurityStatusPanel({getSession:()=>humanSession,getEp
 if(ADVANCED_ACCESS){ // Consulta da conta e cadastro de MFA preservados.
 $('security-status').onclick=()=>run(securityPanel.open);$('security-status-login').onclick=()=>run(securityPanel.open);$('refresh-security').onclick=()=>run(securityPanel.refresh);$('close-security').onclick=securityPanel.clear;
 }
-function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel));}
+function outcomeUnknown(error){return error.requestSent!==false&&(!Number.isInteger(error.status)||error.status>=500||error.status===408);}
+function ticketMutationBlocked(){return ['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
+function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||ticketMutationBlocked();}
 const enrollmentPanel=createMfaEnrollmentPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,blocked:workspaceChangeBlocked,onResult:message=>$('login-status').textContent=message,elements:{title:$('mfa-enrollment-title'),description:$('mfa-enrollment-description'),label:$('mfa-enrollment-label'),dialog:$('mfa-enrollment-dialog'),start:$('start-mfa-enrollment'),confirm:$('confirm-mfa-enrollment'),factor:$('mfa-enrollment-factor'),code:$('mfa-enrollment-code'),secret:$('mfa-enrollment-secret'),qr:$('mfa-enrollment-qr'),provision:$('mfa-provision'),status:$('mfa-enrollment-status')}});
 if(ADVANCED_ACCESS){
 $('add-mfa').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));$('add-mfa-login').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));

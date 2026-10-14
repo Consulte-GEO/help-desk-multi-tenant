@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 async function moduleApi(){const path='../web/access-feedback.js';return import(path).catch((e:any)=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});}
+test('UX10 login distinguishes verified identity without authorized access',async()=>{const m=await moduleApi();assert.match(m.loginErrorText('forbidden'),/acesso.*não (?:foi )?autorizado/i);assert.doesNotMatch(m.loginErrorText('forbidden'),/senha/i);});
 test('UX08 access feedback exports pure mapping functions',async()=>{const m=await moduleApi();assert.equal(typeof m.loginErrorText,'function');assert.equal(typeof m.accessPhase,'function');});
 for(const code of ['invalid_login','invalid_credentials','login_failed','auth_rate_limited','membership_required','simple_mfa_required','simple_workspace_required','auth_unavailable','auth_response_invalid','session_rejected'])test('UX08 known sanitized login code '+code,async()=>{const m=await moduleApi();assert.equal(typeof m.loginErrorText,'function');const x=m.loginErrorText(code);assert.equal(typeof x,'string');assert.ok(x.length>15&&x.length<320);assert.ok(!x.includes(code));});
 for(const unknown of ['toString','__proto__','constructor','<img src=x onerror=alert(1)>','hd_person_PRIVATE_TOKEN',null,0,{},undefined])test('UX08 unknown codes never reflect input '+String(unknown),async()=>{const m=await moduleApi();assert.equal(typeof m.loginErrorText,'function');assert.equal(m.loginErrorText(unknown),'Não foi possível entrar. Confira seus dados e tente novamente.');});

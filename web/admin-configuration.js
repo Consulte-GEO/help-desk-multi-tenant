@@ -35,9 +35,9 @@ export function createConfigurationController(o){
  function setField(name,value){if(destroyed||state.busy||state.uncertain||!state.dialog||!configurationForms[state.kind].fields.includes(name))return false;if(booleanFields.includes(name)?typeof value!=='boolean':value!==null&&typeof value!=='string')return false;state.dialog.data[name]=name==='validUntil'&&value===''?null:value;return true;}
  const setReason=value=>{if(state.dialog&&!state.busy&&!state.uncertain&&typeof value==='string')state.dialog.reason=value;};
  async function send(){
-  if(!pending||state.busy||destroyed)return false;const intention=pending,token=generation;state.busy=true;active=new AbortController();emit();let success=false;
+  if(!pending||state.busy||destroyed)return false;const intention=pending,token=generation,reconciling=state.uncertain;state.busy=true;active=new AbortController();emit();let success=false;
   try{const r=await o.request(intention.path,{method:intention.method,headers:{...intention.headers},body:intention.body,signal:active.signal});if(token!==generation||destroyed)return false;
-   if(!r.ok){if(r.status>=500){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a mesma solicitação.';}else{pending=null;state.uncertain=false;state.dialog=null;clear();state.message='Solicitação recusada. Atualize a lista antes de iniciar outra.';}return false;}
+   if(!r.ok){if(r.status>=500||reconciling){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a mesma solicitação.';}else{pending=null;state.uncertain=false;state.dialog=null;clear();state.message='Solicitação recusada. Atualize a lista antes de iniciar outra.';}return false;}
    const v=await r.json();if(token!==generation||destroyed)return false;const item=record(v.record,intention.kind,audience.workspaceId);
    if(v.workspace_id!==audience.workspaceId||v.actor_id!==audience.principalId||!positive(v.revision)||!uuid.test(v.audit_id)||typeof v.replayed!=='boolean'||intention.targetId&&item.id!==intention.targetId)throw Error();
    pending=null;state.uncertain=false;state.dialog=null;state.message='Configuração registrada. O atendimento não foi liberado por esta ação.';success=true;return true;

@@ -98,7 +98,7 @@ export function mountSupportIntake(root,options){
  function validate(){
   const issues=[];
   for(const [f,min,max] of [[subject,3,200],[description,1,12000]]){
-   const text=f.input.value,invalid=text.trim().length<min||text.length>max||/[\u0000\p{Cs}]/u.test(text);
+   const text=f.input.value,invalid=Array.from(text.trim()).length<min||text.length>max||/[\u0000\p{Cs}]/u.test(text);
    f.input.setAttribute('aria-invalid',String(invalid));f.error.textContent=invalid?`Informe ${f.label.toLowerCase()} válido, de ${min} a ${max} caracteres.`:'';
    if(invalid)issues.push(f);
   }

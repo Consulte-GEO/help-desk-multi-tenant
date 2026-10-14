@@ -72,11 +72,11 @@ export function mountFormEditor(root,options){
  }
  async function send(){
   if(typeof options.submit!=='function'){phase='unavailable';status.textContent='Catálogo não conectado ao armazenamento validado.';update();return;}
-  const generation=epoch;phase='sending';status.textContent='Registrando a operação uma única vez…';update();
+  const generation=epoch,reconciling=phase==='unknown';phase='sending';status.textContent='Registrando a operação uma única vez…';update();
   try{
    const result=await options.submit(intent);if(epoch!==generation)return;
    if(result?.state==='confirmed'){phase='refresh_required';intent=null;reason.input.value='';status.textContent='Operação confirmada pelo catálogo. Atualize a versão pela página antes da próxima alteração.';}
-   else if(result?.state==='rejected'){phase='idle';intent=null;status.textContent='Operação recusada. Consulte a revisão atual.';}
+   else if(result?.state==='rejected'&&!reconciling){phase='idle';intent=null;status.textContent='Operação recusada. Consulte a revisão atual.';}
    else{phase='unknown';status.textContent='Confirmação desconhecida. Concilie a mesma intenção.';}
   }catch{if(epoch===generation){phase='unknown';status.textContent='Confirmação desconhecida. Concilie a mesma intenção.';}}
   finally{if(epoch===generation){update();if(phase==='unknown')reconcileButton.focus();else{status.setAttribute('tabindex','-1');status.focus();}}}

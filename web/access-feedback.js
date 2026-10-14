@@ -6,6 +6,7 @@ const messages=Object.freeze({
  login_failed:'Não foi possível confirmar o acesso. Confira seu e-mail e sua senha.',
  auth_rate_limited:'Houve muitas tentativas de acesso. Aguarde antes de tentar novamente.',
  membership_required:'Seu acesso a esta operação não foi confirmado. Procure o administrador.',
+ forbidden:'Seu acesso a esta operação não foi autorizado. Procure o administrador.',
  simple_mfa_required:'Esta conta exige autenticação adicional e não pode usar o acesso simples. Procure o administrador.',
  simple_workspace_required:'É necessário definir uma única operação para usar o acesso simples. Procure o administrador.',
  auth_unavailable:'O serviço de acesso está indisponível no momento. Tente novamente mais tarde.',

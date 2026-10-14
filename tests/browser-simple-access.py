@@ -144,7 +144,7 @@ with sync_playwright() as p:
     context,page,errors,posts=ready(browser)
     page.route('**/v1/me',lambda r:r.fulfill(status=403,content_type='application/json',body=json.dumps({'code':'forbidden','detail':'Acesso não autorizado.'})))
     password_login(page)
-    expect(page.locator('#login-status')).to_contain_text('Acesso não autorizado')
+    expect(page.locator('#login-status')).to_contain_text('acesso a esta operação não foi autorizado')
     expect(page.locator('#app')).to_be_hidden()
     expect(page.locator('#login-screen')).to_be_visible()
     assert page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
