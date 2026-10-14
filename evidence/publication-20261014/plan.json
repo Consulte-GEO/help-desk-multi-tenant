@@ -5,7 +5,7 @@
   "project": "xaelbntjnvztznnpcvtm",
   "base_branch": "codex/m1-reproducibilidade",
   "pull_request": 31,
-  "method": "existing Git/CD; sequential exact qualified migrations before compatible code",
+  "method": "existing Git/CD; current source with closed authentication-only compatibility on qualified schema0.19; full schema promotion deferred",
   "source": "a2760af4011cd2a72099a9f03b299097a960748f",
   "before_schema": "0.19.0",
   "target_schema": "0.23.0",

@@ -1,0 +1,22 @@
+{
+  "status": "deferred",
+  "applied_migrations": 0,
+  "hosted_schema": "0.19.0",
+  "hosted_migrations": 12,
+  "hosted_private_tables": 25,
+  "all_attempts_rolled_back": true,
+  "reason": "PG17 non-super CREATEROLE automatically grants ADMIN membership from bootstrap superuser; current qualified service boundary forbids any membership; provider postgres cannot revoke the bootstrap grant.",
+  "reference": "https://www.postgresql.org/docs/17/role-attributes.html",
+  "attempts": [
+    {"method":"MCP apply_migration","count":2,"code":"invalid_request_state","database_changed":false},
+    {"method":"CLI db push","code":"HDU01","database_changed":false},
+    {"method":"CLI Management API with same-transaction history registration","code":"HDU06","database_changed":false},
+    {"method":"isolated NOLOGIN service role preparation","code":"P0001","database_changed":false}
+  ],
+  "publication_method": "Existing Git/CD with current code and UX10; exact former qualified schema0.19 authentication contract only while business/admin/workflow/intake all closed.",
+  "local_restricted_probe": "not_executed: connector masks existing secret runtime binding; no credential requested, changed or fallback identity used",
+  "full_runtime_preflight": "continues to require schema0.23; pending schema promotion remains explicit",
+  "business_operations_enabled": false,
+  "real_origin_m08": "deferred by user",
+  "real_email_delivery_enabled": false
+}
