@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: draft handler saves with exact path ID and If-Match, exposes only the public draft DTO
+ok 1 - draft handler saves with exact path ID and If-Match, exposes only the public draft DTO
+  ---
+  duration_ms: 49.1126
+  type: 'test'
+  ...
+# Subtest: draft handler rejects missing precondition, wrong origin, method and query without a save
+ok 2 - draft handler rejects missing precondition, wrong origin, method and query without a save
+  ---
+  duration_ms: 1.7514
+  type: 'test'
+  ...
+# Subtest: closing gate blocks catalogue and drafts before authentication
+ok 3 - closing gate blocks catalogue and drafts before authentication
+  ---
+  duration_ms: 0.5649
+  type: 'test'
+  ...
+# Subtest: catalogue accepts POST only and never adopts selectors as caller identity
+ok 4 - catalogue accepts POST only and never adopts selectors as caller identity
+  ---
+  duration_ms: 1.3919
+  type: 'test'
+  ...
+# Subtest: MFA authentication refusal remains 403 mfa_required on catalogue and both draft methods
+ok 5 - MFA authentication refusal remains 403 mfa_required on catalogue and both draft methods
+  ---
+  duration_ms: 4.3572
+  type: 'test'
+  ...
+# Subtest: readiness accepts a fully compatible catalogue report
+ok 6 - readiness accepts a fully compatible catalogue report
+  ---
+  duration_ms: 0.9662
+  type: 'test'
+  ...
+# Subtest: readiness rejects schema CREATE or missing USAGE
+ok 7 - readiness rejects schema CREATE or missing USAGE
+  ---
+  duration_ms: 0.6138
+  type: 'test'
+  ...
+# Subtest: readiness rejects wrong table with unchanged count
+ok 8 - readiness rejects wrong table with unchanged count
+  ---
+  duration_ms: 0.1609
+  type: 'test'
+  ...
+# Subtest: readiness rejects credential SELECT or blanket UPDATE
+ok 9 - readiness rejects credential SELECT or blanket UPDATE
+  ---
+  duration_ms: 0.1787
+  type: 'test'
+  ...
+# Subtest: readiness rejects column-only credential SELECT or context UPDATE
+ok 10 - readiness rejects column-only credential SELECT or context UPDATE
+  ---
+  duration_ms: 0.1665
+  type: 'test'
+  ...
+# Subtest: readiness rejects latent client table/function access
+ok 11 - readiness rejects latent client table/function access
+  ---
+  duration_ms: 0.1737
+  type: 'test'
+  ...
+# Subtest: readiness rejects missing helper or unexpected overload
+ok 12 - readiness rejects missing helper or unexpected overload
+  ---
+  duration_ms: 0.1787
+  type: 'test'
+  ...
+# Subtest: readiness rejects maintenance helper executable by app
+ok 13 - readiness rejects maintenance helper executable by app
+  ---
+  duration_ms: 0.1745
+  type: 'test'
+  ...
+# Subtest: readiness rejects unsafe definer search_path or owner
+ok 14 - readiness rejects unsafe definer search_path or owner
+  ---
+  duration_ms: 1.4163
+  type: 'test'
+  ...
+# Subtest: readiness rejects disabled or replaced deferred invariant
+ok 15 - readiness rejects disabled or replaced deferred invariant
+  ---
+  duration_ms: 0.6063
+  type: 'test'
+  ...
+# Subtest: readiness rejects missing or unvalidated constraint
+ok 16 - readiness rejects missing or unvalidated constraint
+  ---
+  duration_ms: 0.245
+  type: 'test'
+  ...
+# Subtest: readiness rejects missing/invalid uniqueness index
+ok 17 - readiness rejects missing/invalid uniqueness index
+  ---
+  duration_ms: 0.1852
+  type: 'test'
+  ...
+# Subtest: readiness rejects missing/replaced/permissive policy
+ok 18 - readiness rejects missing/replaced/permissive policy
+  ---
+  duration_ms: 0.1688
+  type: 'test'
+  ...
+# Subtest: readiness rejects RLS off or replication mode wrong
+ok 19 - readiness rejects RLS off or replication mode wrong
+  ---
+  duration_ms: 0.2112
+  type: 'test'
+  ...
+# Subtest: incomplete catalogue reports cannot silently default to safe
+ok 20 - incomplete catalogue reports cannot silently default to safe
+  ---
+  duration_ms: 1.8356
+  type: 'test'
+  ...
+# Subtest: NULL and textual booleans are not approvals
+ok 21 - NULL and textual booleans are not approvals
+  ---
+  duration_ms: 2.1814
+  type: 'test'
+  ...
+# Subtest: failed readiness response never embeds catalogue identifiers
+ok 22 - failed readiness response never embeds catalogue identifiers
+  ---
+  duration_ms: 0.4679
+  type: 'test'
+  ...
+# Subtest: catalogue query uses developer-owned parameters and only pg_catalog metadata
+ok 23 - catalogue query uses developer-owned parameters and only pg_catalog metadata
+  ---
+  duration_ms: 1.4378
+  type: 'test'
+  ...
+# Subtest: schema contract has explicit least privileges and excludes administrative helper execution
+ok 24 - schema contract has explicit least privileges and excludes administrative helper execution
+  ---
+  duration_ms: 0.6512
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 441.1176

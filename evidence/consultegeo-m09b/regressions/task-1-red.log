@@ -1,0 +1,96 @@
+✖ M09b maps an actual published form to fixed priority/workflow/calendar/SLA without synthetic impact (2.5304ms)
+✖ M09b mapping rejects draft, foreign form/version/product and incompatible service before use (1.114ms)
+✖ M09b intake can open a published fixed-priority form without deriving priority from customer text (28.3394ms)
+✖ M09b malformed fixed priority cannot fall back to a customer-controlled classification (4.0545ms)
+✖ M09b admission changed during a draft write prevents COMMIT and all draft effects (1.3965ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2265.7513
+
+✖ failing tests:
+
+test at tests\consultegeo-intake-profile.test.ts:3:1
+✖ M09b maps an actual published form to fixed priority/workflow/calendar/SLA without synthetic impact (2.5304ms)
+  AssertionError [ERR_ASSERTION]: M09b pinned profile missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at api (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:2:190)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:3:126)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\consultegeo-intake-profile.test.ts:4:1
+✖ M09b mapping rejects draft, foreign form/version/product and incompatible service before use (1.114ms)
+  AssertionError [ERR_ASSERTION]: M09b pinned profile missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at api (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:2:190)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:4:119)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\consultegeo-intake-profile.test.ts:5:1
+✖ M09b intake can open a published fixed-priority form without deriving priority from customer text (28.3394ms)
+  Error [HelpdeskError]: Não foi possível confirmar a solicitação. Confira a revisão e o estado dos dados.
+      at intakeFailure (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/src/application/intake-context.ts:6:68)
+      at safeIntakeError (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/src/application/intake-context.ts:25:247)
+      at preview (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/src/application/support-intake.ts:97:18)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:5:273)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    status: 503,
+    code: 'intake_unavailable'
+  }
+
+test at tests\consultegeo-intake-profile.test.ts:6:1
+✖ M09b malformed fixed priority cannot fall back to a customer-controlled classification (4.0545ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:6:193)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'form_schema_changed' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\consultegeo-intake-profile.test.ts:7:1
+✖ M09b admission changed during a draft write prevents COMMIT and all draft effects (1.3965ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-profile.test.ts:7:215)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'release_gate_closed' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

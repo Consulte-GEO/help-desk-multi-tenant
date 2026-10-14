@@ -1,61 +1,31 @@
-**Ajuste de execução:** M09b qualifica catálogo + GET/PUT de rascunho. Protocolo/prévia/abertura/snapshot/outbox passam para M09c conforme spec revisada. Task1 concluída; Task2 executa duas tabelas e leitores/CAS/audit; Task3 monta três operações opcionais e entrega. Nenhum writer parcial será exposto.
+# Consulte GEO M09b — plano executado
 
-# Consulte GEO M09b Implementation Plan
+Execução inline com superpowers:executing-plans; uma revisão independente final. Spec: docs/superpowers/specs/2026-10-13-consultegeo-m09b-design.md.
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans. Execução inline com uma revisão final independente.
+Escopo ajustado e comunicado: M09b qualifica catálogo autorizado e GET/PUT de rascunho; abertura, protocolo, snapshot, recibo e event/outbox seguem M09c. Custo: uma nova qualificação antes de montar o envio. Não existe writer parcial de ticket nesta entrega.
 
-**Goal:** Catálogo autorizado e rascunho/prévia/abertura duráveis no PostgreSQL, ligados à configuração publicada.
+## Task1 — perfil publicado e admissão (concluída)
 
-**Architecture:** Resolver CG e contexto SQL exatos; fábrica de perfil M04; helpers privados e cliente transacional emprestado. Runtime gated, origem ausente recusa.
+- [x] Perfil M04 publicado fornece prioridade e SLA fixos, sem impacto sintético.
+- [x] Admissão atravessa resolver e transação; não cancela uma confirmação de COMMIT já recebida.
+- [x] Casos negativos observados e implementação validada;49/49 focais, tipos aprovados; commit180a38d.
 
-**Tech Stack:** Node22/TypeScript, pg8.16.3, PostgreSQL17, CLI Supabase2.120.0, Web Request/Response, CI original.
+## Task2 — catálogo e stores nativos (concluída)
 
-**Spec:** `docs/superpowers/specs/2026-10-13-consultegeo-m09b-design.md`.
+- [x] CLI criou migration15; prefixo14 e seis candidatos M05 preservados.
+- [x] Catálogo público após contexto humano/conta/produto/serviço/obras atual e completo.
+- [x] Dono, conta, obras, formulário, versão e expiração fixados; CAS/replay, auditoria atômica, locks consistentes.
+- [x] Tabelas privadas ENABLE/FORCE RLS, sem direitos diretos; parser obrigatório sticky e cliente emprestado sem escape.
+- [x] SQL/driver diagnosticados por42P01/42703/22P02; tipos dos seletores preservam strings, sem coerção.
+- [x] Fonte atual no directory; controle real da definição anterior com rollback demonstra recusa, versão atual retoma.
+- [x] PostgreSQL17 original403/403; contrato50/112/42/269/38 confrontado com inventário nativo.
 
-## Global Constraints
+## Task3 — HTTP/runtime e entrega (concluída)
 
-- Base785fa2d; preservar14migrations e candidatos M05. Schema0.22/API0.29, flag intakefalse.
-- Novo GEO real não é simulado; server construction only; nenhum grant/seed/pool privilegiado no produto.
-- Catálogo antes de LIMIT confirma conjunto completo; histórico/draft preserva versão imutável.
-- Sem lookup/file qualificado, abertura que exige evidência recusa.
-- SQL/receipt/CAS/checks compartilham transação; erro obrigatório sticky; sem retry automático.
+- [x] Três operações adicionadas ao OpenAPI0.29 (29total); flagsfalse, HTTPS, auth/MFA, taxa e admissão atéCOMMIT.
+- [x] Origem ausente recusa e envio não passa ao legado; sem montagem fake de anexos/on-behalf.
+- [x] MFA403 preservada, RED→GREEN; uma revisão final e rodada única de correções, semCritical/Important pendentes.
+- [x] CI original38493917973 integral:4487/403/206, zero fail/skip/cancel; fonteb4a6c90, fingerprint5b6636ac.
+- [x] Relatório144, seislogs originais, inventário e regressões preservados; PR31 permanece draft. Pacote incremental será conferido por SHA256.
 
-## Review Focus
-
-- App SQL arbitrário ou body com contexto válido de outra pessoa/conta não produz efeito.
-- Contexto revogado/expirado durante espera nega metadata/receipt/COMMIT.
-- Troca de versão/config/calendar/coverage em rascunho ou replay não altera o snapshot original.
-- ACK ou efeito parcialmente suprimido/contraditório força rollback, inclusive quando capturado.
-- Gate/cancelamento com COMMIT perdido não libera nova intenção nem declara confirmação.
-
-### Task 1: Perfil publicado e admissão
-
-**Files:** `src/application/consultegeo-intake-profile.ts`, `support-intake.ts`, `form-draft.ts`, `intake-context.ts`, testes respectivos.
-
-**Interfaces:** produz IntakeProfile fixedPriority da entrada e política SLA fixada, sem campo impacto sintético. Admissão opcional atravessa resolver/transaction/store; Task2 implementa portas.
-
-- [ ] Negativos antes: draft/corrupt/versão/priority/coverage, gate/cancel em esperas, fixedPriority inválida.
-- [ ] Executar RED, implementar mínimo, GREEN; preservar perfis genéricos antigos.
-- [ ] Commit com logs/ledger.
-
-### Task 2: Migration e lojas SQL
-
-**Files:** migrationCLI15, `consultegeo-intake-store.ts`, catálogo application, contratos schema/security e baselines, suítePG17.
-
-**Interfaces:** lockScope(ctx), profile/form, draft CRUD/CAS, protocol reservation/receipt/commit usam RPCs com ctx validado. SQL consome somente contexto derivado do resolver; snapshot/effects em uma transação. Task3 monta factories.
-
-- [ ] Escrever negativos Node/PG17 e preservar RED; gerar arquivo comCLI.
-- [ ] Implementar helpers/tabelas/guards/ACL explícitos, parser sticky e snapshot pinning; atualizar metadata/manifest sem sobrescrever prefixo.
-- [ ] Executar testes/CI até GREEN; provar rollback/concurrency/replay/isolation.
-- [ ] Commit e ledger com resultado real.
-
-### Task 3: HTTP/runtime e entrega
-
-**Files:** handler catálogo/intake, runtime/config/Function flags, OpenAPI/versões, testesHTTP/runtime/browser adequados; docs144/evidence/pacote.
-
-**Interfaces:** cinco operações, gate/source/origin, taxas/admissão atéCOMMIT; on-behalf/attachments indisponíveis. FrontendM09a permanece compatível.
-
-- [ ] RED dos novos mounts/sourceausente/flags/admissão/métodos/origin/IfMatch/key.
-- [ ] Registrar factories reais e OpenAPI, sem fake authority. GREEN tipos/build/contracts/focais.
-- [ ] CI integral original, revisão fresh-context e único fix pass TDD; canonical/evidências exatas.
-- [ ] Relatório/pacote/hash e PR31 draft. Sem merge/deploy/instalação remota.
+M09c: abertura atômica com protocolo, referência CG selada, snapshot publicado fixado, estado inicial, evento/audit/outbox e recibo/reconciliação. Primeiro caso: Incluir usuário; evidências reais dependem de M08/M11. Nenhum merge/deploy/instalação hospedada ou envio deemail foi executado.

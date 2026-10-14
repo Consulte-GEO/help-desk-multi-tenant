@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: catalogue projects only published customer forms and preserves server-derived context
+ok 1 - catalogue projects only published customer forms and preserves server-derived context
+  ---
+  duration_ms: 272.8254
+  type: 'test'
+  ...
+# Subtest: catalogue rejects draft, cross-workspace, duplicate IDs, different service and private envelope extras
+ok 2 - catalogue rejects draft, cross-workspace, duplicate IDs, different service and private envelope extras
+  ---
+  duration_ms: 143.8626
+  type: 'test'
+  ...
+# Subtest: same authorized resource set reordered on an edit preserves the pinned draft reference order
+ok 3 - same authorized resource set reordered on an edit preserves the pinned draft reference order
+  ---
+  duration_ms: 54.0117
+  type: 'test'
+  ...
+# Subtest: closed read admission stops before even the owner-only SQL locator
+ok 4 - closed read admission stops before even the owner-only SQL locator
+  ---
+  duration_ms: 3.5808
+  type: 'test'
+  ...
+# Subtest: draft handler saves with exact path ID and If-Match, exposes only the public draft DTO
+ok 5 - draft handler saves with exact path ID and If-Match, exposes only the public draft DTO
+  ---
+  duration_ms: 48.5638
+  type: 'test'
+  ...
+# Subtest: draft handler rejects missing precondition, wrong origin, method and query without a save
+ok 6 - draft handler rejects missing precondition, wrong origin, method and query without a save
+  ---
+  duration_ms: 3.408
+  type: 'test'
+  ...
+# Subtest: closing gate blocks catalogue and drafts before authentication
+ok 7 - closing gate blocks catalogue and drafts before authentication
+  ---
+  duration_ms: 1.3612
+  type: 'test'
+  ...
+# Subtest: catalogue accepts POST only and never adopts selectors as caller identity
+ok 8 - catalogue accepts POST only and never adopts selectors as caller identity
+  ---
+  duration_ms: 3.2543
+  type: 'test'
+  ...
+# Subtest: M09b store validates current scope from one borrowed transaction and never escapes pool
+ok 9 - M09b store validates current scope from one borrowed transaction and never escapes pool
+  ---
+  duration_ms: 108.7132
+  type: 'test'
+  ...
+# Subtest: M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+ok 10 - M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+  ---
+  duration_ms: 1.6506
+  type: 'test'
+  ...
+# Subtest: M09b draft reader rejects foreign owner/account and unknown fields before returning data
+ok 11 - M09b draft reader rejects foreign owner/account and unknown fields before returning data
+  ---
+  duration_ms: 5.2416
+  type: 'test'
+  ...
+# Subtest: M09b borrowed store cannot be retained after the owning callback
+ok 12 - M09b borrowed store cannot be retained after the owning callback
+  ---
+  duration_ms: 0.7922
+  type: 'test'
+  ...
+# Subtest: M09b absent source closes catalogue and drafts; submission has no legacy fallback
+ok 13 - M09b absent source closes catalogue and drafts; submission has no legacy fallback
+  ---
+  duration_ms: 279.3455
+  type: 'test'
+  ...
+# Subtest: M09b intake requires workflow and an exact HTTPS origin
+ok 14 - M09b intake requires workflow and an exact HTTPS origin
+  ---
+  duration_ms: 0.3612
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+ok 15 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+  ---
+  duration_ms: 0.4849
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+ok 16 - M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+  ---
+  duration_ms: 0.3333
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+ok 17 - M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+  ---
+  duration_ms: 0.517
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+ok 18 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+  ---
+  duration_ms: 0.2741
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+ok 19 - M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+  ---
+  duration_ms: 0.6083
+  type: 'test'
+  ...
+# Subtest: M06 capabilities report missing dependencies and scoped collection availability
+ok 20 - M06 capabilities report missing dependencies and scoped collection availability
+  ---
+  duration_ms: 1.3583
+  type: 'test'
+  ...
+# Subtest: M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+ok 21 - M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+  ---
+  duration_ms: 0.8222
+  type: 'test'
+  ...
+# Subtest: M06 copied disabled environment example treats blank optional origin as unset
+ok 22 - M06 copied disabled environment example treats blank optional origin as unset
+  ---
+  duration_ms: 0.3905
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1267.4605

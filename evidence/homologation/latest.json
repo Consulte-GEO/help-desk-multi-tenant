@@ -2,9 +2,9 @@
   "schema": 1,
   "scope": "local-m1",
   "platform_approved": false,
-  "source_sha256": "90ecba58d43cd16ae8e323d43f26ddbeb986f2ecefb2e2261e595e7d87556bd2",
-  "started_at": "2026-10-13T22:25:12.231Z",
-  "completed_at": "2026-10-13T22:30:25.474Z",
+  "source_sha256": "5b6636ac227107636829b2d93d4b4f89cb8a2c3fc6945d2216d12768c4386233",
+  "started_at": "2026-10-14T01:07:36.206Z",
+  "completed_at": "2026-10-14T01:11:29.458Z",
   "checks": [
     {
       "id": "lock",
@@ -12,7 +12,7 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/lock.log",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/lock.log",
       "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d",
       "tests": null
     },
@@ -22,8 +22,8 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/install.log",
-      "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/install.log",
+      "sha256": "2263f19ef5d8240e381d2bff86c6b0f6b0b52e287eda1afc06bafaae3b518a27",
       "tests": null
     },
     {
@@ -32,7 +32,7 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/audit.log",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/audit.log",
       "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb",
       "tests": null
     },
@@ -42,11 +42,11 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/application.log",
-      "sha256": "44fce3c81acb57faed6c160cd5248cbdc7f4ca415c8ff08cf846aff851f3d2b7",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/application.log",
+      "sha256": "674613c533957aa6e453fb3c7d7be6c72481dceebcfefca5e8129bf1fc0ff693",
       "tests": {
-        "tests": 4467,
-        "pass": 4467,
+        "tests": 4487,
+        "pass": 4487,
         "fail": 0,
         "cancelled": 0,
         "skipped": 0,
@@ -59,11 +59,11 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/postgres.log",
-      "sha256": "e9247af1ff510e9c3bd9c05bb181f3e3a0bbc62f3e39cddbf0e9a282a9a01d8a",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/postgres.log",
+      "sha256": "d0facc494dca549aa892322ef0f021034fd6a06dc5bf30bcebeeb481e0b06dc9",
       "tests": {
-        "tests": 390,
-        "pass": 390,
+        "tests": 403,
+        "pass": 403,
         "fail": 0,
         "cancelled": 0,
         "skipped": 0,
@@ -76,7 +76,7 @@
       "reason": null,
       "exit_code": 0,
       "signal": null,
-      "artifact": "runs/20c8ca85-f13f-4e6f-a67d-1b2a64c65862/interface.log",
+      "artifact": "runs/fe9e9564-79e2-411d-bd95-9b77e2f16b39/interface.log",
       "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56",
       "tests": {
         "tests": 206,
