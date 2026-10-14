@@ -1440,6 +1440,11 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "table": "helpdesk_audit.hdni_receipts",
+      "name": "hdni_receipts_snapshot_ck",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdni_receipts",
       "name": "hdni_receipts_ticket_fk",
       "type": "f"
     },
