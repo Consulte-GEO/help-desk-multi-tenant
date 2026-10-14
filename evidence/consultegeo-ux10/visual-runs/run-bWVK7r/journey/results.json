@@ -1,0 +1,785 @@
+{
+  "scope": "offline-native-ui-and-adapters; synthetic identity/server; not PostgreSQL or HTTP authorization",
+  "passed": 190,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "320-light save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "320-light review does not create",
+      "passed": true
+    },
+    {
+      "name": "320-light no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "320-light controls readable",
+      "passed": true
+    },
+    {
+      "name": "320-light theme inherited",
+      "passed": true
+    },
+    {
+      "name": "320-light unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "320-light refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "320-light exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "320-light replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "320-light cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "320-light config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "320-light config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "320-light config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "320-light configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "320-light cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "320-light configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "320-light configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "320-light destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "320-light no javascript error",
+      "passed": true
+    },
+    {
+      "name": "320-dark save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "320-dark review does not create",
+      "passed": true
+    },
+    {
+      "name": "320-dark no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "320-dark controls readable",
+      "passed": true
+    },
+    {
+      "name": "320-dark theme inherited",
+      "passed": true
+    },
+    {
+      "name": "320-dark unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "320-dark refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "320-dark exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "320-dark replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "320-dark cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "320-dark config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "320-dark config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "320-dark config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "320-dark configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "320-dark cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "320-dark configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "320-dark configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "320-dark destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "320-dark no javascript error",
+      "passed": true
+    },
+    {
+      "name": "390-light save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "390-light review does not create",
+      "passed": true
+    },
+    {
+      "name": "390-light no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "390-light controls readable",
+      "passed": true
+    },
+    {
+      "name": "390-light theme inherited",
+      "passed": true
+    },
+    {
+      "name": "390-light unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "390-light refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "390-light exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "390-light replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "390-light cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "390-light config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "390-light config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "390-light config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "390-light configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "390-light cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "390-light configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "390-light configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "390-light destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "390-light no javascript error",
+      "passed": true
+    },
+    {
+      "name": "390-dark save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "390-dark review does not create",
+      "passed": true
+    },
+    {
+      "name": "390-dark no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "390-dark controls readable",
+      "passed": true
+    },
+    {
+      "name": "390-dark theme inherited",
+      "passed": true
+    },
+    {
+      "name": "390-dark unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "390-dark refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "390-dark exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "390-dark replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "390-dark cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "390-dark config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "390-dark config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "390-dark config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "390-dark configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "390-dark cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "390-dark configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "390-dark configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "390-dark destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "390-dark no javascript error",
+      "passed": true
+    },
+    {
+      "name": "768-light save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "768-light review does not create",
+      "passed": true
+    },
+    {
+      "name": "768-light no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "768-light controls readable",
+      "passed": true
+    },
+    {
+      "name": "768-light theme inherited",
+      "passed": true
+    },
+    {
+      "name": "768-light unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "768-light refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "768-light exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "768-light replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "768-light cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "768-light config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "768-light config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "768-light config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "768-light configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "768-light cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "768-light configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "768-light configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "768-light destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "768-light no javascript error",
+      "passed": true
+    },
+    {
+      "name": "768-dark save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "768-dark review does not create",
+      "passed": true
+    },
+    {
+      "name": "768-dark no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "768-dark controls readable",
+      "passed": true
+    },
+    {
+      "name": "768-dark theme inherited",
+      "passed": true
+    },
+    {
+      "name": "768-dark unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "768-dark refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "768-dark exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "768-dark replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "768-dark cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "768-dark config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "768-dark config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "768-dark config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "768-dark configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "768-dark cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "768-dark configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "768-dark configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "768-dark destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "768-dark no javascript error",
+      "passed": true
+    },
+    {
+      "name": "1024-light save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "1024-light review does not create",
+      "passed": true
+    },
+    {
+      "name": "1024-light no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1024-light controls readable",
+      "passed": true
+    },
+    {
+      "name": "1024-light theme inherited",
+      "passed": true
+    },
+    {
+      "name": "1024-light unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "1024-light refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "1024-light exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "1024-light replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "1024-light cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "1024-light config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "1024-light config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1024-light config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "1024-light configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "1024-light cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "1024-light configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "1024-light configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "1024-light destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "1024-light no javascript error",
+      "passed": true
+    },
+    {
+      "name": "1024-dark save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "1024-dark review does not create",
+      "passed": true
+    },
+    {
+      "name": "1024-dark no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1024-dark controls readable",
+      "passed": true
+    },
+    {
+      "name": "1024-dark theme inherited",
+      "passed": true
+    },
+    {
+      "name": "1024-dark unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "1024-dark refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "1024-dark exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "1024-dark replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "1024-dark cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "1024-dark config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "1024-dark config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1024-dark config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "1024-dark configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "1024-dark cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "1024-dark configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "1024-dark configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "1024-dark destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "1024-dark no javascript error",
+      "passed": true
+    },
+    {
+      "name": "1440-light save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "1440-light review does not create",
+      "passed": true
+    },
+    {
+      "name": "1440-light no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1440-light controls readable",
+      "passed": true
+    },
+    {
+      "name": "1440-light theme inherited",
+      "passed": true
+    },
+    {
+      "name": "1440-light unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "1440-light refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "1440-light exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "1440-light replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "1440-light cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "1440-light config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "1440-light config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1440-light config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "1440-light configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "1440-light cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "1440-light configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "1440-light configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "1440-light destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "1440-light no javascript error",
+      "passed": true
+    },
+    {
+      "name": "1440-dark save uses one /v1",
+      "passed": true
+    },
+    {
+      "name": "1440-dark review does not create",
+      "passed": true
+    },
+    {
+      "name": "1440-dark no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1440-dark controls readable",
+      "passed": true
+    },
+    {
+      "name": "1440-dark theme inherited",
+      "passed": true
+    },
+    {
+      "name": "1440-dark unknown locks action",
+      "passed": true
+    },
+    {
+      "name": "1440-dark refused replay remains unknown",
+      "passed": true
+    },
+    {
+      "name": "1440-dark exactly one created effect",
+      "passed": true
+    },
+    {
+      "name": "1440-dark replay same key/body",
+      "passed": true
+    },
+    {
+      "name": "1440-dark cancelled discard preserves input",
+      "passed": true
+    },
+    {
+      "name": "1440-dark config has operation summary",
+      "passed": true
+    },
+    {
+      "name": "1440-dark config no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "1440-dark config controls use theme",
+      "passed": true
+    },
+    {
+      "name": "1440-dark configuration labels inherit readable ink",
+      "passed": true
+    },
+    {
+      "name": "1440-dark cancel is visually secondary",
+      "passed": true
+    },
+    {
+      "name": "1440-dark configuration refused replay stays unknown",
+      "passed": true
+    },
+    {
+      "name": "1440-dark configuration single intent",
+      "passed": true
+    },
+    {
+      "name": "1440-dark destroyed content erased",
+      "passed": true
+    },
+    {
+      "name": "1440-dark no javascript error",
+      "passed": true
+    }
+  ],
+  "sources": {
+    "shared/cnpj.js": "4e03f61cceb0809c16854a00e2eb567918566679fb6874f76a8f1555b0431d03",
+    "shared/form-rules.js": "4d321b7d5239996c0b45581e13608a479dd15ac6ad819a2ab81eee7b5b68b548",
+    "shared/consultegeo-request.js": "c40a3a44497cebb125d2903bc62f414afb9448f6a78d19dafdd07ec0c709dee3",
+    "web/portal-ui.js": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737",
+    "web/form-feedback.js": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e",
+    "web/dynamic-form.js": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8",
+    "web/support-intake.js": "af49af54bfd12434ca1bc06332df282be1f2610a176e718d6548d0e49f724efc",
+    "web/consultegeo-request.js": "95b35c208c17c5a93824858af56f3241a9e0a0b16f116544147ff08d3d22cfd9",
+    "web/consultegeo-configuration.js": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7",
+    "shared/instant.js": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+    "web/consultegeo-intake-api.js": "de5f451275364eaabf7c5f6820116547d6c18cb4683ac79940f480a399581242",
+    "shared/mfa.js": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1",
+    "web/human-auth.js": "2ac677ed49bbe6d4bdf327a57deb8aec37f4008157cf7acdbe0b2492b5017f59",
+    "web/human-session.js": "9f360a51f6dc54c6b93f4fbf8024f2c0f95afd9a5bcf1f0b2aabea41b92f7b96",
+    "web/session-fetch.js": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340",
+    "scripts/visual-consultegeo/fixture.js": "9599b663ea6663be8a5e1cb899c48eecbe81751a897827f0233327c0d3739a45"
+  }
+}

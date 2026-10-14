@@ -11,3 +11,8 @@ Nenhuma migration, usuário, segredo, escopo, módulo operacional ou gate do ate
 Verificação local Windows: typecheck, contratos e build aprovados. A suíte de aplicação executou4710 casos:4665 passaram e45 falharam nos fixtures dependentes de symlinks, sockets Unix, TLS/OpenSSL, Python e caminhos locais. O log integral foi preservado no diretório isolado da tarefa. A evidência definitiva para publicação deve vir da homologação Linux desta fonte, com os seis logs e o fingerprint validados por `check:homologation`; `verify:release` permanece obrigatório.
 
 Os testes da wiki incluem entrada `/wiki` com query/hash preservados, abertura/recarga de artigo, busca e home dentro do escopo do service worker. A revisão independente verificou os dois diffs e os assets, e a normalização da home identificada nela foi corrigida. A confirmação da publicação e do acesso hospedado é registrada após os checks remotos.
+
+
+## Homologação desta fonte
+
+CI38590466202 aprovado, commit5d0a80c. lock:passed, install:passed, audit:passed, application:passed (4710/4710), postgres:passed (422/422), interface:passed (539/539). Fingerprint b0502e9d0f8f6c5a1c06249944dc00aa844b6912242e35e784f5c06cd4c1cea4. Artefato oficial11907612664, SHA256 4befe3cb791d3280f1823565792929a6765f6d7b01508070c1dd6ec5d0475229, conferido antes da extração. Os37 arquivos atuais foram importados sem apagar evidências anteriores. Wiki: CI38590975875 aprovado sobre4f2e5be, incluindo navegador desktop/mobile. O Chromium local não iniciou; o cenário completo foi confirmado no CI Linux.
