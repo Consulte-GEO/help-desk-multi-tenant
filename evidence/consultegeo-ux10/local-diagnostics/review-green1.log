@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: failed request retains payload and idempotency key for an exact retry
+ok 1 - failed request retains payload and idempotency key for an exact retry
+  ---
+  duration_ms: 22.5291
+  type: 'test'
+  ...
+# Subtest: successful send clears only the unchanged submitted draft
+ok 2 - successful send clears only the unchanged submitted draft
+  ---
+  duration_ms: 0.9278
+  type: 'test'
+  ...
+# Subtest: new typing while a send is pending is not erased by its response
+ok 3 - new typing while a send is pending is not erased by its response
+  ---
+  duration_ms: 0.1989
+  type: 'test'
+  ...
+# Subtest: switching ticket invalidates late completion and preserves destination draft
+ok 4 - switching ticket invalidates late completion and preserves destination draft
+  ---
+  duration_ms: 0.17
+  type: 'test'
+  ...
+# Subtest: same ticket ID under a different session cannot reuse old request
+ok 5 - same ticket ID under a different session cannot reuse old request
+  ---
+  duration_ms: 0.1594
+  type: 'test'
+  ...
+# Subtest: returning to a ticket does not reactivate its stale operation
+ok 6 - returning to a ticket does not reactivate its stale operation
+  ---
+  duration_ms: 0.1411
+  type: 'test'
+  ...
+# Subtest: public and private drafts and pending requests are independent
+ok 7 - public and private drafts and pending requests are independent
+  ---
+  duration_ms: 0.1947
+  type: 'test'
+  ...
+# Subtest: duplicate submit during an active request does not create another operation
+ok 8 - duplicate submit during an active request does not create another operation
+  ---
+  duration_ms: 0.1789
+  type: 'test'
+  ...
+# Subtest: completion can be applied only once
+ok 9 - completion can be applied only once
+  ---
+  duration_ms: 0.9842
+  type: 'test'
+  ...
+# Subtest: refresh of the same ticket preserves unsent draft and its retry key
+ok 10 - refresh of the same ticket preserves unsent draft and its retry key
+  ---
+  duration_ms: 0.3925
+  type: 'test'
+  ...
+# Subtest: changed payload rotates key, identical input does not
+ok 11 - changed payload rotates key, identical input does not
+  ---
+  duration_ms: 0.2403
+  type: 'test'
+  ...
+# Subtest: editing away and back still protects the newer draft revision
+ok 12 - editing away and back still protects the newer draft revision
+  ---
+  duration_ms: 0.1149
+  type: 'test'
+  ...
+# Subtest: empty identity cannot submit even when a draft exists
+ok 13 - empty identity cannot submit even when a draft exists
+  ---
+  duration_ms: 0.0883
+  type: 'test'
+  ...
+# Subtest: snapshot cannot be externally rewritten to change the submitted body
+ok 14 - snapshot cannot be externally rewritten to change the submitted body
+  ---
+  duration_ms: 2.6905
+  type: 'test'
+  ...
+# Subtest: mounted intake rejects a two-code-point subject before saving any data
+ok 15 - mounted intake rejects a two-code-point subject before saving any data
+  ---
+  duration_ms: 7.1121
+  type: 'test'
+  ...
+# Subtest: generic form editor keeps unknown after rejected replay and reuses its original key
+ok 16 - generic form editor keeps unknown after rejected replay and reuses its original key
+  ---
+  duration_ms: 3.5078
+  type: 'test'
+  ...
+# Subtest: configuration 429 during reconciliation retains body/key and blocks fresh mutations
+ok 17 - configuration 429 during reconciliation retains body/key and blocks fresh mutations
+  ---
+  duration_ms: 18.8298
+  type: 'test'
+  ...
+# Subtest: review approval keeps unknown after rejected replay
+ok 18 - review approval keeps unknown after rejected replay
+  ---
+  duration_ms: 3.6569
+  type: 'test'
+  ...
+# Subtest: review revision keeps unknown after rejected replay
+ok 19 - review revision keeps unknown after rejected replay
+  ---
+  duration_ms: 1.1314
+  type: 'test'
+  ...
+# Subtest: ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+ok 20 - ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+  ---
+  duration_ms: 0.4375
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 437.3621

@@ -1,0 +1,947 @@
+{
+  "mode": "offline-full-app-synthetic-transport",
+  "original_controller_replaced": false,
+  "legacy_css_loaded": true,
+  "cases": [
+    {
+      "name": "gate-fechado",
+      "passed": true,
+      "checks": 8
+    },
+    {
+      "name": "cliente",
+      "passed": true,
+      "checks": 6
+    },
+    {
+      "name": "rascunhos",
+      "passed": true,
+      "checks": 7
+    },
+    {
+      "name": "identificadores",
+      "passed": true,
+      "checks": 3
+    },
+    {
+      "name": "abertura",
+      "passed": true,
+      "checks": 4
+    },
+    {
+      "name": "ambiguidade",
+      "passed": true,
+      "checks": 4
+    },
+    {
+      "name": "recuperar-abertura",
+      "passed": true,
+      "checks": 5
+    },
+    {
+      "name": "mensagem-incerta",
+      "passed": true,
+      "checks": 7
+    },
+    {
+      "name": "prioridade",
+      "passed": true,
+      "checks": 5
+    },
+    {
+      "name": "revogacao",
+      "passed": true,
+      "checks": 6
+    },
+    {
+      "name": "notas-recusadas",
+      "passed": true,
+      "checks": 4
+    },
+    {
+      "name": "filtros",
+      "passed": true,
+      "checks": 5
+    },
+    {
+      "name": "detalhe-tardio",
+      "passed": true,
+      "checks": 4
+    },
+    {
+      "name": "saida-tardia",
+      "passed": true,
+      "checks": 3
+    },
+    {
+      "name": "login-recusado",
+      "passed": true,
+      "checks": 6
+    },
+    {
+      "name": "multiplas-operacoes",
+      "passed": true,
+      "checks": 3
+    },
+    {
+      "name": "responsividade",
+      "passed": true,
+      "checks": 22
+    },
+    {
+      "name": "detalhe-nao-encontrado",
+      "passed": true,
+      "checks": 6
+    },
+    {
+      "name": "falha-temporaria",
+      "passed": true,
+      "checks": 5
+    },
+    {
+      "name": "pausa-sessao",
+      "passed": true,
+      "checks": 6
+    },
+    {
+      "name": "duplo-envio",
+      "passed": true,
+      "checks": 4
+    },
+    {
+      "name": "troca-identidade",
+      "passed": true,
+      "checks": 5
+    },
+    {
+      "name": "teclado",
+      "passed": true,
+      "checks": 8
+    }
+  ],
+  "checks": [
+    {
+      "name": "gate: contagens indisponíveis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate: nenhum GET de negócio",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate: ações bloqueadas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate: avançados ocultos/inertes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "guia: não descreve sessão autenticada como banco em memória",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "saída: senha e lista limpas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate-fechado: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "gate-fechado: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "cliente: nenhum GET interno",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cliente: ferramentas e nota ocultas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cliente: sem nota interna no DOM",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cliente: um envio",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cliente: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "cliente: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "nota: placeholder corresponde ao canal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "canais: público preservado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "canais: privado preservado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "nota: aviso explícito visível",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "voltar/abrir: mesmo rascunho",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "rascunhos: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "rascunhos: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "IDs: mesmo prefixo não é ambíguo",
+      "passed": true,
+      "detail": [
+        "00000000…000011",
+        "00000000…000012"
+      ]
+    },
+    {
+      "name": "identificadores: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "identificadores: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "revisão não cria chamado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "abertura: único efeito",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "abertura: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "abertura: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "cobertura: sem seleção automática",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "cobertura: escolha enviada",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ambiguidade: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "ambiguidade: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "incerto: campos bloqueados",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recuperar: mesma chave/corpo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recuperar: um efeito",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recuperar-abertura: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "recuperar-abertura: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "mensagem incerta: rascunho preservado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mensagem incerta: sem replay automático",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mensagem incerta: outro chamado não substitui a intenção",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mensagem incerta: edição bloqueada até conciliação",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mensagem: mesma intenção explícita",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "mensagem-incerta: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "mensagem-incerta: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "412: motivo preservado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "412: seção de aviso aberta",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "412: um PATCH",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "prioridade: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "prioridade: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "403: cabeçalho e descrição removidos do DOM",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: cache da lista descartado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: nota/rascunho removidos",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: sem repetição indiscriminada",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "revogacao: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "revogacao: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "notas recusadas: público permanece",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "notas recusadas: sem escritor nem conteúdo antigo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "notas-recusadas: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "notas-recusadas: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "filtros: rascunho identificado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "filtros: sem busca ao digitar",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "filtros: query enviada",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "filtros: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "filtros: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "tardia: permanece lista",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "tardia: foco não está oculto",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "detalhe-tardio: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "detalhe-tardio: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "logout: tardia não restaura dados",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "saida-tardia: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "saida-tardia: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "falha: sem /me nem chamado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "falha: senha limpa",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "falha: mensagem sem segredo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "falha: mensagem presente",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "login-recusado: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "login-recusado: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "multi: sem workspace manual ou /me",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "multiplas-operacoes: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "multiplas-operacoes: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "caixa light/320: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/320: inputs >=16px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/390: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/390: inputs >=16px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/768: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/768: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/1024: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/1024: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/1440: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa light/1440: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/320: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/320: inputs >=16px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/390: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/390: inputs >=16px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/768: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/768: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/1024: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/1024: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/1440: sem overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "caixa dark/1440: inputs >=14px",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "responsividade: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "responsividade: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "403: cabeçalho e descrição removidos do DOM",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: cache da lista descartado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: nota/rascunho removidos",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "403: sem repetição indiscriminada",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "detalhe-nao-encontrado: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "detalhe-nao-encontrado: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "503: rascunho não apagado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "503: nenhum envio",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "503: rascunho disponível após GET explícito",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "falha-temporaria: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "falha-temporaria: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "sessão: pausa preserva rascunho",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sessão: negócio não despachado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sessão: renovar não reenvia gravação",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sessão: confirmação explícita envia uma vez",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "pausa-sessao: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "pausa-sessao: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "envio pendente: somente uma requisição",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "envio pendente: somente um efeito",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "duplo-envio: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "duplo-envio: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "outra identidade: sem rascunho da anterior",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "outra identidade: nota não está no DOM",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "outra identidade: ações internas ocultas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "troca-identidade: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "troca-identidade: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "teclado: e-mail inválido associado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "teclado: menu devolve foco",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "teclado: fechar modal não cria chamado",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "teclado: foco visível após modal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "atalho: fora da tela sem foco",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "atalho: visível ao receber foco",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "teclado: sem exceções JS",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "teclado: rotas conhecidas",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "passed": 136,
+  "failed": 0,
+  "source_sha256": {
+    "web/support-intake.css": "c253916aa725af6f891e6ea3fb3cb02df9b62a5441ee47f44d71a7881149a4da",
+    "web/approvals.d.ts": "e8025668b89da9dd8c71884ebe03b2e73470400a01527c5bd8a2bf543b566bb7",
+    "web/admin-members-state.js": "fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2",
+    "web/execution-checklist-contract.d.ts": "3ebbf567a98e1e519aa69c2af71f94dd8ee28737cca8ae99d4387261936a5b4b",
+    "web/theme-init.js": "4f40caa7bf0af0e6058b10957ec2311543e831ae1277321ab454f28eef641f4f",
+    "web/consultegeo-request.d.ts": "b284a5a82fab327936834aeea5cb0ec59c2e0abd761b66f7e0202c00cb204b27",
+    "web/reports.js": "59c9698a65b445b8bfb796f905123669abf9b2d9fe0bedb08d66fdacff26782f",
+    "web/brand-profile.d.ts": "879e3ad8fc057833effcefdff30f03accc0fd6021fe28de852752343b3c73504",
+    "web/execution-checklist-state.d.ts": "e76fdd40caf9341dd56c4cd6ec8917a572ed93623e115637c9b5ee7459872f1c",
+    "web/support-presentation.d.ts": "bb9d86d6504ebb65f93153bff4216bb045fbe52d3b714e0c5c8e74867b973aba",
+    "web/reports.d.ts": "9e7ee46a725e90079ddfe6df0d0df9c5c2077ee8bf58bffc18e93f89ceb55896",
+    "web/access-mode.d.ts": "4b000d2afacccecde360097c5feb74e4f83e477797497c30d52217cde293f32d",
+    "web/opening-wizard.js": "074e7e5c42f8cf4358837dcbb60a5eebb08acfe5fea98e59d521585afa1066cf",
+    "web/ticket-detail.js": "cdc00590fd4a67081e0552439e7c5dd3255b08a1473581b0c3ca23f674b40881",
+    "web/mutation-state.js": "8b9712e1cc9ca7836e1cf8acd00501af44c65a62f76027dbc586c95df8bca5eb",
+    "web/geo-auth-callback.d.ts": "27bfcfd10c435169a5ae132d375b62df12cc46c4af2d73cb1806c279598966ae",
+    "web/portal-format.js": "84e33f30200d1e2dab1792d4cee1d971fcfeea1ff3755a94999731382dd9211e",
+    "web/human-session.js": "9f360a51f6dc54c6b93f4fbf8024f2c0f95afd9a5bcf1f0b2aabea41b92f7b96",
+    "web/operations-ui.js": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f",
+    "web/review-state.d.ts": "a574b3f0990e6f6bfddc674786d2783def745737663021bf11cc978d160f0222",
+    "web/execution-checklist-state.js": "d5e4d5273128eaabc9901b3c55cfa0bf90d531de0d83720a75c1e4663d390233",
+    "web/inbox-view-state.d.ts": "772f0efc945cacc50922f3a22c49057c5a55d5b04c66be37976ebbb50a9f0f91",
+    "web/consultegeo-intake-api.js": "de5f451275364eaabf7c5f6820116547d6c18cb4683ac79940f480a399581242",
+    "web/consultegeo-intake-api.d.ts": "8b1f15771a6cb6d2599a9dd5cc9ef423701b2c08ad677ac7c514538f8b72140b",
+    "web/customer-portal.js": "ecd9fbea157af9da360447b8d66c1dba0756987361825b1e7d908499fc5a0d70",
+    "web/ticket-create-state.d.ts": "04be5d5749e1cc025edcb85450988a54ca136a089aa76cb52e0a08b4e48f6981",
+    "web/support-intake.js": "af49af54bfd12434ca1bc06332df282be1f2610a176e718d6548d0e49f724efc",
+    "web/human-auth.js": "2ac677ed49bbe6d4bdf327a57deb8aec37f4008157cf7acdbe0b2492b5017f59",
+    "web/consultegeo-request.js": "95b35c208c17c5a93824858af56f3241a9e0a0b16f116544147ff08d3d22cfd9",
+    "web/human-auth.d.ts": "588f5a33fed280e824defbac00ddc9148db925b3b6dfb8c1045b992f27752668",
+    "web/ticket-list-state.d.ts": "b7e2b54e3fa942e8e6a0db38406f1e1109cde6fa8e7a303605d0ec459f49f5e8",
+    "web/execution-checklist-contract.js": "729d64735045ab2d3fc38a025cd0569b0e4914032202ab231af1fa09728e3331",
+    "web/portal-ui.d.ts": "45a5d3d4a4ffdfed45e5d5ebd3078dc3b802a6613198a726ff684290e98b15e6",
+    "web/design-tokens.css": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca",
+    "web/brand-shell.js": "4462120a94b3b5c2f65407e931a05a8c2ff326e855e5aae9ca6878c761637d2b",
+    "web/timeline-state.js": "af5dca1ee898946b3d666ce55e2e1b504cfa9e9256f853fc9d5cb6c8b9cdfe2d",
+    "web/styles.css": "0c02504971e74dab99b642c1faf47663155d70dd834ed878b79398b8561fd559",
+    "web/admin-forms.d.ts": "e4beddb99aeb7ad60401db508daba9b5aaab3bfb4ec40dd1d06b4435d32b41e5",
+    "web/totp-qr.js": "187e17488e2e549097168768c0acacfc65b725ac51a6e01593119f340e821c19",
+    "web/portal-format.d.ts": "5dc7bd2caa3b8c8929ce099cdb5d3423842f51035df3d36e79610bcf4730ba11",
+    "web/inbox-workspace.js": "8c16f2a8b8e19e2067f375ce8b4538cb2d700c0db5d040fa443f00d1ca0ebe53",
+    "web/support-intake.d.ts": "d462d4491854d241580b88da6c1f688b549904ddfa5b533690be9a40ca58c510",
+    "web/mutation-state.d.ts": "d80dc2662df0d8a15c5a5c43464caa655ba826ff275b5e445617ccd6306626b2",
+    "web/access-feedback.js": "04a3e58e95480a41637e4f66385975d3e307c3e54b786c8056d90cf93f008f4b",
+    "web/consultegeo-request.css": "0c2d0dd3c04dc2af89f6f273be35fbec01896e7d6ecc10823b7b54ca72873149",
+    "web/access-experience.d.ts": "312f81219d763b98c5c1de170f1ffe1eb662ce7578645bf17b8ae445d1554b2d",
+    "web/account-security.d.ts": "873c96098af87c0a78b13fd1fc2021dda0e9d8cb29d5c539104f9749c95f62d0",
+    "web/index.html": "3f144f2551bd21709cb729fcdcf2a52cdf3df7f9997a4bd36000527c935d1b8c",
+    "web/consultegeo-configuration.d.ts": "5f5219ced0837af574cf91b5b31c36cb0cfa2d9fe80b69ac5fc4d68980559df4",
+    "web/access-experience.css": "13eeb86152df4649364e69bdcbe31fd8f308914c916f4388110d0f1f1b481baa",
+    "web/form-experience.css": "afb0f90b8dc5e2fe02cba92b078b55a647292b32c68d0467c6fc6ed1b3d0d377",
+    "web/opening-flow.js": "ef4a8f82e1d2fc5e00418044a29cbd6e7fb3ba1518315059aec75f42c2385f92",
+    "web/inbox-view-state.js": "6c6b1fab6ed2a5c1eaa1cc63bd0cf5ec7cf06c07e7773f34a832ca69fe106729",
+    "web/consulte-theme.css": "728ed9d8ecda4a6187f6eecde04ad2e1d494fc0906418d7dd18423e8f6f2345d",
+    "web/form-feedback.d.ts": "4cc30ecb5384673371828fcdea2cb891e32bda6f5785f5b37c408a47738a9d98",
+    "web/admin-configuration.js": "e375e5000caa31ce1954714605f8a84d93e4fd86e3a1b73fa1e1c1149895538e",
+    "web/account-security.js": "9cc0d7f495909c79b069b493438b665dc6ea7380e43fafe516485f407ed19852",
+    "web/inbox-workspace.css": "a85bc3ea8ba7465275a129622a681fdb80877367cc0ab1106c9273a355528b0a",
+    "web/human-session.d.ts": "1d71e6e8a32c780bc5e5f6df3ddef862c79516981ec760dd12a3b069d7804adb",
+    "web/execution-checklist.js": "0f5bd40a434961c905b928c7cb592b599c7226c261180ff483293be7a5091d38",
+    "web/operations-ui.d.ts": "aeeb2de609c2def9fbd2087b104fdaf395aad231bb4d066911292a554321513a",
+    "web/access-feedback.d.ts": "f9300719c4e45df2a71d98879e6b5691bc01cac45f8cd879a89645789a8ac2ef",
+    "web/delivery-operations.js": "ab6fde2ea1dd19ae33f43a19c00a498b8b1cfc248a5cd852a21cb3e89e1a6e2a",
+    "web/conversation-state.js": "73cf0db75391744164b1da470f28f70d47d1f9c4ff02dc58ef085defd3089a64",
+    "web/totp-qr.d.ts": "e4420aae58220468644074de55744c7b13a0886788a490b8d06f84b58c3a6abb",
+    "web/ticket-create-state.js": "83c749c70bfbb8113e632317843a06269c2fc9afbfd330dfe271392c47bfb4a2",
+    "web/opening-wizard.d.ts": "cb74d41d97089a5065492c5d46ce46218581ea9851edbb6666397e8f1d7a8d46",
+    "web/consultegeo-configuration.css": "54be6e6591f0ae0040124f4d0180931da120b0e589bba04bae9c8941f0e418aa",
+    "web/access-mode.js": "d27a9670f362dd9961df2097db39bffc70404115c6971b436988ea3642b57d8c",
+    "web/portal-ui.js": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737",
+    "web/attachments.js": "686abc80387e631fef5ac9fa88ee5034359f6007090ece30dd3f406538029c3f",
+    "web/timeline-state.d.ts": "293725a18c63bf908a65394ba2247e96fbccd8eac4fab5cb824f483635068c28",
+    "web/access-experience.js": "d7dbd4511775d39f8bf01c51012acaaedc948d7c75337a798e15928df50940ab",
+    "web/app.js": "02e6e7f5f1fe36bfd55b769979a747c4cfdf056f2938cf37b670daed147d0e4d",
+    "web/dynamic-form.css": "362a6c9af8fa5c701cd91896a40f468d8ffb0713d24e6103ab6ade07c0a68cda",
+    "web/support-queue.js": "ebfb8f0723f15ae43053b90e9d179c0817d0c593e457f0182490b92a18de996f",
+    "web/ticket-actions.d.ts": "7b6b0d8f1eb4fa58f90d75799283c26f1fa0f21549d0d073fbdfdb160e361c62",
+    "web/support-experience.css": "208bb65e59869f405ebc6b6d3efbe9057f6e1fa3528c115575231edb741aedc6",
+    "web/recovery-password.d.ts": "017f9013e352c5afd7436054692a541b4f2a279f0477c04cbfd62d02020b4a44",
+    "web/brand-profile.js": "10964da32c5e5291c271b8702924811db515a157be2e184f46f12c4789c0add9",
+    "web/approvals.js": "58c0247f2b556fd2f2a689c1a42f54811cfd96d934f53ec7f7ff778c3d1df635",
+    "web/admin-ui.js": "54756dfdea4aa00fcfd9029724df16c9b9f92c706f652c851443f4a9f738521d",
+    "web/geo-auth-state.js": "49885dd80d205576ceee6dbd45128ee80bbc820120b22d59aee3edce66a9f5a1",
+    "web/form-review.js": "376f53820b44a0cdc1f6d55ef26ad61ca11bde556af3862b6a215b2655a701d4",
+    "web/form-review.d.ts": "1d4906ebaaf50ce394ed0648155b2473bd50544acf4c44d8e57bac4f8d514124",
+    "web/ticket-actions.js": "c9f1ab464033e5df12c1342d5ae7c1dd3b4b2ee39b91430a999c09744c33c942",
+    "web/admin-forms.js": "9f7ca726be6d6c65c17c0855d2a0480dfc70c5d8f58628c548724f5ae927531c",
+    "web/consultegeo-configuration.js": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7",
+    "web/geo-auth-state.d.ts": "e00853b02615f1d1951743beadf24c912a1f08c0c8d7c169898f243f20502936",
+    "web/geo-auth-callback.js": "92abf4eb538ec3b6819e66e6ecf403b8ec955d7dacd2b66db80767312bb0e69b",
+    "web/session-fetch.js": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340",
+    "web/admin-members.js": "2cd668b2f26eb8a92930d2cb9ce424542bff9de6674c027df127695813d162ac",
+    "web/form-feedback.js": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e",
+    "web/opening-flow.d.ts": "3cc37cb679af5e578559e084fe1b99aa90c84d4a16254105a8b068ac46a71169",
+    "web/review-state.js": "42db5ad8da97e66b5cff319a06a7e06f550ff2b1024ad9130371977261f38061",
+    "web/support-presentation.js": "1fa018592815d029855097cfc336d929843f076ace2e762cd4542ffa373cdb38",
+    "web/execution-checklist.d.ts": "50256d1a953236ec4333e7d34e7e374e7c120f6825dacbd9fb71eb1c0ef62ed6",
+    "web/ticket-list-state.js": "67db3cda25593dfb02d0181b3510ff58d4aec9edba99f3f3bf607d0569cde8ef",
+    "web/dynamic-form.js": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8",
+    "web/portal-state.js": "6a9792fef611863a0bd8eea286751b7a2876b6e6ee4969cd7ed39aff70cab094",
+    "web/optional-support.js": "57de37513c7dc77bf71d2e5a36f0c9cc499ebe2dd86fc22de9dc88d025e5e996",
+    "web/delivery-operations.d.ts": "f22b7304d2c815960264672a2ce1e364c4fb6e11f1e1fe3051fb73779e54cdc4",
+    "web/attachments.d.ts": "787651c69bb2be7ae2d3d3c874048f6a2c3bc17ede52fe27bdf9e1ff9582e634",
+    "web/portal.css": "48c6b83c40e9d3a8e4094ce8864fe928023614d53373d64e0bfa4a9ab3d944bd",
+    "web/admin-members.css": "b9316b65dc44f167b8339f0b718ca7be46eb25c3e409a36dd8ad12362f01b580",
+    "web/operations-experience.css": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac",
+    "web/support-catalog-state.js": "851f406df2bc905ff65cce1890a8baa5c4a1a967168f4da18099a7da599bf8f3",
+    "web/admin-ui.d.ts": "5d26233c41a38ccb453f6e3b2a22486bdeb0219064d5c0d3a50b0625d1c22b83",
+    "web/dynamic-form.d.ts": "6f3b65b2196938ed62663a75134224a074dbdab220bd7343aee1599d229842d9",
+    "web/recovery-password.js": "3870e93595ebb59f5379c84126d72226799264ec775a2bf36c0aebcd3f1305d2",
+    "web/execution-checklist.css": "c5acd26f13c3ad510eec98e3086fad94cf3ec6cfea69eb2b453e9564740fa4b7",
+    "web/session-fetch.d.ts": "be51d45a79bb884a2fd8dbf41e67b01ce47afd771360886a03ac53edabefeb64",
+    "web/optional-support.d.ts": "9ea0473a874b7904f5327fd5ea2de050a6eebc0a377d7db42aa4c4de4e3f9091",
+    "web/admin-experience.css": "3975b8429d947456d04cc2c5ff07a157b2528b7234aea6ecd6e083cc980a8413",
+    "web/vendor/qrcodegen.ts": "1dc03fb5a10e0e2318ea162755bbdb9977ca6ce52cff959e9c9b6deafdccda9c",
+    "web/vendor/qrcodegen.js": "3c6b6da401e3725c2853e70d1dff080a3920ec06054c51d3a78fa391e611b706",
+    "web/vendor/README.md": "051c3f3ed56e40ef8f8b313c3ab951d47b76c8861258cb202613d8be4b47f47f",
+    "web/assets/consulte-geo-white.png": "924d2c378ad237bd23985358509b9d33f5433576468f86c1c59be0564b832bd1",
+    "web/assets/consulte-geo-color.png": "99f7607e9d4bc74ad7f7e06ca3e1311f9e2e82448286bb500e85cfd7de0199db",
+    "shared/checklist-evidence.d.ts": "b178e5c530e2e7d0e4b3324630a23193471f9683d497210f6c1ef44e96d347c2",
+    "shared/consultegeo-request.d.ts": "5aaabe7d56846952e9732884a0d195fa7796effba9eee4e18b1d84494e30d763",
+    "shared/instant.js": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+    "shared/consultegeo-request.js": "c40a3a44497cebb125d2903bc62f414afb9448f6a78d19dafdd07ec0c709dee3",
+    "shared/instant.d.ts": "ed52ed5a5f72ff62d9f40f7ef9e4e658a299f8dd36d11e2403aec42e913c70d2",
+    "shared/cnpj.js": "4e03f61cceb0809c16854a00e2eb567918566679fb6874f76a8f1555b0431d03",
+    "shared/mfa.d.ts": "df7bdb76b9d6f779cbcf522be0665f3c7a6ef3cfa9b94b2bb104f92a76dc1f8e",
+    "shared/checklist-evidence.js": "67487e1b8e5788a8d095292a7960eeea52f52f16d03fe771757c1f4fb5be1e93",
+    "shared/cnpj.d.ts": "ad23cb337b8caeb998bf749a7e0d422a44c3eff7a7595c61ee97b4e9ae33be56",
+    "shared/form-rules.d.ts": "c8a01ed344703045f05aa71a8fefca3e2804528132cbc72caa6fc43ee5cde280",
+    "shared/form-rules.js": "4d321b7d5239996c0b45581e13608a479dd15ac6ad819a2ab81eee7b5b68b548",
+    "shared/mfa.js": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1"
+  },
+  "limits": [
+    "no HTTP/CSP approval",
+    "no hosted Auth, SQL or deployment",
+    "offline import URLs and randomUUID shim"
+  ]
+}

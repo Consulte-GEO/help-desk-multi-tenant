@@ -1,0 +1,200 @@
+TAP version 13
+# Subtest: M09c transport rejects two Unicode characters before preview or creation dispatch
+not ok 1 - M09c transport rejects two Unicode characters before preview or creation dispatch
+  ---
+  duration_ms: 27.6184
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\consultegeo-intake-api.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    2 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-api.test.ts:11:394)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: M09a transport saves fixed draft with If-Match, scoped payload and no automatic retry
+ok 2 - M09a transport saves fixed draft with If-Match, scoped payload and no automatic retry
+  ---
+  duration_ms: 2.1668
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved id
+ok 3 - M09a transport refuses mismatched saved id
+  ---
+  duration_ms: 0.5803
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved accountId
+ok 4 - M09a transport refuses mismatched saved accountId
+  ---
+  duration_ms: 1.5424
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved formId
+ok 5 - M09a transport refuses mismatched saved formId
+  ---
+  duration_ms: 0.6034
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved formVersion
+ok 6 - M09a transport refuses mismatched saved formVersion
+  ---
+  duration_ms: 0.4571
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved revision
+ok 7 - M09a transport refuses mismatched saved revision
+  ---
+  duration_ms: 0.3618
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved status
+ok 8 - M09a transport refuses mismatched saved status
+  ---
+  duration_ms: 0.5408
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved ticketId
+ok 9 - M09a transport refuses mismatched saved ticketId
+  ---
+  duration_ms: 0.859
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved refs
+ok 10 - M09a transport refuses mismatched saved refs
+  ---
+  duration_ms: 0.6903
+  type: 'test'
+  ...
+# Subtest: M09a contradictory ETag and missing content type do not confirm a save
+ok 11 - M09a contradictory ETag and missing content type do not confirm a save
+  ---
+  duration_ms: 0.6646
+  type: 'test'
+  ...
+# Subtest: M09a confirmed creation correlates full receipt, status, key, version and Location
+ok 12 - M09a confirmed creation correlates full receipt, status, key, version and Location
+  ---
+  duration_ms: 0.6084
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation actorId
+ok 13 - M09a rejects borrowed/contradictory creation actorId
+  ---
+  duration_ms: 0.4418
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation requesterId
+ok 14 - M09a rejects borrowed/contradictory creation requesterId
+  ---
+  duration_ms: 0.4617
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation workspaceId
+ok 15 - M09a rejects borrowed/contradictory creation workspaceId
+  ---
+  duration_ms: 0.5805
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation accountId
+ok 16 - M09a rejects borrowed/contradictory creation accountId
+  ---
+  duration_ms: 0.4357
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation draftId
+ok 17 - M09a rejects borrowed/contradictory creation draftId
+  ---
+  duration_ms: 1.4002
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation draftRevision
+ok 18 - M09a rejects borrowed/contradictory creation draftRevision
+  ---
+  duration_ms: 0.4221
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation formId
+ok 19 - M09a rejects borrowed/contradictory creation formId
+  ---
+  duration_ms: 0.47
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation formVersion
+ok 20 - M09a rejects borrowed/contradictory creation formVersion
+  ---
+  duration_ms: 0.4362
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation profileVersionId
+ok 21 - M09a rejects borrowed/contradictory creation profileVersionId
+  ---
+  duration_ms: 0.3629
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation sequence
+ok 22 - M09a rejects borrowed/contradictory creation sequence
+  ---
+  duration_ms: 0.403
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation notification
+ok 23 - M09a rejects borrowed/contradictory creation notification
+  ---
+  duration_ms: 0.3801
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation replayed
+ok 24 - M09a rejects borrowed/contradictory creation replayed
+  ---
+  duration_ms: 0.3403
+  type: 'test'
+  ...
+# Subtest: M09a typed rejection is separate from unknown commit and untyped 5xx
+ok 25 - M09a typed rejection is separate from unknown commit and untyped 5xx
+  ---
+  duration_ms: 1.6992
+  type: 'test'
+  ...
+# Subtest: M09a input mutation and extra authority fields are refused before request
+ok 26 - M09a input mutation and extra authority fields are refused before request
+  ---
+  duration_ms: 1.227
+  type: 'test'
+  ...
+# Subtest: M09a bounded response and HTML/error text never reach the UI
+ok 27 - M09a bounded response and HTML/error text never reach the UI
+  ---
+  duration_ms: 1.2606
+  type: 'test'
+  ...
+# Subtest: M09a saved JSONB answers may reorder object keys while retaining exact values
+ok 28 - M09a saved JSONB answers may reorder object keys while retaining exact values
+  ---
+  duration_ms: 0.5071
+  type: 'test'
+  ...
+# Subtest: M09a composes the actual authenticated session closure without duplicating /v1
+ok 29 - M09a composes the actual authenticated session closure without duplicating /v1
+  ---
+  duration_ms: 2.302
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 28
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 311.6775

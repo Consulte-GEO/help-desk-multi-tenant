@@ -1,5 +1,7 @@
 # Matriz integral — 107 requisitos do levantamento de 12/10/2026
 
+> **UX10 —14/10/2026:** RF-FOR-01/RF-CEN-04 têm entrega visual/composição parcial atualizada no JSON;107 RF e prioridades originais preservados. M08 real adiada pelo usuário, email pending continua fila. [Estado e continuidade](../../146-CONSULTEGEO-UX10-INTEGRACAO-2026-10-14.md).
+
 > **M09c — 14/10/2026:** protocolo/snapshot/recibo e fila nativos homologados; quatro entregas parciais atualizadas no JSON, mantendo 107 RF e as prioridades originais. Pending indica fila, sem prova de envio. [Estado e limites](../../145-CONSULTEGEO-ABERTURA-ATOMICA-M09C-2026-10-13.md).
 
 As prioridades abaixo são as do documento do Claude, não uma promessa de entrega. A disposição é a avaliação desta revisão. A presença de módulos consolidados não significa integração operacional. Os requisitos não foram renumerados. A referência de linha usa a numeração do arquivo original anexado, lido em UTF-8.

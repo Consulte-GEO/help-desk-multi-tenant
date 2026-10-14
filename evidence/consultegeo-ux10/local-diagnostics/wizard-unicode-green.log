@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: UX03 composition gate reports an incomplete checkout as blocked, never approved
+ok 1 - UX03 composition gate reports an incomplete checkout as blocked, never approved
+  ---
+  duration_ms: 101.4312
+  type: 'test'
+  ...
+# Subtest: UX03 composition gate rejects a complete file list with absent controller wiring
+ok 2 - UX03 composition gate rejects a complete file list with absent controller wiring
+  ---
+  duration_ms: 155.3615
+  type: 'test'
+  ...
+# Subtest: UX03 static gate recognizes the delivered assets but never labels a synthetic fixture integrated
+ok 3 - UX03 static gate recognizes the delivered assets but never labels a synthetic fixture integrated
+  ---
+  duration_ms: 243.712
+  type: 'test'
+  ...
+# Subtest: review requires three Unicode characters before a new opening intent
+ok 4 - review requires three Unicode characters before a new opening intent
+  ---
+  duration_ms: 2.6028
+  type: 'test'
+  ...
+# Subtest: starts on context and refuses a disconnected catalog
+ok 5 - starts on context and refuses a disconnected catalog
+  ---
+  duration_ms: 0.4454
+  type: 'test'
+  ...
+# Subtest: three explicit steps, no submission at first or second step
+ok 6 - three explicit steps, no submission at first or second step
+  ---
+  duration_ms: 0.2024
+  type: 'test'
+  ...
+# Subtest: empty/whitespace and length limits produce targeted human errors
+ok 7 - empty/whitespace and length limits produce targeted human errors
+  ---
+  duration_ms: 0.2573
+  type: 'test'
+  ...
+# Subtest: invalid Unicode and unknown priority are rejected by presentation
+ok 8 - invalid Unicode and unknown priority are rejected by presentation
+  ---
+  duration_ms: 0.1177
+  type: 'test'
+  ...
+# Subtest: snapshot changed without an input event cannot be submitted
+ok 9 - snapshot changed without an input event cannot be submitted
+  ---
+  duration_ms: 0.1
+  type: 'test'
+  ...
+# Subtest: back and forward preserve values owned by the host
+ok 10 - back and forward preserve values owned by the host
+  ---
+  duration_ms: 0.1711
+  type: 'test'
+  ...
+# Subtest: pending refuses navigation and another submission
+ok 11 - pending refuses navigation and another submission
+  ---
+  duration_ms: 0.6829
+  type: 'test'
+  ...
+# Subtest: uncertain request bypasses new-form validation only for original recovery
+ok 12 - uncertain request bypasses new-form validation only for original recovery
+  ---
+  duration_ms: 0.5889
+  type: 'test'
+  ...
+# Subtest: uncertain pending request cannot be submitted twice
+ok 13 - uncertain pending request cannot be submitted twice
+  ---
+  duration_ms: 1.3628
+  type: 'test'
+  ...
+# Subtest: ambiguous coverage requires explicit selection and new review
+ok 14 - ambiguous coverage requires explicit selection and new review
+  ---
+  duration_ms: 0.2843
+  type: 'test'
+  ...
+# Subtest: editing after review requires review again
+ok 15 - editing after review requires review again
+  ---
+  duration_ms: 0.1218
+  type: 'test'
+  ...
+# Subtest: reset removes reviewed data and runtime authority hints
+ok 16 - reset removes reviewed data and runtime authority hints
+  ---
+  duration_ms: 0.0984
+  type: 'test'
+  ...
+# Subtest: catalog becomes unavailable and review no longer permits a new intent
+ok 17 - catalog becomes unavailable and review no longer permits a new intent
+  ---
+  duration_ms: 0.5851
+  type: 'test'
+  ...
+# Subtest: fingerprint includes exact context, body, priority and coverage
+ok 18 - fingerprint includes exact context, body, priority and coverage
+  ---
+  duration_ms: 0.2747
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 686.8618

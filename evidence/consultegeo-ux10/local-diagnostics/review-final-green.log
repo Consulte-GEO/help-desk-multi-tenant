@@ -1,0 +1,436 @@
+TAP version 13
+# Subtest: UX10 member replay rejected by 429 preserves the already unknown intent
+ok 1 - UX10 member replay rejected by 429 preserves the already unknown intent
+  ---
+  duration_ms: 83.0305
+  type: 'test'
+  ...
+# Subtest: C04 UI state renders only the authorized server snapshot
+ok 2 - C04 UI state renders only the authorized server snapshot
+  ---
+  duration_ms: 2.9265
+  type: 'test'
+  ...
+# Subtest: C04 UI opening then cancelling is not a mutation and clears reason
+ok 3 - C04 UI opening then cancelling is not a mutation and clears reason
+  ---
+  duration_ms: 2.6446
+  type: 'test'
+  ...
+# Subtest: C04 UI confirmation sends workspace/member revisions and a single key
+ok 4 - C04 UI confirmation sends workspace/member revisions and a single key
+  ---
+  duration_ms: 4.9841
+  type: 'test'
+  ...
+# Subtest: C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+ok 5 - C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+  ---
+  duration_ms: 9.0931
+  type: 'test'
+  ...
+# Subtest: C04 UI revocation after preview is denied by HTTP without stale rows retained
+ok 6 - C04 UI revocation after preview is denied by HTTP without stale rows retained
+  ---
+  duration_ms: 8.1125
+  type: 'test'
+  ...
+# Subtest: C04 UI invitation is pending and the receipt never claims mail was sent
+ok 7 - C04 UI invitation is pending and the receipt never claims mail was sent
+  ---
+  duration_ms: 10.9144
+  type: 'test'
+  ...
+# Subtest: C04 UI double submission is rejected while the first is in flight
+ok 8 - C04 UI double submission is rejected while the first is in flight
+  ---
+  duration_ms: 5.584
+  type: 'test'
+  ...
+# Subtest: C04 UI audience change clears rows, drafts and late responses
+ok 9 - C04 UI audience change clears rows, drafts and late responses
+  ---
+  duration_ms: 1.6473
+  type: 'test'
+  ...
+# Subtest: C04 UI malformed or wrong-workspace response fails closed
+ok 10 - C04 UI malformed or wrong-workspace response fails closed
+  ---
+  duration_ms: 2.033
+  type: 'test'
+  ...
+# Subtest: C04 UI hiding missing hints does not infer capabilities from an administrator role
+ok 11 - C04 UI hiding missing hints does not infer capabilities from an administrator role
+  ---
+  duration_ms: 2.2561
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown responses never trigger an automatic second POST
+ok 12 - C04 UI unknown responses never trigger an automatic second POST
+  ---
+  duration_ms: 1.4902
+  type: 'test'
+  ...
+# Subtest: C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+ok 13 - C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+  ---
+  duration_ms: 2.7698
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+ok 14 - C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+  ---
+  duration_ms: 5.7678
+  type: 'test'
+  ...
+# Subtest: failed request retains payload and idempotency key for an exact retry
+ok 15 - failed request retains payload and idempotency key for an exact retry
+  ---
+  duration_ms: 3.2942
+  type: 'test'
+  ...
+# Subtest: successful send clears only the unchanged submitted draft
+ok 16 - successful send clears only the unchanged submitted draft
+  ---
+  duration_ms: 1.9802
+  type: 'test'
+  ...
+# Subtest: new typing while a send is pending is not erased by its response
+ok 17 - new typing while a send is pending is not erased by its response
+  ---
+  duration_ms: 0.9765
+  type: 'test'
+  ...
+# Subtest: switching ticket invalidates late completion and preserves destination draft
+ok 18 - switching ticket invalidates late completion and preserves destination draft
+  ---
+  duration_ms: 0.7509
+  type: 'test'
+  ...
+# Subtest: same ticket ID under a different session cannot reuse old request
+ok 19 - same ticket ID under a different session cannot reuse old request
+  ---
+  duration_ms: 0.6215
+  type: 'test'
+  ...
+# Subtest: returning to a ticket does not reactivate its stale operation
+ok 20 - returning to a ticket does not reactivate its stale operation
+  ---
+  duration_ms: 0.3337
+  type: 'test'
+  ...
+# Subtest: public and private drafts and pending requests are independent
+ok 21 - public and private drafts and pending requests are independent
+  ---
+  duration_ms: 0.7591
+  type: 'test'
+  ...
+# Subtest: duplicate submit during an active request does not create another operation
+ok 22 - duplicate submit during an active request does not create another operation
+  ---
+  duration_ms: 0.5398
+  type: 'test'
+  ...
+# Subtest: completion can be applied only once
+ok 23 - completion can be applied only once
+  ---
+  duration_ms: 1.0885
+  type: 'test'
+  ...
+# Subtest: refresh of the same ticket preserves unsent draft and its retry key
+ok 24 - refresh of the same ticket preserves unsent draft and its retry key
+  ---
+  duration_ms: 0.4305
+  type: 'test'
+  ...
+# Subtest: changed payload rotates key, identical input does not
+ok 25 - changed payload rotates key, identical input does not
+  ---
+  duration_ms: 0.2418
+  type: 'test'
+  ...
+# Subtest: editing away and back still protects the newer draft revision
+ok 26 - editing away and back still protects the newer draft revision
+  ---
+  duration_ms: 0.1088
+  type: 'test'
+  ...
+# Subtest: empty identity cannot submit even when a draft exists
+ok 27 - empty identity cannot submit even when a draft exists
+  ---
+  duration_ms: 0.078
+  type: 'test'
+  ...
+# Subtest: snapshot cannot be externally rewritten to change the submitted body
+ok 28 - snapshot cannot be externally rewritten to change the submitted body
+  ---
+  duration_ms: 0.2131
+  type: 'test'
+  ...
+# Subtest: timeline starts idle and requires a selected owner
+ok 29 - timeline starts idle and requires a selected owner
+  ---
+  duration_ms: 4.5037
+  type: 'test'
+  ...
+# Subtest: history loads newest-first and appends validated older pages
+ok 30 - history loads newest-first and appends validated older pages
+  ---
+  duration_ms: 3.003
+  type: 'test'
+  ...
+# Subtest: duplicate click cannot request the same history page concurrently
+ok 31 - duplicate click cannot request the same history page concurrently
+  ---
+  duration_ms: 0.4182
+  type: 'test'
+  ...
+# Subtest: old history does not enter a new ticket or an A-B-A generation
+ok 32 - old history does not enter a new ticket or an A-B-A generation
+  ---
+  duration_ms: 0.5049
+  type: 'test'
+  ...
+# Subtest: failure preserves older accepted events and enables retry
+ok 33 - failure preserves older accepted events and enables retry
+  ---
+  duration_ms: 0.3513
+  type: 'test'
+  ...
+# Subtest: public client cannot accept an internal-note history entry
+ok 34 - public client cannot accept an internal-note history entry
+  ---
+  duration_ms: 0.3839
+  type: 'test'
+  ...
+# Subtest: public priority event cannot carry internal reason or arbitrary fields
+ok 35 - public priority event cannot carry internal reason or arbitrary fields
+  ---
+  duration_ms: 0.2884
+  type: 'test'
+  ...
+# Subtest: operator can render priority explanation but never raw JSON/identity fields
+ok 36 - operator can render priority explanation but never raw JSON/identity fields
+  ---
+  duration_ms: 0.8833
+  type: 'test'
+  ...
+# Subtest: history rejects unknown envelope field atomically
+ok 37 - history rejects unknown envelope field atomically
+  ---
+  duration_ms: 0.4992
+  type: 'test'
+  ...
+# Subtest: history rejects unknown event field atomically
+ok 38 - history rejects unknown event field atomically
+  ---
+  duration_ms: 0.3831
+  type: 'test'
+  ...
+# Subtest: history rejects unknown type atomically
+ok 39 - history rejects unknown type atomically
+  ---
+  duration_ms: 0.7873
+  type: 'test'
+  ...
+# Subtest: history rejects invalid time atomically
+ok 40 - history rejects invalid time atomically
+  ---
+  duration_ms: 0.2348
+  type: 'test'
+  ...
+# Subtest: history rejects duplicate event atomically
+ok 41 - history rejects duplicate event atomically
+  ---
+  duration_ms: 0.2469
+  type: 'test'
+  ...
+# Subtest: history rejects bad order atomically
+ok 42 - history rejects bad order atomically
+  ---
+  duration_ms: 0.6388
+  type: 'test'
+  ...
+# Subtest: history rejects unknown public data atomically
+ok 43 - history rejects unknown public data atomically
+  ---
+  duration_ms: 0.6616
+  type: 'test'
+  ...
+# Subtest: history rejects empty page with cursor atomically
+ok 44 - history rejects empty page with cursor atomically
+  ---
+  duration_ms: 0.2563
+  type: 'test'
+  ...
+# Subtest: history rejects empty cursor atomically
+ok 45 - history rejects empty cursor atomically
+  ---
+  duration_ms: 0.1064
+  type: 'test'
+  ...
+# Subtest: history rejects overlong cursor atomically
+ok 46 - history rejects overlong cursor atomically
+  ---
+  duration_ms: 0.0791
+  type: 'test'
+  ...
+# Subtest: history rejects too many events atomically
+ok 47 - history rejects too many events atomically
+  ---
+  duration_ms: 0.0731
+  type: 'test'
+  ...
+# Subtest: reject repeated cursor and cross-page repeated events without partial merge
+ok 48 - reject repeated cursor and cross-page repeated events without partial merge
+  ---
+  duration_ms: 0.2937
+  type: 'test'
+  ...
+# Subtest: history snapshot cannot be mutated by UI callers
+ok 49 - history snapshot cannot be mutated by UI callers
+  ---
+  duration_ms: 1.3455
+  type: 'test'
+  ...
+# Subtest: history stops at 500 visible events, not a claim of total audit count
+ok 50 - history stops at 500 visible events, not a claim of total audit count
+  ---
+  duration_ms: 5.9287
+  type: 'test'
+  ...
+# Subtest: public status history uses only the public status label
+ok 51 - public status history uses only the public status label
+  ---
+  duration_ms: 0.8781
+  type: 'test'
+  ...
+# Subtest: operator note history records existence without note body
+ok 52 - operator note history records existence without note body
+  ---
+  duration_ms: 0.3087
+  type: 'test'
+  ...
+# Subtest: priority request snapshot preserves new edits and the public reply draft
+ok 53 - priority request snapshot preserves new edits and the public reply draft
+  ---
+  duration_ms: 0.8375
+  type: 'test'
+  ...
+# Subtest: uncertain priority retry preserves expected version, content and idempotency key
+ok 54 - uncertain priority retry preserves expected version, content and idempotency key
+  ---
+  duration_ms: 0.3222
+  type: 'test'
+  ...
+# Subtest: late priority acknowledgement does not clear another ticket form
+ok 55 - late priority acknowledgement does not clear another ticket form
+  ---
+  duration_ms: 2.3102
+  type: 'test'
+  ...
+# Subtest: UX05 known member states have readable semantic labels, unknown keys never render
+ok 56 - UX05 known member states have readable semantic labels, unknown keys never render
+  ---
+  duration_ms: 3.1517
+  type: 'test'
+  ...
+# Subtest: UX05 presentation leaves raw identifiers and canonical instants untouched
+ok 57 - UX05 presentation leaves raw identifiers and canonical instants untouched
+  ---
+  duration_ms: 23.9201
+  type: 'test'
+  ...
+# Subtest: UX05 mounts members without invoking any request and has an explicit unloaded state
+ok 58 - UX05 mounts members without invoking any request and has an explicit unloaded state
+  ---
+  duration_ms: 8.1879
+  type: 'test'
+  ...
+# Subtest: UX05 two member mounts do not produce duplicate control IDs
+ok 59 - UX05 two member mounts do not produce duplicate control IDs
+  ---
+  duration_ms: 0.7387
+  type: 'test'
+  ...
+# Subtest: UX05 configuration edits use a dialog with linked reason label and no automatic request
+ok 60 - UX05 configuration edits use a dialog with linked reason label and no automatic request
+  ---
+  duration_ms: 5.7556
+  type: 'test'
+  ...
+# Subtest: UX05 editor exposes separate technical, preview and operation sections
+ok 61 - UX05 editor exposes separate technical, preview and operation sections
+  ---
+  duration_ms: 15.1987
+  type: 'test'
+  ...
+# Subtest: UX05 asset wiring is explicit and does not mount administrative routes
+ok 62 - UX05 asset wiring is explicit and does not mount administrative routes
+  ---
+  duration_ms: 1.7192
+  type: 'test'
+  ...
+# Subtest: UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+ok 63 - UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+  ---
+  duration_ms: 1.3313
+  type: 'test'
+  ...
+# Subtest: UX05 configuration controller matches reviewed replay-preserving checkpoint
+ok 64 - UX05 configuration controller matches reviewed replay-preserving checkpoint
+  ---
+  duration_ms: 5.4321
+  type: 'test'
+  ...
+# Subtest: UX05 member controller matches reviewed replay-preserving checkpoint
+ok 65 - UX05 member controller matches reviewed replay-preserving checkpoint
+  ---
+  duration_ms: 2.1111
+  type: 'test'
+  ...
+# Subtest: mounted intake rejects a two-code-point subject before saving any data
+ok 66 - mounted intake rejects a two-code-point subject before saving any data
+  ---
+  duration_ms: 11.9986
+  type: 'test'
+  ...
+# Subtest: generic form editor keeps unknown after rejected replay and reuses its original key
+ok 67 - generic form editor keeps unknown after rejected replay and reuses its original key
+  ---
+  duration_ms: 5.1101
+  type: 'test'
+  ...
+# Subtest: configuration 429 during reconciliation retains body/key and blocks fresh mutations
+ok 68 - configuration 429 during reconciliation retains body/key and blocks fresh mutations
+  ---
+  duration_ms: 31.7813
+  type: 'test'
+  ...
+# Subtest: review approval keeps unknown after rejected replay
+ok 69 - review approval keeps unknown after rejected replay
+  ---
+  duration_ms: 2.9625
+  type: 'test'
+  ...
+# Subtest: review revision keeps unknown after rejected replay
+ok 70 - review revision keeps unknown after rejected replay
+  ---
+  duration_ms: 0.9633
+  type: 'test'
+  ...
+# Subtest: ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+ok 71 - ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+  ---
+  duration_ms: 0.6485
+  type: 'test'
+  ...
+1..71
+# tests 71
+# suites 0
+# pass 71
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 631.26
