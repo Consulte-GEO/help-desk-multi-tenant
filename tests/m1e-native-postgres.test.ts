@@ -8,7 +8,7 @@ function executor(options:{testCode?:number;failStage?:string;tamper?:boolean}={
   else if(name==='initdb'){const at=args.indexOf('-D');await mkdir(args[at+1],{recursive:true});await writeFile(join(args[at+1],'PG_VERSION'),'17\n');adminSecret=(await readFile(args.find((a:string)=>a.startsWith('--pwfile=')).split('=')[1],'utf8')).trim();if(options.failStage==='initdb')exit_code=1;}
   else if(name==='pg_ctl'){if(args.includes('start'))running=true;if(args.includes('stop')){if(options.failStage==='stop')exit_code=1;else running=false;}if(args.includes('status'))exit_code=running?0:3;}
   else if(name==='psql'&&options.failStage==='database')exit_code=1;
-  else if(args.includes('--test')){appSecret=new URL(o.env.HELPDESK_TEST_APP_URL).password;output='# tests 60\n# pass 60\n# fail 0\n# skipped 0\n# cancelled 0\n# todo 0\n'+adminSecret+' '+appSecret;
+  else if(args.includes('--test')){appSecret=new URL(o.env.HELPDESK_TEST_APP_URL).password;output='1..60\n# tests 60\n# pass 60\n# fail 0\n# skipped 0\n# cancelled 0\n# todo 0\n'+adminSecret+' '+appSecret;
    exit_code=options.testCode??0;if(options.tamper)await writeFile(join(o.env.HOME,'..','.helpdesk-native-owner'),'foreign');}
   return {exit_code,signal:null,output,stdout:output,stderr:'',reason:null};
  };return {execute,calls,secrets:()=>[adminSecret,appSecret]};}
@@ -29,6 +29,16 @@ test('native lifecycle creates its own SCRAM cluster, runs guarded suite and cle
   for(const secret of x.secrets()){assert.ok(secret.length>=40);assert.ok(!r.output.includes(secret));assert.ok(!JSON.stringify(x.calls.map(c=>c.command)).includes(secret));}
  }finally{await fixture.close();}
 });
+test('operator native profile starts an independent cluster and authenticates operator directly',async()=>{
+ const m=await native(),fixture=await f(),x=executor();try{
+  const r=await m.runNativeTests({profile:'operator',env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});
+  assert.equal(r.exit_code,0);assert.equal(r.cleanup,'removed');
+  const suite=x.calls.find(c=>c.command.includes('--test'));assert.ok(suite.command.includes('supabase/tests/operator-upgrade.test.ts'));assert.ok(!suite.command.includes('supabase/tests/rls.test.ts'));
+  const url=new URL(suite.env.HELPDESK_TEST_OPERATOR_URL);assert.equal(url.username,'helpdesk_operator');assert.equal(url.pathname,'/helpdesk_test');assert.equal(url.hostname,'127.0.0.1');assert.ok(url.password.length>=40);assert.ok(!r.output.includes(url.password));
+  assert.ok(x.calls.some(c=>basename(c.command[0])==='psql'&&c.command.includes('-f')));
+ }finally{await fixture.close();}
+});
+test('native homologation owns two different data directories and preserves both suite results',async()=>{const m=await native(),fixture=await f(),x=executor();try{const r=await m.runNativeHomologation({env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});assert.equal(r.exit_code,0);assert.equal(r.cleanup,'removed');const starts=x.calls.filter(c=>c.command.includes('start'));assert.equal(starts.length,2);assert.notEqual(starts[0]!.command[2],starts[1]!.command[2]);const suites=x.calls.filter(c=>c.command.includes('--test'));assert.equal(suites.length,2);assert.ok(suites[0]!.command.includes('supabase/tests/rls.test.ts'));assert.ok(suites[0]!.command.includes('supabase/tests/upgrade.test.ts'));assert.ok(suites[1]!.command.includes('supabase/tests/operator-upgrade.test.ts'));assert.match(r.output,/# tests 120/);assert.equal([...r.output.matchAll(/^# tests /gm)].length,1);}finally{await fixture.close();}});
 test('failed database assertions are not converted to successful execution and still clean the cluster',async()=>{
  const m=await native(),fixture=await f(),x=executor({testCode:1});try{const r=await m.runNativeTests({env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});assert.equal(r.exit_code,1);assert.equal(r.cleanup,'removed');assert.equal(r.stage,'tests');}finally{await fixture.close();}
 });

@@ -235,9 +235,30 @@ GRANT EXECUTE ON FUNCTION helpdesk_auth.hdni_lock_scope(jsonb),helpdesk_auth.hdn
 DO $m05_final$
 DECLARE role_name text;role_oid oid;role_row record;ns record;obj record;allowed boolean;
 BEGIN
+ IF NOT ((SELECT owner.oid FROM pg_catalog.pg_roles owner
+ WHERE owner.rolcreaterole AND (owner.rolsuper OR owner.rolbypassrls)
+ AND owner.rolname NOT IN ('helpdesk_app','helpdesk_resource_publisher','helpdesk_notification_worker','helpdesk_maintenance','anon','authenticated','service_role')
+ AND owner.oid=(SELECT n.nspowner FROM pg_catalog.pg_namespace n WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit')
+ GROUP BY n.nspowner HAVING count(*)=4)) IS NOT NULL AND NOT EXISTS(
+ SELECT 1 FROM pg_catalog.pg_default_acl d CROSS JOIN LATERAL pg_catalog.aclexplode(d.defaclacl) a
+ WHERE d.defaclrole=(SELECT owner.oid FROM pg_catalog.pg_roles owner
+ WHERE owner.rolcreaterole AND (owner.rolsuper OR owner.rolbypassrls)
+ AND owner.rolname NOT IN ('helpdesk_app','helpdesk_resource_publisher','helpdesk_notification_worker','helpdesk_maintenance','anon','authenticated','service_role')
+ AND owner.oid=(SELECT n.nspowner FROM pg_catalog.pg_namespace n WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit')
+ GROUP BY n.nspowner HAVING count(*)=4))
+ AND (d.defaclnamespace=0 OR d.defaclnamespace IN (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit')))
+ AND a.grantee<>d.defaclrole AND NOT (a.grantee=0 AND d.defaclobjtype='f' AND a.privilege_type='EXECUTE'))) THEN RAISE EXCEPTION 'Unqualified schema owner or defaults' USING ERRCODE='HDU06';END IF;
  FOREACH role_name IN ARRAY ARRAY['helpdesk_resource_publisher','helpdesk_notification_worker'] LOOP
   SELECT * INTO role_row FROM pg_roles WHERE rolname=role_name;IF NOT FOUND THEN RAISE EXCEPTION 'Service boundary unavailable' USING ERRCODE='HDU06';END IF;role_oid:=role_row.oid;
-  IF role_row.rolsuper OR role_row.rolbypassrls OR role_row.rolcreaterole OR role_row.rolcreatedb OR role_row.rolreplication OR role_row.rolinherit OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=role_oid OR roleid=role_oid) THEN RAISE EXCEPTION 'Service boundary unsafe' USING ERRCODE='HDU06';END IF;
+  IF role_row.rolsuper OR role_row.rolbypassrls OR role_row.rolcreaterole OR role_row.rolcreatedb OR role_row.rolreplication OR role_row.rolinherit OR EXISTS(
+ SELECT 1 FROM pg_catalog.pg_auth_members m WHERE m.member=role_oid
+ OR (m.roleid=role_oid AND NOT ((m.member=(SELECT owner.oid FROM pg_catalog.pg_roles owner
+ WHERE owner.rolcreaterole AND (owner.rolsuper OR owner.rolbypassrls)
+ AND owner.rolname NOT IN ('helpdesk_app','helpdesk_resource_publisher','helpdesk_notification_worker','helpdesk_maintenance','anon','authenticated','service_role')
+ AND owner.oid=(SELECT n.nspowner FROM pg_catalog.pg_namespace n WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit')
+ GROUP BY n.nspowner HAVING count(*)=4))
+ AND m.grantor=10 AND EXISTS(SELECT 1 FROM pg_catalog.pg_roles bootstrap WHERE bootstrap.oid=10 AND bootstrap.rolsuper)
+ AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option) IS TRUE))) THEN RAISE EXCEPTION 'Service boundary unsafe' USING ERRCODE='HDU06';END IF;
   FOR ns IN SELECT * FROM pg_namespace WHERE nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') LOOP
    allowed:=role_name='helpdesk_resource_publisher' AND ns.nspname='helpdesk_auth';
    IF ns.nspowner=role_oid OR has_schema_privilege(role_oid,ns.oid,'USAGE') IS DISTINCT FROM allowed OR has_schema_privilege(role_oid,ns.oid,'CREATE,USAGE WITH GRANT OPTION') THEN RAISE EXCEPTION 'Service schema boundary unsafe' USING ERRCODE='HDU06';END IF;

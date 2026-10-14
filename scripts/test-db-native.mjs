@@ -1,8 +1,8 @@
-import {runNativeTests} from './native-postgres.mjs';
+import {runNativeHomologation} from './native-postgres.mjs';
 const controller=new AbortController();const abort=()=>controller.abort();
 process.once('SIGINT',abort);process.once('SIGTERM',abort);
 try {
- const result=await runNativeTests({signal:controller.signal});
+ const result=await runNativeHomologation({signal:controller.signal});
  if(result.output)process.stdout.write(result.output+'\n');
  console.log(JSON.stringify({component:'helpdesk.test.native',engine:result.engine,postgres_version:result.version,
   stage:result.stage,exit_code:result.exit_code,cleanup:result.cleanup,reason:result.reason,

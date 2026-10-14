@@ -6,7 +6,7 @@ import type {SqlPool} from '../src/infrastructure/sql.ts';
 const good = () => ({table_count:DATABASE_SECURITY_CONTRACT.tables.length,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,
  schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,
  client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,
- trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true});
+ trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true,owner_defaults_ok:true});
 const poolFor=(row:Record<string,unknown>):SqlPool=>({query:async()=>({rows:[row],rowCount:1}),connect:async()=>{throw Error('unused');},end:async()=>{}});
 test('readiness accepts a fully compatible catalogue report',async()=>{await assertDatabaseSecurity(poolFor(good()));});
 const deviations = {
