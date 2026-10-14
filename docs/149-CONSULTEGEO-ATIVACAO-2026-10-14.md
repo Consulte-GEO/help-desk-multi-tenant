@@ -18,7 +18,11 @@ Portal canônico: https://helpdesk.consultegeo.org. A raiz, index e links de cha
 
 A sequência de implantação é código compatível com atendimento fechado, upgrade atômico 13–17 com histórico e dados preservados, configuração real MRV/obra, verificação do contrato hospedado e ativação dos módulos. A administração de configurações permanece fechada até o cumprimento do requisito de MFA. O operador inicial usa delegação explícita registrada, sem atribuir autenticação forte fictícia.
 
-Neste checkpoint, a fonte está qualificada; a promoção hospedada e a ativação ainda serão verificadas. O backup protegido anterior e o backup do provedor foram conferidos. A receita privada revisada usa uma transação única, protege as 25 tabelas existentes e preserva o histórico das 12 migrations já hospedadas.
+PR34 integrado em 6f9e389; código publicado em produção no deploy 6acfbe235d4a377dd520573c, ainda com atendimento fechado. Os 86 arquivos publicados conferem com o build, as rotas fechadas retornam503, identidade anônima retorna401, links profundos e Wiki retornam200. A migração hospedada foi aplicada em uma transação única e confirmou banco0.24/17 migrations, com as25 tabelas anteriores e os12 registros históricos preservados.
+
+O contrato atual hospedado foi aprovado:67 tabelas,15 verificações de prontidão, aplicação sem privilégios administrativos, memberships ou objetos próprios. A configuração inicial real foi gravada às17:42:49Z com o mesmo requestId e commandHash do plano aprovado. O recibo registra delegação operacional, três configurações publicadas e origem local explícita. As flags de atendimento/workflow/intake foram configuradas somente em Production/Functions; o redeploy e o aceite HTTP liberado seguem como próxima verificação.
+
+O backup protegido anterior e o backup do provedor foram conferidos. A receita privada revisada preservou os dados e o histórico existentes antes do COMMIT. CodeQL apontou um falso positivo no teste negativo que injeta `%00` em uma constante de conexão fictícia; a conferência independente confirmou que o trecho não sanitiza entrada externa e que o validator rejeita NUL antes de criar o pool.
 
 ## Emails
 
