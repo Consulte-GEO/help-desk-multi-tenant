@@ -91,7 +91,7 @@ with sync_playwright() as p:
 
     context,page,errors,posts=ready(browser,workspace_options=[{'id':WS,'name':'A'},{'id':'22222222-2222-4222-8222-222222222222','name':'B'}])
     password_login(page)
-    expect(page.locator('#login-status')).to_contain_text('operação única')
+    expect(page.locator('#login-status')).to_contain_text('uma única operação')
     expect(page.locator('#submit-login')).to_be_enabled()
     expect(page.locator('#workspace-choice')).to_be_hidden()
     assert page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
@@ -102,7 +102,7 @@ with sync_playwright() as p:
     context,page,errors,posts=ready(browser)
     page.evaluate("__authFixture.factors=[{id:'77777777-7777-4777-8777-777777777777',factor_type:'totp',status:'verified'}]")
     password_login(page)
-    expect(page.locator('#login-status')).to_contain_text('acesso simples não está disponível')
+    expect(page.locator('#login-status')).to_contain_text('exige autenticação adicional e não pode usar o acesso simples')
     expect(page.locator('#submit-login')).to_be_enabled()
     expect(page.locator('#mfa-panel')).to_be_hidden()
     assert page.evaluate("__authFixture.calls.some(x=>x.url.endsWith('/logout?scope=local'))")
