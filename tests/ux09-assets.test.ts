@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+async function checker(){const p='../scripts/visual-integration/check-assets.mjs';const m=await import(p).catch(e=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof m.verifyBuiltAssets,'function','Built asset verifier missing');return m;}
+function fixture(){const root=mkdtempSync(path.join(tmpdir(),'ux09-assets-'));mkdirSync(path.join(root,'dist/shared'),{recursive:true});writeFileSync(path.join(root,'dist/index.html'),'<script type="module" src="/app.js"></script><link rel="stylesheet" href="/theme.css">');writeFileSync(path.join(root,'dist/app.js'),"import {a} from '../shared/a.js';");writeFileSync(path.join(root,'dist/shared/a.js'),'export const a=1;');writeFileSync(path.join(root,'dist/theme.css'),':root{color:black}');return root;}
+test('UX09 static build resolves root-relative shared URLs',async()=>{const m=await checker(),r=fixture();try{const v=m.verifyBuiltAssets(r);assert.equal(v.failed,0);assert.ok(v.references>=3);}finally{rmSync(r,{recursive:true,force:true});}});
+test('UX09 missing static import fails the build audit',async()=>{const m=await checker(),r=fixture();try{rmSync(path.join(r,'dist/shared/a.js'));const v=m.verifyBuiltAssets(r);assert.ok(v.failed>0);assert.ok(v.issues.some((x:string)=>x.includes('shared/a.js')));}finally{rmSync(r,{recursive:true,force:true});}});
+test('UX09 private SQL or documentation cannot enter dist',async()=>{const m=await checker(),r=fixture();try{writeFileSync(path.join(r,'dist/private.sql'),'SELECT 1;');assert.ok(m.verifyBuiltAssets(r).failed>0);}finally{rmSync(r,{recursive:true,force:true});}});
+test('UX09 external assets are not silently accepted',async()=>{const m=await checker(),r=fixture();try{writeFileSync(path.join(r,'dist/theme.css'),'@import url("https://unexpected.invalid/x.css");');assert.ok(m.verifyBuiltAssets(r).failed>0);}finally{rmSync(r,{recursive:true,force:true});}});
+test('UX09 field names from and to are not module declarations',async()=>{const m=await checker(),r=fixture();try{writeFileSync(path.join(r,'dist/app.js'),"const fields=['from','to'];\nimport {a} from '../shared/a.js';");assert.equal(m.verifyBuiltAssets(r).failed,0);}finally{rmSync(r,{recursive:true,force:true});}});

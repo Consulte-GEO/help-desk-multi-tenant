@@ -356,7 +356,7 @@
       "stage": "HDN-04/06",
       "review": "Reaproveitar DSL/renderização e tipos existentes; conferir lacunas de e-mail/telefone/CEP e restrições por campo. Nenhum script ou regex arbitrária de cliente.",
       "existing": "form-rules/form-catalog/support-intake",
-      "deliveryStatus": "não alterado por esta rodada; ver capacidade existente e dependências no plano"
+      "deliveryStatus": "Parcial UX10/M09c: renderer/configuração/revisão visual integrados e homologados, callbacks/condicionais/CAS/snapshot conservados. Jornada Incluir usuário ensaiada com adaptadores e PostgreSQL reais; origem/identidade externas e lookup/arquivos continuam pendentes, M08 adiada pelo usuário."
     },
     {
       "code": "RF-FOR-02",
@@ -421,7 +421,7 @@
       "stage": "HDN-04/06",
       "review": "Autosave fica Fase 2 da fonte; rascunho seguro e proteção contra perda/unknown existentes continuam básicos. Debounce/CAS, sem salvamento fora da audiência.",
       "existing": "form-rules/form-catalog/support-intake",
-      "deliveryStatus": "não alterado por esta rodada; ver capacidade existente e dependências no plano"
+      "deliveryStatus": "Parcial M09b/M09c: salvamento explícito controlado e recuperação do rascunho consumido com recibo após TTL homologados. Autosave e montagem do host operacional pendentes."
     },
     {
       "code": "RF-FOR-07",
@@ -525,7 +525,7 @@
       "stage": "HDN-03",
       "review": "Continuação do número legado exige inventário/cutover de sequência, colisões e decisão por workspace. Preservar UUID e referência histórica; não renumerar CG já emitidos.",
       "existing": "support-workflow/sla-clock/business-calendar",
-      "deliveryStatus": "não alterado por esta rodada; ver capacidade existente e dependências no plano"
+      "deliveryStatus": "Parcial M09c: protocolo CG sequencial e recibo nativos homologados; continuidade exige preparação do contador com último valor legado confirmado. Origem/instalação/UI/piloto pendentes."
     },
     {
       "code": "RF-CIC-02",
@@ -707,7 +707,7 @@
       "stage": "HDN-05",
       "review": "Compor tela única preservando endpoints/DTOs internos separados; previews qualificados, sem HTML/planilha executável fornecida por cliente.",
       "existing": "portal-read/support-workflow/knowledge",
-      "deliveryStatus": "não alterado por esta rodada; ver capacidade existente e dependências no plano"
+      "deliveryStatus": "Parcial UX10: caixa/detalhe responsivos, conversa pública e notas internas separadas, histórico e permissões revalidadas; saída e callbacks tardios qualificados. Snapshot nativo M09c e composição ensaiados; anexos/previews reais e ativação de atendimento dependem de fontes qualificadas."
     },
     {
       "code": "RF-CEN-05",
@@ -1123,7 +1123,7 @@
       "stage": "HDN-09",
       "review": "Completar domínio/provedor e evidências de autenticação; nenhum DNS ou e-mail é alterado nesta rodada.",
       "existing": "outbox-dispatch/delivery-ledger/templates",
-      "deliveryStatus": "não alterado por esta rodada; ver capacidade existente e dependências no plano"
+      "deliveryStatus": "Parcial M03/M09c: políticas/templates Resend preparados e evento/outbox mínimos atômicos homologados. Pending significa fila; worker, DNS, aceitação/entrega e webhooks reais M11 pendentes."
     },
     {
       "code": "RF-NOT-02",

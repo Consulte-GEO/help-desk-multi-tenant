@@ -1,0 +1,110 @@
+TAP version 13
+# Subtest: UX10 member replay rejected by 429 preserves the already unknown intent
+not ok 1 - UX10 member replay rejected by 429 preserves the already unknown intent
+  ---
+  duration_ms: 55.6314
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\admin-members-state.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/admin-members-state.test.ts:15:384)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: C04 UI state renders only the authorized server snapshot
+ok 2 - C04 UI state renders only the authorized server snapshot
+  ---
+  duration_ms: 1.6359
+  type: 'test'
+  ...
+# Subtest: C04 UI opening then cancelling is not a mutation and clears reason
+ok 3 - C04 UI opening then cancelling is not a mutation and clears reason
+  ---
+  duration_ms: 2.8775
+  type: 'test'
+  ...
+# Subtest: C04 UI confirmation sends workspace/member revisions and a single key
+ok 4 - C04 UI confirmation sends workspace/member revisions and a single key
+  ---
+  duration_ms: 4.5402
+  type: 'test'
+  ...
+# Subtest: C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+ok 5 - C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+  ---
+  duration_ms: 5.8127
+  type: 'test'
+  ...
+# Subtest: C04 UI revocation after preview is denied by HTTP without stale rows retained
+ok 6 - C04 UI revocation after preview is denied by HTTP without stale rows retained
+  ---
+  duration_ms: 2.1304
+  type: 'test'
+  ...
+# Subtest: C04 UI invitation is pending and the receipt never claims mail was sent
+ok 7 - C04 UI invitation is pending and the receipt never claims mail was sent
+  ---
+  duration_ms: 3.7641
+  type: 'test'
+  ...
+# Subtest: C04 UI double submission is rejected while the first is in flight
+ok 8 - C04 UI double submission is rejected while the first is in flight
+  ---
+  duration_ms: 3.2438
+  type: 'test'
+  ...
+# Subtest: C04 UI audience change clears rows, drafts and late responses
+ok 9 - C04 UI audience change clears rows, drafts and late responses
+  ---
+  duration_ms: 1.6131
+  type: 'test'
+  ...
+# Subtest: C04 UI malformed or wrong-workspace response fails closed
+ok 10 - C04 UI malformed or wrong-workspace response fails closed
+  ---
+  duration_ms: 0.6135
+  type: 'test'
+  ...
+# Subtest: C04 UI hiding missing hints does not infer capabilities from an administrator role
+ok 11 - C04 UI hiding missing hints does not infer capabilities from an administrator role
+  ---
+  duration_ms: 0.8894
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown responses never trigger an automatic second POST
+ok 12 - C04 UI unknown responses never trigger an automatic second POST
+  ---
+  duration_ms: 0.9964
+  type: 'test'
+  ...
+# Subtest: C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+ok 13 - C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+  ---
+  duration_ms: 1.5524
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+ok 14 - C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+  ---
+  duration_ms: 1.9716
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 343.183

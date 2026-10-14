@@ -1,0 +1,238 @@
+TAP version 13
+# Subtest: C04 DOM wiring builds the list and labeled actions without HTML string injection
+ok 1 - C04 DOM wiring builds the list and labeled actions without HTML string injection
+  ---
+  duration_ms: 161.8446
+  type: 'test'
+  ...
+# Subtest: C04 DOM wiring opens confirmation and focuses its reason, no command on open
+ok 2 - C04 DOM wiring opens confirmation and focuses its reason, no command on open
+  ---
+  duration_ms: 5.2973
+  type: 'test'
+  ...
+# Subtest: C04 DOM wiring clears private form fields and rows when the audience changes
+ok 3 - C04 DOM wiring clears private form fields and rows when the audience changes
+  ---
+  duration_ms: 5.2314
+  type: 'test'
+  ...
+# Subtest: C04 DOM destroy clears the mounted panel
+ok 4 - C04 DOM destroy clears the mounted panel
+  ---
+  duration_ms: 2.9513
+  type: 'test'
+  ...
+# Subtest: C05 DOM only treats server labels as text, never HTML
+ok 5 - C05 DOM only treats server labels as text, never HTML
+  ---
+  duration_ms: 162.8701
+  type: 'test'
+  ...
+# Subtest: C05 DOM clears detached form values on an audience change
+ok 6 - C05 DOM clears detached form values on an audience change
+  ---
+  duration_ms: 11.8171
+  type: 'test'
+  ...
+# Subtest: C05 DOM destroys content and form values instead of leaving detached drafts
+ok 7 - C05 DOM destroys content and form values instead of leaving detached drafts
+  ---
+  duration_ms: 5.0709
+  type: 'test'
+  ...
+# Subtest: C06 callback DOM cleans URL but never posts until explicit confirmation
+ok 8 - C06 callback DOM cleans URL but never posts until explicit confirmation
+  ---
+  duration_ms: 8.7634
+  type: 'test'
+  ...
+# Subtest: C07 renderer uses labeled safe DOM controls and the same shared validation
+ok 9 - C07 renderer uses labeled safe DOM controls and the same shared validation
+  ---
+  duration_ms: 48.379
+  type: 'test'
+  ...
+# Subtest: C07 conditional fields are removed and detached secret inputs are scrubbed
+ok 10 - C07 conditional fields are removed and detached secret inputs are scrubbed
+  ---
+  duration_ms: 7.8842
+  type: 'test'
+  ...
+# Subtest: C07 hidden private field is not rendered or retained in customer answers
+ok 11 - C07 hidden private field is not rendered or retained in customer answers
+  ---
+  duration_ms: 2.5759
+  type: 'test'
+  ...
+# Subtest: C07 repeater allows bounded rows and required child validation
+ok 12 - C07 repeater allows bounded rows and required child validation
+  ---
+  duration_ms: 6.2025
+  type: 'test'
+  ...
+# Subtest: C07 table paste is atomic with exact headers and no partial adoption
+ok 13 - C07 table paste is atomic with exact headers and no partial adoption
+  ---
+  duration_ms: 4.7913
+  type: 'test'
+  ...
+# Subtest: C07 late lookup reply after audience change is discarded
+ok 14 - C07 late lookup reply after audience change is discarded
+  ---
+  duration_ms: 1.2993
+  type: 'test'
+  ...
+# Subtest: C07 lookup/file providers only return opaque references and never bypass server evidence
+ok 15 - C07 lookup/file providers only return opaque references and never bypass server evidence
+  ---
+  duration_ms: 2.7673
+  type: 'test'
+  ...
+# Subtest: C07 missing lookup/file/download providers remain visibly unavailable
+ok 16 - C07 missing lookup/file/download providers remain visibly unavailable
+  ---
+  duration_ms: 0.7866
+  type: 'test'
+  ...
+# Subtest: C07 multiselect produces bounded arrays and information is text only
+ok 17 - C07 multiselect produces bounded arrays and information is text only
+  ---
+  duration_ms: 2.2212
+  type: 'test'
+  ...
+# Subtest: C07 destroy clears fields, including detached controls, and refuses later edits
+ok 18 - C07 destroy clears fields, including detached controls, and refuses later edits
+  ---
+  duration_ms: 1.536
+  type: 'test'
+  ...
+# Subtest: M09a discarded conditional lookup choice cannot reappear after hiding and showing the field
+ok 19 - M09a discarded conditional lookup choice cannot reappear after hiding and showing the field
+  ---
+  duration_ms: 1.3299
+  type: 'test'
+  ...
+# Subtest: M09a discarded conditional file choice cannot reappear after hiding and showing the field
+ok 20 - M09a discarded conditional file choice cannot reappear after hiding and showing the field
+  ---
+  duration_ms: 0.7647
+  type: 'test'
+  ...
+# Subtest: C07 build whitelist copies new form assets byte-for-byte and preserves old assets
+ok 21 - C07 build whitelist copies new form assets byte-for-byte and preserves old assets
+  ---
+  duration_ms: 5181.3872
+  type: 'test'
+  ...
+# Subtest: UX10 renderer delivers both callback contracts once with immutable operational answers
+ok 22 - UX10 renderer delivers both callback contracts once with immutable operational answers
+  ---
+  duration_ms: 10.6575
+  type: 'test'
+  ...
+# Subtest: UX10 canEdit forbids programmatic row writes and value changes
+ok 23 - UX10 canEdit forbids programmatic row writes and value changes
+  ---
+  duration_ms: 1.5825
+  type: 'test'
+  ...
+# Subtest: UX10 async reference cannot arrive while owner has locked its intent
+ok 24 - UX10 async reference cannot arrive while owner has locked its intent
+  ---
+  duration_ms: 1.5781
+  type: 'test'
+  ...
+# Subtest: UX10 hiding and showing a conditional field invalidates the old reference generation
+ok 25 - UX10 hiding and showing a conditional field invalidates the old reference generation
+  ---
+  duration_ms: 2.2572
+  type: 'test'
+  ...
+# Subtest: UX10 intake mount propagates pending/saved phases to the operational journey
+ok 26 - UX10 intake mount propagates pending/saved phases to the operational journey
+  ---
+  duration_ms: 12.2007
+  type: 'test'
+  ...
+# Subtest: UX10 rejected reconciliation must not release a previously ambiguous opening
+ok 27 - UX10 rejected reconciliation must not release a previously ambiguous opening
+  ---
+  duration_ms: 3.5971
+  type: 'test'
+  ...
+# Subtest: UX10 first authoritative rejection still returns to editing
+ok 28 - UX10 first authoritative rejection still returns to editing
+  ---
+  duration_ms: 1.8046
+  type: 'test'
+  ...
+# Subtest: UX10 journey selector locks immediately while the visual intake saves
+ok 29 - UX10 journey selector locks immediately while the visual intake saves
+  ---
+  duration_ms: 10.318
+  type: 'test'
+  ...
+# Subtest: UX10 transferred assignments remain supported and private in the operational timeline
+ok 30 - UX10 transferred assignments remain supported and private in the operational timeline
+  ---
+  duration_ms: 7.1203
+  type: 'test'
+  ...
+# Subtest: UX10 build keeps M04 and M09 operational assets alongside all visual modules
+ok 31 - UX10 build keeps M04 and M09 operational assets alongside all visual modules
+  ---
+  duration_ms: 1.7078
+  type: 'test'
+  ...
+# Subtest: UX10 configuration rejected replay keeps original intent unresolved
+ok 32 - UX10 configuration rejected replay keeps original intent unresolved
+  ---
+  duration_ms: 8.9345
+  type: 'test'
+  ...
+# Subtest: UX10 configuration confirmation has an explicit operation summary
+ok 33 - UX10 configuration confirmation has an explicit operation summary
+  ---
+  duration_ms: 5.8037
+  type: 'test'
+  ...
+# Subtest: UX10 journey preserves the host class and presents discard before the long form
+ok 34 - UX10 journey preserves the host class and presents discard before the long form
+  ---
+  duration_ms: 3.5499
+  type: 'test'
+  ...
+# Subtest: UX10 failed API setup cannot discard the previous action data
+ok 35 - UX10 failed API setup cannot discard the previous action data
+  ---
+  duration_ms: 2.7753
+  type: 'test'
+  ...
+# Subtest: UX10 new operational screens use the shared theme without mounting themselves
+ok 36 - UX10 new operational screens use the shared theme without mounting themselves
+  ---
+  duration_ms: 2.6191
+  type: 'test'
+  ...
+# Subtest: UX10 configuration preparation hides unrelated controls and identifies reason
+ok 37 - UX10 configuration preparation hides unrelated controls and identifies reason
+  ---
+  duration_ms: 3.0251
+  type: 'test'
+  ...
+# Subtest: UX10 shell does not advertise the superseded hard-coded API release
+ok 38 - UX10 shell does not advertise the superseded hard-coded API release
+  ---
+  duration_ms: 1.5105
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7271.4337

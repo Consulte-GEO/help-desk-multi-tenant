@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** Registered only from the existing fresh-PG17 rls.test.ts chain. No top-level
  * network/SQL and no hosted target. These scenarios are NOT executed by unit tests. */
 import test from 'node:test';import assert from 'node:assert/strict';
@@ -15,8 +16,7 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
  const targetPath='../../scripts/database-target.ts';const {validateDatabaseTestTargets}=await import(targetPath);
  const {appUrl}=validateDatabaseTestTargets(process.env),admin=adminPool();
  assert.equal((await admin.query("select current_database() as db")).rows[0]?.db,'helpdesk_test');
- const install=await admin.connect();try{await install.query('BEGIN');await install.query("select set_config('app.hdn01b_candidate','disposable-pg17',true)");await install.query(await readFile(new URL('../candidates/hdn_execution_checklist.sql',import.meta.url),'utf8'));await install.query('COMMIT');}
- catch(e){await install.query('ROLLBACK');throw e;}finally{install.release();}
+ await assertPromotedM05Module(admin,'helpdesk_auth.hdn_mark_execution_checklist(uuid,jsonb,text,text,uuid)');
  const pgName='pg',pg=await import(pgName) as {Pool:new(o:Record<string,unknown>)=>SqlPool};
  const pool=new pg.Pool({connectionString:appUrl,max:3,connectionTimeoutMillis:5000});
  try{
@@ -162,10 +162,11 @@ export function registerExecutionChecklistSqlTests(adminPool:()=>SqlPool){test('
    const result=await service.transition(p,tickets.LEGACY!,'resolved',old.version,'Synthetic legacy resolution',randomUUID(),randomUUID());
    assert.equal(result.ticket.status,'resolved');assert.equal(result.ticket.version,old.version+1);
   });
-  await t.test('a same-state message on a resolved bound ticket is not a new completion',async()=>{
+  await t.test('checklist binding without workflow state refuses a generic same-state reply',async()=>{
    const before=await service.get(p,tickets.SAME_STATE!);assert.equal(before.status,'resolved');
-   await service.addMessage(p,tickets.SAME_STATE!,'Synthetic follow-up, not another completion',randomUUID(),randomUUID());
-   const after=await service.get(p,tickets.SAME_STATE!);assert.equal(after.status,'resolved');assert.equal(after.version,before.version+1);
+   const counts=()=>admin.query('select (select count(*) from helpdesk_core.ticket_messages where ticket_id=$1) as messages,(select count(*) from helpdesk_integration.outbox_events where ticket_id=$1) as outbox',[tickets.SAME_STATE]);const priorCounts=(await counts()).rows;
+   await assert.rejects(()=>service.addMessage(p,tickets.SAME_STATE!,'Synthetic follow-up without workflow binding',randomUUID(),randomUUID()),{code:'HDW07'});
+   assert.deepEqual(await service.get(p,tickets.SAME_STATE!),before);assert.deepEqual((await counts()).rows,priorCounts);
   });
   await t.test('reset clears current entry but retains its prior revision in immutable audit',async()=>{await mark(3,randomUUID(),'grupo',{status:'pending',evidenceRefs:[],reason:'Refazer conferência.'});const r=await view();assert.equal(r.snapshot?.entries.find(e=>e.itemId==='grupo')?.actorId,null);const arow=(await admin.query('select before_document from helpdesk_core.hdn_execution_audit where workspace_id=$1 and checklist_revision=4',[w])).rows[0]?.before_document as any;assert.equal(arow.entries.find((e:any)=>e.itemId==='grupo').status,'done');await assert.rejects(admin.query("update helpdesk_core.hdn_execution_audit set reason='erase' where workspace_id=$1",[w]),{code:'23514'});});
   await t.test('driver failure swallowed by caller still rolls a staged marking back',async()=>{await assert.rejects(runTransaction(pool,p,async c=>{const s=createPostgresExecutionChecklistStore(c);await s.mark(tickets.A!,command(4),'b'.repeat(64),randomUUID(),randomUUID());await c.query('select 1/0').catch(()=>{});}),{code:'transaction_statement_failed'});assert.equal((await view()).snapshot?.revision,4);});

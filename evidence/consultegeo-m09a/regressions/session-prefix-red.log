@@ -1,0 +1,48 @@
+✔ M09a transport saves fixed draft with If-Match, scoped payload and no automatic retry (22.6617ms)
+✔ M09a transport refuses mismatched saved id (1.1048ms)
+✔ M09a transport refuses mismatched saved accountId (0.5555ms)
+✔ M09a transport refuses mismatched saved formId (0.4618ms)
+✔ M09a transport refuses mismatched saved formVersion (0.5601ms)
+✔ M09a transport refuses mismatched saved revision (2.0013ms)
+✔ M09a transport refuses mismatched saved status (0.4682ms)
+✔ M09a transport refuses mismatched saved ticketId (0.3699ms)
+✔ M09a transport refuses mismatched saved refs (0.4247ms)
+✔ M09a contradictory ETag and missing content type do not confirm a save (0.869ms)
+✔ M09a confirmed creation correlates full receipt, status, key, version and Location (0.5934ms)
+✔ M09a rejects borrowed/contradictory creation actorId (0.3654ms)
+✔ M09a rejects borrowed/contradictory creation requesterId (0.3439ms)
+✔ M09a rejects borrowed/contradictory creation workspaceId (0.2293ms)
+✔ M09a rejects borrowed/contradictory creation accountId (0.2218ms)
+✔ M09a rejects borrowed/contradictory creation draftId (0.2682ms)
+✔ M09a rejects borrowed/contradictory creation draftRevision (1.0091ms)
+✔ M09a rejects borrowed/contradictory creation formId (0.4927ms)
+✔ M09a rejects borrowed/contradictory creation formVersion (0.3726ms)
+✔ M09a rejects borrowed/contradictory creation profileVersionId (0.3651ms)
+✔ M09a rejects borrowed/contradictory creation sequence (0.2808ms)
+✔ M09a rejects borrowed/contradictory creation notification (0.8238ms)
+✔ M09a rejects borrowed/contradictory creation replayed (0.2544ms)
+✔ M09a typed rejection is separate from unknown commit and untyped 5xx (0.5208ms)
+✔ M09a input mutation and extra authority fields are refused before request (0.2483ms)
+✔ M09a bounded response and HTML/error text never reach the UI (0.9ms)
+✔ M09a saved JSONB answers may reorder object keys while retaining exact values (0.4493ms)
+✖ M09a composes the actual authenticated session closure without duplicating /v1 (0.9878ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 27
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 244.7616
+
+✖ failing tests:
+
+test at tests\consultegeo-intake-api.test.ts:23:1
+✖ M09a composes the actual authenticated session closure without duplicating /v1 (0.9878ms)
+  Error: Confirmação indisponível. Concilie a mesma intenção antes de iniciar outra.
+      at fail (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/consultegeo-intake-api.js:4:16)
+      at invoke (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/consultegeo-intake-api.js:27:192)
+      at async Object.save (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/consultegeo-intake-api.js:34:28)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-intake-api.test.ts:23:1115)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

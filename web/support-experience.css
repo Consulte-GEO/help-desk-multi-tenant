@@ -1,0 +1,32 @@
+/* UX07 — complementary styles only for optional support panels. Uses UX01/UX06 tokens. */
+.hd-ops[data-support-panel] { width: 100%; }
+.hd-ops[data-support-panel] .hd-support-articles {
+ display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,260px),1fr));
+ gap: 16px; list-style: none; padding: 0; margin: 20px 0 16px;
+}
+.hd-ops[data-support-panel] .hd-support-article {
+ padding: 20px; border: 1px solid var(--hd-line); border-radius: var(--hd-radius-lg,18px);
+ background: var(--hd-surface-2); min-width: 0;
+}
+.hd-ops[data-support-panel] .hd-support-article h3 { color: var(--hd-ink); margin-bottom: 12px; }
+.hd-ops[data-support-panel] .hd-support-copy {
+ font: inherit; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere;
+ color: var(--hd-ink); margin: 0;
+}
+.hd-ops[data-support-panel] .hd-support-macro {
+ border: 1px solid var(--hd-line); border-inline-start: 3px solid var(--hd-accent);
+ border-radius: 14px; padding: 20px; margin: 20px 0; background: var(--hd-surface-2);
+}
+.hd-ops[data-support-panel] .hd-support-external-description { margin: 20px 0 16px; max-width: 76ch; }
+.hd-ops[data-support-panel] .hd-support-counter {
+ color: var(--hd-muted); font-size: 12px; font-variant-numeric: tabular-nums; text-align: end; margin: 0;
+}
+.hd-ops[data-support-panel=csat] form { max-width: 760px; }
+.hd-ops[data-support-panel=csat] .hd-ops-actions { justify-content: flex-end; }
+.hd-ops[data-support-panel=csat] [data-ops-action=send-csat] { min-width: 180px; }
+.hd-ops[data-support-panel] .hd-ops-status:empty { display: none; }
+@media (max-width:640px) {
+ .hd-ops[data-support-panel] .hd-support-article, .hd-ops[data-support-panel] .hd-support-macro { padding: 16px; }
+ .hd-ops[data-support-panel] .hd-support-articles { grid-template-columns: minmax(0,1fr); }
+ .hd-ops[data-support-panel] .hd-ops-facts { gap: 10px; }
+}

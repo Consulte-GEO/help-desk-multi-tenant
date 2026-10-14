@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** Runs after the CG03d candidate in the same guarded, owned PostgreSQL17 database.
  * No remote credentials, new provider or hosted migration. The authority is synthetic;
  * resolver, bridge, store, pg transport and database policy are real.
@@ -19,10 +20,7 @@ export function registerResourceScopeStoreSqlTests(adminPool:()=>SqlPool){
  test('CG03e database observations bind the resource lease to the actual ticket transaction',async t=>{
   const {appUrl}=validateDatabaseTestTargets(process.env),admin=adminPool();
   assert.equal((await admin.query("select to_regclass('helpdesk_auth.cg_resource_bindings') is not null as ready")).rows[0]?.ready,true);
-  const installer=await admin.connect();
-  try{await installer.query('BEGIN');await installer.query("select set_config('app.cg03e_candidate','disposable-pg17',true)");
-   await installer.query(await readFile(new URL('../candidates/cg_resource_observation.sql',import.meta.url),'utf8'));await installer.query('COMMIT');
-  }catch(e){await installer.query('ROLLBACK');throw e;}finally{installer.release();}
+  await assertPromotedM05Module(admin,'helpdesk_auth.cg_ticket_resource_allowed(uuid,uuid,uuid,text)');
   const moduleName='pg',driver=await import(moduleName) as {Pool:new(o:Record<string,unknown>)=>SqlPool};
   const pool=new driver.Pool({connectionString:appUrl,max:2,connectionTimeoutMillis:5000});
   try{

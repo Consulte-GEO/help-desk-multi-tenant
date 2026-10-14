@@ -1,0 +1,23 @@
+homologation	Execute independent gates even when browser preparation fails	﻿2026-10-14T05:09:23.2362620Z ##[group]Run npm run homologate:local
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.2363169Z ^[[36;1mnpm run homologate:local^[[0m
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.2448064Z shell: /usr/bin/bash -e {0}
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.2448528Z env:
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.2448896Z   HELPDESK_CI_BROWSER_READY: 1
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.2449357Z ##[endgroup]
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.4082671Z 
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.4090965Z > @consulte-geo/helpdesk@0.30.0 homologate:local
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.4091962Z > node scripts/homologate-local.mjs
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.4092801Z 
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.6657691Z Verificação local: lock
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:23.7326556Z Verificação local: install
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:25.4199234Z Verificação local: audit
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:09:26.2559320Z Verificação local: application
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:11:27.7181452Z Verificação local: postgres
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4810040Z lock: passed
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4812596Z install: passed
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4815861Z audit: passed
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4817926Z application: failed (4700/4701 testes)
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4823818Z PUBLICAÇÃO BLOQUEADA: evidência local incompleta, vencida ou incompatível com este código.
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4829648Z postgres: passed (420/420 testes)
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.4833656Z interface: blocked
+homologation	Execute independent gates even when browser preparation fails	2026-10-14T05:12:35.5081619Z ##[error]Process completed with exit code 1.

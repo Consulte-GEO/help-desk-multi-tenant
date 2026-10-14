@@ -21,7 +21,7 @@ const server=createServer(async(req,res)=>{
   if(path==='/'&&req.method==='GET'){res.setHeader('content-type','text/html; charset=utf-8');res.end(html);return;}
   if(path==='/test-entry.js'&&req.method==='GET'){res.setHeader('content-type','text/javascript');res.end(entry);return;}
   if(path==='/test-config.json'&&req.method==='GET'){res.setHeader('content-type','application/json');res.end(JSON.stringify({headers:Object.fromEntries(fixture.request().headers),principal:fixture.principal.id,workspace:fixture.principal.workspaceId}));return;}
-  if(['/web/admin-members.js','/web/admin-members-state.js','/web/admin-members.css'].includes(path)&&req.method==='GET'){
+  if(['/web/admin-members.js','/web/admin-members-state.js','/web/admin-members.css','/web/admin-experience.css','/web/admin-ui.js'].includes(path)&&req.method==='GET'){
    try{const data=await readFile(new URL('../'+path.slice(1),import.meta.url));res.setHeader('content-type',path.endsWith('.js')?'text/javascript':'text/css');res.end(data);}catch{res.writeHead(404);res.end();}return;
   }
   if(path==='/_test/reset'&&req.method==='POST'){fixture=memberFixture();res.end('{}');return;}

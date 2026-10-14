@@ -1,0 +1,20 @@
+/* UX10: operational M09 journey. Scoped presentation; importing never mounts a feature. */
+.cg-request{font-family:var(--hd-font,system-ui,sans-serif);max-width:960px;margin:0 auto;padding:24px;color:var(--hd-ink,#17233B);background:var(--hd-surface,#fff);border:1px solid var(--hd-line,#DBE1EB);border-radius:var(--hd-radius-xl,24px);box-shadow:var(--hd-shadow,none)}
+.cg-request,.cg-request *{box-sizing:border-box;min-width:0;overflow-wrap:anywhere}
+.cg-request>h2{font-size:1.6rem;line-height:1.35;margin:0 0 20px;letter-spacing:-.025em}
+.cg-request>label{display:block;font-size:1rem;font-weight:650;margin:0 0 8px;color:var(--hd-ink,#17233B)}
+.cg-request>select{width:100%;min-height:48px;padding:12px;border:1px solid var(--hd-control-line,#8390A3);border-radius:10px;background:var(--hd-surface,#fff);color:var(--hd-ink,#17233B);font:inherit;font-size:16px}
+.cg-request>[role=status]{font-size:.95rem;line-height:1.6;color:var(--hd-muted,#506079);margin:12px 0}
+.cg-request>[aria-label="Prazos configurados"]{padding:16px 20px;margin:20px 0;border:1px solid var(--hd-line,#DBE1EB);border-radius:14px;background:var(--hd-info-bg,#EDF3FF);color:var(--hd-info-fg,#204993);line-height:1.65}
+.cg-request>[aria-label="Prazos configurados"]:empty{display:none}
+.cg-request>[aria-label="Prazos configurados"] p:last-child{margin-bottom:0}
+.cg-request [data-cg-discard]{padding:18px;margin:16px 0;background:var(--hd-warning-bg,#FFF5DE);color:var(--hd-warning-fg,#7A5107);border:1px solid currentColor;border-radius:14px;line-height:1.6}
+.cg-request [data-cg-discard] h3{font-size:1.1rem;margin:0 0 8px}
+.cg-request [data-cg-discard] button{min-height:44px;margin:4px 8px 4px 0;padding:10px 16px;border:1px solid var(--hd-control-line,#8390A3);border-radius:10px;font:inherit;font-weight:650;background:var(--hd-surface,#fff);color:var(--hd-ink,#17233B);cursor:pointer}
+.cg-request [data-cg-discard] button:first-of-type{background:var(--hd-danger-bg,#FDECEF);color:var(--hd-danger-fg,#A6203D);border-color:currentColor}
+.cg-request [data-cg-request-form]>.hd-intake{padding:20px;border-radius:18px;box-shadow:none}
+.cg-request :focus-visible{outline:3px solid var(--hd-focus,#A30F6C);outline-offset:3px}
+.cg-request [hidden]{display:none!important}
+.cg-request :disabled{cursor:not-allowed;opacity:.6}
+@media(max-width:640px){.cg-request{padding:16px;border-radius:18px}.cg-request>h2{font-size:1.4rem}.cg-request [data-cg-request-form]>.hd-intake{padding:14px}.cg-request>[aria-label="Prazos configurados"]{padding:14px}.cg-request [data-cg-discard] button{width:100%;margin:5px 0}}
+@media(prefers-reduced-motion:reduce){.cg-request *{scroll-behavior:auto!important;transition:none!important}}

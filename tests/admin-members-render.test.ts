@@ -1,16 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-/** Minimal DOM port double: verifies module wiring, NOT browser/CSS/accessibility. */
-class Element{
- tagName:string;children:Element[]=[];attributes:Record<string,string>={};handlers:Record<string,Function[]>={};value='';disabled=false;hidden=false;open=false;ownerDocument:any;parent:any;own='';
- constructor(tag:string,doc:any){this.tagName=tag;this.ownerDocument=doc;}
- set innerHTML(_value:string){throw Error('HTML string injection forbidden by test');}
- set textContent(v:string){this.own=String(v);this.children=[];}get textContent():string{return this.own+this.children.map(c=>c.textContent).join('');}
- append(...items:Element[]){for(const c of items){this.children.push(c);c.parent=this;}}replaceChildren(...items:Element[]){this.own='';this.children=[];this.append(...items);}
- setAttribute(k:string,v:string){this.attributes[k]=String(v);}removeAttribute(k:string){delete this.attributes[k];}
- addEventListener(k:string,f:Function){(this.handlers[k]??=[]).push(f);}dispatch(k:string){for(const f of this.handlers[k]??[])f({preventDefault(){},target:this});}
- showModal(){this.open=true;}close(){this.open=false;}focus(){}
-}
-function dom(){const doc:any={createElement:(tag:string)=>new Element(tag,doc)};return new Element('main',doc);}
+import {TestElement as Element,testDom} from './helpers/dom-port.ts';
+/** Structural wiring; Chromium separately proves layout/accessibility. */
+const dom=testDom;
 const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
 const snapshot=()=>({workspace_id:id(1),revision:1,total:2,items:[2,3].map(n=>({principal_id:id(n),principal_kind:'human',role:n===2?'admin':'agent',status:'active',effective_status:'active',revision:1,expires_at:null})),available_actions:['invite','revoke','set_role','handoff'],next_cursor:null});
 function all(root:Element):Element[]{return [root,...root.children.flatMap(all)];}

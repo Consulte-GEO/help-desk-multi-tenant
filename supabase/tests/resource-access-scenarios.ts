@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** Candidate SQL runs only when registered by the existing, opted-in fresh PG17 suite.
  * Never a hosted runner. Synthetic identities are ordinary existing Supabase humans,
  * not fabricated external identities. No top-level SQL or network.
@@ -54,12 +55,10 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
    await service.addNote(people.agent,tickets.A!,'CG03d private A',randomUUID(),randomUUID());
    await service.addMessage(people.requester,tickets.C!,'CG03d public but scoped C',randomUUID(),randomUUID());
    const original=await admin.query('select id,version,contract_snapshot from helpdesk_core.tickets where workspace_id=$1 order by id',[w]);
-   const sql=await readFile(new URL('../candidates/cg_resource_scope.sql',import.meta.url),'utf8');
    // The existing fresh-db guard and runner own this database; no DSN is accepted from a request.
-   const install=await admin.connect();
-   try{await install.query('BEGIN');await install.query("select set_config('app.cg03d_candidate','disposable-pg17',true)");await install.query(sql);await install.query('COMMIT');}
-   catch(error){await install.query('ROLLBACK');throw error;}finally{install.release();}
+   await assertPromotedM05Module(admin,'helpdesk_auth.cg_ticket_resource_allowed(uuid,uuid,uuid,text)');
    const ready=(await admin.query("select to_regclass('helpdesk_auth.cg_resource_bindings') is not null as ready")).rows[0]?.ready===true;
+   assert.equal(ready,true);
    const connection=randomUUID(),binding=randomUUID(),otherBinding=randomUUID();
    // During RED the exact existing application/SQL still runs. No fake denial fallback.
    // Setup is conditional only to expose the pre-implementation visibility bug, not a missing-table error.
@@ -112,9 +111,9 @@ export function registerResourceAccessSqlCandidateTests(adminPool:()=>SqlPool){
     for(const table of ['cg_resource_connections','cg_resource_bindings','cg_resource_grant_sets','cg_resource_grant_refs'])await assert.rejects(rowsAs(people.admin,'select * from helpdesk_auth.'+table),{code:'42501'});
     await assert.rejects(rowsAs(people.admin,"update helpdesk_auth.cg_resource_grant_sets set active=true"),{code:'42501'});
    });
-   await t.test('all six candidate tables FORCE RLS and helpers deny PUBLIC execute',async()=>{
+   await t.test('all ten promoted CG tables FORCE RLS and helpers deny PUBLIC execute',async()=>{
     const r=await admin.query("select c.relname,c.relrowsecurity,c.relforcerowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('helpdesk_core','helpdesk_auth') and c.relname like 'cg_%' and c.relkind='r'");
-    assert.equal(r.rows.length,6);assert.ok(r.rows.every(v=>v.relrowsecurity&&v.relforcerowsecurity));
+    assert.equal(r.rows.length,10);assert.ok(r.rows.every(v=>v.relrowsecurity&&v.relforcerowsecurity));
     assert.equal((await admin.query("select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace cross join lateral aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where n.nspname in ('helpdesk_core','helpdesk_auth') and p.proname like 'cg_%' and a.grantee=0 and a.privilege_type='EXECUTE'")).rows.length,0);
    });
    await t.test('missing/expired/unpublished grant never becomes all-resource permission',async()=>{

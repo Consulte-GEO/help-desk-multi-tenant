@@ -1,0 +1,286 @@
+TAP version 13
+# Subtest: UX10 renderer delivers both callback contracts once with immutable operational answers
+not ok 1 - UX10 renderer delivers both callback contracts once with immutable operational answers
+  ---
+  duration_ms: 8.55
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:22:383)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: UX10 canEdit forbids programmatic row writes and value changes
+not ok 2 - UX10 canEdit forbids programmatic row writes and value changes
+  ---
+  duration_ms: 0.9289
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Conclua a intenção atual.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    edit (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/dynamic-form.js:16:48)
+    file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/dynamic-form.js:41:100
+    TestElement.dispatch (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/helpers/dom-port.ts:9:57)
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:24:455)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: UX10 async reference cannot arrive while owner has locked its intent
+ok 3 - UX10 async reference cannot arrive while owner has locked its intent
+  ---
+  duration_ms: 1.5219
+  type: 'test'
+  ...
+# Subtest: UX10 hiding and showing a conditional field invalidates the old reference generation
+ok 4 - UX10 hiding and showing a conditional field invalidates the old reference generation
+  ---
+  duration_ms: 2.7726
+  type: 'test'
+  ...
+# Subtest: UX10 intake mount propagates pending/saved phases to the operational journey
+ok 5 - UX10 intake mount propagates pending/saved phases to the operational journey
+  ---
+  duration_ms: 4.0005
+  type: 'test'
+  ...
+# Subtest: UX10 rejected reconciliation must not release a previously ambiguous opening
+ok 6 - UX10 rejected reconciliation must not release a previously ambiguous opening
+  ---
+  duration_ms: 2.1042
+  type: 'test'
+  ...
+# Subtest: UX10 first authoritative rejection still returns to editing
+ok 7 - UX10 first authoritative rejection still returns to editing
+  ---
+  duration_ms: 0.4826
+  type: 'test'
+  ...
+# Subtest: UX10 journey selector locks immediately while the visual intake saves
+ok 8 - UX10 journey selector locks immediately while the visual intake saves
+  ---
+  duration_ms: 3.0708
+  type: 'test'
+  ...
+# Subtest: UX10 transferred assignments remain supported and private in the operational timeline
+ok 9 - UX10 transferred assignments remain supported and private in the operational timeline
+  ---
+  duration_ms: 10.0152
+  type: 'test'
+  ...
+# Subtest: UX10 build keeps M04 and M09 operational assets alongside all visual modules
+not ok 10 - UX10 build keeps M04 and M09 operational assets alongside all visual modules
+  ---
+  duration_ms: 1.1352
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:40:1'
+  failureType: 'testCodeFailure'
+  error: 'access-feedback.js'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:40:375)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 configuration rejected replay keeps original intent unresolved
+not ok 11 - UX10 configuration rejected replay keeps original intent unresolved
+  ---
+  duration_ms: 3.959
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    'idle' !== 'unknown'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'unknown'
+  actual: 'idle'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:42:468)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 configuration confirmation has an explicit operation summary
+not ok 12 - UX10 configuration confirmation has an explicit operation summary
+  ---
+  duration_ms: 15.9895
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:44:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(summary)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:44:355)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 journey preserves the host class and presents discard before the long form
+not ok 13 - UX10 journey preserves the host class and presents discard before the long form
+  ---
+  duration_ms: 1.5959
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:46:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'contains')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:46:432)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 failed API setup cannot discard the previous action data
+not ok 14 - UX10 failed API setup cannot discard the previous action data
+  ---
+  duration_ms: 1.5882
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:48:1'
+  failureType: 'testCodeFailure'
+  error: 'setup error'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.createApi (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:48:352)
+    activate (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/consultegeo-request.js:14:164)
+    Object.confirmDiscard (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/web/consultegeo-request.js:18:136)
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:48:469)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 new operational screens use the shared theme without mounting themselves
+not ok 15 - UX10 new operational screens use the shared theme without mounting themselves
+  ---
+  duration_ms: 1.0337
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /var\(--hd-surface/. Input:
+    
+    '.cg-request{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:24px;color:#172638;background:#fff;border:1px solid #dbe4ee;border-radius:16px}.cg-request *{box-sizing:border-box;overflow-wrap:anywhere}.cg-request label{display:block;margin:16px 0 6px;font-weight:600}.cg-request input:not([type=checkbox]),.cg-request textarea,.cg-request select{display:block;width:100%;max-width:100%;min-height:44px;padding:10px;border:1px solid #97a8ba;border-radius:6px;background:#fff;color:#172638;font:inherit}.cg-request textarea{min-height:100px}.cg-request button{min-height:44px;margin:8px 8px 8px 0;padding:10px 16px;border:1px solid #bdcdd9;border-radius:8px;background:#007ca8;color:#fff;cursor:pointer;font:inherit}.cg-request button:disabled{opacity:.55;cursor:default}.cg-request [hidden]{display:none!important}.cg-request [aria-label="Prazos configurados"]{padding:8px 16px;background:#edf7fa;border-radius:8px;margin:20px 0}.cg-request fieldset{max-width:100%;min-width:0;border:1px solid #dbe4ee;padding:12px}.cg-request :focus-visible{outline:3px solid #e98b00;outline-offset:3px}@media(max-width:600px){.cg-request{padding:16px;border-radius:0}.cg-request button{width:100%;margin-right:0}}\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    .cg-request{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:24px;color:#172638;background:#fff;border:1px solid #dbe4ee;border-radius:16px}.cg-request *{box-sizing:border-box;overflow-wrap:anywhere}.cg-request label{display:block;margin:16px 0 6px;font-weight:600}.cg-request input:not([type=checkbox]),.cg-request textarea,.cg-request select{display:block;width:100%;max-width:100%;min-height:44px;padding:10px;border:1px solid #97a8ba;border-radius:6px;background:#fff;color:#172638;font:inherit}.cg-request textarea{min-height:100px}.cg-request button{min-height:44px;margin:8px 8px 8px 0;padding:10px 16px;border:1px solid #bdcdd9;border-radius:8px;background:#007ca8;color:#fff;cursor:pointer;font:inherit}.cg-request button:disabled{opacity:.55;cursor:default}.cg-request [hidden]{display:none!important}.cg-request [aria-label="Prazos configurados"]{padding:8px 16px;background:#edf7fa;border-radius:8px;margin:20px 0}.cg-request fieldset{max-width:100%;min-width:0;border:1px solid #dbe4ee;padding:12px}.cg-request :focus-visible{outline:3px solid #e98b00;outline-offset:3px}@media(max-width:600px){.cg-request{padding:16px;border-radius:0}.cg-request button{width:100%;margin-right:0}}
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:50:248)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 configuration preparation hides unrelated controls and identifies reason
+not ok 16 - UX10 configuration preparation hides unrelated controls and identifies reason
+  ---
+  duration_ms: 4.8354
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:52:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:52:392)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX10 shell does not advertise the superseded hard-coded API release
+not ok 17 - UX10 shell does not advertise the superseded hard-coded API release
+  ---
+  duration_ms: 1.1508
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux10-compatibility.test.ts:54:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(!html.includes('v0.27.0'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux10-compatibility.test.ts:54:165)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 7
+# fail 10
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 585.5698

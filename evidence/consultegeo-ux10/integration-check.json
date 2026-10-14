@@ -1,0 +1,26 @@
+{
+  "normalization": "Reviewed derivative text patch for original inspector; not upstream apply_ux10 acceptance. Binary assets separately checksummed and covered by build/browser.",
+  "base": "97be3341f7c72b5962e5e4556b041994b9b8e91b",
+  "head": "67aaf00684e5ea10a265ad18659c2d1c532099ab",
+  "binaries": [
+    {
+      "path": "web/assets/consulte-geo-color.png",
+      "sha256": "99f7607e9d4bc74ad7f7e06ca3e1311f9e2e82448286bb500e85cfd7de0199db"
+    },
+    {
+      "path": "web/assets/consulte-geo-white.png",
+      "sha256": "924d2c378ad237bd23985358509b9d33f5433576468f86c1c59be0564b832bd1"
+    }
+  ],
+  "schema": "helpdesk.integration-inspection.v1",
+  "ok": true,
+  "stage": "after",
+  "variant": "ux10-m09c",
+  "checked_files": 173,
+  "source_fingerprint": "9c2daade5879a279a01c821a4ec40c8baff9a21996a5cc1b3810e1ca2fed4a90",
+  "patch_sha256": "f6032d7930daed73971664d949030c64e54d1ef19008eb1ad6d42c054e203511",
+  "writes_performed": false,
+  "tests_executed": false,
+  "homologated": false,
+  "operational": false
+}

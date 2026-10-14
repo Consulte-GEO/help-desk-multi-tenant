@@ -1,4 +1,25 @@
 import {ADVANCED_ACCESS} from './access-mode.js';
+// UX08: optional presentation. Failed/late assets never authorize or block Auth.
+let accessUX=null,accessConfiguration=null;
+import('./access-experience.js').then(({mountAccessExperience})=>{
+ accessUX=mountAccessExperience(document,{simple:!ADVANCED_ACCESS});
+ if(accessConfiguration!==null)accessUX.configuration(accessConfiguration);
+ accessUX.phase(humanSession?.state().phase??'signed_out');
+}).catch(()=>{/* The existing login/session controller remains authoritative. */});
+// UX03: deferred presentation; a late asset never reorganizes a form being filled.
+let openingUX=null;
+import('./opening-wizard.js').then(({mountOpeningWizard})=>{
+ const mount=()=>{openingUX=mountOpeningWizard(document);renderCatalog();};
+ if($('create-dialog').open)$('create-dialog').addEventListener('close',mount,{once:true});
+ else mount();
+}).catch(()=>{/* Keep the existing single-page form when the optional asset is unavailable. */});
+// UX02: optional presentation. Failure leaves the original UI and Auth available.
+let inboxUX=null;
+import('./inbox-workspace.js').then(({mountInboxWorkspace})=>{
+ inboxUX=mountInboxWorkspace(document,{retryDetail:id=>run(()=>detail(id,{navigate:true}))});
+ if(s.ticket){const op=inboxUX.beginDetail(s.ticket.id);inboxUX.finishDetail(op);}
+ render();
+}).catch(()=>{/* A missing presentation asset never enables a capability. */});
 // Somente a opção de código permite reativar os fluxos avançados preservados.
 for(const node of document.querySelectorAll('[data-advanced-access]')){node.hidden=!ADVANCED_ACCESS;node.inert=!ADVANCED_ACCESS;}
 import {createRecoveryPanel,captureRecoveryNavigation} from './recovery-password.js';
@@ -51,7 +72,9 @@ const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempot
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
 const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
-function clearSession(){recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+// Presentation only: this is an abbreviated UUID, never a business protocol.
+const compactTicketId=id=>(id.length>18?id.slice(0,8)+'…'+id.slice(-6):id).toUpperCase();
+function clearSession(){accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
@@ -89,11 +112,13 @@ async function list(reset=true,selectFirst=false){
 }
 function render(){
  const items=s.tickets,phase=inbox.status();$('ticket-list').replaceChildren();
- for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('aria-label','Abrir chamado: '+t.subject);
-  const top=el('div','card-top'),bottom=el('div','card-bottom');top.append(el('span','',t.id.slice(0,8).toUpperCase()),el('span','',date(t.created_at)));
+ for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('data-ticket-id',t.id);if(s.ticket?.id===t.id)n.setAttribute('aria-current','true');n.setAttribute('aria-label','Abrir chamado: '+t.subject);
+  const top=el('div','card-top'),bottom=el('div','card-bottom');const identifier=el('span','',compactTicketId(t.id));identifier.title=t.id;
+  n.setAttribute('aria-label','Abrir chamado: '+t.subject+' · identificador '+t.id);
+  top.append(identifier,el('span','',date(t.created_at)));
   if(t.assignment)bottom.append(el('span','badge',t.assignment.state==='mine'?'Sob minha responsabilidade':t.assignment.state==='other'?'Com outro atendente':'Sem responsável'));
   bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id)));
-  n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id));$('ticket-list').append(n);
+  n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id,{navigate:true}));$('ticket-list').append(n);
  }
  if(!items.length)$('ticket-list').append(el('p','list-empty',!serviceAvailable()?'Os chamados serão exibidos aqui quando a consulta estiver disponível.':phase==='loading'?'Consultando chamados autorizados…':phase==='error'?'Não foi possível carregar os chamados. Tente novamente.':phase==='idle'?'Aplique a consulta para carregar chamados.':'Nenhum chamado encontrado para os filtros aplicados e suas permissões.'));
  $('stat-total').textContent=items.length;$('stat-open').textContent=items.filter(t=>['received','in_progress'].includes(t.status)).length;
@@ -105,6 +130,7 @@ function render(){
  $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+'. Contagens referem-se somente aos itens carregados.';
  $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
  renderServiceAvailability();
+ inboxUX?.setFilters(inbox.filters(),inbox.busy());inboxUX?.setAvailability(!!s.me,serviceAvailable());
 }
 function applyFilters(){
  const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value,assignment=$('assignment-filter').value;
@@ -132,7 +158,10 @@ async function older(kind){
   if(seq===s.detail&&id===s.ticket?.id&&conversation.accept(generation,kind,page))renderConversation();
  }finally{button.disabled=false;}
 }
-async function detail(id){
+async function detail(id,{navigate=false}={}){
+ // Navigation never discards a request still in flight or an unresolved creation.
+ if(navigate&&id!==s.ticket?.id&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
+ const uxRead=inboxUX?.beginDetail(id,navigate);
  // Lock controls while the current GET and required conversation are being refreshed.
  s.actions=null;s.notesUnavailable=false;
  timeline.reset();renderTimeline();$('notes-section').hidden=true;$('note-tab').hidden=true;
@@ -153,7 +182,7 @@ async function detail(id){
   const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
   conversation.accept(generation,'messages',messages);conversation.accept(generation,'notes',notes);
   $('empty-detail').hidden=true;$('ticket-detail').hidden=false;
-  $('ticket-number').textContent='CHAMADO '+t.id.slice(0,8).toUpperCase()+' · VERSÃO '+t.version;
+  $('ticket-number').textContent='CHAMADO '+compactTicketId(t.id)+' · VERSÃO '+t.version;
   $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;
   $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));
   $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
@@ -163,13 +192,25 @@ async function detail(id){
   $('detail-action-status').textContent=hasWriteActions(actions)?'Ações verificadas pelo servidor para esta versão. Cada envio revalida suas permissões.':'Modo de consulta: seu acesso atual não permite alterações neste chamado.';
   mode(s.mode);renderTransitions();renderAssignment();renderPriority();
   timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),t.internal_status!==undefined);renderTimeline();
+  if(current())inboxUX?.finishDetail(uxRead??inboxUX.beginDetail(id,navigate));
   if($('history-section').open)await loadTimeline();if(current())render();
  }catch(error){
   if(!current())return;
   s.actions=null;conversation.reset('');timeline.reset();renderConversation();renderTimeline();
   $('ticket-detail').hidden=true;$('empty-detail').hidden=false;
-  if([401,403,404].includes(error.status)){s.ticket=null;mutations.reset('');$('message-body').value='';}
+  if([401,403,404].includes(error.status)){
+   // Hiding a refused projection is not cleanup. Do not retain the prior detail
+   // or its operational drafts in hidden DOM. Transient failures retain drafts.
+   s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';
+   $('assignment-form').reset();$('priority-form').reset();
+   for(const field of ['ticket-number','ticket-title','ticket-description','ticket-tags','contract-info','assignment-label','assignment-status','priority-status','detail-action-status','notes-status'])$(field).replaceChildren();
+   $('assignment-reload').hidden=true;$('priority-reload').hidden=true;$('notes-retry').hidden=true;
+   $('notes-section').open=false;$('history-section').open=false;
+   // Discard the old list snapshot as well; explicit refresh revalidates its rows.
+   inbox.reset(inbox.filters());syncInbox();
+  }
   renderComposer();renderAssignment();renderPriority();renderTransitions();
+  inboxUX?.failDetail(uxRead??inboxUX.beginDetail(id,navigate),error.status);
   throw error;
  }
 }
@@ -213,6 +254,7 @@ function renderAssignment(){
  if(draft){try{$('assignment-reason').value=JSON.parse(draft).reason;}catch{$('assignment-status').textContent='Rascunho inválido. Reabra o chamado.';}}
  else $('assignment-reason').value='';
  $('claim-ticket').disabled=busy||!s.actions?.claim;$('release-ticket').disabled=busy||!s.actions?.release;$('assignment-reload').disabled=busy;
+ $('assignment-reason').disabled=mutations.unresolved('assignment');
 }
 function editAssignment(action,rebase=false){
  if(!s.ticket)return;let previous=null;try{previous=JSON.parse(mutations.draft('assignment'));}catch{}
@@ -232,7 +274,7 @@ $('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.v
   $('assignment-status').textContent=d.action==='claim'?'Atendimento assumido. Registro somente no histórico interno.':'Atendimento liberado. Nenhuma permissão de acesso foi modificada.';
   await detail(t.id);if(mutations.current(op))await list();
  }catch(error){
-  if(mutations.finish(op,false).current||mutations.current(op)){
+  if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op)){
    const conflict=error.status===412||error.code==='assignment_conflict'||error.code==='assignment_release_forbidden';
    $('assignment-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':conflict?'Responsabilidade ou versão alterada. Atualize o chamado e revise antes de confirmar novamente.':(error.status===503||!Number.isInteger(error.status))?'Resultado ainda não confirmado. Não crie outra operação: repita sem alterar os campos ou atualize o chamado para verificar.':error.message;
    $('assignment-reload').hidden=!conflict;
@@ -251,6 +293,7 @@ function renderPriority(){
  if(draft){try{const d=JSON.parse(draft);$('ticket-priority').value=d.priority;$('priority-reason').value=d.reason;}catch{$('priority-status').textContent='Rascunho de prioridade inválido. Reabra o chamado.';}}
  else{$('ticket-priority').value=t.priority;$('priority-reason').value='';}
  $('save-priority').disabled=mutations.busy('priority');
+ $('ticket-priority').disabled=$('priority-reason').disabled=mutations.unresolved('priority');
 }
 function editPriority(){if(!s.ticket)return;mutations.edit('priority',JSON.stringify({priority:$('ticket-priority').value,reason:$('priority-reason').value,version:s.ticket.version}));}
 $('ticket-priority').onchange=editPriority;$('priority-reason').oninput=editPriority;
@@ -263,7 +306,7 @@ $('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   $('priority-status').textContent=draft.priority===t.priority?'A prioridade já era a selecionada. Nenhuma alteração foi registrada.':'Prioridade salva. Motivo registrado somente no histórico interno.';
   await detail(t.id);if(mutations.current(op))await list();
  }catch(error){
-  if(mutations.finish(op,false).current||mutations.current(op)){
+  if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op)){
    $('priority-status').textContent=error.requestSent===false?'Alteração não enviada: renove a sessão e confirme novamente. O motivo foi preservado.':error.status===412?'Outro atendimento modificou este chamado. Atualize a versão, revise a prioridade e confirme novamente.':(error.status===503||!Number.isInteger(error.status))?'Não foi possível confirmar a gravação. Repita sem alterar os campos para reutilizar a mesma chave ou atualize o chamado antes de decidir.':error.message;
    $('priority-reload').hidden=error.status!==412;
   }
@@ -281,14 +324,16 @@ function renderComposer(){
  $('message-form').hidden=!publicAllowed&&!internalAllowed;
  $('message-body').value=mutations.draft(s.mode);
  const enabled=s.mode==='internal'?internalAllowed:publicAllowed;
- $('message-body').disabled=!enabled;
+ $('message-body').disabled=!enabled||mutations.unresolved(s.mode);
  $('send-message').disabled=!enabled||mutations.busy(s.mode)||!s.ticket;
  $('transition').disabled=mutations.busy('transition')||!s.ticket||!a?.transitions.length;
+ $('next-status').disabled=$('transition-reason').disabled=mutations.unresolved('transition');
  $('message-form').classList.toggle('internal',s.mode==='internal');
  for(const b of document.querySelectorAll('[data-mode]'))b.classList.toggle('selected',b.dataset.mode===s.mode);
  $('composer-label').textContent=s.mode==='internal'?'Escreva uma nota interna':'Escreva uma resposta pública';
+ $('message-body').placeholder=s.mode==='internal'?'Escreva uma nota interna para a equipe…':'Escreva uma resposta para esta conversa…';
  $('visibility-help').textContent=s.mode==='internal'?'Restrita à equipe. Não é enviada ao cliente.':'Visível para o cliente e para a equipe.';
- $('send-message').textContent=s.mode==='internal'?'Salvar nota':'Enviar resposta';
+ $('send-message').textContent=mutations.unresolved(s.mode)?'Conciliar envio anterior':s.mode==='internal'?'Salvar nota interna':'Enviar resposta';
 }
 function mode(value){s.mode=value;renderComposer();}
 
@@ -313,13 +358,15 @@ function renderCatalog(){
  $('submit-create').disabled=(!unresolvedCreate()&&!catalog.canSubmit())||!!s.createPending;
  $('submit-create').textContent=unresolvedCreate()?'Recuperar abertura':'Validar e abrir chamado';
  $('create-help').textContent=unresolvedCreate()?'A confirmação desta abertura está pendente. Recupere o pedido original antes de iniciar outro. Fechar o formulário preserva o pedido nesta sessão.':'Sem cobertura contratual vigente, a abertura é bloqueada. Triagem sem contrato está prevista para outra entrega.';
+ openingUX?.update({status,canSubmit:catalog.canSubmit(),pending:!!s.createPending,unresolved:unresolvedCreate(),ambiguous:!$('coverage-label').hidden});
 }
 async function loadCatalog(){
  const op=catalog.begin();if(!op)return;renderCatalog();
  try{const page=await api('/support-contexts?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(!catalog.current(op))return;catalog.accept(op,page);renderCatalog();}
  catch(error){if(catalog.fail(op))renderCatalog();}
 }
-async function startCreate(){resetOpening();$('create-dialog').showModal();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
+async function startCreate(){
+ if(ticketMutationBlocked()){notice('Conclua ou recupere o envio atual antes de abrir outro chamado.',true);return;}resetOpening();$('create-dialog').showModal();openingUX?.open();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
 $('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
 $('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);
 $('create-form').addEventListener('input',e=>{s.createKey=crypto.randomUUID();if(e.target.id!=='coverage-choice')$('coverage-label').hidden=true;});
@@ -353,7 +400,7 @@ $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   const visible=$('create-dialog').open;
   if(visible)$('create-dialog').close();else resetOpening();await list();
   if(!visible)return;
-  if(epoch!==s.epoch)return;await detail(t.id);
+  if(epoch!==s.epoch)return;await detail(t.id,{navigate:true});
   if(epoch===s.epoch&&s.ticket?.id===t.id)notice('Chamado aberto. Contrato e histórico preservados.');
  }catch(error){
   if(confirmed){if(epoch===s.epoch){error.message='Chamado aberto, mas não foi possível atualizar a leitura. '+error.message;throw error;}}
@@ -371,7 +418,7 @@ $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   const result=mutations.finish(op,true);if(!result.current)return;renderComposer();
   await detail(id);
   if(mutations.current(op))notice(channel==='internal'?'Nota salva apenas para a equipe.':'Resposta adicionada à conversa. Sem envio de e-mail nesta versão.');
- }catch(error){if(mutations.finish(op,false).current||mutations.current(op))throw error;}
+ }catch(error){if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op))throw error;}
  finally{renderComposer();}
 });};
 $('transition').onclick=()=>run(async()=>{
@@ -381,12 +428,12 @@ $('transition').onclick=()=>run(async()=>{
  mutations.edit('transition',JSON.stringify({...body,version:t.version}));
  const op=mutations.begin('transition');if(!op)return;renderComposer();
  try{
-  await post('/tickets/'+t.id+'/transitions',body,op.key,{'if-match':'"'+t.version+'"'});
+  const original=JSON.parse(op.body);await post('/tickets/'+t.id+'/transitions',{to:original.to,reason:original.reason},op.key,{'if-match':'"'+original.version+'"'});
   if(!mutations.finish(op,true).current)return;
   if($('transition-reason').value===body.reason)$('transition-reason').value='';
   await list();if(!mutations.current(op))return;await detail(t.id);
   if(mutations.current(op))notice('Estado atualizado com controle de versão.');
- }catch(error){if(mutations.finish(op,false).current||mutations.current(op))throw error;}
+ }catch(error){if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op))throw error;}
  finally{renderComposer();}
 });
 for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
@@ -426,7 +473,9 @@ const securityPanel=createSecurityStatusPanel({getSession:()=>humanSession,getEp
 if(ADVANCED_ACCESS){ // Consulta da conta e cadastro de MFA preservados.
 $('security-status').onclick=()=>run(securityPanel.open);$('security-status-login').onclick=()=>run(securityPanel.open);$('refresh-security').onclick=()=>run(securityPanel.refresh);$('close-security').onclick=securityPanel.clear;
 }
-function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel));}
+function outcomeUnknown(error){return error.requestSent!==false&&(!Number.isInteger(error.status)||error.status>=500||error.status===408);}
+function ticketMutationBlocked(){return ['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
+function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||ticketMutationBlocked();}
 const enrollmentPanel=createMfaEnrollmentPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,blocked:workspaceChangeBlocked,onResult:message=>$('login-status').textContent=message,elements:{title:$('mfa-enrollment-title'),description:$('mfa-enrollment-description'),label:$('mfa-enrollment-label'),dialog:$('mfa-enrollment-dialog'),start:$('start-mfa-enrollment'),confirm:$('confirm-mfa-enrollment'),factor:$('mfa-enrollment-factor'),code:$('mfa-enrollment-code'),secret:$('mfa-enrollment-secret'),qr:$('mfa-enrollment-qr'),provision:$('mfa-provision'),status:$('mfa-enrollment-status')}});
 if(ADVANCED_ACCESS){
 $('add-mfa').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));$('add-mfa-login').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));
@@ -544,6 +593,7 @@ function humanChanged(value){recoveryPanel.sync(value);
   clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';
   $('login-status').textContent='Sessão local encerrada. Entre novamente para continuar.';
  }
+ accessUX?.phase(value.phase);
 }
 async function submitMfa(){
  if(!humanSession||humanSession.state().phase!=='verifying_mfa'||humanSession.state().mfaBusy)return;
@@ -573,7 +623,7 @@ $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
   if(attempt===loginAttempt&&s.config?.operational!==false)$('login-status').textContent='';
  }catch(error){
   if(attempt!==loginAttempt||error.code==='stale_session'||error.message==='stale_session')return;
-  const message=!ADVANCED_ACCESS&&error.code==='invalid_login'?'Informe um e-mail e uma senha válidos.':error.message;
+  const message=ADVANCED_ACCESS?error.message:(accessUX?.loginError(error.code)??'Não foi possível entrar. Confira seus dados e tente novamente.');
   // A valid provider identity without a successful /me is not a Help Desk login.
   if(!s.me&&humanSession.state().generation===generation&&humanSession.state().phase!=='signed_out'){
    const result=await humanSession.signOut();
@@ -584,4 +634,4 @@ $('login-form').onsubmit=e=>{e.preventDefault();run(async()=>{
  }
 });};
 async function init(){try{const r=await fetch('/demo-config');if(r.ok){const c=await r.json();if(c.mode==='local-demo')s.demo=c;}}catch{}if(s.demo){recoveryNavigationIntake.clear();$('recover-access').hidden=true;$('demo-banner').hidden=false;$('login-form').hidden=true;$('demo-login').hidden=false;$('profile-label').hidden=false;$('profile').replaceChildren(...s.demo.profiles.map(p=>option(p.key,p.label)));}else{try{const r=await fetch('/v1/public-config');if(r.ok){s.config=await r.json();humanSession=createHumanSession(createHumanAuthTransport(s.config),{onChange:humanChanged,passwordOnly:!ADVANCED_ACCESS});humanFetch=createSessionFetch(humanSession);$('submit-login').disabled=false;$('recover-access').disabled=false;if(!ADVANCED_ACCESS){recoveryNavigationIntake.clear();}
- else if(recoveryNavigationIntake.hasLink()){const link=recoveryNavigationIntake.takeLink(s.config.supabase_url);if(link)recoveryPanel.offerNavigation(link);}else if(recoveryNavigationDiscarded)$('login-status').textContent='Credenciais recebidas pela URL não foram utilizadas. Use um link direto de recuperação ainda não aberto nesta etapa.';}else recoveryNavigationIntake.clear();}catch{recoveryNavigationIntake.clear();notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(init);
+ else if(recoveryNavigationIntake.hasLink()){const link=recoveryNavigationIntake.takeLink(s.config.supabase_url);if(link)recoveryPanel.offerNavigation(link);}else if(recoveryNavigationDiscarded)$('login-status').textContent='Credenciais recebidas pela URL não foram utilizadas. Use um link direto de recuperação ainda não aberto nesta etapa.';}else recoveryNavigationIntake.clear();}catch{recoveryNavigationIntake.clear();notice('API indisponível. Nenhum dado fictício foi carregado.',true);}}}run(async()=>{await init();accessConfiguration=!!s.demo||!!humanSession;accessUX?.configuration(accessConfiguration);});

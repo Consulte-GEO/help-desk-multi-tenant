@@ -1,0 +1,46 @@
+/* UX03: shared presentation only. Optional form is still mounted/authorized by its host.
+   Fallbacks keep unbranded hosts usable; Consulte GEO anchors come from design-tokens. */
+:is(.hd-dynamic-form,.hd-opening) { --form-surface:var(--hd-surface,var(--surface,#fff)); --form-ink:var(--hd-ink,var(--ink,#17233b)); --form-muted:var(--hd-muted,var(--muted,#506079)); --form-line:var(--hd-line,var(--line,#dbe1eb)); --form-control:var(--hd-control-line,#8390a3); --form-focus:var(--hd-focus,#a30f6c); color:var(--form-ink); font-family:var(--hd-font,system-ui,sans-serif); }
+:is(.hd-dynamic-form,.hd-opening) [hidden] { display:none!important; }
+:is(.hd-dynamic-form,.hd-opening) :where(input,textarea,select,button,summary,[tabindex]):focus-visible { outline:3px solid var(--form-focus); outline-offset:3px; }
+:is(.hd-dynamic-form,.hd-opening) :where(p,h2,h3,label,legend,button,dd) { overflow-wrap:anywhere; }
+.hd-form-errors { border:1px solid var(--hd-danger-fg,#a6203d); background:var(--hd-danger-bg,#fdecef); border-radius:14px; padding:16px; margin:16px 0; color:var(--hd-danger-fg,#a6203d); }
+.hd-form-errors h3 { color:inherit; font-size:15px; margin:0 0 8px; }
+.hd-form-errors ul { list-style:none; padding:0; margin:0; }
+.hd-form-errors button { text-align:left; display:block; max-width:100%; min-height:44px; border:0; padding:8px 0; background:transparent; color:inherit; font:inherit; text-decoration:underline; cursor:pointer; }
+.hd-field-error { color:var(--hd-danger-fg,#a6203d); font-size:13px; font-weight:650; line-height:1.5; margin:4px 0; }
+.hd-field-hint,.hd-field-counter { font-size:12px; line-height:1.5; color:var(--form-muted); margin:2px 0; }
+.hd-field-counter { font-variant-numeric:tabular-nums; }
+:is(.hd-dynamic-form,.hd-opening) [aria-invalid="true"] { border-color:var(--hd-danger-fg,#a6203d)!important; }
+.hd-dynamic-form { background:var(--form-surface); border:1px solid var(--form-line); border-radius:24px; padding:24px; min-width:0; }
+.hd-dynamic-form *, .hd-dynamic-form *::before, .hd-dynamic-form *::after { box-sizing:border-box; }
+.hd-dynamic-form h2 { font-size:22px; line-height:1.3; margin:0 0 16px; }
+.hd-dynamic-form .dynamic-field { display:grid; gap:6px; min-width:0; margin-block:20px; }
+.hd-dynamic-form :is(label,legend) { color:var(--form-ink); font-size:14px; font-weight:650; }
+.hd-dynamic-form .dynamic-field :is(input:not([type="checkbox"]),textarea,select) { width:100%; min-width:0; max-width:100%; min-height:44px; border:1px solid var(--form-control); border-radius:14px; padding:11px 12px; font:inherit; font-size:14px; background:var(--form-surface); color:var(--form-ink); }
+.hd-dynamic-form .dynamic-field textarea { min-height:104px; resize:vertical; }
+.hd-dynamic-form .dynamic-field fieldset { min-width:0; margin:0; padding:16px; border:1px solid var(--form-line); border-radius:18px; background:var(--hd-surface-2,var(--form-surface)); }
+.hd-dynamic-form .hd-form-choice { display:flex; flex-wrap:wrap; align-items:center; gap:8px; min-height:44px; }
+.hd-dynamic-form .hd-form-choice label { flex:1; min-height:44px; display:flex; align-items:center; order:1; }
+.hd-dynamic-form .hd-form-choice input { flex:none; width:20px; height:20px; min-height:20px; margin:0; accent-color:var(--form-focus); order:0; }
+.hd-dynamic-form .hd-form-choice .hd-field-error { flex-basis:100%; order:2; }
+.hd-dynamic-form button:not(.hd-form-errors button) { min-height:44px; max-width:100%; width:fit-content; padding:10px 14px; font:inherit; font-size:14px; border:1px solid var(--form-control); border-radius:14px; color:var(--form-ink); background:var(--form-surface); cursor:pointer; }
+.hd-dynamic-form :disabled { opacity:.6; cursor:not-allowed; }
+@media(max-width:600px) { .hd-dynamic-form { padding:16px; border-radius:18px; } .hd-dynamic-form .dynamic-field fieldset { padding:12px; } .hd-dynamic-form button:not(.hd-form-errors button) { width:100%; } .hd-dynamic-form .dynamic-field :is(input:not([type="checkbox"]),textarea,select) { font-size:16px; } }
+@media(prefers-reduced-motion:reduce) { :is(.hd-dynamic-form,.hd-opening) * { scroll-behavior:auto!important; transition:none!important; } }
+/* Existing create-dialog keeps its native focus trap, Escape and controller events. */
+.hd-ui dialog.hd-opening { width:min(720px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); overflow:auto; padding:24px; background:var(--form-surface); color:var(--form-ink); border:1px solid var(--form-line); border-radius:24px; }
+.hd-opening .hd-opening-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:20px 0 8px; padding:0; list-style:none; }
+.hd-opening-steps li { padding:10px 8px; border:1px solid var(--form-line); border-radius:14px; color:var(--form-muted); font-size:13px; font-weight:650; overflow-wrap:anywhere; }
+.hd-opening-steps [aria-current="step"] { color:var(--hd-brand-fg,#a30f6c); background:var(--hd-selected,#fceef7); border-color:var(--hd-brand-fg,#a30f6c); }
+.hd-opening-status { font-size:13px; color:var(--form-muted); line-height:1.6; min-height:24px; }
+.hd-opening-step { margin:20px 0; }
+.hd-opening-step > h3 { font-size:17px; margin:0 0 16px; }
+.hd-opening-step > label { display:block; font-size:14px; font-weight:650; margin:16px 0 4px; }
+.hd-opening-review { display:grid; grid-template-columns:1fr; margin:20px 0; border:1px solid var(--form-line); border-radius:18px; padding:18px; background:var(--hd-surface-2,var(--form-surface)); }
+.hd-opening-review dt { font-size:12px; font-weight:700; color:var(--form-muted); margin:0 0 4px; }
+.hd-opening-review dd { font-size:14px; line-height:1.6; margin:0 0 18px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.hd-opening-review dd:last-child { margin-bottom:0; }
+.hd-opening .dialog-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; border-top:1px solid var(--form-line); padding-top:16px; margin-top:20px; }
+.hd-opening .dialog-actions button { flex:1 1 auto; }
+@media(max-width:600px) { .hd-ui dialog.hd-opening { width:calc(100vw - 20px); max-height:calc(100dvh - 20px); padding:16px; border-radius:18px; } .hd-opening .dialog-actions .primary { flex-basis:100%; } .hd-opening :is(input,textarea,select) { font-size:16px; } .hd-opening-steps li { font-size:12px; padding:8px 6px; } }

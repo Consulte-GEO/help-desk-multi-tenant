@@ -3,13 +3,14 @@ import json, os, shutil, uuid, re
 from urllib.parse import quote
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
-from helpers.browser_ticket_create import verify_create_recovery, verify_pre_dispatch_validation, verify_confirmation_read_failure
+from helpers.browser_ticket_create import ticket_button, begin_details, review_draft, verify_create_recovery, verify_pre_dispatch_validation, verify_confirmation_read_failure
 ROOT=Path(__file__).resolve().parents[1]
 checks=[]
 def record(name): checks.append({'check':name,'result':'passed'})
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
     page=browser.new_page(viewport={'width':1440,'height':1100},device_scale_factor=1)
+    page.set_default_timeout(6000)
     errors=[]
     page.on('pageerror',lambda e: errors.append(str(e)))
     page.goto('http://127.0.0.1:4317/',wait_until='networkidle')
@@ -57,7 +58,8 @@ with sync_playwright() as p:
     record('Refreshing server actions preserves the private composer channel and draft')
     def notes_outage(route): route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
     page.route('**/v1/tickets/*/notes?*',notes_outage)
-    page.locator('#refresh').click()
+    with page.expect_response(lambda response: '/notes?' in response.url and response.status == 503):
+        page.locator('#refresh').click()
     page.wait_for_load_state('networkidle')
     expect(page.locator('#notes-status')).to_contain_text('Notas indisponíveis')
     expect(page.locator('#notes-status')).to_be_visible()
@@ -66,7 +68,9 @@ with sync_playwright() as p:
     expect(page.locator('#public-tab')).to_be_visible()
     expect(page.locator('#message-body')).not_to_have_value('Rascunho interno preservado no refresh.')
     page.unroute('**/v1/tickets/*/notes?*',notes_outage)
-    page.locator('#notes-retry').click()
+    expect(page.locator('#notes-retry')).to_be_visible()
+    with page.expect_response(lambda response: '/notes?' in response.url and response.status == 200):
+        page.locator('#notes-retry').click()
     expect(page.locator('#note-tab')).to_be_visible()
     page.locator('#note-tab').click()
     expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
@@ -92,6 +96,8 @@ with sync_playwright() as p:
     page.locator('#public-tab').click()
     record('Fresh server action snapshot controls read-only UI despite unchanged agent profile')
     # All data remains local. These assertions need an authorized browser; no bypass flags are added.
+    page.locator('#hd-ticket-tools > summary').click()
+    expect(page.locator('#hd-ticket-tools')).to_have_attribute('open', '')
     expect(page.locator('#priority-form')).to_be_visible()
     page.locator('#message-body').fill('Rascunho público preservado pela prioridade.')
     page.locator('#ticket-priority').select_option('urgent')
@@ -160,7 +166,7 @@ with sync_playwright() as p:
         page.locator('#history-section summary').click()
     page.wait_for_timeout(50)
     assert held_history
-    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+    ticket_button(page, 'Dúvida na emissão de boletins').click()
     expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
     page.locator('#history-section summary').click()
     expect(page.locator('#history-list')).to_contain_text('Chamado aberto')
@@ -168,11 +174,13 @@ with sync_playwright() as p:
     page.unroute('**/v1/tickets/*/timeline?*',hold_history)
     page.wait_for_load_state('networkidle')
     expect(page.locator('#history-list')).not_to_contain_text('Prioridade alterada')
-    page.get_by_role('button',name='Abrir chamado: Relatório de ensaio não foi concluído',exact=True).click()
+    ticket_button(page, 'Relatório de ensaio não foi concluído').click()
     expect(page.locator('#ticket-title')).to_have_text('Relatório de ensaio não foi concluído')
     record('Late history cannot replace events belonging to another selected ticket')
     # Server-side filters must not change the selected detail or discard a draft.
     page.locator('#message-body').fill('Rascunho preservado enquanto a lista é filtrada.')
+    if not page.locator('#hd-filter-disclosure').get_attribute('open') == '':
+        page.locator('#hd-filter-disclosure > summary').click()
     page.locator('#search').fill('boletins')
     page.locator('#status-filter').select_option('received')
     page.locator('#priority-filter').select_option('normal')
@@ -220,7 +228,7 @@ with sync_playwright() as p:
     page.locator('#message-body').fill('')
     record('Late search response cannot replace a newer query or its selected conversation')
     page.screenshot(path=str(ROOT/'evidence/interface-desktop.png'),full_page=True)
-    page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
+    page.locator('#new-ticket').click()
     expect(page.locator('#context-choice option')).to_have_count(3)
     expect(page.locator('#context-choice')).to_have_value('')
     expect(page.locator('#submit-create')).to_be_disabled()
@@ -237,15 +245,17 @@ with sync_playwright() as p:
     expect(page.locator('#notes')).to_have_text('')
     expect(page.locator('#ticket-list')).not_to_contain_text('boletins')
     record('Laboratory requester sees only own account; internal content cleared on role switch')
-    page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
+    page.locator('#new-ticket').click()
     expect(page.locator('#context-choice option')).to_have_count(2)
     expect(page.locator('#context-choice')).not_to_have_value('')
     expect(page.locator('#context-choice')).not_to_contain_text('Escola Caminhos')
     expect(page.locator('#submit-create')).to_be_enabled()
     record('Sole authorized context is automatically selected without UUID entry')
+    begin_details(page)
     page.locator('#subject').fill('Teste de abertura pelo portal')
     page.locator('#description').fill('Solicitação fictícia criada por teste automatizado de navegador.')
-    page.get_by_role('button',name='Validar e abrir chamado').click()
+    review_draft(page)
+    page.locator('#submit-create').click()
     expect(page.locator('#create-dialog')).not_to_be_visible()
     expect(page.locator('#ticket-title')).to_have_text('Teste de abertura pelo portal')
     expect(page.locator('#stat-total')).to_have_text('2')
@@ -256,11 +266,11 @@ with sync_playwright() as p:
     record('Public conversation supports sending and reading a real API message')
     page.locator('#profile').select_option('agent')
     expect(page.locator('#stat-total')).to_have_text('3')
-    page.get_by_role('button',name='Abrir chamado: Teste de abertura pelo portal',exact=True).click()
+    ticket_button(page, 'Teste de abertura pelo portal').click()
     expect(page.locator('#ticket-title')).to_have_text('Teste de abertura pelo portal')
     page.locator('#note-tab').click()
     page.locator('#message-body').fill('Nota restrita do teste de navegador.')
-    page.get_by_role('button',name='Salvar nota',exact=True).click()
+    page.locator('#send-message').click()
     expect(page.locator('#notes')).to_contain_text('Nota restrita do teste de navegador.')
     record('Agent saves internal note separately from public conversation')
     # Hold a real request before it reaches the in-memory API. No sleep-based server stub.
@@ -285,7 +295,11 @@ with sync_playwright() as p:
         page.get_by_role('button',name='Enviar resposta',exact=True).click()
     page.wait_for_timeout(50)
     assert pending, 'Second held request not observed'
-    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+    ticket_button(page, 'Dúvida na emissão de boletins').click()
+    expect(page.locator('#ticket-title')).to_have_text('Teste de abertura pelo portal')
+    expect(page.locator('#notification')).to_contain_text('Conclua ou recupere o envio atual')
+    record('Pending send refuses ticket navigation without discarding the original intent')
+    page.locator('#profile').select_option('school')
     expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
     page.locator('#message-body').fill('Rascunho exclusivo da escola.')
     pending.pop(0).continue_()
@@ -295,6 +309,12 @@ with sync_playwright() as p:
     expect(page.locator('#messages')).not_to_contain_text('Mensagem do chamado anterior.')
     page.unroute('**/v1/tickets/*/messages', hold_message)
     record('Late completion cannot navigate back or erase another ticket draft')
+    page.locator('#profile').select_option('agent')
+    expect(page.locator('#stat-total')).to_have_text('3')
+    ticket_button(page, 'Dúvida na emissão de boletins').click()
+    expect(page.locator('#ticket-title')).to_have_text('Dúvida na emissão de boletins')
+    page.locator('#message-body').fill('Rascunho exclusivo da escola.')
+    page.locator('#hd-ticket-tools > summary').click()
     # Responsibility uses the current school ticket and does not modify counts or message drafts.
     expect(page.locator('#assignment-form')).to_be_visible()
     page.locator('#assignment-reason').fill('Motivo privado de responsabilidade.')
@@ -304,6 +324,8 @@ with sync_playwright() as p:
     expect(page.locator('#release-ticket')).to_be_enabled()
     expect(page.locator('#message-body')).to_have_value('Rascunho exclusivo da escola.')
     record('Agent claims responsibility without erasing the public reply draft')
+    if page.locator('#hd-filter-disclosure').get_attribute('open') is None:
+        page.locator('#hd-filter-disclosure > summary').click()
     expect(page.locator('#assignment-filter-label')).to_be_visible()
     page.locator('#assignment-filter').select_option('mine')
     page.locator('#apply-filters').click()
@@ -347,13 +369,13 @@ with sync_playwright() as p:
         else: route.continue_()
     page.route('**/v1/support-contexts?*',hold_catalog)
     with page.expect_request(lambda r: '/v1/support-contexts?' in r.url):
-        page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
+        page.locator('#new-ticket').click()
     page.wait_for_timeout(50)
     assert held_catalog
     page.locator('#cancel-create').click()
     page.locator('#profile').select_option('laboratory')
     expect(page.locator('#stat-total')).to_have_text('2')
-    page.get_by_role('button',name='＋ Novo chamado',exact=True).click()
+    page.locator('#new-ticket').click()
     expect(page.locator('#context-choice')).to_contain_text('Laboratório Horizonte')
     held_catalog[0].continue_()
     page.unroute('**/v1/support-contexts?*',hold_catalog)
@@ -370,6 +392,7 @@ with sync_playwright() as p:
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
     page.screenshot(path=str(ROOT/'evidence/interface-mobile.png'),full_page=True)
     record('390px mobile layout has no horizontal overflow')
+    page.locator('#hd-nav-toggle').click()
     page.get_by_role('button',name='Arquitetura e estágio',exact=True).click()
     expect(page.locator('#guide-view')).to_be_visible()
     record('Roadmap screen identifies implementation versus pending production features')

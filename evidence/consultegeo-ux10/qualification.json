@@ -1,0 +1,50 @@
+{
+  "ciRun": "38516252764",
+  "sourceCommit": "5170e05c6f4f66bd935c75b3cbbb0f3ef41b8dfa",
+  "branchSource": "5170e05c6f4f66bd935c75b3cbbb0f3ef41b8dfa",
+  "sourceFingerprint": "9c2daade5879a279a01c821a4ec40c8baff9a21996a5cc1b3810e1ca2fed4a90",
+  "counts": [
+    [
+      "application",
+      {
+        "tests": 4701,
+        "pass": 4701,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    ],
+    [
+      "postgres",
+      {
+        "tests": 420,
+        "pass": 420,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    ],
+    [
+      "interface",
+      {
+        "tests": 539,
+        "pass": 539,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    ]
+  ],
+  "inventory": {
+    "tables": 53,
+    "functions": 124,
+    "triggers": 45,
+    "constraints": 287,
+    "policies": 38
+  },
+  "verified": true,
+  "platform_approved": false
+}

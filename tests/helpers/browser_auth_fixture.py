@@ -1,7 +1,7 @@
 """Real page/DOM, SYNTHETIC Auth provider and API responses. No external identity service.
 Normal loopback navigation/CSP are preserved; no browser policy bypass is configured.
 """
-import json, os, shutil
+import json, os, shutil, sys
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
@@ -10,7 +10,9 @@ WS='11111111-1111-4111-8111-111111111111'
 ACCOUNT='44444444-4444-4444-8444-444444444444'
 TICKET='66666666-6666-4666-8666-666666666666'
 checks=[]
-def record(name): checks.append({'check':name,'result':'passed'})
+def record(name):
+    checks.append({'check':name,'result':'passed'})
+    print('Auth fixture check: '+name, file=sys.stderr, flush=True)
 INIT=r"""
 (() => {
  const originalFetch=window.fetch.bind(window);

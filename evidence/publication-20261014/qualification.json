@@ -1,0 +1,66 @@
+{
+  "run": "38556218088",
+  "commit": "5148f59e1174d4d4020511694eb326b0abaf9b45",
+  "source_sha256": "e0913c93ad182dcbb851166f2ea4b282ad7f3779ce1f394cbcf3b8e820438336",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 4710,
+        "pass": 4710,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 422,
+        "pass": 422,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 539,
+        "pass": 539,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "inventory": {
+    "tables": 53,
+    "functions": 124,
+    "triggers": 45,
+    "constraints": 287,
+    "policies": 38
+  },
+  "logs_hashes_verified": true
+}

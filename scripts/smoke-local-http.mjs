@@ -10,7 +10,7 @@ async function call(path,who='laboratory',method='GET',body,key=randomUUID(),ext
 }
 function passed(name){checks.push({check:name,result:'passed'});}
 for(const [who,account] of [['laboratory',lab.account_id],['school',school.account_id]]){const r=await call('/tickets',who);assert.equal(r.response.status,200);assert.ok(r.body.items.every(t=>t.account_id===account));}passed('HTTP account isolation in local demo');
-assert.equal((await call('/capabilities')).body.release,'0.27.0');passed('HTTP advertises current version');
+assert.equal((await call('/capabilities')).body.release,'0.30.0');passed('HTTP advertises current version');
 const input={account_id:lab.account_id,product_instance_id:lab.product_instance_id,service_code:lab.service_code,subject:'M1 smoke via HTTP',description:'Loopback only; fictitious data.',priority:'normal'},key=randomUUID();
 const created=await call('/tickets','laboratory','POST',input,key);assert.equal(created.response.status,201);const id=created.body.id;
 const replay=await call('/tickets','laboratory','POST',input,key);assert.equal(replay.response.status,200);assert.equal(replay.body.id,id);passed('HTTP create and idempotent replay');
@@ -23,6 +23,7 @@ assert.equal((await call('/tickets/'+id+'/notes')).response.status,403);assert.d
 
 
 for(const asset of ['/app.js','/shared/instant.js','/ticket-actions.js','/human-auth.js','/human-session.js','/session-fetch.js','/conversation-state.js','/mutation-state.js','/support-catalog-state.js','/ticket-list-state.js','/timeline-state.js']){const r=await fetch(base+asset);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/javascript/);assert.ok((await r.text()).length>100);}passed('HTTP serves all JavaScript modules including mutation guard');
+for(const asset of ['/consultegeo-request.js','/consultegeo-intake-api.js','/consultegeo-configuration.js','/shared/consultegeo-request.js','/consultegeo-request.css','/consultegeo-configuration.css']){const r=await fetch(base+asset);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),asset.endsWith('.css')?/text\/css/:/javascript/);assert.equal(r.headers.get('x-content-type-options'),'nosniff');assert.match(r.headers.get('content-security-policy'),/script-src 'self'/);assert.ok((await r.text()).length>100);passed('HTTP M04/M09 asset with exact MIME/CSP: '+asset);}
 assert.equal((await call('/tickets?limit=1&limit=100')).response.status,400);assert.equal((await call('/tickets?cursor=')).response.status,400);assert.equal((await call('/tickets?account_id=')).response.status,400);passed('HTTP rejects duplicate parameters and empty selectors');
 const profile=configuration.profiles.find(p=>p.key==='laboratory');
 const encoded=await fetch(base+'/v1/tickets',{method:'POST',headers:{authorization:'Bearer '+profile.token,'x-workspace-id':profile.workspace_id,'content-type':'application/json','content-encoding':'gzip','idempotency-key':randomUUID()},body:'{}'});assert.equal(encoded.status,415);passed('HTTP rejects compressed bodies rather than silently decoding unsupported input');

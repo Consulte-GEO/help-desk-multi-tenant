@@ -1,0 +1,234 @@
+TAP version 13
+# Subtest: UX10 member replay rejected by 429 preserves the already unknown intent
+ok 1 - UX10 member replay rejected by 429 preserves the already unknown intent
+  ---
+  duration_ms: 72.6507
+  type: 'test'
+  ...
+# Subtest: C04 UI state renders only the authorized server snapshot
+ok 2 - C04 UI state renders only the authorized server snapshot
+  ---
+  duration_ms: 2.2691
+  type: 'test'
+  ...
+# Subtest: C04 UI opening then cancelling is not a mutation and clears reason
+ok 3 - C04 UI opening then cancelling is not a mutation and clears reason
+  ---
+  duration_ms: 2.347
+  type: 'test'
+  ...
+# Subtest: C04 UI confirmation sends workspace/member revisions and a single key
+ok 4 - C04 UI confirmation sends workspace/member revisions and a single key
+  ---
+  duration_ms: 4.0681
+  type: 'test'
+  ...
+# Subtest: C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+ok 5 - C04 UI original intent remains frozen after unknown confirmation and reconciliation does not duplicate
+  ---
+  duration_ms: 5.4357
+  type: 'test'
+  ...
+# Subtest: C04 UI revocation after preview is denied by HTTP without stale rows retained
+ok 6 - C04 UI revocation after preview is denied by HTTP without stale rows retained
+  ---
+  duration_ms: 2.0449
+  type: 'test'
+  ...
+# Subtest: C04 UI invitation is pending and the receipt never claims mail was sent
+ok 7 - C04 UI invitation is pending and the receipt never claims mail was sent
+  ---
+  duration_ms: 4.6249
+  type: 'test'
+  ...
+# Subtest: C04 UI double submission is rejected while the first is in flight
+ok 8 - C04 UI double submission is rejected while the first is in flight
+  ---
+  duration_ms: 3.7007
+  type: 'test'
+  ...
+# Subtest: C04 UI audience change clears rows, drafts and late responses
+ok 9 - C04 UI audience change clears rows, drafts and late responses
+  ---
+  duration_ms: 1.5032
+  type: 'test'
+  ...
+# Subtest: C04 UI malformed or wrong-workspace response fails closed
+ok 10 - C04 UI malformed or wrong-workspace response fails closed
+  ---
+  duration_ms: 0.5812
+  type: 'test'
+  ...
+# Subtest: C04 UI hiding missing hints does not infer capabilities from an administrator role
+ok 11 - C04 UI hiding missing hints does not infer capabilities from an administrator role
+  ---
+  duration_ms: 0.9416
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown responses never trigger an automatic second POST
+ok 12 - C04 UI unknown responses never trigger an automatic second POST
+  ---
+  duration_ms: 0.8461
+  type: 'test'
+  ...
+# Subtest: C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+ok 13 - C04 UI known revision conflict requires a refresh and does not pretend to reconcile success
+  ---
+  duration_ms: 1.7753
+  type: 'test'
+  ...
+# Subtest: C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+ok 14 - C04 UI unknown confirmation closes the modal so reconciliation remains reachable
+  ---
+  duration_ms: 2.9272
+  type: 'test'
+  ...
+# Subtest: UX05 known member states have readable semantic labels, unknown keys never render
+ok 15 - UX05 known member states have readable semantic labels, unknown keys never render
+  ---
+  duration_ms: 3.1027
+  type: 'test'
+  ...
+# Subtest: UX05 presentation leaves raw identifiers and canonical instants untouched
+ok 16 - UX05 presentation leaves raw identifiers and canonical instants untouched
+  ---
+  duration_ms: 27.857
+  type: 'test'
+  ...
+# Subtest: UX05 mounts members without invoking any request and has an explicit unloaded state
+ok 17 - UX05 mounts members without invoking any request and has an explicit unloaded state
+  ---
+  duration_ms: 6.5168
+  type: 'test'
+  ...
+# Subtest: UX05 two member mounts do not produce duplicate control IDs
+ok 18 - UX05 two member mounts do not produce duplicate control IDs
+  ---
+  duration_ms: 0.8181
+  type: 'test'
+  ...
+# Subtest: UX05 configuration edits use a dialog with linked reason label and no automatic request
+ok 19 - UX05 configuration edits use a dialog with linked reason label and no automatic request
+  ---
+  duration_ms: 3.8487
+  type: 'test'
+  ...
+# Subtest: UX05 editor exposes separate technical, preview and operation sections
+ok 20 - UX05 editor exposes separate technical, preview and operation sections
+  ---
+  duration_ms: 13.9769
+  type: 'test'
+  ...
+# Subtest: UX05 asset wiring is explicit and does not mount administrative routes
+ok 21 - UX05 asset wiring is explicit and does not mount administrative routes
+  ---
+  duration_ms: 2.4728
+  type: 'test'
+  ...
+# Subtest: UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+ok 22 - UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+  ---
+  duration_ms: 1.1695
+  type: 'test'
+  ...
+# Subtest: UX05 configuration controller command algorithm is byte-preserved
+not ok 23 - UX05 configuration controller command algorithm is byte-preserved
+  ---
+  duration_ms: 2.3191
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux05-admin.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '87e0d78e0c6094aef0677d0e2a9eb6f85a7ff6645a7320e12450511805d15668'
+    - '8ebd8e95a141e3817c0f848c1bf7cf4165dc2ebea7a2fbb4bfb2c33583c32379'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '8ebd8e95a141e3817c0f848c1bf7cf4165dc2ebea7a2fbb4bfb2c33583c32379'
+  actual: '87e0d78e0c6094aef0677d0e2a9eb6f85a7ff6645a7320e12450511805d15668'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux05-admin.test.ts:15:259)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: UX05 member controller is byte-preserved
+not ok 24 - UX05 member controller is byte-preserved
+  ---
+  duration_ms: 0.6808
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux05-admin.test.ts:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2'
+    - '9e6683b27073076973bde2263d5266de949fbc4e7515d0c1133a61ce01bfcf40'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '9e6683b27073076973bde2263d5266de949fbc4e7515d0c1133a61ce01bfcf40'
+  actual: 'fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux05-admin.test.ts:16:61)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: mounted intake rejects a two-code-point subject before saving any data
+ok 25 - mounted intake rejects a two-code-point subject before saving any data
+  ---
+  duration_ms: 13.3413
+  type: 'test'
+  ...
+# Subtest: generic form editor keeps unknown after rejected replay and reuses its original key
+ok 26 - generic form editor keeps unknown after rejected replay and reuses its original key
+  ---
+  duration_ms: 4.1929
+  type: 'test'
+  ...
+# Subtest: configuration 429 during reconciliation retains body/key and blocks fresh mutations
+ok 27 - configuration 429 during reconciliation retains body/key and blocks fresh mutations
+  ---
+  duration_ms: 21.2228
+  type: 'test'
+  ...
+# Subtest: review approval keeps unknown after rejected replay
+ok 28 - review approval keeps unknown after rejected replay
+  ---
+  duration_ms: 2.9452
+  type: 'test'
+  ...
+# Subtest: review revision keeps unknown after rejected replay
+ok 29 - review revision keeps unknown after rejected replay
+  ---
+  duration_ms: 0.8864
+  type: 'test'
+  ...
+# Subtest: ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+ok 30 - ambiguous mutation keeps original payload/key despite newer draft and rejected replay; logout clears
+  ---
+  duration_ms: 0.3023
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 28
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 358.2217

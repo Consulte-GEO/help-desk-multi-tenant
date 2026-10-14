@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: M09c transport rejects two Unicode characters before preview or creation dispatch
+ok 1 - M09c transport rejects two Unicode characters before preview or creation dispatch
+  ---
+  duration_ms: 43.5402
+  type: 'test'
+  ...
+# Subtest: M09a transport saves fixed draft with If-Match, scoped payload and no automatic retry
+ok 2 - M09a transport saves fixed draft with If-Match, scoped payload and no automatic retry
+  ---
+  duration_ms: 5.5633
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved id
+ok 3 - M09a transport refuses mismatched saved id
+  ---
+  duration_ms: 1.2484
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved accountId
+ok 4 - M09a transport refuses mismatched saved accountId
+  ---
+  duration_ms: 1.0099
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved formId
+ok 5 - M09a transport refuses mismatched saved formId
+  ---
+  duration_ms: 1.8
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved formVersion
+ok 6 - M09a transport refuses mismatched saved formVersion
+  ---
+  duration_ms: 0.9153
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved revision
+ok 7 - M09a transport refuses mismatched saved revision
+  ---
+  duration_ms: 0.5759
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved status
+ok 8 - M09a transport refuses mismatched saved status
+  ---
+  duration_ms: 0.692
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved ticketId
+ok 9 - M09a transport refuses mismatched saved ticketId
+  ---
+  duration_ms: 1.0364
+  type: 'test'
+  ...
+# Subtest: M09a transport refuses mismatched saved refs
+ok 10 - M09a transport refuses mismatched saved refs
+  ---
+  duration_ms: 1.5658
+  type: 'test'
+  ...
+# Subtest: M09a contradictory ETag and missing content type do not confirm a save
+ok 11 - M09a contradictory ETag and missing content type do not confirm a save
+  ---
+  duration_ms: 1.1081
+  type: 'test'
+  ...
+# Subtest: M09a confirmed creation correlates full receipt, status, key, version and Location
+ok 12 - M09a confirmed creation correlates full receipt, status, key, version and Location
+  ---
+  duration_ms: 0.9859
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation actorId
+ok 13 - M09a rejects borrowed/contradictory creation actorId
+  ---
+  duration_ms: 0.6884
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation requesterId
+ok 14 - M09a rejects borrowed/contradictory creation requesterId
+  ---
+  duration_ms: 0.5148
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation workspaceId
+ok 15 - M09a rejects borrowed/contradictory creation workspaceId
+  ---
+  duration_ms: 0.3658
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation accountId
+ok 16 - M09a rejects borrowed/contradictory creation accountId
+  ---
+  duration_ms: 0.3753
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation draftId
+ok 17 - M09a rejects borrowed/contradictory creation draftId
+  ---
+  duration_ms: 0.9794
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation draftRevision
+ok 18 - M09a rejects borrowed/contradictory creation draftRevision
+  ---
+  duration_ms: 0.4137
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation formId
+ok 19 - M09a rejects borrowed/contradictory creation formId
+  ---
+  duration_ms: 0.5181
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation formVersion
+ok 20 - M09a rejects borrowed/contradictory creation formVersion
+  ---
+  duration_ms: 0.3819
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation profileVersionId
+ok 21 - M09a rejects borrowed/contradictory creation profileVersionId
+  ---
+  duration_ms: 0.3168
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation sequence
+ok 22 - M09a rejects borrowed/contradictory creation sequence
+  ---
+  duration_ms: 0.3677
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation notification
+ok 23 - M09a rejects borrowed/contradictory creation notification
+  ---
+  duration_ms: 0.273
+  type: 'test'
+  ...
+# Subtest: M09a rejects borrowed/contradictory creation replayed
+ok 24 - M09a rejects borrowed/contradictory creation replayed
+  ---
+  duration_ms: 0.7115
+  type: 'test'
+  ...
+# Subtest: M09a typed rejection is separate from unknown commit and untyped 5xx
+ok 25 - M09a typed rejection is separate from unknown commit and untyped 5xx
+  ---
+  duration_ms: 1.596
+  type: 'test'
+  ...
+# Subtest: M09a input mutation and extra authority fields are refused before request
+ok 26 - M09a input mutation and extra authority fields are refused before request
+  ---
+  duration_ms: 0.4624
+  type: 'test'
+  ...
+# Subtest: M09a bounded response and HTML/error text never reach the UI
+ok 27 - M09a bounded response and HTML/error text never reach the UI
+  ---
+  duration_ms: 1.3713
+  type: 'test'
+  ...
+# Subtest: M09a saved JSONB answers may reorder object keys while retaining exact values
+ok 28 - M09a saved JSONB answers may reorder object keys while retaining exact values
+  ---
+  duration_ms: 0.6115
+  type: 'test'
+  ...
+# Subtest: M09a composes the actual authenticated session closure without duplicating /v1
+ok 29 - M09a composes the actual authenticated session closure without duplicating /v1
+  ---
+  duration_ms: 2.7128
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 270.2642

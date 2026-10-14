@@ -1,0 +1,96 @@
+TAP version 13
+# Subtest: M09b absent source closes catalogue and drafts; submission has no legacy fallback
+not ok 1 - M09b absent source closes catalogue and drafts; submission has no legacy fallback
+  ---
+  duration_ms: 261.5387
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\consultegeo-runtime.test.ts:2:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-runtime.test.ts:2:294)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: M09b intake requires workflow and an exact HTTPS origin
+not ok 2 - M09b intake requires workflow and an exact HTTPS origin
+  ---
+  duration_ms: 0.3566
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\consultegeo-runtime.test.ts:3:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-runtime.test.ts:3:274)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+ok 3 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+  ---
+  duration_ms: 1.3396
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+ok 4 - M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+  ---
+  duration_ms: 1.219
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+ok 5 - M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+  ---
+  duration_ms: 1.3239
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+ok 6 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+  ---
+  duration_ms: 0.4347
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+ok 7 - M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+  ---
+  duration_ms: 0.4022
+  type: 'test'
+  ...
+# Subtest: M06 capabilities report missing dependencies and scoped collection availability
+ok 8 - M06 capabilities report missing dependencies and scoped collection availability
+  ---
+  duration_ms: 1.9338
+  type: 'test'
+  ...
+# Subtest: M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+ok 9 - M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+  ---
+  duration_ms: 2.5339
+  type: 'test'
+  ...
+# Subtest: M06 copied disabled environment example treats blank optional origin as unset
+ok 10 - M06 copied disabled environment example treats blank optional origin as unset
+  ---
+  duration_ms: 0.4419
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 8
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 459.4828

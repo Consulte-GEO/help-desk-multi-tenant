@@ -1,0 +1,69 @@
+HTTP em memória: 41 verificações aprovadas.
+
+Exception in callback Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:296>>) at C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py:542
+handle: <Handle Connection.dispatch.<locals>._done_callback(<Task cancell..._page.py:296>>) at C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py:542>
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\tests\browser-smoke.py", line 165, in <module>
+    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\sync_api\_generated.py", line 18032, in click
+    self._sync(
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_locator.py", line 165, in click
+    return await self._frame._click(self._selector, strict=True, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_frame.py", line 594, in _click
+    await self._channel.send("click", self._timeout, locals_to_params(locals()))
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py", line 76, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py", line 632, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Abrir chamado: Dúvida na emissão de boletins", exact=True)
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\thiag\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py", line 543, in _done_callback
+    exc = future.exception()
+          ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_page.py", line 310, in _on_route
+    handled = await route_handler.handle(route)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_helper.py", line 442, in handle
+    return await self._handle_internal(route)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_helper.py", line 484, in _handle_internal
+    return await handled_future
+           ^^^^^^^^^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\tests\browser-smoke.py", line 165, in <module>
+    page.get_by_role('button',name='Abrir chamado: Dúvida na emissão de boletins',exact=True).click()
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\sync_api\_generated.py", line 18032, in click
+    self._sync(
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_locator.py", line 165, in click
+    return await self._frame._click(self._selector, strict=True, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_frame.py", line 594, in _click
+    await self._channel.send("click", self._timeout, locals_to_params(locals()))
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py", line 76, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_connection.py", line 632, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Abrir chamado: Dúvida na emissão de boletins", exact=True)
+
+
+Navegador em memória: não aprovado.

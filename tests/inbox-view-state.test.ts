@@ -1,0 +1,19 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+// Dynamic load keeps the RED diagnostic an assertion, not an import syntax failure.
+async function subject() {
+ const m=await import('../web/inbox-view-state.js').catch(()=>null);
+ assert.ok(m?.createInboxViewState,'UX02 presentation state is not implemented');return m;
+}
+test('automatic first selection stays on the mobile list',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();const r=c.begin('a');c.finish(r);assert.equal(c.view().pane,'list');assert.equal(c.view().selected,'a');});
+test('explicit open chooses detail and finishes without a second command',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();const r=c.begin('a',true);assert.equal(c.view().pane,'detail');assert.equal(c.view().phase,'loading');assert.equal(c.finish(r),true);assert.equal(c.view().phase,'ready');});
+test('back during a request prevents late focus/navigation',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();const r=c.begin('a',true);c.back();assert.equal(c.finish(r),true);assert.equal(c.view().pane,'list');assert.equal(c.view().focusDetail,false);});
+test('only the latest read may finish or fail',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();const a=c.begin('a',true),b=c.begin('b',true);assert.equal(c.finish(a),false);assert.equal(c.fail(a,'forbidden'),false);assert.equal(c.finish(b),true);assert.equal(c.view().selected,'b');});
+test('same-ticket refresh does not request focus',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();c.finish(c.begin('a',true));c.consumeFocus();c.finish(c.begin('a'));assert.equal(c.view().focusDetail,false);assert.equal(c.view().pane,'detail');});
+test('reset rejects all callbacks from the previous identity',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();const r=c.begin('a',true);c.reset();assert.equal(c.finish(r),false);assert.equal(c.fail(r,'unavailable'),false);assert.equal(c.view().selected,null);assert.equal(c.view().pane,'list');});
+test('error category is bounded and does not retain an API message',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();c.fail(c.begin('a',true),'secret raw response');assert.equal(c.view().error,'unavailable');assert.equal(JSON.stringify(c.view()).includes('secret'),false);});
+test('back after an error retains list-first state',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();c.fail(c.begin('a',true),'forbidden');c.back();assert.equal(c.view().pane,'list');assert.equal(c.view().error,'forbidden');});
+test('snapshot is immutable and contains no drafts',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();assert.equal(Object.isFrozen(c.view()),true);assert.deepEqual(Object.keys(c.view()).sort(),['error','focusDetail','pane','phase','selected','target']);});
+test('invalid selection cannot become a navigation intent',async()=>{const {createInboxViewState}=await subject();const c=createInboxViewState();assert.throws(()=>c.begin(''));assert.throws(()=>c.begin(null as unknown as string));assert.throws(()=>c.begin('a'.repeat(201)));});
+test('effective filter normalization preserves accents and accepts only known keys',async()=>{const {normalizeInboxFilters}=await subject();assert.deepEqual(normalizeInboxFilters({q:'  Ação  ',status:'resolved',priority:'high',assignment:'mine',token:'never'}),{q:'Ação',status:'resolved',priority:'high',assignment:'mine'});});
+test('draft differences are separate from effective query',async()=>{const {inboxFiltersDiffer}=await subject();assert.equal(inboxFiltersDiffer({q:'ação'},{q:'acao'}),true);assert.equal(inboxFiltersDiffer({q:' a '},{q:'a',status:''}),false);});

@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "finding": "directory_without_complete_cg_coverage",
+  "run": "https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38468447046",
+  "commit": "a99b3e61f6b3bdf053639909f7800939dbd6c470",
+  "source_sha256": "eaa8dc3007789bdf4e852ecd7c57161cb83a661adc759606ff021880027aa8f2",
+  "log_sha256": "bcd7613f831e0a5bff9ff22f938483f3a92074ba0c5066c053e3366919702890",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 4418,
+        "pass": 4418,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "failed",
+      "tests": {
+        "tests": 390,
+        "pass": 388,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 192,
+        "pass": 192,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ]
+}

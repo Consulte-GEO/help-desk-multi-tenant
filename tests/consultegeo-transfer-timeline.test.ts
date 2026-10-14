@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {eventDto} from '../src/http/serialization.ts';
+import {createTimelineState,eventPresentation} from '../web/timeline-state.js';
+const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
+const p:any={id:id(1),workspaceId:id(2),kind:'human',workspaceRole:null,grants:[{accountId:id(3),role:'agent'}],scopes:['tickets:read','tickets:write']};
+const event:any={id:id(4),workspaceId:id(2),accountId:id(3),ticketId:id(5),actorId:p.id,type:'ticket.assignment_changed',customerVisible:false,data:{action:'transfer',from:id(6),to:id(7),reason:'Atendimento especializado',version:9},createdAt:'2026-10-13T12:00:00.000000Z'};
+test('transfer survives server projection and internal timeline without exposing destination IDs',()=>{const dto=eventDto(p,event);assert.deepEqual(dto.data,{action:'transfer',reason:event.data.reason,version:9});assert.doesNotMatch(JSON.stringify(dto),new RegExp(id(6)+'|'+id(7)));const state=createTimelineState();state.reset('operator',true);assert.equal(state.accept(state.begin(),{items:[dto],next_cursor:null}),true);assert.equal(eventPresentation(dto,true).title,'Atendimento transferido');});
+test('transfer remains unavailable to customer timelines and unknown actions stay rejected',()=>{assert.throws(()=>eventDto({...p,grants:[{accountId:id(3),role:'requester'}]},event));const dto={id:event.id,type:event.type,created_at:event.createdAt,data:{action:'transfer',reason:'Equipe',version:9}};const state=createTimelineState();state.reset('customer',false);assert.throws(()=>state.accept(state.begin(),{items:[dto],next_cursor:null}));assert.throws(()=>eventDto(p,{...event,data:{...event.data,action:'grant_all'}}));});

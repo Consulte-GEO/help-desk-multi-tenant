@@ -1,0 +1,40 @@
+{
+  "requested_by_user": true,
+  "destination": "https://helpdesk-consultegeo.netlify.app",
+  "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "project": "xaelbntjnvztznnpcvtm",
+  "base_branch": "codex/m1-reproducibilidade",
+  "pull_request": 31,
+  "method": "existing Git/CD; current source with closed authentication-only compatibility on qualified schema0.19; full schema promotion deferred",
+  "source": "a2760af4011cd2a72099a9f03b299097a960748f",
+  "before_schema": "0.19.0",
+  "target_schema": "0.23.0",
+  "migrations": [
+    {
+      "file": "20261013181408_consultegeo_m05_upgrade.sql",
+      "sha256": "23aae798d34cf5c4d6e96478761dfb2e5208dc071fd886f2ab56d78e12d83b1a",
+      "bytes": 163253
+    },
+    {
+      "file": "20261013195704_consultegeo_m06_public_conversation.sql",
+      "sha256": "10a397bd74b6ba2c81bd115c63ad205bc2aeac157686812e7d040ffcf353f09b",
+      "bytes": 15986
+    },
+    {
+      "file": "20261013233838_consultegeo_m09b_intake.sql",
+      "sha256": "4c54493c8d46b7c3f86e77666be0f618df8fd6512dd5cae3f279d31248e1be7a",
+      "bytes": 32503
+    },
+    {
+      "file": "20261014015714_consultegeo_m09c_atomic_opening.sql",
+      "sha256": "5da69e1865d63c94f9ee61ce86d3a16b1103b557cc9a04bdaaa8af5bad4b0e93",
+      "bytes": 43902
+    }
+  ],
+  "gates_remain_closed": true,
+  "origin_m08_deferred": true,
+  "real_email_delivery": false,
+  "business_seeds": false,
+  "rollback": "Each exact migration rolls back its own uncommitted changes. After a committed upgrade, retain data/schema and fix forward with gates closed; never downgrade marker or publish older deploy. Encrypted private-schema backup retained locally; full provider restore not tested.",
+  "codeql": "Five fixture HTML regex alerts replaced with parser; CodeQL success on a2760af. Complete quality gates and source-bound evidence required before merge."
+}

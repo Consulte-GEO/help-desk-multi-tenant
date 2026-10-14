@@ -1,0 +1,38 @@
+/* UX03-C — optional host; explicit theme tokens, no global selectors or remote assets. */
+.hd-intake {max-width:56rem;margin:auto;font:14px/1.6 var(--hd-font,inherit);color:var(--hd-ink,inherit);min-width:0}
+.hd-intake * {box-sizing:border-box;min-width:0}
+.hd-intake h2,.hd-intake h3,.hd-intake p {margin:0}
+.hd-intake h2 {font-size:clamp(24px,3vw,30px);line-height:1.3;margin-bottom:8px}
+.hd-intake h3 {font-size:18px;line-height:1.4}
+.hd-intake-eyebrow {color:var(--hd-brand-fg,inherit);font-size:11px;font-weight:750;letter-spacing:.1em;margin-bottom:8px!important}
+.hd-intake-muted {color:var(--hd-muted,inherit);font-size:13px}
+.hd-intake-steps {list-style:none;display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 16px;padding:0}
+.hd-intake-steps li {flex:1;padding:10px 14px;border:1px solid var(--hd-line,currentColor);border-radius:var(--hd-radius-md,14px);background:var(--hd-surface,transparent);color:var(--hd-muted,inherit);font-weight:650;font-size:13px}
+.hd-intake-steps [aria-current] {background:var(--hd-selected,transparent);color:var(--hd-brand-fg,inherit);border-color:var(--hd-brand-fg,currentColor)}
+.hd-intake-status,.hd-intake-notice {padding:14px 16px;border-radius:var(--hd-radius-md,14px);background:var(--hd-info-bg,transparent);color:var(--hd-info-fg,inherit);margin-bottom:16px!important;overflow-wrap:anywhere}
+.hd-intake-fields,.hd-intake-review,.hd-intake-receipt {border:1px solid var(--hd-line,currentColor);border-radius:var(--hd-radius-xl,24px);padding:24px;background:var(--hd-surface,transparent);margin:0 0 16px;box-shadow:var(--hd-shadow);overflow-wrap:anywhere}
+.hd-intake-fields>legend {font-size:18px;font-weight:700;padding:0 6px}
+.hd-intake-field {display:grid;gap:6px;margin-bottom:20px}
+.hd-intake-field label {font-weight:700}
+.hd-intake-field input,.hd-intake-field textarea {font:inherit;color:var(--hd-ink,inherit);background:var(--hd-surface,transparent);width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--hd-control-line,currentColor);border-radius:var(--hd-radius-md,14px)}
+.hd-intake-field textarea {min-height:120px;resize:vertical}
+.hd-intake-field [aria-invalid=true] {border-color:var(--hd-danger-fg,currentColor)}
+.hd-intake-field-error {color:var(--hd-danger-fg,inherit);font-size:13px}
+.hd-intake-field-error:empty {display:none}
+.hd-intake-dynamic-fields {margin:16px 0 0;padding:16px 0 0;border:0;border-top:1px solid var(--hd-line,currentColor)}
+.hd-intake-dynamic-fields>legend {font-size:14px;font-weight:700;padding:0 6px}
+.hd-intake-review dl {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:12px 16px;margin:20px 0}
+.hd-intake-review dt {font-size:13px;font-weight:700;color:var(--hd-muted,inherit)}
+.hd-intake-review dd {margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.hd-intake-actions {display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-block:16px}
+.hd-intake-primary,.hd-intake-secondary,.hd-intake-errors button {min-height:44px;border-radius:var(--hd-radius-md,14px);padding:10px 16px;max-width:100%;font:inherit;font-weight:700;cursor:pointer;overflow-wrap:anywhere}
+.hd-intake-primary {background:var(--hd-grad-brand);color:var(--hd-on-accent);border:1px solid transparent}
+.hd-intake-secondary {background:var(--hd-surface,transparent);color:var(--hd-ink,inherit);border:1px solid var(--hd-control-line,currentColor)}
+.hd-intake button:disabled {cursor:not-allowed;opacity:.6}
+.hd-intake :focus-visible {outline:3px solid var(--hd-focus,currentColor);outline-offset:3px}
+.hd-intake-errors {padding:16px;margin-bottom:16px;background:var(--hd-danger-bg,transparent);color:var(--hd-danger-fg,inherit);border:1px solid var(--hd-danger-fg,currentColor);border-radius:var(--hd-radius-md,14px)}
+.hd-intake-errors button {display:block;background:transparent;color:inherit;border:0;text-align:left;text-decoration:underline;font-weight:500}
+.hd-intake-receipt {background:var(--hd-success-bg,transparent);color:var(--hd-success-fg,inherit)}
+.hd-intake-receipt p {margin-top:12px}
+@media(max-width:600px) {.hd-intake-fields,.hd-intake-review {padding:16px}.hd-intake-steps {gap:6px}.hd-intake-steps li {padding:8px;font-size:12px}.hd-intake-review dl {grid-template-columns:1fr;gap:4px}.hd-intake-review dd {margin-bottom:12px}.hd-intake-actions button {flex:1 1 100%}}
+@media(prefers-reduced-motion:reduce) {.hd-intake * {scroll-behavior:auto!important}}

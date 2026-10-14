@@ -1,0 +1,170 @@
+TAP version 13
+# Subtest: UX10 login distinguishes verified identity without authorized access
+not ok 1 - UX10 login distinguishes verified identity without authorized access
+  ---
+  duration_ms: 20.6804
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\ux08-access-feedback.test.ts:4:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /acesso.*não autorizado/i. Input:
+    
+    'Seu acesso a esta operação não foi autorizado. Procure o administrador.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Seu acesso a esta operação não foi autorizado. Procure o administrador.'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/ux08-access-feedback.test.ts:4:120)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: UX08 access feedback exports pure mapping functions
+ok 2 - UX08 access feedback exports pure mapping functions
+  ---
+  duration_ms: 0.292
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code invalid_login
+ok 3 - UX08 known sanitized login code invalid_login
+  ---
+  duration_ms: 0.1778
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code invalid_credentials
+ok 4 - UX08 known sanitized login code invalid_credentials
+  ---
+  duration_ms: 0.1784
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code login_failed
+ok 5 - UX08 known sanitized login code login_failed
+  ---
+  duration_ms: 0.0922
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_rate_limited
+ok 6 - UX08 known sanitized login code auth_rate_limited
+  ---
+  duration_ms: 0.716
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code membership_required
+ok 7 - UX08 known sanitized login code membership_required
+  ---
+  duration_ms: 0.1813
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code simple_mfa_required
+ok 8 - UX08 known sanitized login code simple_mfa_required
+  ---
+  duration_ms: 0.1147
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code simple_workspace_required
+ok 9 - UX08 known sanitized login code simple_workspace_required
+  ---
+  duration_ms: 0.2507
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_unavailable
+ok 10 - UX08 known sanitized login code auth_unavailable
+  ---
+  duration_ms: 0.3164
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_response_invalid
+ok 11 - UX08 known sanitized login code auth_response_invalid
+  ---
+  duration_ms: 0.1324
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code session_rejected
+ok 12 - UX08 known sanitized login code session_rejected
+  ---
+  duration_ms: 0.0708
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input toString
+ok 13 - UX08 unknown codes never reflect input toString
+  ---
+  duration_ms: 0.1032
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input __proto__
+ok 14 - UX08 unknown codes never reflect input __proto__
+  ---
+  duration_ms: 0.0451
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input constructor
+ok 15 - UX08 unknown codes never reflect input constructor
+  ---
+  duration_ms: 0.0468
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input <img src=x onerror=alert(1)>
+ok 16 - UX08 unknown codes never reflect input <img src=x onerror=alert(1)>
+  ---
+  duration_ms: 0.1146
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input hd_person_PRIVATE_TOKEN
+ok 17 - UX08 unknown codes never reflect input hd_person_PRIVATE_TOKEN
+  ---
+  duration_ms: 0.1153
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input null
+ok 18 - UX08 unknown codes never reflect input null
+  ---
+  duration_ms: 0.0645
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input 0
+ok 19 - UX08 unknown codes never reflect input 0
+  ---
+  duration_ms: 0.0489
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input [object Object]
+ok 20 - UX08 unknown codes never reflect input [object Object]
+  ---
+  duration_ms: 0.0472
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input undefined
+ok 21 - UX08 unknown codes never reflect input undefined
+  ---
+  duration_ms: 0.0436
+  type: 'test'
+  ...
+# Subtest: UX08 arbitrary objects are not read as errors
+ok 22 - UX08 arbitrary objects are not read as errors
+  ---
+  duration_ms: 0.1268
+  type: 'test'
+  ...
+# Subtest: UX08 only sign-in is presented as signing-in busy; security phases are not reactivated
+ok 23 - UX08 only sign-in is presented as signing-in busy; security phases are not reactivated
+  ---
+  duration_ms: 0.6307
+  type: 'test'
+  ...
+# Subtest: UX08 mappings do not manufacture membership or session
+ok 24 - UX08 mappings do not manufacture membership or session
+  ---
+  duration_ms: 0.4308
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 23
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 236.398

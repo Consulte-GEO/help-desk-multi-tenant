@@ -1,3 +1,4 @@
+import type {TransactionAdmission} from '../infrastructure/transaction.ts';
 import {randomUUID} from 'node:crypto';
 import type {Principal} from '../domain/model.ts';
 import {HelpdeskError} from '../domain/errors.ts';
@@ -34,7 +35,7 @@ export interface SupportWorkflowTransaction {
 }
 export function workflowScopeKey(scope:ResourceScopeContext){return requestHash({workspaceId:scope.workspaceId,accountId:scope.accountId,bindingId:scope.bindingId,bindingRevision:scope.bindingRevision,accessRevision:scope.accessRevision,refs:scope.refs});}
 const fail=(code='workflow_store_unavailable',status=503)=>new HelpdeskError(status,code,'Não foi possível confirmar a operação de atendimento.');
-const allowed:Record<string,number>={checklist_evidence_denied:403,checklist_store_invalid:503,checklist_store_unavailable:503,checklist_binding_required:409,checklist_forbidden:403,workflow_forbidden:403,workflow_profile_mismatch:409,workflow_version_conflict:412,workflow_time_conflict:409,invalid_workflow_command:400,workflow_approval_required:409,workflow_transition_forbidden:409,workflow_resolution_required:409,workflow_reopen_window_expired:409,workflow_assignee_denied:403,workflow_idempotency_conflict:409,
+const allowed:Record<string,number>={release_gate_closed:503,request_cancelled:409,checklist_evidence_denied:403,checklist_store_invalid:503,checklist_store_unavailable:503,checklist_binding_required:409,checklist_forbidden:403,workflow_forbidden:403,workflow_profile_mismatch:409,workflow_version_conflict:412,workflow_time_conflict:409,invalid_workflow_command:400,workflow_approval_required:409,workflow_transition_forbidden:409,workflow_resolution_required:409,workflow_reopen_window_expired:409,workflow_assignee_denied:403,workflow_idempotency_conflict:409,
  resource_scope_denied:403,resource_scope_unavailable:503,resource_scope_database_mismatch:403,resource_scope_database_unavailable:503,transaction_outcome_unknown:503,transaction_identity_changed:403,transaction_work_incomplete:503,transaction_statement_failed:503,workflow_store_unavailable:503,workflow_not_found:404,workflow_checklist_unavailable:503,workflow_checklist_required:409,workflow_checklist_mismatch:409,workflow_checklist_confirmation_required:409};
 function safe(e:unknown){try{if(e instanceof HelpdeskError){const c=Object.getOwnPropertyDescriptor(e,'code')?.value;if(typeof c==='string'&&Object.hasOwn(allowed,c))return fail(c,allowed[c]);}}catch{}return fail();}
 /** Optional application composition. Real directory/command store + runtime wiring
@@ -43,9 +44,9 @@ function safe(e:unknown){try{if(e instanceof HelpdeskError){const c=Object.getOw
  */
 export function createSupportWorkflow(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;createStore:(client:SqlClient,p:Principal)=>SupportWorkflowTransaction;clock?:()=>string}){
  const clock=o.clock??(()=>new Date().toISOString());
- async function execute(p:Principal,target:string,refs:readonly ExternalResourceRef[],raw:unknown,key:string,requestId:string,signal?:AbortSignal):Promise<SupportTransitionReceipt>{
+ async function execute(p:Principal,target:string,refs:readonly ExternalResourceRef[],raw:unknown,key:string,requestId:string,signal?:AbortSignal,admission?:TransactionAdmission):Promise<SupportTransitionReceipt>{
   try{
-   const ticketId=uuidIdentifier(target);uuidIdentifier(requestId);if(!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw fail('invalid_workflow_command',400);
+   admission?.();const ticketId=uuidIdentifier(target);uuidIdentifier(requestId);if(!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw fail('invalid_workflow_command',400);
    const command=copyFormData(raw),hash=requestHash({workspaceId:p.workspaceId,actorId:p.id,ticketId,command});
    const proof=await o.resolver.resolveResourceScope(p,refs,'tickets.write',signal);
    return await runResourceTicketTransaction(o.pool,o.resolver,p,ticketId,refs,'tickets.write',proof,async(client,scope)=>{
@@ -81,7 +82,7 @@ export function createSupportWorkflow(o:{pool:SqlPool;resolver:ReturnType<typeof
     // complete forms or delegated tokens. Recipient ACL/delivery belongs to CG12.
     const outbox=decision.event.type==='assigned'?null:freezeFormData({id:eventId,workspaceId:p.workspaceId,accountId:t.accountId,ticketId,type:'support.'+decision.event.type,version:result.version,requestId,createdAt:at});
     await store.commitDecision(t.version,decision,audit,outbox,{key,hash,result});return result;
-   },signal);
+   },signal,admission);
   }catch(e){throw safe(e);}
  }
  return Object.freeze({execute});

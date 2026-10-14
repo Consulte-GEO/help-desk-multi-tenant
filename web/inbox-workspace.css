@@ -1,0 +1,41 @@
+/* UX02 progressive enhancement; no rules can override business [hidden]/disabled. */
+.hd-ui .hd-inbox-enhanced .hd-filter-disclosure { margin:12px 0; border:1px solid var(--hd-line); border-radius:var(--hd-radius-md); background:var(--hd-surface-2); }
+.hd-ui .hd-inbox-enhanced .hd-filter-disclosure summary { min-height:44px; padding:10px 12px; font-size:13px; font-weight:700; color:var(--hd-ink); cursor:pointer; }
+.hd-ui .hd-inbox-enhanced .hd-filter-disclosure .filter-grid { padding:8px 12px; }
+.hd-ui .hd-inbox-enhanced .hd-filter-disclosure > label { margin:0; padding:8px 12px 14px; }
+.hd-ui .hd-inbox-enhanced .hd-filter-draft { border-left:3px solid var(--hd-warning-fg); background:var(--hd-warning-bg); color:var(--hd-warning-fg); padding:8px 12px; border-radius:6px; }
+.hd-ui .hd-inbox-enhanced .hd-detail-navigation { padding:16px 20px; border-bottom:1px solid var(--hd-line); }
+.hd-ui .hd-inbox-enhanced .hd-detail-navigation button { text-align:left; }
+.hd-ui .hd-inbox-enhanced .hd-detail-read { margin:16px 20px; padding:16px; border:1px solid var(--hd-line); border-radius:var(--hd-radius-md); background:var(--hd-info-bg); color:var(--hd-info-fg); }
+.hd-ui .hd-inbox-enhanced .hd-detail-read p { margin:0 0 8px; font-size:14px; }
+.hd-ui .hd-inbox-enhanced .hd-ticket-tools { margin:16px 24px 20px; border:1px solid var(--hd-line); border-radius:var(--hd-radius-lg); background:var(--hd-surface); overflow:visible; }
+.hd-ui .hd-inbox-enhanced .hd-ticket-tools > summary { min-height:48px; padding:12px 16px; cursor:pointer; font-size:14px; font-weight:700; color:var(--hd-ink); border-radius:inherit; background:var(--hd-surface-2); }
+.hd-ui .hd-inbox-enhanced .hd-ticket-tools-body { padding:16px; }
+.hd-ui .hd-inbox-enhanced .hd-ticket-tools .priority-form,.hd-ui .hd-inbox-enhanced .hd-ticket-tools .transition-area { margin:0 0 16px; }
+.hd-ui .hd-inbox-enhanced .hd-ticket-tools .priority-form:last-child { margin-bottom:0; }
+.hd-ui .hd-inbox-enhanced .hd-tools-feedback { margin:16px 24px; padding:12px; border:1px solid var(--hd-line); border-radius:var(--hd-radius-md); background:var(--hd-warning-bg); }
+.hd-ui .hd-inbox-enhanced .hd-tools-feedback p { margin:0 0 8px; color:var(--hd-warning-fg); }
+.hd-ui .hd-inbox-enhanced .hd-internal-warning { padding:12px 16px; margin:0; background:var(--hd-warning-bg); color:var(--hd-warning-fg); border-bottom:1px solid var(--hd-line); font-size:13px; font-weight:700; }
+.hd-ui .hd-inbox-enhanced .composer-tabs button { min-height:44px; }
+.hd-ui .hd-inbox-enhanced .messages { max-height:none; overflow:visible; }
+.hd-ui .hd-inbox-enhanced .ticket-description { font-size:14px; }
+.hd-ui .hd-inbox-enhanced :where(button,input,select,textarea,summary,h2) { scroll-margin-block:24px; }
+.hd-ui .hd-guide-availability { padding:14px 18px; background:var(--hd-info-bg); color:var(--hd-info-fg); border-radius:var(--hd-radius-md); border:1px solid var(--hd-line); }
+@media(min-width:1101px) {
+ .hd-ui .hd-inbox-enhanced .workspace-grid { grid-template-columns:minmax(320px,.78fr) minmax(0,1.22fr); }
+ .hd-ui .hd-inbox-enhanced .priority-fields { grid-template-columns:minmax(0,1fr); }
+ .hd-ui .hd-inbox-enhanced .transition-area { grid-template-columns:minmax(0,1fr); }
+}
+@media(max-width:1100px) {
+ .hd-ui .hd-inbox-enhanced .workspace-grid { grid-template-columns:minmax(0,1fr); }
+ .hd-ui .hd-inbox-enhanced[data-inbox-pane="list"] .detail-panel { display:none; }
+ .hd-ui .hd-inbox-enhanced[data-inbox-pane="detail"] :is(.ticket-panel,.page-heading,.stats) { display:none; }
+ .hd-ui .hd-inbox-enhanced .ticket-list { max-height:none; overflow:visible; }
+ .hd-ui .hd-inbox-enhanced .hd-ticket-tools,.hd-ui .hd-inbox-enhanced .hd-tools-feedback { margin-inline:16px; }
+ .hd-ui .hd-inbox-enhanced .hd-detail-navigation { padding:12px 16px; }
+ .hd-ui .hd-inbox-enhanced .hd-ticket-tools-body { padding:12px; }
+ .hd-ui .hd-inbox-enhanced .priority-fields,.hd-ui .hd-inbox-enhanced .transition-area { grid-template-columns:minmax(0,1fr); }
+}
+@media(max-width:380px) {
+ .hd-ui .hd-inbox-enhanced .hd-filter-disclosure .filter-grid { grid-template-columns:minmax(0,1fr); }
+}

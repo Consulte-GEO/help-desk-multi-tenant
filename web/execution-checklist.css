@@ -1,5 +1,5 @@
 /* Optional internal panel. No global selectors, scripts, fonts or external assets. */
-.execution-checklist{--ck-border:#cbd5e1;--ck-surface:#fff;--ck-text:#1e293b;--ck-muted:#526275;--ck-action:#115e59;color:var(--ck-text);background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:12px;padding:24px;box-sizing:border-box;max-width:100%;font:inherit}
+.execution-checklist{--ck-border:var(--hd-line,#DBE1EB);--ck-surface:var(--hd-surface,#fff);--ck-text:var(--hd-ink,#17233B);--ck-muted:var(--hd-muted,#506079);--ck-action:var(--hd-brand-fg,#A30F6C);color:var(--ck-text);background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:var(--hd-radius-xl,24px);padding:24px;box-sizing:border-box;max-width:100%;font:inherit}
 .execution-checklist [hidden]{display:none!important}
 .execution-checklist *{box-sizing:border-box;min-width:0}
 .execution-checklist h2,.execution-checklist h3,.execution-checklist p{margin-top:0}
@@ -19,21 +19,21 @@
 .checklist__item:first-child{border-top:0}
 .checklist__item-content{flex:1}
 .checklist__tags{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.83rem;color:var(--ck-muted);margin-bottom:0}
-.checklist__badge{display:inline-block;border:1px solid var(--ck-border);border-radius:5px;padding:3px 9px;font-weight:600;white-space:nowrap;color:var(--ck-text)}
-.execution-checklist button{font:inherit;font-weight:600;cursor:pointer;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid var(--ck-action);border-radius:6px;white-space:normal;line-height:1.4}
+.checklist__badge{display:inline-block;border:1px solid var(--ck-border);border-radius:var(--hd-radius-sm,10px);padding:3px 9px;font-weight:600;white-space:nowrap;color:var(--ck-text)}
+.execution-checklist button{font:inherit;font-weight:600;cursor:pointer;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid var(--ck-action);border-radius:var(--hd-radius-md,14px);white-space:normal;line-height:1.4}
 .execution-checklist button:disabled{cursor:default;opacity:.52}
-.execution-checklist :focus-visible{outline:3px solid #d97706;outline-offset:3px}
-.checklist__primary{background:var(--ck-action);color:#fff}
+.execution-checklist :focus-visible{outline:3px solid var(--hd-focus,#A30F6C);outline-offset:3px}
+.checklist__primary{background:var(--hd-grad-brand);color:var(--hd-on-accent,#fff);border-color:transparent}
 .checklist__secondary{background:var(--ck-surface);color:var(--ck-action)}
-.checklist__dialog{border:1px solid var(--ck-border);border-radius:12px;background:var(--ck-surface);color:var(--ck-text);width:min(610px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
-.checklist__dialog::backdrop{background:rgb(15 23 42 / .55)}
+.checklist__dialog{border:1px solid var(--ck-border);border-radius:var(--hd-radius-xl,24px);background:var(--ck-surface);color:var(--ck-text);width:min(610px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:24px;overflow:auto}
+.checklist__dialog::backdrop{background:var(--hd-backdrop,rgba(14,27,64,.65))}
 .checklist__dialog h3{font-size:1.3rem;margin-bottom:12px}
 .checklist__field{margin:16px 0}
 .checklist__field label{display:block;font-weight:600;margin-bottom:6px}
-.checklist__field input,.checklist__field textarea,.checklist__field select{display:block;width:100%;font:inherit;color:inherit;background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:5px;padding:10px;line-height:1.4}
+.checklist__field input,.checklist__field textarea,.checklist__field select{display:block;width:100%;font:inherit;color:inherit;background:var(--ck-surface);border:1px solid var(--ck-border);border-radius:var(--hd-radius-sm,10px);padding:10px;line-height:1.4}
 .checklist__field textarea{resize:vertical;min-height:76px;overflow-wrap:anywhere}
 .checklist__hint{margin:6px 0 0}
-.checklist__risk{background:#fff7ed;color:#7c2d12;border-left:4px solid #c2410c;border-radius:4px;padding:12px 14px;font-size:.93rem;line-height:1.6}
+.checklist__risk{background:var(--hd-warning-bg);color:var(--hd-warning-fg);border-left:4px solid var(--hd-warning-fg);border-radius:4px;padding:12px 14px;font-size:.93rem;line-height:1.6}
 .checklist__risk p{margin-bottom:12px}
 .checklist__ack{display:flex;align-items:flex-start;gap:10px}
 .checklist__ack input{margin:5px 0 0;width:20px;height:20px;flex-shrink:0}
@@ -50,3 +50,19 @@
 .checklist__evidence-option input[type=checkbox]{width:20px;height:20px;flex:0 0 20px;padding:0;margin:4px 0 0}
 .checklist__evidence-option label{font-weight:400;overflow-wrap:anywhere}
 .checklist__evidence-selected p{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.88rem}
+
+/* UX06 — qualified progress, status vocabulary and touch targets. */
+.checklist__summary { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; background:var(--hd-surface-2); padding:16px; border:1px solid var(--ck-border); border-radius:18px; }
+.checklist__summary progress { width:100%; height:10px; accent-color:var(--hd-accent); }
+.checklist__badge { border:0; border-radius:999px; line-height:1.5; white-space:normal; font-size:12px; background:var(--hd-neutral-bg);color:var(--hd-neutral-fg); }
+.checklist__badge[data-checklist-status-value=done] { background:var(--hd-success-bg);color:var(--hd-success-fg); }
+.checklist__badge[data-checklist-status-value=not_applicable] { background:var(--hd-info-bg);color:var(--hd-info-fg); }
+.checklist__step { color:var(--hd-brand-fg); font-size:13px; font-weight:700; }
+.checklist__field input,.checklist__field select,.checklist__field textarea { min-height:44px; border-color:var(--hd-control-line);border-radius:14px; }
+.checklist__field input[type=checkbox] { min-height:20px; accent-color:var(--hd-accent); }
+.checklist__evidence-option label,.checklist__ack label { min-height:44px;cursor:pointer;display:flex;align-items:center;flex:1; }
+.checklist__evidence-option { align-items:center; padding-block:4px; }
+.checklist__evidence-option input[type=checkbox] { margin:0; }
+.checklist__field h4 { font-size:16px;margin:0 0 8px; }
+.checklist__field .checklist__actions { justify-content:flex-start; margin-top:16px; }
+@media(max-width:640px){.execution-checklist input:not([type=checkbox]),.execution-checklist select,.execution-checklist textarea{font-size:16px}}

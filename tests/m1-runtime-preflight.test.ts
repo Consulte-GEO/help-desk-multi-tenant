@@ -34,7 +34,7 @@ function fixture(o:FixtureOptions={}){
   if(sql.includes("current_setting('transaction_read_only')"))return {command:'SELECT',rows:[{read_only:o.readOnly??'on'}],rowCount:1};
   if(o.queryFailure)throw Object.assign(Error('SECRET SQL'),{code:'42P01'});
   if(sql.includes('session_user as login_name'))return {command:'SELECT',rows:[o.role??role],rowCount:1};
-  if(sql.includes('helpdesk_auth.schema_version()'))return {command:'SELECT',rows:[{version:o.schema??'0.19.0'}],rowCount:1};
+  if(sql.includes('helpdesk_auth.schema_version()'))return {command:'SELECT',rows:[{version:o.schema??'0.23.0'}],rowCount:1};
   if(sql.includes('expected_tables')){assert.equal(values?.[0],JSON.stringify(DATABASE_SECURITY_CONTRACT));return {command:'SELECT',rows:[o.security??security],rowCount:1};}
   throw Error('Unexpected query in private preflight: '+sql);
  };

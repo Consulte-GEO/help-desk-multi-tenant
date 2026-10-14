@@ -1,3 +1,4 @@
+import {assertPromotedM05Module} from './m05-promoted-module.ts';
 /** CG03g integration specifications for the EXISTING owned fresh-PG17 runner.
  * Real driver and database when executed; not executable without D/E and guarded targets.
  * This file is not a hosted installer. No external source or production identity is used.
@@ -18,10 +19,7 @@ export function registerResourcePublicationSqlTests(adminPool:()=>SqlPool){
  test('CG03g complete publication, observation and receipt on real restricted PostgreSQL',async t=>{
   const {appUrl}=validateDatabaseTestTargets(process.env),admin=adminPool();
   assert.equal((await admin.query("select to_regclass('helpdesk_auth.cg_resource_observations') is not null as ready")).rows[0]?.ready,true);
-  const install=await admin.connect();
-  try{await install.query('BEGIN');await install.query("select set_config('app.cg03g_candidate','disposable-pg17',true)");
-   await install.query(await readFile(new URL('../candidates/cg_resource_publication.sql',import.meta.url),'utf8'));await install.query('COMMIT');
-  }catch(error){await install.query('ROLLBACK');throw error;}finally{install.release();}
+  await assertPromotedM05Module(admin,'helpdesk_auth.cg_publication_open(text,text)');
   const password=randomBytes(32).toString('base64url');
   const alter=(await admin.query("select format('alter role helpdesk_resource_publisher login password %L',$1::text) as command",[password])).rows[0]?.command;
   assert.equal(typeof alter,'string');await admin.query(String(alter));

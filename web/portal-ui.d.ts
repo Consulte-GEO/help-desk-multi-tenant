@@ -1,0 +1,12 @@
+export function countText(value: unknown): string;
+export function metricText(metric: unknown): string;
+export function priorityText(value: unknown): string;
+export function statusView(value: unknown): {label: string; tone: string};
+export function textValue(value: unknown, fallback?: string): string;
+export function node(root: HTMLElement, tag: string, text?: unknown, className?: string): HTMLElement;
+export function prepareRoot(root: HTMLElement, classes: string): void;
+export function stateCard(root: HTMLElement, title: string, text: string, tone?: string): HTMLElement;
+export function counters(root: HTMLElement, values: unknown, waitingLabel?: string): HTMLElement;
+export function statusBadge(root: HTMLElement, value: unknown, team?: boolean): HTMLElement;
+export function captureAction(root: HTMLElement): string | null;
+export function restoreAction(root: HTMLElement, key: string | null): void;

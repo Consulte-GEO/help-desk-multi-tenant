@@ -1,3 +1,4 @@
+import {adminUI,adminText,clearAdminNode} from './admin-ui.js';
 /** Fixed catalog UI. Client-side hints never replace administrative capability,
  * MFA, relational validation, CAS or immutable version checks on the server. */
 export const configurationForms=Object.freeze({
@@ -34,9 +35,9 @@ export function createConfigurationController(o){
  function setField(name,value){if(destroyed||state.busy||state.uncertain||!state.dialog||!configurationForms[state.kind].fields.includes(name))return false;if(booleanFields.includes(name)?typeof value!=='boolean':value!==null&&typeof value!=='string')return false;state.dialog.data[name]=name==='validUntil'&&value===''?null:value;return true;}
  const setReason=value=>{if(state.dialog&&!state.busy&&!state.uncertain&&typeof value==='string')state.dialog.reason=value;};
  async function send(){
-  if(!pending||state.busy||destroyed)return false;const intention=pending,token=generation;state.busy=true;active=new AbortController();emit();let success=false;
+  if(!pending||state.busy||destroyed)return false;const intention=pending,token=generation,reconciling=state.uncertain;state.busy=true;active=new AbortController();emit();let success=false;
   try{const r=await o.request(intention.path,{method:intention.method,headers:{...intention.headers},body:intention.body,signal:active.signal});if(token!==generation||destroyed)return false;
-   if(!r.ok){if(r.status>=500){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a mesma solicitação.';}else{pending=null;state.uncertain=false;state.dialog=null;clear();state.message='Solicitação recusada. Atualize a lista antes de iniciar outra.';}return false;}
+   if(!r.ok){if(r.status>=500||reconciling){state.uncertain=true;state.dialog=null;state.message='Confirmação desconhecida. Concilie a mesma solicitação.';}else{pending=null;state.uncertain=false;state.dialog=null;clear();state.message='Solicitação recusada. Atualize a lista antes de iniciar outra.';}return false;}
    const v=await r.json();if(token!==generation||destroyed)return false;const item=record(v.record,intention.kind,audience.workspaceId);
    if(v.workspace_id!==audience.workspaceId||v.actor_id!==audience.principalId||!positive(v.revision)||!uuid.test(v.audit_id)||typeof v.replayed!=='boolean'||intention.targetId&&item.id!==intention.targetId)throw Error();
    pending=null;state.uncertain=false;state.dialog=null;state.message='Configuração registrada. O atendimento não foi liberado por esta ação.';success=true;return true;
@@ -52,23 +53,86 @@ export function createConfigurationController(o){
  function destroy(){generation++;active?.abort();active=null;pending=null;clear();state.dialog=null;destroyed=true;}
  return Object.freeze({view,load,open,setField,setReason,confirm,cancel,reconcile:()=>state.uncertain?send():Promise.resolve(false),setAudience,destroy});
 }
-/** Optional semantic DOM mount, not a replacement of the existing app shell. */
+/** Optional INTERNAL presentation. The unchanged controller remains the only command
+ * composer. A modal organizes existing fields, not a new authorization boundary. */
 export function mountConfigurationPanel(root,o){
- const doc=root.ownerDocument;let controller;
- const make=(tag,text)=>{const e=doc.createElement(tag);if(text!==undefined)e.textContent=text;return e;};
- const button=(text,fn,disabled=false)=>{const b=make('button',text);b.type='button';b.disabled=disabled;b.onclick=fn;return b;};
- const clearFields=()=>{for(const element of root.querySelectorAll('input,textarea')){element.value='';element.checked=false;}};
- const render=s=>{
-  clearFields();root.replaceChildren();root.append(make('h2','Contas, catálogo e contratos'));
-  const hint=make('p','Configuração administrativa. Publicar um contrato não libera atendimento ou acesso à origem.');root.append(hint);
-  const selector=make('select');selector.setAttribute('aria-label','Tipo de configuração');for(const [kind,form] of Object.entries(configurationForms)){const opt=make('option',form.label);opt.value=kind;selector.append(opt);}selector.value=s.kind;selector.disabled=s.busy||s.uncertain;selector.onchange=()=>controller.load(selector.value);root.append(selector,button('Atualizar',()=>controller.load(s.kind),s.busy||s.uncertain),button('Novo registro',()=>controller.open('create'),s.busy||s.uncertain||!s.revision));
-  const status=make('p',s.message);status.setAttribute('role','status');status.setAttribute('aria-live','polite');root.append(status);
-  if(s.uncertain)root.append(button('Conciliar solicitação',()=>controller.reconcile(),s.busy));
-  const list=make('ul');for(const row of s.items){const li=make('li');li.append(make('strong',String(row.data.name??row.data.code??row.id)),make('span',` · revisão ${row.revision} · ${row.id}`));if(row.data.published!==true){li.append(button('Editar',()=>controller.open('update',row.id),s.busy||s.uncertain));if(row.kind==='contract_version')li.append(button('Publicar versão',()=>controller.open('publish',row.id),s.busy||s.uncertain));}else li.append(make('span',' · publicada, somente leitura'));list.append(li);}root.append(list);if(s.nextCursor)root.append(button('Carregar mais',()=>controller.load(s.kind,{append:true}),s.busy||s.uncertain));
-  if(s.dialog){const fieldset=make('fieldset');fieldset.append(make('legend',s.dialog.action==='publish'?'Confirmar publicação':'Editar configuração'));
-   if(s.dialog.action!=='publish')for(const name of configurationForms[s.kind].fields){const label=make('label',fieldLabels[name]+' '),input=make('input');input.name=name;input.type=booleanFields.includes(name)?'checkbox':'text';if(input.type==='checkbox')input.checked=s.dialog.data[name]===true;else input.value=s.dialog.data[name]??'';input.disabled=s.busy;input.oninput=()=>controller.setField(name,input.type==='checkbox'?input.checked:input.value);label.append(input);fieldset.append(label);}
-   const reason=make('textarea');reason.setAttribute('aria-label','Motivo da alteração');reason.value=s.dialog.reason;reason.oninput=()=>controller.setReason(reason.value);reason.disabled=s.busy;fieldset.append(reason,button('Confirmar alteração',()=>controller.confirm(),s.busy),button('Cancelar',()=>controller.cancel(),s.busy));root.append(fieldset);
+ const ui=adminUI(root,'configuration'),{node,button,field,listen}=ui,rowListeners=[],fieldListeners=[],rowButtons=new Map();
+ let destroyed=false,rowsStamp='',editorKey='',currentFields=[],returnKey=null,focusAfter=null,wasOpen=false,lastAudience='';
+ const section=node('section',undefined,{class:'hd-admin','data-admin-panel':'configuration'});
+ const toolbar=node('div',undefined,{class:'hd-admin-toolbar'}),selectLabel=node('label','Tipo de configuração',{for:ui.prefix+'-kind'}),selector=node('select',undefined,{id:ui.prefix+'-kind','aria-label':'Tipo de configuração'});
+ for(const [kind,form] of Object.entries(configurationForms))selector.append(node('option',form.label,{value:kind}));selectLabel.append(selector);
+ const refresh=button('Atualizar',()=>void controller.load(controller.view().kind)),create=button('Novo registro',()=>{returnKey='new';controller.open('create');},true),reconcile=button('Conciliar solicitação',()=>void controller.reconcile(),true);
+ listen(selector,'change',()=>void controller.load(selector.value));reconcile.hidden=true;toolbar.append(selectLabel,refresh,create,reconcile);
+ const status=node('p','',{class:'hd-admin-status',role:'status','aria-live':'polite'}),count=node('p','',{class:'hd-admin-muted'}),empty=node('div','',{class:'hd-admin-empty'}),list=node('ul',undefined,{class:'hd-admin-list'}),more=button('Carregar mais',()=>void controller.load(controller.view().kind,{append:true}));
+ const dialog=node('dialog',undefined,{'aria-labelledby':ui.prefix+'-title','aria-describedby':ui.prefix+'-notice'}),heading=node('div',undefined,{class:'hd-admin-dialog-heading'}),title=node('h2','',{id:ui.prefix+'-title'}),notice=node('p','',{id:ui.prefix+'-notice',class:'hd-admin-muted'}),recordLabel=node('p','',{class:'hd-admin-muted'});
+ heading.append(title,notice,recordLabel);const form=node('form',undefined,{class:'hd-admin-dialog-form'});form.noValidate=true;
+ const body=node('div',undefined,{class:'hd-admin-dialog-body'}),fieldRoot=node('div'),reason=field('Motivo da alteração','reason',{tag:'textarea',hint:'Obrigatório: de 3 a 2.000 caracteres. A operação fica no histórico administrativo.',attrs:{'data-config-reason':'',rows:'3',maxlength:'2000',required:''}}),feedback=node('p','',{role:'status','aria-live':'polite',class:'hd-admin-error'});
+ body.append(fieldRoot,reason.box,feedback);
+ const footer=node('div',undefined,{class:'hd-admin-dialog-footer'}),cancel=button('Cancelar',()=>controller.cancel()),confirm=node('button','Confirmar alteração',{type:'submit',class:'hd-admin-primary'});footer.append(cancel,confirm);form.append(body,footer);dialog.append(heading,form);
+ listen(reason.input,'input',()=>controller.setReason(reason.input.value));
+ listen(form,'submit',event=>{event.preventDefault();if(confirm.disabled)return;
+  reason.feedback('');if(reason.input.value.trim().length<3||reason.input.value.length>2000){reason.feedback('Informe um motivo com pelo menos três caracteres e até 2.000 caracteres.');reason.input.focus();return;}
+  controller.setReason(reason.input.value);void controller.confirm();
+ });
+ listen(dialog,'cancel',event=>{event.preventDefault();controller.cancel();});
+ section.append(ui.header('Contas, catálogo e contratos','Organize os cadastros e suas versões. A disponibilidade de cada ação depende da validação administrativa atual.'),toolbar,status,count,empty,list,more,dialog);root.replaceChildren(section);
+ function wipeEditor(){
+  ui.removeListeners(fieldListeners);clearAdminNode(fieldRoot);currentFields=[];editorKey='';reason.input.value='';reason.input.disabled=true;reason.feedback('');title.textContent=notice.textContent=recordLabel.textContent=feedback.textContent='';
+ }
+ function makeFields(d){
+  wipeEditor();editorKey=JSON.stringify([d.kind,d.action,d.targetId]);
+  if(d.action==='publish')return;
+  for(const name of configurationForms[d.kind].fields){
+   const isBool=booleanFields.includes(name),isStatus=name==='status';
+   const label=isStatus?'Situação do contrato':fieldLabels[name];
+   const hint=name==='validUntil'?'Deixe vazio quando não houver fim de validade. Mantenha o instante UTC terminado em Z.':name==='validFrom'?'Informe o instante UTC completo, terminado em Z; a precisão não é convertida.':name.endsWith('Id')?'Use o identificador do registro autorizado. Não há busca por nome ou e-mail neste painel.':name==='environment'?'Use o identificador de ambiente cadastrado; o valor é validado pelo servidor.':'';
+   const f=field(label,name,{tag:isStatus?'select':'input',hint,attrs:{name,'data-config-field':name,...(isBool?{type:'checkbox'}:{})}});
+   if(isBool)f.box.className='hd-admin-field hd-admin-field--boolean';
+   if(isStatus)for(const [value,text] of [['active','Ativo'],['suspended','Suspenso'],['terminated','Encerrado']])f.input.append(node('option',text,{value}));
+   // Keep existing unrecognized values visible for explicit review; never select a new status silently.
+   if(isStatus&&typeof d.data[name]==='string'&&!['active','suspended','terminated'].includes(d.data[name]))f.input.append(node('option','Valor atual não reconhecido',{value:d.data[name]}));
+   listen(f.input,isBool||isStatus?'change':'input',()=>controller.setField(name,isBool?f.input.checked:f.input.value),fieldListeners);
+   currentFields.push({name,isBool,...f});fieldRoot.append(f.box);
   }
- };
- controller=createConfigurationController({...o,onState:render});render(controller.view());return Object.freeze({controller,destroy:()=>{controller.destroy();clearFields();root.replaceChildren();}});
+ }
+ function clearRows(){ui.removeListeners(rowListeners);rowButtons.clear();clearAdminNode(list);rowsStamp='';}
+ function render(s){
+  const audience=s.audience.workspaceId+'|'+s.audience.principalId;
+  if(audience!==lastAudience){clearRows();wipeEditor();returnKey=focusAfter=null;lastAudience=audience;}
+  section.setAttribute('aria-busy',String(s.busy));selector.value=s.kind;selector.disabled=refresh.disabled=s.busy||s.uncertain||!!s.dialog;
+  create.disabled=s.busy||s.uncertain||!s.revision||!!s.dialog;reconcile.hidden=!s.uncertain;reconcile.disabled=s.busy;
+  status.textContent=s.message;count.textContent=s.revision===null?'':`${s.items.length} de ${s.total} registros carregados · revisão da consulta ${s.revision}`;
+  empty.hidden=s.items.length>0;empty.textContent=s.busy?'Consultando registros…':s.revision!==null?'Nenhum registro encontrado nesta consulta.':s.message?'Consulta indisponível. Revise o aviso antes de continuar.':'Escolha o tipo e atualize a lista para consultar os registros autorizados.';
+  const stamp=JSON.stringify([s.kind,s.items]);
+  if(stamp!==rowsStamp){clearRows();rowsStamp=stamp;
+   for(const row of s.items){
+    const li=node('li',undefined,{class:'hd-admin-card','data-config-record':row.id}),content=node('div',undefined,{class:'hd-admin-list-body'}),actions=node('div',undefined,{class:'hd-admin-actions'});
+    content.append(node('strong',adminText(row.data.name)||adminText(row.data.code)||configurationForms[s.kind].label+' · '+row.id.slice(0,8)),node('p','Revisão '+row.revision,{class:'hd-admin-muted'}));
+    if(row.data.published===true)content.append(ui.badge('published'));else if(typeof row.data.status==='string')content.append(ui.badge(row.data.status));else if(row.data.active===false||row.data.enabled===false)content.append(node('span','Inativo',{class:'hd-admin-badge'}));
+    const ids=node('details');ids.append(node('summary','Ver identificador'),node('code',row.id));content.append(ids);
+    if(row.data.published!==true){
+     const add=(action,text)=>{const key=row.id+'|'+action;const b=button(text,()=>{returnKey=key;controller.open(action,row.id);},false,{'data-config-action':action},rowListeners);rowButtons.set(key,b);actions.append(b);};
+     add('update','Editar');if(row.kind==='contract_version')add('publish','Publicar versão');
+    }
+    li.append(content,actions);list.append(li);
+   }
+  }
+  for(const b of rowButtons.values())b.disabled=s.busy||s.uncertain||!!s.dialog;
+  more.hidden=!s.nextCursor;more.disabled=s.busy||s.uncertain||!!s.dialog;
+  if(!s.dialog){
+   if(wasOpen){if(dialog.open)dialog.close();focusAfter=s.uncertain?'reconcile':returnKey;wasOpen=false;}wipeEditor();
+  }else{
+   const d=s.dialog,key=JSON.stringify([d.kind,d.action,d.targetId]);if(key!==editorKey)makeFields(d);
+   title.textContent=(d.action==='publish'?'Confirmar publicação':d.action==='create'?'Novo registro':'Editar registro')+' — '+configurationForms[d.kind].label;
+   notice.textContent=d.action==='publish'?'Publicar esta versão não libera atendimento nem acesso à origem. Depois de publicada, esta versão não pode ser editada.':'Confira os campos e informe o motivo. O servidor valida permissões, relacionamentos e revisões antes de registrar.';
+   recordLabel.textContent=d.targetId?'Registro: '+d.targetId+' · revisão '+d.entityRevision:'';
+   for(const f of currentFields){const value=d.data[f.name];if(f.isBool)f.input.checked=value===true;else if(f.input.value!==(value??''))f.input.value=value??'';f.input.disabled=s.busy||s.uncertain;}
+   if(reason.input.value!==d.reason)reason.input.value=d.reason;reason.input.disabled=cancel.disabled=confirm.disabled=s.busy||s.uncertain;
+   feedback.textContent=s.busy?'Registrando a operação uma única vez…':'';
+   if(!dialog.open){dialog.showModal();(currentFields[0]?.input??reason.input).focus();}wasOpen=true;
+  }
+  if(focusAfter&&!s.busy)queueMicrotask(()=>{if(destroyed||!focusAfter||controller.view().busy||controller.view().dialog)return;const key=focusAfter;focusAfter=null;const target=key==='reconcile'?reconcile:key==='new'?create:rowButtons.get(key);if(target&&!target.disabled&&!target.hidden)target.focus();else if(!refresh.disabled)refresh.focus();});
+ }
+ const controller=createConfigurationController({...o,onState:render});render(controller.view());
+ return Object.freeze({controller,destroy(){destroyed=true;controller.destroy();ui.removeListeners();ui.removeListeners(rowListeners);if(dialog.open)dialog.close();wipeEditor();clearRows();clearAdminNode(section);root.replaceChildren();lastAudience='';returnKey=focusAfter=null;}});
 }

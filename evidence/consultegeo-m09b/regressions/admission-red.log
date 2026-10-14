@@ -1,0 +1,90 @@
+TAP version 13
+# Subtest: same authorized resource set reordered on an edit preserves the pinned draft reference order
+not ok 1 - same authorized resource set reordered on an edit preserves the pinned draft reference order
+  ---
+  duration_ms: 33.0097
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\consultegeo-draft-admission.test.ts:2:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        {
+          connectionId: '00000000-0000-4000-8000-000000000004',
+    +     id: 'B',
+    -     id: 'A',
+          tenantId: 'T1',
+          type: 'work'
+        },
+        {
+          connectionId: '00000000-0000-4000-8000-000000000004',
+    +     id: 'A',
+    -     id: 'B',
+          tenantId: 'T1',
+          type: 'work'
+        }
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      connectionId: '00000000-0000-4000-8000-000000000004'
+      tenantId: 'T1'
+      type: 'work'
+      id: 'A'
+    1:
+      connectionId: '00000000-0000-4000-8000-000000000004'
+      tenantId: 'T1'
+      type: 'work'
+      id: 'B'
+  actual:
+    0:
+      connectionId: '00000000-0000-4000-8000-000000000004'
+      tenantId: 'T1'
+      type: 'work'
+      id: 'B'
+    1:
+      connectionId: '00000000-0000-4000-8000-000000000004'
+      tenantId: 'T1'
+      type: 'work'
+      id: 'A'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-draft-admission.test.ts:2:326)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: closed read admission stops before even the owner-only SQL locator
+not ok 2 - closed read admission stops before even the owner-only SQL locator
+  ---
+  duration_ms: 2.0318
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\.local\\consultegeo-m02\\tests\\consultegeo-draft-admission.test.ts:3:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/.local/consultegeo-m02/tests/consultegeo-draft-admission.test.ts:3:502)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 308.9619

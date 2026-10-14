@@ -1,0 +1,464 @@
+[
+  {
+    "run": 38499957694,
+    "reportSha256": "077a34b22af84a35045caa606d6a433eff7baad81dd18493c297694f9af7675a",
+    "source": "3b846ffa21addcf5d761fc592faeae2e2598b339",
+    "sourceFingerprint": "e87d4fcdc0f7fdefb1ad7188680a0495be317f0894f6a40845847996a666faf0",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Generated OpenAPI and native fixture/upgrade registration defects; fixed without lowering gates.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "f142b666ec19ccdc186d3f7346cea28bd7e97f7597af1ce9f284e23da422e0da"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "failed",
+        "tests": {
+          "tests": 4494,
+          "pass": 4493,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "76c839547652902fb3053612e2a7c4ddae0c012b682fc1be72fe60c4d047b110"
+      },
+      {
+        "id": "postgres",
+        "status": "failed",
+        "tests": {
+          "tests": 405,
+          "pass": 402,
+          "fail": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "a122b640ce3a5c11ef030a7c8047816e8af25c8d544d0ef93a00f1d5ae3c9a10"
+      },
+      {
+        "id": "interface",
+        "status": "blocked",
+        "tests": null,
+        "sha256": null
+      }
+    ]
+  },
+  {
+    "run": 38500783423,
+    "reportSha256": "a94c3c89b431e64dd24b3dc58d3a951b221190123dadb1ad28e096cbe613e338",
+    "source": "de89364ab12eaac93adc153267933eea19a1a3e9",
+    "sourceFingerprint": "6d2c451a8b427bf2e33901a3dbe6fbb4714c14ec83c7a516d673aca698273972",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Native deferred request_id ambiguity; reproduced and fixed.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "f142b666ec19ccdc186d3f7346cea28bd7e97f7597af1ce9f284e23da422e0da"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4494,
+          "pass": 4494,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "cc686917f6948099ef901bb0231c587b4b62678e6760f94f5231b0ce4348ae7b"
+      },
+      {
+        "id": "postgres",
+        "status": "failed",
+        "tests": {
+          "tests": 417,
+          "pass": 407,
+          "fail": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "ab3b7e9406e9efebbebd9489f785464393215532e76523564417a26e027e09e2"
+      },
+      {
+        "id": "interface",
+        "status": "passed",
+        "tests": {
+          "tests": 206,
+          "pass": 206,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56"
+      }
+    ]
+  },
+  {
+    "run": 38501954926,
+    "reportSha256": "b03a7dc623e48d0b5aa46007af195362148a57c8b520e0e470f8f3a88abd9cba",
+    "source": "d920e0463d3a62cbcc8ec4c101068ddd0a801d37",
+    "sourceFingerprint": "4ea054bb39b7e2a367dbfa83e388e600608eede979647c9188793a889a3b2307",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Native ambiguity and persisted-effect regressions; fixed.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4495,
+          "pass": 4495,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "a375af0c2d8aadd80865be19740953ae55d8f5ee6483d44eb763189813b0c6f1"
+      },
+      {
+        "id": "postgres",
+        "status": "failed",
+        "tests": {
+          "tests": 419,
+          "pass": 408,
+          "fail": 11,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "8b52c140e912a0f4254f39a12b8d17093837edd5b501f5f71d68d745bdfa1e64"
+      },
+      {
+        "id": "interface",
+        "status": "passed",
+        "tests": {
+          "tests": 206,
+          "pass": 206,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56"
+      }
+    ]
+  },
+  {
+    "run": 38502884909,
+    "reportSha256": "4f5f730137f11cebadd5eb452b72f6b6a94479b167e75243a4b88347356a4dbd",
+    "source": "d0c2eb79b1aea8475ec2ca5128650c92d2f5c286",
+    "sourceFingerprint": "0f2a6d1ae2e9ac8b2b3a7bc16585254a2938fee0c0f1290d78986d8e5c53ad31",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Trusted draft-expiry error lost by borrowed-query adapter; fixed.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4495,
+          "pass": 4495,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "35cbe8ab6ecd49368522a4b44b0f915ec2c5f097020be7359b02ce0404e71633"
+      },
+      {
+        "id": "postgres",
+        "status": "failed",
+        "tests": {
+          "tests": 419,
+          "pass": 417,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "46fe7d0500a93a0066d09c7d9a5a21a56ce6d2cc08bcb23bff297a99c9c12400"
+      },
+      {
+        "id": "interface",
+        "status": "passed",
+        "tests": {
+          "tests": 206,
+          "pass": 206,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56"
+      }
+    ]
+  },
+  {
+    "run": 38504028290,
+    "reportSha256": "36f073d787ba43ea415fe73f4787786fd0ae7b4fbc49c60d55205fa6587fb23f",
+    "source": "0faa091f88a2d7a5c913eae8960ba3a62684e433",
+    "sourceFingerprint": "1ff72af2b968f97e33cdb3bf24d0e888e9bdd4d4bb4081d8df7f5c2196999e22",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Expiry fixture races 2000ms runtime lock timeout; deterministic fixture correction in 1486611.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "f142b666ec19ccdc186d3f7346cea28bd7e97f7597af1ce9f284e23da422e0da"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4496,
+          "pass": 4496,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "8846128b1007c9d4fa836fd2fdd0be858117698cf8681d281f5094c644a7d3e0"
+      },
+      {
+        "id": "postgres",
+        "status": "failed",
+        "tests": {
+          "tests": 419,
+          "pass": 417,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "533ba581755d5dbec825ab661867918208f0b650338ed73be833aa710919f5ff"
+      },
+      {
+        "id": "interface",
+        "status": "passed",
+        "tests": {
+          "tests": 206,
+          "pass": 206,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56"
+      }
+    ]
+  },
+  {
+    "run": 38504033511,
+    "reportSha256": "1bbdce49ab8b4e240671f5808e0efd519752f6f3abb55c719e9f2ebe56524860",
+    "source": "a3e383d4e6e68b3d3ce1df81000410d6f8bcf60b",
+    "sourceFingerprint": "1ff72af2b968f97e33cdb3bf24d0e888e9bdd4d4bb4081d8df7f5c2196999e22",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "All gates passed for 0faa091 source; superseded by deterministic expiry-fixture qualification.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4496,
+          "pass": 4496,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "e365d6c0c281bede1f411c6c6be62341d683be37ebf1255964114b0858ceaddb"
+      },
+      {
+        "id": "postgres",
+        "status": "passed",
+        "tests": {
+          "tests": 419,
+          "pass": 419,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "174f8a1fbaa12c5bb31eb1ebf46fd5f7a27d9a66a67ae5b6ab729f140ca21716"
+      },
+      {
+        "id": "interface",
+        "status": "passed",
+        "tests": {
+          "tests": 206,
+          "pass": 206,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "4c4eed333f6a89765296f81838b3884f7ba4a2e9f43a664d5f8fb526b4048e56"
+      }
+    ]
+  },
+  {
+    "run": 38505825900,
+    "reportSha256": "b307f92b214af341f696f12df183c32ca9d73a2c4b0d2c24cb3808321197c535",
+    "source": "14866114942e1eb1f8e597d8a42f25d848dfb2e8",
+    "sourceFingerprint": "d50ffef9b3565a7ae1cc33913c7199c6d6834a5e7c5e4acea9efa2de63e28ee6",
+    "platformApproved": false,
+    "finalQualification": false,
+    "diagnosis": "Application4496 and PostgreSQL419 passed; browser notes-retry timeout. Attempt1 preserved, rerun requested without source/gate changes.",
+    "checks": [
+      {
+        "id": "lock",
+        "status": "passed",
+        "tests": null,
+        "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+      },
+      {
+        "id": "install",
+        "status": "passed",
+        "tests": null,
+        "sha256": "c3c608177ca74e82a9f8b6d40eeb38932cd080926f5cb3a71009a1ce7dda754d"
+      },
+      {
+        "id": "audit",
+        "status": "passed",
+        "tests": null,
+        "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+      },
+      {
+        "id": "application",
+        "status": "passed",
+        "tests": {
+          "tests": 4496,
+          "pass": 4496,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "bea6f2c27a492620f99e0cd37241f05a724f7a1e32fdfa436038876bd87d82e3"
+      },
+      {
+        "id": "postgres",
+        "status": "passed",
+        "tests": {
+          "tests": 419,
+          "pass": 419,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sha256": "c7dc18b0f785bc1e4f955d29eed65a009d03bf215c72bdf6d89357caa9858a17"
+      },
+      {
+        "id": "interface",
+        "status": "failed",
+        "tests": null,
+        "sha256": "8dd3197cd6b5ac73e209850800d275d44da013ea0d67d6edf931e274e1964cf2"
+      }
+    ]
+  }
+]

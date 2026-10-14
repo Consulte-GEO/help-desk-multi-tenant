@@ -1,0 +1,922 @@
+TAP version 13
+# Subtest: UX04 build explicitly copies helper and host CSS
+ok 1 - UX04 build explicitly copies helper and host CSS
+  ---
+  duration_ms: 3.6101
+  type: 'test'
+  ...
+# Subtest: UX04 host styles are linked after the base theme without auto-mounting a new route
+ok 2 - UX04 host styles are linked after the base theme without auto-mounting a new route
+  ---
+  duration_ms: 3.1231
+  type: 'test'
+  ...
+# Subtest: UX04 demo serves new CSS with CSS MIME from an explicit allowlist
+ok 3 - UX04 demo serves new CSS with CSS MIME from an explicit allowlist
+  ---
+  duration_ms: 1.5914
+  type: 'test'
+  ...
+# Subtest: UX04/UX10 intake controller matches the M09a operational reconciliation fix
+ok 4 - UX04/UX10 intake controller matches the M09a operational reconciliation fix
+  ---
+  duration_ms: 2.5117
+  type: 'test'
+  ...
+# Subtest: UX04 does not report an answer change on mount, validation or snapshot
+ok 5 - UX04 does not report an answer change on mount, validation or snapshot
+  ---
+  duration_ms: 12.4877
+  type: 'test'
+  ...
+# Subtest: UX04 text and explicit false changes notify the host once
+ok 6 - UX04 text and explicit false changes notify the host once
+  ---
+  duration_ms: 2.2127
+  type: 'test'
+  ...
+# Subtest: UX04 row operations and accepted paste notify without native input events
+ok 7 - UX04 row operations and accepted paste notify without native input events
+  ---
+  duration_ms: 7.4045
+  type: 'test'
+  ...
+# Subtest: UX04 late reference from old audience cannot notify or repopulate
+ok 8 - UX04 late reference from old audience cannot notify or repopulate
+  ---
+  duration_ms: 3.1128
+  type: 'test'
+  ...
+# Subtest: UX04 accepted reference notifies only after validated selection; destroy rejects stale completion
+ok 9 - UX04 accepted reference notifies only after validated selection; destroy rejects stale completion
+  ---
+  duration_ms: 2.3931
+  type: 'test'
+  ...
+# Subtest: UX04 an observer exception cannot corrupt validated answers
+ok 10 - UX04 an observer exception cannot corrupt validated answers
+  ---
+  duration_ms: 1.4264
+  type: 'test'
+  ...
+# Subtest: UX04 count is unavailable, not zero, for invalid input
+ok 11 - UX04 count is unavailable, not zero, for invalid input
+  ---
+  duration_ms: 2.3514
+  type: 'test'
+  ...
+# Subtest: UX04 count preserves zero and locale grouping
+ok 12 - UX04 count preserves zero and locale grouping
+  ---
+  duration_ms: 0.5869
+  type: 'test'
+  ...
+# Subtest: UX04 metric requires explicit availability and an admissible value
+ok 13 - UX04 metric requires explicit availability and an admissible value
+  ---
+  duration_ms: 0.27
+  type: 'test'
+  ...
+# Subtest: UX04 available zero and decimals remain numeric without invented units
+ok 14 - UX04 available zero and decimals remain numeric without invented units
+  ---
+  duration_ms: 0.2983
+  type: 'test'
+  ...
+# Subtest: UX04 status never falls through object prototypes
+ok 15 - UX04 status never falls through object prototypes
+  ---
+  duration_ms: 1.5846
+  type: 'test'
+  ...
+# Subtest: UX04 priority is an allowlisted label, not arbitrary server text
+ok 16 - UX04 priority is an allowlisted label, not arbitrary server text
+  ---
+  duration_ms: 0.3191
+  type: 'test'
+  ...
+# Subtest: UX04 signed zero has the same visible meaning as zero
+ok 17 - UX04 signed zero has the same visible meaning as zero
+  ---
+  duration_ms: 1.2619
+  type: 'test'
+  ...
+# Subtest: UX05 configuration account uses original fields and retains unchanged values while sending
+ok 18 - UX05 configuration account uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 19.5906
+  type: 'test'
+  ...
+# Subtest: UX05 configuration product uses original fields and retains unchanged values while sending
+ok 19 - UX05 configuration product uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 1.5319
+  type: 'test'
+  ...
+# Subtest: UX05 configuration instance uses original fields and retains unchanged values while sending
+ok 20 - UX05 configuration instance uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 2.2101
+  type: 'test'
+  ...
+# Subtest: UX05 configuration service uses original fields and retains unchanged values while sending
+ok 21 - UX05 configuration service uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 1.324
+  type: 'test'
+  ...
+# Subtest: UX05 configuration binding uses original fields and retains unchanged values while sending
+ok 22 - UX05 configuration binding uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 1.117
+  type: 'test'
+  ...
+# Subtest: UX05 configuration contract uses original fields and retains unchanged values while sending
+ok 23 - UX05 configuration contract uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 1.1159
+  type: 'test'
+  ...
+# Subtest: UX05 configuration contract_version uses original fields and retains unchanged values while sending
+ok 24 - UX05 configuration contract_version uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 3.1354
+  type: 'test'
+  ...
+# Subtest: UX05 configuration coverage uses original fields and retains unchanged values while sending
+ok 25 - UX05 configuration coverage uses original fields and retains unchanged values while sending
+  ---
+  duration_ms: 2.0899
+  type: 'test'
+  ...
+# Subtest: UX05 configuration unknown replay preserves exact bytes and key
+ok 26 - UX05 configuration unknown replay preserves exact bytes and key
+  ---
+  duration_ms: 3.3931
+  type: 'test'
+  ...
+# Subtest: UX05 editor rejects byte overflow, retains last parsed preview and never submits
+ok 27 - UX05 editor rejects byte overflow, retains last parsed preview and never submits
+  ---
+  duration_ms: 53.153
+  type: 'test'
+  ...
+# Subtest: UX05 editor renders markup as plain data, including differences and confirmation
+ok 28 - UX05 editor renders markup as plain data, including differences and confirmation
+  ---
+  duration_ms: 2.8194
+  type: 'test'
+  ...
+# Subtest: UX05 two editor mounts have unique input and preview IDs
+ok 29 - UX05 two editor mounts have unique input and preview IDs
+  ---
+  duration_ms: 2.4465
+  type: 'test'
+  ...
+# Subtest: UX05 published config record remains immutable in the controller
+ok 30 - UX05 published config record remains immutable in the controller
+  ---
+  duration_ms: 2.467
+  type: 'test'
+  ...
+# Subtest: UX05 known member states have readable semantic labels, unknown keys never render
+ok 31 - UX05 known member states have readable semantic labels, unknown keys never render
+  ---
+  duration_ms: 4.9638
+  type: 'test'
+  ...
+# Subtest: UX05 presentation leaves raw identifiers and canonical instants untouched
+ok 32 - UX05 presentation leaves raw identifiers and canonical instants untouched
+  ---
+  duration_ms: 31.7763
+  type: 'test'
+  ...
+# Subtest: UX05 mounts members without invoking any request and has an explicit unloaded state
+ok 33 - UX05 mounts members without invoking any request and has an explicit unloaded state
+  ---
+  duration_ms: 10.9989
+  type: 'test'
+  ...
+# Subtest: UX05 two member mounts do not produce duplicate control IDs
+ok 34 - UX05 two member mounts do not produce duplicate control IDs
+  ---
+  duration_ms: 2.304
+  type: 'test'
+  ...
+# Subtest: UX05 configuration edits use a dialog with linked reason label and no automatic request
+ok 35 - UX05 configuration edits use a dialog with linked reason label and no automatic request
+  ---
+  duration_ms: 9.652
+  type: 'test'
+  ...
+# Subtest: UX05 editor exposes separate technical, preview and operation sections
+ok 36 - UX05 editor exposes separate technical, preview and operation sections
+  ---
+  duration_ms: 29.1475
+  type: 'test'
+  ...
+# Subtest: UX05 asset wiring is explicit and does not mount administrative routes
+ok 37 - UX05 asset wiring is explicit and does not mount administrative routes
+  ---
+  duration_ms: 2.8309
+  type: 'test'
+  ...
+# Subtest: UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+ok 38 - UX05 member ID labels retain a suffix so equal prefixes are distinguishable
+  ---
+  duration_ms: 2.0798
+  type: 'test'
+  ...
+# Subtest: UX05 configuration controller command algorithm is byte-preserved
+ok 39 - UX05 configuration controller command algorithm is byte-preserved
+  ---
+  duration_ms: 1.7398
+  type: 'test'
+  ...
+# Subtest: UX05 member controller is byte-preserved
+ok 40 - UX05 member controller is byte-preserved
+  ---
+  duration_ms: 1.2832
+  type: 'test'
+  ...
+# Subtest: UX06 checklist exposes a qualified native progress meter, without fake unloaded totals
+ok 41 - UX06 checklist exposes a qualified native progress meter, without fake unloaded totals
+  ---
+  duration_ms: 111.9101
+  type: 'test'
+  ...
+# Subtest: UX06 checklist refuses missing evidence/risk and forbidden exemption using original controller
+ok 42 - UX06 checklist refuses missing evidence/risk and forbidden exemption using original controller
+  ---
+  duration_ms: 14.0943
+  type: 'test'
+  ...
+# Subtest: UX06 attachments cannot send an empty selection and expose the selection before upload
+ok 43 - UX06 attachments cannot send an empty selection and expose the selection before upload
+  ---
+  duration_ms: 6.9673
+  type: 'test'
+  ...
+# Subtest: UX06 attachment limits and types are advisory checks before any remote intent
+ok 44 - UX06 attachment limits and types are advisory checks before any remote intent
+  ---
+  duration_ms: 2.315
+  type: 'test'
+  ...
+# Subtest: UX06 approval requires a local review, explicit decision, and no request on mount
+ok 45 - UX06 approval requires a local review, explicit decision, and no request on mount
+  ---
+  duration_ms: 10.0968
+  type: 'test'
+  ...
+# Subtest: UX06 form review displays Before/After as distinct text-only public values
+ok 46 - UX06 form review displays Before/After as distinct text-only public values
+  ---
+  duration_ms: 10.2804
+  type: 'test'
+  ...
+# Subtest: UX06 saved-draft lookup is single-flight and cannot call preview after destruction
+ok 47 - UX06 saved-draft lookup is single-flight and cannot call preview after destruction
+  ---
+  duration_ms: 10.7664
+  type: 'test'
+  ...
+# Subtest: UX06 delivery keeps accepted separate from delivered and ignores inherited/unknown keys
+ok 48 - UX06 delivery keeps accepted separate from delivered and ignores inherited/unknown keys
+  ---
+  duration_ms: 7.7205
+  type: 'test'
+  ...
+# Subtest: UX06 delivery UI is explicit read-only, with no provider payload and no auto-read
+ok 49 - UX06 delivery UI is explicit read-only, with no provider payload and no auto-read
+  ---
+  duration_ms: 1.7234
+  type: 'test'
+  ...
+# Subtest: UX06 CSS uses semantic tokens and includes scoped mobile readability
+ok 50 - UX06 CSS uses semantic tokens and includes scoped mobile readability
+  ---
+  duration_ms: 2.1623
+  type: 'test'
+  ...
+# Subtest: UX06 presentation state maps cannot treat unknown values as success
+ok 51 - UX06 presentation state maps cannot treat unknown values as success
+  ---
+  duration_ms: 0.5418
+  type: 'test'
+  ...
+# Subtest: UX06 security controllers stay byte-identical to the recovered reference
+ok 52 - UX06 security controllers stay byte-identical to the recovered reference
+  ---
+  duration_ms: 4.202
+  type: 'test'
+  ...
+# Subtest: UX06 all presentation assets are explicitly distributed without mounting optional panels
+ok 53 - UX06 all presentation assets are explicitly distributed without mounting optional panels
+  ---
+  duration_ms: 2.0353
+  type: 'test'
+  ...
+# Subtest: UX07 additional assets are explicitly built and demo CSS has the correct MIME
+ok 54 - UX07 additional assets are explicitly built and demo CSS has the correct MIME
+  ---
+  duration_ms: 5.1177
+  type: 'test'
+  ...
+# Subtest: UX07 stylesheet is connected without enabling optional panels or test fixtures
+ok 55 - UX07 stylesheet is connected without enabling optional panels or test fixtures
+  ---
+  duration_ms: 1.7375
+  type: 'test'
+  ...
+# Subtest: UX07 new styles remain scoped and use existing tokens
+ok 56 - UX07 new styles remain scoped and use existing tokens
+  ---
+  duration_ms: 1.267
+  type: 'test'
+  ...
+# Subtest: UX07 optional module never fetches, persists, copies to clipboard or injects raw HTML
+ok 57 - UX07 optional module never fetches, persists, copies to clipboard or injects raw HTML
+  ---
+  duration_ms: 1.9915
+  type: 'test'
+  ...
+# Subtest: UX07 keeps original operations UI helper byte-identical
+ok 58 - UX07 keeps original operations UI helper byte-identical
+  ---
+  duration_ms: 3.7412
+  type: 'test'
+  ...
+# Subtest: UX07 the original date formatter is untouched
+ok 59 - UX07 the original date formatter is untouched
+  ---
+  duration_ms: 1.0354
+  type: 'test'
+  ...
+# Subtest: UX07 knowledge distinguishes empty from unavailable and never calls opening at mount
+ok 60 - UX07 knowledge distinguishes empty from unavailable and never calls opening at mount
+  ---
+  duration_ms: 44.7965
+  type: 'test'
+  ...
+# Subtest: UX07 knowledge renders only title/snippet as text and keeps no fabricated links
+ok 61 - UX07 knowledge renders only title/snippet as text and keeps no fabricated links
+  ---
+  duration_ms: 0.6922
+  type: 'test'
+  ...
+# Subtest: UX07 knowledge missing host action is unavailable rather than a false CTA
+ok 62 - UX07 knowledge missing host action is unavailable rather than a false CTA
+  ---
+  duration_ms: 0.3498
+  type: 'test'
+  ...
+# Subtest: UX07 replacement scrubs prior content and old dispose cannot remove the new panel
+ok 63 - UX07 replacement scrubs prior content and old dispose cannot remove the new panel
+  ---
+  duration_ms: 0.7063
+  type: 'test'
+  ...
+# Subtest: UX07 old knowledge button is inert after replacement
+ok 64 - UX07 old knowledge button is inert after replacement
+  ---
+  duration_ms: 0.4236
+  type: 'test'
+  ...
+# Subtest: UX07 opening callback is single-flight, handles failures without private diagnostics
+ok 65 - UX07 opening callback is single-flight, handles failures without private diagnostics
+  ---
+  duration_ms: 9.4278
+  type: 'test'
+  ...
+# Subtest: UX07 macro requires an actual unsent preview and exposes no send/copy action
+ok 66 - UX07 macro requires an actual unsent preview and exposes no send/copy action
+  ---
+  duration_ms: 0.8888
+  type: 'test'
+  ...
+# Subtest: UX07 empty macro does not masquerade as content
+ok 67 - UX07 empty macro does not masquerade as content
+  ---
+  duration_ms: 0.4397
+  type: 'test'
+  ...
+# Subtest: UX07 external work recognizes only own keys and never declares the ticket resolved
+ok 68 - UX07 external work recognizes only own keys and never declares the ticket resolved
+  ---
+  duration_ms: 1.5751
+  type: 'test'
+  ...
+# Subtest: UX07 external state does not expose raw integration payload
+ok 69 - UX07 external state does not expose raw integration payload
+  ---
+  duration_ms: 1.3103
+  type: 'test'
+  ...
+# Subtest: UX07 package date and counts are advisory; invalid and expired grants cannot request
+ok 70 - UX07 package date and counts are advisory; invalid and expired grants cannot request
+  ---
+  duration_ms: 3.6337
+  type: 'test'
+  ...
+# Subtest: UX07 package display excludes id token URL and unknown object properties
+ok 71 - UX07 package display excludes id token URL and unknown object properties
+  ---
+  duration_ms: 1.9935
+  type: 'test'
+  ...
+# Subtest: UX07 package rechecks clock on explicit click and never authorizes by date
+ok 72 - UX07 package rechecks clock on explicit click and never authorizes by date
+  ---
+  duration_ms: 1.4458
+  type: 'test'
+  ...
+# Subtest: UX07 package requests original reference once while pending; callback does not prove download
+ok 73 - UX07 package requests original reference once while pending; callback does not prove download
+  ---
+  duration_ms: 6.6542
+  type: 'test'
+  ...
+# Subtest: UX07 late package response cannot affect a new audience panel
+ok 74 - UX07 late package response cannot affect a new audience panel
+  ---
+  duration_ms: 3.4354
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT has explicit labels no default score and no vote on mount
+ok 75 - UX07 CSAT has explicit labels no default score and no vote on mount
+  ---
+  duration_ms: 1.3877
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT inline rating error is accessible and stops missing or out-of-range score
+ok 76 - UX07 CSAT inline rating error is accessible and stops missing or out-of-range score
+  ---
+  duration_ms: 1.5266
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT does not send overlong comments and shows remaining count
+ok 77 - UX07 CSAT does not send overlong comments and shows remaining count
+  ---
+  duration_ms: 0.8402
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT single-flight and exact replay survive callback payload mutation
+ok 78 - UX07 CSAT single-flight and exact replay survive callback payload mutation
+  ---
+  duration_ms: 3.9444
+  type: 'test'
+  ...
+# Subtest: UX07 incompatible attribution is not a CSAT confirmation
+ok 79 - UX07 incompatible attribution is not a CSAT confirmation
+  ---
+  duration_ms: 4.2883
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT never renders raw exceptions
+ok 80 - UX07 CSAT never renders raw exceptions
+  ---
+  duration_ms: 1.7606
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT dispose cleans old nodes listeners and late response
+ok 81 - UX07 CSAT dispose cleans old nodes listeners and late response
+  ---
+  duration_ms: 2.3692
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT remount does not let old responses or old dispose destroy current view
+ok 82 - UX07 CSAT remount does not let old responses or old dispose destroy current view
+  ---
+  duration_ms: 2.4825
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT independent roots keep distinct ids, comments and pending requests
+ok 83 - UX07 CSAT independent roots keep distinct ids, comments and pending requests
+  ---
+  duration_ms: 1.6408
+  type: 'test'
+  ...
+# Subtest: UX07 unavailable CSAT adapter cannot create an intent
+ok 84 - UX07 unavailable CSAT adapter cannot create an intent
+  ---
+  duration_ms: 0.8808
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT failed key generation is a recoverable preparation error, not dispatched uncertainty
+ok 85 - UX07 CSAT failed key generation is a recoverable preparation error, not dispatched uncertainty
+  ---
+  duration_ms: 1.6081
+  type: 'test'
+  ...
+# Subtest: UX07 microsecond package validity is not rounded down at the millisecond boundary
+ok 86 - UX07 microsecond package validity is not rounded down at the millisecond boundary
+  ---
+  duration_ms: 0.5018
+  type: 'test'
+  ...
+# Subtest: UX07 CSAT corrected fields clear the stale validation summary without sending
+ok 87 - UX07 CSAT corrected fields clear the stale validation summary without sending
+  ---
+  duration_ms: 0.9982
+  type: 'test'
+  ...
+# Subtest: UX08 access CSS included without mounting GEO or enabling advanced access
+ok 88 - UX08 access CSS included without mounting GEO or enabling advanced access
+  ---
+  duration_ms: 2.4286
+  type: 'test'
+  ...
+# Subtest: UX08 build and demo include explicit access graph with CSS MIME
+ok 89 - UX08 build and demo include explicit access graph with CSS MIME
+  ---
+  duration_ms: 1.8556
+  type: 'test'
+  ...
+# Subtest: UX08 main presentation has no credential reads, network, storage or navigation
+ok 90 - UX08 main presentation has no credential reads, network, storage or navigation
+  ---
+  duration_ms: 0.9891
+  type: 'test'
+  ...
+# Subtest: UX08 callback mount is explicitly scoped and themed
+ok 91 - UX08 callback mount is explicitly scoped and themed
+  ---
+  duration_ms: 1.1532
+  type: 'test'
+  ...
+# Subtest: UX08 access feedback exports pure mapping functions
+ok 92 - UX08 access feedback exports pure mapping functions
+  ---
+  duration_ms: 4.6496
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code invalid_login
+ok 93 - UX08 known sanitized login code invalid_login
+  ---
+  duration_ms: 0.477
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code invalid_credentials
+ok 94 - UX08 known sanitized login code invalid_credentials
+  ---
+  duration_ms: 0.2668
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code login_failed
+ok 95 - UX08 known sanitized login code login_failed
+  ---
+  duration_ms: 0.3201
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_rate_limited
+ok 96 - UX08 known sanitized login code auth_rate_limited
+  ---
+  duration_ms: 0.1878
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code membership_required
+ok 97 - UX08 known sanitized login code membership_required
+  ---
+  duration_ms: 2.4273
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code simple_mfa_required
+ok 98 - UX08 known sanitized login code simple_mfa_required
+  ---
+  duration_ms: 0.6276
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code simple_workspace_required
+ok 99 - UX08 known sanitized login code simple_workspace_required
+  ---
+  duration_ms: 1.4102
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_unavailable
+ok 100 - UX08 known sanitized login code auth_unavailable
+  ---
+  duration_ms: 1.4529
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code auth_response_invalid
+ok 101 - UX08 known sanitized login code auth_response_invalid
+  ---
+  duration_ms: 1.4333
+  type: 'test'
+  ...
+# Subtest: UX08 known sanitized login code session_rejected
+ok 102 - UX08 known sanitized login code session_rejected
+  ---
+  duration_ms: 0.4064
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input toString
+ok 103 - UX08 unknown codes never reflect input toString
+  ---
+  duration_ms: 0.8075
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input __proto__
+ok 104 - UX08 unknown codes never reflect input __proto__
+  ---
+  duration_ms: 0.4036
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input constructor
+ok 105 - UX08 unknown codes never reflect input constructor
+  ---
+  duration_ms: 0.1383
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input <img src=x onerror=alert(1)>
+ok 106 - UX08 unknown codes never reflect input <img src=x onerror=alert(1)>
+  ---
+  duration_ms: 0.1262
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input hd_person_PRIVATE_TOKEN
+ok 107 - UX08 unknown codes never reflect input hd_person_PRIVATE_TOKEN
+  ---
+  duration_ms: 0.7728
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input null
+ok 108 - UX08 unknown codes never reflect input null
+  ---
+  duration_ms: 0.2399
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input 0
+ok 109 - UX08 unknown codes never reflect input 0
+  ---
+  duration_ms: 0.1532
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input [object Object]
+ok 110 - UX08 unknown codes never reflect input [object Object]
+  ---
+  duration_ms: 0.4691
+  type: 'test'
+  ...
+# Subtest: UX08 unknown codes never reflect input undefined
+ok 111 - UX08 unknown codes never reflect input undefined
+  ---
+  duration_ms: 0.1915
+  type: 'test'
+  ...
+# Subtest: UX08 arbitrary objects are not read as errors
+ok 112 - UX08 arbitrary objects are not read as errors
+  ---
+  duration_ms: 0.2982
+  type: 'test'
+  ...
+# Subtest: UX08 only sign-in is presented as signing-in busy; security phases are not reactivated
+ok 113 - UX08 only sign-in is presented as signing-in busy; security phases are not reactivated
+  ---
+  duration_ms: 1.9774
+  type: 'test'
+  ...
+# Subtest: UX08 mappings do not manufacture membership or session
+ok 114 - UX08 mappings do not manufacture membership or session
+  ---
+  duration_ms: 0.5167
+  type: 'test'
+  ...
+# Subtest: UX08 GEO URL is cleaned even when callback is invalid
+ok 115 - UX08 GEO URL is cleaned even when callback is invalid
+  ---
+  duration_ms: 2.6944
+  type: 'test'
+  ...
+# Subtest: UX08 GEO capture returns payload without dispatch
+ok 116 - UX08 GEO capture returns payload without dispatch
+  ---
+  duration_ms: 0.3664
+  type: 'test'
+  ...
+# Subtest: UX08 original GEO controller is dormant before explicit completion
+ok 117 - UX08 original GEO controller is dormant before explicit completion
+  ---
+  duration_ms: 0.4606
+  type: 'test'
+  ...
+# Subtest: UX08 GEO duplicated completion consumes a callback only once
+ok 118 - UX08 GEO duplicated completion consumes a callback only once
+  ---
+  duration_ms: 65.9514
+  type: 'test'
+  ...
+# Subtest: UX08 GEO refusal cannot be rendered as success or retried automatically
+ok 119 - UX08 GEO refusal cannot be rendered as success or retried automatically
+  ---
+  duration_ms: 0.8671
+  type: 'test'
+  ...
+# Subtest: UX08 GEO incompatible receipt is not adopted
+ok 120 - UX08 GEO incompatible receipt is not adopted
+  ---
+  duration_ms: 1.7047
+  type: 'test'
+  ...
+# Subtest: UX08 GEO late response after cancellation is ignored
+ok 121 - UX08 GEO late response after cancellation is ignored
+  ---
+  duration_ms: 0.4672
+  type: 'test'
+  ...
+# Subtest: UX08 GEO synchronous host mount failure removes stored credentials
+ok 122 - UX08 GEO synchronous host mount failure removes stored credentials
+  ---
+  duration_ms: 0.7219
+  type: 'test'
+  ...
+# Subtest: UX09 static build resolves root-relative shared URLs
+ok 123 - UX09 static build resolves root-relative shared URLs
+  ---
+  duration_ms: 32.0967
+  type: 'test'
+  ...
+# Subtest: UX09 missing static import fails the build audit
+ok 124 - UX09 missing static import fails the build audit
+  ---
+  duration_ms: 17.2937
+  type: 'test'
+  ...
+# Subtest: UX09 private SQL or documentation cannot enter dist
+ok 125 - UX09 private SQL or documentation cannot enter dist
+  ---
+  duration_ms: 34.2267
+  type: 'test'
+  ...
+# Subtest: UX09 external assets are not silently accepted
+ok 126 - UX09 external assets are not silently accepted
+  ---
+  duration_ms: 18.6317
+  type: 'test'
+  ...
+# Subtest: UX09 field names from and to are not module declarations
+ok 127 - UX09 field names from and to are not module declarations
+  ---
+  duration_ms: 16.8579
+  type: 'test'
+  ...
+# Subtest: UX10 renderer delivers both callback contracts once with immutable operational answers
+ok 128 - UX10 renderer delivers both callback contracts once with immutable operational answers
+  ---
+  duration_ms: 8.7961
+  type: 'test'
+  ...
+# Subtest: UX10 canEdit forbids programmatic row writes and value changes
+ok 129 - UX10 canEdit forbids programmatic row writes and value changes
+  ---
+  duration_ms: 1.3899
+  type: 'test'
+  ...
+# Subtest: UX10 async reference cannot arrive while owner has locked its intent
+ok 130 - UX10 async reference cannot arrive while owner has locked its intent
+  ---
+  duration_ms: 1.3701
+  type: 'test'
+  ...
+# Subtest: UX10 hiding and showing a conditional field invalidates the old reference generation
+ok 131 - UX10 hiding and showing a conditional field invalidates the old reference generation
+  ---
+  duration_ms: 1.7505
+  type: 'test'
+  ...
+# Subtest: UX10 intake mount propagates pending/saved phases to the operational journey
+ok 132 - UX10 intake mount propagates pending/saved phases to the operational journey
+  ---
+  duration_ms: 9.4017
+  type: 'test'
+  ...
+# Subtest: UX10 rejected reconciliation must not release a previously ambiguous opening
+ok 133 - UX10 rejected reconciliation must not release a previously ambiguous opening
+  ---
+  duration_ms: 3.1685
+  type: 'test'
+  ...
+# Subtest: UX10 first authoritative rejection still returns to editing
+ok 134 - UX10 first authoritative rejection still returns to editing
+  ---
+  duration_ms: 0.8841
+  type: 'test'
+  ...
+# Subtest: UX10 journey selector locks immediately while the visual intake saves
+ok 135 - UX10 journey selector locks immediately while the visual intake saves
+  ---
+  duration_ms: 6.9099
+  type: 'test'
+  ...
+# Subtest: UX10 transferred assignments remain supported and private in the operational timeline
+ok 136 - UX10 transferred assignments remain supported and private in the operational timeline
+  ---
+  duration_ms: 4.3324
+  type: 'test'
+  ...
+# Subtest: UX10 build keeps M04 and M09 operational assets alongside all visual modules
+ok 137 - UX10 build keeps M04 and M09 operational assets alongside all visual modules
+  ---
+  duration_ms: 1.4433
+  type: 'test'
+  ...
+# Subtest: UX10 configuration rejected replay keeps original intent unresolved
+ok 138 - UX10 configuration rejected replay keeps original intent unresolved
+  ---
+  duration_ms: 9.034
+  type: 'test'
+  ...
+# Subtest: UX10 configuration confirmation has an explicit operation summary
+ok 139 - UX10 configuration confirmation has an explicit operation summary
+  ---
+  duration_ms: 6.8717
+  type: 'test'
+  ...
+# Subtest: UX10 journey preserves the host class and presents discard before the long form
+ok 140 - UX10 journey preserves the host class and presents discard before the long form
+  ---
+  duration_ms: 3.9533
+  type: 'test'
+  ...
+# Subtest: UX10 failed API setup cannot discard the previous action data
+ok 141 - UX10 failed API setup cannot discard the previous action data
+  ---
+  duration_ms: 4.4285
+  type: 'test'
+  ...
+# Subtest: UX10 new operational screens use the shared theme without mounting themselves
+ok 142 - UX10 new operational screens use the shared theme without mounting themselves
+  ---
+  duration_ms: 2.2484
+  type: 'test'
+  ...
+# Subtest: UX10 configuration preparation hides unrelated controls and identifies reason
+ok 143 - UX10 configuration preparation hides unrelated controls and identifies reason
+  ---
+  duration_ms: 2.7812
+  type: 'test'
+  ...
+# Subtest: UX10 shell does not advertise the superseded hard-coded API release
+ok 144 - UX10 shell does not advertise the superseded hard-coded API release
+  ---
+  duration_ms: 0.7289
+  type: 'test'
+  ...
+# Subtest: UX01 supplies isolated branding and theme entry points
+ok 145 - UX01 supplies isolated branding and theme entry points
+  ---
+  duration_ms: 3.685
+  type: 'test'
+  ...
+# Subtest: UX01 wires the presentation layer without removing the application controller
+ok 146 - UX01 wires the presentation layer without removing the application controller
+  ---
+  duration_ms: 1.1587
+  type: 'test'
+  ...
+# Subtest: UX01 ships every visual dependency through the real build allowlist
+ok 147 - UX01 ships every visual dependency through the real build allowlist
+  ---
+  duration_ms: 0.7979
+  type: 'test'
+  ...
+# Subtest: UX01 preserves protected access containers and disabled initial admission
+ok 148 - UX01 preserves protected access containers and disabled initial admission
+  ---
+  duration_ms: 0.912
+  type: 'test'
+  ...
+# Subtest: UX01 presentation code has no business transport or credential access
+ok 149 - UX01 presentation code has no business transport or credential access
+  ---
+  duration_ms: 5.7689
+  type: 'test'
+  ...
+# Subtest: UX01 branding profiles are closed and non-authoritative
+ok 150 - UX01 branding profiles are closed and non-authoritative
+  ---
+  duration_ms: 5.9206
+  type: 'test'
+  ...
+# Subtest: UX01 only persists an enumerated presentation preference and survives unavailable storage
+ok 151 - UX01 only persists an enumerated presentation preference and survives unavailable storage
+  ---
+  duration_ms: 7.6255
+  type: 'test'
+  ...
+# Subtest: UX01 demo server can resolve all seven new same-origin assets without widening its routes
+ok 152 - UX01 demo server can resolve all seven new same-origin assets without widening its routes
+  ---
+  duration_ms: 1.2428
+  type: 'test'
+  ...
+1..152
+# tests 152
+# suites 0
+# pass 152
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5236.7278

@@ -1,0 +1,186 @@
+{
+  "schema": "0.19.0",
+  "project": "xaelbntjnvztznnpcvtm",
+  "observed_at": "2026-10-14T10:22:21.691787+00:00",
+  "encrypted_local_backup": ".local/production-20261014/before-upgrade.dpapi",
+  "backup_roundtrip_verified": true,
+  "historical_migrations_exact_bytes_verified": 12,
+  "backup_scope": "private HelpDesk schemas/data/catalog/migration history; Auth and full-provider restore not included",
+  "tables": [
+    {
+      "name": "helpdesk_audit.audit_events",
+      "count": 1,
+      "md5": "8e06141c7e719159605153696d00c2e2"
+    },
+    {
+      "name": "helpdesk_audit.write_effects",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.account_grants",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.human_scope_versions",
+      "count": 2,
+      "md5": "2a237013c22118ead92dea6281ab1c19"
+    },
+    {
+      "name": "helpdesk_auth.integration_connections",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.integration_credentials",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.integration_sessions",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.principals",
+      "count": 1,
+      "md5": "1311c2305c74763b5af0e83bb23315e5"
+    },
+    {
+      "name": "helpdesk_auth.rate_limit_buckets",
+      "count": 51,
+      "md5": "c742f5dc7d4df8a094b3a9e734c05d51"
+    },
+    {
+      "name": "helpdesk_auth.source_scope_bindings",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_auth.workspace_memberships",
+      "count": 1,
+      "md5": "44367a4d2eca84202ce1c179095e78b8"
+    },
+    {
+      "name": "helpdesk_core.accounts",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.contract_versions",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.coverages",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.internal_notes",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.product_instances",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.products",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.services",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.support_contracts",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.ticket_events",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.ticket_messages",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.tickets",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_core.workspaces",
+      "count": 1,
+      "md5": "06655331aa6ff2962eb16b1509a9d351"
+    },
+    {
+      "name": "helpdesk_integration.api_idempotency_keys",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    },
+    {
+      "name": "helpdesk_integration.outbox_events",
+      "count": 0,
+      "md5": "d751713988987e9331980363e24189ce"
+    }
+  ],
+  "migrations": [
+    {
+      "version": "20260928204720",
+      "name": "20260915000100_restrict_existing_definer"
+    },
+    {
+      "version": "20260928204735",
+      "name": "20260915000200_helpdesk_foundation"
+    },
+    {
+      "version": "20260928204741",
+      "name": "20260915000300_m1_authorization"
+    },
+    {
+      "version": "20260928204748",
+      "name": "20260915000400_m1_resource_limits"
+    },
+    {
+      "version": "20260928204753",
+      "name": "20260916000500_m1_session_lifecycle"
+    },
+    {
+      "version": "20260928204808",
+      "name": "20260916000600_support_catalog"
+    },
+    {
+      "version": "20260928204814",
+      "name": "20260916000700_ticket_priority"
+    },
+    {
+      "version": "20260928204823",
+      "name": "20260916000800_ticket_assignment"
+    },
+    {
+      "version": "20260928204829",
+      "name": "20260917000900_human_scope_versions"
+    },
+    {
+      "version": "20260928204855",
+      "name": "20260917001000_transaction_effects"
+    },
+    {
+      "version": "20260928204900",
+      "name": "20260917001100_conversation_lock"
+    },
+    {
+      "version": "20261007133307",
+      "name": "20261007001200_workspace_discovery"
+    }
+  ]
+}

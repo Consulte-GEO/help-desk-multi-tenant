@@ -1,8 +1,51 @@
-/* Optional components inherit the host's approved colors, fonts and spacing. */
-.support-portal { max-width: 76rem; margin-inline: auto; padding: 1rem; }
-.support-portal section { display: grid; grid-template-columns: repeat(auto-fit,minmax(12rem,1fr)); gap: 1rem; }
-.support-portal ul { list-style: none; padding: 0; }
-.support-portal li { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-block: 1rem; border-bottom: 1px solid currentColor; }
-.support-portal button { font: inherit; min-height: 2.75rem; overflow-wrap: anywhere; text-align: start; }
-.support-portal button:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
-@media (max-width: 40rem) { .support-portal li { flex-direction: column; } }
+/* UX04 — scoped optional surfaces. The host loads design-tokens.css and selects its brand/theme. */
+.hd-portal {max-width:76rem;margin-inline:auto;color:var(--hd-ink,inherit);font-family:var(--hd-font,inherit);font-size:14px;line-height:1.6;min-width:0}
+.hd-portal *, .hd-portal *::before {box-sizing:border-box;min-width:0}
+.hd-portal h1,.hd-portal h2,.hd-portal h3,.hd-portal p {margin:0}
+.hd-portal h1 {font-size:clamp(24px,3vw,32px);line-height:1.2;letter-spacing:-.025em}
+.hd-portal h2 {font-size:22px;line-height:1.3}
+.hd-portal h3 {font-size:17px;line-height:1.4}
+.hd-portal-header {display:grid;gap:10px;margin-bottom:24px;overflow-wrap:anywhere}
+.hd-portal-eyebrow {color:var(--hd-brand-fg);font-size:11px;font-weight:750;letter-spacing:.09em}
+.hd-portal-muted,.hd-portal-date {color:var(--hd-muted,inherit);font-size:13px}
+.hd-portal-status {color:var(--hd-info-fg,inherit)}
+.hd-portal-status:empty {display:none}
+.hd-portal-status:not(:empty) {padding:12px 16px;border:1px solid var(--hd-line,currentColor);border-radius:var(--hd-radius-md,14px);margin-bottom:16px;background:var(--hd-info-bg,transparent)}
+.hd-portal-stats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.hd-portal-stats article {padding:20px;border-radius:var(--hd-radius-xl,24px);border:1px solid var(--hd-line,currentColor);background:var(--hd-surface,transparent);box-shadow:var(--hd-shadow);overflow-wrap:anywhere}
+.hd-portal-stats h2 {font-size:13px;color:var(--hd-muted);font-weight:600;min-height:42px}
+.hd-portal-stats strong {display:block;font-size:clamp(22px,2vw,30px);line-height:1.4;margin-block:8px;font-variant-numeric:tabular-nums}
+.hd-portal-stats p {font-size:12px;color:var(--hd-muted)}
+.hd-portal-list-panel {padding:24px;border-radius:var(--hd-radius-xl,24px);border:1px solid var(--hd-line,currentColor);background:var(--hd-surface,transparent);box-shadow:var(--hd-shadow);margin-bottom:20px;display:grid;gap:12px}
+.hd-portal-list {list-style:none;padding:0;margin:0}
+.hd-portal-ticket {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);gap:16px;padding-block:18px;border-top:1px solid var(--hd-line,currentColor)}
+.hd-portal-ticket:first-child {border-top:0}
+.hd-portal-open {display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:6px;width:100%;min-height:44px;padding:12px;border:1px solid transparent;border-radius:var(--hd-radius-md,14px);color:var(--hd-ink,inherit);background:transparent;font:inherit;cursor:pointer;overflow-wrap:anywhere}
+.hd-portal-open:hover:not(:disabled) {background:var(--hd-selected,transparent);border-color:var(--hd-line,currentColor)}
+.hd-portal-open:disabled {opacity:.65;cursor:wait}
+.hd-portal :focus-visible {outline:3px solid var(--hd-focus,currentColor);outline-offset:3px}
+.hd-portal-protocol {font-family:var(--hd-mono,monospace);font-size:12px;color:var(--hd-brand-fg)}
+.hd-portal-subject {font-weight:700;line-height:1.5}
+.hd-portal-ticket-meta {display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px;overflow-wrap:anywhere}
+.hd-portal-tags {display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hd-portal-badge {display:inline-flex;align-items:center;gap:8px;min-height:28px;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:650;line-height:1.5;max-width:100%;overflow-wrap:anywhere}
+.hd-portal-badge::before {content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+.hd-portal-badge--neutral {background:var(--hd-neutral-bg);color:var(--hd-neutral-fg)}
+.hd-portal-badge--info {background:var(--hd-info-bg);color:var(--hd-info-fg)}
+.hd-portal-badge--success {background:var(--hd-success-bg);color:var(--hd-success-fg)}
+.hd-portal-badge--warning {background:var(--hd-warning-bg);color:var(--hd-warning-fg)}
+.hd-portal-badge--brand {background:var(--hd-selected);color:var(--hd-brand-fg)}
+.hd-portal-state {padding:24px;border:1px dashed var(--hd-control-line,currentColor);border-radius:var(--hd-radius-lg,18px);background:var(--hd-surface-2,transparent);display:grid;gap:8px;overflow-wrap:anywhere}
+.hd-portal-state h2 {font-size:18px}
+.hd-portal-state--error {border-style:solid;background:var(--hd-danger-bg,transparent);color:var(--hd-danger-fg,inherit)}
+.hd-portal-prose {white-space:pre-wrap;overflow-wrap:anywhere}
+.hd-portal-conversation {list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.hd-portal-message {padding:16px;border-radius:var(--hd-radius-md,14px);background:var(--hd-surface-2,transparent);border:1px solid var(--hd-line,currentColor);display:grid;gap:8px}
+.hd-portal-metrics {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0}
+.hd-portal-metric {padding:18px;background:var(--hd-surface-2,transparent);border:1px solid var(--hd-line,currentColor);border-radius:var(--hd-radius-md,14px);overflow-wrap:anywhere}
+.hd-portal-metric dt {font-weight:650;font-size:13px}
+.hd-portal-metric dd {margin:12px 0 0;font-size:22px;font-variant-numeric:tabular-nums}
+.hd-portal-metric dd.hd-portal-muted {font-size:16px}
+@media(max-width:1000px) {.hd-portal-stats {grid-template-columns:repeat(2,minmax(0,1fr))}.hd-portal-metrics {grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px) {.hd-portal-ticket {grid-template-columns:minmax(0,1fr);gap:0}.hd-portal-ticket-meta {padding-top:0}.hd-portal-list-panel {padding:16px}.hd-portal-stats {gap:10px}.hd-portal-stats article {padding:14px}.hd-portal-stats h2 {min-height:0}.hd-portal-metrics {grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce) {.hd-portal * {scroll-behavior:auto!important}}

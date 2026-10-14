@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: catalogue projects only published customer forms and preserves server-derived context
+ok 1 - catalogue projects only published customer forms and preserves server-derived context
+  ---
+  duration_ms: 173.9192
+  type: 'test'
+  ...
+# Subtest: catalogue rejects draft, cross-workspace, duplicate IDs, different service and private envelope extras
+ok 2 - catalogue rejects draft, cross-workspace, duplicate IDs, different service and private envelope extras
+  ---
+  duration_ms: 127.3246
+  type: 'test'
+  ...
+# Subtest: M09b store validates current scope from one borrowed transaction and never escapes pool
+ok 3 - M09b store validates current scope from one borrowed transaction and never escapes pool
+  ---
+  duration_ms: 89.7452
+  type: 'test'
+  ...
+# Subtest: M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+ok 4 - M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+  ---
+  duration_ms: 1.1381
+  type: 'test'
+  ...
+# Subtest: M09b draft reader rejects foreign owner/account and unknown fields before returning data
+ok 5 - M09b draft reader rejects foreign owner/account and unknown fields before returning data
+  ---
+  duration_ms: 3.7667
+  type: 'test'
+  ...
+# Subtest: M09b borrowed store cannot be retained after the owning callback
+ok 6 - M09b borrowed store cannot be retained after the owning callback
+  ---
+  duration_ms: 0.6893
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 615.659

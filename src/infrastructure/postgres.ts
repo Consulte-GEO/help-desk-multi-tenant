@@ -1,4 +1,7 @@
+import {createPostgresPublicWorkflowReader} from './public-workflow-read.ts';
+import {assertBorrowedTransactionIdentity} from './transaction.ts';
 import {assertLegacyTerminalUpdateAllowed} from './legacy-transition-guard.ts';
+import {DATABASE_SECURITY_CONTRACT} from './database-security-contract.ts';
 import {assertSingleWrite} from './write-result.ts';
 import {canonicalInstant} from '../../shared/instant.js';
 import {decodeIdempotencyLookup} from './idempotency-lookup.ts';
@@ -29,7 +32,7 @@ export async function assertSchemaCompatibility(pool:SqlPool):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(version!=='0.19.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(version!==DATABASE_SECURITY_CONTRACT.schemaVersion)throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 export {assertDatabaseSecurity} from './database-security.ts';
 export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{
@@ -105,9 +108,12 @@ class PostgresStore implements Store{
  async saveIdempotency(r:StoredResult):Promise<void>{await this.insert('helpdesk_integration.api_idempotency_keys',['workspace_id','principal_id','operation','key','request_hash','result'],[r.workspaceId,r.principalId,r.operation,r.key,r.hash,JSON.stringify(r.result)]);}
  async addMessage(m:PublicMessage):Promise<void>{await this.insert('helpdesk_core.ticket_messages',['id','workspace_id','account_id','ticket_id','actor_id','actor_type','body','created_at'],[m.id,m.workspaceId,m.accountId,m.ticketId,m.actorId,m.actorType,m.body,m.createdAt]);}
  async addNote(n:InternalNote):Promise<void>{await this.insert('helpdesk_core.internal_notes',['id','workspace_id','account_id','ticket_id','actor_id','body','created_at'],[n.id,n.workspaceId,n.accountId,n.ticketId,n.actorId,n.body,n.createdAt]);}
- async messages(id:string,w:PageWindow={limit:100,cursor:null}):Promise<PublicMessage[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,actor_type,body,${timeColumn('created_at')} from helpdesk_core.ticket_messages where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by ticket_messages.created_at desc,id desc limit $5`,[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(message);}
+ async messages(id:string,w:PageWindow={limit:100,cursor:null}):Promise<PublicMessage[]>{return createPostgresPublicWorkflowReader(this.c,this.p).messages(id,w);}
  async notes(id:string,w:PageWindow={limit:100,cursor:null}):Promise<InternalNote[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,body,${timeColumn('created_at')} from helpdesk_core.internal_notes where workspace_id=$1 and ticket_id=$2 and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid)) order by internal_notes.created_at desc,id desc limit $5`,[this.p.workspaceId,id,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(note);}
  async addEvent(e:TicketEvent):Promise<void>{await this.insert('helpdesk_core.ticket_events',['id','workspace_id','account_id','ticket_id','actor_id','type','customer_visible','data','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.actorId,e.type,e.customerVisible,JSON.stringify(e.data),e.createdAt]);}
- async events(id:string,includeInternal:boolean,w:PageWindow={limit:100,cursor:null}):Promise<TicketEvent[]>{return (await this.c.query(`select id,workspace_id,account_id,ticket_id,actor_id,type,customer_visible,data,${timeColumn('created_at')} from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2 and ($3::boolean or customer_visible) and ($4::timestamptz is null or (created_at,id)<($4::timestamptz,$5::uuid)) order by ticket_events.created_at desc,id desc limit $6`,[this.p.workspaceId,id,includeInternal,w.cursor?.at??null,w.cursor?.id??null,w.limit])).rows.map(r=>({id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),type:str(r,'type'),customerVisible:r.customer_visible===true,data:r.data as Record<string,unknown>,createdAt:iso(r.created_at)}));}
+ async events(id:string,includeInternal:boolean,w:PageWindow={limit:100,cursor:null}):Promise<TicketEvent[]>{return createPostgresPublicWorkflowReader(this.c,this.p).events(id,includeInternal,w);}
  async enqueue(e:Parameters<Store['enqueue']>[0]):Promise<void>{await this.insert('helpdesk_integration.outbox_events',['id','workspace_id','account_id','ticket_id','type','payload','request_id','created_at'],[e.id,e.workspaceId,e.accountId,e.ticketId,e.type,JSON.stringify(e.payload),e.requestId,e.createdAt]);}
 }
+
+/** Scoped route adapter: no pool acquisition, nested transaction or identity substitution. */
+export function createBorrowedPostgresUnitOfWork(client:SqlClient,p:Principal):UnitOfWork{return {async run(actor,work){assertBorrowedTransactionIdentity(client,p);if(JSON.stringify(actor)!==JSON.stringify(p))throw new HelpdeskError(403,'transaction_identity_changed','Contexto alterado.');return work(new PostgresStore(client,p));}};}

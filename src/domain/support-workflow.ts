@@ -44,9 +44,9 @@ export function decideSupportTransition(p:Principal,rawTicket:SupportTicket,rawP
   if(Object.hasOwn(profile,'executionChecklist'))requirements.push({kind:'execution_checklist',reference:parseExecutionChecklistReference(profile.executionChecklist)});
   next.resolution=body;next.status='resolved';kind='resolved';}
  else if(action==='close'){requireState(['resolved']);if(!t.resolution?.trim())throw fail('workflow_resolution_required',409);next.status='closed';next.closedAt=at;kind='closed';}
- else if(action==='reopen'){requireState(['resolved','closed']);reason=text(c.reason);if(t.status==='closed'&&(!t.closedAt||instantMicros(at)-instantMicros(t.closedAt)>BigInt(profile.reopenWindowMicros)))throw fail('workflow_reopen_window_expired',409);next.status='open';next.closedAt=null;kind='reopened';}
+ else if(action==='reopen'){requireState(['resolved','closed']);reason=text(c.reason);const since=t.status==='closed'?t.closedAt:t.lastEventAt;if(!since||instantMicros(at)-instantMicros(since)>BigInt(profile.reopenWindowMicros))throw fail('workflow_reopen_window_expired',409);next.status='open';next.closedAt=null;kind='reopened';}
  else if(action==='cancel'){requireState(['new',...active]);reason=text(c.reason);next.status='cancelled';kind='cancelled';}
- else if(action==='transfer'){requireState(active);reason=text(c.reason);const principalId=uuidIdentifier(c.targetPrincipalId);next.assignedTo=principalId;requirements.push({kind:'assignee',principalId});kind='assigned';}
+ else if(action==='transfer'){requireState(active);reason=text(c.reason);if(reason.length>2000||/[\p{Cc}]/u.test(reason))throw fail('invalid_workflow_command');const principalId=uuidIdentifier(c.targetPrincipalId);if(principalId===t.assignedTo)throw fail('workflow_transition_forbidden',409);next.assignedTo=principalId;requirements.push({kind:'assignee',principalId});kind='assigned';}
  const event:SupportWorkflowEvent={ticketId:t.id,workspaceId:t.workspaceId,profileVersionId:t.profileVersionId,sequence:next.version,at,type:kind,actorId:p.id,actorKind:operator?'human_agent':'customer',from:t.status,to:next.status,...(body!==undefined?{body}:{})};
  return freezeFormData({after:next,event,requirements,audit:{action,reason}});
 }

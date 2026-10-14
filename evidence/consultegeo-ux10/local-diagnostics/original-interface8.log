@@ -1,0 +1,31 @@
+HTTP em memória: 41 verificações aprovadas.
+Navegador em memória: 40 verificações aprovadas.
+
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\tests\browser-simple-access.py", line 147, in <module>
+    expect(page.locator('#login-status')).to_contain_text('Acesso não autorizado')
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\sync_api\_generated.py", line 22185, in to_contain_text
+    self._sync(
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_assertions.py", line 303, in to_contain_text
+    await self._expect_impl(
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_assertions.py", line 128, in _expect_impl
+    _record_soft_or_raise(
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\.local\consultegeo-m02\.local\ux10-browser\Lib\site-packages\playwright\_impl\_assertions.py", line 60, in _record_soft_or_raise
+    raise error
+AssertionError: Locator expected to contain text 'Acesso não autorizado'
+Actual value: Não foi possível entrar. Confira seus dados e tente novamente. 
+Call log:
+  - Expect "to_contain_text" locator("#login-status") with timeout 5000ms
+  - waiting for locator("#login-status")
+    - locator resolved to <p class="fine" role="status" id="login-status" aria-live="polite" aria-atomic="true" data-access-tone="info">Entrando…</p>
+    - unexpected value "Entrando…"
+    13 × locator resolved to <p class="fine" role="status" id="login-status" aria-live="polite" aria-atomic="true" data-access-tone="neutral">Não foi possível entrar. Confira seus dados e ten…</p>
+       - unexpected value "Não foi possível entrar. Confira seus dados e tente novamente."
+
+Aria snapshot:
+- status: Não foi possível entrar. Confira seus dados e tente novamente.
+
+Acesso simples atual (provedor sintético): não aprovado.

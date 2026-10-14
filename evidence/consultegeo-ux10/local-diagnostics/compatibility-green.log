@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: UX10 renderer delivers both callback contracts once with immutable operational answers
+ok 1 - UX10 renderer delivers both callback contracts once with immutable operational answers
+  ---
+  duration_ms: 5.5289
+  type: 'test'
+  ...
+# Subtest: UX10 canEdit forbids programmatic row writes and value changes
+ok 2 - UX10 canEdit forbids programmatic row writes and value changes
+  ---
+  duration_ms: 2.0553
+  type: 'test'
+  ...
+# Subtest: UX10 async reference cannot arrive while owner has locked its intent
+ok 3 - UX10 async reference cannot arrive while owner has locked its intent
+  ---
+  duration_ms: 0.8902
+  type: 'test'
+  ...
+# Subtest: UX10 hiding and showing a conditional field invalidates the old reference generation
+ok 4 - UX10 hiding and showing a conditional field invalidates the old reference generation
+  ---
+  duration_ms: 1.1101
+  type: 'test'
+  ...
+# Subtest: UX10 intake mount propagates pending/saved phases to the operational journey
+ok 5 - UX10 intake mount propagates pending/saved phases to the operational journey
+  ---
+  duration_ms: 4.3225
+  type: 'test'
+  ...
+# Subtest: UX10 rejected reconciliation must not release a previously ambiguous opening
+ok 6 - UX10 rejected reconciliation must not release a previously ambiguous opening
+  ---
+  duration_ms: 1.0676
+  type: 'test'
+  ...
+# Subtest: UX10 first authoritative rejection still returns to editing
+ok 7 - UX10 first authoritative rejection still returns to editing
+  ---
+  duration_ms: 0.3815
+  type: 'test'
+  ...
+# Subtest: UX10 journey selector locks immediately while the visual intake saves
+ok 8 - UX10 journey selector locks immediately while the visual intake saves
+  ---
+  duration_ms: 3.5336
+  type: 'test'
+  ...
+# Subtest: UX10 transferred assignments remain supported and private in the operational timeline
+ok 9 - UX10 transferred assignments remain supported and private in the operational timeline
+  ---
+  duration_ms: 5.9464
+  type: 'test'
+  ...
+# Subtest: UX10 build keeps M04 and M09 operational assets alongside all visual modules
+ok 10 - UX10 build keeps M04 and M09 operational assets alongside all visual modules
+  ---
+  duration_ms: 6.6946
+  type: 'test'
+  ...
+# Subtest: UX10 configuration rejected replay keeps original intent unresolved
+ok 11 - UX10 configuration rejected replay keeps original intent unresolved
+  ---
+  duration_ms: 5.5921
+  type: 'test'
+  ...
+# Subtest: UX10 configuration confirmation has an explicit operation summary
+ok 12 - UX10 configuration confirmation has an explicit operation summary
+  ---
+  duration_ms: 3.8277
+  type: 'test'
+  ...
+# Subtest: UX10 journey preserves the host class and presents discard before the long form
+ok 13 - UX10 journey preserves the host class and presents discard before the long form
+  ---
+  duration_ms: 1.9033
+  type: 'test'
+  ...
+# Subtest: UX10 failed API setup cannot discard the previous action data
+ok 14 - UX10 failed API setup cannot discard the previous action data
+  ---
+  duration_ms: 1.9393
+  type: 'test'
+  ...
+# Subtest: UX10 new operational screens use the shared theme without mounting themselves
+ok 15 - UX10 new operational screens use the shared theme without mounting themselves
+  ---
+  duration_ms: 81.3417
+  type: 'test'
+  ...
+# Subtest: UX10 configuration preparation hides unrelated controls and identifies reason
+ok 16 - UX10 configuration preparation hides unrelated controls and identifies reason
+  ---
+  duration_ms: 2.3951
+  type: 'test'
+  ...
+# Subtest: UX10 shell does not advertise the superseded hard-coded API release
+ok 17 - UX10 shell does not advertise the superseded hard-coded API release
+  ---
+  duration_ms: 0.6555
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 667.6269
