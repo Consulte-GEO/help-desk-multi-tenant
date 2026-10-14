@@ -27,5 +27,9 @@ try{
   if(!Array.isArray(checks)||!checks.length||checks.some(c=>c.result!=='passed'))throw Error('Asserções da interface ausentes/incompletas.');
   count+=checks.length;console.log(suite.name+': '+checks.length+' verificações aprovadas.');
  }
+ const visual=await runCommand({command:[process.execPath,'scripts/test-visual-local.mjs'],cwd:root,timeoutMs:500000});
+ if(visual.exit_code!==0||visual.signal||visual.reason){console.error(visual.output);throw Error('UX10 composição visual: não aprovada.');}
+ const visualChecks=JSON.parse(visual.stdout).checks;if(!Array.isArray(visualChecks)||visualChecks.length<324||visualChecks.some(c=>c.result!=='passed'))throw Error('UX10 asserções incompletas.');
+ count+=visualChecks.length;console.log('UX10 composição visual: '+visualChecks.length+' verificações aprovadas.');
  console.log(`# tests ${count}\n# pass ${count}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0`);
 }catch(error){console.error(error.message);process.exitCode=1;}

@@ -8,6 +8,7 @@ const draft={id:sid(8),accountId:sid(3),refs,formId:sid(7),formVersion:1};
 const profileVersionId='cg-wf-'+sid(7)+'-v1';
 const row=()=>({...draft,revision:1,expiresAt:LATER,answers:{details:'A'},status:'editing',ticketId:null});
 const input=()=>({draftId:draft.id,expectedDraftRevision:1,subject:'Solicitação',description:'Descrição',coverageId:sid(30),previewHash:'a'.repeat(64)});
+test('M09c transport rejects two Unicode characters before preview or creation dispatch',async()=>{const f=await setup(response(receipt()));const signal=new AbortController().signal;const {previewHash,...preview}=input();await assert.rejects(f.api.preview({...preview,subject:'😀a'},signal));await assert.rejects(f.api.create({...input(),subject:'😀a'},'m09c-unicode-key-0001',signal));assert.equal(f.calls.length,0);});
 const receipt=()=>({ticketId:sid(41),protocol:'CG-10001',sequence:'10001',workspaceId:sid(1),accountId:sid(3),actorId:sid(2),requesterId:sid(2),draftId:sid(8),draftRevision:1,version:1,profileVersionId,formId:sid(7),formVersion:1,priority:'normal',createdAt:NOW,notification:'pending',replayed:false});
 function response(value:any,status=200,headers:any={}){return new Response(JSON.stringify(value),{status,headers:{'content-type':'application/json',...headers}});}
 async function setup(reply:any){const m=await module(),calls:any[]=[];return {calls,api:m.createConsulteGeoIntakeApi({context,draft,profileVersionId,request:async(path:string,init:any)=>{calls.push({path,...init});return typeof reply==='function'?reply():reply;}})};}

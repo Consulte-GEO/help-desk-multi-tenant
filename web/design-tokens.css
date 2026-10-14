@@ -1,0 +1,84 @@
+/* Help Desk UX01 — GEOLAB component vocabulary + Consulte GEO brand anchors.
+   No laboratory/contract logic, remote fonts or per-user data in this layer. */
+:root[data-helpdesk-ds] {
+  --hd-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --hd-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --hd-radius-sm: 10px; --hd-radius-md: 14px; --hd-radius-lg: 18px; --hd-radius-xl: 24px;
+  --hd-space-1: 4px; --hd-space-2: 8px; --hd-space-3: 12px; --hd-space-4: 16px;
+  --hd-space-5: 20px; --hd-space-6: 24px; --hd-space-8: 32px;
+  --hd-motion: 140ms; --hd-ease: cubic-bezier(.2,0,0,1);
+  --hd-accent: #285AD6; --hd-accent-hover: #1C45AB;
+  --hd-brand-fg-light: #244A9A; --hd-brand-fg-dark: #A5C7FF;
+  --hd-selection-light: #EEF3FE; --hd-selection-dark: #1C3159;
+  --hd-grad-brand: linear-gradient(135deg, #17396E 0%, #204782 55%, #285AD6 100%);
+  --hd-nav: #14263F; --hd-nav-raised: #203753; --hd-nav-ink: #F0F4FF;
+  --hd-nav-muted: #BFCCE6; --hd-nav-line: #485E7C;
+  --hd-focus-on-dark: #F3B1DB;
+  font-family: var(--hd-font); font-synthesis: none;
+  /* Compatibility aliases let optional components consume the same semantics. */
+  --green: var(--hd-accent); --ink: var(--hd-ink); --muted: var(--hd-muted);
+  --line: var(--hd-line); --border: var(--hd-line); --surface: var(--hd-surface);
+  --surface-2: var(--hd-surface-2); --nav: var(--hd-nav);
+  --paper: var(--hd-paper); --ink-soft: var(--hd-muted); --ink-faint: var(--hd-subtle);
+  --success: var(--hd-success-fg); --warning: var(--hd-warning-fg);
+  --danger: var(--hd-danger-fg); --info: var(--hd-info-fg);
+}
+:root[data-helpdesk-ds][data-brand="consulte-geo"] {
+  --hd-navy: #182863; --hd-navy-deep: #0E1B40; --hd-purple: #3E2D71;
+  --hd-magenta: #C5117E; --hd-magenta-light: #E8459E;
+  --hd-accent: var(--hd-magenta); --hd-accent-hover: #A30F6C;
+  --hd-brand-fg-light: #A30F6C; --hd-brand-fg-dark: #F6A0D3;
+  --hd-selection-light: #FCEEF7; --hd-selection-dark: #33223B;
+  --hd-nav: var(--hd-navy-deep); --hd-nav-raised: #24355F;
+  --hd-grad-brand: linear-gradient(135deg, var(--hd-navy) 0%, var(--hd-purple) 55%, var(--hd-magenta) 100%);
+}
+
+:root[data-helpdesk-ds] {
+  color-scheme: light;
+  --hd-paper: #FAF9F7; --hd-surface: #FFFFFF; --hd-surface-2: #F3F5FA;
+  --hd-ink: #17233B; --hd-muted: #506079; --hd-subtle: #59677F;
+  --hd-line: #DBE1EB; --hd-control-line: #8390A3;
+  --hd-brand-fg: var(--hd-brand-fg-light); --hd-selected: var(--hd-selection-light);
+  --hd-on-accent: #FFFFFF; --hd-focus: #A30F6C;
+  --hd-success-bg: #EAF7F0; --hd-success-fg: #14653C;
+  --hd-warning-bg: #FFF5DE; --hd-warning-fg: #7A5107;
+  --hd-danger-bg: #FDECEF; --hd-danger-fg: #A6203D;
+  --hd-info-bg: #EDF3FF; --hd-info-fg: #204993;
+  --hd-neutral-bg: #EEF1F6; --hd-neutral-fg: #4E5C72;
+  --hd-shadow: 0 8px 28px #17233B0D; --hd-shadow-pop: 0 20px 60px #101C3A29;
+  --hd-backdrop: #0E1B40A8;
+}
+
+:root[data-helpdesk-ds][data-theme="dark"] {
+  color-scheme: dark;
+  --hd-paper: #0A0F1C; --hd-surface: #121B2C; --hd-surface-2: #1A253A;
+  --hd-ink: #EBEFF8; --hd-muted: #B4C0D5; --hd-subtle: #A8B7CF;
+  --hd-line: #35445D; --hd-control-line: #7688A5;
+  --hd-brand-fg: var(--hd-brand-fg-dark); --hd-selected: var(--hd-selection-dark);
+  --hd-on-accent: #FFFFFF; --hd-focus: #F6A0D3;
+  --hd-success-bg: #16372D; --hd-success-fg: #84E1B2;
+  --hd-warning-bg: #3C3017; --hd-warning-fg: #F5D281;
+  --hd-danger-bg: #421F31; --hd-danger-fg: #FFAFBC;
+  --hd-info-bg: #1A2F54; --hd-info-fg: #9AC5FF;
+  --hd-neutral-bg: #26354B; --hd-neutral-fg: #CDDAEF;
+  --hd-shadow: 0 8px 28px #00000033; --hd-shadow-pop: 0 20px 60px #00000066;
+  --hd-backdrop: #030712BD;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-helpdesk-ds]:not([data-theme="light"]):not([data-theme="dark"]) {
+  color-scheme: dark;
+  --hd-paper: #0A0F1C; --hd-surface: #121B2C; --hd-surface-2: #1A253A;
+  --hd-ink: #EBEFF8; --hd-muted: #B4C0D5; --hd-subtle: #A8B7CF;
+  --hd-line: #35445D; --hd-control-line: #7688A5;
+  --hd-brand-fg: var(--hd-brand-fg-dark); --hd-selected: var(--hd-selection-dark);
+  --hd-on-accent: #FFFFFF; --hd-focus: #F6A0D3;
+  --hd-success-bg: #16372D; --hd-success-fg: #84E1B2;
+  --hd-warning-bg: #3C3017; --hd-warning-fg: #F5D281;
+  --hd-danger-bg: #421F31; --hd-danger-fg: #FFAFBC;
+  --hd-info-bg: #1A2F54; --hd-info-fg: #9AC5FF;
+  --hd-neutral-bg: #26354B; --hd-neutral-fg: #CDDAEF;
+  --hd-shadow: 0 8px 28px #00000033; --hd-shadow-pop: 0 20px 60px #00000066;
+  --hd-backdrop: #030712BD;
+  }
+}

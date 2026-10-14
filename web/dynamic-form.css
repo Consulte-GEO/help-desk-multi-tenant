@@ -1,4 +1,5 @@
-/* Optional component styles; not yet included in the runtime asset whitelist. */
+@import url('./form-experience.css');
+/* Optional component styles. Shipping does not mount or authorize the feature. */
 .dynamic-field { display: grid; gap: .45rem; margin-block: 1rem; min-width: 0; }
 .dynamic-field label, .dynamic-field legend { font-weight: 600; }
 .dynamic-field input:not([type=checkbox]), .dynamic-field textarea, .dynamic-field select { box-sizing: border-box; width: 100%; min-height: 2.75rem; padding: .65rem; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: .35rem; }

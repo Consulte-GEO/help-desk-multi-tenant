@@ -1,0 +1,36 @@
+/* UX08 presentation. No rule overrides hidden/inert or enables business controls. */
+.hd-ui #login-status:not(:empty){margin-top:16px;padding:12px 14px;border:1px solid var(--hd-line);border-left:4px solid var(--hd-info-fg);border-radius:var(--hd-radius-md);background:var(--hd-info-bg);color:var(--hd-info-fg);font-size:14px;line-height:1.65;overflow-wrap:anywhere}
+.hd-ui #login-status[data-access-tone='danger']:not(:empty){color:var(--hd-danger-fg);background:var(--hd-danger-bg);border-left-color:var(--hd-danger-fg)}
+.hd-ui #login-status[data-access-tone='warning']:not(:empty){color:var(--hd-warning-fg);background:var(--hd-warning-bg);border-left-color:var(--hd-warning-fg)}
+.hd-ui .hd-access-field-error{display:block;margin-top:6px;color:var(--hd-danger-fg);font-size:13px;font-weight:600;line-height:1.5}
+.hd-ui #submit-login[aria-busy='true']::after{content:'';display:inline-block;inline-size:16px;block-size:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:hd-access-spin .85s linear infinite}
+@keyframes hd-access-spin{to{transform:rotate(360deg)}}
+.hd-ui #session-banner[data-access-experience]{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 20px;margin:16px 28px;padding:16px 20px;border:1px solid var(--hd-line);border-left:4px solid var(--hd-info-fg);border-radius:var(--hd-radius-lg);background:var(--hd-info-bg);color:var(--hd-info-fg)}
+.hd-ui #session-banner[data-access-tone='warning']{background:var(--hd-warning-bg);color:var(--hd-warning-fg);border-left-color:var(--hd-warning-fg)}
+.hd-ui .hd-access-session-title{margin:0;font-size:17px;line-height:1.4;color:inherit}
+.hd-ui #session-banner #session-status{grid-column:1;font-size:14px;color:inherit;margin:0}
+.hd-ui #session-banner #retry-session{grid-column:2;grid-row:1/3;min-height:44px}
+.hd-ui [data-advanced-access] dialog{border-radius:var(--hd-radius-xl);width:min(680px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:24px;overflow:auto;overscroll-behavior:contain;background:var(--hd-surface);color:var(--hd-ink)}
+.hd-ui [data-advanced-access] dialog h2{font-size:24px;line-height:1.3;overflow-wrap:anywhere}
+.hd-ui [data-advanced-access] dialog :is(input,select,textarea){min-height:44px}
+.hd-ui [data-advanced-access] dialog .dialog-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.hd-ui [data-advanced-access] dialog :is(code,#mfa-enrollment-label){white-space:pre-wrap;overflow-wrap:anywhere}
+.hd-ui [data-advanced-access] .totp-qr{background:white;filter:none;max-width:100%;height:auto;image-rendering:pixelated}
+.hd-ui .hd-geo-access{max-width:650px;margin:32px auto;padding:28px;border:1px solid var(--hd-line);border-radius:var(--hd-radius-xl);background:var(--hd-surface);color:var(--hd-ink);box-shadow:var(--hd-shadow)}
+.hd-ui .hd-geo-access h1{font-size:28px;margin:8px 0 16px}
+.hd-ui .hd-geo-access .hd-geo-intro{line-height:1.65;color:var(--hd-muted)}
+.hd-ui .hd-geo-access #geo-login-status{padding:16px;margin:20px 0;background:var(--hd-info-bg);color:var(--hd-info-fg);border-left:4px solid currentColor;border-radius:var(--hd-radius-md);font-size:14px;line-height:1.65;overflow-wrap:anywhere}
+.hd-ui .hd-geo-access[data-geo-stage='error'] #geo-login-status,.hd-ui .hd-geo-access[data-geo-stage='invalid'] #geo-login-status{background:var(--hd-danger-bg);color:var(--hd-danger-fg)}
+.hd-ui .hd-geo-access[data-geo-stage='cancelled'] #geo-login-status,.hd-ui .hd-geo-access[data-geo-stage='unconfigured'] #geo-login-status{background:var(--hd-warning-bg);color:var(--hd-warning-fg)}
+.hd-ui .hd-geo-access[data-geo-stage='confirmed'] #geo-login-status{background:var(--hd-success-bg);color:var(--hd-success-fg)}
+.hd-ui .hd-geo-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+@media(max-width:600px){
+ .hd-ui #session-banner[data-access-experience]{grid-template-columns:minmax(0,1fr);margin:12px 16px;padding:16px;gap:10px}
+ .hd-ui #session-banner #retry-session{grid-column:1;grid-row:auto;width:100%}
+ .hd-ui [data-advanced-access] dialog{padding:18px;width:calc(100vw - 24px);max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}
+ .hd-ui :is(#login-screen,[data-advanced-access] dialog) :is(input,select,textarea){font-size:16px}
+ .hd-ui [data-advanced-access] dialog .dialog-actions>*{flex:1 1 150px}
+ .hd-ui .hd-geo-access{margin:16px 12px;padding:20px}
+ .hd-ui .hd-geo-actions>*{flex:1 1 180px;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){.hd-ui #submit-login[aria-busy='true']::after{animation:none}}

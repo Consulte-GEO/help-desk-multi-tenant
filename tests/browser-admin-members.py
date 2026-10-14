@@ -4,7 +4,8 @@ Own the server process and random loopback port. Never attach to a hosted target
 import json
 import os
 from pathlib import Path
-import select
+from queue import Queue, Empty
+from threading import Thread
 import shutil
 import subprocess
 import time
@@ -19,10 +20,15 @@ env = {**os.environ, 'HELPDESK_OWNED_ADMIN_BROWSER': 'synthetic-loopback'}
 process = subprocess.Popen(['node', '--experimental-strip-types', 'tests/admin-members-server.ts'], cwd=root, env=env,
                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
 try:
-    ready, _, _ = select.select([process.stdout], [], [], 10)
-    if not ready:
-        raise RuntimeError('Owned member fixture did not become ready')
-    base = json.loads(process.stdout.readline())['url']
+    ready = Queue()
+    Thread(target=lambda: ready.put(process.stdout.readline()), daemon=True).start()
+    try:
+        line = ready.get(timeout=10)
+    except Empty:
+        raise RuntimeError('Owned member fixture did not become ready') from None
+    if not line:
+        raise RuntimeError('Owned member fixture exited before readiness')
+    base = json.loads(line)['url']
     assert base.startswith('http://127.0.0.1:')
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'), args=['--no-sandbox'])

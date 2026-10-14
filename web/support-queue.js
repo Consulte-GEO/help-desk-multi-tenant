@@ -1,3 +1,3 @@
-import {renderCustomerPortal} from './customer-portal.js';
-/** Presentation only: team/account views require independent backend capability. */
-export function renderSupportQueue(root,state,onOpen){renderCustomerPortal(root,state,onOpen);const h=root.children[0];if(h)h.textContent='Fila de atendimento';}
+import {renderPortalView} from './customer-portal.js';
+/** Presentation only: the caller still needs independent team/account capability. */
+export function renderSupportQueue(root,state,onOpen){renderPortalView(root,state,onOpen,true);}

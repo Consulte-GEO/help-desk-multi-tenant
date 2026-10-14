@@ -1,0 +1,1 @@
+export function validateVisualReport(checkout:string,raw:unknown,kind:'app'|'journey',policy?:Readonly<{minimum?:number;cases?:number;requiredSources?:readonly string[]}>):Promise<{check:string;result:'passed'}[]>;

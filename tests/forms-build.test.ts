@@ -3,7 +3,7 @@ const legacy=['access-mode.js','totp-qr.js','recovery-password.js','account-secu
 /** Tests actual build program with OWNED fixture files. Not a build of the complete app. */
 test('C07 build whitelist copies new form assets byte-for-byte and preserves old assets',async()=>{
  const root=await mkdtemp(join(tmpdir(),'helpdesk-forms-build-'));
- try{for(const path of ['scripts','web/vendor','shared'])await mkdir(join(root,path),{recursive:true});
+ try{for(const path of ['scripts','web/vendor','web/assets','shared'])await mkdir(join(root,path),{recursive:true});
   await writeFile(join(root,'scripts/build.mjs'),await readFile(new URL('../scripts/build.mjs',import.meta.url)));
   for(const path of legacy)await writeFile(join(root,'web',path),'owned-legacy-fixture:'+path);
   for(const path of ['instant.js','mfa.js'])await writeFile(join(root,'shared',path),'owned-shared-fixture:'+path);
@@ -11,6 +11,8 @@ test('C07 build whitelist copies new form assets byte-for-byte and preserves old
   added.push('web/consultegeo-request.js','web/consultegeo-request.css','web/consultegeo-intake-api.js','shared/consultegeo-request.js');
   added.push('web/execution-checklist.js','web/execution-checklist-state.js','web/execution-checklist-contract.js','web/execution-checklist.css','shared/checklist-evidence.js');
   added.push('web/consultegeo-configuration.js','web/consultegeo-configuration.css');
+  added.push('web/support-intake.css');
+  added.push(...['brand-profile.js','brand-shell.js','inbox-view-state.js','inbox-workspace.js','theme-init.js','opening-flow.js','opening-wizard.js','form-feedback.js','portal-ui.js','admin-ui.js','admin-members.js','admin-members-state.js','admin-configuration.js','operations-ui.js','support-presentation.js','access-feedback.js','access-experience.js','geo-auth-callback.js','geo-auth-state.js','design-tokens.css','consulte-theme.css','inbox-workspace.css','form-experience.css','admin-experience.css','admin-members.css','operations-experience.css','support-experience.css','access-experience.css','assets/consulte-geo-color.png','assets/consulte-geo-white.png'].map(p=>'web/'+p));
   for(const path of added)await writeFile(join(root,path),await readFile(new URL('../'+path,import.meta.url)));
   await mkdir(join(root,'profiles','consultegeo'),{recursive:true});
   await writeFile(join(root,'profiles','consultegeo','execution-checklists.draft.json'),'PRIVATE DRAFT: MUST NOT COPY');

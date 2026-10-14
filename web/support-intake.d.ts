@@ -14,4 +14,4 @@ export function createSupportIntakeState(options:IntakeUiOptions):Readonly<{
  edit(value:{answers:unknown;subject:string;description:string;coverageId:string|null}):void;
  save():Promise<void>;preview():Promise<void>;confirm():Promise<void>;reconcile():Promise<void>;clear():void;snapshot():IntakeUiSnapshot;
 }>;
-export function mountSupportIntake(root:HTMLElement,options:IntakeUiOptions&DynamicFormOptions):Readonly<{state:ReturnType<typeof createSupportIntakeState>;clear():void;destroy():void}>;
+export function mountSupportIntake(root:HTMLElement,options:IntakeUiOptions&Omit<DynamicFormOptions,'onChange'>):Readonly<{state:ReturnType<typeof createSupportIntakeState>;clear():void;destroy():void}>;

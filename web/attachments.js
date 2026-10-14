@@ -1,3 +1,5 @@
+import {operationsUI, attachmentView, attachmentSelectionIssue, transferredText, clearOperationsNode} from './operations-ui.js';
+
 /** Direct transfer to an already-created, private TUS resource. The trusted server
  * adapter must reserve a create-only object and return a version-sealable resource.
  * No upload creation POST, public bucket, localStorage or automatic retry here. */
@@ -44,13 +46,105 @@ export function createAttachmentBatch(options){let phase='idle',entries=[],revis
  return Object.freeze({select,start,reconcile,refreshStatus,clear,state});
 }
 
-/** Optional attachment selector with explicit progress/analysis refresh. No remote
- * URL/token is put in DOM, form values, clipboard or durable browser storage. */
-export function mountAttachments(root,options){const doc=root.ownerDocument,n=(tag,text)=>{const e=doc.createElement(tag);if(text!==undefined)e.textContent=text;return e;};const batch=createAttachmentBatch(options);let cleared=false;
- const input=n('input');input.type='file';input.multiple=true;input.setAttribute('aria-label','Selecionar anexos privados');input.setAttribute('accept','.png,.jpg,.jpeg,.pdf');
- const start=n('button','Enviar arquivos selecionados'),retry=n('button','Conciliar transferência'),refresh=n('button','Consultar análise'),list=n('ul'),status=n('p');for(const b of [start,retry,refresh])b.type='button';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
- function draw(){const s=batch.state();list.replaceChildren();for(const r of s.items)list.append(n('li',r.name+' — '+({selected:'selecionado',uploading:'em transferência',pending_scan:'aguardando análise',scanning:'em análise',clean:'análise concluída',rejected:'rejeitado',unsupported:'formato não suportado',scan_error:'análise indisponível'}[r.status]??'não confirmado')));input.disabled=s.phase!=='idle';start.disabled=s.phase!=='idle';retry.disabled=s.phase!=='unknown';refresh.disabled=!['pending_scan','ready','attention'].includes(s.phase);status.textContent=s.phase==='unknown'?'Confirmação desconhecida. Preserve esta seleção e concilie.':s.phase==='ready'?'Análise concluída. O servidor conferirá acesso e revisão no envio.':s.phase==='pending_scan'?'Transferência concluída. Análise ainda pendente.':s.phase==='attention'?'Um arquivo exige atenção e não pode satisfazer evidência obrigatória.':'';}
- const act=f=>async()=>{try{const promise=f();draw();await promise;}catch{if(!cleared)status.textContent='Operação não confirmada.';}finally{if(!cleared)draw();}};
- start.addEventListener('click',act(()=>{batch.select(Array.from(input.files??[]).map(blob=>({name:blob.name,blob})));input.value='';return batch.start();}));retry.addEventListener('click',act(()=>batch.reconcile()));refresh.addEventListener('click',act(()=>batch.refreshStatus()));root.replaceChildren(n('h3','Anexos privados'),input,start,retry,refresh,list,status);draw();
- return Object.freeze({batch,clear:()=>{cleared=true;input.value='';batch.clear();list.replaceChildren();status.textContent='';input.disabled=true;start.disabled=true;retry.disabled=true;refresh.disabled=true;},destroy:()=>{cleared=true;input.value='';batch.clear();root.replaceChildren();}});
+/** Optional selector. Names and files stay in memory. Only the original batch/TUS
+ * algorithms perform transfers. UI checks are advisory, never scanner approval. */
+export function mountAttachments(root, options) {
+ const ui = operationsUI(root, 'attachments', 'Anexos privados', 'Selecione as evidências e acompanhe a transferência e a análise. Os arquivos continuam privados.'), {node} = ui;
+ let cleared = false, destroyed = false, running = false, chosen = [], metadata = [], rowListeners = [], lastPhase = '';
+ const field = ui.field('Selecionar anexos privados', 'files', 'input', 'PNG, JPEG ou PDF. Até 50 arquivos por lote e 100 MiB por arquivo. O servidor verifica o conteúdo e o acesso.');
+ const input = field.input; input.type = 'file'; input.multiple = true; input.setAttribute('accept', '.png,.jpg,.jpeg,.pdf'); input.setAttribute('data-ops-action', 'select-files');
+ const list = node('ul', undefined, {class: 'hd-ops-file-list', 'aria-label': 'Arquivos selecionados'}), selectionText = node('p', '', {class: 'hd-ops-muted', 'data-attachment-selection': ''});
+ const actions = node('div', undefined, {class: 'hd-ops-actions'});
+ const start = ui.button('Enviar arquivos selecionados', 'send-files', () => act(() => {
+  const issue = attachmentSelectionIssue(chosen);
+  if (issue) { field.feedback(issue); input.focus(); return; }
+  batch.select(chosen.map(blob => ({name: blob.name, blob}))); chosen = []; input.value = ''; field.feedback('');
+  return batch.start();
+ }), true);
+ const retry = ui.button('Conciliar transferência', 'reconcile-files', () => act(() => batch.reconcile()), true);
+ const refresh = ui.button('Consultar análise', 'read-analysis', () => act(() => batch.refreshStatus()));
+ actions.append(start, retry, refresh);
+ const notice = node('p', '100% dos bytes transferidos não significa análise aprovada. O servidor revalida o arquivo e sua vinculação antes de aceitar uma evidência.', {class: 'hd-ops-notice'});
+ ui.section.append(field.box, selectionText, list, notice, actions);
+ // These wrappers only refresh the presentation at existing call boundaries.
+ // They preserve arguments, call count, return values, errors and adapter receiver.
+ const api = {};
+ for (const name of ['start', 'saveSelection', 'bind', 'finish']) api[name] = (...args) => { draw(); return options.api[name](...args); };
+ const transfer = (grant, file) => {
+  const original = options.transfer ? options.transfer(grant, file) : createTusTransfer({grant, file, onProgress: () => draw()});
+  return {state: () => original.state(), clear: () => original.clear(), async resume() { draw(); try { return await original.resume(); } finally { draw(); } }};
+ };
+ const batch = createAttachmentBatch({...options, api, transfer});
+ function clearRows() {
+  for (const [button, handler] of rowListeners) button.removeEventListener('click', handler);
+  rowListeners = []; clearOperationsNode(list);
+ }
+ function draw() {
+  if (cleared || destroyed) return;
+  const s = batch.state(), idle = s.phase === 'idle', items = idle ? metadata.map(m => ({name: m.name, status: 'selected', progress: 0})) : s.items;
+  input.disabled = !idle || running;
+  start.hidden = !idle; start.disabled = running || !chosen.length;
+  retry.hidden = s.phase !== 'unknown'; retry.disabled = running;
+  refresh.hidden = !['pending_scan', 'ready', 'attention'].includes(s.phase); refresh.disabled = running;
+  selectionText.textContent = items.length ? items.length + ' arquivo(s) neste lote.' : 'Nenhum arquivo selecionado.';
+  ui.section.setAttribute('aria-busy', String(running)); clearRows();
+  items.forEach((file, index) => {
+   const row = node('li', undefined, {class: 'hd-ops-file'}), top = node('div', undefined, {class: 'hd-ops-file-top'}), view = attachmentView(file.status);
+   top.append(node('h3', file.name), ui.badge(view)); row.append(top);
+   if (idle) {
+    const remove = node('button', 'Remover da seleção', {type: 'button', class: 'hd-ops-secondary', 'data-attachment-remove': String(index), 'aria-label': 'Remover da seleção: ' + file.name});
+    remove.disabled = running;
+    const handler = () => { if (cleared || destroyed || running || batch.state().phase !== 'idle') return; chosen.splice(index, 1); metadata.splice(index, 1); field.feedback(''); draw(); input.focus(); };
+    remove.addEventListener('click', handler); rowListeners.push([remove, handler]); row.append(remove);
+   } else {
+    const total = metadata[index]?.size, text = transferredText(file.progress, total);
+    if (text !== 'Progresso indisponível') {
+     const meter = node('progress', '', {max: String(total), value: String(file.progress), 'aria-label': 'Bytes confirmados de ' + file.name}); row.append(meter);
+    }
+    row.append(node('p', text, {class: 'hd-ops-muted'}));
+   }
+   list.append(row);
+  });
+  const texts = {
+   idle: 'A seleção ainda não foi enviada. Remova os arquivos que não devem fazer parte deste lote.',
+   preparing: 'Preparando a transferência privada…', saving: 'Vinculando a seleção ao rascunho…', uploading: 'Transferindo os arquivos. O progresso indica apenas bytes confirmados.',
+   finalizing: 'Conferindo a conclusão da transferência…', checking: 'Consultando o resultado da análise…',
+   pending_scan: 'Transferência concluída. Consulte a análise; os bytes enviados não confirmam que o arquivo pode ser usado.',
+   ready: 'Análise concluída. O servidor conferirá acesso e revisão no envio da solicitação.',
+   attention: 'Um arquivo exige atenção. Arquivos rejeitados ou sem análise concluída não atendem uma evidência obrigatória.',
+   unknown: 'Confirmação desconhecida. Preserve este lote e concilie a mesma transferência antes de iniciar outra.', cleared: '',
+  };
+  ui.report(texts[s.phase] ?? 'Estado indisponível.', ['attention', 'unknown', 'pending_scan'].includes(s.phase) ? 'warning' : s.phase === 'ready' ? 'success' : 'neutral');
+  if (lastPhase && lastPhase !== s.phase && s.phase === 'unknown' && !running) retry.focus();
+  lastPhase = s.phase;
+ }
+ async function act(fn) {
+  if (cleared || destroyed || running) return;
+  running = true;
+  let failed = false;
+  try { const result = fn(); draw(); await result; } catch { failed = true; }
+  finally {
+   running = false;
+   if (!cleared && !destroyed) {
+    draw();
+    if (batch.state().phase === 'unknown') retry.focus();
+    else if (failed) { ui.report('Não foi possível concluir esta operação. Confira os arquivos e o estado do lote.', 'warning'); ui.status.focus(); }
+   }
+  }
+ }
+ ui.listen(input, 'change', () => {
+  if (cleared || destroyed || running || batch.state().phase !== 'idle') return;
+  const files = Array.from(input.files ?? []); input.value = '';
+  if (!files.length) return;
+  const issue = attachmentSelectionIssue(files);
+  if (issue) { field.feedback(issue + (chosen.length ? ' A seleção anterior foi preservada.' : '')); return; }
+  chosen = files; metadata = files.map(file => ({name: file.name, size: file.size})); field.feedback(''); draw();
+ });
+ function clear() {
+  if (cleared) return; cleared = true; running = false; chosen = []; metadata = []; input.value = ''; batch.clear(); clearRows();
+  field.feedback(''); selectionText.textContent = ''; ui.report(''); ui.section.setAttribute('aria-busy', 'false');
+  input.disabled = start.disabled = retry.disabled = refresh.disabled = true;
+ }
+ ui.mount(); draw();
+ return Object.freeze({batch, clear, destroy() { if (destroyed) return; clear(); destroyed = true; ui.destroy(); }});
 }

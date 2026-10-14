@@ -1,9 +1,73 @@
 import {createReviewState} from './review-state.js';
-/** Host supplies the existing dynamic-form/draft save workflow. This panel receives
- * only a SAVED draft reference and shows the server's public diff before confirmation.
- * It cannot turn pending uploads or a client-side preview into authorization. */
-export function mountFormReview(root,options){const d=root.ownerDocument,n=(tag,text)=>{const e=d.createElement(tag);if(text!==undefined)e.textContent=text;return e;};let destroyed=false;
- const title=n('h2','Revisar devolutiva'),diff=n('section'),status=n('p'),preview=n('button','Conferir alterações salvas'),confirm=n('button','Confirmar revisão'),reconcile=n('button','Conciliar mesma revisão');diff.setAttribute('aria-label','Diferenças públicas do formulário');status.setAttribute('role','status');status.setAttribute('aria-live','polite');for(const b of [preview,confirm,reconcile])b.type='button';
- const draw=s=>{preview.disabled=s.phase!=='ready';confirm.disabled=s.phase!=='review';reconcile.disabled=s.phase!=='unknown';diff.replaceChildren();if(s.phase==='review')for(const item of s.publicDiff)diff.append(n('p',String(item.path)+': '+JSON.stringify(item.before)+' → '+JSON.stringify(item.after)));status.textContent=s.phase==='unknown'?'Confirmação desconhecida. Preserve o rascunho e concilie esta intenção.':s.phase==='confirmed'?'Revisão registrada. Respostas anteriores preservadas; notificação pendente.':s.phase==='error'?'Recarregue o chamado e confira anexos e revisão.':s.phase==='previewing'?'Conferindo alterações…':s.phase==='submitting'?'Registrando revisão…':'';};
- const state=createReviewState({...options,onChange:draw}),safe=f=>()=>{Promise.resolve().then(f).catch(()=>{if(!destroyed)status.textContent='Salve o rascunho e confira os anexos antes de continuar.';});};preview.addEventListener('click',safe(async()=>state.previewRevision(await options.savedDraft())));confirm.addEventListener('click',safe(state.confirmRevision));reconcile.addEventListener('click',safe(state.reconcile));root.replaceChildren(title,diff,preview,confirm,reconcile,status);draw(state.snapshot());return Object.freeze({state,destroy:()=>{destroyed=true;state.clear();diff.replaceChildren();status.textContent='';root.replaceChildren();}});
+import {operationsUI, diffValue, operationsText, clearOperationsNode} from './operations-ui.js';
+
+/** Receives only a saved draft reference and the server's public diff. No GET,
+ * preview or visual confirmation can replace server authorization at commit. */
+export function mountFormReview(root, options) {
+ const ui = operationsUI(root, 'form-review', 'Revisar devolutiva', 'Confira as alterações do rascunho salvo antes de confirmar. As respostas anteriores permanecem no histórico.'), {node} = ui;
+ let destroyed = false, waitingForDraft = false, epoch = 0, lastPhase = '', diffStamp = '';
+ const diff = node('section', undefined, {'aria-label': 'Diferenças públicas do formulário'}), list = node('ol', undefined, {class: 'hd-ops-diff-list'});
+ diff.append(node('h3', 'O que será alterado'), list);
+ const actions = node('div', undefined, {class: 'hd-ops-actions'});
+ const preview = ui.button('Conferir alterações salvas', 'preview-revision', async () => {
+  if (destroyed || waitingForDraft || state.snapshot().phase !== 'ready') return;
+  const stamp = epoch; waitingForDraft = true; draw(state.snapshot()); let failed = false;
+  try {
+   const draft = await options.savedDraft();
+   if (destroyed || stamp !== epoch || state.snapshot().phase !== 'ready') return;
+   await state.previewRevision(draft);
+  } catch { failed = true; }
+  finally {
+   waitingForDraft = false;
+   if (!destroyed && stamp === epoch && state.snapshot().phase !== 'cleared') {
+    draw(state.snapshot());
+    if (failed) { ui.report('Não foi possível conferir o rascunho salvo. Revise os dados e os anexos no chamado.', 'warning'); ui.status.focus(); }
+    else if (state.snapshot().phase === 'review') confirm.focus();
+   }
+  }
+ }, true);
+ const confirm = ui.button('Confirmar revisão', 'confirm-revision', () => run(() => state.confirmRevision()), true);
+ const reconcile = ui.button('Conciliar mesma revisão', 'reconcile-revision', () => run(() => state.reconcile()), true);
+ actions.append(preview, confirm, reconcile);
+ ui.section.append(diff, node('p', 'Esta tela mostra apenas diferenças públicas. Confirmar depende de nova validação de acesso, revisão e anexos no servidor.', {class: 'hd-ops-muted'}), actions);
+ function draw(s) {
+  if (destroyed) return;
+  if (s.phase === 'cleared') { epoch++; waitingForDraft = false; }
+  const busy = waitingForDraft || ['previewing', 'submitting'].includes(s.phase);
+  ui.section.setAttribute('aria-busy', String(busy));
+  preview.hidden = s.phase !== 'ready'; preview.disabled = busy;
+  confirm.hidden = s.phase !== 'review'; confirm.disabled = busy;
+  reconcile.hidden = s.phase !== 'unknown'; reconcile.disabled = busy;
+  diff.hidden = s.phase !== 'review';
+  const stamp = s.phase === 'review' ? JSON.stringify(s.publicDiff) : '';
+  if (stamp !== diffStamp) {
+   clearOperationsNode(list); diffStamp = stamp;
+   if (s.phase === 'review' && !s.publicDiff.length) list.append(node('li', 'Não há diferenças públicas nesta revisão.', {class: 'hd-ops-notice'}));
+   for (const item of s.phase === 'review' ? s.publicDiff : []) {
+    const row = node('li', undefined, {class: 'hd-ops-diff'}), columns = node('div', undefined, {class: 'hd-ops-diff-columns'});
+    row.append(node('h4', operationsText(item?.path) || 'Campo do formulário'));
+    for (const [label, value] of [['Antes', item?.before], ['Depois', item?.after]]) {
+     const box = node('div'); box.append(node('h4', label), node('pre', diffValue(value))); columns.append(box);
+    }
+    row.append(columns); list.append(row);
+   }
+  }
+  const texts = {ready: waitingForDraft ? 'Consultando o rascunho salvo…' : 'Salve o rascunho no chamado e confira as alterações aqui.', previewing: 'Conferindo a revisão e as diferenças públicas…', review: 'Confira os valores antes e depois. Nenhuma revisão foi registrada ainda.', submitting: 'Registrando a revisão uma única vez…', confirmed: 'Revisão registrada. Respostas anteriores preservadas; notificação pendente.', unknown: 'Confirmação desconhecida. Preserve o rascunho e concilie esta mesma revisão.', error: 'Revisão indisponível. Recarregue o chamado e confira o rascunho e os anexos.', cleared: ''};
+  ui.report(texts[s.phase] ?? 'Estado indisponível.', ['unknown', 'error'].includes(s.phase) ? 'warning' : s.phase === 'confirmed' ? 'success' : 'neutral');
+  if (lastPhase && lastPhase !== s.phase) {
+   if (s.phase === 'review' && !waitingForDraft) confirm.focus();
+   else if (s.phase === 'unknown') reconcile.focus();
+   else if (['error', 'confirmed'].includes(s.phase)) ui.status.focus();
+  }
+  lastPhase = s.phase;
+ }
+ async function run(fn) {
+  if (destroyed || state.snapshot().phase === 'cleared') return;
+  try { await fn(); } catch {
+   if (!destroyed && state.snapshot().phase !== 'cleared') ui.report('Confira a revisão atual do chamado antes de continuar.', 'warning');
+  }
+ }
+ const state = createReviewState({...options, onChange: draw});
+ ui.mount(); draw(state.snapshot());
+ return Object.freeze({state, destroy() { if (destroyed) return; destroyed = true; epoch++; state.clear(); clearOperationsNode(list); ui.destroy(); }});
 }

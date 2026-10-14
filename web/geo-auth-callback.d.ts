@@ -1,0 +1,4 @@
+export interface GeoReturnCredentials {principal_id:string;workspace_id:string;access_token:string;refresh_token:string;expires_at:string;absolute_expires_at:string;return_path:string;}
+export interface GeoReturnController {view():{authenticated:boolean;busy:boolean;message:string;audience:{principalId:string;workspaceId:string}|null};complete(callback:{code:string;state:string;iss:string},workspaceId?:string):Promise<boolean>;refresh():Promise<boolean>;logout():Promise<boolean>;accessToken():string|null;destroy():void;}
+/** Optional host. Adapter mounts synchronously in the SAME document. Never serialize credentials. */
+export function mountGeoAuthCallback(options:{document:Document;location:Pick<Location,'href'>;history:Pick<History,'replaceState'>;request?:(path:string,init:RequestInit)=>Promise<Response>;mountAuthenticatedPortal?:(credentials:Readonly<GeoReturnCredentials>)=>void;}):Readonly<{controller:GeoReturnController|null;destroy():void}>;

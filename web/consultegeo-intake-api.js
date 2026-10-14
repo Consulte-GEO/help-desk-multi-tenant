@@ -27,7 +27,7 @@ export function createConsulteGeoIntakeApi(options){
   if(!r.ok){if(data&&data.status===r.status&&typeof data.code==='string'&&Object.hasOwn(known,data.code)&&known[data.code]===r.status)return {rejected:{kind:'rejected',code:data.code}};throw fail();}
   return {r,data};
  }
- function input(raw,commit){const v=exact(raw,['draftId','expectedDraftRevision','subject','description','coverageId',...(commit?['previewHash']:[])]);if(v.draftId!==draft.id||!positive(v.expectedDraftRevision)||v.coverageId!==context.coverageId||typeof v.subject!=='string'||v.subject.trim().length<3||v.subject.length>200||typeof v.description!=='string'||!v.description.trim()||v.description.length>12000||commit&&(typeof v.previewHash!=='string'||!/^[a-f0-9]{64}$/.test(v.previewHash)))throw fail();return v;}
+ function input(raw,commit){const v=exact(raw,['draftId','expectedDraftRevision','subject','description','coverageId',...(commit?['previewHash']:[])]);if(v.draftId!==draft.id||!positive(v.expectedDraftRevision)||v.coverageId!==context.coverageId||typeof v.subject!=='string'||Array.from(v.subject.trim()).length<3||v.subject.length>200||typeof v.description!=='string'||!v.description.trim()||v.description.length>12000||commit&&(typeof v.previewHash!=='string'||!/^[a-f0-9]{64}$/.test(v.previewHash)))throw fail();return v;}
  return Object.freeze({
   async save(raw,expected,signal){
    const v=exact(raw,['id','accountId','refs','formId','formVersion','answers']);if(!Number.isSafeInteger(expected)||expected<0||expected>=Number.MAX_SAFE_INTEGER||v.id!==draft.id||v.accountId!==draft.accountId||v.formId!==draft.formId||v.formVersion!==draft.formVersion||!sameRefs(v.refs,draft.refs))throw fail();

@@ -1,0 +1,926 @@
+{
+  "scope": "reviewed-visual-port-over-M09c",
+  "written": 133,
+  "files": [
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX01_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "4a8b917cc161c02fbe8d5ee17f974dd8b9ad31372f0aac4928545852c7a747e0"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX02_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "119c87ab22c78999d0232540a0dcbb9562b95ea669bb13ad67ea715614251a64"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX03_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "c02c7535120cac57be45e34410c0dba31615c2af4150e45674f7d38f8ac1203f"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX04_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "4ea77792a146060f6652528e9e3c0dc0306488fdc699b6b9e4430c6af44df7ff"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX05_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "ff784cc37d72e3134dd456e70a3c74cdf9a36785d117d6d92eaa74032a6dddd7"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX06_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "a164bb58c699b857b7e26916f18c4097a63c2d5023e5d115ce6e1cea8aa1d546"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX07_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "2e1117de3fedc73852a680e3ee7cc2e51f4bab65f06eaf8ec98e121d85060d09"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX08_SPEC.md",
+      "beforeSha256": null,
+      "afterSha256": "fc0aa86e99fde687b613fcfe55475f0b09a9420db8cb4ea9098d22ebcbb74636"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX09_REVISAO.md",
+      "beforeSha256": null,
+      "afterSha256": "6879f6032e9f9add1950736ddfe7795ea72823153017a2502350fd3bf1c8fe31"
+    },
+    {
+      "path": "docs/design/HELPDESK_VISUAL_UX10_COMPATIBILIDADE.md",
+      "beforeSha256": null,
+      "afterSha256": "f8a17be6b9d6de11cb78543a38f7ac823efc4548f170b38129505cb076eeebf0"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-ux10-compatibilidade.md",
+      "beforeSha256": null,
+      "afterSha256": "0ea446279782ab9b37dcb3412cf3c4f662ba7f48f2fac89d105ec0e97c544f16"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux01.md",
+      "beforeSha256": null,
+      "afterSha256": "e8db242a3953d8966b5a6f58fad11f7af5032f976db8dc546b1a6903f96aef96"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux02.md",
+      "beforeSha256": null,
+      "afterSha256": "c847e1e80ed9918b884cf7e89d4a55305b680c598325def65b218c5c4b3d4665"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux03.md",
+      "beforeSha256": null,
+      "afterSha256": "b9ff5f69283c4e40c3884bb061151ecff7498ce309b3cd0c556e1e09bed397d7"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux04.md",
+      "beforeSha256": null,
+      "afterSha256": "46415ba781b066b7c4105c8b5700b72983414a06d1418971ebb7acac0181e5bf"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux05.md",
+      "beforeSha256": null,
+      "afterSha256": "be2de20dc71a9e9661ac812639dd4db1285cbe16254de1755ff6e03bc036366e"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux06.md",
+      "beforeSha256": null,
+      "afterSha256": "0e84e6d2049ef078086869ce4aae5819f0957d678132771f8c6b93ddadba2d12"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux07.md",
+      "beforeSha256": null,
+      "afterSha256": "6cb0737842709567654adc9f2beb13be8c5ad5429c29dde46866a9f95e0443b6"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux08.md",
+      "beforeSha256": null,
+      "afterSha256": "c128fb492ece4633846f26f6acf4e1dbe3c81aadf62df1a7a174a4a883cf8550"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-13-ux09-integracao.md",
+      "beforeSha256": null,
+      "afterSha256": "d11595e0005822415ee6afa6f871cfaa91699faefbd49bc5ac55be9688d0517a"
+    },
+    {
+      "path": "scripts/build.mjs",
+      "beforeSha256": "92c81c7ea38ef8bc9adb800f563e9cb53ade98776b85df9fe683fb20dae5a73f",
+      "afterSha256": "224d625a3ca8f00e28734b35586c6a6e0b5f683171bd7feac07fea73b3e1f87c"
+    },
+    {
+      "path": "scripts/demo.ts",
+      "beforeSha256": "88d45fda67f56baf5354fbbc5ac6671bccaaae2a459667157bac48529805030c",
+      "afterSha256": "af070b0f8953216ecbe9a780b2ce5471496227cfa0c827031fd495c009fdd521"
+    },
+    {
+      "path": "scripts/visual-access/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "065ce7e46eb1490336bda644e95f77768c4610d779f664c299dc44024558451c"
+    },
+    {
+      "path": "scripts/visual-access/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "e1ebfb683edc5bc242a93f4da4f73196897e93fa02e40527f5e2ad2f19ee99f2"
+    },
+    {
+      "path": "scripts/visual-access/verify-integration.mjs",
+      "beforeSha256": null,
+      "afterSha256": "820618380c6c77241f48e5126061a8060e25dd3733a2eaef44055a7902a13b2c"
+    },
+    {
+      "path": "scripts/visual-admin/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "019d519f27373460c2fabb475ac58c048f9c8bd773f3d463f40c3409a450a2e5"
+    },
+    {
+      "path": "scripts/visual-admin/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "072dc36ef8039b6ba0b2da3a24d398dae58a03d4bc880bf14782ac74ce8fe55b"
+    },
+    {
+      "path": "scripts/visual-branding/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "4da827e32777eb3a4a74a74f2130f33f515ebebd22634da8401cd30c48116991"
+    },
+    {
+      "path": "scripts/visual-branding/check-tokens.py",
+      "beforeSha256": null,
+      "afterSha256": "8bfe29dcbb24382a093ee29b97cfe0288dcdee0e75467881738f5024c8babd49"
+    },
+    {
+      "path": "scripts/visual-branding/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "4953d5adecdc655d3eb5c4cb50e2f7d0e0941a317ef29e36499de6cc622ac4c0"
+    },
+    {
+      "path": "scripts/visual-consultegeo/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "a63fcdba60d6b73d9896573e4a44190b561b41d4788b6779e94f4397b8e49782"
+    },
+    {
+      "path": "scripts/visual-consultegeo/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "9599b663ea6663be8a5e1cb899c48eecbe81751a897827f0233327c0d3739a45"
+    },
+    {
+      "path": "scripts/visual-inbox/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "a9e61a771f4b176adb47a0c3b527d748f7170b69710d29e9569336b47c2468d2"
+    },
+    {
+      "path": "scripts/visual-inbox/original-dom-ids.json",
+      "beforeSha256": null,
+      "afterSha256": "3454ff1904fb11c4cd556133259dbfb10ae3aca0d9b68dc7b8bc83bf3682209b"
+    },
+    {
+      "path": "scripts/visual-inbox/verify-integration.mjs",
+      "beforeSha256": null,
+      "afterSha256": "c66ad34de55f9392a76a0d2470019d013bb05cb2c1b4d3000f72fd7eff43c2f5"
+    },
+    {
+      "path": "scripts/visual-integration/README.md",
+      "beforeSha256": null,
+      "afterSha256": "b07a333704536933107a8ff62145a695e7df62cf6019757b196503c6ee62b203"
+    },
+    {
+      "path": "scripts/visual-integration/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "00aaa13a5b7b009f606c2c664e3426ebcc02914b3f434b2fd6fe2237b586cdd7"
+    },
+    {
+      "path": "scripts/visual-integration/check-assets.mjs",
+      "beforeSha256": null,
+      "afterSha256": "81efe51731d6a096eceb6de1e7bf0583f68b448202b50afeb8f8b75294ea70d5"
+    },
+    {
+      "path": "scripts/visual-integration/runtime.py",
+      "beforeSha256": null,
+      "afterSha256": "bb82ebbb12877b404b92d5f751f9d5a35fc4c07d3175c3fdc6c7f305ce36179c"
+    },
+    {
+      "path": "scripts/visual-integration/transport.py",
+      "beforeSha256": null,
+      "afterSha256": "b6c0c751e7b5626da9d60f61a10b6dea31000036d847faa0a7689b1cfb0ec296"
+    },
+    {
+      "path": "scripts/visual-opening/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "aa9633483348d0e880baa0eabee7de5a6b0a817ef014e09d80e433bba0b22d51"
+    },
+    {
+      "path": "scripts/visual-opening/verify-integration.mjs",
+      "beforeSha256": null,
+      "afterSha256": "d5e909a0362b1f38c77622f0f1cdf3884f7be0f7642993cf63adb33ba8c8d1c2"
+    },
+    {
+      "path": "scripts/visual-operations/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "aa2a9154cc9f88c1e673aa7acf02665c30e8d64b9ed6e5076a04126577ebff15"
+    },
+    {
+      "path": "scripts/visual-operations/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "cd8607066945c275da4601ddb1171245daa4269f796c29352a63b61c61674782"
+    },
+    {
+      "path": "scripts/visual-portal/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "f0bb7d1bbf31015c321e09ea2b0784ba2668eca209ac24753bbb757ca540bc1e"
+    },
+    {
+      "path": "scripts/visual-support/browser-check.py",
+      "beforeSha256": null,
+      "afterSha256": "207601d3871b4877032d7f41af0b6f0c436eabb32e89954dd00c7a67ead77ae5"
+    },
+    {
+      "path": "scripts/visual-support/fixture.js",
+      "beforeSha256": null,
+      "afterSha256": "acc8543d9ea0f7fe6bf57a85c8f8a69bdf5a6c6a7bdfa651b98c8f8089932d64"
+    },
+    {
+      "path": "tests/form-feedback.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "e1490bad06e5a5d710a78806dced9b0bf0a9efb0b9ed3c2c802ca4a5c48c99bf"
+    },
+    {
+      "path": "tests/helpers/dom-port.ts",
+      "beforeSha256": "b9de4c93a2385510b5eec3d08cb37a952a17e9496c7ea6efdf05ed40bf8163eb",
+      "afterSha256": "be4662297272e6661694d3890fc94eeea7366988ebef2cabf36f1610b990a9fd"
+    },
+    {
+      "path": "tests/inbox-view-state.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "b6b120983be7be79c71952c10710f937a0acf686cdddd93a28ab7b3323e7b05b"
+    },
+    {
+      "path": "tests/opening-assets.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "1b7d44535a732a8aff0ca2aa4a6b808c4117dd29c70f5162b0245c7d1fbc3f8b"
+    },
+    {
+      "path": "tests/opening-composition.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "403419bc9ecc559ef7d9b56aab09781bd7f065cfcea2be06e2fd2216e3d110a5"
+    },
+    {
+      "path": "tests/opening-flow.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "d6af2388f4f153adf64c0c89a4e42e62e3cc6c4296159ed4893ccbe704a4938e"
+    },
+    {
+      "path": "tests/ux04-delivery.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "9a13e8d86f2cd0b5e4339c0be957f7e4276756bc5bd13b0fd5706e12c654c387"
+    },
+    {
+      "path": "tests/ux04-dynamic-notifications.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "9a485a32fb13fce405f518133060217b8287bcf3ad4b4e67d93096ca085bfba7"
+    },
+    {
+      "path": "tests/ux04-portal-values.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "bd4f5d8947ca5ee373f8ce54c6150045e52d4986ac4ea5c0a1e7ee28aaf88aea"
+    },
+    {
+      "path": "tests/ux05-admin-regression.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "9ddc7e4863fa91da601df3294658e657812d594bc2fac8cfbc2aa596e2cccfd5"
+    },
+    {
+      "path": "tests/ux05-admin.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "31321b5ca38eebf6ee836d5cc440bccad671c38092593c2cc73f24b4c77072d1"
+    },
+    {
+      "path": "tests/ux06-operations.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "a66b459594aeb4180082e50cf8f5be2fef1e7ae714dca4d3a8c276a0f4da0057"
+    },
+    {
+      "path": "tests/ux07-assets.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "a0d06d0d258c51f05426d863e42a1d774164eb36dfb154c2953e197e098f5e0e"
+    },
+    {
+      "path": "tests/ux07-support.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "52db86be65f626fe6143fcb67ab87f104687a72794f6578cae692515a6630b67"
+    },
+    {
+      "path": "tests/ux08-access-assets.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "a1e4210625f260cdc14a06201b7a35121b12e3f1cabec82be118669f8c955254"
+    },
+    {
+      "path": "tests/ux08-access-feedback.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "b6b1eb526cad35bf3a7aad3587669a3e6839b62d13830e8738060e627892e77b"
+    },
+    {
+      "path": "tests/ux08-callback.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "598de86f63a9255cdfa3b4bc99e85c833d14baf48f0d0dd6055d450eb23a761c"
+    },
+    {
+      "path": "tests/ux09-assets.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "decfc7d1cb4d7046ab31318560a5804ae90329b849d317561424b631c1580cf7"
+    },
+    {
+      "path": "tests/ux10-compatibility.test.ts",
+      "beforeSha256": "43abc4a6985625aad1da7121a5e08619e6a8121b21b75c67d123194bb88f4f21",
+      "afterSha256": "43abc4a6985625aad1da7121a5e08619e6a8121b21b75c67d123194bb88f4f21"
+    },
+    {
+      "path": "tests/visual-branding.test.ts",
+      "beforeSha256": null,
+      "afterSha256": "a05c220ec5f2afdbae357c310f4df8b7e7fd20262c076af613cbbcdd19100109"
+    },
+    {
+      "path": "web/access-experience.css",
+      "beforeSha256": null,
+      "afterSha256": "13eeb86152df4649364e69bdcbe31fd8f308914c916f4388110d0f1f1b481baa"
+    },
+    {
+      "path": "web/access-experience.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "312f81219d763b98c5c1de170f1ffe1eb662ce7578645bf17b8ae445d1554b2d"
+    },
+    {
+      "path": "web/access-experience.js",
+      "beforeSha256": null,
+      "afterSha256": "d7dbd4511775d39f8bf01c51012acaaedc948d7c75337a798e15928df50940ab"
+    },
+    {
+      "path": "web/access-feedback.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "f9300719c4e45df2a71d98879e6b5691bc01cac45f8cd879a89645789a8ac2ef"
+    },
+    {
+      "path": "web/access-feedback.js",
+      "beforeSha256": null,
+      "afterSha256": "a062bc4353eb3ac4d74a9dbbcce1083fd212525835e0aa201358eeff7dd88099"
+    },
+    {
+      "path": "web/admin-configuration.js",
+      "beforeSha256": "1d5ef34fa73bfdb155646cb6ba199219c4eb9bac7e6cf8300cbd0b1a2a9b6b0f",
+      "afterSha256": "18de725ab3f13762c74c64bf8fbbbf33a84171afa48f50afc7ae550b0c728a24"
+    },
+    {
+      "path": "web/admin-experience.css",
+      "beforeSha256": null,
+      "afterSha256": "3975b8429d947456d04cc2c5ff07a157b2528b7234aea6ecd6e083cc980a8413"
+    },
+    {
+      "path": "web/admin-forms.js",
+      "beforeSha256": "0bbc55d786f8fa78bb2dd7458c2aa081b0426c9d10527e6ace04c97fc16a765c",
+      "afterSha256": "dad27514276303b58658a5ae412e688d7f353c09ceed7df3b3fb134ccc7ed496"
+    },
+    {
+      "path": "web/admin-members.css",
+      "beforeSha256": "31e9e738684f306dc0631f15c48b6977c8cf50ed9ade37399809698ea5c5d6bd",
+      "afterSha256": "b9316b65dc44f167b8339f0b718ca7be46eb25c3e409a36dd8ad12362f01b580"
+    },
+    {
+      "path": "web/admin-members.js",
+      "beforeSha256": "dcfaa9a2351f1e4a7545aa05c17d2bc63ce17018e0f491d03bb8ad69cd264372",
+      "afterSha256": "2cd668b2f26eb8a92930d2cb9ce424542bff9de6674c027df127695813d162ac"
+    },
+    {
+      "path": "web/admin-ui.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "5d26233c41a38ccb453f6e3b2a22486bdeb0219064d5c0d3a50b0625d1c22b83"
+    },
+    {
+      "path": "web/admin-ui.js",
+      "beforeSha256": null,
+      "afterSha256": "54756dfdea4aa00fcfd9029724df16c9b9f92c706f652c851443f4a9f738521d"
+    },
+    {
+      "path": "web/approvals.js",
+      "beforeSha256": "b5f3b046a70949220c495717d4129121fb3682adbda9b2562efbd4dca2d1369b",
+      "afterSha256": "58c0247f2b556fd2f2a689c1a42f54811cfd96d934f53ec7f7ff778c3d1df635"
+    },
+    {
+      "path": "web/assets/consulte-geo-color.png",
+      "beforeSha256": null,
+      "afterSha256": "99f7607e9d4bc74ad7f7e06ca3e1311f9e2e82448286bb500e85cfd7de0199db"
+    },
+    {
+      "path": "web/assets/consulte-geo-white.png",
+      "beforeSha256": null,
+      "afterSha256": "924d2c378ad237bd23985358509b9d33f5433576468f86c1c59be0564b832bd1"
+    },
+    {
+      "path": "web/attachments.js",
+      "beforeSha256": "eebe728855a0f9ff6ce1e814818a72406baf05aadcdbbeb68003b410f101d03f",
+      "afterSha256": "686abc80387e631fef5ac9fa88ee5034359f6007090ece30dd3f406538029c3f"
+    },
+    {
+      "path": "web/brand-profile.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "879e3ad8fc057833effcefdff30f03accc0fd6021fe28de852752343b3c73504"
+    },
+    {
+      "path": "web/brand-profile.js",
+      "beforeSha256": null,
+      "afterSha256": "10964da32c5e5291c271b8702924811db515a157be2e184f46f12c4789c0add9"
+    },
+    {
+      "path": "web/brand-shell.js",
+      "beforeSha256": null,
+      "afterSha256": "4462120a94b3b5c2f65407e931a05a8c2ff326e855e5aae9ca6878c761637d2b"
+    },
+    {
+      "path": "web/consulte-theme.css",
+      "beforeSha256": null,
+      "afterSha256": "728ed9d8ecda4a6187f6eecde04ad2e1d494fc0906418d7dd18423e8f6f2345d"
+    },
+    {
+      "path": "web/consultegeo-configuration.css",
+      "beforeSha256": "8b4f08d97c1cfaf73a04cee54f8378d3026201567fe71ee022c1ea6251b4bfb3",
+      "afterSha256": "54be6e6591f0ae0040124f4d0180931da120b0e589bba04bae9c8941f0e418aa"
+    },
+    {
+      "path": "web/consultegeo-configuration.js",
+      "beforeSha256": "c6450ca3d45888bb88f64ee8b2f5d02d68ae511bdeead56aa0c04c65d682734e",
+      "afterSha256": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7"
+    },
+    {
+      "path": "web/consultegeo-request.css",
+      "beforeSha256": "bf2bb191d35cac21cf1ce4ec87b5ef70e9040b273955a03d24aa34e20b11b4dc",
+      "afterSha256": "0c2d0dd3c04dc2af89f6f273be35fbec01896e7d6ecc10823b7b54ca72873149"
+    },
+    {
+      "path": "web/consultegeo-request.js",
+      "beforeSha256": "afa8fd53e48cafbe8fbafce9101600649c8a1a59d7b4768420564e080b7dcc0e",
+      "afterSha256": "95b35c208c17c5a93824858af56f3241a9e0a0b16f116544147ff08d3d22cfd9"
+    },
+    {
+      "path": "web/customer-portal.js",
+      "beforeSha256": "a196e08df55cb02bad051b4d3980e60fd6f65af1bdea4b7ae90c6e9746e6925d",
+      "afterSha256": "ecd9fbea157af9da360447b8d66c1dba0756987361825b1e7d908499fc5a0d70"
+    },
+    {
+      "path": "web/delivery-operations.js",
+      "beforeSha256": "d5b27bd52a53cddb80d307edbbb47e7d0fd3e61de6b0f0760441e6ab4b505e84",
+      "afterSha256": "ab6fde2ea1dd19ae33f43a19c00a498b8b1cfc248a5cd852a21cb3e89e1a6e2a"
+    },
+    {
+      "path": "web/design-tokens.css",
+      "beforeSha256": null,
+      "afterSha256": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca"
+    },
+    {
+      "path": "web/dynamic-form.css",
+      "beforeSha256": "6e7ab3014bd445bd5983a34a6a0fa904ae24553427471bc801a5b95129151cdc",
+      "afterSha256": "362a6c9af8fa5c701cd91896a40f468d8ffb0713d24e6103ab6ade07c0a68cda"
+    },
+    {
+      "path": "web/dynamic-form.d.ts",
+      "beforeSha256": "368afca65e93a253fe83f3cf17b0b2558718cd2cc61ed7e44f6eec5ad7918eb2",
+      "afterSha256": "6f3b65b2196938ed62663a75134224a074dbdab220bd7343aee1599d229842d9"
+    },
+    {
+      "path": "web/dynamic-form.js",
+      "beforeSha256": "61bd7e0251f5c8e09d906b0b066ef3abd745de88a18471bbde23a6f214930c6c",
+      "afterSha256": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8"
+    },
+    {
+      "path": "web/execution-checklist.css",
+      "beforeSha256": "3e27cd093bf24123acedbc0093e726be7e8188df2f226d068c4a014baf32fe36",
+      "afterSha256": "c5acd26f13c3ad510eec98e3086fad94cf3ec6cfea69eb2b453e9564740fa4b7"
+    },
+    {
+      "path": "web/execution-checklist.js",
+      "beforeSha256": "10f173005f4b3df399a2c808883552015d9cc686007b64e1f66e67de220e01e3",
+      "afterSha256": "0f5bd40a434961c905b928c7cb592b599c7226c261180ff483293be7a5091d38"
+    },
+    {
+      "path": "web/form-experience.css",
+      "beforeSha256": null,
+      "afterSha256": "afb0f90b8dc5e2fe02cba92b078b55a647292b32c68d0467c6fc6ed1b3d0d377"
+    },
+    {
+      "path": "web/form-feedback.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "4cc30ecb5384673371828fcdea2cb891e32bda6f5785f5b37c408a47738a9d98"
+    },
+    {
+      "path": "web/form-feedback.js",
+      "beforeSha256": null,
+      "afterSha256": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e"
+    },
+    {
+      "path": "web/form-review.js",
+      "beforeSha256": "3adf3265ff595d590bd3e83e9aec77f9af66e2970439a90588b7f4797f6edfea",
+      "afterSha256": "376f53820b44a0cdc1f6d55ef26ad61ca11bde556af3862b6a215b2655a701d4"
+    },
+    {
+      "path": "web/geo-auth-callback.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "27bfcfd10c435169a5ae132d375b62df12cc46c4af2d73cb1806c279598966ae"
+    },
+    {
+      "path": "web/geo-auth-callback.js",
+      "beforeSha256": "24076c7d476bca1019eea36078270b7c193a42982e8b5d6013676b818432ea75",
+      "afterSha256": "92abf4eb538ec3b6819e66e6ecf403b8ec955d7dacd2b66db80767312bb0e69b"
+    },
+    {
+      "path": "web/geo-auth-state.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "e00853b02615f1d1951743beadf24c912a1f08c0c8d7c169898f243f20502936"
+    },
+    {
+      "path": "web/inbox-view-state.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "772f0efc945cacc50922f3a22c49057c5a55d5b04c66be37976ebbb50a9f0f91"
+    },
+    {
+      "path": "web/inbox-view-state.js",
+      "beforeSha256": null,
+      "afterSha256": "6c6b1fab6ed2a5c1eaa1cc63bd0cf5ec7cf06c07e7773f34a832ca69fe106729"
+    },
+    {
+      "path": "web/inbox-workspace.css",
+      "beforeSha256": null,
+      "afterSha256": "a85bc3ea8ba7465275a129622a681fdb80877367cc0ab1106c9273a355528b0a"
+    },
+    {
+      "path": "web/inbox-workspace.js",
+      "beforeSha256": null,
+      "afterSha256": "8c16f2a8b8e19e2067f375ce8b4538cb2d700c0db5d040fa443f00d1ca0ebe53"
+    },
+    {
+      "path": "web/index.html",
+      "beforeSha256": "93028527551e41d9e5d9f5c763f5e1d4dd3cf9cec4ce0144c751e3cac1823155",
+      "afterSha256": "c82da3766cf7866dea3baf340126dbd4dd9ec582dd9fc27c67af3873bfd44490"
+    },
+    {
+      "path": "web/opening-flow.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "3cc37cb679af5e578559e084fe1b99aa90c84d4a16254105a8b068ac46a71169"
+    },
+    {
+      "path": "web/opening-flow.js",
+      "beforeSha256": null,
+      "afterSha256": "eea1cdab733abf0c283e996d7dc23d86bc76b03a5f6f262cc51600ce2120f250"
+    },
+    {
+      "path": "web/opening-wizard.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "cb74d41d97089a5065492c5d46ce46218581ea9851edbb6666397e8f1d7a8d46"
+    },
+    {
+      "path": "web/opening-wizard.js",
+      "beforeSha256": null,
+      "afterSha256": "074e7e5c42f8cf4358837dcbb60a5eebb08acfe5fea98e59d521585afa1066cf"
+    },
+    {
+      "path": "web/operations-experience.css",
+      "beforeSha256": null,
+      "afterSha256": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac"
+    },
+    {
+      "path": "web/operations-ui.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "aeeb2de609c2def9fbd2087b104fdaf395aad231bb4d066911292a554321513a"
+    },
+    {
+      "path": "web/operations-ui.js",
+      "beforeSha256": null,
+      "afterSha256": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f"
+    },
+    {
+      "path": "web/optional-support.d.ts",
+      "beforeSha256": "70b3f82b00a53413f19386f240d7a20b09693d8343518c649cf6e3df733b17a7",
+      "afterSha256": "9ea0473a874b7904f5327fd5ea2de050a6eebc0a377d7db42aa4c4de4e3f9091"
+    },
+    {
+      "path": "web/optional-support.js",
+      "beforeSha256": "eb25c6c131ba05da4be69bd503b59d3bb12c62a3fcd017a49261aa08d85c1955",
+      "afterSha256": "57de37513c7dc77bf71d2e5a36f0c9cc499ebe2dd86fc22de9dc88d025e5e996"
+    },
+    {
+      "path": "web/portal-ui.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "45a5d3d4a4ffdfed45e5d5ebd3078dc3b802a6613198a726ff684290e98b15e6"
+    },
+    {
+      "path": "web/portal-ui.js",
+      "beforeSha256": null,
+      "afterSha256": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737"
+    },
+    {
+      "path": "web/portal.css",
+      "beforeSha256": "af4903c70338077f9504d3a1ed6b85fa55011a6c72a22482280ff90abe324757",
+      "afterSha256": "48c6b83c40e9d3a8e4094ce8864fe928023614d53373d64e0bfa4a9ab3d944bd"
+    },
+    {
+      "path": "web/reports.js",
+      "beforeSha256": "d2b693c04a63dc764c60de7ba155ed39314006c40ce90899d0302dfb2e4a5256",
+      "afterSha256": "59c9698a65b445b8bfb796f905123669abf9b2d9fe0bedb08d66fdacff26782f"
+    },
+    {
+      "path": "web/support-experience.css",
+      "beforeSha256": null,
+      "afterSha256": "208bb65e59869f405ebc6b6d3efbe9057f6e1fa3528c115575231edb741aedc6"
+    },
+    {
+      "path": "web/support-intake.css",
+      "beforeSha256": null,
+      "afterSha256": "c253916aa725af6f891e6ea3fb3cb02df9b62a5441ee47f44d71a7881149a4da"
+    },
+    {
+      "path": "web/support-intake.d.ts",
+      "beforeSha256": "d715dc7ccdf36a3d79cb49ef0365ebdc0b2168f74786cd432c1d6da5abbbe1f9",
+      "afterSha256": "d462d4491854d241580b88da6c1f688b549904ddfa5b533690be9a40ca58c510"
+    },
+    {
+      "path": "web/support-intake.js",
+      "beforeSha256": "7dd9533286d8701500a7787344a8f008e6893d804495e13ab99ca68516421d36",
+      "afterSha256": "5390c8987a0eb4f32f75796b31e61e31948ddbcf2519f9ca0b503965155f4bd1"
+    },
+    {
+      "path": "web/support-presentation.d.ts",
+      "beforeSha256": null,
+      "afterSha256": "bb9d86d6504ebb65f93153bff4216bb045fbe52d3b714e0c5c8e74867b973aba"
+    },
+    {
+      "path": "web/support-presentation.js",
+      "beforeSha256": null,
+      "afterSha256": "1fa018592815d029855097cfc336d929843f076ace2e762cd4542ffa373cdb38"
+    },
+    {
+      "path": "web/support-queue.js",
+      "beforeSha256": "a4fd43004bcdebcb48f6a4399c2830802c35bc27dd46727820b30cdbdf1c529c",
+      "afterSha256": "ebfb8f0723f15ae43053b90e9d179c0817d0c593e457f0182490b92a18de996f"
+    },
+    {
+      "path": "web/theme-init.js",
+      "beforeSha256": null,
+      "afterSha256": "4f40caa7bf0af0e6058b10957ec2311543e831ae1277321ab454f28eef641f4f"
+    },
+    {
+      "path": "web/ticket-detail.js",
+      "beforeSha256": "77fd0d6b46813ec817976d7849afe6a83269eecfd4e975122e34aaa7a74195a8",
+      "afterSha256": "cdc00590fd4a67081e0552439e7c5dd3255b08a1473581b0c3ca23f674b40881"
+    },
+    {
+      "path": "web/app.js",
+      "beforeSha256": "940b74fe6164188e01d6fe0d71515c0f26968ee7ff0da2fa3b1f2f8ec7430521",
+      "afterSha256": "77e2099921424cf429adb61a6b76ae7289195cf3d9e899f38062be11f588a2a8"
+    }
+  ],
+  "protectedFiles": {
+    "src/version.ts": "90416d63b11da43ed818cd7a2f9bba7b8d4def9aab85cddb6b8d6dd7628ccd40",
+    "src/application/attachment-scan.ts": "a29364c9a5a7e5e3a8831128f91c7a630ea4fdc31b05dc02b944f40a2dbe9622",
+    "src/application/attachments.ts": "5773a707f3f23309c5a2ff99def98365418d36d502cebf0d2b4378eeaf7293d4",
+    "src/application/configuration-admin.ts": "715cb6aaab9a5407e75901304e88ee5d1d8d79bc0045107693718fbe0fe0f845",
+    "src/application/consultegeo-configuration.ts": "283b995ae2ca8f1e0524ff5a1f2932d248d8c29f4a1968c3aaacb62c8c1be0c6",
+    "src/application/consultegeo-customer-configuration.ts": "9ecb65ebe57cd84953d5c5f069e52e05b100e9b817d7227aa18cea0e91db3cb8",
+    "src/application/consultegeo-intake-profile.ts": "154668bf5e90eb5309ebe7bf9435577ae79fbdfaeddca643378719dcee584e60",
+    "src/application/consultegeo-request-catalog.ts": "80ddc757af1e67836a1140ccb747c3a8b94445ba00799af80c1acd4219dc774c",
+    "src/application/conversation-result.ts": "40367600ba6392c0e83388cc9da334a30acbacb6b0ac5bd4f8c2896e3e091f6f",
+    "src/application/coverage-result.ts": "ca2c79e85769afd22b120d618dcc8bb8bcb3ac478a3c8e95731b7b1628043cd0",
+    "src/application/csat.ts": "5db2677d34df74068e4f8e6354abedb9200a8f6e0821d08e8946ed2f6f3b94d9",
+    "src/application/execution-checklist.ts": "2b47f6a84a808f77a6ad69334ab02b744c8abcb4ee925cb99e4b251bf621deef",
+    "src/application/expansion-preflight.ts": "dca3b4da9f8215fcc09c95cee36280b4905e2838699fb3f34596f22b69ef1bba",
+    "src/application/external-identity.ts": "d113fecd44a74b7c47514703386388bdbb5906dc830f4a361ac2737cf8fa61e1",
+    "src/application/external-work.ts": "01ad7549d38f06f1976c1028d3d575813d10db5ed1478a897ccd944841fa5755",
+    "src/application/first-admin-bootstrap.ts": "20030d2a52768ea1213703b915b839932b0aeffc1814c3b8ae07e601cf805d5b",
+    "src/application/form-catalog.ts": "f234e74a89f84d0cdcfd1533102d5dc558dd1396f991b8c6f69219c5840b53e9",
+    "src/application/form-draft.ts": "bd853b5d6b1a3727f52cd68a888c13525e7d6d38a030380b68128fae567a84ef",
+    "src/application/geo-login.ts": "7fd3adce9b29fd6bc23012b77639d53d771905d2ced503c0b1615d62a67ad64a",
+    "src/application/helpdesk.ts": "623b6ff2c3992c8b9277051896f1df0a53a5838ebdc51c2e21d35faf56bfad9f",
+    "src/application/human-scope-change.ts": "bf312cfd83b9a4dfa4af033e5361c7be0eca30598f41ac4a45c08967c308bf71",
+    "src/application/intake-beneficiary.ts": "ce18a419d6397e8b8b579aa7fb1c64d20b15771f711de7b2e578204772994682",
+    "src/application/intake-context.ts": "7ca9e1e91be76d174e501ebcdfc9663b2bb8ff5cd31d9a7fb15ac1f54ed5e00f",
+    "src/application/knowledge.ts": "35d15af4d51bd0c2a69b8da70949f2a414100f812f3e920e3a88e539de3fdc02",
+    "src/application/legacy-history-inspection.ts": "2948852f098d370feeaa4ff40f89c07e084b5d6b16cf387a3ef9bfbeea1e86ce",
+    "src/application/member-admin.ts": "98888101c215100d9c0d67fd021ac9c0a737550cbee95da60be3e168c1fc58f5",
+    "src/application/member-invitation.ts": "012959473a52b6a02270d1cb058d9bc76a19b97c3707d017012dc6e29061d470",
+    "src/application/notification-outbox.ts": "7f5a2d02fbbab788ffb5132e7bc173c83960df454ff6d684d40ad19308e9f297",
+    "src/application/outbox-dispatch.ts": "dbc4b6c99738e72593112bf0ca3ced22215cbb1f323941dd79118f33ddf0e639",
+    "src/application/package-delivery.ts": "a0b5e81b24bbe9ca9c920a5ca238ebfc83477b99ff60e360d66fa78112c124d3",
+    "src/application/pagination.ts": "740d4462701b511e70c5ad21c3f5e000604e70617fdfbf8fccd21f21b64854f3",
+    "src/application/pilot-control.ts": "12d8ae1f7bb27e6aa9ea4f55a80f3f7fc3fc315d73b3c04a6d77e525b7942168",
+    "src/application/portal-read.ts": "c2fedb7355da78838259e09332c779703fb43c358b5d0178935946ac0ed3f8c2",
+    "src/application/ports.ts": "d242d6391cc9bf8e8ad390fb97e7c065f39fe8b2b3478339d857aaa852373812",
+    "src/application/replay-result.ts": "7c8ddbb9bc4d3099ac0d715c7fa2758173da9adce9e7ba52bce69b27f15ee4ff",
+    "src/application/report-export.ts": "72d75a49ed48c8697826a136a4bada6c9ac97e0b0a0e702711f6455a0b8b79a0",
+    "src/application/resource-access.ts": "6714f8ea10bd6bd160963999e593d29f144d03377aa4a8e1f3dcdb1650ed9b59",
+    "src/application/resource-grant-publisher.ts": "28777b3e67522008ab142a1098433ea4499ef05c5bdcdd8d00054a31cd87d76e",
+    "src/application/support-catalog.ts": "7d784e3bd6700de4f9e2fb12ff80062720c4b8a5b2262eedc03c14de2ddf9344",
+    "src/application/support-intake.ts": "b8c1405492ef73fc851ac13c43542a9c531a9c523887fe2e301fb59023eede22",
+    "src/application/support-review.ts": "b2d3b4c4956a5a2fac60c80f3297602ba335c483493209fe13aebebf85cfa421",
+    "src/application/support-workflow.ts": "da2a1e89e4b843d3596269f77e005825edc3715387cbf2ecb4614f0b65812e69",
+    "src/application/ticket-actions.ts": "b51f2aafed5786e4bac326e4a414072f388ce254e3a0eb2b6c24f7aa30cf26aa",
+    "src/application/ticket-assignment.ts": "b7f4c54f155d300c03670638a05e0e2f86324b2c267f14b80b74ffd1c56e73b5",
+    "src/application/ticket-priority.ts": "e4345c92b1e1e55b1c14e4ba1f522edd8fa44188838db7cf15de000453b9f0d7",
+    "src/application/ticket-search.ts": "77283caf8c610e860691084f40cdc2753209d6dd7fd331378055d0dcaf81b681",
+    "src/domain/admin-policy.ts": "2219441f53b5a03c806d91769bbc0f26434139807c81e1a1b9dbc0e7e8cca995",
+    "src/domain/attachment.ts": "c0b0cfe0a8884fcd4022dba861732043145ed0f4c1616659239efc3aa7c4144d",
+    "src/domain/business-calendar.ts": "66123dcd42cfa944997aebf13b38d877c2f4357fd8d634a16a4a39f10a551fae",
+    "src/domain/calendar.ts": "285027ca7a50e16af243cd321e14f935a3830be775bb9bdfb6155de4a1f2fc4f",
+    "src/domain/canonical.ts": "ab4e1e1111143e8403782307c477e61bd4f4bbb37680a74eba370367502a0847",
+    "src/domain/contracts.ts": "04a79e0ad1d3b6ae02c0bddbbfed9db609e55156b7380bc045a89e1f07d6c7c6",
+    "src/domain/errors.ts": "c9b6fdc8a8565fafd10c4ad877da7c6dbbc0707b6901642456115f5e46ee9155",
+    "src/domain/execution-checklist-mark.ts": "b4c1ac8f17dca315e217228388f52d35c4db96f6a33b6de6aea7bfb36fa64bd4",
+    "src/domain/execution-checklist.ts": "a15c849810c2d92bbe3d00b839f9d60845cc7ffcde6b1c27495b92413b4fc210",
+    "src/domain/external-identity.ts": "d6dc0875f081c92c33ac164b46b9f1bac3cb5b3fb1c4f8785acacce5d06f95de",
+    "src/domain/external-resource.ts": "69947fcedd1400c624664a23594f2972235afad1bf564cd37179bf7d86b572eb",
+    "src/domain/form-schema.ts": "3f7785d28abc4e0d1a0bce247add432d1ccdc1ddee7a46f6ea1687256378801e",
+    "src/domain/form-validation.ts": "e297450ad068a948ddfc50456b1917e8c2a030200832630b1eb3b08b271fa019",
+    "src/domain/input-values.ts": "f81581e43a9a5a0797fce8d7ef58c619cb52706008c2dcc7c4d7c757b8fda6b9",
+    "src/domain/model.ts": "5de40e2d322d9faff11507ec80f6c71d8b6f64a23964e24d36697ca9bb8fd63e",
+    "src/domain/notification-delivery.ts": "f81ab7a209baef5837edd3c3439b8dfc373ad9b267bd9a2b1b2fa72bb3b6c859",
+    "src/domain/policy.ts": "7637a02cdcd9622cea26e78780617b7d32b0be1bf668493f221f70086656e009",
+    "src/domain/portal-detail.ts": "bb8df881a41aa38512f2ae10b139d105e519933289e2005832d67de850956278",
+    "src/domain/portal-query.ts": "6c49ec935d76ae1ed321a1ee45d091de8c96ea67e1c61302d08f5a5100e88077",
+    "src/domain/profile-expansion.ts": "c23aa73f38df8bbc21a4e29214234740e25c1c6b1eadbad77cf72084e331d33e",
+    "src/domain/public-workflow.ts": "549b652e886d7e75a9d5369fbc4ec352b074ec246641bf7403e52c198f6d9289",
+    "src/domain/recovery-plan.ts": "a8005782c41a379c35362a6a2215aeec2607ff3fcd5708adc7fee00e996590f7",
+    "src/domain/release-manifest.ts": "efe64e307580b3e1a1f597c1526dd65b4b4bef5f66014ffb1a66d31aebea50ab",
+    "src/domain/resource-publication.ts": "f41a2a1cfd4a07711c70217c6bbac545827c60d95c73ef2a36313b7994bed395",
+    "src/domain/scopes.ts": "8f14fb8d06722bab87d4de68b2f08a83be1ac9e69e99baacf8e016e4be070dee",
+    "src/domain/sla-clock.ts": "7d083c86904ca44c563f66605296c285d5f6e604a57702e58ef67b5e74cfdde9",
+    "src/domain/support-configuration.ts": "a750f91caf97e7a759689f39142eea21fc9c222c34b384700aa780ada7251749",
+    "src/domain/support-review.ts": "564eca6f96a304154ad9ed974202b9cc614efc0135a9ad21bdd3fc1bef5430b6",
+    "src/domain/support-workflow.ts": "617bf38d07100f3fbe29a9c379352e22d0b7d0736aaf1e513c905191f0b23aa3",
+    "src/domain/transaction-effects.ts": "20acaabd0a35916e177c1594e6dd8abd5def15eb845dff8755fd9756d24d56ec",
+    "src/domain/workflow.ts": "e8c8fd81a3229a478eee1c4875851d050294f2843088328209195fbd4a24b4d0",
+    "src/http/additional-support.ts": "099db1a7e33b6819a8910ed817d4dc89407ec88fe7b737d95ea5dbc0e41c2004",
+    "src/http/configuration-admin.ts": "7bbc6e18433dacd52cc7d5d4d3c434abd4a4211945da8490933d2ef53b4b80ad",
+    "src/http/consultegeo-configuration.ts": "8e17d9696e5e388c3a158c57c09686f16ca22747bc5f84267c20254082b164df",
+    "src/http/consultegeo-drafts.ts": "ccf9c48e72affe368bfe543dcfc362cbb09aa1a8565f8c3300f0ba9aa37f3654",
+    "src/http/consultegeo-opening.ts": "06fa5ee4c9c092c7bfcd982e9a9fe2e09a5c1bab1cc618208ec402e76793ff22",
+    "src/http/controlled-json.ts": "95e898ed2ecade63ca589b751caa36532e6a58474170736de0717a7973d18149",
+    "src/http/delivery-events.ts": "71f3e843a20ab229c4f8628ae6b8ca348e3f768a7d3f4891adb73334c65667f1",
+    "src/http/delivery-operations.ts": "8487d64e0349939c397fa52c4f3b140dc40db4074ac1895dcef391e3a7abf35f",
+    "src/http/empty-body.ts": "ec14f857b1e4d5f922dab253454770fb6432fbfc0e5999d3d6798d975e2c278d",
+    "src/http/execution-checklist.ts": "91c0ed6a453ba9278247f64be4243a7faaa34d435292592e77abd5a1dca9effd",
+    "src/http/form-catalog.ts": "92e7c42de5c44e657eb412a730b14a6e9873cd0d01c11bb42c071ad3e1a1148b",
+    "src/http/geo-auth.ts": "99f2a3165033e3133b7d62dc108524913c4acbcda8ceeb57a74e2b053de8bb74",
+    "src/http/handler.ts": "59d21b24d4b13af0d57cffb2ea734bf0a75fb62d2baacd1fe47b0fe694cc0061",
+    "src/http/member-admin.ts": "922176e0068a5dcd1a015d6136a2f592c06a4ceeed9302cc0e53a28128464914",
+    "src/http/pilot-control.ts": "f03c3732cdaa4844c29884c5751de54a55d215186aa671ca25dced88fa6cd1e2",
+    "src/http/portal.ts": "d728a656a04c2da0e470b582e65d77c845cef4d020567dff4a58a9c45332a253",
+    "src/http/scoped-ticket-handler.ts": "58b655db3585174f0cee5e6e2a702e3ce05be7767a77786bd6054f80e492f7be",
+    "src/http/serialization.ts": "e1885f360ab33747a0679154cf96355ace275450ed7ffea0ad1217beefc2fd76",
+    "src/http/support-intake.ts": "3b28fa03eb49dc23266b75d295443056b966389034f48f8944ef6bd3f9d4e260",
+    "src/http/support-review.ts": "fea250dba3a3ef962132915de48ae80beceb871eca6a5062d5327f7b4bc27db0",
+    "src/http/support-workflow.ts": "622c672c47bec5d445c6549bf4dfb1d585455d792c6ace5523806165bf6b46de",
+    "src/http/validation.ts": "a5230cb16204c64cb7f6178b9ed650f6a6bb5635bab60c5a2754548b0baaa819",
+    "src/infrastructure/auth-assurance.ts": "8dd22d6427a6973a5615d52cf6d79662b6002551561284c09c4ca52094ce8d19",
+    "src/infrastructure/auth-response.ts": "52a365859c6c197e6d965409f01c51a6dfb38637d9dc5080cd6ad05564b59d78",
+    "src/infrastructure/authentication.ts": "0f91d3e0fb550a16fe153b679397ae8f388f01c0206972855ffe4dd28a56d607",
+    "src/infrastructure/consultegeo-configuration-store.ts": "c9cf75a01df13fd492284a2a0702d052d47ffe3e65f09ac1b376d1ee025d414c",
+    "src/infrastructure/consultegeo-intake-store.ts": "9f58197cc7f9c2ca6626a871c985582826b2bfa92e09e2ef1235f9157d4cfd2b",
+    "src/infrastructure/consultegeo-runtime.ts": "59a4ea0f47f6c3852f7a77c0e6fd3bc4bf165baa8e2894f6ba137071c91f2256",
+    "src/infrastructure/database-security-contract.ts": "894e1d16a5f0dc0cb91b1663ff7d41fa103a36b9039324d2c8ac594c66eb300e",
+    "src/infrastructure/database-security.ts": "716d4e673b4390ac6cd265956c1f973f8ea007315a065d8e6101f47e950971b7",
+    "src/infrastructure/execution-checklist-store.ts": "d5006b47e54ebc01934bc531ae6862ef4ba1ebebadb00ca6c589fa6920f260cc",
+    "src/infrastructure/hosted-handler.ts": "eac25b432d8b20f17e251a49b8596d1ad3a2ff5a9c57f80b7e30a0a3841089e2",
+    "src/infrastructure/hosted-preflight.ts": "d09edbd1621c04ab26a2011a3e8ebbb13ce9c8a86b8257a7f7f1af1d22c63671",
+    "src/infrastructure/idempotency-lookup.ts": "91c2837dc1968400de77842fce082aeba292b06f6c41ef583768f2e5fbbb569e",
+    "src/infrastructure/legacy-transition-guard.ts": "7af566447eb5703e0960ccf25e032a9e9b2a659ff8b7c15a41006746a23156df",
+    "src/infrastructure/memory.ts": "5a2c3064858d7d4beabb567343de72026d480d80318a3f91aa65c4410700f18a",
+    "src/infrastructure/oidc-client.ts": "52b24f1042a9e4c65be8df8bb90b0ece4b8f7f9e11dd625fa99d3713a6c11bfb",
+    "src/infrastructure/oidc-identity.ts": "e446eabb663f69579c406750ddc572e5d51d7a86a3065839c352f09393f2237c",
+    "src/infrastructure/oidc-token-vault.ts": "7de9468d0b1b21e3ac795626cabd704f932aaa7f7cf3e8df3d6b4ca9109ff16e",
+    "src/infrastructure/operational-json.ts": "c84fbb44c5ac62df9dd28a39beaa95e74fafa4b4c4f05f8fcb4ea36214d39d37",
+    "src/infrastructure/pilot-transaction.ts": "7f568bef23dfe6172853c5cf5b93c5b29a71c70494961e61b18f19871f49f433",
+    "src/infrastructure/portal-read-store.ts": "950fb58aa47e7cdab8c19d7d31c44a743fc5f644719fdf3d9e8ddbdd91821c59",
+    "src/infrastructure/postgres.ts": "4eb78691327eac848ca59758d10cc672ebc87b6f80cc040bb4c0d55052fc6a75",
+    "src/infrastructure/principal-validation.ts": "56777d574ae7d8aa695be2a30bffbb3e098ac9f8370966881f3af03025433601",
+    "src/infrastructure/public-workflow-read.ts": "d3bb178fb234fd6a95d4c184b3c28807329ddf49a466920bd94c358ce0ea318f",
+    "src/infrastructure/rate-limit.ts": "264ee112115803f90e37341287bbf7ea327d322d1f3e52b81db56f39e92df9d9",
+    "src/infrastructure/release-attestation.ts": "6790e2da51c5e1913238070ddf5da604e97f4df7547d0e701684bb248dc0afb3",
+    "src/infrastructure/resource-access-store.ts": "3890ab82cc9687e34f94ca816c5a32b5ccbd8040ea7a509ad0c5953bc1f9c0af",
+    "src/infrastructure/resource-grant-publication-store.ts": "1bded82c4d98758e99f0f9c9809b1657abf8772cdb2d9445b8a0ce7905a12295",
+    "src/infrastructure/resource-transaction.ts": "1da41a8969c2f5d3ab92782b2d2836c7f83c310faf6242ad0b69ae4a245061db",
+    "src/infrastructure/runtime-config.ts": "0fe3c33ddfa440fadb888318deb2b35a8c1fd073c6bfe4c917b3c7d8b87d839a",
+    "src/infrastructure/runtime-preflight.ts": "209f55a88e5a39b502d6b86ad069e25668bee3265faa08706aa8058a760958f0",
+    "src/infrastructure/runtime.ts": "4da1ca020b3385e3aef9795c768c76eacbe6203d1f5a428b6a94e95e357ed9f1",
+    "src/infrastructure/session-lifecycle.ts": "2646abab1452385c18329613a04b68cd2ebc2fe9968ca1d3603d64afbd235d28",
+    "src/infrastructure/sql.ts": "b971c6eb82c933e93ee46c7bf68dae84e4f3744dc97e63b36ece8f382c031651",
+    "src/infrastructure/support-workflow-checklist.ts": "8ec3b6a136798b8f2f13f70af07131a83046e39f2a891d4e1d2cb9e2f7737e85",
+    "src/infrastructure/support-workflow-store.ts": "f761a7fa3b79ea77a74c878a39f698f480349996f0ec6f54c66473d2bc8afedf",
+    "src/infrastructure/transaction.ts": "6fa52cf60405522aa66e9369747c491efe54e58c7a3dbf1d92429b91010f8853",
+    "src/infrastructure/workspace-discovery.ts": "4c8bb81023fd92765a887ecfad9e4eb47dd6c0d7c16d357d5e6981c364a652ba",
+    "src/infrastructure/write-result.ts": "077e49ae8c48366aafa693c29d774553a7c099792b0e79bfb46d093aad047d8b",
+    "src/observability/codes.ts": "e43d8d36f7aa63192a4e10e96982a6aa312f633639627d19b21a5365128dcdfb",
+    "src/observability/http.ts": "5b7d0bdb2aacded829b624d2622ff01604866f83dcee079fbbeadc065abc6467",
+    "src/observability/summary.ts": "2a40dafb0aedc3122f0d53e54359167516335452cef99cea8a08eeb1446008c1",
+    "src/connectors/geo-legacy/mapping.ts": "7cc483a1d02725f7d793a200a4181d06d05bf1793116afeeacf2a99646f13e5b",
+    "src/connectors/novo-geo/contract.ts": "a26795dc3aaad225d1816c97c633bb2541c23c9aa954ccc0dd0cca9a921c7fd7",
+    "src/integrations/consultegeo/configuration.ts": "f1678d34919ba975e2d0f172c0efae6f5c851dca7b0af14a885773e6d08e32c0",
+    "src/integrations/consultegeo/service-policy.ts": "af9a1bd295695813f8a68a3c96ed240faaebc25f0e2843827618a52e65ec65ad",
+    "src/integrations/files/clamd-scanner.ts": "1569643e0c534aa069b66b6d563ccd563dd67481433dcc4cc12cf9b37bb5b442",
+    "src/integrations/files/inspection.ts": "86f670c861c48e6c8ad0fc952e6ef17c2748a53b6ecde764f203d52a536593fa",
+    "src/integrations/files/storage.ts": "47500e9f02b44024996d3613e78539f3665a28a25219a5b284db9289f77c9c8c",
+    "src/integrations/notifications/resend-channel.ts": "761cb9689795e81269f70191b0d9536f64964de74015f753ffc0ac985b5f485c",
+    "src/integrations/notifications/signed-events.ts": "b81eb2f8a6d3a428673a65f17ced7168e8836bd308527c535e40c60cee104fae",
+    "src/integrations/notifications/templates.ts": "1b00c7ea520c26bb4efe9e19ae70ace33c82c2ace5fc01e59809d3e6913dd57a",
+    "supabase/consultegeo-upgrade.manifest.json": "70a0c2389426b417474825c80b2abb78d8f3f481ef2b0c1e7c1f5b59a256254b",
+    "supabase/migrations.manifest.json": "6576ec13ce18c4b404a4ebc84d814d4b59a2045b9e5abc143de1306974d2aaab",
+    "supabase/candidates/cg_resource_observation.sql": "b3fd7bddcdc352e738615c20eaa7377eaebe16985f262ddf7e08fab8682c1fe3",
+    "supabase/candidates/cg_resource_publication.sql": "09d610deec654d5c9d52d2e08f35d85728fb78ba7dd6a7e045d77132c028593c",
+    "supabase/candidates/cg_resource_scope.sql": "6e95aaba83e9411e11addc7f734c9f28f0713b81f3756d666fe000efd7d3e3c7",
+    "supabase/candidates/hdn_consultegeo_configuration.sql": "b6080ff019fb80b795a81f9b4e303856a290f0117a6f38d253b12784e72a5dcd",
+    "supabase/candidates/hdn_execution_checklist.sql": "7b7baab705549e0b706fbd1aaf76cb80558e68a53784718cf7029f1f62ec77bd",
+    "supabase/candidates/hdn_support_workflow.sql": "35b92d19ece3b94653f442d3396e735ec1fe391d97be4661992043ed29684979",
+    "supabase/migrations/20260915000100_restrict_existing_definer.sql": "b98618ba0c23b1f126119e159324ad4576358798d8fb6e6fb09553ffdc7f3607",
+    "supabase/migrations/20260915000200_helpdesk_foundation.sql": "ede5ab9756781e396e0065c0124f5bf1c698ea53fc72aef067582221b65b7ccc",
+    "supabase/migrations/20260915000300_m1_authorization.sql": "aee3c4a82c791c0519719884e2e0ad0fe15f7fbff4afe0e9f552559959ae279c",
+    "supabase/migrations/20260915000400_m1_resource_limits.sql": "3448a0c925bac1477183b01858180c12bce44dd4999f23122db0bae2c2185f11",
+    "supabase/migrations/20260916000500_m1_session_lifecycle.sql": "cc862fb5f5259344be73c606a94b816a5dd964915a2a7397fbdd3003c27f0a32",
+    "supabase/migrations/20260916000600_support_catalog.sql": "f5c30d4fce3c7671c4b946704e57bbd0139c10936e93e48dcbc77b2c214cb979",
+    "supabase/migrations/20260916000700_ticket_priority.sql": "4d8065d139c66d7256d555cac0c56a32d1a0ee027d6471bbcddcbb77399cf637",
+    "supabase/migrations/20260916000800_ticket_assignment.sql": "a5bd483ab2be0dc3076c338ce8a785ddb2861600bf9e784341cab4c3773eb348",
+    "supabase/migrations/20260917000900_human_scope_versions.sql": "016562a019a745b8e8953aa32a232fda8b06163b02cb9ca5c40a5536fff064cd",
+    "supabase/migrations/20260917001000_transaction_effects.sql": "8672037df0d7ae62593aefc865d82e6f7994d12a087f9ef40232d54b241a0d9c",
+    "supabase/migrations/20260917001100_conversation_lock.sql": "14191c072a5d101ab644eeaa0dfc6cbed61dfa25a9eaaf92870ea5b413337166",
+    "supabase/migrations/20261007001200_workspace_discovery.sql": "9e080628937d47ff23d27a1169e67c9464ec694522c0f4ad1337e901575fa21d",
+    "supabase/migrations/20261013181408_consultegeo_m05_upgrade.sql": "23aae798d34cf5c4d6e96478761dfb2e5208dc071fd886f2ab56d78e12d83b1a",
+    "supabase/migrations/20261013195704_consultegeo_m06_public_conversation.sql": "10a397bd74b6ba2c81bd115c63ad205bc2aeac157686812e7d040ffcf353f09b",
+    "supabase/migrations/20261013233838_consultegeo_m09b_intake.sql": "4c54493c8d46b7c3f86e77666be0f618df8fd6512dd5cae3f279d31248e1be7a",
+    "supabase/migrations/20261014015714_consultegeo_m09c_atomic_opening.sql": "5da69e1865d63c94f9ee61ce86d3a16b1103b557cc9a04bdaaa8af5bad4b0e93",
+    "supabase/templates/recovery.html": "2f77fb60a7245cb86c30d580c2835f2a6c8f75b02af920b3b91029255b02bce8",
+    "supabase/tests/capacity-scenarios.ts": "2e9a4241a31cde3f9dd756ba655e41c96532d834f63bc79dfb9e7fcc89abd390",
+    "supabase/tests/capacity-workload-scenarios.ts": "b7c539e27bcabea440ae3adc542507bd0dfdc2f7872e6fb66d134da66a18fed7",
+    "supabase/tests/consultegeo-configuration-scenarios.ts": "03354d548e785df674f46e0ce804409d4860cdba079d69635531cf4844f18c6b",
+    "supabase/tests/consultegeo-intake-scenarios.ts": "b6b903f87f4e706a2baa2242c6311f50682e04ed425b9b482334f7043bdca670",
+    "supabase/tests/consultegeo-opening-scenarios.ts": "b046216f0353837f0b0b1693208961f3e74f8597158a3448c19f995578834fb0",
+    "supabase/tests/execution-checklist-scenarios.ts": "0b9c843b17a84de6caa70f5af2a7bb7fdaf164b95ca6a2ecee5a59ffe627eeec",
+    "supabase/tests/first-admin-scenarios.ts": "6e65adea0754cd98d9e569a03701ff33fb3f9031f74a8c2e85181e1c647016b8",
+    "supabase/tests/hosted-acceptance-scenarios.ts": "1cbe7ad51c95aeae1308c6d82d43c59a850786f66f38df3c44ba0ad45113aece",
+    "supabase/tests/m05-promoted-module.ts": "669a949b3baa56e86568ad7727b77844d9b49665d3754ce85dd6c0a1429be706",
+    "supabase/tests/m05-security-inventory.ts": "69dee9b49eec034e4df0b07a5db27927152687193aac4ec08d6c8f18221cd371",
+    "supabase/tests/m05-upgrade-scenarios.ts": "482c21e70d34ae0ce76910a65285e4fb61244aca3928966909cdb1a81fadafc7",
+    "supabase/tests/resource-access-scenarios.ts": "c9bd9e3078dc84292c6ec79a67cc94d4cf4b74e4bf44c57d77a955fda860bfcd",
+    "supabase/tests/resource-publication-scenarios.ts": "5751d5f5a0f004f8771d8457eb862c4b08d88d0152b9d7b08e496f601a2c984f",
+    "supabase/tests/resource-scope-store-scenarios.ts": "e0e473fa44d277e82ba998c24430c02de3743190d73cca1cea46d04656413e9d",
+    "supabase/tests/rls.test.ts": "30bd962fead99c5e3720b92a425f6f2bd4a48442163e69609ed0715f3787e8c1",
+    "supabase/tests/support-workflow-scenarios.ts": "bcc779af5a95954c217c08a811b05c7adeae780baa765ac641838b0d97156c41",
+    "supabase/tests/upgrade.test.ts": "64edefb880f40debf8ec68b1249a45af75a0055ef07478fa5390e1208eead296",
+    "supabase/tests/workspace-discovery-scenarios.ts": "383dd0ac648ff9ece5baee6721abafca5ca0760a50cdfe95beb227b6f7298005",
+    "shared/checklist-evidence.d.ts": "b178e5c530e2e7d0e4b3324630a23193471f9683d497210f6c1ef44e96d347c2",
+    "shared/checklist-evidence.js": "67487e1b8e5788a8d095292a7960eeea52f52f16d03fe771757c1f4fb5be1e93",
+    "shared/cnpj.d.ts": "ad23cb337b8caeb998bf749a7e0d422a44c3eff7a7595c61ee97b4e9ae33be56",
+    "shared/cnpj.js": "4e03f61cceb0809c16854a00e2eb567918566679fb6874f76a8f1555b0431d03",
+    "shared/consultegeo-request.d.ts": "5aaabe7d56846952e9732884a0d195fa7796effba9eee4e18b1d84494e30d763",
+    "shared/consultegeo-request.js": "c40a3a44497cebb125d2903bc62f414afb9448f6a78d19dafdd07ec0c709dee3",
+    "shared/form-rules.d.ts": "c8a01ed344703045f05aa71a8fefca3e2804528132cbc72caa6fc43ee5cde280",
+    "shared/form-rules.js": "4d321b7d5239996c0b45581e13608a479dd15ac6ad819a2ab81eee7b5b68b548",
+    "shared/instant.d.ts": "ed52ed5a5f72ff62d9f40f7ef9e4e658a299f8dd36d11e2403aec42e913c70d2",
+    "shared/instant.js": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+    "shared/mfa.d.ts": "df7bdb76b9d6f779cbcf522be0665f3c7a6ef3cfa9b94b2bb104f92a76dc1f8e",
+    "shared/mfa.js": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1",
+    "profiles/consultegeo/configuration-drafts.v1.json": "120afd098db42622a8c38ded7bf3ff2b28f975c39eea9966e9e412f8164ca1ad",
+    "profiles/consultegeo/execution-checklists.draft.json": "50959071dc8a782a49b0ffdb8e29945edfd44df5ed7745f2545509460727af46",
+    "profiles/consultegeo/notification-templates.v1.json": "093b638178f27cb336700e04fbe8cf7311ed7954d120c12bf0db4a8bd3a4b6e6",
+    "profiles/consultegeo/operational-policy.v1.json": "2107756ba718103d40732db718b869feaaa8c01b7dfbd3bb171b1b510c3b2460",
+    "netlify/functions/api.mts": "8bf748ab7629d1fd3b0730518d5d7f920c4e831e7eafe42ae1602d5e6e37e99e",
+    "netlify/functions/runtime-preflight.mts": "118b9e56a8f1abe7cbf97af7c06815c8440ac2e0792c12d0e3629acd3d65a0eb",
+    ".github/workflows/ci.yml": "43c19fe677b4c34f93e5ec943535c9aa49a5db0d730a6a9ee16c04286832117e",
+    "package.json": "e954774454a7d9d5db199a46b16fcd599fc0a2c16f2bd726de9a8019370a75b9",
+    "package-lock.json": "281368c7119b51cca770d1485202561571314748bfd8735aa652caa0b364aea8",
+    "tsconfig.json": "8e64406d384090f2deb3d121297a273db72694b314f61d51186dc856289e4035",
+    ".env.example": "4842158e5c6e407b4575b03b88073f31ad8401b5be40b5d3f5c7f7ef41e2b817",
+    ".gitignore": "6a15edc5978b285259f372ede4062dbe42243bb4568dc655a6ba927e144b4cd0",
+    "netlify.toml": "7fb4082302cb3a96f8223e22b4839ca175c64355b19768be846ede2de3404102",
+    "web/portal-format.js": "84e33f30200d1e2dab1792d4cee1d971fcfeea1ff3755a94999731382dd9211e",
+    "web/portal-state.js": "6a9792fef611863a0bd8eea286751b7a2876b6e6ee4969cd7ed39aff70cab094",
+    "web/admin-members-state.js": "9e6683b27073076973bde2263d5266de949fbc4e7515d0c1133a61ce01bfcf40",
+    "web/review-state.js": "1bd5ada929e6b724d981c92142068c8a7d6252dbfd00fd27e1bbe7c0dac25726",
+    "web/execution-checklist-state.js": "d5e4d5273128eaabc9901b3c55cfa0bf90d531de0d83720a75c1e4663d390233",
+    "web/execution-checklist-contract.js": "729d64735045ab2d3fc38a025cd0569b0e4914032202ab231af1fa09728e3331",
+    "web/geo-auth-state.js": "49885dd80d205576ceee6dbd45128ee80bbc820120b22d59aee3edce66a9f5a1",
+    "web/human-auth.js": "2ac677ed49bbe6d4bdf327a57deb8aec37f4008157cf7acdbe0b2492b5017f59",
+    "web/human-session.js": "9f360a51f6dc54c6b93f4fbf8024f2c0f95afd9a5bcf1f0b2aabea41b92f7b96",
+    "web/session-fetch.js": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340",
+    "web/access-mode.js": "d27a9670f362dd9961df2097db39bffc70404115c6971b436988ea3642b57d8c",
+    "web/ticket-actions.js": "c9f1ab464033e5df12c1342d5ae7c1dd3b4b2ee39b91430a999c09744c33c942",
+    "web/ticket-list-state.js": "67db3cda25593dfb02d0181b3510ff58d4aec9edba99f3f3bf607d0569cde8ef",
+    "web/mutation-state.js": "1020a746647729b381913d52f8d0f7648693f4147d0d16f61b3fc93142b67e64",
+    "web/recovery-password.js": "3870e93595ebb59f5379c84126d72226799264ec775a2bf36c0aebcd3f1305d2",
+    "web/account-security.js": "9cc0d7f495909c79b069b493438b665dc6ea7380e43fafe516485f407ed19852",
+    "web/totp-qr.js": "187e17488e2e549097168768c0acacfc65b725ac51a6e01593119f340e821c19",
+    "web/timeline-state.js": "af5dca1ee898946b3d666ce55e2e1b504cfa9e9256f853fc9d5cb6c8b9cdfe2d",
+    "web/conversation-state.js": "73cf0db75391744164b1da470f28f70d47d1f9c4ff02dc58ef085defd3089a64",
+    "web/support-catalog-state.js": "851f406df2bc905ff65cce1890a8baa5c4a1a967168f4da18099a7da599bf8f3",
+    "web/ticket-create-state.js": "83c749c70bfbb8113e632317843a06269c2fc9afbfd330dfe271392c47bfb4a2",
+    "web/styles.css": "0c02504971e74dab99b642c1faf47663155d70dd834ed878b79398b8561fd559",
+    "web/vendor/qrcodegen.js": "3c6b6da401e3725c2853e70d1dff080a3920ec06054c51d3a78fa391e611b706",
+    "web/consultegeo-intake-api.js": "9c179a4926c3db9f417612869a2be70426df7a99145b064f34c07e807eda50d8",
+    "web/consultegeo-request.d.ts": "b284a5a82fab327936834aeea5cb0ec59c2e0abd761b66f7e0202c00cb204b27",
+    "web/consultegeo-configuration.d.ts": "5f5219ced0837af574cf91b5b31c36cb0cfa2d9fe80b69ac5fc4d68980559df4",
+    "web/timeline-state.d.ts": "293725a18c63bf908a65394ba2247e96fbccd8eac4fab5cb824f483635068c28"
+  },
+  "sourceMetadataPreserved": true,
+  "automaticUpstreamApplication": false,
+  "fixturesCopiedToProduct": false
+}
