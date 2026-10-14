@@ -32,7 +32,7 @@ with sync_playwright() as p:
         ticket={'id':TICKET,'account_id':ACCOUNT,'product_instance_id':INSTANCE,'service_code':'questions','subject':'Dúvida sintética da obra','description':'Dados locais de ensaio; nenhum registro externo.','status':'received','internal_status':'new','priority':'normal','version':1,'coverage_id':COVERAGE,'contract_version_id':CONTRACT,'created_at':'2026-10-14T12:00:00.000000Z','updated_at':'2026-10-14T12:00:00.000000Z','assignment':{'state':'unassigned','can_claim':True,'can_release':False},'consultegeo':{'protocol':'CG-10001','profileVersionId':PROFILE,'workflow':True,'requesterId':PRI}}
         def api(route):
             req=route.request;path=urlparse(req.url).path;headers={};status=200
-            if path=='/v1/public-config':value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest','operational':True}
+            if path=='/v1/public-config':value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest','operational':True,'consultegeo_intake':True}
             elif path=='/v1/workspaces':value={'items':[{'id':WS,'name':'Consulte GEO sintética'}]}
             elif path=='/v1/me':value={'id':PRI,'kind':'human','workspace_id':WS,'workspace_role':'admin','grants':[{'account_id':ACCOUNT,'role':'agent'}],'scopes':['tickets:read','tickets:write','notes:read','notes:write','contexts:resolve']}
             elif path=='/v1/consultegeo/contexts':value={'schema':1,'workspaceId':WS,'principalId':PRI,'contexts':[{'accountId':ACCOUNT,'accountName':'Cliente sintético','productInstanceId':INSTANCE,'connectionId':CONNECTION,'tenantId':'local','works':[{'id':'encanto','name':'Obra sintética Encanto','ref':REF}]}]}

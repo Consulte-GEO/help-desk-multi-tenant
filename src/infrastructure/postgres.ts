@@ -1,4 +1,5 @@
 import {createPostgresPublicWorkflowReader} from './public-workflow-read.ts';
+import {parseConsulteGeoTicketSummary} from '../../shared/consultegeo-ticket.js';
 import {assertBorrowedTransactionIdentity} from './transaction.ts';
 import {assertLegacyTerminalUpdateAllowed} from './legacy-transition-guard.ts';
 import {DATABASE_SECURITY_CONTRACT} from './database-security-contract.ts';
@@ -48,10 +49,7 @@ type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const i
 function consulteGeoSummary(value:unknown){
  const invalid=()=>new HelpdeskError(503,'invalid_database_result','Resumo Consulte GEO indisponível.');
  if(value===null)return undefined;
- if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==4)throw invalid();
- const fields:Record<string,unknown>={};for(const key of ['protocol','profileVersionId','workflow','requesterId']){const field=Object.getOwnPropertyDescriptor(value,key);if(!field||!Object.hasOwn(field,'value')||!field.enumerable)throw invalid();fields[key]=field.value;}
- if(typeof fields.protocol!=='string'||!/^CG-[1-9][0-9]{0,18}$/.test(fields.protocol)||BigInt(fields.protocol.slice(3))>9223372036854775807n||fields.workflow!==true)throw invalid();
- try{return {protocol:fields.protocol,profileVersionId:uuidIdentifier(fields.profileVersionId),workflow:true as const,requesterId:uuidIdentifier(fields.requesterId)};}catch{throw invalid();}
+ try{return parseConsulteGeoTicketSummary(value);}catch{throw invalid();}
 }
 function ticket(r:Row,local=false):Ticket{const summary=local?consulteGeoSummary(r.consultegeo_summary):undefined;return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),assignedTo:r.assigned_to==null?null:str(r,'assigned_to'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at),...(summary?{consulteGeo:summary}:{})};}
 function message(r:Row):PublicMessage{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),actorType:r.actor_type as PublicMessage['actorType'],body:str(r,'body'),createdAt:iso(r.created_at)};}

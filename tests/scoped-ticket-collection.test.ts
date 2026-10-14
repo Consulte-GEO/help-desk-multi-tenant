@@ -44,7 +44,7 @@ test('cancel during native preparation rolls back and never executes page SQL',a
 });
 test('local borrowed get projects actual bounded protocol/profile/requester metadata and rejects corrupt native summary',async()=>{
  const p:Principal={id:id(2),workspaceId:id(1),kind:'human',workspaceRole:'admin',grants:[],scopes:['tickets:read']};
- const summary={protocol:'CG-10001',profileVersionId:id(10),workflow:true,requesterId:id(2)},calls:string[]=[];
+ const summary={protocol:'CG-10001',profileVersionId:'cg-wf-'+id(10)+'-v1',workflow:true,requesterId:id(2)},calls:string[]=[];
  let metadata:unknown=summary;
  const row={id:id(6),workspace_id:p.workspaceId,account_id:id(3),product_instance_id:id(4),service_code:'SUPPORT',created_by:p.id,assigned_to:null,subject:'Residencial Encanto',description:'Native summary',status:'new',priority:'normal',version:1,coverage_id:id(8),contract_version_id:id(9),contract_snapshot:{contractId:id(9),version:1,policy:{}},created_at:'2026-10-14T12:00:00.123456Z',updated_at:'2026-10-14T12:00:00.123456Z'};
  const pool:SqlPool={query:async()=>{throw Error();},end:async()=>{},connect:async()=>({release(){},async query(sql){calls.push(sql);return {command:['BEGIN','COMMIT','ROLLBACK'].includes(sql)?sql:'SELECT',rowCount:1,rows:[{...row,consultegeo_summary:metadata}]};}})};

@@ -84,7 +84,7 @@ const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
  $('operational-status').hidden=available||!s.me;
- $('new-ticket').disabled=!available;$('refresh').disabled=!available;
+ $('new-ticket').disabled=!available||!s.demo&&s.config?.consultegeo_intake===false;$('refresh').disabled=!available;
  $('empty-detail').querySelector('h2').textContent=available?'Todo atendimento começa com uma boa conversa.':'Chamados e conversas';
  $('empty-detail').querySelector('p').textContent=available?'Selecione um chamado para consultar o histórico ou abra uma nova solicitação.':'Quando a consulta estiver disponível, selecione um chamado para acompanhar suas mensagens e seu histórico.';
  for(const control of $('ticket-filters').querySelectorAll('input,select,button'))control.disabled=!available;
@@ -384,7 +384,8 @@ async function startOperationalCreate(){
 $('cg-close-create').onclick=()=>{if(cgOpening?.blocked()){notice('Concilie a mesma intenção antes de fechar o formulário.',true);return;}$('cg-create-dialog').close();};
 $('cg-create-dialog').addEventListener('cancel',e=>{if(cgOpening?.blocked()){e.preventDefault();notice('Concilie a mesma intenção antes de fechar o formulário.',true);}});
 async function startCreate(){
- if(!s.demo)return startOperationalCreate();
+ if(!s.demo&&s.config?.consultegeo_intake===false){notice('A abertura de chamados ainda não está disponível.',true);return;}
+ if(!s.demo&&s.config?.consultegeo_intake===true)return startOperationalCreate();
  if(ticketMutationBlocked()){notice('Conclua ou recupere o envio atual antes de abrir outro chamado.',true);return;}resetOpening();$('create-dialog').showModal();openingUX?.open();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
 $('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
 $('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);

@@ -1,5 +1,5 @@
 import {registerConsulteGeoOpeningSqlTests} from './consultegeo-opening-scenarios.ts';
-import {registerNotificationDeliverySqlTests} from './notification-delivery-scenarios.ts';
+import {registerNotificationDeliverySqlTests,runNotificationDelayedActivationScenarios} from './notification-delivery-scenarios.ts';
 import {registerLocalRegistrySqlTests} from './local-registry-scenarios.ts';
 import {registerInitialOperationSqlTests} from './initial-operation-scenarios.ts';
 import {registerActivationSecurityInventory} from './activation-security-inventory.ts';
@@ -27,5 +27,6 @@ export function registerCapacityTests(adminPool:()=>SqlPool,appPool:()=>SqlPool)
  registerNotificationDeliverySqlTests(adminPool);
  registerLocalRegistrySqlTests(adminPool,appPool);
  registerInitialOperationSqlTests(adminPool,appPool);
+ runNotificationDelayedActivationScenarios(adminPool,appPool);
  registerActivationSecurityInventory(adminPool);
 }

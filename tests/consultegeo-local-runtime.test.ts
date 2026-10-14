@@ -35,3 +35,4 @@ test('ticket/search/catalog capabilities require actual local source and workflo
 test('configured local mode retains ticket route ownership when workflow closes; no legacy fallback',async()=>{
  const f=fixture(true,false,true),response=await f.runtime(new Request('https://helpdesk.example/v1/tickets'));assert.equal(response.status,503);assert.deepEqual(f.calls,[]);
 });
+test('public journey discovery is true only for mounted qualified local intake and closed otherwise',async()=>{assert.equal((await (await fixture().runtime(new Request('https://helpdesk.example/v1/public-config'))).json()).consultegeo_intake,true);for(const args of [[false,true,true],[true,false,true],[true,true,false]])assert.equal((await (await fixture(...args as [boolean,boolean,boolean]).runtime(new Request('https://helpdesk.example/v1/public-config'))).json()).consultegeo_intake,false);});

@@ -4593,6 +4593,10 @@
           "operational": {
             "type": "boolean",
             "description": "False enquanto atendimento permanece bloqueado."
+          },
+          "consultegeo_intake": {
+            "type": "boolean",
+            "description": "Descoberta do formulário local Consulte GEO montado e liberado no servidor. Não concede acesso a clientes, obras ou chamados."
           }
         },
         "required": [
