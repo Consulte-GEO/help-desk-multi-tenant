@@ -27,3 +27,5 @@ Task1/2 commit principal0adf8ab integra apresentação e cenário de composiçã
 Task1: complete (97be334..5170e05); auditoria230/preflight39/delta133+24hooks, RED17/7/10→GREEN17/17, ports38/38, contracts/types/build/secrets0 e integração169 arquivos aprovada.
 Task2: complete (0adf8ab..5170e05); composição nativa com ACK perdido,420/420PG17 incluindo cenário UI/sessionFetch/intake HTTP/stores; M08 externa explicitamente adiada, nenhum fallback.
 Task3: complete; CI38516252764 fonte5170e05c6f4f66bd935c75b3cbbb0f3ef41b8dfa fingerprint9c2daade5879a279a01c821a4ec40c8baff9a21996a5cc1b3810e1ca2fed4a90,4701/420/539=5660, six gates/logs e inventário exatos conferidos; revisão única/fix pass, proof/ZIP/PR draft. Nenhum minor adiado. Worktree preservado; scratch próprio arquivado após commit.
+
+Delivery complete: ZIP1327 entries/8045306 bytes/SHA9971c1b4cf41078c33a81026230a37c5cbc8d0ade0a675933b1130e11c7f24f0, CRC/bytes/manifests e fingerprint da fonte no ZIP conferidos. PR31 OPEN/draft atualizado por fast-forward, base/qualificação preservadas. Worktree mantido; scratch desta execução arquivado em .local/ux10-execution-complete.zip antes de sua remoção.

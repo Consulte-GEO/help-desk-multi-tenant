@@ -1,0 +1,1052 @@
+{
+  "schema": "helpdesk.cumulative-increments.v1",
+  "source_fingerprint": "9c2daade5879a279a01c821a4ec40c8baff9a21996a5cc1b3810e1ca2fed4a90",
+  "variants": [
+    {
+      "name": "ux10-m09c",
+      "patch": "patches/ux10.patch",
+      "patch_sha256": "f5b5c25029936f30583b6927b78865bf6686795c5917f4d5aff90084b26977aa",
+      "expected_base_source_fingerprint": "d50ffef9b3565a7ae1cc33913c7199c6d6834a5e7c5e4acea9efa2de63e28ee6",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "operation": "modify",
+          "before_sha256": "5367a8c9ace62781fcc9f3906fe2611b3cd8655460817f8d911865cf663e76e0",
+          "after_sha256": "953724fe54e500e60420642d1841e91a0ff4d0dce695645628223696f096ff4e"
+        },
+        {
+          "path": "README.md",
+          "operation": "modify",
+          "before_sha256": "574acac899cbe6eaf125ca55c8066dfc9cb93d090cfe15f4bb1059c6f7ea5851",
+          "after_sha256": "76e21a5d65058c698e7dacb86789e492d659ea36f24e1f007e776d08a8471c09"
+        },
+        {
+          "path": "docs/02-PLANO-DE-DESENVOLVIMENTO.md",
+          "operation": "modify",
+          "before_sha256": "45e25e8a8c2aac31248195260903569a68377f158f9ff85924664fd25bc0b29c",
+          "after_sha256": "e186b217a36e649a78cd168ff985041553fd8f9ac3875ee0775c12c9313f08cd"
+        },
+        {
+          "path": "docs/04-ESTADO-E-EVIDENCIAS.md",
+          "operation": "modify",
+          "before_sha256": "38783e875d546f77d65904f6d8ceb55ee30de5b18af227ae1caae3d2b5da3910",
+          "after_sha256": "6adc7a63a67c55f81a181d72d9d94a7d07e443276081fe2a785fb80d5222b840"
+        },
+        {
+          "path": "docs/146-CONSULTEGEO-UX10-INTEGRACAO-2026-10-14.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "7b7e22c35187575d4e4b894072112713a46745b54d71ac35594c1e6fe0f2af7f"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX01_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4a8b917cc161c02fbe8d5ee17f974dd8b9ad31372f0aac4928545852c7a747e0"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX02_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "119c87ab22c78999d0232540a0dcbb9562b95ea669bb13ad67ea715614251a64"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX03_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c02c7535120cac57be45e34410c0dba31615c2af4150e45674f7d38f8ac1203f"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX04_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4ea77792a146060f6652528e9e3c0dc0306488fdc699b6b9e4430c6af44df7ff"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX05_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ff784cc37d72e3134dd456e70a3c74cdf9a36785d117d6d92eaa74032a6dddd7"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX06_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a164bb58c699b857b7e26916f18c4097a63c2d5023e5d115ce6e1cea8aa1d546"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX07_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "2e1117de3fedc73852a680e3ee7cc2e51f4bab65f06eaf8ec98e121d85060d09"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX08_SPEC.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "fc0aa86e99fde687b613fcfe55475f0b09a9420db8cb4ea9098d22ebcbb74636"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX09_REVISAO.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "6879f6032e9f9add1950736ddfe7795ea72823153017a2502350fd3bf1c8fe31"
+        },
+        {
+          "path": "docs/design/HELPDESK_VISUAL_UX10_COMPATIBILIDADE.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "f8a17be6b9d6de11cb78543a38f7ac823efc4548f170b38129505cb076eeebf0"
+        },
+        {
+          "path": "docs/requirements/consultegeo/02_MATRIZ_107_REQUISITOS.md",
+          "operation": "modify",
+          "before_sha256": "d4b119d0c478b80dba518cf893263a0f9ac019d0a6f0195675228909c7b2375d",
+          "after_sha256": "60634eea7ffe5d82bcc4ef0da559c4771bf02b1403cbd18254464a7155f61c70"
+        },
+        {
+          "path": "docs/requirements/consultegeo/matriz-107-requisitos.json",
+          "operation": "modify",
+          "before_sha256": "1b92f6d89518318cb953fd3cb138f100c6082f38fef1d9c6104b22b406f26111",
+          "after_sha256": "cd145408684c84da1d5efb9b232d2308f1aad059571ddc0f01fc63677877e443"
+        },
+        {
+          "path": "docs/requirements/consultegeo/ux10/AUDITORIA_COMPATIBILIDADE_UX10.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "feac8b02da1488c57afea92fb72f59d030e04096dba2a2d90fc2006086f3016e"
+        },
+        {
+          "path": "docs/requirements/consultegeo/ux10/HANDOFF_CODEX_UX10.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "3d227c9984d20d0faef013158ba0da8645b1400de4f72ec6199a4cc07fe1150f"
+        },
+        {
+          "path": "docs/requirements/consultegeo/ux10/PLANO_DESENVOLVIMENTO_REVISADO_UX10.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "81e6d2b2fbdb8d93c1ea1dfbb5fe5c117ec71b6792138c961cd4365dfca560f9"
+        },
+        {
+          "path": "docs/requirements/consultegeo/ux10/RELATORIO_UX10.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ddd7ac9edd96a67149ca8437c6852f7ad650f836a58caa621f75352e63e78534"
+        },
+        {
+          "path": "docs/requirements/consultegeo/ux10/SOURCE.json",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "9e5b4d1c73791ff1232913a5ca7b9490a6eabce9d9395d9c96a1f2655dceded6"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-ux10-compatibilidade.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "0ea446279782ab9b37dcb3412cf3c4f662ba7f48f2fac89d105ec0e97c544f16"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux01.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "e8db242a3953d8966b5a6f58fad11f7af5032f976db8dc546b1a6903f96aef96"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux02.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c847e1e80ed9918b884cf7e89d4a55305b680c598325def65b218c5c4b3d4665"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux03.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b9ff5f69283c4e40c3884bb061151ecff7498ce309b3cd0c556e1e09bed397d7"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux04.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "46415ba781b066b7c4105c8b5700b72983414a06d1418971ebb7acac0181e5bf"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux05.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "be2de20dc71a9e9661ac812639dd4db1285cbe16254de1755ff6e03bc036366e"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux06.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "0e84e6d2049ef078086869ce4aae5819f0957d678132771f8c6b93ddadba2d12"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux07.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "6cb0737842709567654adc9f2beb13be8c5ad5429c29dde46866a9f95e0443b6"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-helpdesk-visual-ux08.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c128fb492ece4633846f26f6acf4e1dbe3c81aadf62df1a7a174a4a883cf8550"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-13-ux09-integracao.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "d11595e0005822415ee6afa6f871cfaa91699faefbd49bc5ac55be9688d0517a"
+        },
+        {
+          "path": "docs/superpowers/plans/2026-10-14-consultegeo-ux10.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "6e5c9a31ee1145a17263abb89f3ad4feddceb14f0888e7b322886eb24f1553d6"
+        },
+        {
+          "path": "docs/superpowers/specs/2026-10-14-consultegeo-ux10-design.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "49c9858aea05ed587c5019ed88446f685920b04d6f1206a175f156847cfb0a36"
+        },
+        {
+          "path": "scripts/build.mjs",
+          "operation": "modify",
+          "before_sha256": "92c81c7ea38ef8bc9adb800f563e9cb53ade98776b85df9fe683fb20dae5a73f",
+          "after_sha256": "224d625a3ca8f00e28734b35586c6a6e0b5f683171bd7feac07fea73b3e1f87c"
+        },
+        {
+          "path": "scripts/demo.ts",
+          "operation": "modify",
+          "before_sha256": "88d45fda67f56baf5354fbbc5ac6671bccaaae2a459667157bac48529805030c",
+          "after_sha256": "f3a928e74a02bb0c65b6748aa2c7dad6edf0c61c1e0726aa9911f043e7b2d535"
+        },
+        {
+          "path": "scripts/smoke-local-http.mjs",
+          "operation": "modify",
+          "before_sha256": "d4510267358a5f5675b5d13df3ccadbafa097d49a5f744a9e9d502d0eea1fadf",
+          "after_sha256": "dff6df645b8e574980176e3c76cdeb623de2683e5998cfb9e7b872d832685f27"
+        },
+        {
+          "path": "scripts/test-ui-local.mjs",
+          "operation": "modify",
+          "before_sha256": "55ec5242a0c6c5d96960b0d83b9a5a730501008d4f65c34fc52d6fde476548ae",
+          "after_sha256": "23f5ded75902e99ce8f0d24029e908cd54e6498eb931ecfd00cfdd865f4ded64"
+        },
+        {
+          "path": "scripts/test-visual-local.d.mts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ec7f1d99ba206cb682fc3e7a341a439afbcff762fc1637d742a2fd373b49610d"
+        },
+        {
+          "path": "scripts/test-visual-local.mjs",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ac0fb2e55d66e4ce3c15f07653fc7aaf14158c17c8170437ef75932142f56bd4"
+        },
+        {
+          "path": "scripts/visual-access/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "065ce7e46eb1490336bda644e95f77768c4610d779f664c299dc44024558451c"
+        },
+        {
+          "path": "scripts/visual-access/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "e1ebfb683edc5bc242a93f4da4f73196897e93fa02e40527f5e2ad2f19ee99f2"
+        },
+        {
+          "path": "scripts/visual-access/verify-integration.mjs",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "820618380c6c77241f48e5126061a8060e25dd3733a2eaef44055a7902a13b2c"
+        },
+        {
+          "path": "scripts/visual-admin/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "019d519f27373460c2fabb475ac58c048f9c8bd773f3d463f40c3409a450a2e5"
+        },
+        {
+          "path": "scripts/visual-admin/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "072dc36ef8039b6ba0b2da3a24d398dae58a03d4bc880bf14782ac74ce8fe55b"
+        },
+        {
+          "path": "scripts/visual-branding/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4da827e32777eb3a4a74a74f2130f33f515ebebd22634da8401cd30c48116991"
+        },
+        {
+          "path": "scripts/visual-branding/check-tokens.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "8bfe29dcbb24382a093ee29b97cfe0288dcdee0e75467881738f5024c8babd49"
+        },
+        {
+          "path": "scripts/visual-branding/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4953d5adecdc655d3eb5c4cb50e2f7d0e0941a317ef29e36499de6cc622ac4c0"
+        },
+        {
+          "path": "scripts/visual-consultegeo/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "f5f87332f329224315e160bd459309bb574a1afd8b833cfd035b56e5c25c8a37"
+        },
+        {
+          "path": "scripts/visual-consultegeo/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "9599b663ea6663be8a5e1cb899c48eecbe81751a897827f0233327c0d3739a45"
+        },
+        {
+          "path": "scripts/visual-inbox/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a9e61a771f4b176adb47a0c3b527d748f7170b69710d29e9569336b47c2468d2"
+        },
+        {
+          "path": "scripts/visual-inbox/original-dom-ids.json",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "3454ff1904fb11c4cd556133259dbfb10ae3aca0d9b68dc7b8bc83bf3682209b"
+        },
+        {
+          "path": "scripts/visual-inbox/verify-integration.mjs",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c66ad34de55f9392a76a0d2470019d013bb05cb2c1b4d3000f72fd7eff43c2f5"
+        },
+        {
+          "path": "scripts/visual-integration/README.md",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b07a333704536933107a8ff62145a695e7df62cf6019757b196503c6ee62b203"
+        },
+        {
+          "path": "scripts/visual-integration/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c0878629e356db8fc6a6df82a90c1efe9c18dec32c1e56c9a4ab46a8b07d347e"
+        },
+        {
+          "path": "scripts/visual-integration/check-assets.mjs",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "81efe51731d6a096eceb6de1e7bf0583f68b448202b50afeb8f8b75294ea70d5"
+        },
+        {
+          "path": "scripts/visual-integration/runtime.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "bb82ebbb12877b404b92d5f751f9d5a35fc4c07d3175c3fdc6c7f305ce36179c"
+        },
+        {
+          "path": "scripts/visual-integration/transport.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b6c0c751e7b5626da9d60f61a10b6dea31000036d847faa0a7689b1cfb0ec296"
+        },
+        {
+          "path": "scripts/visual-opening/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "aa9633483348d0e880baa0eabee7de5a6b0a817ef014e09d80e433bba0b22d51"
+        },
+        {
+          "path": "scripts/visual-opening/verify-integration.mjs",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "d5e909a0362b1f38c77622f0f1cdf3884f7be0f7642993cf63adb33ba8c8d1c2"
+        },
+        {
+          "path": "scripts/visual-operations/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "aa2a9154cc9f88c1e673aa7acf02665c30e8d64b9ed6e5076a04126577ebff15"
+        },
+        {
+          "path": "scripts/visual-operations/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "cd8607066945c275da4601ddb1171245daa4269f796c29352a63b61c61674782"
+        },
+        {
+          "path": "scripts/visual-portal/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "f0bb7d1bbf31015c321e09ea2b0784ba2668eca209ac24753bbb757ca540bc1e"
+        },
+        {
+          "path": "scripts/visual-support/browser-check.py",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "207601d3871b4877032d7f41af0b6f0c436eabb32e89954dd00c7a67ead77ae5"
+        },
+        {
+          "path": "scripts/visual-support/fixture.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "acc8543d9ea0f7fe6bf57a85c8f8a69bdf5a6c6a7bdfa651b98c8f8089932d64"
+        },
+        {
+          "path": "supabase/tests/consultegeo-opening-scenarios.ts",
+          "operation": "modify",
+          "before_sha256": "b046216f0353837f0b0b1693208961f3e74f8597158a3448c19f995578834fb0",
+          "after_sha256": "da8f8a6b9402d01c51c81498f26b0549fa02ff747651605a61a91a7926994497"
+        },
+        {
+          "path": "tests/admin-members-render.test.ts",
+          "operation": "modify",
+          "before_sha256": "595d7e44be8be72e2240567448d0cc0f922a6f63195291a7601692f970249fab",
+          "after_sha256": "d92870eef66237103c29ea00b1952c7ec4befec879660290c4d46e4447fbbed9"
+        },
+        {
+          "path": "tests/admin-members-server.ts",
+          "operation": "modify",
+          "before_sha256": "eb56eead450946ee17915d9ce2ed4dc06f11b82399b8bd28b6f886b2d0833a5d",
+          "after_sha256": "10ab1ef61da93516a3c29a71a3f9447feb3d1c7f6aedfd9c2adb2a9564d6b450"
+        },
+        {
+          "path": "tests/admin-members-state.test.ts",
+          "operation": "modify",
+          "before_sha256": "e009a6ec27f03c227013f198b770ade72a54f4a4f1d956d0bb85c5fddbdec8f5",
+          "after_sha256": "29316611e383e6fb7da203d49007fa42145b79066582b60010a6b97f1ca0f59d"
+        },
+        {
+          "path": "tests/browser-admin-members.py",
+          "operation": "modify",
+          "before_sha256": "0d2d1417712793ac6a4208104ddc1e2dea3fadb1861c903d780fdff4704f4aaa",
+          "after_sha256": "2a5ea919c43761fdea45f98bf51ae5ab30b65a541c94ae13c0f5f260bc9ef3f0"
+        },
+        {
+          "path": "tests/browser-consultegeo-request.py",
+          "operation": "modify",
+          "before_sha256": "921d82a1ce30131749ec3b2426e3bdf028a52ac230421b87233cb7ca6e8dbae0",
+          "after_sha256": "9d84d23757458563501112ee24e968deca9bb3d0a4023aa1606a976cde737fcc"
+        },
+        {
+          "path": "tests/browser-simple-access.py",
+          "operation": "modify",
+          "before_sha256": "82493b8583771e1c50972784f786f4bead933d891edf6251764ac393c2d4eca2",
+          "after_sha256": "1fc31d5be2f91d43d82846241d1cb4fc5e2123f5f540eed2e9a22d3293d498df"
+        },
+        {
+          "path": "tests/browser-smoke.py",
+          "operation": "modify",
+          "before_sha256": "9647e117420d3e839bf4939e74bda605f2d0323d62973aee434550f42a022c55",
+          "after_sha256": "7e1013174f2388680168f307a308ac4cdb89fc31de0fc2efa21f3000dbdad639"
+        },
+        {
+          "path": "tests/consultegeo-intake-api.test.ts",
+          "operation": "modify",
+          "before_sha256": "ebfb96ffce43737522577d3e8edf99e5274d3f5f7e8a35ccdcb4077b393df4c0",
+          "after_sha256": "63b058788e64b2cb7ea7ad4fbc3f801135e5498051519e77711d9dc854784b99"
+        },
+        {
+          "path": "tests/cycles05-06-dom.test.ts",
+          "operation": "modify",
+          "before_sha256": "f01827e859b3bf6d9cfd6213ab96e1820bfcacde17cb21464b6814d90db4f7f4",
+          "after_sha256": "385858773f6b17c687e1a441bb17d02df03e6dd33c10eff3f42394e319b29700"
+        },
+        {
+          "path": "tests/dynamic-form.test.ts",
+          "operation": "modify",
+          "before_sha256": "2abe3226095418f281f759dcb5b9d10452ead02b682ecee23790d55d0637de94",
+          "after_sha256": "7a39b35d01835e261ba69a1c678c836243151c3ffd561f37955e3d67a1e0e1d4"
+        },
+        {
+          "path": "tests/fixtures/configuration/browser-server.ts",
+          "operation": "modify",
+          "before_sha256": "ae7f5b415167acad5b7fbdc2e6078e0309c665879c99588c2e030b50f7ccd1f2",
+          "after_sha256": "dca423a812aa64ae44d09c9b1c381d3705c1ea814323da6dfcf987bc9ace9483"
+        },
+        {
+          "path": "tests/fixtures/consultegeo-request/browser-server.ts",
+          "operation": "modify",
+          "before_sha256": "03b076d7daf747ccc930658be8fbc87f37ce8c25ed76cbd8a36634223828949c",
+          "after_sha256": "fef82304710cfac3fce96542a4472504eff7f74f0853db53c46e2fd38f1a1ae2"
+        },
+        {
+          "path": "tests/form-feedback.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "e1490bad06e5a5d710a78806dced9b0bf0a9efb0b9ed3c2c802ca4a5c48c99bf"
+        },
+        {
+          "path": "tests/forms-build.test.ts",
+          "operation": "modify",
+          "before_sha256": "2651e8a486c94b7e6ca324898918800137854121fcefe3fe9b1ee948ea4924d9",
+          "after_sha256": "b401063c3ebfe3f52fc456e800abb585b096d326b7187f600436710184e99d21"
+        },
+        {
+          "path": "tests/helpers/browser_auth_fixture.py",
+          "operation": "modify",
+          "before_sha256": "89874d1490cbd089b5987e2cce277002f4a9ac6e25490c817c6a447f10c2467f",
+          "after_sha256": "dfab74aebc53539a6ca1208642b1a3748a3d0f52f9c24cb56796af20f80cab2f"
+        },
+        {
+          "path": "tests/helpers/browser_ticket_create.py",
+          "operation": "modify",
+          "before_sha256": "db46cf2f813fcf61927b20eeb5f730d49b1f1e9c988180a0746e07c91e05cb50",
+          "after_sha256": "89a6b240712a8ecfa6fb328915b424a73d8ac429f797a260bb74db786366ffbf"
+        },
+        {
+          "path": "tests/helpers/dom-port.ts",
+          "operation": "modify",
+          "before_sha256": "b9de4c93a2385510b5eec3d08cb37a952a17e9496c7ea6efdf05ed40bf8163eb",
+          "after_sha256": "a443c700a6e90914c41ed7926277050608c44f5797ef054e881039bdb47a827c"
+        },
+        {
+          "path": "tests/inbox-view-state.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b6b120983be7be79c71952c10710f937a0acf686cdddd93a28ab7b3323e7b05b"
+        },
+        {
+          "path": "tests/opening-assets.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "1b7d44535a732a8aff0ca2aa4a6b808c4117dd29c70f5162b0245c7d1fbc3f8b"
+        },
+        {
+          "path": "tests/opening-composition.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "403419bc9ecc559ef7d9b56aab09781bd7f065cfcea2be06e2fd2216e3d110a5"
+        },
+        {
+          "path": "tests/opening-flow.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c18ee3530ce7e92fa22af1b4582c25afbcca30866f656b6fee478e80fc504b4e"
+        },
+        {
+          "path": "tests/ux04-delivery.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "9a13e8d86f2cd0b5e4339c0be957f7e4276756bc5bd13b0fd5706e12c654c387"
+        },
+        {
+          "path": "tests/ux04-dynamic-notifications.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "9a485a32fb13fce405f518133060217b8287bcf3ad4b4e67d93096ca085bfba7"
+        },
+        {
+          "path": "tests/ux04-portal-values.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "bd4f5d8947ca5ee373f8ce54c6150045e52d4986ac4ea5c0a1e7ee28aaf88aea"
+        },
+        {
+          "path": "tests/ux05-admin-regression.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "9ddc7e4863fa91da601df3294658e657812d594bc2fac8cfbc2aa596e2cccfd5"
+        },
+        {
+          "path": "tests/ux05-admin.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "931033a0c7f01d11dd5b2e235dd70250eedc07e6ad34c8c3e6bcbdfe8e19612e"
+        },
+        {
+          "path": "tests/ux06-operations.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "29bb38531eb538dcc2ace7994996ee25eb4594dd1916d522faec9c4b1072af4b"
+        },
+        {
+          "path": "tests/ux07-assets.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a0d06d0d258c51f05426d863e42a1d774164eb36dfb154c2953e197e098f5e0e"
+        },
+        {
+          "path": "tests/ux07-support.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "52db86be65f626fe6143fcb67ab87f104687a72794f6578cae692515a6630b67"
+        },
+        {
+          "path": "tests/ux08-access-assets.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a1e4210625f260cdc14a06201b7a35121b12e3f1cabec82be118669f8c955254"
+        },
+        {
+          "path": "tests/ux08-access-feedback.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ce2b5194dea48b91770ace2e954166b0ab43e855594b7196cf9564a59f625634"
+        },
+        {
+          "path": "tests/ux08-callback.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "598de86f63a9255cdfa3b4bc99e85c833d14baf48f0d0dd6055d450eb23a761c"
+        },
+        {
+          "path": "tests/ux09-assets.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "decfc7d1cb4d7046ab31318560a5804ae90329b849d317561424b631c1580cf7"
+        },
+        {
+          "path": "tests/ux10-compatibility.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "43abc4a6985625aad1da7121a5e08619e6a8121b21b75c67d123194bb88f4f21"
+        },
+        {
+          "path": "tests/ux10-review-regressions.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "91b0f6aa10cbb568b9de353558315b332d4b3225772ba34d145d96229274cc28"
+        },
+        {
+          "path": "tests/visual-branding.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a05c220ec5f2afdbae357c310f4df8b7e7fd20262c076af613cbbcdd19100109"
+        },
+        {
+          "path": "tests/visual-ci-reports.test.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "1cada8290d3c728407602d76d66c9371b1ddbf10be59f3198806bac40147274c"
+        },
+        {
+          "path": "web/access-experience.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "13eeb86152df4649364e69bdcbe31fd8f308914c916f4388110d0f1f1b481baa"
+        },
+        {
+          "path": "web/access-experience.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "312f81219d763b98c5c1de170f1ffe1eb662ce7578645bf17b8ae445d1554b2d"
+        },
+        {
+          "path": "web/access-experience.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "d7dbd4511775d39f8bf01c51012acaaedc948d7c75337a798e15928df50940ab"
+        },
+        {
+          "path": "web/access-feedback.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "f9300719c4e45df2a71d98879e6b5691bc01cac45f8cd879a89645789a8ac2ef"
+        },
+        {
+          "path": "web/access-feedback.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "04a3e58e95480a41637e4f66385975d3e307c3e54b786c8056d90cf93f008f4b"
+        },
+        {
+          "path": "web/admin-configuration.js",
+          "operation": "modify",
+          "before_sha256": "1d5ef34fa73bfdb155646cb6ba199219c4eb9bac7e6cf8300cbd0b1a2a9b6b0f",
+          "after_sha256": "e375e5000caa31ce1954714605f8a84d93e4fd86e3a1b73fa1e1c1149895538e"
+        },
+        {
+          "path": "web/admin-experience.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "3975b8429d947456d04cc2c5ff07a157b2528b7234aea6ecd6e083cc980a8413"
+        },
+        {
+          "path": "web/admin-forms.js",
+          "operation": "modify",
+          "before_sha256": "0bbc55d786f8fa78bb2dd7458c2aa081b0426c9d10527e6ace04c97fc16a765c",
+          "after_sha256": "9f7ca726be6d6c65c17c0855d2a0480dfc70c5d8f58628c548724f5ae927531c"
+        },
+        {
+          "path": "web/admin-members-state.js",
+          "operation": "modify",
+          "before_sha256": "9e6683b27073076973bde2263d5266de949fbc4e7515d0c1133a61ce01bfcf40",
+          "after_sha256": "fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2"
+        },
+        {
+          "path": "web/admin-members.css",
+          "operation": "modify",
+          "before_sha256": "31e9e738684f306dc0631f15c48b6977c8cf50ed9ade37399809698ea5c5d6bd",
+          "after_sha256": "b9316b65dc44f167b8339f0b718ca7be46eb25c3e409a36dd8ad12362f01b580"
+        },
+        {
+          "path": "web/admin-members.js",
+          "operation": "modify",
+          "before_sha256": "dcfaa9a2351f1e4a7545aa05c17d2bc63ce17018e0f491d03bb8ad69cd264372",
+          "after_sha256": "2cd668b2f26eb8a92930d2cb9ce424542bff9de6674c027df127695813d162ac"
+        },
+        {
+          "path": "web/admin-ui.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "5d26233c41a38ccb453f6e3b2a22486bdeb0219064d5c0d3a50b0625d1c22b83"
+        },
+        {
+          "path": "web/admin-ui.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "54756dfdea4aa00fcfd9029724df16c9b9f92c706f652c851443f4a9f738521d"
+        },
+        {
+          "path": "web/app.js",
+          "operation": "modify",
+          "before_sha256": "940b74fe6164188e01d6fe0d71515c0f26968ee7ff0da2fa3b1f2f8ec7430521",
+          "after_sha256": "02e6e7f5f1fe36bfd55b769979a747c4cfdf056f2938cf37b670daed147d0e4d"
+        },
+        {
+          "path": "web/approvals.js",
+          "operation": "modify",
+          "before_sha256": "b5f3b046a70949220c495717d4129121fb3682adbda9b2562efbd4dca2d1369b",
+          "after_sha256": "58c0247f2b556fd2f2a689c1a42f54811cfd96d934f53ec7f7ff778c3d1df635"
+        },
+        {
+          "path": "web/attachments.js",
+          "operation": "modify",
+          "before_sha256": "eebe728855a0f9ff6ce1e814818a72406baf05aadcdbbeb68003b410f101d03f",
+          "after_sha256": "686abc80387e631fef5ac9fa88ee5034359f6007090ece30dd3f406538029c3f"
+        },
+        {
+          "path": "web/brand-profile.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "879e3ad8fc057833effcefdff30f03accc0fd6021fe28de852752343b3c73504"
+        },
+        {
+          "path": "web/brand-profile.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "10964da32c5e5291c271b8702924811db515a157be2e184f46f12c4789c0add9"
+        },
+        {
+          "path": "web/brand-shell.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4462120a94b3b5c2f65407e931a05a8c2ff326e855e5aae9ca6878c761637d2b"
+        },
+        {
+          "path": "web/consulte-theme.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "728ed9d8ecda4a6187f6eecde04ad2e1d494fc0906418d7dd18423e8f6f2345d"
+        },
+        {
+          "path": "web/consultegeo-configuration.css",
+          "operation": "modify",
+          "before_sha256": "8b4f08d97c1cfaf73a04cee54f8378d3026201567fe71ee022c1ea6251b4bfb3",
+          "after_sha256": "54be6e6591f0ae0040124f4d0180931da120b0e589bba04bae9c8941f0e418aa"
+        },
+        {
+          "path": "web/consultegeo-configuration.js",
+          "operation": "modify",
+          "before_sha256": "c6450ca3d45888bb88f64ee8b2f5d02d68ae511bdeead56aa0c04c65d682734e",
+          "after_sha256": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7"
+        },
+        {
+          "path": "web/consultegeo-intake-api.js",
+          "operation": "modify",
+          "before_sha256": "9c179a4926c3db9f417612869a2be70426df7a99145b064f34c07e807eda50d8",
+          "after_sha256": "de5f451275364eaabf7c5f6820116547d6c18cb4683ac79940f480a399581242"
+        },
+        {
+          "path": "web/consultegeo-request.css",
+          "operation": "modify",
+          "before_sha256": "bf2bb191d35cac21cf1ce4ec87b5ef70e9040b273955a03d24aa34e20b11b4dc",
+          "after_sha256": "0c2d0dd3c04dc2af89f6f273be35fbec01896e7d6ecc10823b7b54ca72873149"
+        },
+        {
+          "path": "web/consultegeo-request.js",
+          "operation": "modify",
+          "before_sha256": "afa8fd53e48cafbe8fbafce9101600649c8a1a59d7b4768420564e080b7dcc0e",
+          "after_sha256": "95b35c208c17c5a93824858af56f3241a9e0a0b16f116544147ff08d3d22cfd9"
+        },
+        {
+          "path": "web/customer-portal.js",
+          "operation": "modify",
+          "before_sha256": "a196e08df55cb02bad051b4d3980e60fd6f65af1bdea4b7ae90c6e9746e6925d",
+          "after_sha256": "ecd9fbea157af9da360447b8d66c1dba0756987361825b1e7d908499fc5a0d70"
+        },
+        {
+          "path": "web/delivery-operations.js",
+          "operation": "modify",
+          "before_sha256": "d5b27bd52a53cddb80d307edbbb47e7d0fd3e61de6b0f0760441e6ab4b505e84",
+          "after_sha256": "ab6fde2ea1dd19ae33f43a19c00a498b8b1cfc248a5cd852a21cb3e89e1a6e2a"
+        },
+        {
+          "path": "web/design-tokens.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca"
+        },
+        {
+          "path": "web/dynamic-form.css",
+          "operation": "modify",
+          "before_sha256": "6e7ab3014bd445bd5983a34a6a0fa904ae24553427471bc801a5b95129151cdc",
+          "after_sha256": "362a6c9af8fa5c701cd91896a40f468d8ffb0713d24e6103ab6ade07c0a68cda"
+        },
+        {
+          "path": "web/dynamic-form.d.ts",
+          "operation": "modify",
+          "before_sha256": "368afca65e93a253fe83f3cf17b0b2558718cd2cc61ed7e44f6eec5ad7918eb2",
+          "after_sha256": "6f3b65b2196938ed62663a75134224a074dbdab220bd7343aee1599d229842d9"
+        },
+        {
+          "path": "web/dynamic-form.js",
+          "operation": "modify",
+          "before_sha256": "61bd7e0251f5c8e09d906b0b066ef3abd745de88a18471bbde23a6f214930c6c",
+          "after_sha256": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8"
+        },
+        {
+          "path": "web/execution-checklist.css",
+          "operation": "modify",
+          "before_sha256": "3e27cd093bf24123acedbc0093e726be7e8188df2f226d068c4a014baf32fe36",
+          "after_sha256": "c5acd26f13c3ad510eec98e3086fad94cf3ec6cfea69eb2b453e9564740fa4b7"
+        },
+        {
+          "path": "web/execution-checklist.js",
+          "operation": "modify",
+          "before_sha256": "10f173005f4b3df399a2c808883552015d9cc686007b64e1f66e67de220e01e3",
+          "after_sha256": "0f5bd40a434961c905b928c7cb592b599c7226c261180ff483293be7a5091d38"
+        },
+        {
+          "path": "web/form-experience.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "afb0f90b8dc5e2fe02cba92b078b55a647292b32c68d0467c6fc6ed1b3d0d377"
+        },
+        {
+          "path": "web/form-feedback.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4cc30ecb5384673371828fcdea2cb891e32bda6f5785f5b37c408a47738a9d98"
+        },
+        {
+          "path": "web/form-feedback.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e"
+        },
+        {
+          "path": "web/form-review.js",
+          "operation": "modify",
+          "before_sha256": "3adf3265ff595d590bd3e83e9aec77f9af66e2970439a90588b7f4797f6edfea",
+          "after_sha256": "376f53820b44a0cdc1f6d55ef26ad61ca11bde556af3862b6a215b2655a701d4"
+        },
+        {
+          "path": "web/geo-auth-callback.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "27bfcfd10c435169a5ae132d375b62df12cc46c4af2d73cb1806c279598966ae"
+        },
+        {
+          "path": "web/geo-auth-callback.js",
+          "operation": "modify",
+          "before_sha256": "24076c7d476bca1019eea36078270b7c193a42982e8b5d6013676b818432ea75",
+          "after_sha256": "92abf4eb538ec3b6819e66e6ecf403b8ec955d7dacd2b66db80767312bb0e69b"
+        },
+        {
+          "path": "web/geo-auth-state.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "e00853b02615f1d1951743beadf24c912a1f08c0c8d7c169898f243f20502936"
+        },
+        {
+          "path": "web/inbox-view-state.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "772f0efc945cacc50922f3a22c49057c5a55d5b04c66be37976ebbb50a9f0f91"
+        },
+        {
+          "path": "web/inbox-view-state.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "6c6b1fab6ed2a5c1eaa1cc63bd0cf5ec7cf06c07e7773f34a832ca69fe106729"
+        },
+        {
+          "path": "web/inbox-workspace.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "a85bc3ea8ba7465275a129622a681fdb80877367cc0ab1106c9273a355528b0a"
+        },
+        {
+          "path": "web/inbox-workspace.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "8c16f2a8b8e19e2067f375ce8b4538cb2d700c0db5d040fa443f00d1ca0ebe53"
+        },
+        {
+          "path": "web/index.html",
+          "operation": "modify",
+          "before_sha256": "93028527551e41d9e5d9f5c763f5e1d4dd3cf9cec4ce0144c751e3cac1823155",
+          "after_sha256": "3f144f2551bd21709cb729fcdcf2a52cdf3df7f9997a4bd36000527c935d1b8c"
+        },
+        {
+          "path": "web/mutation-state.d.ts",
+          "operation": "modify",
+          "before_sha256": "877ffb6444d0d57040175f991cc5ebaac703d2ca3d8115df5f0591b7fc4d2a2f",
+          "after_sha256": "d80dc2662df0d8a15c5a5c43464caa655ba826ff275b5e445617ccd6306626b2"
+        },
+        {
+          "path": "web/mutation-state.js",
+          "operation": "modify",
+          "before_sha256": "1020a746647729b381913d52f8d0f7648693f4147d0d16f61b3fc93142b67e64",
+          "after_sha256": "8b9712e1cc9ca7836e1cf8acd00501af44c65a62f76027dbc586c95df8bca5eb"
+        },
+        {
+          "path": "web/opening-flow.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "3cc37cb679af5e578559e084fe1b99aa90c84d4a16254105a8b068ac46a71169"
+        },
+        {
+          "path": "web/opening-flow.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "ef4a8f82e1d2fc5e00418044a29cbd6e7fb3ba1518315059aec75f42c2385f92"
+        },
+        {
+          "path": "web/opening-wizard.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "cb74d41d97089a5065492c5d46ce46218581ea9851edbb6666397e8f1d7a8d46"
+        },
+        {
+          "path": "web/opening-wizard.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "074e7e5c42f8cf4358837dcbb60a5eebb08acfe5fea98e59d521585afa1066cf"
+        },
+        {
+          "path": "web/operations-experience.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac"
+        },
+        {
+          "path": "web/operations-ui.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "aeeb2de609c2def9fbd2087b104fdaf395aad231bb4d066911292a554321513a"
+        },
+        {
+          "path": "web/operations-ui.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f"
+        },
+        {
+          "path": "web/optional-support.d.ts",
+          "operation": "modify",
+          "before_sha256": "70b3f82b00a53413f19386f240d7a20b09693d8343518c649cf6e3df733b17a7",
+          "after_sha256": "9ea0473a874b7904f5327fd5ea2de050a6eebc0a377d7db42aa4c4de4e3f9091"
+        },
+        {
+          "path": "web/optional-support.js",
+          "operation": "modify",
+          "before_sha256": "eb25c6c131ba05da4be69bd503b59d3bb12c62a3fcd017a49261aa08d85c1955",
+          "after_sha256": "57de37513c7dc77bf71d2e5a36f0c9cc499ebe2dd86fc22de9dc88d025e5e996"
+        },
+        {
+          "path": "web/portal-ui.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "45a5d3d4a4ffdfed45e5d5ebd3078dc3b802a6613198a726ff684290e98b15e6"
+        },
+        {
+          "path": "web/portal-ui.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737"
+        },
+        {
+          "path": "web/portal.css",
+          "operation": "modify",
+          "before_sha256": "af4903c70338077f9504d3a1ed6b85fa55011a6c72a22482280ff90abe324757",
+          "after_sha256": "48c6b83c40e9d3a8e4094ce8864fe928023614d53373d64e0bfa4a9ab3d944bd"
+        },
+        {
+          "path": "web/reports.js",
+          "operation": "modify",
+          "before_sha256": "d2b693c04a63dc764c60de7ba155ed39314006c40ce90899d0302dfb2e4a5256",
+          "after_sha256": "59c9698a65b445b8bfb796f905123669abf9b2d9fe0bedb08d66fdacff26782f"
+        },
+        {
+          "path": "web/review-state.js",
+          "operation": "modify",
+          "before_sha256": "1bd5ada929e6b724d981c92142068c8a7d6252dbfd00fd27e1bbe7c0dac25726",
+          "after_sha256": "42db5ad8da97e66b5cff319a06a7e06f550ff2b1024ad9130371977261f38061"
+        },
+        {
+          "path": "web/support-experience.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "208bb65e59869f405ebc6b6d3efbe9057f6e1fa3528c115575231edb741aedc6"
+        },
+        {
+          "path": "web/support-intake.css",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "c253916aa725af6f891e6ea3fb3cb02df9b62a5441ee47f44d71a7881149a4da"
+        },
+        {
+          "path": "web/support-intake.d.ts",
+          "operation": "modify",
+          "before_sha256": "d715dc7ccdf36a3d79cb49ef0365ebdc0b2168f74786cd432c1d6da5abbbe1f9",
+          "after_sha256": "d462d4491854d241580b88da6c1f688b549904ddfa5b533690be9a40ca58c510"
+        },
+        {
+          "path": "web/support-intake.js",
+          "operation": "modify",
+          "before_sha256": "7dd9533286d8701500a7787344a8f008e6893d804495e13ab99ca68516421d36",
+          "after_sha256": "af49af54bfd12434ca1bc06332df282be1f2610a176e718d6548d0e49f724efc"
+        },
+        {
+          "path": "web/support-presentation.d.ts",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "bb9d86d6504ebb65f93153bff4216bb045fbe52d3b714e0c5c8e74867b973aba"
+        },
+        {
+          "path": "web/support-presentation.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "1fa018592815d029855097cfc336d929843f076ace2e762cd4542ffa373cdb38"
+        },
+        {
+          "path": "web/support-queue.js",
+          "operation": "modify",
+          "before_sha256": "a4fd43004bcdebcb48f6a4399c2830802c35bc27dd46727820b30cdbdf1c529c",
+          "after_sha256": "ebfb8f0723f15ae43053b90e9d179c0817d0c593e457f0182490b92a18de996f"
+        },
+        {
+          "path": "web/theme-init.js",
+          "operation": "add",
+          "before_sha256": null,
+          "after_sha256": "4f40caa7bf0af0e6058b10957ec2311543e831ae1277321ab454f28eef641f4f"
+        },
+        {
+          "path": "web/ticket-detail.js",
+          "operation": "modify",
+          "before_sha256": "77fd0d6b46813ec817976d7849afe6a83269eecfd4e975122e34aaa7a74195a8",
+          "after_sha256": "cdc00590fd4a67081e0552439e7c5dd3255b08a1473581b0c3ca23f674b40881"
+        }
+      ]
+    }
+  ]
+}

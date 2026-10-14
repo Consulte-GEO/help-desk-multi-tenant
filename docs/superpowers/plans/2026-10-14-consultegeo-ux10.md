@@ -34,4 +34,4 @@ Files: relatório146, requisitos UX10, evidência canônica, ledger e ZIP cumula
 Interfaces: fonte/fingerprint novo versus seis logs/inventário PG17; única revisão final por contexto independente.
 - [x] CI original completa, PG17/upgrade/prefixos e interface; conservar todo diagnóstico de falha.
 - [x] Revisão única e fix pass RED/GREEN, suíte completa aprovada; registrar todos rulings/custos/minors.
-- [ ] Atualizar PR31 draft, evidência, plano com capacidades e dependências exatas, pacote verificado. Preservar worktree; arquivar/deletar só scratch desta execução.
+- [x] Atualizar PR31 draft, evidência, plano com capacidades e dependências exatas, pacote verificado. Preservar worktree; arquivar/deletar só scratch desta execução.
