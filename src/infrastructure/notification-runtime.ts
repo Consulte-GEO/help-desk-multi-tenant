@@ -34,7 +34,7 @@ export function validateNotificationRuntimeConfig(raw:NotificationRuntimeConfig,
 /** Fixed named reads only. Recipient/contact/authorization never come from env. */
 export function readNotificationRuntimeEnvironment(get:(name:string)=>string|undefined,purpose:Purpose):NotificationRuntimeConfig{return {
  enabled:get('HELPDESK_NOTIFICATION_DELIVERY_ENABLED'),releaseApproved:get('HELPDESK_RELEASE_APPROVED'),databaseUrl:get('HELPDESK_NOTIFICATION_DATABASE_URL'),databaseCa:get('HELPDESK_NOTIFICATION_DATABASE_CA'),origin:get('HELPDESK_CONSULTEGEO_ORIGIN'),
- ...(purpose==='worker'?{resendApiKey:get('HELPDESK_RESEND_API_KEY'),resendFrom:get('HELPDESK_RESEND_FROM'),senderVerified:get('HELPDESK_RESEND_SENDER_VERIFIED')}:{webhookSecret:get('HELPDESK_RESEND_WEBHOOK_SECRET'),webhookPreviousSecret:get('HELPDESK_RESEND_WEBHOOK_PREVIOUS_SECRET')})
+ ...(purpose==='worker'?{resendApiKey:get('RESEND_API_KEY'),resendFrom:get('RESEND_FROM'),senderVerified:get('HELPDESK_NOTIFICATION_SENDER_VERIFIED')}:{webhookSecret:get('RESEND_WEBHOOK_SECRET'),webhookPreviousSecret:get('RESEND_WEBHOOK_PREVIOUS_SECRET')})
 };}
 type NotificationDatabaseContract=Readonly<{schemaVersion:string;roles:readonly Readonly<{name:string;schemas:readonly string[];functions:readonly string[]}>[]}>;
 const signatures=NOTIFICATION_WORKER_HELPERS.map(s=>'helpdesk_auth.'+s).sort();
