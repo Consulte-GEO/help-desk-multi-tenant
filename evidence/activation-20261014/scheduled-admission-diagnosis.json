@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-14T20:15:35.035Z",
+  "siteId": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deployId": "6acfe1320c0ae8cfa3b4cdcf",
+  "commit": "9770415148eced981fb62b83e175b49aee628fde",
+  "requestId": "01M4Y0WNKVRD0GCK3QPTXGG7R2",
+  "status": 503,
+  "event": {
+    "component": "helpdesk.notifications",
+    "event": "scheduled_worker_failed",
+    "phase": "deploy_guard",
+    "code": "notification_unavailable",
+    "deployContext": "production",
+    "publishedDeploy": false,
+    "configuration": null
+  },
+  "correction": "Use the native production context under the provider's schedule-only ingress; preserve observed metadata and all configuration/database/delivery checks.",
+  "providerContract": [
+    "https://docs.netlify.com/build/functions/api/#schedule",
+    "https://docs.netlify.com/build/functions/scheduled-functions/"
+  ],
+  "manualInvocationLimit": "An authenticated Netlify operator may use Run now on an old production deploy; that is not proof of current scheduled execution.",
+  "productionCycleVerified": false
+}
