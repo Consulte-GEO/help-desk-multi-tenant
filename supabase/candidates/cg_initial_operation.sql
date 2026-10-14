@@ -95,6 +95,44 @@ BEGIN
  RETURN receipt;
 END$$;
 
+-- The original M09c receipt pins a published workflow but does not bind its
+-- execution checklist. For the real local Consulte GEO source, create that
+-- binding in the SAME opening transaction from the immutable native snapshot.
+-- No caller supplies a template or gains direct binding-table privileges.
+CREATE FUNCTION helpdesk_auth.cg_initial_bind_checklist() RETURNS trigger LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
+DECLARE local_account helpdesk_auth.cg_local_accounts%rowtype;snapshot_doc jsonb;profile_doc jsonb;template_doc jsonb;reference_doc jsonb;pinned text;affected int;
+BEGIN
+ SELECT * INTO local_account FROM helpdesk_auth.cg_local_accounts a WHERE a.workspace_id=NEW.workspace_id AND a.account_id=NEW.account_id FOR SHARE;
+ IF NOT FOUND THEN RETURN NEW;END IF;
+ IF NOT local_account.active OR local_account.binding_id IS DISTINCT FROM (NEW.scope->>'bindingId')::uuid
+ OR NEW.transaction_id IS DISTINCT FROM pg_current_xact_id() OR NEW.actor_id IS DISTINCT FROM helpdesk_auth.actor_id()
+ OR NEW.workspace_id IS DISTINCT FROM helpdesk_auth.workspace_id() THEN RAISE EXCEPTION 'Local opening checklist identity invalid' USING ERRCODE='HDI08';END IF;
+ SELECT document INTO snapshot_doc FROM helpdesk_core.hdni_snapshots s WHERE (s.workspace_id,s.account_id,s.ticket_id)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id) FOR SHARE;
+ IF NOT FOUND OR snapshot_doc->'receipt' IS DISTINCT FROM NEW.result OR helpdesk_auth.hdni_digest(snapshot_doc) IS DISTINCT FROM NEW.snapshot_hash
+ OR snapshot_doc->'bundle'->'resourceScope' IS DISTINCT FROM NEW.scope THEN RAISE EXCEPTION 'Local opening checklist snapshot invalid' USING ERRCODE='HDI08';END IF;
+ pinned:=NEW.result->>'profileVersionId';
+ PERFORM 1 FROM helpdesk_core.hdn_workflow_state s WHERE (s.workspace_id,s.account_id,s.ticket_id,s.profile_version_id)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id,pinned) FOR SHARE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Local opening workflow missing' USING ERRCODE='HDI08';END IF;
+ SELECT document INTO profile_doc FROM helpdesk_core.hdn_workflow_profiles p WHERE p.workspace_id=NEW.workspace_id AND p.version_id=pinned FOR SHARE;
+ IF NOT FOUND OR profile_doc->>'status' IS DISTINCT FROM 'published' OR profile_doc IS DISTINCT FROM snapshot_doc->'profile'->'workflow'
+ THEN RAISE EXCEPTION 'Local opening published workflow invalid' USING ERRCODE='HDI08';END IF;
+ reference_doc:=profile_doc->'executionChecklist';
+ IF NOT coalesce(helpdesk_auth.hdn_cfg_object(reference_doc,ARRAY['id','version','sha256']),false)
+ OR NOT coalesce(helpdesk_auth.hdn_cfg_int(reference_doc->'version',1,2147483647),false)
+ OR jsonb_typeof(reference_doc->'id') IS DISTINCT FROM 'string' OR reference_doc->>'id' !~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$'
+ OR jsonb_typeof(reference_doc->'sha256') IS DISTINCT FROM 'string' OR reference_doc->>'sha256' !~ '^[a-f0-9]{64}$'
+ THEN RAISE EXCEPTION 'Local opening checklist reference invalid' USING ERRCODE='HDI08';END IF;
+ SELECT document INTO template_doc FROM helpdesk_core.hdn_execution_templates t WHERE (t.workspace_id,t.template_id,t.version,t.sha256)=(NEW.workspace_id,reference_doc->>'id',(reference_doc->>'version')::int,reference_doc->>'sha256') FOR SHARE;
+ IF NOT FOUND OR template_doc->>'status' IS DISTINCT FROM 'published' OR helpdesk_auth.hdn_workflow_digest(template_doc) IS DISTINCT FROM reference_doc->>'sha256'
+ THEN RAISE EXCEPTION 'Local opening published checklist invalid' USING ERRCODE='HDI08';END IF;
+ INSERT INTO helpdesk_core.hdn_execution_bindings(workspace_id,account_id,ticket_id,profile_version_id,template_id,template_version,template_sha256) VALUES(NEW.workspace_id,NEW.account_id,NEW.ticket_id,pinned,reference_doc->>'id',(reference_doc->>'version')::int,reference_doc->>'sha256');
+ GET DIAGNOSTICS affected=ROW_COUNT;
+ IF affected<>1 OR NOT EXISTS(SELECT 1 FROM helpdesk_core.hdn_execution_bindings b WHERE (b.workspace_id,b.account_id,b.ticket_id,b.profile_version_id,b.template_id,b.template_version,b.template_sha256)=(NEW.workspace_id,NEW.account_id,NEW.ticket_id,pinned,reference_doc->>'id',(reference_doc->>'version')::int,reference_doc->>'sha256'))
+ THEN RAISE EXCEPTION 'Local opening checklist binding suppressed or changed' USING ERRCODE='HDI08';END IF;
+ RETURN NEW;
+END$$;
+CREATE TRIGGER cg_initial_bind_checklist AFTER INSERT ON helpdesk_audit.hdni_receipts FOR EACH ROW EXECUTE FUNCTION helpdesk_auth.cg_initial_bind_checklist();
+
 -- Minimal current-authorized presentation, never a public receipt/snapshot dump.
 CREATE FUNCTION helpdesk_auth.cg_local_ticket_summary(target uuid) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
 DECLARE metadata jsonb;r helpdesk_audit.hdni_receipts%rowtype;profile text;BEGIN
@@ -106,11 +144,11 @@ DECLARE metadata jsonb;r helpdesk_audit.hdni_receipts%rowtype;profile text;BEGIN
  RETURN jsonb_build_object('protocol',r.result->'protocol','profileVersionId',profile,'workflow',true,'requesterId',r.result->'requesterId');
 END$$;
 REVOKE ALL ON TABLE helpdesk_audit.cg_initial_receipts FROM PUBLIC,helpdesk_app,helpdesk_resource_publisher,helpdesk_notification_worker;
-REVOKE ALL ON FUNCTION helpdesk_auth.cg_initial_receipt_immutable(),helpdesk_auth.cg_initial_operation(text,text),helpdesk_auth.cg_local_ticket_summary(uuid) FROM PUBLIC,helpdesk_app,helpdesk_resource_publisher,helpdesk_notification_worker;
+REVOKE ALL ON FUNCTION helpdesk_auth.cg_initial_receipt_immutable(),helpdesk_auth.cg_initial_operation(text,text),helpdesk_auth.cg_initial_bind_checklist(),helpdesk_auth.cg_local_ticket_summary(uuid) FROM PUBLIC,helpdesk_app,helpdesk_resource_publisher,helpdesk_notification_worker;
 DO $clients$ DECLARE role_name text;signature text;BEGIN
  FOREACH role_name IN ARRAY ARRAY['anon','authenticated','service_role','helpdesk_maintenance'] LOOP IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname=role_name) THEN
   EXECUTE format('REVOKE ALL ON TABLE helpdesk_audit.cg_initial_receipts FROM %I',role_name);
-  FOREACH signature IN ARRAY ARRAY['cg_initial_receipt_immutable()','cg_initial_operation(text,text)','cg_local_ticket_summary(uuid)'] LOOP EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.%s FROM %I',signature,role_name);END LOOP;
+  FOREACH signature IN ARRAY ARRAY['cg_initial_receipt_immutable()','cg_initial_operation(text,text)','cg_initial_bind_checklist()','cg_local_ticket_summary(uuid)'] LOOP EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.%s FROM %I',signature,role_name);END LOOP;
  END IF;END LOOP;
 END $clients$;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.cg_local_ticket_summary(uuid) TO helpdesk_app;
