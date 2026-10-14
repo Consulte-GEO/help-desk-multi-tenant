@@ -1,3 +1,5 @@
+> **Estado atual — 14/10/2026:** atendimento Consulte GEO ativo em https://helpdesk.consultegeo.org para MRV — Residencial Encanto. API/interface 0.31.0, banco 0.24.0 e 17 migrations; 6.100 verificações aprovadas. Cadastros e acessos publicado, com oito tipos de cadastro, cinco ações e workflow/checklist/SLA. O administrador confirmou acesso ao painel. Resend técnico validado; conexão exclusiva do worker em qualificação. Novo GEO adiado. [Ativação](docs/149-CONSULTEGEO-ATIVACAO-2026-10-14.md) e [Cadastros](docs/150-CONSULTEGEO-CADASTROS-2026-10-14.md). Os estados abaixo são históricos.
+
 > **Publicação UX10 —14/10/2026:** interface/API0.30 publicadas no helpdesk-consultegeo e81 assets conferidos. PR31/merge4b1f5f5,CI4710/422/539 (5671) aprovado; acesso aceita o contrato completo0.19 somente com atendimento e módulos CG fechados. Promoção0.23 hospedada pendente por limite do operador PG17; M08 real adiada e emails operacionais desativados. [Estado publicado e limites](docs/147-PUBLICACAO-UX10-2026-10-14.md).
 
 > **Consulte GEO M09c + UX10 —14/10/2026:** apresentação integrada e composição de sessão/intake/abertura PostgreSQL qualificadas; fonte5170e05, CI38516252764:4701/420/539 (5660), zero fail/skip/cancel/todo. Revisão única e fix pass concluídos, intentos preservados após ACK perdido/replay recusado. API/interface0.30.0, schema0.23.0,16 migrations; writers/lock/flags/SQL preservados. M08 real adiada pelo usuário; atendimento hospedado e entrega Resend permanecem etapas próprias. [Entrega e plano atualizado](docs/146-CONSULTEGEO-UX10-INTEGRACAO-2026-10-14.md).
@@ -22,9 +24,9 @@
 
 > **HDN-01l — revisão de 13/10/2026:** cumulativo integrado à fonte da PR30; corrigidos fingerprint, build, recusas de acesso e preparação/compatibilidade do browser. Revisão independente concluída; CI4246/326/168 aprovado sem skips e evidência da mesma fonte verificada. PR30 mesclado/publicado, 44 assets de produção e fronteira readonly conferidos; atendimento fechado. [Estado e limites](docs/138-REVISAO-HDN01L-2026-10-13.md).
 
-# Help Desk independente — API/interface 0.27.0
+# Help Desk Consulte GEO — API/interface 0.31.0
 
-O código consolidado R1 está na principal `codex/m1-reproducibilidade`. O atendimento operacional permanece fechado; os módulos opcionais continuam candidatos até a montagem e os aceites próprios. Schema 0.19.0, 12 migrations históricas e 19 operações HTTP.
+O código publicado está na principal `codex/m1-reproducibilidade`. O atendimento operacional está ativo com cadastro local de cliente/obra e isolamento por autorização. Schema 0.24.0 e 17 migrations. A administração de configurações continua exigindo MFA; a integração com Novo GEO permanece adiada por decisão do usuário.
 
 A integração HDW-00/00b acrescenta auditoria offline e seleção explícita de localizadores do wiki para revisão privada. Não monta rotas ou publica artigos. Estado, problemas corrigidos e validação corrente: [revisão de 12/10](docs/135-HDW00B-REVISAO-E-INTEGRACAO-2026-10-12.md). Consolidação dos 18 ciclos e matriz operacional: [R1](docs/134-CONSOLIDACAO-R1-2026-10-11.md).
 

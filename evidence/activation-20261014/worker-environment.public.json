@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "site": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "account": "68a35d6f9d3da169c2aa304d",
+  "project": "xaelbntjnvztznnpcvtm",
+  "checkedAt": "2026-10-14T19:30:49.408Z",
+  "keys": [
+    "HELPDESK_NOTIFICATION_DATABASE_URL",
+    "HELPDESK_NOTIFICATION_DATABASE_CA"
+  ],
+  "completed": [
+    {
+      "key": "HELPDESK_NOTIFICATION_DATABASE_URL",
+      "scope": "functions",
+      "context": "production",
+      "isSecret": true
+    },
+    {
+      "key": "HELPDESK_NOTIFICATION_DATABASE_CA",
+      "scope": "functions",
+      "context": "production",
+      "isSecret": true
+    }
+  ],
+  "providerCalled": false,
+  "deliveryFlagChanged": false,
+  "senderFlagChanged": false,
+  "existingSecretsPrinted": false,
+  "environmentEnumeration": false,
+  "installed": true,
+  "phase": "verified",
+  "qualificationCheckedAt": "2026-10-14T19:30:29.684Z",
+  "sslEnforcementCheckedAt": "2026-10-14T19:30:38.056Z",
+  "newDeployRequired": true
+}

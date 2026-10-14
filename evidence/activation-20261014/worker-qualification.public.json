@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "qualified": true,
+  "checkedAt": "2026-10-14T19:30:29.684Z",
+  "site": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "project": "xaelbntjnvztznnpcvtm",
+  "host": "aws-0-ca-central-1.pooler.supabase.com",
+  "port": 5432,
+  "username": "helpdesk_notification_worker.xaelbntjnvztznnpcvtm",
+  "database": "postgres",
+  "sessionUser": "helpdesk_notification_worker",
+  "currentUser": "helpdesk_notification_worker",
+  "serverVersionNum": 170006,
+  "privateTables": 67,
+  "contractSchemaVersion": "0.24.0",
+  "helpers": 13,
+  "checks": {
+    "sessionUser": "helpdesk_notification_worker",
+    "currentUser": "helpdesk_notification_worker",
+    "schema": true,
+    "role": true,
+    "acl": true,
+    "helpers": true,
+    "tables": true,
+    "clients": true,
+    "settings": true,
+    "tls": true
+  },
+  "clientTls": {
+    "encrypted": true,
+    "authorized": true,
+    "hostnameVerified": true,
+    "certificateSha256": "03:70:9C:A4:4D:1B:06:E4:50:4D:A0:A8:3B:6C:A0:65:76:1E:DC:70:4C:D5:63:4B:CC:38:94:FD:5C:7B:32:48",
+    "protocol": "TLSv1.3",
+    "caSha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7"
+  },
+  "providerCalled": false,
+  "domainDataRead": false
+}

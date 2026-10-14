@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-10-14T19:31:03.571Z",
+  "summary": {
+    "cg_opening_receipts": 0,
+    "mrv_tickets": 0,
+    "native_receipts": 0,
+    "notification_attempts": 0,
+    "notification_plans": 0,
+    "notification_states": {},
+    "routes": [
+      {
+        "active": true,
+        "audience": "none",
+        "kind": "support.approval_granted",
+        "revision": 1,
+        "template_hash": null
+      },
+      {
+        "active": true,
+        "audience": "none",
+        "kind": "support.approval_rejected",
+        "revision": 1,
+        "template_hash": null
+      },
+      {
+        "active": true,
+        "audience": "none",
+        "kind": "support.approval_requested",
+        "revision": 1,
+        "template_hash": null
+      },
+      {
+        "active": true,
+        "audience": "requester",
+        "kind": "support.created",
+        "revision": 1,
+        "template_hash": "6812afb67823ae0366016e72ecf69e241322447cf5a1a5f26d88442b495d8d71"
+      },
+      {
+        "active": true,
+        "audience": "none",
+        "kind": "support.customer_reply",
+        "revision": 1,
+        "template_hash": null
+      },
+      {
+        "active": true,
+        "audience": "requester",
+        "kind": "support.devolutiva",
+        "revision": 1,
+        "template_hash": "ee3d0ae61a165981ce09e2532923fd4736fa07570d713336723f9634253cae18"
+      },
+      {
+        "active": true,
+        "audience": "none",
+        "kind": "support.form_revised",
+        "revision": 1,
+        "template_hash": null
+      },
+      {
+        "active": true,
+        "audience": "requester",
+        "kind": "support.resolved",
+        "revision": 1,
+        "template_hash": "aa5a278146c27be2b36bc9f5d95d9d81afa89b80945cb689c60b8fa8be419180"
+      }
+    ]
+  },
+  "business_mutations_dispatched": 0
+}
