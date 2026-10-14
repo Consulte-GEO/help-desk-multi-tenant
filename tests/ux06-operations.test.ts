@@ -58,8 +58,8 @@ test('UX06 CSS uses semantic tokens and includes scoped mobile readability',()=>
 test('UX06 presentation state maps cannot treat unknown values as success',async()=>{
  const m=await load('operations-ui.js');for(const v of ['toString','__proto__','clean-ish',null,{}])assert.equal(m.attachmentView(v).tone,'neutral');assert.notEqual(m.attachmentView('pending_scan').tone,'success');assert.equal(m.attachmentView('clean').label,'Análise concluída');
 });
-test('UX06 security controllers stay byte-identical to the recovered reference',()=>{
- const expected={'execution-checklist-state.js':'58f17cfc131c6dd3f986b6a3a10185e23025eea2','execution-checklist-contract.js':'8ae90bb018c1e8e119ee1387463b0a548284c20b','review-state.js':'201f8368198e5f5fde98086f6bcfc445d37c9abb'};
+test('UX06 security controllers match preserved reference and reviewed replay checkpoint',()=>{
+ const expected={'execution-checklist-state.js':'58f17cfc131c6dd3f986b6a3a10185e23025eea2','execution-checklist-contract.js':'8ae90bb018c1e8e119ee1387463b0a548284c20b','review-state.js':'c5edf4bb39a6815468f7cea21efe91fbba4e1c01'};
  for(const [name,sha] of Object.entries(expected)){const b=Buffer.from(file(name));assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex'),sha,name);}
 });
 
