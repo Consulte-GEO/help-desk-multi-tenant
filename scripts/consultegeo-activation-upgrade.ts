@@ -36,6 +36,8 @@ export const ACTIVATION_QUALIFICATION=Object.freeze({
   "inventorySha256": "7d09c31cd827ea3b78741a914e6c9099847a909d30e4643e82b59eeaffa53225"
 });
 export const ACTIVATION_CONTRACT_SHA256='25cbbb8edf974512acce0121ca74536ee637357181c386e49b8ec16542ff8939';
+// Immutable compiler input included in source fingerprints and source-only CI archives.
+export const ACTIVATION_INVENTORY_SOURCE='supabase/qualifications/consultegeo-activation.inventory.json';
 const generatedBy={tool:'Supabase CLI',version:'2.120.0',command:'supabase migration new consultegeo_operational_activation'};
 const digest=(value:string|Buffer)=>createHash('sha256').update(value).digest('hex');
 function exact(value:unknown,keys:readonly string[]):value is Record<string,unknown>{return !!value&&typeof value==='object'&&!Array.isArray(value)&&Reflect.ownKeys(value).length===keys.length&&keys.every(key=>Object.hasOwn(value,key));}
@@ -134,7 +136,7 @@ export async function verifyConsulteGeoActivation(root:string):Promise<{schemaVe
   ||JSON.stringify(bundle.migrations.slice(0,16).map(({file,sha256})=>({file,sha256})))!==JSON.stringify(ACTIVATION_BASELINE))throw failure();
  const migration=bundle.migrations[16]!;
  if(raw.file!==migration.file||!/^\d{14}_consultegeo_operational_activation\.sql$/.test(migration.file)||raw.sha256!==migration.sha256)throw failure();
- const inventory=await regular(join(path,'evidence/consultegeo-activation/security-inventory.json'),2*1024*1024);
+ const inventory=await regular(join(path,ACTIVATION_INVENTORY_SOURCE),2*1024*1024);
  if(digest(inventory)!==ACTIVATION_QUALIFICATION.inventorySha256||JSON.stringify(JSON.parse(inventory))!==JSON.stringify(DATABASE_SECURITY_CONTRACT))throw failure();
  const components=await Promise.all(QUALIFIED_ACTIVATION_COMPONENTS.map(async c=>({...c,sql:await regular(join(path,'supabase/candidates',c.file),2*1024*1024)})));
  if(compileConsulteGeoActivation(components)!==migration.sql)throw failure();return {schemaVersion:'0.24.0',file:migration.file,sha256:migration.sha256};
