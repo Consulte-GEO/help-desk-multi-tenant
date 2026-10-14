@@ -1,5 +1,7 @@
 # Matriz integral — 107 requisitos do levantamento de 12/10/2026
 
+> **M09c — 14/10/2026:** protocolo/snapshot/recibo e fila nativos homologados; quatro entregas parciais atualizadas no JSON, mantendo 107 RF e as prioridades originais. Pending indica fila, sem prova de envio. [Estado e limites](../../145-CONSULTEGEO-ABERTURA-ATOMICA-M09C-2026-10-13.md).
+
 As prioridades abaixo são as do documento do Claude, não uma promessa de entrega. A disposição é a avaliação desta revisão. A presença de módulos consolidados não significa integração operacional. Os requisitos não foram renumerados. A referência de linha usa a numeração do arquivo original anexado, lido em UTF-8.
 
 **Inventário:** 107 RF distintos; 52 MVP, 43 Fase 2, 12 Fase 3. Nenhum RNF codificado consta do arquivo, embora a introdução explique a sigla. Requisitos técnicos complementares estão no plano, claramente identificados.

@@ -1,0 +1,147 @@
+{
+  "scope": "Windows-local-only-before-0faa091",
+  "counts": {
+    "tests": 4495,
+    "pass": 4462,
+    "fail": 33,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "logSha256": "8537956930056e71518aa88ebfd54b0a28c21f88aa23a8b62298aadae782cb9a",
+  "limitations": [
+    {
+      "test": "C01 source symlink is refused without following it",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\etc\\\\passwd' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-consolidation-nlPNkV\\\\src\\\\feature.ts'\""
+    },
+    {
+      "test": "C01 symlinked parent directory cannot escape the checkout",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\etc' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-consolidation-kzMNA2\\\\src'\""
+    },
+    {
+      "test": "C09 ClamD client sends real INSTREAM framing over an owned local socket",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-l2ok1Q\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 FOUND is rejection and never exposes the provider signature text",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-RRaDDk\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 refuses incomplete or incompatible daemon reply \"stream: ignored ERROR\\\\u0000\"",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-qaAb8U\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 refuses incomplete or incompatible daemon reply \"INSTREAM size limit exceeded. ERROR\\\\u0000\"",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-TZ3dzZ\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 refuses incomplete or incompatible daemon reply \"OK\\\\u0000\"",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-W7x8dq\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 refuses incomplete or incompatible daemon reply \"stream: OK\\\\n\"",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-9kPMGj\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 scanner cancellation does not send another request",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-0qndQQ\\\\clamd.sock'"
+    },
+    {
+      "test": "C09 scanner definition change during scanning cannot stamp an old definition receipt",
+      "error": "error: 'listen EACCES: permission denied C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-clamd-test-cmUdV2\\\\clamd.sock'"
+    },
+    {
+      "test": "HDW00b CLI refuses symlink review input",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw-review-cli-RrJT5I\\\\review.json' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw-review-cli-RrJT5I\\\\linked.json'\""
+    },
+    {
+      "test": "HDW00b CLI rejects policy symlink for both new and existing commands",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw-review-cli-WUH7xo\\\\policy.json' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw-review-cli-WUH7xo\\\\policy-link.json'\""
+    },
+    {
+      "test": "HDW00 final file symlink is not followed",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\outside-1791945802146.md' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00-3O7eRG\\\\operacao\\\\consulta.md'\""
+    },
+    {
+      "test": "HDW00 directory symlink is not traversed",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\tmp' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00-rKqK5r\\\\operacao'\""
+    },
+    {
+      "test": "HDW00 root symlink is refused with a safe error",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00-OAlbAb' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00-OAlbAb-link'\""
+    },
+    {
+      "test": "HDW00 CLI symbolic policy refused before reading",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00cli-LtIuLj\\\\policy.json' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hdw00cli-LtIuLj\\\\link.json'\""
+    },
+    {
+      "test": "CI extraction excludes committed historical reports and screenshots without deleting originals",
+      "error": "error: 'Invalid CI source context.'"
+    },
+    {
+      "test": "repeating CI staging creates a new empty evidence root instead of reusing an earlier attempt",
+      "error": "error: 'Invalid CI source context.'"
+    },
+    {
+      "test": "CI staging refuses source symlinks instead of reading outside the checkout",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-ci-test-Qkjzm4\\\\private.txt' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-ci-test-Qkjzm4\\\\checkout\\\\src\\\\escape.ts'\""
+    },
+    {
+      "test": "CI staging preserves a committed file named source.tar without colliding with its temporary archive",
+      "error": "error: 'Invalid CI source context.'"
+    },
+    {
+      "test": "CI staging refuses a symlinked temp parent resolving to a newline path before emitting step outputs",
+      "error": "error: |-"
+    },
+    {
+      "test": "M1-R9 a symbolic execution directory cannot redirect evidence to an older run",
+      "error": "error: \"EPERM: operation not permitted, symlink 'previous' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-evidence-coherence-tA0NdU\\\\evidence\\\\homologation\\\\runs\\\\current'\""
+    },
+    {
+      "test": "R5 symlinked patch is refused even if target bytes match",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration U4zDnI\\\\outside.patch' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration U4zDnI\\\\package\\\\patches\\\\change.patch'\""
+    },
+    {
+      "test": "R5 symlinked checkout ancestor cannot redirect file checks",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration 1AxN7Y\\\\outside' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration 1AxN7Y\\\\checkout\\\\src'\""
+    },
+    {
+      "test": "R5 symlinked package directory is not followed to a matching patch",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration ijXgIK\\\\outside' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk integration ijXgIK\\\\package\\\\patches'\""
+    },
+    {
+      "test": "fingerprint refuses symlinked source trees",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-fingerprint-vTdscw\\\\target' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-fingerprint-vTdscw\\\\src'\""
+    },
+    {
+      "test": "native environment cannot inherit production, PG service overrides or Node preload hooks",
+      "error": "error: |-"
+    },
+    {
+      "test": "symbolic-link substitution of data directory blocks automatic cleanup and preserves foreign files",
+      "error": "error: |-"
+    },
+    {
+      "test": "migration loader rejects symbolic-file",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-BJTP9D\\\\other.sql' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-BJTP9D\\\\supabase\\\\migrations\\\\20260916000100_fixture.sql'\""
+    },
+    {
+      "test": "migration loader rejects symbolic-directory",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-6DQl35\\\\other' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-6DQl35\\\\supabase\\\\migrations'\""
+    },
+    {
+      "test": "migration bytes reject manifest-symlink",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-6wGLRS\\\\external.json' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-6wGLRS\\\\supabase\\\\migrations.manifest.json'\""
+    },
+    {
+      "test": "migration bytes reject supabase-symlink",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-WjFOvd\\\\elsewhere' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\helpdesk-migrations-WjFOvd\\\\supabase'\""
+    },
+    {
+      "test": "CLI refuses symlink without printing file content",
+      "error": "error: \"EPERM: operation not permitted, symlink 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hd-scope-plan-EZKboZ\\\\input.json' -> 'C:\\\\Users\\\\thiag\\\\AppData\\\\Local\\\\Temp\\\\hd-scope-plan-EZKboZ\\\\link'\""
+    }
+  ],
+  "qualification": "No failures waived; canonical Linux CI required. The subsequent borrowed-query fix adds one regression, proven separately and in Linux."
+}

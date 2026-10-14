@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: M09c protocol allocation requires native confirmation on the same borrowed transaction
+ok 1 - M09c protocol allocation requires native confirmation on the same borrowed transaction
+  ---
+  duration_ms: 75.5274
+  type: 'test'
+  ...
+# Subtest: M09c malformed protocol ACK is sticky even if caught
+ok 2 - M09c malformed protocol ACK is sticky even if caught
+  ---
+  duration_ms: 0.6755
+  type: 'test'
+  ...
+# Subtest: M09b store validates current scope from one borrowed transaction and never escapes pool
+ok 3 - M09b store validates current scope from one borrowed transaction and never escapes pool
+  ---
+  duration_ms: 2.8212
+  type: 'test'
+  ...
+# Subtest: M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+ok 4 - M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+  ---
+  duration_ms: 0.4318
+  type: 'test'
+  ...
+# Subtest: M09b draft reader rejects foreign owner/account and unknown fields before returning data
+ok 5 - M09b draft reader rejects foreign owner/account and unknown fields before returning data
+  ---
+  duration_ms: 1.4986
+  type: 'test'
+  ...
+# Subtest: M09b borrowed store cannot be retained after the owning callback
+ok 6 - M09b borrowed store cannot be retained after the owning callback
+  ---
+  duration_ms: 0.4311
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 281.4937

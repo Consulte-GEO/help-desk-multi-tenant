@@ -1,0 +1,526 @@
+TAP version 13
+# Subtest: C09+C10 upload ID, saved draft revision, mandatory scan, preview and one protocol compose
+ok 1 - C09+C10 upload ID, saved draft revision, mandatory scan, preview and one protocol compose
+  ---
+  duration_ms: 68.8011
+  type: 'test'
+  ...
+# Subtest: C09+C10 substituted sealed object after preview prevents all commit effects
+ok 2 - C09+C10 substituted sealed object after preview prevents all commit effects
+  ---
+  duration_ms: 16.5377
+  type: 'test'
+  ...
+# Subtest: M09b maps an actual published form to fixed priority/workflow/calendar/SLA without synthetic impact
+ok 3 - M09b maps an actual published form to fixed priority/workflow/calendar/SLA without synthetic impact
+  ---
+  duration_ms: 234.9312
+  type: 'test'
+  ...
+# Subtest: M09b mapping rejects draft, foreign form/version/product and incompatible service before use
+ok 4 - M09b mapping rejects draft, foreign form/version/product and incompatible service before use
+  ---
+  duration_ms: 313.006
+  type: 'test'
+  ...
+# Subtest: M09b intake can open a published fixed-priority form without deriving priority from customer text
+ok 5 - M09b intake can open a published fixed-priority form without deriving priority from customer text
+  ---
+  duration_ms: 61.7205
+  type: 'test'
+  ...
+# Subtest: M09b malformed fixed priority cannot fall back to a customer-controlled classification
+ok 6 - M09b malformed fixed priority cannot fall back to a customer-controlled classification
+  ---
+  duration_ms: 3.6306
+  type: 'test'
+  ...
+# Subtest: M09b admission changed during a draft write prevents COMMIT and all draft effects
+ok 7 - M09b admission changed during a draft write prevents COMMIT and all draft effects
+  ---
+  duration_ms: 1.9023
+  type: 'test'
+  ...
+# Subtest: M09c protocol allocation requires native confirmation on the same borrowed transaction
+ok 8 - M09c protocol allocation requires native confirmation on the same borrowed transaction
+  ---
+  duration_ms: 147.4916
+  type: 'test'
+  ...
+# Subtest: M09c malformed protocol ACK is sticky even if caught
+ok 9 - M09c malformed protocol ACK is sticky even if caught
+  ---
+  duration_ms: 0.9203
+  type: 'test'
+  ...
+# Subtest: M09b store validates current scope from one borrowed transaction and never escapes pool
+ok 10 - M09b store validates current scope from one borrowed transaction and never escapes pool
+  ---
+  duration_ms: 1.2578
+  type: 'test'
+  ...
+# Subtest: M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+ok 11 - M09b mandatory malformed SQL scope ACK remains sticky if callback catches it
+  ---
+  duration_ms: 0.4705
+  type: 'test'
+  ...
+# Subtest: M09b draft reader rejects foreign owner/account and unknown fields before returning data
+ok 12 - M09b draft reader rejects foreign owner/account and unknown fields before returning data
+  ---
+  duration_ms: 1.8263
+  type: 'test'
+  ...
+# Subtest: M09b borrowed store cannot be retained after the owning callback
+ok 13 - M09b borrowed store cannot be retained after the owning callback
+  ---
+  duration_ms: 0.5309
+  type: 'test'
+  ...
+# Subtest: M09c preserves all fifteen qualified migrations byte for byte
+ok 14 - M09c preserves all fifteen qualified migrations byte for byte
+  ---
+  duration_ms: 112.7553
+  type: 'test'
+  ...
+# Subtest: M09c HTTP returns receipt with version, location and explicit confirmation
+ok 15 - M09c HTTP returns receipt with version, location and explicit confirmation
+  ---
+  duration_ms: 45.2297
+  type: 'test'
+  ...
+# Subtest: M09c HTTP requires exact origin, CAS and intention key before creating
+ok 16 - M09c HTTP requires exact origin, CAS and intention key before creating
+  ---
+  duration_ms: 1.9996
+  type: 'test'
+  ...
+# Subtest: M09c HTTP preserves MFA refusal and rechecks release gate after authentication
+ok 17 - M09c HTTP preserves MFA refusal and rechecks release gate after authentication
+  ---
+  duration_ms: 0.8263
+  type: 'test'
+  ...
+# Subtest: M09c HTTP leaves on-behalf unmounted and reports unknown COMMIT for reconciliation
+ok 18 - M09c HTTP leaves on-behalf unmounted and reports unknown COMMIT for reconciliation
+  ---
+  duration_ms: 3.0843
+  type: 'test'
+  ...
+# Subtest: M09b absent source closes catalogue and drafts; submission has no legacy fallback
+ok 19 - M09b absent source closes catalogue and drafts; submission has no legacy fallback
+  ---
+  duration_ms: 437.0586
+  type: 'test'
+  ...
+# Subtest: M09b intake requires workflow and an exact HTTPS origin
+ok 20 - M09b intake requires workflow and an exact HTTPS origin
+  ---
+  duration_ms: 1.2609
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+ok 21 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001/workflow-commands without legacy fallback
+  ---
+  duration_ms: 1.7689
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+ok 22 - M06 missing qualified source/disabled admin closes /v1/internal/tickets/10000000-0000-4000-8000-000000000001/execution-checklist without legacy fallback
+  ---
+  duration_ms: 2.6742
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+ok 23 - M06 missing qualified source/disabled admin closes /v1/admin/consultegeo/configurations without legacy fallback
+  ---
+  duration_ms: 0.7925
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+ok 24 - M06 missing qualified source/disabled admin closes /v1/tickets/10000000-0000-4000-8000-000000000001 without legacy fallback
+  ---
+  duration_ms: 0.3798
+  type: 'test'
+  ...
+# Subtest: M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+ok 25 - M06 missing qualified source/disabled admin closes /v1/tickets without legacy fallback
+  ---
+  duration_ms: 0.739
+  type: 'test'
+  ...
+# Subtest: M06 capabilities report missing dependencies and scoped collection availability
+ok 26 - M06 capabilities report missing dependencies and scoped collection availability
+  ---
+  duration_ms: 1.7296
+  type: 'test'
+  ...
+# Subtest: M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+ok 27 - M06 runtime config defaults false and enabled modules require explicit HTTPS origin
+  ---
+  duration_ms: 1.0291
+  type: 'test'
+  ...
+# Subtest: M06 copied disabled environment example treats blank optional origin as unset
+ok 28 - M06 copied disabled environment example treats blank optional origin as unset
+  ---
+  duration_ms: 0.4317
+  type: 'test'
+  ...
+# Subtest: C10 verified beneficiary records requester and executor separately without granting account access
+ok 29 - C10 verified beneficiary records requester and executor separately without granting account access
+  ---
+  duration_ms: 86.1036
+  type: 'test'
+  ...
+# Subtest: C10 caller-supplied beneficiary proof is refused {"beneficiaryId":"00000000-0000-4000-8000-000000000044"}
+ok 30 - C10 caller-supplied beneficiary proof is refused {"beneficiaryId":"00000000-0000-4000-8000-000000000044"}
+  ---
+  duration_ms: 5.976
+  type: 'test'
+  ...
+# Subtest: C10 caller-supplied beneficiary proof is refused true
+ok 31 - C10 caller-supplied beneficiary proof is refused true
+  ---
+  duration_ms: 12.0166
+  type: 'test'
+  ...
+# Subtest: C10 caller-supplied beneficiary proof is refused "same@example.test"
+ok 32 - C10 caller-supplied beneficiary proof is refused "same@example.test"
+  ---
+  duration_ms: 4.7678
+  type: 'test'
+  ...
+# Subtest: C10 caller-supplied beneficiary proof is refused null
+ok 33 - C10 caller-supplied beneficiary proof is refused null
+  ---
+  duration_ms: 2.4763
+  type: 'test'
+  ...
+# Subtest: C10 requester cannot invoke support delegation merely because it can write tickets
+ok 34 - C10 requester cannot invoke support delegation merely because it can write tickets
+  ---
+  duration_ms: 1.6219
+  type: 'test'
+  ...
+# Subtest: C10 proof from another verifier instance does not authorize intake
+ok 35 - C10 proof from another verifier instance does not authorize intake
+  ---
+  duration_ms: 6.5105
+  type: 'test'
+  ...
+# Subtest: C10 beneficiary revoked after preview cannot create a delegated ticket
+ok 36 - C10 beneficiary revoked after preview cannot create a delegated ticket
+  ---
+  duration_ms: 9.6211
+  type: 'test'
+  ...
+# Subtest: C10 beneficiary expiry during commit rolls back the whole delegated request
+ok 37 - C10 beneficiary expiry during commit rolls back the whole delegated request
+  ---
+  duration_ms: 20.8139
+  type: 'test'
+  ...
+# Subtest: C10 delegated replay has the same protocol but requires a current verified beneficiary
+ok 38 - C10 delegated replay has the same protocol but requires a current verified beneficiary
+  ---
+  duration_ms: 12.9156
+  type: 'test'
+  ...
+# Subtest: C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.refs[0].externalId='C'
+ok 39 - C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.refs[0].externalId='C'
+  ---
+  duration_ms: 6.1587
+  type: 'test'
+  ...
+# Subtest: C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.accountId=sid(40)
+ok 40 - C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.accountId=sid(40)
+  ---
+  duration_ms: 4.0462
+  type: 'test'
+  ...
+# Subtest: C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.principalKind='integration'
+ok 41 - C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.principalKind='integration'
+  ---
+  duration_ms: 3.7868
+  type: 'test'
+  ...
+# Subtest: C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.capability='members.read'
+ok 42 - C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.capability='members.read'
+  ---
+  duration_ms: 4.12
+  type: 'test'
+  ...
+# Subtest: C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.active=false
+ok 43 - C10 incompatible beneficiary observation cannot produce a proof (v    )=>v.active=false
+  ---
+  duration_ms: 2.3263
+  type: 'test'
+  ...
+# Subtest: C10 refreshed beneficiary observation validity does not change the business intent
+ok 44 - C10 refreshed beneficiary observation validity does not change the business intent
+  ---
+  duration_ms: 5.7981
+  type: 'test'
+  ...
+# Subtest: C10 historical delegated receipt can replay after current authorization revision advances
+ok 45 - C10 historical delegated receipt can replay after current authorization revision advances
+  ---
+  duration_ms: 13.4764
+  type: 'test'
+  ...
+# Subtest: C09/C10 disabled mount rejects before authentication and business operations
+ok 46 - C09/C10 disabled mount rejects before authentication and business operations
+  ---
+  duration_ms: 111.7628
+  type: 'test'
+  ...
+# Subtest: C10 draft save and preview/commit/replay use real application composition over HTTP objects
+ok 47 - C10 draft save and preview/commit/replay use real application composition over HTTP objects
+  ---
+  duration_ms: 44.2419
+  type: 'test'
+  ...
+# Subtest: C09/C10 cannot bypass using /v1/tickets
+ok 48 - C09/C10 cannot bypass using /v1/tickets
+  ---
+  duration_ms: 1.1757
+  type: 'test'
+  ...
+# Subtest: C09/C10 cannot bypass using /v1/attachments/scan
+ok 49 - C09/C10 cannot bypass using /v1/attachments/scan
+  ---
+  duration_ms: 0.4702
+  type: 'test'
+  ...
+# Subtest: C09/C10 cannot bypass using /v1/attachments/00000000-0000-4000-8000-000000000009/scan
+ok 50 - C09/C10 cannot bypass using /v1/attachments/00000000-0000-4000-8000-000000000009/scan
+  ---
+  duration_ms: 0.3556
+  type: 'test'
+  ...
+# Subtest: C10 foreign origin is denied before body or mutation
+ok 51 - C10 foreign origin is denied before body or mutation
+  ---
+  duration_ms: 0.924
+  type: 'test'
+  ...
+# Subtest: C10 draft identity cannot differ between path and body
+ok 52 - C10 draft identity cannot differ between path and body
+  ---
+  duration_ms: 0.7769
+  type: 'test'
+  ...
+# Subtest: C10 mutation needs explicit version and stable intent
+ok 53 - C10 mutation needs explicit version and stable intent
+  ---
+  duration_ms: 2.9591
+  type: 'test'
+  ...
+# Subtest: C09 attachment API accepts metadata only, not binary content
+ok 54 - C09 attachment API accepts metadata only, not binary content
+  ---
+  duration_ms: 1.417
+  type: 'test'
+  ...
+# Subtest: C09 finish reports pending and never accepts a scanner verdict from HTTP
+ok 55 - C09 finish reports pending and never accepts a scanner verdict from HTTP
+  ---
+  duration_ms: 5.0273
+  type: 'test'
+  ...
+# Subtest: C10 direct submit of changed draft does not trust a forged preview
+ok 56 - C10 direct submit of changed draft does not trust a forged preview
+  ---
+  duration_ms: 5.5014
+  type: 'test'
+  ...
+# Subtest: C10 query selector cannot override private draft resources
+ok 57 - C10 query selector cannot override private draft resources
+  ---
+  duration_ms: 1.6608
+  type: 'test'
+  ...
+# Subtest: C10 draft HTTP projection excludes private extension fields
+ok 58 - C10 draft HTTP projection excludes private extension fields
+  ---
+  duration_ms: 2.9839
+  type: 'test'
+  ...
+# Subtest: C10 on-behalf body without configured qualified verifier remains disabled
+ok 59 - C10 on-behalf body without configured qualified verifier remains disabled
+  ---
+  duration_ms: 4.2663
+  type: 'test'
+  ...
+# Subtest: C10 draft stores incomplete answers without a ticket or protocol
+ok 60 - C10 draft stores incomplete answers without a ticket or protocol
+  ---
+  duration_ms: 68.3964
+  type: 'test'
+  ...
+# Subtest: C10 preview calculates policy priority and deadlines without mutation
+ok 61 - C10 preview calculates policy priority and deadlines without mutation
+  ---
+  duration_ms: 6.9311
+  type: 'test'
+  ...
+# Subtest: C10 create persists one snapshot, protocol, workflow event and minimal outbox
+ok 62 - C10 create persists one snapshot, protocol, workflow event and minimal outbox
+  ---
+  duration_ms: 8.8155
+  type: 'test'
+  ...
+# Subtest: C10 same key returns the same ticket/protocol; not a newly enriched snapshot
+ok 63 - C10 same key returns the same ticket/protocol; not a newly enriched snapshot
+  ---
+  duration_ms: 12.4906
+  type: 'test'
+  ...
+# Subtest: C10 lost COMMIT recovers original protocol with same intent
+ok 64 - C10 lost COMMIT recovers original protocol with same intent
+  ---
+  duration_ms: 8.3395
+  type: 'test'
+  ...
+# Subtest: C10 audit/bundle failure rolls back draft consumption and ticket
+ok 65 - C10 audit/bundle failure rolls back draft consumption and ticket
+  ---
+  duration_ms: 8.7086
+  type: 'test'
+  ...
+# Subtest: C10 second key cannot create another ticket from one consumed draft
+ok 66 - C10 second key cannot create another ticket from one consumed draft
+  ---
+  duration_ms: 5.8985
+  type: 'test'
+  ...
+# Subtest: C10 two concurrent intents consume the same draft at most once
+ok 67 - C10 two concurrent intents consume the same draft at most once
+  ---
+  duration_ms: 8.9574
+  type: 'test'
+  ...
+# Subtest: C10 direct submission refuses pending_scan evidence
+ok 68 - C10 direct submission refuses pending_scan evidence
+  ---
+  duration_ms: 7.3776
+  type: 'test'
+  ...
+# Subtest: C10 direct submission refuses scanning evidence
+ok 69 - C10 direct submission refuses scanning evidence
+  ---
+  duration_ms: 5.221
+  type: 'test'
+  ...
+# Subtest: C10 direct submission refuses rejected evidence
+ok 70 - C10 direct submission refuses rejected evidence
+  ---
+  duration_ms: 5.913
+  type: 'test'
+  ...
+# Subtest: C10 direct submission refuses unsupported evidence
+ok 71 - C10 direct submission refuses unsupported evidence
+  ---
+  duration_ms: 4.4353
+  type: 'test'
+  ...
+# Subtest: C10 direct submission refuses scan_error evidence
+ok 72 - C10 direct submission refuses scan_error evidence
+  ---
+  duration_ms: 4.5727
+  type: 'test'
+  ...
+# Subtest: C10 current revocation blocks a previously prepared preview and replay
+ok 73 - C10 current revocation blocks a previously prepared preview and replay
+  ---
+  duration_ms: 4.666
+  type: 'test'
+  ...
+# Subtest: C10 source changed after preview cannot silently commit (f    )=>f.coverage.enabled=false
+ok 74 - C10 source changed after preview cannot silently commit (f    )=>f.coverage.enabled=false
+  ---
+  duration_ms: 7.8983
+  type: 'test'
+  ...
+# Subtest: C10 source changed after preview cannot silently commit (f    )=>f.profile.priorityPolicy.priorities.normal='P1'
+ok 75 - C10 source changed after preview cannot silently commit (f    )=>f.profile.priorityPolicy.priorities.normal='P1'
+  ---
+  duration_ms: 3.3874
+  type: 'test'
+  ...
+# Subtest: C10 source changed after preview cannot silently commit (f    )=>f.schema.title='Changed schema'
+ok 76 - C10 source changed after preview cannot silently commit (f    )=>f.schema.title='Changed schema'
+  ---
+  duration_ms: 6.1334
+  type: 'test'
+  ...
+# Subtest: C10 source changed after preview cannot silently commit (f    )=>f.profile.sla.solutionMicros='999'
+ok 77 - C10 source changed after preview cannot silently commit (f    )=>f.profile.sla.solutionMicros='999'
+  ---
+  duration_ms: 4.3
+  type: 'test'
+  ...
+# Subtest: C10 draft belongs to its owner, never to a workspace neighbor
+ok 78 - C10 draft belongs to its owner, never to a workspace neighbor
+  ---
+  duration_ms: 1.6898
+  type: 'test'
+  ...
+# Subtest: C10 stale draft revision cannot overwrite newer answers
+ok 79 - C10 stale draft revision cannot overwrite newer answers
+  ---
+  duration_ms: 2.3054
+  type: 'test'
+  ...
+# Subtest: C10 saved draft may be retrieved in same scope but never after TTL
+ok 80 - C10 saved draft may be retrieved in same scope but never after TTL
+  ---
+  duration_ms: 2.9599
+  type: 'test'
+  ...
+# Subtest: C10 expired coverage before commit forces rollback
+ok 81 - C10 expired coverage before commit forces rollback
+  ---
+  duration_ms: 6.2011
+  type: 'test'
+  ...
+# Subtest: C10 forged prior receipt is rejected rather than returned by key alone
+ok 82 - C10 forged prior receipt is rejected rather than returned by key alone
+  ---
+  duration_ms: 3.6415
+  type: 'test'
+  ...
+# Subtest: C10 unknown client fields cannot assign actor, priority or schema
+ok 83 - C10 unknown client fields cannot assign actor, priority or schema
+  ---
+  duration_ms: 2.3283
+  type: 'test'
+  ...
+# Subtest: C10 complete resource scope is carried into the committed bundle
+ok 84 - C10 complete resource scope is carried into the committed bundle
+  ---
+  duration_ms: 3.203
+  type: 'test'
+  ...
+# Subtest: C10 unknown private fields in a replay record are refused
+ok 85 - C10 unknown private fields in a replay record are refused
+  ---
+  duration_ms: 6.2398
+  type: 'test'
+  ...
+# Subtest: C10 subject minimum is compatible with the existing ticket contract
+ok 86 - C10 subject minimum is compatible with the existing ticket contract
+  ---
+  duration_ms: 1.1913
+  type: 'test'
+  ...
+1..86
+# tests 86
+# suites 0
+# pass 86
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1043.9404
