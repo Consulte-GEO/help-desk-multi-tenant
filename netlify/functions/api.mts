@@ -1,6 +1,7 @@
 import {createHostedRuntime} from '../../src/infrastructure/runtime.ts';
 import {createHostedHandler} from '../../src/infrastructure/hosted-handler.ts';
 import {consoleHttpObserver} from '../../src/observability/http.ts';
+import {restoreHostedVersionPrecondition} from '../../src/infrastructure/hosted-version-carrier.ts';
 // Only the lazy handler is allocated here. No environment read, driver import or connection on module load.
 declare const Netlify:{env:{get(name:string):string|undefined}};
 const hosted=createHostedHandler(()=>createHostedRuntime({
@@ -8,7 +9,7 @@ const hosted=createHostedHandler(()=>createHostedRuntime({
  publishableKey:Netlify.env.get('SUPABASE_PUBLISHABLE_KEY'),databaseCa:Netlify.env.get('HELPDESK_DATABASE_CA'),
  releaseApproved:Netlify.env.get('HELPDESK_RELEASE_APPROVED'),rateLimitHmacKey:Netlify.env.get('HELPDESK_RATE_LIMIT_HMAC_KEY'),
  consulteGeoAdministration:Netlify.env.get('HELPDESK_CONSULTEGEO_ADMINISTRATION'),consulteGeoWorkflow:Netlify.env.get('HELPDESK_CONSULTEGEO_WORKFLOW'),consulteGeoIntake:Netlify.env.get('HELPDESK_CONSULTEGEO_INTAKE'),consulteGeoOrigin:Netlify.env.get('HELPDESK_CONSULTEGEO_ORIGIN'),consulteGeoSourceMode:Netlify.env.get('HELPDESK_CONSULTEGEO_SOURCE_MODE')
-}),consoleHttpObserver);
+}).then(runtime=>(request:Request,context?:{clientIp?:string})=>runtime(restoreHostedVersionPrecondition(request),context)),consoleHttpObserver);
 export default function handler(request:Request,context:{ip?:string}={}):Promise<Response>{
  return hosted(request,{clientIp:context.ip});
 }
