@@ -5,6 +5,8 @@ Opening callbacks are synthetic; no app.js, Auth, HTTP, CSP or PostgreSQL E2E.
 from __future__ import annotations
 import argparse,base64,json,re,shutil,sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from visual_fixture_html import without_scripts
 from playwright.sync_api import sync_playwright
 HERE=Path(__file__).resolve().parent
 p=argparse.ArgumentParser(description=__doc__)
@@ -96,7 +98,7 @@ def dynamic_tests(page):
  ck('destroy removes content and prevents late reply from reviving it',page.locator('#dynamic').inner_text()=='')
 
 def opening_setup(page):
- html=(root/'index.html').read_text();html=re.sub(r'<script\b[^>]*src=[^>]*>\s*</script>','',html,flags=re.I);html=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',html,flags=re.I)
+ html=without_scripts((root/'index.html').read_text());html=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',html,flags=re.I)
  css=css_files(['styles.css','design-tokens.css','consulte-theme.css','inbox-workspace.css','form-experience.css'])
  page.set_content(html.replace('</head>','<style>'+css+'</style></head>'),wait_until='domcontentloaded')
  page.add_script_tag(type='module',content=f"import {{mountOpeningWizard}} from {repr(module_url(root/'opening-wizard.js'))};\nimport {{createTicketCreateState,retryCreateIntent}} from {repr(module_url(root/'ticket-create-state.js'))};\n"+'''

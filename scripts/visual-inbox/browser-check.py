@@ -4,6 +4,9 @@ Uses set_content because local HTTP navigation may be blocked. No credential/dat
 """
 import argparse,base64,json,re,shutil
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from visual_fixture_html import without_scripts
 from playwright.sync_api import sync_playwright
 HERE=Path(__file__).resolve().parent
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--web-root',type=Path,default=HERE.parents[1]/'web');a=p.parse_args();root=a.web_root.resolve();a.output.mkdir(parents=True,exist_ok=True)
@@ -13,7 +16,7 @@ def ck(name,ok,details=None):
  if not ok:print('FAIL:',name,details)
 def uri(text):return 'data:text/javascript;base64,'+base64.b64encode(text.encode()).decode()
 def setup(page):
- html=(root/'index.html').read_text();html=re.sub(r'<script\b[^>]*src=[^>]*>\s*</script>','',html,flags=re.I);html=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',html,flags=re.I)
+ html=without_scripts((root/'index.html').read_text());html=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',html,flags=re.I)
  css='\n'.join(re.sub(r'@import[^;]+;','',(root/f).read_text()) for f in ['styles.css','design-tokens.css','consulte-theme.css']+(['inbox-workspace.css'] if (root/'inbox-workspace.css').exists() else [])+(['form-experience.css'] if (root/'form-experience.css').exists() else []))
  page.set_content(html.replace('</head>','<style>'+css+'</style></head>'),wait_until='domcontentloaded')
  page.add_script_tag(type='module',content=(HERE.parent/'visual-branding/fixture.js').read_text())

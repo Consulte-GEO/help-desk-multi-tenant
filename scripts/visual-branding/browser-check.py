@@ -5,6 +5,9 @@ No real accounts, API, Supabase or production navigation. Not an end-to-end gate
 from __future__ import annotations
 import argparse, base64, functools, http.server, json, os, re, shutil, threading, time
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from visual_fixture_html import without_scripts
 from playwright.sync_api import sync_playwright
 
 HERE=Path(__file__).resolve().parent
@@ -42,7 +45,7 @@ def offline_load(page):
  # This is a private harness transformation, never a production source mutation.
  # Preserve native DOM/CSS/ES-module semantics, but do not navigate or fetch any resource.
  html=(root/'index.html').read_text()
- html=re.sub(r'<script\b[^>]*src=[^>]*>\s*</script>','',html,flags=re.I)
+ html=without_scripts(html)
  html=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',html,flags=re.I)
  css=(root/'styles.css').read_text()
  bootstrap=''

@@ -5,6 +5,9 @@ Production sources are not modified by this loader. HTTP/CSP are NOT qualified.
 """
 import base64,json,re
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from visual_fixture_html import without_scripts
 from types import SimpleNamespace
 from transport import ORIGIN
 
@@ -30,7 +33,7 @@ def setup_offline(page,fixture):
  page.expose_binding('__ux09Fetch',fetch_binding)
  page.goto('about:blank')
  source=(root/'web/index.html').read_text()
- source=re.sub(r'<script\b[^>]*>[\s\S]*?</script>','',source)
+ source=without_scripts(source)
  source=re.sub(r'<link rel="stylesheet" href="([^"]+)">',lambda m:'<style>'+css(root/'web'/m[1].lstrip('/'))+'</style>',source)
  page.set_content(source)
  page.add_script_tag(content='''

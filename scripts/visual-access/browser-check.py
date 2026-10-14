@@ -2,6 +2,9 @@
 """UX08 real presentation + original GEO controller, fake transports. No hosted/Auth approval."""
 import argparse,base64,json,re,threading,traceback,shutil
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from visual_fixture_html import without_scripts
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright
@@ -18,7 +21,7 @@ def module(file):
   cache[file]='data:text/javascript;base64,'+base64.b64encode(s.encode()).decode()
  return cache[file]
 def html():
- s=(web/'index.html').read_text();s=re.sub(r'<script\b[^>]*>[\s\S]*?</script>','',s)
+ s=without_scripts((web/'index.html').read_text())
  def css(m):
   name=m[1].lstrip('/');f=web/name
   if not f.exists():missing.add(name);return ''
