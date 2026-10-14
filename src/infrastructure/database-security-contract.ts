@@ -2201,6 +2201,11 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_draft_effect",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
       "name": "hdni_drafts_account_fk",
       "type": "f"
     },

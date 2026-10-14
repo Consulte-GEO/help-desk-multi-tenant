@@ -38,11 +38,11 @@ $$;
 -- Context is compared with current native rows, never treated as a bearer credential.
 -- Every RPC repeats this check, including after waits and at deferred COMMIT validation.
 CREATE FUNCTION helpdesk_auth.hdni_lock_scope(ctx jsonb) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
-DECLARE w uuid:=helpdesk_auth.workspace_id();who uuid:=helpdesk_auth.actor_id();a uuid;b uuid;conn uuid;tenant text;op text;r record;x jsonb;refs jsonb:=ctx->'refs';n int;
+DECLARE w uuid:=helpdesk_auth.workspace_id();who uuid:=helpdesk_auth.actor_id();a uuid;binding_uuid uuid;conn uuid;tenant text;op text;r record;x jsonb;refs jsonb:=ctx->'refs';n int;
 BEGIN
  IF NOT coalesce(helpdesk_auth.hdn_cfg_object(ctx,ARRAY['principalId','workspaceId','accountId','bindingId','bindingRevision','accessRevision','manifestFingerprint','operation','asOf','expiresAt','refs']),false)
  OR ctx->>'workspaceId' IS DISTINCT FROM w::text OR ctx->>'principalId' IS DISTINCT FROM who::text OR NOT coalesce(helpdesk_auth.is_human(),false) THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';END IF;
- a:=(ctx->>'accountId')::uuid;b:=(ctx->>'bindingId')::uuid;op:=ctx->>'operation';
+ a:=(ctx->>'accountId')::uuid;binding_uuid:=(ctx->>'bindingId')::uuid;op:=ctx->>'operation';
  PERFORM pg_advisory_xact_lock_shared(hashtextextended('helpdesk-human-scopes:'||w::text||':'||who::text,0));
  PERFORM 1 FROM helpdesk_auth.principals WHERE id=who AND active AND kind='human' FOR SHARE;IF NOT FOUND THEN RAISE EXCEPTION 'Actor denied' USING ERRCODE='HDI01';END IF;
  PERFORM 1 FROM helpdesk_auth.workspace_memberships WHERE workspace_id=w AND principal_id=who FOR SHARE;
@@ -62,11 +62,11 @@ BEGIN
  FROM helpdesk_auth.cg_resource_connections c JOIN helpdesk_auth.cg_resource_bindings b ON (b.workspace_id,b.connection_id)=(c.workspace_id,c.id)
  JOIN helpdesk_auth.cg_resource_grant_sets g ON (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation)=(b.workspace_id,b.account_id,b.id,who,op)
  JOIN helpdesk_auth.cg_resource_observations o ON (o.workspace_id,o.account_id,o.binding_id,o.principal_id,o.operation,o.grant_revision,o.access_revision,o.as_of,o.expires_at,o.expected_count)=(g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.revision,g.source_revision,g.as_of,g.expires_at,g.expected_count)
- WHERE c.workspace_id=w AND c.id=conn AND b.account_id=a AND b.id=hdni_lock_scope.b AND b.tenant_id=tenant AND c.active AND b.active AND g.active FOR SHARE OF c,b,g,o;
+ WHERE c.workspace_id=w AND c.id=conn AND b.account_id=a AND b.id=binding_uuid AND b.tenant_id=tenant AND c.active AND b.active AND g.active FOR SHARE OF c,b,g,o;
  IF NOT FOUND OR r.as_of>clock_timestamp() OR r.expires_at<=clock_timestamp() OR ctx->>'bindingRevision' IS DISTINCT FROM r.binding_revision OR ctx->>'accessRevision' IS DISTINCT FROM r.access_revision OR ctx->>'manifestFingerprint' IS DISTINCT FROM r.manifest_fingerprint
  OR (ctx->>'asOf')::timestamptz IS DISTINCT FROM r.as_of OR (ctx->>'expiresAt')::timestamptz IS DISTINCT FROM r.expires_at
  OR NOT coalesce(helpdesk_auth.product_allowed(w,r.product_instance_id),false)
- OR (SELECT count(*) FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation)=(w,a,b,who,op))<>r.expected_count
+ OR (SELECT count(*) FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation)=(w,a,binding_uuid,who,op))<>r.expected_count
  OR EXISTS(SELECT 1 FROM jsonb_array_elements(refs) x WHERE NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_grant_refs g WHERE (g.workspace_id,g.account_id,g.binding_id,g.principal_id,g.operation,g.resource_type,g.resource_id)=(w,a,b,who,op,x->>'type',x->>'id'))) THEN RAISE EXCEPTION 'Scope changed' USING ERRCODE='HDI01';END IF;
  RETURN ctx; -- only after native comparison; preserves canonical resolver timestamps/order.
 EXCEPTION WHEN invalid_text_representation OR datetime_field_overflow THEN RAISE EXCEPTION 'Scope denied' USING ERRCODE='HDI01';
