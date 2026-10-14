@@ -8,12 +8,12 @@ import {createResendDeliveryReceiver,type NativeResendReceipt} from '../applicat
 const failed=(code='notification_unavailable',status=503)=>new HelpdeskError(status,code,'A operação de email permanece indisponível até sua configuração e qualificação.');
 export const RESEND_WEBHOOK_PATH='/integrations/resend/events';
 const BUDGET_MS=25000;
-export type NotificationRuntimeConfig={enabled?:string;releaseApproved?:string;databaseUrl?:string;databaseCa?:string;origin?:string;resendApiKey?:string;resendFrom?:string;senderVerified?:string;webhookSecret?:string;webhookPreviousSecret?:string};
+export type NotificationRuntimeConfig={enabled?:string;webhookEnabled?:string;releaseApproved?:string;databaseUrl?:string;databaseCa?:string;origin?:string;resendApiKey?:string;resendFrom?:string;senderVerified?:string;webhookSecret?:string;webhookPreviousSecret?:string};
 type Purpose='worker'|'webhook';
 type ValidConfig={databaseUrl:string;databaseCa?:string;origin:string;resendApiKey?:string;resendFrom?:string;webhookSecrets:readonly string[]};
 export function validateNotificationRuntimeConfig(raw:NotificationRuntimeConfig,purpose:Purpose='worker'):ValidConfig{
  const invalid=()=>failed('notification_configuration_required');try{
-  if(!raw||typeof raw!=='object'||Array.isArray(raw)||raw.enabled!=='true'||raw.releaseApproved!=='true')throw invalid();
+  if(!raw||typeof raw!=='object'||Array.isArray(raw)||(purpose==='worker'?raw.enabled:raw.webhookEnabled??raw.enabled)!=='true'||raw.releaseApproved!=='true')throw invalid();
   for(const field of ['databaseUrl','databaseCa','origin','resendApiKey','resendFrom','senderVerified','webhookSecret','webhookPreviousSecret'] as const)if(raw[field]!==undefined&&typeof raw[field]!=='string')throw invalid();
   if(!raw.databaseUrl||!raw.origin||/[\u0000-\u0020\u007f]/.test(raw.databaseUrl)||/[\u0000-\u0020\u007f]/.test(raw.origin))throw invalid();
   const db=new URL(raw.databaseUrl),origin=new URL(raw.origin),user=decodeURIComponent(db.username),password=decodeURIComponent(db.password),database=decodeURIComponent(db.pathname);
@@ -34,7 +34,7 @@ export function validateNotificationRuntimeConfig(raw:NotificationRuntimeConfig,
 /** Fixed named reads only. Recipient/contact/authorization never come from env. */
 export function readNotificationRuntimeEnvironment(get:(name:string)=>string|undefined,purpose:Purpose):NotificationRuntimeConfig{return {
  enabled:get('HELPDESK_NOTIFICATION_DELIVERY_ENABLED'),releaseApproved:get('HELPDESK_RELEASE_APPROVED'),databaseUrl:get('HELPDESK_NOTIFICATION_DATABASE_URL'),databaseCa:get('HELPDESK_NOTIFICATION_DATABASE_CA'),origin:get('HELPDESK_CONSULTEGEO_ORIGIN'),
- ...(purpose==='worker'?{resendApiKey:get('RESEND_API_KEY'),resendFrom:get('RESEND_FROM'),senderVerified:get('HELPDESK_NOTIFICATION_SENDER_VERIFIED')}:{webhookSecret:get('RESEND_WEBHOOK_SECRET'),webhookPreviousSecret:get('RESEND_WEBHOOK_PREVIOUS_SECRET')})
+ ...(purpose==='worker'?{resendApiKey:get('RESEND_API_KEY'),resendFrom:get('RESEND_FROM'),senderVerified:get('HELPDESK_NOTIFICATION_SENDER_VERIFIED')}:{webhookEnabled:get('HELPDESK_NOTIFICATION_WEBHOOK_ENABLED'),webhookSecret:get('RESEND_WEBHOOK_SECRET'),webhookPreviousSecret:get('RESEND_WEBHOOK_PREVIOUS_SECRET')})
 };}
 type NotificationDatabaseContract=Readonly<{schemaVersion:string;roles:readonly Readonly<{name:string;schemas:readonly string[];functions:readonly string[]}>[]}>;
 const signatures=NOTIFICATION_WORKER_HELPERS.map(s=>'helpdesk_auth.'+s).sort();
