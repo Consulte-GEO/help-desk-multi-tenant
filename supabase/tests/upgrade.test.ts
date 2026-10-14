@@ -108,6 +108,7 @@ before(async()=>{
  assert.deepEqual((await admin.query(accessSql)).rows,accessBefore);
  await admin.query(bundle.migrations[13]!.sql);
  const beforeM09b=await captureRows();await admin.query(bundle.migrations[14]!.sql);assert.deepEqual(await captureRows(),beforeM09b);assert.deepEqual((await admin.query(accessSql)).rows,accessBefore);
+ const beforeM09c=await captureRows();await admin.query(bundle.migrations[15]!.sql);assert.deepEqual(await captureRows(),beforeM09c);assert.deepEqual((await admin.query(accessSql)).rows,accessBefore);
  app=new driver.Pool({connectionString:upgradeUrl(targets.appUrl),max:3});
  service=new HelpdeskService(new PostgresUnitOfWork(app));
 });

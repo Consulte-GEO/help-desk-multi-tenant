@@ -43,7 +43,7 @@ test('catalogue query uses developer-owned parameters and only pg_catalog metada
 });
 test('schema contract has explicit least privileges and excludes administrative helper execution',async()=>{
  const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/database-security-contract.ts');
- assert.equal(c.tables.length,53);assert.equal(c.functions.length,123);assert.equal(c.triggers.length,45);assert.equal(c.policies.length,38);
+ assert.equal(c.tables.length,53);assert.equal(c.functions.length,124);assert.equal(c.triggers.length,45);assert.equal(c.policies.length,38);
  assert.equal(new Set(c.tables.map(t=>t.name)).size,53);
  for(const t of c.tables.filter(t=>t.name.startsWith('helpdesk_auth.')))assert.deepEqual([t.read,t.insert,t.updates],[false,false,[]]);
  assert.deepEqual(c.tables.find(t=>t.name==='helpdesk_core.tickets')!.updates,['status','version','updated_at','priority','assigned_to']);

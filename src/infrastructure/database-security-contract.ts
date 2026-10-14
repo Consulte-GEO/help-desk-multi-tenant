@@ -810,6 +810,11 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": true
     },
     {
+      "signature": "helpdesk_auth.hdni_trim(text)",
+      "definer": false,
+      "execute": false
+    },
+    {
       "signature": "helpdesk_auth.hdni_utf16(text)",
       "definer": false,
       "execute": false

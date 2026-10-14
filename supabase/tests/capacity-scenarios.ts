@@ -17,5 +17,5 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
  registerExecutionChecklistSqlTests(adminPool);
  registerSupportWorkflowSqlTests(adminPool);
  registerConsulteGeoConfigurationSqlTests(adminPool);
- registerConsulteGeoIntakeSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);
+ registerConsulteGeoIntakeSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);
 }
