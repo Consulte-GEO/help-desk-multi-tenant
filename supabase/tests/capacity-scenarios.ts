@@ -1,3 +1,4 @@
+import {registerConsulteGeoOpeningSqlTests} from './consultegeo-opening-scenarios.ts';
 /** Foundation scenarios registered exclusively by rls.test.ts after its fresh-PG17 guard. */
 import {registerConsulteGeoIntakeSqlTests} from './consultegeo-intake-scenarios.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
@@ -16,5 +17,5 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
  registerExecutionChecklistSqlTests(adminPool);
  registerSupportWorkflowSqlTests(adminPool);
  registerConsulteGeoConfigurationSqlTests(adminPool);
- registerConsulteGeoIntakeSqlTests(adminPool);
+ registerConsulteGeoIntakeSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);
 }

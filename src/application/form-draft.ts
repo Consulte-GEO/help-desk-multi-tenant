@@ -19,7 +19,7 @@ export function checkedDraft(raw:DraftForm|null,p:Principal,id:string,refs:reado
  if(d.id!==id||d.ownerId!==p.id||d.workspaceId!==p.workspaceId||externalResourceSelectionKey(d.refs)!==externalResourceSelectionKey(refs))throw fail('draft_forbidden',403);
  formRevision(d.revision);uuidIdentifier(d.accountId);uuidIdentifier(d.formId);formRevision(d.formVersion);
  if(!['editing','committed'].includes(d.status)||typeof d.schemaHash!=='string'||!/^[a-f0-9]{64}$/.test(d.schemaHash))throw fail();
- if(instantMicros(d.expiresAt)<=instantMicros(at))throw fail('draft_expired',409);expires?.(d.expiresAt,'draft_expired');return freezeFormData(d);
+ if(d.status==='editing'){if(instantMicros(d.expiresAt)<=instantMicros(at))throw fail('draft_expired',409);expires?.(d.expiresAt,'draft_expired');}else uuidIdentifier(d.ticketId);return freezeFormData(d);
 }
 export function createFormDraftService(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:DraftDirectory;createStore:(c:SqlClient,p:Principal)=>FormDraftTransaction;draftTtlSeconds:number;clock?:()=>string}){
  const clock=o.clock??(()=>new Date().toISOString());if(!Number.isSafeInteger(o.draftTtlSeconds)||o.draftTtlSeconds<1||o.draftTtlSeconds>604800)throw fail();

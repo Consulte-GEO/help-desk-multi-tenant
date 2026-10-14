@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "schemaVersion": "0.22.0",
+  "schemaVersion": "0.23.0",
   "migrations": [
     {
       "file": "20260915000100_restrict_existing_definer.sql",
@@ -61,6 +61,10 @@
     {
       "file": "20261013233838_consultegeo_m09b_intake.sql",
       "sha256": "4c54493c8d46b7c3f86e77666be0f618df8fd6512dd5cae3f279d31248e1be7a"
+    },
+    {
+      "file": "20261014015714_consultegeo_m09c_atomic_opening.sql",
+      "sha256": "d1dbce80d807bd420289a31a2995c9d6005d2eca99fdf328876cbe2c772fab3a"
     }
   ]
 }

@@ -34,7 +34,7 @@ export interface SupportIntakeTransaction extends ScopedDraftStore{
  /** Lock/CAS draft and atomically insert ticket, complete refs, form, profile/SLA,
   * event, audit, participant, minimal outbox, protocol and receipt; consume draft.
   * No COMMIT or provider calls here. Never use unrestricted request DB roles. */
- commitRequest(bundle:IntakeBundle,expectedDraftRevision:number,receipt:{key:string;hash:string;result:SupportRequestReceipt}):Promise<void>;
+ commitRequest(bundle:IntakeBundle,expectedDraftRevision:number,receipt:{key:string;hash:string;result:SupportRequestReceipt},input?:IntakeRequest):Promise<void>;
 }
 const keyOf=(v:string)=>{if(typeof v!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(v))throw fail('invalid_intake_input',400);return v;};
 function parseInput(raw:unknown,commit:boolean):IntakeRequest{
@@ -110,7 +110,7 @@ export function createSupportIntake(o:{pool:SqlPool;resolver:ReturnType<typeof c
    const id=randomUUID(),protocol='CG-'+sequence,eventId=randomUUID(),ticket=freezeFormData({...v.candidate,id}),event=freezeFormData({...v.event,ticketId:id});
    const result:SupportRequestReceipt=freezeFormData({ticketId:id,protocol,sequence,workspaceId:p.workspaceId,accountId:scope.accountId,actorId:p.id,requesterId,draftId:v.d.id,draftRevision:v.d.revision,version:1,profileVersionId:v.profile.profileVersionId,formId:v.d.formId,formVersion:v.d.formVersion,priority:v.priority,createdAt:v.at,notification:'pending',replayed:false});
    const bundle:IntakeBundle=freezeFormData({draftId:v.d.id,resourceScope:scope,ticket,requesterId,participants:b?[{principalId:requesterId,role:'requester'}]:[],protocol,sequence,form:{formId:v.d.formId,formVersion:v.d.formVersion,schemaHash:v.d.schemaHash,answers:v.values.answers,publicAnswers:v.values.publicAnswers,evidence:v.evidence},workflow:{profileVersionId:v.profile.profileVersionId,slaPolicyVersionId:v.profile.sla.versionId,calendarVersionId:v.profile.sla.calendar.versionId,approval:v.profile.approvalRequired?'pending':'not_required'},event,delegation:b?{type:'request.delegated',actorId:p.id,beneficiaryId:requesterId,beneficiaryRevision:b.revision,ticketId:id,at:v.at}:null,clocks:{...v.clocks,ticketId:id},audit:{id:eventId,actorId:p.id,requestId,at:v.at,action:'support.created',draftId:v.d.id,ticketId:id},outbox:{id:eventId,workspaceId:p.workspaceId,accountId:scope.accountId,ticketId:id,type:'support.created',version:1,requestId,createdAt:v.at}});
-   await tx.commitRequest(bundle,v.d.revision,{key,hash,result});return result;
+   await tx.commitRequest(bundle,v.d.revision,{key,hash,result},input);return result;
   },signal,admission);
  }catch(e){throw safeIntakeError(e);}}
  return Object.freeze({

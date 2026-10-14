@@ -50,7 +50,7 @@ def extend_consultegeo(s):
     schemas['ConsulteGeoCatalogResult']={'type':'object','additionalProperties':False,'properties':{'schema':{'const':1},'context':{'type':'object','additionalProperties':False,'properties':context_fields,'required':list(context_fields)},'configurations':{'type':'array','maxItems':20,'items':ref('ConsulteGeoCustomerConfiguration')}},'required':['schema','context','configurations']}
     draft_fields={k:uuid for k in ['id','accountId','formId']};draft_fields.update(refs=refs,formVersion={'type':'integer','minimum':1,'maximum':2147483647},answers={'type':'object','description':'Respostas incompletas comuns permitidas; nunca conferem aptidão para envio.'})
     schemas['ConsulteGeoDraftInput']={'type':'object','additionalProperties':False,'properties':draft_fields,'required':list(draft_fields)}
-    result_fields={**draft_fields,'revision':{'type':'integer','minimum':1},'expiresAt':{'type':'string','format':'date-time'},'status':{'const':'editing'},'ticketId':{'type':'null'}}
+    result_fields={**draft_fields,'revision':{'type':'integer','minimum':1},'expiresAt':{'type':'string','format':'date-time'},'status':{'enum':['editing','committed']},'ticketId':{'type':['string','null'],'format':'uuid'}}
     schemas['ConsulteGeoDraft']={'type':'object','additionalProperties':False,'properties':result_fields,'required':list(result_fields)}
     params['FormDraftId']={'in':'path','name':'draft_id','required':True,'schema':uuid}
     base='/consultegeo/request-catalog'
@@ -61,3 +61,20 @@ def extend_consultegeo(s):
      for op in s['paths'][path].values():op['security']=[{'bearerAuth':[]}]
     for op in s['paths'][base].values():op['responses']['200']['headers']={'ETag':{'schema':{'type':'string','pattern':'^"[1-9][0-9]*"$'}}}
     for name in ['consultegeo_request_catalog','form_drafts','support_requests']:cap['properties']['capabilities'].setdefault('properties',{})[name]={'type':'boolean'}
+
+    opening={'draftId':uuid,'expectedDraftRevision':{'type':'integer','minimum':1,'maximum':2147483646},'subject':{'type':'string','minLength':3,'maxLength':200},'description':{'type':'string','minLength':1,'maxLength':12000},'coverageId':{'type':['string','null'],'format':'uuid'}}
+    schemas['ConsulteGeoOpeningPreviewInput']={'type':'object','additionalProperties':False,'properties':opening,'required':list(opening)}
+    submission={**opening,'previewHash':{'type':'string','pattern':'^[a-f0-9]{64}$'}}
+    schemas['ConsulteGeoOpeningInput']={'type':'object','additionalProperties':False,'properties':submission,'required':list(submission)}
+    clock={'type':'object','description':'Projeção inicial sobre calendário e SLA publicados fixados no chamado.'}
+    preview={'valid':{'const':True},'commitAuthorized':{'const':False},'draftId':uuid,'draftRevision':{'type':'integer'},'previewHash':{'type':'string','pattern':'^[a-f0-9]{64}$'},'subject':opening['subject'],'priority':{'enum':['low','normal','high','urgent']},'clocks':clock,'attachmentCount':{'type':'integer','minimum':0}}
+    schemas['ConsulteGeoOpeningPreview']={'type':'object','additionalProperties':False,'properties':preview,'required':list(preview)}
+    receipt={k:uuid for k in ['ticketId','workspaceId','accountId','actorId','requesterId','draftId','formId']}
+    receipt.update(protocol={'type':'string','pattern':'^CG-[1-9][0-9]{4,17}$'},sequence={'type':'string','pattern':'^[1-9][0-9]{4,17}$'},draftRevision={'type':'integer','minimum':1},version={'const':1},profileVersionId={'type':'string'},formVersion={'type':'integer','minimum':1},priority={'enum':['low','normal','high','urgent']},createdAt={'type':'string','format':'date-time'},notification={'const':'pending','description':'Enfileirado atomicamente; não significa email enviado.'},replayed={'type':'boolean'})
+    schemas['ConsulteGeoOpeningReceipt']={'type':'object','additionalProperties':False,'properties':receipt,'required':list(receipt)}
+    s['paths']['/support-requests/preview']={'post':operation('POST','previewConsulteGeoSupportRequest','Revalida formulário, obras e cobertura; não aloca protocolo.','ConsulteGeoOpeningPreview',[pr('Origin')],'ConsulteGeoOpeningPreviewInput')}
+    s['paths']['/support-requests']={'post':operation('POST','createConsulteGeoSupportRequest','Consome rascunho com protocolo, snapshot, evento, fila e recibo atômicos.','ConsulteGeoOpeningReceipt',[pr('Origin'),pr('IfMatch'),pr('Idempotency')],'ConsulteGeoOpeningInput')}
+    op=s['paths']['/support-requests']['post'];op['responses']['201']=op['responses']['200'];op['description']='Mesma intenção/chave recupera recibo original após autorização atual, mesmo após TTL do rascunho consumido. Sem envio externo durante a transação. Resultado desconhecido exige conciliação; nunca trocar a chave automaticamente.'
+    for path in ['/support-requests','/support-requests/preview']:
+     s['paths'][path]['post']['security']=[{'bearerAuth':[]}]
+     s['paths'][path]['post']['responses']['422']={'description':'Formulário ou cobertura indisponível.','content':{'application/problem+json':{'schema':ref('Problem')}}}
