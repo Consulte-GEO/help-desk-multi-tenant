@@ -1,9 +1,10 @@
+import {parseConsulteGeoTicketSummary} from '../shared/consultegeo-ticket.js';
 import {isCanonicalInstant} from '../shared/instant.js';
 /** Per-session, per-query inbox state. No persistent cache or authorization decisions. */
 const PUBLIC=['received','in_progress','waiting_for_you','resolved','closed'];
 const PRIORITIES=['low','normal','high','urgent'];
 const INTERNAL=['new','triage','open','waiting_customer','waiting_internal','waiting_third_party','resolved','closed','cancelled'];
-const FIELDS=['id','account_id','product_instance_id','service_code','subject','description','status','internal_status','assignment','priority','version','coverage_id','contract_version_id','created_at','updated_at'];
+const FIELDS=['consultegeo','id','account_id','product_instance_id','service_code','subject','description','status','internal_status','assignment','priority','version','coverage_id','contract_version_id','created_at','updated_at'];
 const bad=()=>{throw Error('Resposta da lista incompatível. Atualize a consulta antes de continuar.');};
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const identifier=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(v);
@@ -25,6 +26,7 @@ function validateAssignment(a){
   &&(!a.can_claim||a.state==='unassigned')&&(!a.can_release||a.state!=='unassigned');
 }
 function validateItem(t){
+ if(t?.consultegeo!==undefined)parseConsulteGeoTicketSummary(t.consultegeo);
  if(!object(t)||Object.keys(t).some(k=>!FIELDS.includes(k))
   ||!['id','account_id','product_instance_id','coverage_id','contract_version_id'].every(k=>identifier(t[k]))
   ||!text(t.service_code,1,80)||!text(t.subject,3,200)||!text(t.description,1,12000)

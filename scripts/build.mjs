@@ -1,6 +1,7 @@
 import {mkdir,copyFile,rm} from 'node:fs/promises';
 await rm(new URL('../dist/',import.meta.url),{recursive:true,force:true});await mkdir(new URL('../dist/',import.meta.url),{recursive:true});
-for(const name of ['access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-operation.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['support-navigation.js','access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 
 await mkdir(new URL('../dist/shared/',import.meta.url),{recursive:true});
 await copyFile(new URL('../shared/instant.js',import.meta.url),new URL('../dist/shared/instant.js',import.meta.url));
@@ -54,3 +55,5 @@ for(const name of ['access-feedback.js','access-experience.js','access-experienc
 // UX10 merge: retain M04/M09 assets from the operational branch. No route is mounted here.
 for(const name of ['consultegeo-configuration.js','consultegeo-configuration.css','consultegeo-request.js','consultegeo-request.css','consultegeo-intake-api.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 await copyFile(new URL('../shared/consultegeo-request.js',import.meta.url),new URL('../dist/shared/consultegeo-request.js',import.meta.url));
+
+await copyFile(new URL('../shared/consultegeo-ticket.js',import.meta.url),new URL('../dist/shared/consultegeo-ticket.js',import.meta.url));

@@ -5,6 +5,7 @@ import {uuidIdentifier} from '../domain/input-values.ts';
 import {parseExternalResourceSelection} from '../domain/external-resource.ts';
 import type {ResourceOperation, createResourceAccessResolver} from '../application/resource-access.ts';
 import {runResourceTicketTransaction} from '../infrastructure/resource-access-store.ts';
+import {runTransaction} from '../infrastructure/transaction.ts';
 import type {SqlClient,SqlPool} from '../infrastructure/sql.ts';
 
 /** Private lookup only. Return the COMPLETE ticket selection, never caller-chosen refs.
@@ -23,6 +24,8 @@ export interface ScopedTicketHttpOptions {
  directory:TicketResourceDirectory;
  directoryTimeoutMs:number;
  streamTimeoutMs?:number;
+ /** Server-selected local collection composition; never a request selector. */
+ collection?:boolean;
  /** Required server adapter: use existing HelpdeskService/DTOs on THIS borrowed
   * client. No second pool, nested BEGIN/COMMIT or optional-note data in public DTOs.
   * This factory does not supply a fake implementation when the adapter is absent.
@@ -111,9 +114,21 @@ function problem(error:unknown,requestId:string):Response{
  }}catch{code='scoped_request_unavailable';status=503;}
  return Response.json({type:'about:blank',status,code,detail:code==='transaction_outcome_unknown'?'Confirmação desconhecida. Conserve a mesma chave e não repita automaticamente.':status>=500?'Operação indisponível. Nenhuma autorização adicional foi concedida.':'Requisição não concluída.',request_id:requestId},{status,headers:{'content-type':'application/problem+json','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId}});
 }
+async function authenticated(d:ScopedTicketHttpOptions,req:Request):Promise<Principal>{
+ const p=structuredClone(await d.authenticate(req));for(const grant of p.grants)Object.freeze(grant);Object.freeze(p.grants);Object.freeze(p.scopes);
+ if(p.productInstanceIds)Object.freeze(p.productInstanceIds);return Object.freeze(p);
+}
+async function materializedResponse(response:Response,req:Request,requestId:string,timeoutMs:number):Promise<Response>{
+ if(!(response instanceof Response))throw unavailable();
+ if(!response.ok)throw fail([400,403,404,409,412,422,428,429].includes(response.status)?response.status:503,'business_request_rejected','Operação recusada.');
+ const data=await boundedBytes(response.body,2*1024*1024,req.signal,timeoutMs),headers=new Headers({'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId});
+ for(const key of ['etag','location','idempotency-replayed']){const value=response.headers.get(key);if(value!==null)headers.set(key,value);}
+ return new Response(data,{status:response.status,headers});
+}
 /** Opt-in mounted router. Not installed by default into the production runtime.
  * It owns /v1/tickets and its children: NEVER fall back to unscoped handling on a
- * denial/null directory. Generic collection/create remain closed until C03/C10.
+ * denial/null directory. Collection requires the local borrowed SQL store;
+ * generic creation remains closed in favor of the qualified opening pipeline.
  */
 export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Request,context?:{clientIp?:string})=>Promise<Response>{
  if(!Number.isInteger(d.directoryTimeoutMs)||d.directoryTimeoutMs<1||d.directoryTimeoutMs>5000||typeof d.enabled!=='function'||typeof d.execute!=='function'||!d.rateLimiter)throw unavailable();
@@ -124,16 +139,22 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
    if(d.enabled()!==true)throw fail(503,'release_gate_closed','Atendimento ainda não liberado.');
    await d.rateLimiter.beforeAuthentication(req,context);admission();
    const url=new URL(req.url),path=url.pathname.replace(/\/$/,'');
-   if(path==='/v1/tickets')throw fail(503,'scoped_collection_not_ready','Coleção e abertura aguardam integração completa.');
+   if(path==='/v1/tickets'){
+    if(req.method!=='GET'||d.collection!==true)throw fail(503,'scoped_collection_not_ready','Coleção ou abertura genérica indisponível.');
+    const p=await authenticated(d,req);await d.rateLimiter.afterAuthentication(p);admission();
+    if(p.kind!=='human'||!p.scopes.includes('tickets:read'))throw fail(403,'forbidden','Operação não autorizada.');
+    for(const key of url.searchParams.keys())if(!['limit','cursor','account_id','q','status','priority','assignment'].includes(key)||url.searchParams.getAll(key).length!==1)throw fail(400,'unknown_parameter','Parâmetro de consulta não permitido.');
+    if(url.searchParams.has('limit')&&(!/^\d{1,3}$/.test(url.searchParams.get('limit')!)||Number(url.searchParams.get('limit'))<1||Number(url.searchParams.get('limit'))>100))throw fail(400,'invalid_input','Limite de página inválido.');
+    if(url.searchParams.has('account_id'))uuidIdentifier(url.searchParams.get('account_id'));
+    return await runTransaction(d.pool,p,async client=>materializedResponse(await d.execute(client,p,req),req,requestId,streamTimeoutMs),admission);
+   }
    const m=/^\/v1\/tickets\/([^/]+)(?:\/(messages|notes|timeline|transitions|assignments))?$/.exec(path);
    if(!m)throw fail(404,'resource_not_found','Recurso não encontrado.');
    const ticketId=uuidIdentifier(m[1]),action=m[2]??'',operation=routeOperations[req.method+':'+action];
    if(!operation)throw fail(405,'method_not_allowed','Método não permitido.');
    // Detach/freeze the authenticated context before handing it to async metadata
    // adapters. Such adapters may read it, but must not enlarge its capabilities.
-   const p=structuredClone(await d.authenticate(req));
-   for(const grant of p.grants)Object.freeze(grant);Object.freeze(p.grants);Object.freeze(p.scopes);
-   if(p.productInstanceIds)Object.freeze(p.productInstanceIds);Object.freeze(p);
+   const p=await authenticated(d,req);
    await d.rateLimiter.afterAuthentication(p);admission();
    await validateRequest(req,url,action,streamTimeoutMs);
    if(req.signal.aborted)throw canceled();
@@ -141,15 +162,9 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
    admission();const proof=await d.resolver.resolveResourceScope(p,mapping.refs,operation,req.signal);
    return await runResourceTicketTransaction(d.pool,d.resolver,p,ticketId,mapping.refs,operation,proof,async(client,scope)=>{
     if(scope.accountId!==mapping.accountId)throw fail(403,'resource_scope_denied','Conta do chamado alterada.');
-    const response=await d.execute(client,p,req);
-    if(!(response instanceof Response))throw unavailable();
-    if(!response.ok)throw fail([400,403,404,409,412,422,428,429].includes(response.status)?response.status:503,'business_request_rejected','Operação recusada.');
     // Fully consume the DTO before leaving the transaction. Do not return a lazy
     // stream capable of querying after the connection/proof has been released.
-    const data=await boundedBytes(response.body,2*1024*1024,req.signal,streamTimeoutMs);
-    const headers=new Headers({'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId});
-    for(const key of ['etag','location','idempotency-replayed']){const value=response.headers.get(key);if(value!==null)headers.set(key,value);}
-    return new Response(data,{status:response.status,headers});
+    return materializedResponse(await d.execute(client,p,req),req,requestId,streamTimeoutMs);
    },req.signal,admission);
   }catch(error){return problem(error,requestId);}
  };

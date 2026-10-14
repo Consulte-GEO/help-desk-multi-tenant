@@ -1,6 +1,7 @@
 import type {SqlPool} from './sql.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 import {DATABASE_SECURITY_CONTRACT} from './database-security-contract.ts';
+import {OWNER_DEFAULTS_OK_SQL,unsafeServiceMembershipSql} from '../../scripts/consultegeo-service-membership.ts';
 
 /** One read-only catalogue query; no ticket, credential, token, or message values. */
 export const DATABASE_SECURITY_QUERY = `with
@@ -82,11 +83,12 @@ export const DATABASE_SECURITY_QUERY = `with
     or p.polroles is distinct from array[(select oid from app)]::oid[])) as policy_contract_ok,
  ((select count(*) from expected_roles)=2 and not exists(select 1 from expected_roles e left join pg_catalog.pg_roles r on r.rolname=e.name where r.oid is null
    or r.rolsuper or r.rolbypassrls or r.rolcreaterole or r.rolcreatedb or r.rolreplication or r.rolinherit
-   or exists(select 1 from pg_catalog.pg_auth_members m where m.member=r.oid or m.roleid=r.oid)
+   or ${unsafeServiceMembershipSql('r.oid')}
    or exists(select 1 from schemas n where n.nspowner=r.oid or pg_catalog.has_schema_privilege(r.oid,n.oid,'USAGE') is distinct from (n.nspname=any(e.schemas)) or pg_catalog.has_schema_privilege(r.oid,n.oid,'CREATE,USAGE WITH GRANT OPTION'))
    or exists(select 1 from tables t where t.relowner=r.oid or pg_catalog.has_table_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN') or pg_catalog.has_any_column_privilege(r.oid,t.oid,'SELECT,INSERT,UPDATE,REFERENCES'))
    or exists(select 1 from functions p where p.proowner=r.oid or pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE') is distinct from (p.signature=any(e.functions)) or pg_catalog.has_function_privilege(r.oid,p.oid,'EXECUTE WITH GRANT OPTION'))
  )) as reserved_roles_ok,
+ ${OWNER_DEFAULTS_OK_SQL} as owner_defaults_ok,
  (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999
   and pg_catalog.current_setting('row_security')='on'
   and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok`;
@@ -94,7 +96,7 @@ export const DATABASE_SECURITY_QUERY = `with
 export const READINESS_FLAGS = Object.freeze([
  'schema_contract_ok','table_contract_ok','table_privileges_ok','column_privileges_ok',
  'client_object_privileges_ok','helper_contract_ok','helper_privileges_ok','helper_settings_ok',
- 'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok','reserved_roles_ok'
+ 'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok','reserved_roles_ok','owner_defaults_ok'
 ] as const);
 
 export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{

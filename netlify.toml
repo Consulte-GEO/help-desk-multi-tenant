@@ -8,6 +8,21 @@
   node_bundler = "esbuild"
   external_node_modules = ["pg"]
 [[redirects]]
+  from = "https://helpdesk-consultegeo.netlify.app/"
+  to = "https://helpdesk.consultegeo.org/"
+  status = 302
+  force = true
+[[redirects]]
+  from = "https://helpdesk-consultegeo.netlify.app/index.html"
+  to = "https://helpdesk.consultegeo.org/"
+  status = 302
+  force = true
+[[redirects]]
+  from = "https://helpdesk-consultegeo.netlify.app/support/tickets/*"
+  to = "https://helpdesk.consultegeo.org/support/tickets/:splat"
+  status = 302
+  force = true
+[[redirects]]
   from = "/wiki"
   to = "https://wiki-consultegeo.netlify.app/wiki/"
   status = 200
@@ -17,6 +32,10 @@
   to = "https://wiki-consultegeo.netlify.app/wiki/:splat"
   status = 200
   force = true
+[[redirects]]
+  from = "/support/tickets/*"
+  to = "/index.html"
+  status = 200
 [[headers]]
   for = "/*"
   [headers.values]

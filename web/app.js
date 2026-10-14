@@ -1,4 +1,7 @@
 import {ADVANCED_ACCESS} from './access-mode.js';
+import {mountOperationalJourney} from './consultegeo-operation.js';
+import {mountOperationalWorkflow} from './consultegeo-workflow.js';
+let cgOpening=null,cgWorkflow=null;
 // UX08: optional presentation. Failed/late assets never authorize or block Auth.
 let accessUX=null,accessConfiguration=null;
 import('./access-experience.js').then(({mountAccessExperience})=>{
@@ -23,6 +26,8 @@ import('./inbox-workspace.js').then(({mountInboxWorkspace})=>{
 // Somente a opção de código permite reativar os fluxos avançados preservados.
 for(const node of document.querySelectorAll('[data-advanced-access]')){node.hidden=!ADVANCED_ACCESS;node.inert=!ADVANCED_ACCESS;}
 import {createRecoveryPanel,captureRecoveryNavigation} from './recovery-password.js';
+import {captureSupportNavigation} from './support-navigation.js';
+const supportNavigation=captureSupportNavigation(location,history);
 const recoveryNavigationIntake=captureRecoveryNavigation(location,history);
 const recoveryNavigationDiscarded=recoveryNavigationIntake.discarded;
 import {loadTicketDetail,hasWriteActions,composerMode} from './ticket-actions.js';
@@ -71,15 +76,15 @@ async function api(path,options={}){
 const post=(path,body,key,headers={})=>api(path,{method:'POST',headers:{'idempotency-key':key,...headers},body:JSON.stringify(body)});
 const date=v=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
 const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='waiting_for_you'?'wait':status==='in_progress'?'progress':''),labels[status]??status);
-const product=id=>s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
+const product=(id,consultegeo=false)=>consultegeo?'Consulte GEO':s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 // Presentation only: this is an abbreviated UUID, never a business protocol.
 const compactTicketId=id=>(id.length>18?id.slice(0,8)+'…'+id.slice(-6):id).toUpperCase();
-function clearSession(){accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
  $('operational-status').hidden=available||!s.me;
- $('new-ticket').disabled=!available;$('refresh').disabled=!available;
+ $('new-ticket').disabled=!available||!s.demo&&s.config?.consultegeo_intake===false;$('refresh').disabled=!available;
  $('empty-detail').querySelector('h2').textContent=available?'Todo atendimento começa com uma boa conversa.':'Chamados e conversas';
  $('empty-detail').querySelector('p').textContent=available?'Selecione um chamado para consultar o histórico ou abra uma nova solicitação.':'Quando a consulta estiver disponível, selecione um chamado para acompanhar suas mensagens e seu histórico.';
  for(const control of $('ticket-filters').querySelectorAll('input,select,button'))control.disabled=!available;
@@ -97,7 +102,7 @@ async function login(){
  $('identity-name').textContent=s.me.workspace_role==='admin'?'Administrador':s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';
  $('workspace-label').textContent=s.demo?'Consulte · demonstração':ADVANCED_ACCESS?s.workspace:'Operação autorizada';
  $('login-status').textContent='';$('login-screen').hidden=true;$('app').hidden=false;
- render();if(serviceAvailable())await list(true,true);
+ render();if(serviceAvailable()){const linked=supportNavigation.takeTicket();await list(true,!linked);if(linked)await detail(linked,{navigate:true});}
 }
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -113,11 +118,11 @@ async function list(reset=true,selectFirst=false){
 function render(){
  const items=s.tickets,phase=inbox.status();$('ticket-list').replaceChildren();
  for(const t of items){const n=el('button','ticket-card'+(s.ticket?.id===t.id?' selected':''));n.type='button';n.setAttribute('data-ticket-id',t.id);if(s.ticket?.id===t.id)n.setAttribute('aria-current','true');n.setAttribute('aria-label','Abrir chamado: '+t.subject);
-  const top=el('div','card-top'),bottom=el('div','card-bottom');const identifier=el('span','',compactTicketId(t.id));identifier.title=t.id;
+  const top=el('div','card-top'),bottom=el('div','card-bottom');const identifier=el('span','',t.consultegeo?.protocol??compactTicketId(t.id));identifier.title=t.id;
   n.setAttribute('aria-label','Abrir chamado: '+t.subject+' · identificador '+t.id);
   top.append(identifier,el('span','',date(t.created_at)));
   if(t.assignment)bottom.append(el('span','badge',t.assignment.state==='mine'?'Sob minha responsabilidade':t.assignment.state==='other'?'Com outro atendente':'Sem responsável'));
-  bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id)));
+  bottom.append(badge(t.status),el('span','badge',priorities[t.priority]),el('span','card-product',product(t.product_instance_id,!!t.consultegeo)));
   n.append(top,el('h3','',t.subject),el('p','',t.description),bottom);n.onclick=()=>run(()=>detail(t.id,{navigate:true}));$('ticket-list').append(n);
  }
  if(!items.length)$('ticket-list').append(el('p','list-empty',!serviceAvailable()?'Os chamados serão exibidos aqui quando a consulta estiver disponível.':phase==='loading'?'Consultando chamados autorizados…':phase==='error'?'Não foi possível carregar os chamados. Tente novamente.':phase==='idle'?'Aplique a consulta para carregar chamados.':'Nenhum chamado encontrado para os filtros aplicados e suas permissões.'));
@@ -159,8 +164,10 @@ async function older(kind){
  }finally{button.disabled=false;}
 }
 async function detail(id,{navigate=false}={}){
+ if(cgWorkflow?.blocked()){if(navigate&&id===s.ticket?.id){const retained=inboxUX?.beginDetail(id,true);if(retained)inboxUX.finishDetail(retained);notice('O atendimento anterior ainda aguarda confirmação. Concilie a mesma intenção.');return;}notice('Concilie o atendimento ou a marcação atual antes de atualizar ou trocar o chamado.',true);return;}
  // Navigation never discards a request still in flight or an unresolved creation.
  if(navigate&&id!==s.ticket?.id&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
+ cgWorkflow?.destroy();cgWorkflow=null;$('cg-workflow').hidden=true;
  const uxRead=inboxUX?.beginDetail(id,navigate);
  // Lock controls while the current GET and required conversation are being refreshed.
  s.actions=null;s.notesUnavailable=false;
@@ -182,15 +189,16 @@ async function detail(id,{navigate=false}={}){
   const generation=conversation.reset(JSON.stringify([s.workspace,s.me.id,t.id]));
   conversation.accept(generation,'messages',messages);conversation.accept(generation,'notes',notes);
   $('empty-detail').hidden=true;$('ticket-detail').hidden=false;
-  $('ticket-number').textContent='CHAMADO '+compactTicketId(t.id)+' · VERSÃO '+t.version;
-  $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;
-  $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id)));
+  $('ticket-number').textContent=(t.consultegeo?.protocol??'CHAMADO '+compactTicketId(t.id))+' · VERSÃO '+t.version;
+  $('ticket-title').textContent=t.subject;$('ticket-description').textContent=t.description;$('ticket-operation-help').textContent=t.consultegeo?'O atendimento e as respostas públicas ficam registrados neste chamado. Notas internas são restritas à equipe.':'Anexos, relógios de SLA e envio de notificações não estão habilitados nesta versão.';
+  $('ticket-tags').replaceChildren(badge(t.status),el('span','badge',priorities[t.priority]),el('span','badge',product(t.product_instance_id,!!t.consultegeo)));
   $('contract-info').textContent='Versão '+t.contract_version_id.slice(0,12)+' · cobertura '+t.coverage_id.slice(0,12);
   renderConversation();$('notes-section').hidden=!actions.read_notes&&!notesUnavailable;
   $('notes-status').textContent=notesUnavailable?'Notas indisponíveis nesta consulta. O conteúdo anterior foi removido; a conversa pública continua disponível.':'';
   $('notes-retry').hidden=!notesUnavailable;if(notesUnavailable)$('notes-section').open=true;
   $('detail-action-status').textContent=hasWriteActions(actions)?'Ações verificadas pelo servidor para esta versão. Cada envio revalida suas permissões.':'Modo de consulta: seu acesso atual não permite alterações neste chamado.';
   mode(s.mode);renderTransitions();renderAssignment();renderPriority();
+  if(!s.demo&&t.consultegeo?.workflow===true){$('cg-workflow').hidden=false;const epoch=s.epoch;cgWorkflow=mountOperationalWorkflow($('cg-workflow'),{identity:{workspaceId:s.workspace,principalId:s.me.id},ticket:t,request:operationalRequest(),canWriteWorkflow:actions.reply||actions.transitions.length>0,canWriteChecklist:t.internal_status!==undefined&&actions.add_note&&s.me.scopes.includes('tickets:write'),onChange:()=>renderComposer(),onRefresh:()=>run(()=>detail(t.id)),onConfirmed:()=>run(async()=>{if(epoch!==s.epoch)return;await detail(t.id);if(epoch===s.epoch)await list();})});}
   timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),t.internal_status!==undefined);renderTimeline();
   if(current())inboxUX?.finishDetail(uxRead??inboxUX.beginDetail(id,navigate));
   if($('history-section').open)await loadTimeline();if(current())render();
@@ -217,7 +225,7 @@ async function detail(id,{navigate=false}={}){
 
 function renderTransitions(){
  const moves=s.actions?.transitions??[],selected=$('next-status').value;
- $('transition-area').hidden=!moves.length;
+ $('transition-area').hidden=!!s.ticket?.consultegeo||!moves.length;
  $('next-status').replaceChildren(...moves.map(v=>option(v.to,labels[v.to])));
  if(moves.some(v=>v.to===selected))$('next-status').value=selected;
  updateTransitionReason();
@@ -247,7 +255,7 @@ $('history-section').ontoggle=()=>{if($('history-section').open&&timeline.status
 $('history-more').onclick=()=>run(loadTimeline);$('history-retry').onclick=()=>run(loadTimeline);
 $('history-refresh').onclick=()=>run(async()=>{if(!s.ticket||!s.actions)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),s.ticket.internal_status!==undefined);await loadTimeline();});
 function renderAssignment(){
- const t=s.ticket,a=t?.assignment,visible=t&&s.actions&&a;
+ const t=s.ticket,a=t?.assignment,visible=t&&!t.consultegeo&&s.actions&&a;
  $('assignment-form').hidden=!visible;if(!visible)return;
  $('assignment-label').textContent=a.state==='mine'?'Responsável: você.':a.state==='other'?'Responsável: outro atendente. Em chamados não encerrados, um administrador pode liberar para nova atribuição.':'Este chamado está sem responsável.';
  const busy=mutations.busy('assignment'),draft=mutations.draft('assignment');
@@ -287,7 +295,7 @@ $('assignment-reload').onclick=()=>run(async()=>{
 });
 
 function renderPriority(){
- const t=s.ticket,allowed=t&&s.actions?.change_priority;
+ const t=s.ticket,allowed=t&&!t.consultegeo&&s.actions?.change_priority;
  $('priority-form').hidden=!allowed;if(!allowed)return;
  const draft=mutations.draft('priority');
  if(draft){try{const d=JSON.parse(draft);$('ticket-priority').value=d.priority;$('priority-reason').value=d.reason;}catch{$('priority-status').textContent='Rascunho de prioridade inválido. Reabra o chamado.';}}
@@ -318,14 +326,14 @@ $('older-messages').onclick=()=>run(()=>older('messages'));
 $('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}
 function renderComposer(){
- const a=s.actions,publicAllowed=!!a?.reply,internalAllowed=!!a?.add_note;
- s.mode=composerMode(s.mode,a);
+ const a=s.actions,publicAllowed=!s.ticket?.consultegeo&&!!a?.reply,internalAllowed=!!a?.add_note;
+ s.mode=s.ticket?.consultegeo&&internalAllowed?'internal':composerMode(s.mode,a);
  $('public-tab').hidden=!publicAllowed;$('note-tab').hidden=!internalAllowed;
  $('message-form').hidden=!publicAllowed&&!internalAllowed;
  $('message-body').value=mutations.draft(s.mode);
  const enabled=s.mode==='internal'?internalAllowed:publicAllowed;
- $('message-body').disabled=!enabled||mutations.unresolved(s.mode);
- $('send-message').disabled=!enabled||mutations.busy(s.mode)||!s.ticket;
+ $('message-body').disabled=cgWorkflow?.blocked()===true||!enabled||mutations.unresolved(s.mode);
+ $('send-message').disabled=cgWorkflow?.blocked()===true||!enabled||mutations.busy(s.mode)||!s.ticket;
  $('transition').disabled=mutations.busy('transition')||!s.ticket||!a?.transitions.length;
  $('next-status').disabled=$('transition-reason').disabled=mutations.unresolved('transition');
  $('message-form').classList.toggle('internal',s.mode==='internal');
@@ -365,7 +373,19 @@ async function loadCatalog(){
  try{const page=await api('/support-contexts?limit=50'+(op.cursor?'&cursor='+encodeURIComponent(op.cursor):''));if(!catalog.current(op))return;catalog.accept(op,page);renderCatalog();}
  catch(error){if(catalog.fail(op))renderCatalog();}
 }
+function operationalRequest(){const epoch=s.epoch,transport=humanFetch;return async(path,init={})=>{if(epoch!==s.epoch||!s.me||s.demo||!transport||transport!==humanFetch)throw Error('stale_session');const response=await transport(path,init);if(epoch!==s.epoch||transport!==humanFetch||!transport.currentResponse(response))throw Error('stale_session');return response;};}
+async function startOperationalCreate(){
+ if(workspaceChangeBlocked()){notice('Conclua ou concilie o envio atual antes de abrir outro chamado.',true);return;}
+ if(cgOpening?.state().phase==='confirmed'){cgOpening.destroy();cgOpening=null;}
+ $('cg-create-dialog').showModal();
+ if(cgOpening)return;const epoch=s.epoch;cgOpening=mountOperationalJourney($('cg-create-root'),{identity:{workspaceId:s.workspace,principalId:s.me.id},request:operationalRequest(),onReceipt:receipt=>run(async()=>{if(epoch!==s.epoch)return;$('cg-create-dialog').close();await list();if(epoch===s.epoch)await detail(receipt.ticketId,{navigate:true});if(epoch===s.epoch)notice('Chamado '+receipt.protocol+' registrado. A notificação está na fila de email.');})});
+ await cgOpening.load();
+}
+$('cg-close-create').onclick=()=>{if(cgOpening?.blocked()){notice('Concilie a mesma intenção antes de fechar o formulário.',true);return;}$('cg-create-dialog').close();};
+$('cg-create-dialog').addEventListener('cancel',e=>{if(cgOpening?.blocked()){e.preventDefault();notice('Concilie a mesma intenção antes de fechar o formulário.',true);}});
 async function startCreate(){
+ if(!s.demo&&s.config?.consultegeo_intake===false){notice('A abertura de chamados ainda não está disponível.',true);return;}
+ if(!s.demo&&s.config?.consultegeo_intake===true)return startOperationalCreate();
  if(ticketMutationBlocked()){notice('Conclua ou recupere o envio atual antes de abrir outro chamado.',true);return;}resetOpening();$('create-dialog').showModal();openingUX?.open();if(unresolvedCreate()){$('submit-create').focus();return;}creation.reset(createIdentity());$('subject').focus();await loadCatalog();}
 $('context-choice').onchange=()=>{catalog.select($('context-choice').value);s.createKey=crypto.randomUUID();$('coverage-label').hidden=true;renderCatalog();};
 $('context-more').onclick=()=>run(loadCatalog);$('context-retry').onclick=()=>run(loadCatalog);
@@ -410,7 +430,7 @@ $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
 });};
 $('message-body').oninput=()=>mutations.edit(s.mode,$('message-body').value);
 $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- if(!s.ticket||!(s.mode==='internal'?s.actions?.add_note:s.actions?.reply))return;
+ if(cgWorkflow?.blocked()||!s.ticket||!(s.mode==='internal'?s.actions?.add_note:s.actions?.reply))return;
  const id=s.ticket.id,channel=s.mode;mutations.edit(channel,$('message-body').value);
  const op=mutations.begin(channel);if(!op)return;renderComposer();
  try{
@@ -474,8 +494,8 @@ if(ADVANCED_ACCESS){ // Consulta da conta e cadastro de MFA preservados.
 $('security-status').onclick=()=>run(securityPanel.open);$('security-status-login').onclick=()=>run(securityPanel.open);$('refresh-security').onclick=()=>run(securityPanel.refresh);$('close-security').onclick=securityPanel.clear;
 }
 function outcomeUnknown(error){return error.requestSent!==false&&(!Number.isInteger(error.status)||error.status>=500||error.status===408);}
-function ticketMutationBlocked(){return ['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
-function workspaceChangeBlocked(){return creation.busy()||unresolvedCreate()||ticketMutationBlocked();}
+function ticketMutationBlocked(){return cgWorkflow?.blocked()===true||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
+function workspaceChangeBlocked(){return cgOpening?.blocked()===true||creation.busy()||unresolvedCreate()||ticketMutationBlocked();}
 const enrollmentPanel=createMfaEnrollmentPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,blocked:workspaceChangeBlocked,onResult:message=>$('login-status').textContent=message,elements:{title:$('mfa-enrollment-title'),description:$('mfa-enrollment-description'),label:$('mfa-enrollment-label'),dialog:$('mfa-enrollment-dialog'),start:$('start-mfa-enrollment'),confirm:$('confirm-mfa-enrollment'),factor:$('mfa-enrollment-factor'),code:$('mfa-enrollment-code'),secret:$('mfa-enrollment-secret'),qr:$('mfa-enrollment-qr'),provision:$('mfa-provision'),status:$('mfa-enrollment-status')}});
 if(ADVANCED_ACCESS){
 $('add-mfa').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));$('add-mfa-login').onclick=()=>run(()=>enrollmentPanel.open({additional:true}));

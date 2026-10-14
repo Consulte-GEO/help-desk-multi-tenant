@@ -1,3 +1,4 @@
+import {parseConsulteGeoTicketSummary} from '../shared/consultegeo-ticket.js';
 import {isCanonicalInstant} from '../shared/instant.js';
 /** Current GET hints only. Never an authorization token, cached policy, or fallback to /me roles. */
 const BOOLEAN_FIELDS=['reply','read_notes','add_note','change_priority','claim','release'];
@@ -8,6 +9,7 @@ const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const id=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(v);
 const bad=()=>{throw Error('Ações do chamado indisponíveis ou incompatíveis. Atualize o chamado antes de operar.');};
 export function readTicketActions(ticket){
+ if(ticket?.consultegeo!==undefined)parseConsulteGeoTicketSummary(ticket.consultegeo);
  if(!object(ticket)||!id(ticket.id)||!Number.isSafeInteger(ticket.version)||ticket.version<1||!PUBLIC.includes(ticket.status))bad();
  const a=ticket.available_actions;
  if(!object(a)||Object.keys(a).sort().join(',')!==ACTION_FIELDS||a.ticket_id!==ticket.id||a.version!==ticket.version

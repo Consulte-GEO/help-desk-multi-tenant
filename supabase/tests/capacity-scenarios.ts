@@ -1,4 +1,8 @@
 import {registerConsulteGeoOpeningSqlTests} from './consultegeo-opening-scenarios.ts';
+import {registerNotificationDeliverySqlTests,runNotificationDelayedActivationScenarios} from './notification-delivery-scenarios.ts';
+import {registerLocalRegistrySqlTests} from './local-registry-scenarios.ts';
+import {registerInitialOperationSqlTests} from './initial-operation-scenarios.ts';
+import {registerActivationSecurityInventory} from './activation-security-inventory.ts';
 /** Foundation scenarios registered exclusively by rls.test.ts after its fresh-PG17 guard. */
 import {registerConsulteGeoIntakeSqlTests} from './consultegeo-intake-scenarios.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
@@ -9,7 +13,7 @@ import {registerResourcePublicationSqlTests} from './resource-publication-scenar
 import {registerExecutionChecklistSqlTests} from './execution-checklist-scenarios.ts';
 import {registerSupportWorkflowSqlTests} from './support-workflow-scenarios.ts';
 import {registerConsulteGeoConfigurationSqlTests} from './consultegeo-configuration-scenarios.ts';
-export function registerCapacityTests(adminPool:()=>SqlPool){
+export function registerCapacityTests(adminPool:()=>SqlPool,appPool:()=>SqlPool){
  registerCapacityWorkloadTests(adminPool);
  registerResourceAccessSqlCandidateTests(adminPool);
  registerResourceScopeStoreSqlTests(adminPool);
@@ -18,4 +22,11 @@ export function registerCapacityTests(adminPool:()=>SqlPool){
  registerSupportWorkflowSqlTests(adminPool);
  registerConsulteGeoConfigurationSqlTests(adminPool);
  registerConsulteGeoIntakeSqlTests(adminPool);registerConsulteGeoOpeningSqlTests(adminPool);
+ // Candidate proofs run only after the original schema0.23 semantic suite.
+ // Their catalog additions do not promote the hosted migration manifest.
+ registerNotificationDeliverySqlTests(adminPool);
+ registerLocalRegistrySqlTests(adminPool,appPool);
+ registerInitialOperationSqlTests(adminPool,appPool);
+ runNotificationDelayedActivationScenarios(adminPool,appPool);
+ registerActivationSecurityInventory(adminPool);
 }

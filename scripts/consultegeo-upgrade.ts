@@ -1,3 +1,5 @@
+import {SERVICE_FINAL_GUARD} from './consultegeo-service-membership.ts';
+import {GUARD_REVISION_MANIFEST,restoreQualifiedGuard} from './consultegeo-guard-revision.ts';
 /** Offline M05 recipe verification. No driver, SQL execution or automatic repair. */
 import {createHash} from 'node:crypto';import {constants} from 'node:fs';import {lstat,open,realpath} from 'node:fs/promises';import {join} from 'node:path';import {loadMigrationBundle} from './migration-files.ts';
 const digest=(s:string|Buffer)=>createHash('sha256').update(s).digest('hex');
@@ -81,25 +83,7 @@ DO $m05_worker$ DECLARE ns text;BEGIN
  END LOOP;
 END $m05_worker$;
 -- Validate EFFECTIVE service boundaries before publishing the schema marker.
-DO $m05_final$
-DECLARE role_name text;role_oid oid;role_row record;ns record;obj record;allowed boolean;
-BEGIN
- FOREACH role_name IN ARRAY ARRAY['helpdesk_resource_publisher','helpdesk_notification_worker'] LOOP
-  SELECT * INTO role_row FROM pg_roles WHERE rolname=role_name;IF NOT FOUND THEN RAISE EXCEPTION 'Service boundary unavailable' USING ERRCODE='HDU06';END IF;role_oid:=role_row.oid;
-  IF role_row.rolsuper OR role_row.rolbypassrls OR role_row.rolcreaterole OR role_row.rolcreatedb OR role_row.rolreplication OR role_row.rolinherit OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=role_oid OR roleid=role_oid) THEN RAISE EXCEPTION 'Service boundary unsafe' USING ERRCODE='HDU06';END IF;
-  FOR ns IN SELECT * FROM pg_namespace WHERE nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') LOOP
-   allowed:=role_name='helpdesk_resource_publisher' AND ns.nspname='helpdesk_auth';
-   IF ns.nspowner=role_oid OR has_schema_privilege(role_oid,ns.oid,'USAGE') IS DISTINCT FROM allowed OR has_schema_privilege(role_oid,ns.oid,'CREATE,USAGE WITH GRANT OPTION') THEN RAISE EXCEPTION 'Service schema boundary unsafe' USING ERRCODE='HDU06';END IF;
-  END LOOP;
-  FOR obj IN SELECT c.* FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') AND c.relkind='r' LOOP
-   IF obj.relowner=role_oid OR has_table_privilege(role_oid,obj.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER,MAINTAIN') OR has_any_column_privilege(role_oid,obj.oid,'SELECT,INSERT,UPDATE,REFERENCES') THEN RAISE EXCEPTION 'Service table boundary unsafe' USING ERRCODE='HDU06';END IF;
-  END LOOP;
-  FOR obj IN SELECT p.*,n.nspname||'.'||p.proname||'('||oidvectortypes(p.proargtypes)||')' AS signature FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('helpdesk_auth','helpdesk_core','helpdesk_integration','helpdesk_audit') LOOP
-   allowed:=role_name='helpdesk_resource_publisher' AND obj.signature IN ('helpdesk_auth.cg_publication_open(text, text)','helpdesk_auth.cg_publication_replace(text, text, text, text, text)','helpdesk_auth.cg_publication_append(text, text, text)');
-   IF obj.proowner=role_oid OR has_function_privilege(role_oid,obj.oid,'EXECUTE') IS DISTINCT FROM allowed OR has_function_privilege(role_oid,obj.oid,'EXECUTE WITH GRANT OPTION') THEN RAISE EXCEPTION 'Service function boundary unsafe' USING ERRCODE='HDU06';END IF;
-  END LOOP;
- END LOOP;
-END $m05_final$;
+${SERVICE_FINAL_GUARD}
 CREATE OR REPLACE FUNCTION helpdesk_auth.schema_version() RETURNS text LANGUAGE sql IMMUTABLE SET search_path='' AS $$SELECT '0.20.0'::text$$;
 COMMIT;
 `;
@@ -114,10 +98,17 @@ function exact(x:unknown,keys:readonly string[]):x is Record<string,unknown>{ret
 async function regular(path:string,max:number){const s=await lstat(path);if(!s.isFile()||s.isSymbolicLink()||s.size>max)throw failure();const h=await open(path,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);try{const a=await h.stat();if(!a.isFile()||a.size>max)throw failure();const buffer=Buffer.alloc(max+1),{bytesRead}=await h.read(buffer,0,max+1,0);if(bytesRead>max)throw failure();return new TextDecoder('utf-8',{fatal:true}).decode(buffer.subarray(0,bytesRead));}finally{await h.close();}}
 export async function verifyConsulteGeoUpgrade(root:string):Promise<{schemaVersion:string;file:string;sha256:string}>{try{
  const path=await realpath(root),bundle=await loadMigrationBundle(path),raw:unknown=JSON.parse(await regular(join(path,'supabase/consultegeo-upgrade.manifest.json'),65536));
- if(!exact(raw,['format','product','baseSchema','targetSchema','file','sha256','generatedBy','qualifiedBase','components','baseline'])||raw.format!==1||raw.product!=='CONSULTE_GEO'||raw.baseSchema!=='0.19.0'||raw.targetSchema!=='0.20.0'||!((bundle.schemaVersion==='0.20.0'&&bundle.migrations.length===13)||(bundle.schemaVersion==='0.21.0'&&bundle.migrations.length===14)||(bundle.schemaVersion==='0.22.0'&&bundle.migrations.length===15)||(bundle.schemaVersion==='0.23.0'&&bundle.migrations.length===16))
+ if(!exact(raw,['format','product','baseSchema','targetSchema','file','sha256','generatedBy','qualifiedBase','components','baseline','guardRevision'])||raw.format!==1||raw.product!=='CONSULTE_GEO'||raw.baseSchema!=='0.19.0'||raw.targetSchema!=='0.20.0'||!((bundle.schemaVersion==='0.20.0'&&bundle.migrations.length===13)||(bundle.schemaVersion==='0.21.0'&&bundle.migrations.length===14)||(bundle.schemaVersion==='0.22.0'&&bundle.migrations.length===15)||(bundle.schemaVersion==='0.23.0'&&bundle.migrations.length===16)||(bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17))
   ||JSON.stringify(raw.generatedBy)!==JSON.stringify(generatedBy)||JSON.stringify(raw.qualifiedBase)!==JSON.stringify(base)||JSON.stringify(raw.components)!==JSON.stringify(QUALIFIED_UPGRADE_COMPONENTS)||JSON.stringify(raw.baseline)!==JSON.stringify(UPGRADE_BASELINE)
   ||JSON.stringify(bundle.migrations.slice(0,12).map(({file,sha256})=>({file,sha256})))!==JSON.stringify(UPGRADE_BASELINE))throw failure();
+ if(raw.guardRevision!==GUARD_REVISION_MANIFEST.revision||JSON.stringify(JSON.parse(await regular(join(path,'supabase/consultegeo-guard-revision.manifest.json'),65536)))!==JSON.stringify(GUARD_REVISION_MANIFEST))throw failure();
+ for(const [index,migration] of bundle.migrations.slice(12,16).entries()){
+  if(migration.file!==GUARD_REVISION_MANIFEST.migrations[index]?.file)throw failure();
+  restoreQualifiedGuard(migration.file,migration.sql);
+ }
  const migration=bundle.migrations[12]!;if(raw.file!==migration.file||!/^\d{14}_consultegeo_m05_upgrade\.sql$/.test(migration.file)||raw.sha256!==migration.sha256)throw failure();
  const components=await Promise.all(QUALIFIED_UPGRADE_COMPONENTS.map(async c=>({...c,sql:await regular(join(path,'supabase/candidates',c.file),2*1024*1024)})));
- if(compileConsulteGeoUpgrade(components)!==migration.sql)throw failure();return {schemaVersion:raw.targetSchema as string,file:migration.file,sha256:migration.sha256};
+ if(compileConsulteGeoUpgrade(components)!==migration.sql)throw failure();
+ if(bundle.schemaVersion==='0.24.0'){const {verifyConsulteGeoActivation}=await import('./consultegeo-activation-upgrade.ts');await verifyConsulteGeoActivation(path);}
+ return {schemaVersion:raw.targetSchema as string,file:migration.file,sha256:migration.sha256};
 }catch{throw failure();}}

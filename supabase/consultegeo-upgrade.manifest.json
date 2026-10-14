@@ -4,7 +4,7 @@
   "baseSchema": "0.19.0",
   "targetSchema": "0.20.0",
   "file": "20261013181408_consultegeo_m05_upgrade.sql",
-  "sha256": "23aae798d34cf5c4d6e96478761dfb2e5208dc071fd886f2ab56d78e12d83b1a",
+  "sha256": "ddb84087f1a48367fb8546947d818d0b45578dac2a2c184f382e8a4e84426ecc",
   "generatedBy": {
     "tool": "Supabase CLI",
     "version": "2.120.0",
@@ -89,5 +89,6 @@
       "file": "20261007001200_workspace_discovery.sql",
       "sha256": "9e080628937d47ff23d27a1169e67c9464ec694522c0f4ad1337e901575fa21d"
     }
-  ]
+  ],
+  "guardRevision": "pg17-bootstrap-owner-v1"
 }

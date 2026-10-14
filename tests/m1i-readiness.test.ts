@@ -6,7 +6,7 @@ import type {SqlPool} from '../src/infrastructure/sql.ts';
 const good = () => ({table_count:DATABASE_SECURITY_CONTRACT.tables.length,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,
  schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,
  client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,
- trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true});
+ trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true,owner_defaults_ok:true});
 const poolFor=(row:Record<string,unknown>):SqlPool=>({query:async()=>({rows:[row],rowCount:1}),connect:async()=>{throw Error('unused');},end:async()=>{}});
 test('readiness accepts a fully compatible catalogue report',async()=>{await assertDatabaseSecurity(poolFor(good()));});
 const deviations = {
@@ -41,8 +41,8 @@ test('catalogue query uses developer-owned parameters and only pg_catalog metada
  assert.doesNotMatch(DATABASE_SECURITY_QUERY,/\b(?:from|join)\s+helpdesk_(core|auth|integration|audit)\./i);
  assert.doesNotMatch(DATABASE_SECURITY_QUERY,/\b(?:grant|revoke|alter|drop|create)\s+(?:table|schema|function|role)\b/i);
 });
-test('schema contract has explicit least privileges and excludes administrative helper execution',async()=>{
- const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/database-security-contract.ts');
+test('the frozen 0.23 schema contract retains explicit least privileges and excludes administrative helper execution',async()=>{
+ const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/consultegeo-v023-security-contract.ts');
  assert.equal(c.tables.length,53);assert.equal(c.functions.length,124);assert.equal(c.triggers.length,45);assert.equal(c.policies.length,38);
  assert.equal(new Set(c.tables.map(t=>t.name)).size,53);
  for(const t of c.tables.filter(t=>t.name.startsWith('helpdesk_auth.')))assert.deepEqual([t.read,t.insert,t.updates],[false,false,[]]);

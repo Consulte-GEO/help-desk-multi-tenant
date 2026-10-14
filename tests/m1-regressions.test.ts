@@ -58,7 +58,7 @@ test('schema compatibility rejects missing or mismatched database version',async
  const {assertSchemaCompatibility}=await import('../src/infrastructure/postgres.ts');
  assert.equal(typeof assertSchemaCompatibility,'function');
  for(const value of [undefined,'0.1.0','0.2.0','0.5.0','0.8.0','0.9.0','0.16.0','999.0.0'])await assert.rejects(()=>assertSchemaCompatibility(poolFor({version:value})),{code:'schema_version_mismatch'});
- await assertSchemaCompatibility(poolFor({version:'0.23.0'}));
+ await assertSchemaCompatibility(poolFor({version:DATABASE_SECURITY_CONTRACT.schemaVersion}));
 });
 
 test('cache denied by database cannot return even metadata from the old response',async()=>{
@@ -81,7 +81,7 @@ test('write-only scope cannot open a ticket without the read permission required
 });
 test('runtime security readiness requires FORCE RLS and non-exposed private schemas',async()=>{
  const {assertDatabaseSecurity}=await import('../src/infrastructure/postgres.ts');assert.equal(typeof assertDatabaseSecurity,'function');
- const good={table_count:DATABASE_SECURITY_CONTRACT.tables.length,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true};
+ const good={table_count:DATABASE_SECURITY_CONTRACT.tables.length,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,schema_contract_ok:true,table_contract_ok:true,table_privileges_ok:true,column_privileges_ok:true,client_object_privileges_ok:true,helper_contract_ok:true,helper_privileges_ok:true,helper_settings_ok:true,trigger_contract_ok:true,constraint_contract_ok:true,index_contract_ok:true,policy_contract_ok:true,execution_settings_ok:true,reserved_roles_ok:true,owner_defaults_ok:true};
  await assertDatabaseSecurity(poolFor(good));
  for(const change of [{table_count:22},{unsafe_tables:1},{public_schema_access:true},{client_schema_access:true},{public_helper_execute:true}])
   await assert.rejects(()=>assertDatabaseSecurity(poolFor({...good,...change})),{code:'unsafe_database_policies'});

@@ -74,7 +74,7 @@ INIT=r"""
  };
 })();
 """
-def prepare(browser, authentication_only=False, workspace_options=None, recovery_fragment="", advanced_access=True):
+def prepare(browser, authentication_only=False, workspace_options=None, recovery_fragment="", advanced_access=True, consultegeo_intake=None):
     context=browser.new_context(viewport={'width':1440,'height':1000})
     context.add_init_script(INIT)
     page=context.new_page()
@@ -87,7 +87,7 @@ def prepare(browser, authentication_only=False, workspace_options=None, recovery
     page.route('**/demo-config',lambda r:r.fulfill(status=404,body=''))
     def api(route):
         path=urlparse(route.request.url).path
-        if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest',**({'operational':False} if authentication_only else {})}
+        if path=='/v1/public-config': value={'supabase_url':'https://syntheticproject.supabase.co','publishable_key':'sb_publishable_localtest',**({'operational':False} if authentication_only else {}),**({'consultegeo_intake':consultegeo_intake} if consultegeo_intake is not None else {})}
         elif path=='/v1/workspaces': value={'items':workspace_options if workspace_options is not None else [{'id':WS,'name':'Suporte autorizado'}]}
         elif authentication_only and path not in ['/v1/me','/v1/workspaces']:
             errors.append('Business request before release: '+path);route.fulfill(status=503,body='{}');return

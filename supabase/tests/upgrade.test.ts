@@ -5,8 +5,8 @@
 import test,{before,after} from 'node:test';
 import assert from 'node:assert/strict';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
-import {loadMigrationBundle} from '../../scripts/migration-files.ts';
-import {PostgresUnitOfWork,assertSafeDatabaseRole,assertDatabaseSecurity,assertSchemaCompatibility} from '../../src/infrastructure/postgres.ts';
+import {loadQualifiedV023Bundle as loadMigrationBundle,assertSchemaCompatibility,assertDatabaseSecurity} from '../../tests/helpers/qualified-v023.ts';
+import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';
 import {HelpdeskService} from '../../src/application/helpdesk.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';

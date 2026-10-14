@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.30.0",
+    "version": "0.31.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -4282,6 +4282,9 @@
             "type": "string",
             "format": "date-time",
             "description": "Instante atual em UTC com três ou seis dígitos de fração de segundo. Microssegundos não são arredondados. Reenvios preservam a representação histórica original; não trate date-time como formato fixo de 24 caracteres."
+          },
+          "consultegeo": {
+            "$ref": "#/components/schemas/ConsulteGeoTicketSummary"
           }
         },
         "required": [
@@ -4590,6 +4593,10 @@
           "operational": {
             "type": "boolean",
             "description": "False enquanto atendimento permanece bloqueado."
+          },
+          "consultegeo_intake": {
+            "type": "boolean",
+            "description": "Descoberta do formulário local Consulte GEO montado e liberado no servidor. Não concede acesso a clientes, obras ou chamados."
           }
         },
         "required": [
@@ -4875,6 +4882,9 @@
           },
           "available_actions": {
             "$ref": "#/components/schemas/TicketActions"
+          },
+          "consultegeo": {
+            "$ref": "#/components/schemas/ConsulteGeoTicketSummary"
           }
         },
         "required": [
@@ -6090,6 +6100,34 @@
           "notification",
           "replayed"
         ]
+      },
+      "ConsulteGeoTicketSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "protocol",
+          "profileVersionId",
+          "workflow",
+          "requesterId"
+        ],
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "pattern": "^CG-[1-9][0-9]{4,17}$"
+          },
+          "profileVersionId": {
+            "type": "string",
+            "pattern": "^cg-wf-[0-9a-f-]+-v[1-9][0-9]*$"
+          },
+          "workflow": {
+            "const": true
+          },
+          "requesterId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "description": "Resumo mínimo de um chamado Consulte GEO com perfil e protocolo fixados na abertura. Somente apresentação após autorização atual; não concede permissões."
       }
     }
   }
