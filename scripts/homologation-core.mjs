@@ -8,7 +8,9 @@ export const steps = Object.freeze([
  {id:'audit',requires:['install'],command:['npm','audit','--audit-level=high'],timeout:300_000,minTests:0},
  {id:'application',requires:['install'],command:['npm','run','verify'],timeout:300_000,minTests:1436},
  {id:'postgres',requires:['install'],command:['npm','run','test:db:local'],timeout:600_000,minTests:215},
- {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:300_000,minTests:71}
+ // The visual subprocess already permits 500s; reserve time for the preceding
+ // functional suites too. Assertions, counts and failure policy stay unchanged.
+ {id:'interface',requires:['application'],command:['node','scripts/test-ui-local.mjs'],timeout:600_000,minTests:71}
 ]);
 const hash = text => createHash('sha256').update(text).digest('hex');
 export function testCounts(output) {
