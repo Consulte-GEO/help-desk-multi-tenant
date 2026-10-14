@@ -1,8 +1,8 @@
 /** Structural sentinels only. They do NOT execute SQL or prove RLS. */
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {DATABASE_SECURITY_CONTRACT as contract} from '../src/infrastructure/database-security-contract.ts';
-import {loadMigrationBundle} from '../scripts/migration-files.ts';
+import {DATABASE_SECURITY_CONTRACT as contract} from '../src/infrastructure/consultegeo-v023-security-contract.ts';
+import {loadQualifiedV023Bundle as loadMigrationBundle} from './helpers/qualified-v023.ts';
 const path='supabase/migrations/20260917000900_human_scope_versions.sql';
 const sql=()=>readFile(path,'utf8');
 test('scope migration and runtime catalogue name the same private version table',async()=>{
@@ -41,7 +41,7 @@ test('manifest extends rather than alters the eight earlier migrations',async()=
 });
 
 test('readiness accepts only the table count of the new catalogue',async()=>{
- const {assertDatabaseSecurity,READINESS_FLAGS}=await import('../src/infrastructure/database-security.ts');
+ const {assertDatabaseSecurity}=await import('./helpers/qualified-v023.ts');const {READINESS_FLAGS}=await import('../src/infrastructure/database-security.ts');
  const row={table_count:24,unsafe_tables:0,public_schema_access:false,client_schema_access:false,public_helper_execute:false,...Object.fromEntries(READINESS_FLAGS.map(k=>[k,true]))};
  const pool=(count:number)=>({query:async()=>({rows:[{...row,table_count:count}],rowCount:1}),connect:async()=>{throw Error('unused');},end:async()=>{}});
  await assertDatabaseSecurity(pool(contract.tables.length));await assert.rejects(()=>assertDatabaseSecurity(pool(contract.tables.length-1)),{code:'unsafe_database_policies'});

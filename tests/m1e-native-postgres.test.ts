@@ -38,7 +38,21 @@ test('operator native profile starts an independent cluster and authenticates op
   assert.ok(x.calls.some(c=>basename(c.command[0])==='psql'&&c.command.includes('-f')));
  }finally{await fixture.close();}
 });
-test('native homologation owns two different data directories and preserves both suite results',async()=>{const m=await native(),fixture=await f(),x=executor();try{const r=await m.runNativeHomologation({env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});assert.equal(r.exit_code,0);assert.equal(r.cleanup,'removed');const starts=x.calls.filter(c=>c.command.includes('start'));assert.equal(starts.length,2);assert.notEqual(starts[0]!.command[2],starts[1]!.command[2]);const suites=x.calls.filter(c=>c.command.includes('--test'));assert.equal(suites.length,2);assert.ok(suites[0]!.command.includes('supabase/tests/rls.test.ts'));assert.ok(suites[0]!.command.includes('supabase/tests/upgrade.test.ts'));assert.ok(suites[1]!.command.includes('supabase/tests/operator-upgrade.test.ts'));assert.match(r.output,/# tests 120/);assert.equal([...r.output.matchAll(/^# tests /gm)].length,1);}finally{await fixture.close();}});
+test('native homologation owns three different data directories and preserves every original suite result',async()=>{const m=await native(),fixture=await f(),x=executor();try{const r=await m.runNativeHomologation({env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});assert.equal(r.exit_code,0);assert.equal(r.cleanup,'removed');const starts=x.calls.filter(c=>c.command.includes('start'));assert.equal(starts.length,3);assert.equal(new Set(starts.map(c=>c.command[2])).size,3);const suites=x.calls.filter(c=>c.command.includes('--test'));assert.equal(suites.length,3);assert.ok(suites[0]!.command.includes('supabase/tests/rls.test.ts'));assert.ok(suites[0]!.command.includes('supabase/tests/upgrade.test.ts'));assert.ok(suites[1]!.command.includes('supabase/tests/operator-upgrade.test.ts'));assert.ok(suites[2]!.command.includes('supabase/tests/activation-upgrade.test.ts'));assert.match(r.output,/# tests 180/);assert.equal([...r.output.matchAll(/^# tests /gm)].length,1);}finally{await fixture.close();}});
+
+test('activation native profile bootstraps only a direct non-superuser operator and its owned database',async()=>{
+ const m=await native(),fixture=await f(),x=executor();let bootstrap='';
+ try{
+  const execute=async(o:any)=>{if(basename(o.command[0])==='psql'&&o.command.includes('-f'))bootstrap=await readFile(o.command[o.command.indexOf('-f')+1],'utf8');return x.execute(o);};
+  const r=await m.runNativeTests({profile:'activation',env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute,checkDriver:()=>{}});
+  assert.equal(r.exit_code,0);assert.equal(r.cleanup,'removed');
+  assert.match(bootstrap,/CREATE ROLE helpdesk_operator LOGIN NOSUPERUSER NOCREATEDB CREATEROLE NOINHERIT NOREPLICATION BYPASSRLS/);
+  assert.match(bootstrap,/CREATE DATABASE helpdesk_test OWNER helpdesk_operator;/);
+  assert.doesNotMatch(bootstrap,/helpdesk_app|helpdesk_resource_publisher|helpdesk_notification_worker|GRANT|SET ROLE/);
+  const suite=x.calls.find(c=>c.command.includes('--test'));assert.deepEqual(suite.command.slice(suite.command.indexOf('--test-concurrency=1')+1),['supabase/tests/activation-upgrade.test.ts']);
+  assert.equal(new URL(suite.env.HELPDESK_TEST_OPERATOR_URL).username,'helpdesk_operator');
+ }finally{await fixture.close();}
+});
 test('failed database assertions are not converted to successful execution and still clean the cluster',async()=>{
  const m=await native(),fixture=await f(),x=executor({testCode:1});try{const r=await m.runNativeTests({env:{HELPDESK_TEST_PG_BIN:fixture.bin},platform:'linux',uid:1000,tempParent:fixture.base,execute:x.execute,checkDriver:()=>{}});assert.equal(r.exit_code,1);assert.equal(r.cleanup,'removed');assert.equal(r.stage,'tests');}finally{await fixture.close();}
 });

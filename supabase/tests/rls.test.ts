@@ -4,11 +4,11 @@ import {registerHostedAcceptanceSqlTests} from './hosted-acceptance-scenarios.ts
 import {registerFirstAdminTests} from './first-admin-scenarios.ts';
 import {registerWorkspaceDiscoveryTests} from './workspace-discovery-scenarios.ts';
 import {registerCapacityTests} from './capacity-scenarios.ts';
-import {probeDatabaseReadOnly} from '../../src/infrastructure/runtime-preflight.ts';
+import {probeDatabaseReadOnly,loadQualifiedV023Bundle as loadMigrationBundle,assertSchemaCompatibility,assertDatabaseSecurity} from '../../tests/helpers/qualified-v023.ts';
 import test,{before,after,describe} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {HelpdeskService} from '../../src/application/helpdesk.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {createAuthentication} from '../../src/infrastructure/authentication.ts';import {secretHash} from '../../src/domain/canonical.ts';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool,SqlClient} from '../../src/infrastructure/sql.ts';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';
-import {loadMigrationBundle} from '../../scripts/migration-files.ts';
-import {assertSchemaCompatibility,assertDatabaseSecurity} from '../../src/infrastructure/postgres.ts';
+
+
 import {createPostgresRateLimiter} from '../../src/infrastructure/rate-limit.ts';
 import {runTransaction,withControlTransactions} from '../../src/infrastructure/transaction.ts';
 import {SCOPES} from '../../src/domain/scopes.ts';

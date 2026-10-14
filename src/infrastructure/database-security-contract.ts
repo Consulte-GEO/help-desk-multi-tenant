@@ -1,6 +1,6 @@
-/** Reviewed metadata for schema 0.23.0; expressions require native qualification. */
+/** Reviewed PG17 metadata for schema 0.24.0; native qualification 38596743873. */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.23.0",
+  "schemaVersion": "0.24.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -15,7 +15,25 @@ export const DATABASE_SECURITY_CONTRACT = {
       "updates": []
     },
     {
+      "name": "helpdesk_audit.cg_initial_receipts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.cg_local_receipts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
       "name": "helpdesk_audit.hdn_cfg_commits",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.hdn_notification_audit",
       "read": false,
       "insert": false,
       "updates": []
@@ -46,6 +64,30 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_auth.account_grants",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.cg_local_accounts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.cg_local_permissions",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.cg_local_registries",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.cg_local_works",
       "read": false,
       "insert": false,
       "updates": []
@@ -308,9 +350,9 @@ export const DATABASE_SECURITY_CONTRACT = {
       "insert": true,
       "updates": [
         "status",
+        "priority",
         "version",
         "updated_at",
-        "priority",
         "assigned_to"
       ]
     },
@@ -324,6 +366,48 @@ export const DATABASE_SECURITY_CONTRACT = {
       "name": "helpdesk_integration.api_idempotency_keys",
       "read": false,
       "insert": true,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_attempts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_events",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_native_receipts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_plans",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_records",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_routes",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_templates",
+      "read": false,
+      "insert": false,
       "updates": []
     },
     {
@@ -385,9 +469,94 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": false
     },
     {
+      "signature": "helpdesk_auth.cg_initial_bind_checklist()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_initial_operation(text, text)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_initial_receipt_immutable()",
+      "definer": false,
+      "execute": false
+    },
+    {
       "signature": "helpdesk_auth.cg_invalidate_resource_grant()",
       "definer": true,
       "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_assert_current(jsonb)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_base_intake_scope(jsonb)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_base_ticket_allowed(uuid, uuid, uuid, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_immutable_receipt()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_manifest()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_operator()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_prepare_ticket_collection()",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_provision(text, text)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_read_access(uuid, text, text)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_refresh(uuid, text, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_request_contexts()",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_require_receipt()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_ticket_directory(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.cg_local_ticket_summary(uuid)",
+      "definer": true,
+      "execute": true
     },
     {
       "signature": "helpdesk_auth.cg_lock_ticket_scope(uuid, text)",
@@ -618,6 +787,111 @@ export const DATABASE_SECURITY_CONTRACT = {
       "signature": "helpdesk_auth.hdn_mark_execution_checklist(uuid, jsonb, text, text, uuid)",
       "definer": true,
       "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_apply_native(uuid, text, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_authorize(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_claim(text, text, text, integer)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_event(uuid, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_facts(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_immutable()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_lock(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_native(jsonb, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_plan(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_recipient(jsonb)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_routing(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_save(uuid, jsonb, bigint, jsonb, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_save_event(uuid, text, text)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_source(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_sources(integer)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_stamp(text)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_template(text, integer)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_valid_intent(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_valid_record(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_worker()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_write_plan(uuid, jsonb, jsonb)",
+      "definer": true,
+      "execute": false
     },
     {
       "signature": "helpdesk_auth.hdn_public_events(uuid, boolean, timestamp with time zone, uuid, integer)",
@@ -957,6 +1231,20 @@ export const DATABASE_SECURITY_CONTRACT = {
   ],
   "triggers": [
     {
+      "table": "helpdesk_audit.cg_initial_receipts",
+      "name": "cg_initial_receipt_immutable",
+      "function": "helpdesk_auth.cg_initial_receipt_immutable()",
+      "type": 31,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipt_immutable",
+      "function": "helpdesk_auth.cg_local_immutable_receipt()",
+      "type": 31,
+      "deferred": false
+    },
+    {
       "table": "helpdesk_audit.hdn_cfg_commits",
       "name": "hdn_cfg_commit_immutable",
       "function": "helpdesk_auth.hdn_execution_immutable()",
@@ -969,6 +1257,13 @@ export const DATABASE_SECURITY_CONTRACT = {
       "function": "helpdesk_auth.hdn_cfg_final_admission()",
       "type": 5,
       "deferred": true
+    },
+    {
+      "table": "helpdesk_audit.hdn_notification_audit",
+      "name": "hdn_notification_audit_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
     },
     {
       "table": "helpdesk_audit.hdn_workflow_commits",
@@ -993,6 +1288,13 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "table": "helpdesk_audit.hdni_receipts",
+      "name": "cg_initial_bind_checklist",
+      "function": "helpdesk_auth.cg_initial_bind_checklist()",
+      "type": 5,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.hdni_receipts",
       "name": "hdni_opening_complete",
       "function": "helpdesk_auth.hdni_opening_effect()",
       "type": 5,
@@ -1010,6 +1312,34 @@ export const DATABASE_SECURITY_CONTRACT = {
       "name": "complete_write_effect",
       "function": "helpdesk_audit.require_write_effect()",
       "type": 5,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_account_receipt",
+      "function": "helpdesk_auth.cg_local_require_receipt()",
+      "type": 29,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permission_receipt",
+      "function": "helpdesk_auth.cg_local_require_receipt()",
+      "type": 29,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registry_receipt",
+      "function": "helpdesk_auth.cg_local_require_receipt()",
+      "type": 29,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.cg_local_works",
+      "name": "cg_local_work_receipt",
+      "function": "helpdesk_auth.cg_local_require_receipt()",
+      "type": 29,
       "deferred": true
     },
     {
@@ -1265,6 +1595,41 @@ export const DATABASE_SECURITY_CONTRACT = {
       "deferred": false
     },
     {
+      "table": "helpdesk_integration.hdn_notification_attempts",
+      "name": "hdn_notification_attempt_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_events",
+      "name": "hdn_notification_event_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_plans",
+      "name": "hdn_notification_plan_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_route_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_templates",
+      "name": "hdn_notification_template_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
       "table": "helpdesk_integration.outbox_events",
       "name": "bind_write_effect_outbox",
       "function": "helpdesk_audit.bind_effect_outbox()",
@@ -1287,6 +1652,51 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_audit.audit_events",
       "name": "audit_events_workspace_id_fkey",
       "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.cg_initial_receipts",
+      "name": "cg_initial_receipts_command_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.cg_initial_receipts",
+      "name": "cg_initial_receipts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.cg_initial_receipts",
+      "name": "cg_initial_receipts_request_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_audit.cg_initial_receipts",
+      "name": "cg_initial_receipts_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipts_command_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipts_decision_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipts_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.cg_local_receipts",
+      "name": "cg_local_receipts_workspace_id_registry_revision_key",
+      "type": "u"
     },
     {
       "table": "helpdesk_audit.hdn_cfg_commits",
@@ -1312,6 +1722,26 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_audit.hdn_cfg_commits",
       "name": "hdn_cfg_final_admission",
       "type": "t"
+    },
+    {
+      "table": "helpdesk_audit.hdn_notification_audit",
+      "name": "hdn_notification_audit_intent_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdn_notification_audit",
+      "name": "hdn_notification_audit_intent_id_revision_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_audit.hdn_notification_audit",
+      "name": "hdn_notification_audit_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.hdn_notification_audit",
+      "name": "hdn_notification_audit_type_check",
+      "type": "c"
     },
     {
       "table": "helpdesk_audit.hdn_workflow_commits",
@@ -1516,6 +1946,116 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "table": "helpdesk_auth.account_grants",
       "name": "account_grants_workspace_id_account_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_account_receipt",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_accounts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_accounts_workspace_id_account_id_binding_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_accounts_workspace_id_binding_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_accounts",
+      "name": "cg_local_accounts_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permission_receipt",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_operation_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_principal_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_role_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_work_ids_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_permissions",
+      "name": "cg_local_permissions_workspace_id_account_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registries_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registries_decision_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registries_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registries_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registries_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_registries",
+      "name": "cg_local_registry_receipt",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_works",
+      "name": "cg_local_work_receipt",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_works",
+      "name": "cg_local_works_id_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_works",
+      "name": "cg_local_works_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.cg_local_works",
+      "name": "cg_local_works_workspace_id_account_id_fkey",
       "type": "f"
     },
     {
@@ -2689,6 +3229,171 @@ export const DATABASE_SECURITY_CONTRACT = {
       "type": "f"
     },
     {
+      "table": "helpdesk_integration.hdn_notification_attempts",
+      "name": "hdn_notification_attempts_attempt_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_attempts",
+      "name": "hdn_notification_attempts_intent_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_attempts",
+      "name": "hdn_notification_attempts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_attempts",
+      "name": "hdn_notification_attempts_request_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_events",
+      "name": "hdn_notification_events_event_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_events",
+      "name": "hdn_notification_events_intent_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_events",
+      "name": "hdn_notification_events_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_disposition_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_event_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_event_id_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_intent_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_outcome_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_native_receipts",
+      "name": "hdn_notification_native_receipts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_plans",
+      "name": "hdn_notification_plans_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_plans",
+      "name": "hdn_notification_plans_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_channel_id_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_event_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_event_id_recipient_id_channel_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_recipient_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_records",
+      "name": "hdn_notification_records_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_audience_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_expires_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_template_id_template_version_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_workspace_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_templates",
+      "name": "hdn_notification_templates_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_templates",
+      "name": "hdn_notification_templates_check1",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_templates",
+      "name": "hdn_notification_templates_check2",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_templates",
+      "name": "hdn_notification_templates_pkey",
+      "type": "p"
+    },
+    {
       "table": "helpdesk_integration.outbox_events",
       "name": "assignment_outbox_forbidden",
       "type": "c"
@@ -2953,8 +3658,24 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_notification_worker",
-      "schemas": [],
-      "functions": []
+      "schemas": [
+        "helpdesk_auth"
+      ],
+      "functions": [
+        "helpdesk_auth.hdn_notification_authorize(uuid)",
+        "helpdesk_auth.hdn_notification_claim(text, text, text, integer)",
+        "helpdesk_auth.hdn_notification_event(uuid, text)",
+        "helpdesk_auth.hdn_notification_lock(uuid)",
+        "helpdesk_auth.hdn_notification_native(jsonb, text)",
+        "helpdesk_auth.hdn_notification_plan(uuid)",
+        "helpdesk_auth.hdn_notification_routing(uuid)",
+        "helpdesk_auth.hdn_notification_save(uuid, jsonb, bigint, jsonb, text)",
+        "helpdesk_auth.hdn_notification_save_event(uuid, text, text)",
+        "helpdesk_auth.hdn_notification_source(uuid)",
+        "helpdesk_auth.hdn_notification_sources(integer)",
+        "helpdesk_auth.hdn_notification_template(text, integer)",
+        "helpdesk_auth.hdn_notification_write_plan(uuid, jsonb, jsonb)"
+      ]
     }
   ]
 } as const;

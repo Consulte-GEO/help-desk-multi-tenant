@@ -1,7 +1,7 @@
 import {testCounts} from './homologation-core.mjs';
-/** Both real clusters must pass independently before their single gate summary is emitted. */
+/** Every real cluster must pass independently before the single gate summary is emitted. */
 export function combinePostgresSuites(outputs){
- if(!Array.isArray(outputs)||outputs.length!==2)throw Error('Both isolated PostgreSQL suites are required.');
+ if(!Array.isArray(outputs)||![2,3].includes(outputs.length))throw Error('The isolated PostgreSQL suites are required.');
  let total=0,rootTotal=0;const evidence=[];
  for(const [index,output] of outputs.entries()){
   const counts=testCounts(output);

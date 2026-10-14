@@ -1,8 +1,8 @@
 /** Real PG17 proof in a second owned cluster. The operator is a direct non-superuser login. */
 import test,{before,after} from 'node:test';import assert from 'node:assert/strict';
-import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';import {loadMigrationBundle} from '../../scripts/migration-files.ts';
-import {assertDatabaseSecurity,DATABASE_SECURITY_QUERY} from '../../src/infrastructure/database-security.ts';import {assertSafeDatabaseRole,assertSchemaCompatibility} from '../../src/infrastructure/postgres.ts';
-import {DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/database-security-contract.ts';import type {SqlPool} from '../../src/infrastructure/sql.ts';
+import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';import {loadQualifiedV023Bundle as loadMigrationBundle,assertSchemaCompatibility,assertDatabaseSecurity,DATABASE_SECURITY_QUERY,DATABASE_SECURITY_CONTRACT} from '../../tests/helpers/qualified-v023.ts';
+import {assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';
+import type {SqlPool} from '../../src/infrastructure/sql.ts';
 import {withOperatorFixture} from '../../tests/helpers/operator-fixture.ts';
 const targets=validateDatabaseTestTargets(process.env),operatorUrl=new URL(process.env.HELPDESK_TEST_OPERATOR_URL??'');
 const adminUrl=new URL(targets.adminUrl);

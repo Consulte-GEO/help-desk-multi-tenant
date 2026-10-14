@@ -3,7 +3,7 @@ import {HelpdeskService} from '../src/application/helpdesk.ts';
 import {PostgresUnitOfWork} from '../src/infrastructure/postgres.ts';
 import {noteDriver,noteWriter} from './helpers/v018-driver.ts';
 import {ticketActions} from '../src/application/ticket-actions.ts';
-import {loadMigrationBundle} from '../scripts/migration-files.ts';
+import {loadQualifiedV023Bundle as loadMigrationBundle} from './helpers/qualified-v023.ts';
 const clock=()=>new Date('2026-09-17T18:00:00.000Z');
 test('note-only operator creates and replays without requesting the ticket UPDATE policy',async()=>{
  const f=noteDriver(),s=new HelpdeskService(new PostgresUnitOfWork(f.pool),clock),key='v018-note-only-key';

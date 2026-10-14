@@ -44,7 +44,7 @@ export async function runNativeTests({profile='superuser',env=process.env,platfo
  const ok=r=>r.exit_code===0&&!r.signal&&!r.reason;
  const must=async(command,options)=>{const r=await call(command,options);if(!ok(r))throw Error('native_stage_failed');return r;};
  try {
-  if(!['superuser','operator'].includes(profile))throw Error('invalid_native_profile');
+  if(!['superuser','operator','activation'].includes(profile))throw Error('invalid_native_profile');
   const c=nativeSettings(env,platform,uid);result.stage='prerequisites';await checkDriver();
   bin=await realpath(c.binDirectory);if(!(await lstat(bin)).isDirectory())throw Error('invalid_bin_directory');
   for(const name of ['initdb','pg_ctl','psql']){
@@ -63,16 +63,16 @@ export async function runNativeTests({profile='superuser',env=process.env,platfo
   result.stage='database';
   // Random credentials + an owned cluster prevent attaching to an unrelated service after a port race.
   const psql=[join(bin,'psql'),'-X','--no-password','-v','ON_ERROR_STOP=1','-h','127.0.0.1','-p',String(port),'-U','postgres','-d','postgres'];
-  if(profile==='operator'){
+  if(profile!=='superuser'){
    const bootstrap=join(root,'operator-bootstrap.sql');
    await writeFile(bootstrap,`CREATE ROLE helpdesk_operator LOGIN NOSUPERUSER NOCREATEDB CREATEROLE NOINHERIT NOREPLICATION BYPASSRLS PASSWORD '${operatorSecret}';\nCREATE DATABASE helpdesk_test OWNER helpdesk_operator;\n`,{mode:0o600,flag:'wx'});
    await must([...psql,'-f',bootstrap],{env:{...childEnv,PGPASSWORD:adminSecret}});await rm(bootstrap);
   }else await must([...psql,'-c','CREATE DATABASE helpdesk_test;'],{env:{...childEnv,PGPASSWORD:adminSecret}});
   const endpoint=`@127.0.0.1:${port}/helpdesk_test`;result.stage='tests';
-  const tests=profile==='operator'?['supabase/tests/operator-upgrade.test.ts']:['supabase/tests/rls.test.ts','supabase/tests/upgrade.test.ts'];
+  const tests=profile==='activation'?['supabase/tests/activation-upgrade.test.ts']:profile==='operator'?['supabase/tests/operator-upgrade.test.ts']:['supabase/tests/rls.test.ts','supabase/tests/upgrade.test.ts'];
   const suite=await call([process.execPath,'--experimental-strip-types','--test','--test-reporter=tap','--test-concurrency=1',...tests],{
    timeoutMs:300_000,env:{...childEnv,ALLOW_DATABASE_TESTS:'1',HELPDESK_TEST_ADMIN_URL:'postgresql://postgres:'+adminSecret+endpoint,HELPDESK_TEST_APP_URL:'postgresql://helpdesk_app:'+appSecret+endpoint,
-    ...(profile==='operator'?{HELPDESK_TEST_OPERATOR_URL:'postgresql://helpdesk_operator:'+operatorSecret+endpoint}:{})}
+    ...(profile!=='superuser'?{HELPDESK_TEST_OPERATOR_URL:'postgresql://helpdesk_operator:'+operatorSecret+endpoint}:{})}
   });
   result.output=scrub(suite.output);result.exit_code=ok(suite)?0:1;result.reason=ok(suite)?null:'test_command_failed';
  }catch{result.reason=signal?.aborted?'aborted':'native_'+result.stage+'_unavailable';result.exit_code=1;}
@@ -95,9 +95,11 @@ export async function runNativeTests({profile='superuser',env=process.env,platfo
 }
 /** runNativeTests owns one cluster per call, because roles are cluster-wide. */
 export async function runNativeHomologation(options={}){
- const first=await runNativeTests({...options,profile:'superuser'});if(first.exit_code)return first;
- const second=await runNativeTests({...options,profile:'operator'});
- if(second.exit_code)return {...second,output:first.output+'\n'+second.output};
- try{return {...second,output:combinePostgresSuites([first.output,second.output])};}
- catch{return {...second,output:first.output+'\n'+second.output,exit_code:1,reason:'native_suite_assertions_incomplete'};}
+ const outputs=[];let result;
+ for(const profile of ['superuser','operator','activation']){
+  result=await runNativeTests({...options,profile});outputs.push(result.output);
+  if(result.exit_code)return {...result,output:outputs.join('\n')};
+ }
+ try{return {...result,output:combinePostgresSuites(outputs)};}
+ catch{return {...result,output:outputs.join('\n'),exit_code:1,reason:'native_suite_assertions_incomplete'};}
 }

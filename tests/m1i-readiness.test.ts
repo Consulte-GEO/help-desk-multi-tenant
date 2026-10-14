@@ -41,8 +41,8 @@ test('catalogue query uses developer-owned parameters and only pg_catalog metada
  assert.doesNotMatch(DATABASE_SECURITY_QUERY,/\b(?:from|join)\s+helpdesk_(core|auth|integration|audit)\./i);
  assert.doesNotMatch(DATABASE_SECURITY_QUERY,/\b(?:grant|revoke|alter|drop|create)\s+(?:table|schema|function|role)\b/i);
 });
-test('schema contract has explicit least privileges and excludes administrative helper execution',async()=>{
- const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/database-security-contract.ts');
+test('the frozen 0.23 schema contract retains explicit least privileges and excludes administrative helper execution',async()=>{
+ const {DATABASE_SECURITY_CONTRACT:c}=await import('../src/infrastructure/consultegeo-v023-security-contract.ts');
  assert.equal(c.tables.length,53);assert.equal(c.functions.length,124);assert.equal(c.triggers.length,45);assert.equal(c.policies.length,38);
  assert.equal(new Set(c.tables.map(t=>t.name)).size,53);
  for(const t of c.tables.filter(t=>t.name.startsWith('helpdesk_auth.')))assert.deepEqual([t.read,t.insert,t.updates],[false,false,[]]);

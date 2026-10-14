@@ -1,8 +1,8 @@
 /** Inventory/source checks only. Do not call these PostgreSQL execution tests. */
 import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
-import {DATABASE_SECURITY_CONTRACT as c} from '../src/infrastructure/database-security-contract.ts';
+import {DATABASE_SECURITY_CONTRACT as c} from '../src/infrastructure/consultegeo-v023-security-contract.ts';
 import {DATABASE_SECURITY_QUERY} from '../src/infrastructure/database-security.ts';
-import {loadMigrationBundle} from '../scripts/migration-files.ts';
+import {loadQualifiedV023Bundle as loadMigrationBundle} from './helpers/qualified-v023.ts';
 const path='supabase/migrations/20260917001000_transaction_effects.sql';
 const functions=['record_ticket_effect','record_conversation_effect','bind_effect_event','bind_effect_outbox','require_write_effect'];
 test('write effects have a private table in the runtime inventory',()=>{
