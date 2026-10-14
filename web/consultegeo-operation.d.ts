@@ -1,0 +1,10 @@
+import type {ConsulteGeoCustomerConfiguration,ConsulteGeoRequestContext} from '../shared/consultegeo-request.js';
+export type OperationIdentity=Readonly<{workspaceId:string;principalId:string}>;
+export type OperationalContext=Readonly<{accountId:string;accountName:string;productInstanceId:string;connectionId:string;tenantId:string;works:readonly Readonly<{id:string;name:string;ref:ConsulteGeoRequestContext['refs'][number]}>[]}>;
+export type OperationRequest=(path:string,init:RequestInit)=>Promise<Response>;
+export type JourneyView=Readonly<{phase:string;contexts:readonly OperationalContext[];selection:Readonly<{accountId:string;workId:string;service:string}>|null;catalog:Readonly<{context:ConsulteGeoRequestContext;configuration:ConsulteGeoCustomerConfiguration}>|null;message:string}>;
+export const OPERATIONAL_SERVICES:Readonly<Record<string,string>>;
+export function readOperationalContexts(raw:unknown,identity:OperationIdentity):readonly OperationalContext[];
+export function readOperationalResponse(request:OperationRequest,path:string,init:RequestInit,signal?:AbortSignal):Promise<{response:Response;data:any}>;
+export function createOperationalJourney(options:{identity:OperationIdentity;request:OperationRequest;onChange?:(view:JourneyView)=>void}):Readonly<{view():JourneyView;load():Promise<boolean>;choose(selection:{accountId:string;workId:string;service:string}):Promise<boolean>;clear():void}>;
+export function mountOperationalJourney(root:HTMLElement,options:{identity:OperationIdentity;request:OperationRequest;onChange?:(view:{phase:string;blocked:boolean})=>void;onReceipt?:(receipt:{ticketId:string;protocol:string;notification:'pending'})=>void}):Readonly<{load():Promise<boolean>;blocked():boolean;state():Readonly<{phase:string}>;clear():void;destroy():void}>;
