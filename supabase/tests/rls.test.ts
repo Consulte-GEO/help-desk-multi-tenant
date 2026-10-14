@@ -1096,6 +1096,6 @@ registerHostedAcceptanceSqlTests(()=>({admin,app}));
 registerFirstAdminTests(()=>admin,()=>app);
 registerWorkspaceDiscoveryTests(()=>admin,()=>app);
 registerM05UpgradeTests(()=>admin);
-registerCapacityTests(()=>admin);
+registerCapacityTests(()=>admin,()=>app);
 
 });

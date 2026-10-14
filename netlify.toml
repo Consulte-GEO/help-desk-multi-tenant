@@ -7,6 +7,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["pg"]
+[[redirects]]
+  from = "/support/tickets/*"
+  to = "/index.html"
+  status = 200
 [[headers]]
   for = "/*"
   [headers.values]

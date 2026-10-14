@@ -102,7 +102,10 @@ export async function verifyConsulteGeoUpgrade(root:string):Promise<{schemaVersi
   ||JSON.stringify(raw.generatedBy)!==JSON.stringify(generatedBy)||JSON.stringify(raw.qualifiedBase)!==JSON.stringify(base)||JSON.stringify(raw.components)!==JSON.stringify(QUALIFIED_UPGRADE_COMPONENTS)||JSON.stringify(raw.baseline)!==JSON.stringify(UPGRADE_BASELINE)
   ||JSON.stringify(bundle.migrations.slice(0,12).map(({file,sha256})=>({file,sha256})))!==JSON.stringify(UPGRADE_BASELINE))throw failure();
  if(raw.guardRevision!==GUARD_REVISION_MANIFEST.revision||JSON.stringify(JSON.parse(await regular(join(path,'supabase/consultegeo-guard-revision.manifest.json'),65536)))!==JSON.stringify(GUARD_REVISION_MANIFEST))throw failure();
- for(const migration of bundle.migrations.slice(12))restoreQualifiedGuard(migration.file,migration.sql);
+ for(const [index,migration] of bundle.migrations.slice(12).entries()){
+  if(migration.file!==GUARD_REVISION_MANIFEST.migrations[index]?.file)throw failure();
+  restoreQualifiedGuard(migration.file,migration.sql);
+ }
  const migration=bundle.migrations[12]!;if(raw.file!==migration.file||!/^\d{14}_consultegeo_m05_upgrade\.sql$/.test(migration.file)||raw.sha256!==migration.sha256)throw failure();
  const components=await Promise.all(QUALIFIED_UPGRADE_COMPONENTS.map(async c=>({...c,sql:await regular(join(path,'supabase/candidates',c.file),2*1024*1024)})));
  if(compileConsulteGeoUpgrade(components)!==migration.sql)throw failure();return {schemaVersion:raw.targetSchema as string,file:migration.file,sha256:migration.sha256};

@@ -10,7 +10,7 @@
     "test": "node --experimental-strip-types --test --test-reporter=tap tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "demo": "node --experimental-strip-types scripts/demo.ts",
-    "test:db": "node --experimental-strip-types --test --test-reporter=tap --test-concurrency=1 supabase/tests/*.test.ts",
+    "test:db": "node --experimental-strip-types --test --test-reporter=tap --test-concurrency=1 supabase/tests/rls.test.ts supabase/tests/upgrade.test.ts",
     "check:contracts": "node --experimental-strip-types scripts/check-contracts.ts",
     "build": "node scripts/build.mjs",
     "dev": "netlify dev",

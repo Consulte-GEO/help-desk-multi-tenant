@@ -83,7 +83,12 @@ export function createOutboxDispatcher(options:{store:NotificationDeliveryStore;
    return await withRecord(id,async(tx,current)=>{
     // An authenticated callback may have settled this record while the send awaited ACK.
     if(current.state!=='sending'||current.lease?.id!==r.lease!.id)return deliveryView(current);
-    const at=now(),next=finishNotificationSend(current,r.lease!.id,response,at,policy);await tx.save(next,current.revision,audit(next,'delivery.send_observed',at));return deliveryView(next);
+    const at=now(),next=finishNotificationSend(current,r.lease!.id,response,at,policy);await tx.save(next,current.revision,audit(next,'delivery.send_observed',at));
+    // A durable store may reconcile an authenticated native callback retained
+    // before ACK under this same record lock. Return that persisted state.
+    const observed=parseDeliveryRecord(await tx.read());
+    if(requestHash(observed.intent)!==requestHash(next.intent)||observed.revision<next.revision)throw deliveryFailure('delivery_receipt_mismatch',409);
+    return deliveryView(observed);
    });
   }catch{return unavailable(id);}
  }
