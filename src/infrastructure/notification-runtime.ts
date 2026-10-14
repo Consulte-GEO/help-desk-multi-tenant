@@ -112,7 +112,7 @@ export function createResendWebhookHandler(o:{configuration:()=>NotificationRunt
   check();const runtime=await o.runtime(source);check();await runtime.acceptNative(event,signal);check();return privateJson({received:true},200);
  },request.signal);}catch(e){return privateFailure(e);}};
 }
-type PublishedContext={deploy?:{context?:string;published?:boolean}};
+type ScheduledContext={deploy?:{context?:string;published?:boolean}};
 type ScheduledPhase='deploy_guard'|'configuration'|'initialization'|'cycle';
 const observedConfigurationKeys=['enabled','releaseApproved','databaseUrl','databaseCa','origin','resendApiKey','resendFrom','senderVerified'] as const;
 type ConfigurationPresence=Readonly<Record<typeof observedConfigurationKeys[number],boolean>>;
@@ -122,7 +122,11 @@ function configurationPresence(raw:NotificationRuntimeConfig):ConfigurationPrese
  return Object.freeze(Object.fromEntries(observedConfigurationKeys.map(key=>{const value=raw&&typeof raw==='object'?Object.getOwnPropertyDescriptor(raw,key)?.value:undefined;return [key,['enabled','releaseApproved','senderVerified'].includes(key)?value==='true':typeof value==='string'&&value.trim()!==''];})) as Record<typeof observedConfigurationKeys[number],boolean>);
 }
 export function createNotificationScheduledHandler(o:{configuration:()=>NotificationRuntimeConfig;runtime:(config:NotificationRuntimeConfig)=>Promise<Pick<NotificationRuntime,'runOnce'>>;observe?:(entry:ScheduledWorkerObservation)=>void}){
- return async(_request:Request,context:PublishedContext={}):Promise<Response>=>{let phase:ScheduledPhase='deploy_guard',presence:ConfigurationPresence|null=null;try{if(context.deploy?.context!=='production'||context.deploy.published!==true)throw failed();return await budget(async(signal,check)=>{phase='configuration';const config=o.configuration();if(o.observe)try{presence=configurationPresence(config);}catch{}validateNotificationRuntimeConfig(config,'worker');check();phase='initialization';const runtime=await o.runtime(config);check();phase='cycle';await runtime.runOnce('netlify-worker:'+randomUUID(),signal);check();return new Response(null,{status:204,headers:{'cache-control':'no-store','referrer-policy':'no-referrer','x-content-type-options':'nosniff'}});});}catch(e){
+ // Bound exclusively by notification-worker's config.schedule: Netlify rejects
+ // public URL invocation and schedules only the published deploy. Its scheduler
+ // can supply published=false; that bit is observation, not admission here.
+ // Native production context still rejects Run now on previews/branch deploys.
+ return async(_request:Request,context:ScheduledContext={}):Promise<Response>=>{let phase:ScheduledPhase='deploy_guard',presence:ConfigurationPresence|null=null;try{if(context.deploy?.context!=='production')throw failed();return await budget(async(signal,check)=>{phase='configuration';const config=o.configuration();if(o.observe)try{presence=configurationPresence(config);}catch{}validateNotificationRuntimeConfig(config,'worker');check();phase='initialization';const runtime=await o.runtime(config);check();phase='cycle';await runtime.runOnce('netlify-worker:'+randomUUID(),signal);check();return new Response(null,{status:204,headers:{'cache-control':'no-store','referrer-policy':'no-referrer','x-content-type-options':'nosniff'}});});}catch(e){
   // One closed, private operational event. Observation cannot change the outcome.
   if(o.observe)try{const raw=e instanceof HelpdeskError?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined,code=['notification_unavailable','notification_configuration_required','notification_database_unqualified','notification_deadline_exceeded'].includes(raw)?raw:'notification_unavailable',candidate=context.deploy?.context,deployContext=candidate==='production'||candidate==='deploy-preview'||candidate==='branch-deploy'?candidate:'other';o.observe(Object.freeze({component:'helpdesk.notifications',event:'scheduled_worker_failed',phase,code,deployContext,publishedDeploy:context.deploy?.published===true,configuration:presence}));}catch{}
   return privateFailure(e);
