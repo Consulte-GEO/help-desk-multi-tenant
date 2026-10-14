@@ -1,8 +1,9 @@
 import {createConsulteGeoRuntimeHandlers,validateConsulteGeoRuntimeConfig,type ConsulteGeoSourcePorts} from './consultegeo-runtime.ts';
+import {assertRuntimeDatabase} from './authentication-database.ts';
 import {consoleHttpObserver} from '../observability/http.ts';
 import {withControlTransactions} from './transaction.ts';
 import {createPostgresRateLimiter} from './rate-limit.ts';
-import type {SqlPool} from './sql.ts';import {PostgresUnitOfWork,assertSafeDatabaseRole,assertSchemaCompatibility,assertDatabaseSecurity,observePoolErrors} from './postgres.ts';import {createAuthentication} from './authentication.ts';import {HelpdeskService} from '../application/helpdesk.ts';import {createHttpHandler} from '../http/handler.ts';
+import type {SqlPool} from './sql.ts';import {PostgresUnitOfWork,observePoolErrors} from './postgres.ts';import {createAuthentication} from './authentication.ts';import {HelpdeskService} from '../application/helpdesk.ts';import {createHttpHandler} from '../http/handler.ts';
 import {validateRuntimeConfig,validateBackendConfig} from './runtime-config.ts';
 import type {RuntimeConfig} from './runtime-config.ts';
 export {validateRuntimeConfig} from './runtime-config.ts';
@@ -20,6 +21,6 @@ async function createRuntime(c:ReturnType<typeof validateBackendConfig>,authenti
  const driver=await import(driverName) as {Pool:new(options:Record<string,unknown>)=>SqlPool};
  const pool=withControlTransactions(new driver.Pool({connectionString:c.databaseUrl,max:1,connectionTimeoutMillis:5000,idleTimeoutMillis:30000,application_name:'helpdesk-api',ssl:{rejectUnauthorized:true,...(c.databaseCa?{ca:c.databaseCa}:{})}}));
  observePoolErrors(pool,event=>console.warn(JSON.stringify(event)));
- try{await assertSafeDatabaseRole(pool);await assertSchemaCompatibility(pool);await assertDatabaseSecurity(pool);const auth=createAuthentication(pool,c),rateLimiter=createPostgresRateLimiter(pool,c.rateLimitHmacKey);const legacy=createHttpHandler({authenticationOnly,service:new HelpdeskService(new PostgresUnitOfWork(pool)),rateLimiter,...auth,publicConfig:{supabaseUrl:c.supabaseUrl,publishableKey:c.publishableKey},observe:consoleHttpObserver});return createConsulteGeoRuntimeHandlers({pool,authentication:auth,rateLimiter,origin:modules.origin,flags:{business:()=>!authenticationOnly,administration:()=>modules.administration,workflow:()=>modules.workflow,intake:()=>modules.intake},source,legacy,observe:consoleHttpObserver});}
+ try{await assertRuntimeDatabase(pool,{authenticationOnly,...modules});const auth=createAuthentication(pool,c),rateLimiter=createPostgresRateLimiter(pool,c.rateLimitHmacKey);const legacy=createHttpHandler({authenticationOnly,service:new HelpdeskService(new PostgresUnitOfWork(pool)),rateLimiter,...auth,publicConfig:{supabaseUrl:c.supabaseUrl,publishableKey:c.publishableKey},observe:consoleHttpObserver});return createConsulteGeoRuntimeHandlers({pool,authentication:auth,rateLimiter,origin:modules.origin,flags:{business:()=>!authenticationOnly,administration:()=>modules.administration,workflow:()=>modules.workflow,intake:()=>modules.intake},source,legacy,observe:consoleHttpObserver});}
  catch(error){await pool.end().catch(()=>{});throw error;}
 }
