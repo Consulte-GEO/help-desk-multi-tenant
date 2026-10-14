@@ -87,7 +87,7 @@ export function mountExecutionChecklist(root,options){
  function formatTime(at){try{return new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'}).format(new Date(at));}catch{return 'Data indisponível';}}
  function render(state){
   section.setAttribute('aria-busy',String(state.phase==='loading'||state.phase==='saving'));
-  status.textContent=state.message;
+  status.textContent=state.message;if(state.phase!=='error')status.setAttribute('data-response-diagnostic','');
   refresh.disabled=!['idle','ready','refresh_required','error'].includes(state.phase);
   reconcile.hidden=state.phase!=='unknown';reconcile.disabled=state.phase==='saving';
   progress.textContent=state.requiredTotal===null?'Nenhuma revisão carregada.':state.requiredCompleted+' de '+state.requiredTotal+' itens obrigatórios conferidos';
@@ -127,7 +127,7 @@ export function mountExecutionChecklist(root,options){
   }
   lastPhase=state.phase;
  }
- const controller=createExecutionChecklistController({...options,onState:state=>{render(state);options.onState?.(state);}});
+ const controller=createExecutionChecklistController({...options,onResponseDiagnostic:category=>status.setAttribute('data-response-diagnostic',category),onState:state=>{render(state);options.onState?.(state);}});
  render(controller.view());
  return Object.freeze({...controller,destroy(){controller.destroy();wipeFields();wipeReview();wipeRows();revision.textContent='';status.textContent='';if(dialog.open)dialog.close();for(const [target,type,fn] of listeners)target.removeEventListener(type,fn);root.replaceChildren();returnFocus=null;}});
 }
