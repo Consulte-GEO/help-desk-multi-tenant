@@ -81,6 +81,10 @@
       "result": "passed"
     },
     {
+      "check": "Pending send refuses ticket navigation without discarding the original intent",
+      "result": "passed"
+    },
+    {
       "check": "Late completion cannot navigate back or erase another ticket draft",
       "result": "passed"
     },
@@ -110,6 +114,38 @@
     },
     {
       "check": "Late catalog response from another profile cannot replace the current selection",
+      "result": "passed"
+    },
+    {
+      "check": "Trim-invalid draft remains editable and can be corrected before creation dispatch",
+      "result": "passed"
+    },
+    {
+      "check": "Read failure after confirmed creation is reported without reopening unknown or duplicating the ticket",
+      "result": "passed"
+    },
+    {
+      "check": "Lost creation receipt recovers original key/payload without new resolution: expired",
+      "result": "passed"
+    },
+    {
+      "check": "Closing/reopening preserves unresolved creation and prevents editing: expired",
+      "result": "passed"
+    },
+    {
+      "check": "Lost creation receipt recovers original key/payload without new resolution: ambiguous",
+      "result": "passed"
+    },
+    {
+      "check": "Closing/reopening preserves unresolved creation and prevents editing: ambiguous",
+      "result": "passed"
+    },
+    {
+      "check": "Malformed creation receipt never confirms or unlocks a new creation",
+      "result": "passed"
+    },
+    {
+      "check": "Changing session clears unresolved creation without exposing the previous account draft",
       "result": "passed"
     },
     {

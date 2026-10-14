@@ -8,6 +8,16 @@
   node_bundler = "esbuild"
   external_node_modules = ["pg"]
 [[redirects]]
+  from = "/wiki"
+  to = "https://wiki-consultegeo.netlify.app/wiki/"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/wiki/*"
+  to = "https://wiki-consultegeo.netlify.app/wiki/:splat"
+  status = 200
+  force = true
+[[redirects]]
   from = "/support/tickets/*"
   to = "/index.html"
   status = 200
