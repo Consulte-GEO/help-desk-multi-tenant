@@ -1,0 +1,3648 @@
+
+> @consulte-geo/helpdesk@0.31.0 test:db:local
+> node scripts/test-db-local.mjs
+
+TAP version 13
+# PostgreSQL isolated cluster 1
+# Subtest: PostgreSQL authorization and integrity
+    # Subtest: actual request login has no BYPASSRLS or table ownership
+    ok 1 - actual request login has no BYPASSRLS or table ownership
+      ---
+      duration_ms: 30.952184
+      type: 'test'
+      ...
+    # Subtest: all domain and authentication tables have ENABLE plus FORCE RLS
+    ok 2 - all domain and authentication tables have ENABLE plus FORCE RLS
+      ---
+      duration_ms: 2.974197
+      type: 'test'
+      ...
+    # Subtest: PUBLIC cannot execute private helpers
+    ok 3 - PUBLIC cannot execute private helpers
+      ---
+      duration_ms: 2.749349
+      type: 'test'
+      ...
+    # Subtest: known ticket UUID cannot be read from another workspace
+    ok 4 - known ticket UUID cannot be read from another workspace
+      ---
+      duration_ms: 2.602619
+      type: 'test'
+      ...
+    # Subtest: known ticket UUID cannot be read by sibling account
+    ok 5 - known ticket UUID cannot be read by sibling account
+      ---
+      duration_ms: 7.01103
+      type: 'test'
+      ...
+    # Subtest: requester cannot read notes with direct SQL, authorized agent can
+    ok 6 - requester cannot read notes with direct SQL, authorized agent can
+      ---
+      duration_ms: 7.028665
+      type: 'test'
+      ...
+    # Subtest: credential table denies direct app access
+    ok 7 - credential table denies direct app access
+      ---
+      duration_ms: 2.625033
+      type: 'test'
+      ...
+    # Subtest: context is cleared between reused pooled connections
+    ok 8 - context is cleared between reused pooled connections
+      ---
+      duration_ms: 4.43473
+      type: 'test'
+      ...
+    # Subtest: concurrent PostgreSQL retries create one ticket and one creation outbox event
+    ok 9 - concurrent PostgreSQL retries create one ticket and one creation outbox event
+      ---
+      duration_ms: 109.984938
+      type: 'test'
+      ...
+    # Subtest: same idempotency key with different body yields conflict
+    ok 10 - same idempotency key with different body yields conflict
+      ---
+      duration_ms: 4.936704
+      type: 'test'
+      ...
+    # Subtest: published policy cannot be edited in place
+    ok 11 - published policy cannot be edited in place
+      ---
+      duration_ms: 1.794485
+      type: 'test'
+      ...
+    # Subtest: committed ticket requires initial event and outbox even for an admin insert
+    ok 12 - committed ticket requires initial event and outbox even for an admin insert
+      ---
+      duration_ms: 9.898676
+      type: 'test'
+      ...
+    # Subtest: contract suspension after resolution blocks creation
+    ok 13 - contract suspension after resolution blocks creation
+      ---
+      duration_ms: 15.493769
+      type: 'test'
+      ...
+    # Subtest: revoked account grant takes effect despite previously resolved principal
+    ok 14 - revoked account grant takes effect despite previously resolved principal
+      ---
+      duration_ms: 3.087667
+      type: 'test'
+      ...
+    # Subtest: integration credential revocation invalidates a previously minted session
+    ok 15 - integration credential revocation invalidates a previously minted session
+      ---
+      duration_ms: 24.72362
+      type: 'test'
+      ...
+    # Subtest: M1 schema readiness is checked with the real request login
+    ok 16 - M1 schema readiness is checked with the real request login
+      ---
+      duration_ms: 18.976819
+      type: 'test'
+      ...
+    # Subtest: runtime role cannot read cached JSON directly, even for its current actor
+    ok 17 - runtime role cannot read cached JSON directly, even for its current actor
+      ---
+      duration_ms: 3.371063
+      type: 'test'
+      ...
+    # Subtest: creation replay loses access after grant revocation, with no cached payload returned
+    ok 18 - creation replay loses access after grant revocation, with no cached payload returned
+      ---
+      duration_ms: 8.153505
+      type: 'test'
+      ...
+    # Subtest: former agent cannot retrieve an internal note from the cache
+    ok 19 - former agent cannot retrieve an internal note from the cache
+      ---
+      duration_ms: 3.677443
+      type: 'test'
+      ...
+    # Subtest: revoked integration read scope removes direct SQL visibility and cached access
+    ok 20 - revoked integration read scope removes direct SQL visibility and cached access
+      ---
+      duration_ms: 4.773619
+      type: 'test'
+      ...
+    # Subtest: read-only machine cannot bypass HTTP and insert a public message by SQL
+    ok 21 - read-only machine cannot bypass HTTP and insert a public message by SQL
+      ---
+      duration_ms: 6.899452
+      type: 'test'
+      ...
+    # Subtest: integration cannot forge a human-agent author type
+    ok 22 - integration cannot forge a human-agent author type
+      ---
+      duration_ms: 5.81333
+      type: 'test'
+      ...
+    # Subtest: requester cannot use direct SQL to force a forbidden status change
+    ok 23 - requester cannot use direct SQL to force a forbidden status change
+      ---
+      duration_ms: 5.693591
+      type: 'test'
+      ...
+    # Subtest: composite FK rejects a ticket referencing a sibling account coverage
+    ok 24 - composite FK rejects a ticket referencing a sibling account coverage
+      ---
+      duration_ms: 3.074888
+      type: 'test'
+      ...
+    # Subtest: cross-account public-message insertion is denied by SQL
+    ok 25 - cross-account public-message insertion is denied by SQL
+      ---
+      duration_ms: 5.994753
+      type: 'test'
+      ...
+    # Subtest: integration cannot read notes through table or operation helper
+    ok 26 - integration cannot read notes through table or operation helper
+      ---
+      duration_ms: 3.596702
+      type: 'test'
+      ...
+    # Subtest: concurrent updates with the same ETag produce exactly one transition
+    ok 27 - concurrent updates with the same ETag produce exactly one transition
+      ---
+      duration_ms: 53.152376
+      type: 'test'
+      ...
+    # Subtest: transaction rollback clears context on the exact same single-connection pool
+    ok 28 - transaction rollback clears context on the exact same single-connection pool
+      ---
+      duration_ms: 8.223461
+      type: 'test'
+      ...
+    # Subtest: expired replay returns conflict, preserves ticket and does not disclose old response
+    ok 29 - expired replay returns conflict, preserves ticket and does not disclose old response
+      ---
+      duration_ms: 40.27108
+      type: 'test'
+      ...
+    # Subtest: SQL limiter rejects malformed budgets and caller-chosen thresholds
+    ok 30 - SQL limiter rejects malformed budgets and caller-chosen thresholds
+      ---
+      duration_ms: 12.890469
+      type: 'test'
+      ...
+    # Subtest: multiple HTTP instances share the token-exchange budget and denial consumes no other budget
+    ok 31 - multiple HTTP instances share the token-exchange budget and denial consumes no other budget
+      ---
+      duration_ms: 53.759568
+      type: 'test'
+      ...
+    # Subtest: HTTP limiter adapter consumes real SQL budgets with pseudonymous keys
+    ok 32 - HTTP limiter adapter consumes real SQL budgets with pseudonymous keys
+      ---
+      duration_ms: 2.148207
+      type: 'test'
+      ...
+    # Subtest: app cannot access rate bucket rows or invoke technical cleanup
+    ok 33 - app cannot access rate bucket rows or invoke technical cleanup
+      ---
+      duration_ms: 3.134237
+      type: 'test'
+      ...
+    # Subtest: connection-wide active-session quota serializes concurrent token exchanges
+    ok 34 - connection-wide active-session quota serializes concurrent token exchanges
+      ---
+      duration_ms: 67.204169
+      type: 'test'
+      ...
+    # Subtest: technical cleanup defaults to simulation and never deletes tickets or pending outbox
+    ok 35 - technical cleanup defaults to simulation and never deletes tickets or pending outbox
+      ---
+      duration_ms: 8.31636
+      type: 'test'
+      ...
+    # Subtest: M1c swallowed server SQL error is refused before COMMIT and its prior write rolls back
+    ok 36 - M1c swallowed server SQL error is refused before COMMIT and its prior write rolls back
+      ---
+      duration_ms: 10.021771
+      type: 'test'
+      ...
+    # Subtest: M1c control statements see the real server timeouts and empty identity selectors
+    ok 37 - M1c control statements see the real server timeouts and empty identity selectors
+      ---
+      duration_ms: 2.391372
+      type: 'test'
+      ...
+    # Subtest: M1c control failure resets timeouts and context on the same single-connection pool
+    ok 38 - M1c control failure resets timeouts and context on the same single-connection pool
+      ---
+      duration_ms: 7.059703
+      type: 'test'
+      ...
+    # Subtest: M1c self-revocation denies the revoked bearer and preserves its peer and credential
+    ok 39 - M1c self-revocation denies the revoked bearer and preserves its peer and credential
+      ---
+      duration_ms: 15.084144
+      type: 'test'
+      ...
+    # Subtest: M1c terminating workspace A session cannot terminate workspace B session
+    ok 40 - M1c terminating workspace A session cannot terminate workspace B session
+      ---
+      duration_ms: 9.972397
+      type: 'test'
+      ...
+    # Subtest: M1c repeated and nonexistent session digests receive the same SQL acknowledgement
+    ok 41 - M1c repeated and nonexistent session digests receive the same SQL acknowledgement
+      ---
+      duration_ms: 16.832609
+      type: 'test'
+      ...
+    # Subtest: M1c an expired session can be terminated even after connection access is disabled
+    ok 42 - M1c an expired session can be terminated even after connection access is disabled
+      ---
+      duration_ms: 10.55398
+      type: 'test'
+      ...
+    # Subtest: M1c the runtime role cannot delete session-table rows directly
+    ok 43 - M1c the runtime role cannot delete session-table rows directly
+      ---
+      duration_ms: 3.011723
+      type: 'test'
+      ...
+    # Subtest: M1c the revocation helper is private, search-path hardened and excluded from maintenance
+    ok 44 - M1c the revocation helper is private, search-path hardened and excluded from maintenance
+      ---
+      duration_ms: 3.983362
+      type: 'test'
+      ...
+    # Subtest: M1c the revocation helper rejects malformed hashes without accepting another selector
+    ok 45 - M1c the revocation helper rejects malformed hashes without accepting another selector
+      ---
+      duration_ms: 5.729655
+      type: 'test'
+      ...
+    # Subtest: M1c concurrent termination is idempotent and does not affect peer sessions
+    ok 46 - M1c concurrent termination is idempotent and does not affect peer sessions
+      ---
+      duration_ms: 26.785467
+      type: 'test'
+      ...
+    # Subtest: M1d real catalog returns only authorized account labels in each workspace
+    ok 47 - M1d real catalog returns only authorized account labels in each workspace
+      ---
+      duration_ms: 14.393857
+      type: 'test'
+      ...
+    # Subtest: M1d forbidden account filters are denied in both service and private helper
+    ok 48 - M1d forbidden account filters are denied in both service and private helper
+      ---
+      duration_ms: 2.488057
+      type: 'test'
+      ...
+    # Subtest: M1d a selected foreign workspace cannot override the transaction workspace
+    ok 49 - M1d a selected foreign workspace cannot override the transaction workspace
+      ---
+      duration_ms: 2.446665
+      type: 'test'
+      ...
+    # Subtest: M1d revoking the last live human grant denies catalog despite a cached principal
+    ok 50 - M1d revoking the last live human grant denies catalog despite a cached principal
+      ---
+      duration_ms: 14.660998
+      type: 'test'
+      ...
+    # Subtest: M1d machine discovery respects its live account binding and product instance
+    ok 51 - M1d machine discovery respects its live account binding and product instance
+      ---
+      duration_ms: 7.405191
+      type: 'test'
+      ...
+    # Subtest: M1d removing contexts scope denies SQL discovery even with old principal scopes
+    ok 52 - M1d removing contexts scope denies SQL discovery even with old principal scopes
+      ---
+      duration_ms: 3.220537
+      type: 'test'
+      ...
+    # Subtest: M1d disabled coverage disappears from real catalog
+    ok 53 - M1d disabled coverage disappears from real catalog
+      ---
+      duration_ms: 8.336319
+      type: 'test'
+      ...
+    # Subtest: M1d suspension after catalog selection still blocks the actual creation
+    ok 54 - M1d suspension after catalog selection still blocks the actual creation
+      ---
+      duration_ms: 9.788932
+      type: 'test'
+      ...
+    # Subtest: M1d duplicate eligible coverages remain one option but resolution stays ambiguous
+    ok 55 - M1d duplicate eligible coverages remain one option but resolution stays ambiguous
+      ---
+      duration_ms: 7.400524
+      type: 'test'
+      ...
+    # Subtest: M1d real composite cursor follows UTF-8 C order without duplicates
+    ok 56 - M1d real composite cursor follows UTF-8 C order without duplicates
+      ---
+      duration_ms: 15.838146
+      type: 'test'
+      ...
+    # Subtest: M1d private catalog rejects partial cursor tuples and invalid page bounds
+    ok 57 - M1d private catalog rejects partial cursor tuples and invalid page bounds
+      ---
+      duration_ms: 5.948444
+      type: 'test'
+      ...
+    # Subtest: M1d catalog helper is private and gives no new direct catalogue table grants
+    ok 58 - M1d catalog helper is private and gives no new direct catalogue table grants
+      ---
+      duration_ms: 3.12283
+      type: 'test'
+      ...
+    # Subtest: M1d catalog truncates Unicode labels by characters, not UTF-16 units
+    ok 59 - M1d catalog truncates Unicode labels by characters, not UTF-16 units
+      ---
+      duration_ms: 4.482492
+      type: 'test'
+      ...
+    # Subtest: M1d discovery does not create tickets, events or outbox side effects
+    ok 60 - M1d discovery does not create tickets, events or outbox side effects
+      ---
+      duration_ms: 4.839398
+      type: 'test'
+      ...
+    # Subtest: SQL busca filtra antes do limite e encontra chamado antigo entre 31 criações
+    ok 61 - SQL busca filtra antes do limite e encontra chamado antigo entre 31 criações
+      ---
+      duration_ms: 604.427766
+      type: 'test'
+      ...
+    # Subtest: SQL busca mantém autorização de conta/workspace mesmo conhecendo UUID
+    ok 62 - SQL busca mantém autorização de conta/workspace mesmo conhecendo UUID
+      ---
+      duration_ms: 71.891559
+      type: 'test'
+      ...
+    # Subtest: SQL busca não encontra nota interna, mensagem ou descrição
+    ok 63 - SQL busca não encontra nota interna, mensagem ou descrição
+      ---
+      duration_ms: 198.212591
+      type: 'test'
+      ...
+    # Subtest: SQL busca perde acesso imediatamente na próxima consulta após revogação
+    ok 64 - SQL busca perde acesso imediatamente na próxima consulta após revogação
+      ---
+      duration_ms: 20.995491
+      type: 'test'
+      ...
+    # Subtest: SQL filtros públicos agregam espera interna sem expor seletor privado
+    ok 65 - SQL filtros públicos agregam espera interna sem expor seletor privado
+      ---
+      duration_ms: 64.752792
+      type: 'test'
+      ...
+    # Subtest: SQL trata curingas e aspas literalmente sem ampliar escopo
+    ok 66 - SQL trata curingas e aspas literalmente sem ampliar escopo
+      ---
+      duration_ms: 115.199632
+      type: 'test'
+      ...
+    # Subtest: SQL e memória concordam na busca latina sem depender da locale do banco
+    ok 67 - SQL e memória concordam na busca latina sem depender da locale do banco
+      ---
+      duration_ms: 121.418281
+      type: 'test'
+      ...
+    # Subtest: SQL prioridade e assunto são aplicados em conjunto no escopo da integração
+    ok 68 - SQL prioridade e assunto são aplicados em conjunto no escopo da integração
+      ---
+      duration_ms: 78.513211
+      type: 'test'
+      ...
+    # Subtest: SQL priority mutation records one versioned event and minimal outbox with immutable contract
+    ok 69 - SQL priority mutation records one versioned event and minimal outbox with immutable contract
+      ---
+      duration_ms: 46.088219
+      type: 'test'
+      ...
+    # Subtest: SQL requester cannot write priority even by bypassing the application
+    ok 70 - SQL requester cannot write priority even by bypassing the application
+      ---
+      duration_ms: 22.381649
+      type: 'test'
+      ...
+    # Subtest: SQL integration cannot write its own ticket priority
+    ok 71 - SQL integration cannot write its own ticket priority
+      ---
+      duration_ms: 18.13987
+      type: 'test'
+      ...
+    # Subtest: SQL operator mutation without event and outbox cannot commit
+    ok 72 - SQL operator mutation without event and outbox cannot commit
+      ---
+      duration_ms: 27.434006
+      type: 'test'
+      ...
+    # Subtest: SQL operator event without matching outbox cannot commit
+    ok 73 - SQL operator event without matching outbox cannot commit
+      ---
+      duration_ms: 44.018101
+      type: 'test'
+      ...
+    # Subtest: SQL repeated priority request returns original version without another event
+    ok 74 - SQL repeated priority request returns original version without another event
+      ---
+      duration_ms: 97.442466
+      type: 'test'
+      ...
+    # Subtest: SQL same-priority no-op records cache but not event/outbox or new version
+    ok 75 - SQL same-priority no-op records cache but not event/outbox or new version
+      ---
+      duration_ms: 32.448087
+      type: 'test'
+      ...
+    # Subtest: SQL two concurrent priority updates cannot silently overwrite a version
+    ok 76 - SQL two concurrent priority updates cannot silently overwrite a version
+      ---
+      duration_ms: 55.21129
+      type: 'test'
+      ...
+    # Subtest: SQL priority cache denies a former operator who can still read the account
+    ok 77 - SQL priority cache denies a former operator who can still read the account
+      ---
+      duration_ms: 65.388803
+      type: 'test'
+      ...
+    # Subtest: SQL sibling account cannot insert a priority event into a known ticket
+    ok 78 - SQL sibling account cannot insert a priority event into a known ticket
+      ---
+      duration_ms: 18.157918
+      type: 'test'
+      ...
+    # Subtest: SQL priority event shape denies reason-less and extra-private payloads
+    ok 79 - SQL priority event shape denies reason-less and extra-private payloads
+      ---
+      duration_ms: 21.812456
+      type: 'test'
+      ...
+    # Subtest: SQL priority outbox forbids accidental internal reason propagation
+    ok 80 - SQL priority outbox forbids accidental internal reason propagation
+      ---
+      duration_ms: 20.152052
+      type: 'test'
+      ...
+    # Subtest: SQL terminal status blocks operator priority update independently of UI
+    ok 81 - SQL terminal status blocks operator priority update independently of UI
+      ---
+      duration_ms: 43.44492
+      type: 'test'
+      ...
+    # Subtest: SQL column grant and private trigger privileges remain least privilege
+    ok 82 - SQL column grant and private trigger privileges remain least privilege
+      ---
+      duration_ms: 1.029997
+      type: 'test'
+      ...
+    # Subtest: SQL claim persists assignee, private event and no outbound event
+    ok 83 - SQL claim persists assignee, private event and no outbound event
+      ---
+      duration_ms: 48.255654
+      type: 'test'
+      ...
+    # Subtest: SQL assigned ownership is invisible in requester timeline
+    ok 84 - SQL assigned ownership is invisible in requester timeline
+      ---
+      duration_ms: 48.463626
+      type: 'test'
+      ...
+    # Subtest: SQL release by owner removes assignment with a second event
+    ok 85 - SQL release by owner removes assignment with a second event
+      ---
+      duration_ms: 60.022344
+      type: 'test'
+      ...
+    # Subtest: SQL occupied claim and release by another agent are denied
+    ok 86 - SQL occupied claim and release by another agent are denied
+      ---
+      duration_ms: 48.656626
+      type: 'test'
+      ...
+    # Subtest: SQL administrator may release but not steal occupied ticket
+    ok 87 - SQL administrator may release but not steal occupied ticket
+      ---
+      duration_ms: 62.67644
+      type: 'test'
+      ...
+    # Subtest: SQL requester cannot bypass API to claim
+    ok 88 - SQL requester cannot bypass API to claim
+      ---
+      duration_ms: 20.371391
+      type: 'test'
+      ...
+    # Subtest: SQL M2M cannot bypass API to assign even its own ticket
+    ok 89 - SQL M2M cannot bypass API to assign even its own ticket
+      ---
+      duration_ms: 17.9802
+      type: 'test'
+      ...
+    # Subtest: SQL cross-account principal assignment target is refused
+    ok 90 - SQL cross-account principal assignment target is refused
+      ---
+      duration_ms: 21.440697
+      type: 'test'
+      ...
+    # Subtest: SQL assignment cannot commit without its private event
+    ok 91 - SQL assignment cannot commit without its private event
+      ---
+      duration_ms: 31.067283
+      type: 'test'
+      ...
+    # Subtest: SQL two agents racing a version yield one successful assignment
+    ok 92 - SQL two agents racing a version yield one successful assignment
+      ---
+      duration_ms: 55.08558
+      type: 'test'
+      ...
+    # Subtest: SQL identical concurrent claim returns a replay without another event
+    ok 93 - SQL identical concurrent claim returns a replay without another event
+      ---
+      duration_ms: 47.715914
+      type: 'test'
+      ...
+    # Subtest: SQL replay remains the old assignment snapshot after release
+    ok 94 - SQL replay remains the old assignment snapshot after release
+      ---
+      duration_ms: 73.455106
+      type: 'test'
+      ...
+    # Subtest: SQL no-op keeps version and writes no assignment event
+    ok 95 - SQL no-op keeps version and writes no assignment event
+      ---
+      duration_ms: 21.793035
+      type: 'test'
+      ...
+    # Subtest: SQL assignee whose grant is revoked cannot read or use assignment cache
+    ok 96 - SQL assignee whose grant is revoked cannot read or use assignment cache
+      ---
+      duration_ms: 65.56719
+      type: 'test'
+      ...
+    # Subtest: SQL terminal and combined status-assignment updates are refused
+    ok 97 - SQL terminal and combined status-assignment updates are refused
+      ---
+      duration_ms: 50.534727
+      type: 'test'
+      ...
+    # Subtest: SQL internal assignment cannot enter outbox
+    ok 98 - SQL internal assignment cannot enter outbox
+      ---
+      duration_ms: 16.92763
+      type: 'test'
+      ...
+    # Subtest: SQL assignment event requires exact shape and private visibility
+    ok 99 - SQL assignment event requires exact shape and private visibility
+      ---
+      duration_ms: 23.269313
+      type: 'test'
+      ...
+    # Subtest: SQL assignment grants remain narrow and trigger functions inaccessible
+    ok 100 - SQL assignment grants remain narrow and trigger functions inaccessible
+      ---
+      duration_ms: 1.063176
+      type: 'test'
+      ...
+    # Subtest: startup refuses extra table-level credential access
+    ok 101 - startup refuses extra table-level credential access
+      ---
+      duration_ms: 38.360856
+      type: 'test'
+      ...
+    # Subtest: startup refuses extra credential-column access without a table grant
+    ok 102 - startup refuses extra credential-column access without a table grant
+      ---
+      duration_ms: 36.163786
+      type: 'test'
+      ...
+    # Subtest: startup refuses extra update permission on ticket identity
+    ok 103 - startup refuses extra update permission on ticket identity
+      ---
+      duration_ms: 29.691857
+      type: 'test'
+      ...
+    # Subtest: startup refuses grant option while ordinary SELECT remains required
+    ok 104 - startup refuses grant option while ordinary SELECT remains required
+      ---
+      duration_ms: 30.045598
+      type: 'test'
+      ...
+    # Subtest: startup refuses disabled deferred creation invariant
+    ok 105 - startup refuses disabled deferred creation invariant
+      ---
+      duration_ms: 31.276677
+      type: 'test'
+      ...
+    # Subtest: startup refuses disabled deferred assignment invariant
+    ok 106 - startup refuses disabled deferred assignment invariant
+      ---
+      duration_ms: 30.498138
+      type: 'test'
+      ...
+    # Subtest: startup refuses an additional permissive policy
+    ok 107 - startup refuses an additional permissive policy
+      ---
+      duration_ms: 29.931938
+      type: 'test'
+      ...
+    # Subtest: startup refuses exposing the maintenance function to the HTTP role
+    ok 108 - startup refuses exposing the maintenance function to the HTTP role
+      ---
+      duration_ms: 31.207373
+      type: 'test'
+      ...
+    # Subtest: startup refuses a private helper search_path change
+    ok 109 - startup refuses a private helper search_path change
+      ---
+      duration_ms: 30.963126
+      type: 'test'
+      ...
+    # Subtest: startup refuses missing required public-conversation SELECT
+    ok 110 - startup refuses missing required public-conversation SELECT
+      ---
+      duration_ms: 26.443719
+      type: 'test'
+      ...
+    # Subtest: startup refuses app CREATE inside a private schema
+    ok 111 - startup refuses app CREATE inside a private schema
+      ---
+      duration_ms: 29.166028
+      type: 'test'
+      ...
+    # Subtest: SQL mine filter returns the assigned ticket before pagination
+    ok 112 - SQL mine filter returns the assigned ticket before pagination
+      ---
+      duration_ms: 52.800318
+      type: 'test'
+      ...
+    # Subtest: SQL unassigned filter omits an assigned ticket visible without the filter
+    ok 113 - SQL unassigned filter omits an assigned ticket visible without the filter
+      ---
+      duration_ms: 249.164444
+      type: 'test'
+      ...
+    # Subtest: SQL release returns the ticket to the unassigned view
+    ok 114 - SQL release returns the ticket to the unassigned view
+      ---
+      duration_ms: 174.541785
+      type: 'test'
+      ...
+    # Subtest: SQL assignment filter observes a live operator downgrade
+    ok 115 - SQL assignment filter observes a live operator downgrade
+      ---
+      duration_ms: 46.150803
+      type: 'test'
+      ...
+    # Subtest: SQL requester cannot use operator assignment selection
+    ok 116 - SQL requester cannot use operator assignment selection
+      ---
+      duration_ms: 45.217953
+      type: 'test'
+      ...
+    # Subtest: SQL a different workspace sees no result for a known assigned ticket
+    ok 117 - SQL a different workspace sees no result for a known assigned ticket
+      ---
+      duration_ms: 40.034438
+      type: 'test'
+      ...
+    # Subtest: v015 membership without a capability revision has no implicit scope
+    ok 118 - v015 membership without a capability revision has no implicit scope
+      ---
+      duration_ms: 26.455788
+      type: 'test'
+      ...
+    # Subtest: v015 explicit read-only operator can read but not mutate or create
+    ok 119 - v015 explicit read-only operator can read but not mutate or create
+      ---
+      duration_ms: 18.810006
+      type: 'test'
+      ...
+    # Subtest: v015 stale application scopes cannot bypass the current DB capability ceiling
+    ok 120 - v015 stale application scopes cannot bypass the current DB capability ceiling
+      ---
+      duration_ms: 11.038837
+      type: 'test'
+      ...
+    # Subtest: v015 write-only notes yield an author receipt and replay without collection read
+    ok 121 - v015 write-only notes yield an author receipt and replay without collection read
+      ---
+      duration_ms: 36.378479
+      type: 'test'
+      ...
+    # Subtest: v015 a note receipt is not shared with another write-only operator
+    ok 122 - v015 a note receipt is not shared with another write-only operator
+      ---
+      duration_ms: 20.805613
+      type: 'test'
+      ...
+    # Subtest: v015 revoking note write denies receipt even when collection read remains
+    ok 123 - v015 revoking note write denies receipt even when collection read remains
+      ---
+      duration_ms: 26.481547
+      type: 'test'
+      ...
+    # Subtest: v015 revoking note collection read preserves write receipt for author
+    ok 124 - v015 revoking note collection read preserves write receipt for author
+      ---
+      duration_ms: 25.419532
+      type: 'test'
+      ...
+    # Subtest: v015 empty scope revision denies previous ticket access without changing the ticket
+    ok 125 - v015 empty scope revision denies previous ticket access without changing the ticket
+      ---
+      duration_ms: 14.370169
+      type: 'test'
+      ...
+    # Subtest: v015 workspace administrator still requires explicitly granted capabilities
+    ok 126 - v015 workspace administrator still requires explicitly granted capabilities
+      ---
+      duration_ms: 7.96416
+      type: 'test'
+      ...
+    # Subtest: v015 HTTP login cannot read, append or update the scope history
+    ok 127 - v015 HTTP login cannot read, append or update the scope history
+      ---
+      duration_ms: 10.810453
+      type: 'test'
+      ...
+    # Subtest: v015 scope getter and guard are not callable by HTTP or maintenance roles
+    ok 128 - v015 scope getter and guard are not callable by HTTP or maintenance roles
+      ---
+      duration_ms: 1.825091
+      type: 'test'
+      ...
+    # Subtest: v015 stale expected revision fails without altering existing audit history
+    ok 129 - v015 stale expected revision fails without altering existing audit history
+      ---
+      duration_ms: 13.772712
+      type: 'test'
+      ...
+    # Subtest: v015 concurrent provisioning of the same revision has exactly one winner
+    ok 130 - v015 concurrent provisioning of the same revision has exactly one winner
+      ---
+      duration_ms: 14.136157
+      type: 'test'
+      ...
+    # Subtest: v015 history stores the real SQL session identity, reason and correlation
+    ok 131 - v015 history stores the real SQL session identity, reason and correlation
+      ---
+      duration_ms: 3.534778
+      type: 'test'
+      ...
+    # Subtest: v015 existing capability revisions are append-only even for ordinary owner DML
+    ok 132 - v015 existing capability revisions are append-only even for ordinary owner DML
+      ---
+      duration_ms: 17.36007
+      type: 'test'
+      ...
+    # Subtest: v015 malformed capabilities never produce an audit revision
+    ok 133 - v015 malformed capabilities never produce an audit revision
+      ---
+      duration_ms: 44.626524
+      type: 'test'
+      ...
+    # Subtest: v015 capability revisions do not grant access to another workspace
+    ok 134 - v015 capability revisions do not grant access to another workspace
+      ---
+      duration_ms: 10.374209
+      type: 'test'
+      ...
+    # Subtest: v015 suspended membership can be revoked without restoring access
+    ok 135 - v015 suspended membership can be revoked without restoring access
+      ---
+      duration_ms: 31.031138
+      type: 'test'
+      ...
+    # Subtest: v015 an integration principal cannot receive a human scope revision
+    ok 136 - v015 an integration principal cannot receive a human scope revision
+      ---
+      duration_ms: 1.612151
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted message event rejects and preserves all prior rows
+    ok 137 - SQL016 omitted message event rejects and preserves all prior rows
+      ---
+      duration_ms: 49.468165
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted note event rejects and preserves all prior rows
+    ok 138 - SQL016 omitted note event rejects and preserves all prior rows
+      ---
+      duration_ms: 25.023597
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted status event rejects and preserves all prior rows
+    ok 139 - SQL016 omitted status event rejects and preserves all prior rows
+      ---
+      duration_ms: 21.771184
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted priority event rejects and preserves all prior rows
+    ok 140 - SQL016 omitted priority event rejects and preserves all prior rows
+      ---
+      duration_ms: 21.707628
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted assignment event rejects and preserves all prior rows
+    ok 141 - SQL016 omitted assignment event rejects and preserves all prior rows
+      ---
+      duration_ms: 25.969177
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted message outbox rejects even with a correct event
+    ok 142 - SQL016 omitted message outbox rejects even with a correct event
+      ---
+      duration_ms: 22.017903
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted status outbox rejects even with a correct event
+    ok 143 - SQL016 omitted status outbox rejects even with a correct event
+      ---
+      duration_ms: 21.603131
+      type: 'test'
+      ...
+    # Subtest: SQL016 omitted priority outbox rejects even with a correct event
+    ok 144 - SQL016 omitted priority outbox rejects even with a correct event
+      ---
+      duration_ms: 20.502548
+      type: 'test'
+      ...
+    # Subtest: SQL016 creation cannot commit if the application silently omits its event
+    ok 145 - SQL016 creation cannot commit if the application silently omits its event
+      ---
+      duration_ms: 2.402729
+      type: 'test'
+      ...
+    # Subtest: SQL016 direct status change fails at COMMIT without a corresponding new event/outbox
+    ok 146 - SQL016 direct status change fails at COMMIT without a corresponding new event/outbox
+      ---
+      duration_ms: 27.829351
+      type: 'test'
+      ...
+    # Subtest: SQL016 direct note insert fails at COMMIT without its private functional event
+    ok 147 - SQL016 direct note insert fails at COMMIT without its private functional event
+      ---
+      duration_ms: 19.581966
+      type: 'test'
+      ...
+    # Subtest: SQL016 message with no parent-version advance cannot commit
+    ok 148 - SQL016 message with no parent-version advance cannot commit
+      ---
+      duration_ms: 19.723038
+      type: 'test'
+      ...
+    # Subtest: SQL016 an empty version bump cannot commit without a newly inserted public message
+    ok 149 - SQL016 an empty version bump cannot commit without a newly inserted public message
+      ---
+      duration_ms: 26.279143
+      type: 'test'
+      ...
+    # Subtest: SQL016 an event from an earlier committed write cannot stand in for a new message event
+    ok 150 - SQL016 an event from an earlier committed write cannot stand in for a new message event
+      ---
+      duration_ms: 46.995913
+      type: 'test'
+      ...
+    # Subtest: SQL016 event actor corruption rolls back the new public message
+    ok 151 - SQL016 event actor corruption rolls back the new public message
+      ---
+      duration_ms: 19.827675
+      type: 'test'
+      ...
+    # Subtest: SQL016 event data corruption rolls back the new public message
+    ok 152 - SQL016 event data corruption rolls back the new public message
+      ---
+      duration_ms: 20.533214
+      type: 'test'
+      ...
+    # Subtest: SQL016 event duplicate corruption rolls back the new public message
+    ok 153 - SQL016 event duplicate corruption rolls back the new public message
+      ---
+      duration_ms: 19.756268
+      type: 'test'
+      ...
+    # Subtest: SQL016 outbox version corruption is not a valid counterpart
+    ok 154 - SQL016 outbox version corruption is not a valid counterpart
+      ---
+      duration_ms: 18.968064
+      type: 'test'
+      ...
+    # Subtest: SQL016 outbox extra corruption is not a valid counterpart
+    ok 155 - SQL016 outbox extra corruption is not a valid counterpart
+      ---
+      duration_ms: 18.809406
+      type: 'test'
+      ...
+    # Subtest: SQL016 outbox duplicate corruption is not a valid counterpart
+    ok 156 - SQL016 outbox duplicate corruption is not a valid counterpart
+      ---
+      duration_ms: 18.688294
+      type: 'test'
+      ...
+    # Subtest: SQL016 outbox time corruption is not a valid counterpart
+    ok 157 - SQL016 outbox time corruption is not a valid counterpart
+      ---
+      duration_ms: 18.926842
+      type: 'test'
+      ...
+    # Subtest: SQL016 private note cannot generate an external outbox record
+    ok 158 - SQL016 private note cannot generate an external outbox record
+      ---
+      duration_ms: 20.861197
+      type: 'test'
+      ...
+    # Subtest: SQL016 app cannot read or modify private effect receipts
+    ok 159 - SQL016 app cannot read or modify private effect receipts
+      ---
+      duration_ms: 5.733229
+      type: 'test'
+      ...
+    # Subtest: SQL016 client and maintenance roles cannot invoke receipt functions
+    ok 160 - SQL016 client and maintenance roles cannot invoke receipt functions
+      ---
+      duration_ms: 2.09753
+      type: 'test'
+      ...
+    # Subtest: SQL016 a committed message has one complete receipt joined to one matching event/outbox
+    ok 161 - SQL016 a committed message has one complete receipt joined to one matching event/outbox
+      ---
+      duration_ms: 68.499344
+      type: 'test'
+      ...
+    # Subtest: SQL016 no-op and idempotent replay add no receipt
+    ok 162 - SQL016 no-op and idempotent replay add no receipt
+      ---
+      duration_ms: 56.099744
+      type: 'test'
+      ...
+    # Subtest: SQL016 multiple application commands in one transaction bind distinct receipts and versions
+    ok 163 - SQL016 multiple application commands in one transaction bind distinct receipts and versions
+      ---
+      duration_ms: 78.262615
+      type: 'test'
+      ...
+    # Subtest: SQL016 savepoint rollback removes its pending receipt before a valid note is committed
+    ok 164 - SQL016 savepoint rollback removes its pending receipt before a valid note is committed
+      ---
+      duration_ms: 31.555024
+      type: 'test'
+      ...
+    # Subtest: SQL016 disabled completion trigger is refused by runtime readiness
+    ok 165 - SQL016 disabled completion trigger is refused by runtime readiness
+      ---
+      duration_ms: 26.746595
+      type: 'test'
+      ...
+    # Subtest: SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation
+    ok 166 - SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation
+      ---
+      duration_ms: 22.861711
+      type: 'test'
+      ...
+    # Subtest: SQL017 keyset list reaches all tickets within one millisecond
+    ok 167 - SQL017 keyset list reaches all tickets within one millisecond
+      ---
+      duration_ms: 296.26964
+      type: 'test'
+      ...
+    # Subtest: SQL017 messages pagination keeps every sub-millisecond row with the real app role
+    ok 168 - SQL017 messages pagination keeps every sub-millisecond row with the real app role
+      ---
+      duration_ms: 313.857141
+      type: 'test'
+      ...
+    # Subtest: SQL017 notes pagination keeps every sub-millisecond row with the real app role
+    ok 169 - SQL017 notes pagination keeps every sub-millisecond row with the real app role
+      ---
+      duration_ms: 191.71293
+      type: 'test'
+      ...
+    # Subtest: SQL017 timeline pagination keeps every sub-millisecond row with the real app role
+    ok 170 - SQL017 timeline pagination keeps every sub-millisecond row with the real app role
+      ---
+      duration_ms: 331.762469
+      type: 'test'
+      ...
+    # Subtest: SQL017 equal timestamps with three and six input digits use UUID tie-break without dropping rows
+    ok 171 - SQL017 equal timestamps with three and six input digits use UUID tie-break without dropping rows
+      ---
+      duration_ms: 206.607898
+      type: 'test'
+      ...
+    # Subtest: SQL017 projection remains canonical UTC even on a connection with another TimeZone
+    ok 172 - SQL017 projection remains canonical UTC even on a connection with another TimeZone
+      ---
+      duration_ms: 28.276412
+      type: 'test'
+      ...
+    # Subtest: SQL017 replay preserves the exact original creation instant after a real database roundtrip
+    ok 173 - SQL017 replay preserves the exact original creation instant after a real database roundtrip
+      ---
+      duration_ms: 23.701532
+      type: 'test'
+      ...
+    # Subtest: v018 note-only human sees ticket in SELECT but not through SELECT FOR UPDATE
+    ok 174 - v018 note-only human sees ticket in SELECT but not through SELECT FOR UPDATE
+      ---
+      duration_ms: 26.442399
+      type: 'test'
+      ...
+    # Subtest: v018 private parent lock coexists with an existing foreign-key KEY SHARE lock
+    ok 175 - v018 private parent lock coexists with an existing foreign-key KEY SHARE lock
+      ---
+      duration_ms: 16.449601
+      type: 'test'
+      ...
+    # Subtest: v018 two note-only operators create distinct receipts concurrently without a public outbox
+    ok 176 - v018 two note-only operators create distinct receipts concurrently without a public outbox
+      ---
+      duration_ms: 41.175733
+      type: 'test'
+      ...
+    # Subtest: v018 same-author concurrent note retries preserve one receipt and one effect
+    ok 177 - v018 same-author concurrent note retries preserve one receipt and one effect
+      ---
+      duration_ms: 49.446643
+      type: 'test'
+      ...
+    # Subtest: v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of every new effect
+    ok 178 - v018 suppressed idempotency INSERT causes a safe pre-COMMIT rollback of every new effect
+      ---
+      duration_ms: 45.839596
+      type: 'test'
+      ...
+    # Subtest: v018 valid zero-row optimistic UPDATE remains conflict and leaves state intact
+    ok 179 - v018 valid zero-row optimistic UPDATE remains conflict and leaves state intact
+      ---
+      duration_ms: 6.694662
+      type: 'test'
+      ...
+    # Subtest: v018 replacement conversation hook retains private execution and empty search_path
+    ok 180 - v018 replacement conversation hook retains private execution and empty search_path
+      ---
+      duration_ms: 1.215115
+      type: 'test'
+      ...
+    # Subtest: SQL019 locked coverage preserves a future microsecond start rather than granting early eligibility
+    ok 181 - SQL019 locked coverage preserves a future microsecond start rather than granting early eligibility
+      ---
+      duration_ms: 16.821891
+      type: 'test'
+      ...
+    # Subtest: SQL019 expiry after the clock within the same millisecond remains eligible
+    ok 182 - SQL019 expiry after the clock within the same millisecond remains eligible
+      ---
+      duration_ms: 8.476168
+      type: 'test'
+      ...
+    # Subtest: SQL019 a single-microsecond interval has inclusive start and exclusive end after JSONB transport
+    ok 183 - SQL019 a single-microsecond interval has inclusive start and exclusive end after JSONB transport
+      ---
+      duration_ms: 10.167158
+      type: 'test'
+      ...
+    # Subtest: SQL019 non-UTC PostgreSQL session output is compared without truncation or source mutation
+    ok 184 - SQL019 non-UTC PostgreSQL session output is compared without truncation or source mutation
+      ---
+      duration_ms: 14.787125
+      type: 'test'
+      ...
+    # Subtest: SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result
+    ok 185 - SQL019 unsupported infinity is a controlled configuration error, not an empty coverage result
+      ---
+      duration_ms: 6.810818
+      type: 'test'
+      ...
+    # Subtest: SQL M1-R2 private database probe passes without business writes and restores transaction settings
+    ok 186 - SQL M1-R2 private database probe passes without business writes and restores transaction settings
+      ---
+      duration_ms: 21.398013
+      type: 'test'
+      ...
+    # Subtest: SQL M1-R2 private probe refuses an administrative login and still rolls back
+    ok 187 - SQL M1-R2 private probe refuses an administrative login and still rolls back
+      ---
+      duration_ms: 2.773966
+      type: 'test'
+      ...
+    # Subtest: SQL M1-R2 private probe detects a real helper grant regression without repairing it
+    ok 188 - SQL M1-R2 private probe detects a real helper grant regression without repairing it
+      ---
+      duration_ms: 14.900846
+      type: 'test'
+      ...
+    # Subtest: M1-R4 terminated owned backend cannot commit a message and next request gets a fresh client
+    ok 189 - M1-R4 terminated owned backend cannot commit a message and next request gets a fresh client
+      ---
+      duration_ms: 26.219393
+      type: 'test'
+      ...
+    # Subtest: M1-R4 saved callback client cannot inspect the next account on a reused connection
+    ok 190 - M1-R4 saved callback client cannot inspect the next account on a reused connection
+      ---
+      duration_ms: 8.319634
+      type: 'test'
+      ...
+    # Subtest: M1-R4 real pg client retains exactly one transaction listener across repeated control queries
+    ok 191 - M1-R4 real pg client retains exactly one transaction listener across repeated control queries
+      ---
+      duration_ms: 23.61996
+      type: 'test'
+      ...
+# {"component":"helpdesk.database","event":"connection_release_failed","commit_state":"confirmed"}
+    # Subtest: M1-R6 confirmed ticket survives throwing release and same-key replay does not duplicate effects
+    ok 192 - M1-R6 confirmed ticket survives throwing release and same-key replay does not duplicate effects
+      ---
+      duration_ms: 42.810638
+      type: 'test'
+      ...
+# {"component":"helpdesk.database","event":"connection_release_failed","commit_state":"unknown"}
+    # Subtest: M1-R6 lost acknowledgement plus throwing release keeps unknown outcome and recovers original receipt
+    ok 193 - M1-R6 lost acknowledgement plus throwing release keeps unknown outcome and recovers original receipt
+      ---
+      duration_ms: 41.19378
+      type: 'test'
+      ...
+    # Subtest: M1-R17 HTTP acceptance uses restricted PostgreSQL auth and correlates five committed effects; full rerun adds nothing
+    ok 194 - M1-R17 HTTP acceptance uses restricted PostgreSQL auth and correlates five committed effects; full rerun adds nothing
+      ---
+      duration_ms: 1659.573418
+      type: 'test'
+      ...
+    # Subtest: M1-R17 lost HTTP response after create recovers from PostgreSQL receipts without a second effect
+    ok 195 - M1-R17 lost HTTP response after create recovers from PostgreSQL receipts without a second effect
+      ---
+      duration_ms: 1102.216892
+      type: 'test'
+      ...
+    # Subtest: M1-R17 lost HTTP response after message recovers from PostgreSQL receipts without a second effect
+    ok 196 - M1-R17 lost HTTP response after message recovers from PostgreSQL receipts without a second effect
+      ---
+      duration_ms: 1162.076093
+      type: 'test'
+      ...
+    # Subtest: M1-R17 lost HTTP response after priority recovers from PostgreSQL receipts without a second effect
+    ok 197 - M1-R17 lost HTTP response after priority recovers from PostgreSQL receipts without a second effect
+      ---
+      duration_ms: 1238.368188
+      type: 'test'
+      ...
+    # Subtest: M1-R17 lost HTTP response after machine:create recovers from PostgreSQL receipts without a second effect
+    ok 198 - M1-R17 lost HTTP response after machine:create recovers from PostgreSQL receipts without a second effect
+      ---
+      duration_ms: 1399.543322
+      type: 'test'
+      ...
+    # Subtest: M1-R17 lost HTTP response after machine:message recovers from PostgreSQL receipts without a second effect
+    ok 199 - M1-R17 lost HTTP response after machine:message recovers from PostgreSQL receipts without a second effect
+      ---
+      duration_ms: 1400.035321
+      type: 'test'
+      ...
+    # Subtest: SQL first administrator preserves the exact read-only ceiling, operator audit and idempotent receipt
+    ok 200 - SQL first administrator preserves the exact read-only ceiling, operator audit and idempotent receipt
+      ---
+      duration_ms: 14.027577
+      type: 'test'
+      ...
+    # Subtest: SQL application login cannot bootstrap even with a valid subject UUID and complete plan
+    ok 201 - SQL application login cannot bootstrap even with a valid subject UUID and complete plan
+      ---
+      duration_ms: 4.401139
+      type: 'test'
+      ...
+    # Subtest: SQL changed Auth binding, stale scope revision and inactive membership deny without partial promotion
+    ok 202 - SQL changed Auth binding, stale scope revision and inactive membership deny without partial promotion
+      ---
+      duration_ms: 14.220476
+      type: 'test'
+      ...
+    # Subtest: SQL two competing private bootstrap requests have exactly one winner
+    ok 203 - SQL two competing private bootstrap requests have exactly one winner
+      ---
+      duration_ms: 12.100443
+      type: 'test'
+      ...
+    # Subtest: SQL unrelated audit names do not collide through underscore wildcards
+    ok 204 - SQL unrelated audit names do not collide through underscore wildcards
+      ---
+      duration_ms: 9.634429
+      type: 'test'
+      ...
+    # Subtest: SQL revoked administrator and conflicting request payload cannot repeat or renew bootstrap
+    ok 205 - SQL revoked administrator and conflicting request payload cannot repeat or renew bootstrap
+      ---
+      duration_ms: 12.839342
+      type: 'test'
+      ...
+    # Subtest: SQL atomicity rolls back the role and permission revision when administrative audit fails
+    ok 206 - SQL atomicity rolls back the role and permission revision when administrative audit fails
+      ---
+      duration_ms: 6.614043
+      type: 'test'
+      ...
+    # Subtest: SQL quoting keeps apostrophes, backslashes and DO delimiter text as audited prose
+    ok 207 - SQL quoting keeps apostrophes, backslashes and DO delimiter text as audited prose
+      ---
+      duration_ms: 5.079608
+      type: 'test'
+      ...
+    # Subtest: real restricted SQL discovers membership/grant-only workspaces and excludes unrelated neighbors
+    ok 208 - real restricted SQL discovers membership/grant-only workspaces and excludes unrelated neighbors
+      ---
+      duration_ms: 5.763055
+      type: 'test'
+      ...
+    # Subtest: real discovery loses revoked links at next query with no cached workspace permission
+    ok 209 - real discovery loses revoked links at next query with no cached workspace permission
+      ---
+      duration_ms: 7.246873
+      type: 'test'
+      ...
+    # Subtest: real discovery rejects inactive principal and never infers access for unknown identity
+    ok 210 - real discovery rejects inactive principal and never infers access for unknown identity
+      ---
+      duration_ms: 4.672547
+      type: 'test'
+      ...
+    # Subtest: workspace discovery is not executable by browser roles or PUBLIC
+    ok 211 - workspace discovery is not executable by browser roles or PUBLIC
+      ---
+      duration_ms: 5.593451
+      type: 'test'
+      ...
+    # Subtest: private discovery returns at most one overflow sentinel without silently truncating the API list
+    ok 212 - private discovery returns at most one overflow sentinel without silently truncating the API list
+      ---
+      duration_ms: 35.797732
+      type: 'test'
+      ...
+    # Subtest: M05 atomic upgrade and restricted service identities on owned PG17
+        # Subtest: qualified legacy authentication requires closed business and all CG modules on real PG17
+        ok 1 - qualified legacy authentication requires closed business and all CG modules on real PG17
+          ---
+          duration_ms: 27.129633
+          type: 'test'
+          ...
+        # Subtest: legacy authentication refuses live privilege drift and retains all data
+        ok 2 - legacy authentication refuses live privilege drift and retains all data
+          ---
+          duration_ms: 18.09206
+          type: 'test'
+          ...
+        # Subtest: wrong previous schema is refused without effects
+        ok 3 - wrong previous schema is refused without effects
+          ---
+          duration_ms: 6.040322
+          type: 'test'
+          ...
+        # Subtest: partial table installation is refused and rolled back
+        ok 4 - partial table installation is refused and rolled back
+          ---
+          duration_ms: 9.065535
+          type: 'test'
+          ...
+        # Subtest: partial helper installation is refused without adopting it
+        ok 5 - partial helper installation is refused without adopting it
+          ---
+          duration_ms: 7.154544
+          type: 'test'
+          ...
+        # Subtest: existing inherited service role is refused
+        ok 6 - existing inherited service role is refused
+          ---
+          duration_ms: 17.973282
+          type: 'test'
+          ...
+        # Subtest: existing column-level worker access is refused
+        ok 7 - existing column-level worker access is refused
+          ---
+          duration_ms: 13.221656
+          type: 'test'
+          ...
+        # Subtest: injected mid-install failure rolls back every module and the marker
+        ok 8 - injected mid-install failure rolls back every module and the marker
+          ---
+          duration_ms: 50.231718
+          type: 'test'
+          ...
+        # Subtest: late excess EXECUTE is rejected before marker and rolls every module back
+        ok 9 - late excess EXECUTE is rejected before marker and rolls every module back
+          ---
+          duration_ms: 78.011929
+          type: 'test'
+          ...
+        # Subtest: successful upgrade preserves old rows and does not seed module records
+        ok 10 - successful upgrade preserves old rows and does not seed module records
+          ---
+          duration_ms: 149.181772
+          type: 'test'
+          ...
+        # Subtest: safe publisher LOGIN and credential survive promotion with only its boundary
+        ok 11 - safe publisher LOGIN and credential survive promotion with only its boundary
+          ---
+          duration_ms: 11.360161
+          type: 'test'
+          ...
+        # Subtest: reapplication is refused by marker without modifying rows
+        ok 12 - reapplication is refused by marker without modifying rows
+          ---
+          duration_ms: 7.043849
+          type: 'test'
+          ...
+        # Subtest: normal request identity cannot install the migration
+        ok 13 - normal request identity cannot install the migration
+          ---
+          duration_ms: 10.733419
+          type: 'test'
+          ...
+        # Subtest: reserved worker has a real restricted session with zero domain authority
+        ok 14 - reserved worker has a real restricted session with zero domain authority
+          ---
+          duration_ms: 35.708367
+          type: 'test'
+          ...
+        # Subtest: readiness rejects worker table/helper/schema rights and membership drift
+        ok 15 - readiness rejects worker table/helper/schema rights and membership drift
+          ---
+          duration_ms: 90.81687
+          type: 'test'
+          ...
+        # Subtest: operator default EXECUTE cannot expand publisher authority during installation
+        ok 16 - operator default EXECUTE cannot expand publisher authority during installation
+          ---
+          duration_ms: 132.781823
+          type: 'test'
+          ...
+        1..16
+    ok 213 - M05 atomic upgrade and restricted service identities on owned PG17
+      ---
+      duration_ms: 1025.166822
+      type: 'test'
+      ...
+    # Subtest: HD-P04 real PostgreSQL single-connection mixed workload measures queue, replay, isolation and complete cursor search
+    ok 214 - HD-P04 real PostgreSQL single-connection mixed workload measures queue, replay, isolation and complete cursor search
+      ---
+      duration_ms: 743.432411
+      type: 'test'
+      ...
+    # Subtest: HD-P04 real distributed quota bursts are atomic, preserve neighbor semantics and produce only source-bound sanitized evidence
+    ok 215 - HD-P04 real distributed quota bursts are atomic, preserve neighbor semantics and produce only source-bound sanitized evidence
+      ---
+      duration_ms: 14256.575191
+      type: 'test'
+      ...
+    # Subtest: CG03d candidate resource policies against real restricted PostgreSQL
+        # Subtest: manager cannot SELECT owned/account work C directly
+        ok 1 - manager cannot SELECT owned/account work C directly
+          ---
+          duration_ms: 4.569743
+          type: 'test'
+          ...
+        # Subtest: requester cannot SELECT owned/account work C directly
+        ok 2 - requester cannot SELECT owned/account work C directly
+          ---
+          duration_ms: 3.073947
+          type: 'test'
+          ...
+        # Subtest: admin cannot SELECT owned/account work C directly
+        ok 3 - admin cannot SELECT owned/account work C directly
+          ---
+          duration_ms: 3.0761
+          type: 'test'
+          ...
+        # Subtest: complete A+B visible, partial A+C entirely denied
+        ok 4 - complete A+B visible, partial A+C entirely denied
+          ---
+          duration_ms: 7.192532
+          type: 'test'
+          ...
+        # Subtest: same source ID in another tenant remains inaccessible
+        ok 5 - same source ID in another tenant remains inaccessible
+          ---
+          duration_ms: 2.944382
+          type: 'test'
+          ...
+        # Subtest: unmarked protected ticket is not a global-access fallback
+        ok 6 - unmarked protected ticket is not a global-access fallback
+          ---
+          duration_ms: 3.248158
+          type: 'test'
+          ...
+        # Subtest: existing unprotected product and snapshots survive candidate installation
+        ok 7 - existing unprotected product and snapshots survive candidate installation
+          ---
+          duration_ms: 3.660428
+          type: 'test'
+          ...
+        # Subtest: ACL is applied before aggregate and LIMIT, with source zeroes preserved
+        ok 8 - ACL is applied before aggregate and LIMIT, with source zeroes preserved
+          ---
+          duration_ms: 48.061799
+          type: 'test'
+          ...
+        # Subtest: public messages and private notes of C cannot bypass the parent ACL
+        ok 9 - public messages and private notes of C cannot bypass the parent ACL
+          ---
+          duration_ms: 12.274064
+          type: 'test'
+          ...
+        # Subtest: idempotency helper cannot disclose the cached C receipt
+        ok 10 - idempotency helper cannot disclose the cached C receipt
+          ---
+          duration_ms: 3.803893
+          type: 'test'
+          ...
+        # Subtest: application GET also denies C, and authorized A still works
+        ok 11 - application GET also denies C, and authorized A still works
+          ---
+          duration_ms: 6.655355
+          type: 'test'
+          ...
+        # Subtest: request role cannot alter or read the private source-grant tables
+        ok 12 - request role cannot alter or read the private source-grant tables
+          ---
+          duration_ms: 5.762854
+          type: 'test'
+          ...
+        # Subtest: all ten promoted CG tables FORCE RLS and helpers deny PUBLIC execute
+        ok 13 - all ten promoted CG tables FORCE RLS and helpers deny PUBLIC execute
+          ---
+          duration_ms: 2.190629
+          type: 'test'
+          ...
+        # Subtest: missing/expired/unpublished grant never becomes all-resource permission
+        ok 14 - missing/expired/unpublished grant never becomes all-resource permission
+          ---
+          duration_ms: 11.406411
+          type: 'test'
+          ...
+        # Subtest: revoked binding remains restrictive rather than reverting to legacy
+        ok 15 - revoked binding remains restrictive rather than reverting to legacy
+          ---
+          duration_ms: 7.032412
+          type: 'test'
+          ...
+        # Subtest: direct mutation of C changes no rows and note INSERT cannot bypass it
+        ok 16 - direct mutation of C changes no rows and note INSERT cannot bypass it
+          ---
+          duration_ms: 6.568796
+          type: 'test'
+          ...
+        # Subtest: authorized notes-only writer keeps its own receipt but not the notes collection
+        ok 17 - authorized notes-only writer keeps its own receipt but not the notes collection
+          ---
+          duration_ms: 32.204355
+          type: 'test'
+          ...
+        # Subtest: source IDs preserve leading zeroes: 0001 is granted but 1 is denied
+        ok 18 - source IDs preserve leading zeroes: 0001 is granted but 1 is denied
+          ---
+          duration_ms: 6.65885
+          type: 'test'
+          ...
+        # Subtest: the old generic create command cannot bypass required resource metadata
+        ok 19 - the old generic create command cannot bypass required resource metadata
+          ---
+          duration_ms: 4.780389
+          type: 'test'
+          ...
+        # Subtest: current resource read grant cannot substitute for a revoked resource write grant
+        ok 20 - current resource read grant cannot substitute for a revoked resource write grant
+          ---
+          duration_ms: 12.377048
+          type: 'test'
+          ...
+        # Subtest: inactive or undeletable connection cannot downgrade protected tickets into legacy
+        ok 21 - inactive or undeletable connection cannot downgrade protected tickets into legacy
+          ---
+          duration_ms: 15.340649
+          type: 'test'
+          ...
+        # Subtest: partial staging cannot be sealed or become visible
+        ok 22 - partial staging cannot be sealed or become visible
+          ---
+          duration_ms: 8.018182
+          type: 'test'
+          ...
+        # Subtest: resource bindings reject cross-account and cross-product references
+        ok 23 - resource bindings reject cross-account and cross-product references
+          ---
+          duration_ms: 14.960588
+          type: 'test'
+          ...
+        # Subtest: source child edit invalidates the entire grant snapshot
+        ok 24 - source child edit invalidates the entire grant snapshot
+          ---
+          duration_ms: 8.380476
+          type: 'test'
+          ...
+        # Subtest: published ticket references are immutable and cannot lose C silently
+        ok 25 - published ticket references are immutable and cannot lose C silently
+          ---
+          duration_ms: 6.240553
+          type: 'test'
+          ...
+        # Subtest: an in-flight authorized read serializes against a local grant revocation
+        ok 26 - an in-flight authorized read serializes against a local grant revocation
+          ---
+          duration_ms: 222.52118
+          type: 'test'
+          ...
+        1..26
+    ok 216 - CG03d candidate resource policies against real restricted PostgreSQL
+      ---
+      duration_ms: 752.575308
+      type: 'test'
+      ...
+    # Subtest: CG03e database observations bind the resource lease to the actual ticket transaction
+        # Subtest: matching lease and published observation allow the exact ticket on the same transaction
+        ok 1 - matching lease and published observation allow the exact ticket on the same transaction
+          ---
+          duration_ms: 15.653419
+          type: 'test'
+          ...
+        # Subtest: equivalent resource order matches the exact multi-resource ticket
+        ok 2 - equivalent resource order matches the exact multi-resource ticket
+          ---
+          duration_ms: 10.887141
+          type: 'test'
+          ...
+        # Subtest: a lease for A cannot admit an A+B ticket even with full underlying coverage
+        ok 3 - a lease for A cannot admit an A+B ticket even with full underlying coverage
+          ---
+          duration_ms: 6.796256
+          type: 'test'
+          ...
+        # Subtest: a local write lease without persisted observation is denied
+        ok 4 - a local write lease without persisted observation is denied
+          ---
+          duration_ms: 8.067165
+          type: 'test'
+          ...
+        # Subtest: mismatched access revision stops before business SQL
+        ok 5 - mismatched access revision stops before business SQL
+          ---
+          duration_ms: 7.300905
+          type: 'test'
+          ...
+        # Subtest: mismatched binding revision stops before business SQL
+        ok 6 - mismatched binding revision stops before business SQL
+          ---
+          duration_ms: 6.32628
+          type: 'test'
+          ...
+        # Subtest: mismatched manifest stops before business SQL
+        ok 7 - mismatched manifest stops before business SQL
+          ---
+          duration_ms: 5.092658
+          type: 'test'
+          ...
+        # Subtest: one microsecond difference in the persisted observation is not rounded away
+        ok 8 - one microsecond difference in the persisted observation is not rounded away
+          ---
+          duration_ms: 4.585496
+          type: 'test'
+          ...
+        # Subtest: a new local grant revision invalidates older provenance despite unchanged resources
+        ok 9 - a new local grant revision invalidates older provenance despite unchanged resources
+          ---
+          duration_ms: 9.988831
+          type: 'test'
+          ...
+        # Subtest: same grant number with altered source metadata is not the recorded observation
+        ok 10 - same grant number with altered source metadata is not the recorded observation
+          ---
+          duration_ms: 7.539604
+          type: 'test'
+          ...
+        # Subtest: source change while awaiting a pool connection is detected by the SQL store
+        ok 11 - source change while awaiting a pool connection is detected by the SQL store
+          ---
+          duration_ms: 4.590223
+          type: 'test'
+          ...
+        # Subtest: observation table is private and its history cannot be rewritten
+        ok 12 - observation table is private and its history cannot be rewritten
+          ---
+          duration_ms: 9.780719
+          type: 'test'
+          ...
+        # Subtest: scope helper returns no metadata for C or an unsupported operation
+        ok 13 - scope helper returns no metadata for C or an unsupported operation
+          ---
+          duration_ms: 5.08018
+          type: 'test'
+          ...
+        # Subtest: a provenance insert with wrong source metadata is refused, not silently approved
+        ok 14 - a provenance insert with wrong source metadata is refused, not silently approved
+          ---
+          duration_ms: 2.935749
+          type: 'test'
+          ...
+        # Subtest: database locks prevent observation invalidation until the authorized transaction ends
+        ok 15 - database locks prevent observation invalidation until the authorized transaction ends
+          ---
+          duration_ms: 217.569304
+          type: 'test'
+          ...
+        1..15
+    ok 217 - CG03e database observations bind the resource lease to the actual ticket transaction
+      ---
+      duration_ms: 412.593465
+      type: 'test'
+      ...
+    # Subtest: CG03g complete publication, observation and receipt on real restricted PostgreSQL
+        # Subtest: new target publishes complete refs, matching observation and one audit receipt
+        ok 1 - new target publishes complete refs, matching observation and one audit receipt
+          ---
+          duration_ms: 30.499946
+          type: 'test'
+          ...
+        # Subtest: same intent replays its original receipt without republishing a newer source
+        ok 2 - same intent replays its original receipt without republishing a newer source
+          ---
+          duration_ms: 15.601731
+          type: 'test'
+          ...
+        # Subtest: two intents against the same existing revision have one winner
+        ok 3 - two intents against the same existing revision have one winner
+          ---
+          duration_ms: 29.303518
+          type: 'test'
+          ...
+        # Subtest: two intents for an absent target are serialized before row creation
+        ok 4 - two intents for an absent target are serialized before row creation
+          ---
+          duration_ms: 13.080074
+          type: 'test'
+          ...
+        # Subtest: concurrent same-key requests produce one effect and the same receipt
+        ok 5 - concurrent same-key requests produce one effect and the same receipt
+          ---
+          duration_ms: 17.760242
+          type: 'test'
+          ...
+        # Subtest: failure before receipt SQL rolls back replacement and observation
+        ok 6 - failure before receipt SQL rolls back replacement and observation
+          ---
+          duration_ms: 11.808163
+          type: 'test'
+          ...
+        # Subtest: a real COMMIT followed by simulated lost ack is reconciled with the same key
+        ok 7 - a real COMMIT followed by simulated lost ack is reconciled with the same key
+          ---
+          duration_ms: 15.76758
+          type: 'test'
+          ...
+        # Subtest: CG03i caught client-side rejection cannot commit an already staged publication
+        ok 8 - CG03i caught client-side rejection cannot commit an already staged publication
+          ---
+          duration_ms: 7.602828
+          type: 'test'
+          ...
+        # Subtest: replication publisher is denied by both the adapter and SQL helper
+        ok 9 - replication publisher is denied by both the adapter and SQL helper
+          ---
+          duration_ms: 8.279134
+          type: 'test'
+          ...
+        # Subtest: private schema ownership denies the publisher before any publication
+        ok 10 - private schema ownership denies the publisher before any publication
+          ---
+          duration_ms: 14.230902
+          type: 'test'
+          ...
+        # Subtest: private function ownership denies the publisher before any publication
+        ok 11 - private function ownership denies the publisher before any publication
+          ---
+          duration_ms: 15.801832
+          type: 'test'
+          ...
+        # Subtest: normal request login cannot use publication helpers or the private adapter
+        ok 12 - normal request login cannot use publication helpers or the private adapter
+          ---
+          duration_ms: 11.97934
+          type: 'test'
+          ...
+        # Subtest: publisher login has no direct table read/write and no PUBLIC helper grant
+        ok 13 - publisher login has no direct table read/write and no PUBLIC helper grant
+          ---
+          duration_ms: 24.974727
+          type: 'test'
+          ...
+        # Subtest: revoked snapshot publishes no resources or current observation
+        ok 14 - revoked snapshot publishes no resources or current observation
+          ---
+          duration_ms: 24.375717
+          type: 'test'
+          ...
+        # Subtest: disabled source publisher mapping denies writes without granting legacy fallback
+        ok 15 - disabled source publisher mapping denies writes without granting legacy fallback
+          ---
+          duration_ms: 6.800773
+          type: 'test'
+          ...
+        # Subtest: retargeting the tenant cannot publish under a known binding
+        ok 16 - retargeting the tenant cannot publish under a known binding
+          ---
+          duration_ms: 1.987144
+          type: 'test'
+          ...
+        # Subtest: deferred database constraint refuses staging without its same-transaction receipt
+        ok 17 - deferred database constraint refuses staging without its same-transaction receipt
+          ---
+          duration_ms: 9.348629
+          type: 'test'
+          ...
+        # Subtest: ledger cannot be updated or deleted even by the test administrator
+        ok 18 - ledger cannot be updated or deleted even by the test administrator
+          ---
+          duration_ms: 31.854899
+          type: 'test'
+          ...
+        # Subtest: externally changed grant state cannot be silently adopted as revision zero
+        ok 19 - externally changed grant state cannot be silently adopted as revision zero
+          ---
+          duration_ms: 24.359544
+          type: 'test'
+          ...
+        1..19
+    ok 218 - CG03g complete publication, observation and receipt on real restricted PostgreSQL
+      ---
+      duration_ms: 330.220179
+      type: 'test'
+      ...
+    # Subtest: HDN01b restricted PostgreSQL checklist marking
+        # Subtest: real restricted role passes readiness without table grants
+        ok 1 - real restricted role passes readiness without table grants
+          ---
+          duration_ms: 3.874008
+          type: 'test'
+          ...
+        # Subtest: requester and partial work coverage cannot read internal checklist
+        ok 2 - requester and partial work coverage cannot read internal checklist
+          ---
+          duration_ms: 11.438418
+          type: 'test'
+          ...
+        # Subtest: one mark atomically persists actor, snapshot, audit and receipt
+        ok 3 - one mark atomically persists actor, snapshot, audit and receipt
+          ---
+          duration_ms: 38.479018
+          type: 'test'
+          ...
+        # Subtest: resolution reader revalidates current private evidence with no new audit
+        ok 4 - resolution reader revalidates current private evidence with no new audit
+          ---
+          duration_ms: 13.737872
+          type: 'test'
+          ...
+        # Subtest: missing referenced note cannot satisfy a previously marked item
+        ok 5 - missing referenced note cannot satisfy a previously marked item
+          ---
+          duration_ms: 7.942568
+          type: 'test'
+          ...
+        # Subtest: a referenced note from C never becomes evidence of A
+        ok 6 - a referenced note from C never becomes evidence of A
+          ---
+          duration_ms: 7.189377
+          type: 'test'
+          ...
+        # Subtest: resolution evidence remains bound to its marking author
+        ok 7 - resolution evidence remains bound to its marking author
+          ---
+          duration_ms: 6.895475
+          type: 'test'
+          ...
+        # Subtest: resolution denies a note newer than its marking by one microsecond
+        ok 8 - resolution denies a note newer than its marking by one microsecond
+          ---
+          duration_ms: 7.602288
+          type: 'test'
+          ...
+        # Subtest: new evidence reader also denies requester and A+C
+        ok 9 - new evidence reader also denies requester and A+C
+          ---
+          duration_ms: 12.041955
+          type: 'test'
+          ...
+        # Subtest: resolution holds note row locks until its transaction finishes
+        ok 10 - resolution holds note row locks until its transaction finishes
+          ---
+          duration_ms: 211.208474
+          type: 'test'
+          ...
+        # Subtest: old revision and forged caller attribution are denied
+        ok 11 - old revision and forged caller attribution are denied
+          ---
+          duration_ms: 20.52908
+          type: 'test'
+          ...
+        # Subtest: foreign note cannot qualify and no second snapshot revision is created
+        ok 12 - foreign note cannot qualify and no second snapshot revision is created
+          ---
+          duration_ms: 27.674501
+          type: 'test'
+          ...
+        # Subtest: sensitive item requires acknowledgement and own note
+        ok 13 - sensitive item requires acknowledgement and own note
+          ---
+          duration_ms: 49.341862
+          type: 'test'
+          ...
+        # Subtest: two concurrent writes from one revision produce one commit and one conflict
+        ok 14 - two concurrent writes from one revision produce one commit and one conflict
+          ---
+          duration_ms: 64.714579
+          type: 'test'
+          ...
+        # Subtest: the original service cannot resolve a bound ticket even with a complete checklist
+        ok 15 - the original service cannot resolve a bound ticket even with a complete checklist
+          ---
+          duration_ms: 20.128419
+          type: 'test'
+          ...
+        # Subtest: the original store cannot directly close a bound open ticket
+        ok 16 - the original store cannot directly close a bound open ticket
+          ---
+          duration_ms: 15.712778
+          type: 'test'
+          ...
+        # Subtest: the legacy terminal helper refuses foreign resources and a foreign account
+        ok 17 - the legacy terminal helper refuses foreign resources and a foreign account
+          ---
+          duration_ms: 12.466022
+          type: 'test'
+          ...
+        # Subtest: SQL legacy completion refusal remains sticky when application code catches it
+        ok 18 - SQL legacy completion refusal remains sticky when application code catches it
+          ---
+          duration_ms: 5.510776
+          type: 'test'
+          ...
+        # Subtest: unbound legacy tickets still resolve through the original service
+        ok 19 - unbound legacy tickets still resolve through the original service
+          ---
+          duration_ms: 43.005516
+          type: 'test'
+          ...
+        # Subtest: checklist binding without workflow state refuses a generic same-state reply
+        ok 20 - checklist binding without workflow state refuses a generic same-state reply
+          ---
+          duration_ms: 29.187564
+          type: 'test'
+          ...
+        # Subtest: reset clears current entry but retains its prior revision in immutable audit
+        ok 21 - reset clears current entry but retains its prior revision in immutable audit
+          ---
+          duration_ms: 31.286045
+          type: 'test'
+          ...
+        # Subtest: driver failure swallowed by caller still rolls a staged marking back
+        ok 22 - driver failure swallowed by caller still rolls a staged marking back
+          ---
+          duration_ms: 31.031283
+          type: 'test'
+          ...
+        # Subtest: caught local terminal-validation failure rolls back the marking, audit and receipt
+        ok 23 - caught local terminal-validation failure rolls back the marking, audit and receipt
+          ---
+          duration_ms: 40.57794
+          type: 'test'
+          ...
+        # Subtest: caught invalid marking envelope cannot commit snapshot audit or receipt
+        ok 24 - caught invalid marking envelope cannot commit snapshot audit or receipt
+          ---
+          duration_ms: 39.328003
+          type: 'test'
+          ...
+        # Subtest: current note permission revocation denies the helper as well
+        ok 25 - current note permission revocation denies the helper as well
+          ---
+          duration_ms: 3.135439
+          type: 'test'
+          ...
+        # Subtest: all tables FORCE RLS and PUBLIC cannot execute candidate functions
+        ok 26 - all tables FORCE RLS and PUBLIC cannot execute candidate functions
+          ---
+          duration_ms: 2.35054
+          type: 'test'
+          ...
+        # Subtest: ticket revision change cannot inherit completed entries
+        ok 27 - ticket revision change cannot inherit completed entries
+          ---
+          duration_ms: 38.144005
+          type: 'test'
+          ...
+        # Subtest: eligible note projection contains metadata only and does not mark or audit
+        ok 28 - eligible note projection contains metadata only and does not mark or audit
+          ---
+          duration_ms: 10.234329
+          type: 'test'
+          ...
+        # Subtest: metadata query still enforces RLS for a foreign or partially authorized resource
+        ok 29 - metadata query still enforces RLS for a foreign or partially authorized resource
+          ---
+          duration_ms: 12.413402
+          type: 'test'
+          ...
+        # Subtest: native metadata pagination preserves the full authorized order without duplicate notes
+        ok 30 - native metadata pagination preserves the full authorized order without duplicate notes
+          ---
+          duration_ms: 382.474091
+          type: 'test'
+          ...
+        # Subtest: removing current notes read scope blocks both selection entry and direct metadata
+        ok 31 - removing current notes read scope blocks both selection entry and direct metadata
+          ---
+          duration_ms: 53.871274
+          type: 'test'
+          ...
+        1..31
+    ok 219 - HDN01b restricted PostgreSQL checklist marking
+      ---
+      duration_ms: 1745.949913
+      type: 'test'
+      ...
+    # Subtest: M02 durable support workflow on restricted PostgreSQL
+        # Subtest: M06 public workflow bodies retain original event IDs and revisions through reopen and later resolution
+        ok 1 - M06 public workflow bodies retain original event IDs and revisions through reopen and later resolution
+          ---
+          duration_ms: 761.730269
+          type: 'test'
+          ...
+        # Subtest: M06 ordinary reply is not duplicated and handoff reason is never projected
+        ok 2 - M06 ordinary reply is not duplicated and handoff reason is never projected
+          ---
+          duration_ms: 190.562064
+          type: 'test'
+          ...
+        # Subtest: M06 RPC relation, live scopes and internal-history authorization precede projection
+        ok 3 - M06 RPC relation, live scopes and internal-history authorization precede projection
+          ---
+          duration_ms: 55.085961
+          type: 'test'
+          ...
+        # Subtest: M06 directory denies revoked, expired and incomplete CG coverage before disclosing refs
+        ok 4 - M06 directory denies revoked, expired and incomplete CG coverage before disclosing refs
+          ---
+          duration_ms: 22.910677
+          type: 'test'
+          ...
+        # Subtest: M06 composed HTTP executes real workflow and scoped conversation on one borrowed connection
+        ok 5 - M06 composed HTTP executes real workflow and scoped conversation on one borrowed connection
+          ---
+          duration_ms: 61.809757
+          type: 'test'
+          ...
+        # Subtest: M03 triage and start persist their semantic command with one core event
+        ok 6 - M03 triage and start persist their semantic command with one core event
+          ---
+          duration_ms: 70.667408
+          type: 'test'
+          ...
+        # Subtest: M03 customer return resumes work and preserves the responsible analyst
+        ok 7 - M03 customer return resumes work and preserves the responsible analyst
+          ---
+          duration_ms: 88.840241
+          type: 'test'
+          ...
+        # Subtest: M03 reply and handoff keep public response separate from the private reason
+        ok 8 - M03 reply and handoff keep public response separate from the private reason
+          ---
+          duration_ms: 75.012274
+          type: 'test'
+          ...
+        # Subtest: M03 resolved close and closed reopening preserve solution and history
+        ok 9 - M03 resolved close and closed reopening preserve solution and history
+          ---
+          duration_ms: 183.625269
+          type: 'test'
+          ...
+        # Subtest: M03 transfer requires a live fully scoped colleague and generates no outbox
+        ok 10 - M03 transfer requires a live fully scoped colleague and generates no outbox
+          ---
+          duration_ms: 83.11351
+          type: 'test'
+          ...
+        # Subtest: M03 requester target and missing colleague scope are refused without partial effects
+        ok 11 - M03 requester target and missing colleague scope are refused without partial effects
+          ---
+          duration_ms: 79.002968
+          type: 'test'
+          ...
+        # Subtest: M03 old public message path cannot bypass structured approval or state
+        ok 12 - M03 old public message path cannot bypass structured approval or state
+          ---
+          duration_ms: 11.20724
+          type: 'test'
+          ...
+        # Subtest: M03 forged approval GUC cannot insert a public message directly
+        ok 13 - M03 forged approval GUC cannot insert a public message directly
+          ---
+          duration_ms: 5.163786
+          type: 'test'
+          ...
+        # Subtest: M03 requester cannot answer a colleague ticket even with the same work grant
+        ok 14 - M03 requester cannot answer a colleague ticket even with the same work grant
+          ---
+          duration_ms: 7.032922
+          type: 'test'
+          ...
+        # Subtest: M03 pending approval blocks the structured and old reply paths
+        ok 15 - M03 pending approval blocks the structured and old reply paths
+          ---
+          duration_ms: 36.46958
+          type: 'test'
+          ...
+        # Subtest: M03 backdated direct reopening cannot bypass the database clock expiry
+        ok 16 - M03 backdated direct reopening cannot bypass the database clock expiry
+          ---
+          duration_ms: 145.578982
+          type: 'test'
+          ...
+        # Subtest: M03 a workspace agent without an account operator grant cannot receive transfer
+        ok 17 - M03 a workspace agent without an account operator grant cannot receive transfer
+          ---
+          duration_ms: 41.574897
+          type: 'test'
+          ...
+        # Subtest: M03 cancellation records the reason privately without resolving the ticket
+        ok 18 - M03 cancellation records the reason privately without resolving the ticket
+          ---
+          duration_ms: 45.728295
+          type: 'test'
+          ...
+        # Subtest: writer and workflow commit with core event effect outbox and bound receipt
+        ok 19 - writer and workflow commit with core event effect outbox and bound receipt
+          ---
+          duration_ms: 96.230069
+          type: 'test'
+          ...
+        # Subtest: raw terminal update cannot bypass a complete checklist
+        ok 20 - raw terminal update cannot bypass a complete checklist
+          ---
+          duration_ms: 55.706299
+          type: 'test'
+          ...
+        # Subtest: GUC claiming approval does not manufacture a private transaction permit
+        ok 21 - GUC claiming approval does not manufacture a private transaction permit
+          ---
+          duration_ms: 34.175074
+          type: 'test'
+          ...
+        # Subtest: missing required mark refuses resolution without partial effects
+        ok 22 - missing required mark refuses resolution without partial effects
+          ---
+          duration_ms: 43.078526
+          type: 'test'
+          ...
+        # Subtest: current requester C and A+C are denied by private workflow helper
+        ok 23 - current requester C and A+C are denied by private workflow helper
+          ---
+          duration_ms: 18.919303
+          type: 'test'
+          ...
+        # Subtest: concurrent resolution of one revision commits at most once
+        ok 24 - concurrent resolution of one revision commits at most once
+          ---
+          duration_ms: 132.676904
+          type: 'test'
+          ...
+        # Subtest: same command replays the original receipt and no new public event
+        ok 25 - same command replays the original receipt and no new public event
+          ---
+          duration_ms: 132.095242
+          type: 'test'
+          ...
+        # Subtest: same idempotency key with different body is a conflict
+        ok 26 - same idempotency key with different body is a conflict
+          ---
+          duration_ms: 119.826997
+          type: 'test'
+          ...
+        # Subtest: SQL validates intent digest rather than trusting hash supplied by caller
+        ok 27 - SQL validates intent digest rather than trusting hash supplied by caller
+          ---
+          duration_ms: 61.339661
+          type: 'test'
+          ...
+        # Subtest: private ledger rejects direct app reads and writes
+        ok 28 - private ledger rejects direct app reads and writes
+          ---
+          duration_ms: 3.015289
+          type: 'test'
+          ...
+        # Subtest: public core outbox never receives resolution body audit or checklist notes
+        ok 29 - public core outbox never receives resolution body audit or checklist notes
+          ---
+          duration_ms: 130.38969
+          type: 'test'
+          ...
+        # Subtest: suppressed core outbox rolls back workflow state audit receipt and core effects
+        ok 30 - suppressed core outbox rolls back workflow state audit receipt and core effects
+          ---
+          duration_ms: 155.059049
+          type: 'test'
+          ...
+        # Subtest: successful SQL with corrupted acknowledgement cannot commit after caught validation
+        ok 31 - successful SQL with corrupted acknowledgement cannot commit after caught validation
+          ---
+          duration_ms: 114.167657
+          type: 'test'
+          ...
+        # Subtest: JSON canonical subset agrees with application hash on real Unicode and timestamps
+        ok 32 - JSON canonical subset agrees with application hash on real Unicode and timestamps
+          ---
+          duration_ms: 3.13608
+          type: 'test'
+          ...
+        # Subtest: published profile and committed receipt remain immutable
+        ok 33 - published profile and committed receipt remain immutable
+          ---
+          duration_ms: 109.491084
+          type: 'test'
+          ...
+        1..33
+    ok 220 - M02 durable support workflow on restricted PostgreSQL
+      ---
+      duration_ms: 6999.323567
+      type: 'test'
+      ...
+    # Subtest: M04 Consulte GEO publication on real restricted PostgreSQL17
+        # Subtest: all six families compile identically in JS and SQL and publish atomically
+        ok 1 - all six families compile identically in JS and SQL and publish atomically
+          ---
+          duration_ms: 977.107854
+          type: 'test'
+          ...
+        # Subtest: same intent replays and divergent request conflicts without extra effects
+        ok 2 - same intent replays and divergent request conflicts without extra effects
+          ---
+          duration_ms: 249.422755
+          type: 'test'
+          ...
+        # Subtest: restore creates a successor without changing pinned published content
+        ok 3 - restore creates a successor without changing pinned published content
+          ---
+          duration_ms: 389.725578
+          type: 'test'
+          ...
+        # Subtest: concurrent publications of one revision commit at most once
+        ok 4 - concurrent publications of one revision commit at most once
+          ---
+          duration_ms: 390.979629
+          type: 'test'
+          ...
+        # Subtest: admin membership alone and workspace agent cannot publish
+        ok 5 - admin membership alone and workspace agent cannot publish
+          ---
+          duration_ms: 144.983642
+          type: 'test'
+          ...
+        # Subtest: registry lacking source lookup or files blocks publication
+        ok 6 - registry lacking source lookup or files blocks publication
+          ---
+          duration_ms: 251.08393
+          type: 'test'
+          ...
+        # Subtest: direct app SQL cannot forge calendar or SLA artifacts
+        ok 7 - direct app SQL cannot forge calendar or SLA artifacts
+          ---
+          duration_ms: 153.776496
+          type: 'test'
+          ...
+        # Subtest: malformed definition including JSON nulls is rejected by SQL validator
+        ok 8 - malformed definition including JSON nulls is rejected by SQL validator
+          ---
+          duration_ms: 5.219058
+          type: 'test'
+          ...
+        # Subtest: raw SQL rejects JS-incompatible text with a correct intent hash
+        ok 9 - raw SQL rejects JS-incompatible text with a correct intent hash
+          ---
+          duration_ms: 18.031679
+          type: 'test'
+          ...
+        # Subtest: valid Unicode boundaries and multiline guidance publish with identical artifacts
+        ok 10 - valid Unicode boundaries and multiline guidance publish with identical artifacts
+          ---
+          duration_ms: 301.762316
+          type: 'test'
+          ...
+        # Subtest: raw SQL bounds conditional strings by UTF16 units
+        ok 11 - raw SQL bounds conditional strings by UTF16 units
+          ---
+          duration_ms: 2550.061987
+          type: 'test'
+          ...
+        # Subtest: tables and private compiler are inaccessible to app SQL
+        ok 12 - tables and private compiler are inaccessible to app SQL
+          ---
+          duration_ms: 4.382522
+          type: 'test'
+          ...
+        # Subtest: published version and audit are immutable even for maintenance identity
+        ok 13 - published version and audit are immutable even for maintenance identity
+          ---
+          duration_ms: 393.351311
+          type: 'test'
+          ...
+        # Subtest: suppressed artifact must roll back configuration publication and audit
+        ok 14 - suppressed artifact must roll back configuration publication and audit
+          ---
+          duration_ms: 348.629921
+          type: 'test'
+          ...
+        1..14
+    ok 221 - M04 Consulte GEO publication on real restricted PostgreSQL17
+      ---
+      duration_ms: 6207.583385
+      type: 'test'
+      ...
+    # Subtest: M09b published catalogue and owner-only drafts on restricted PostgreSQL17
+        # Subtest: catalogue selects latest published version, never an unpublished successor
+        ok 1 - catalogue selects latest published version, never an unpublished successor
+          ---
+          duration_ms: 48.26291
+          type: 'test'
+          ...
+        # Subtest: older pinned published form saves incomplete answers, replays without another audit, and resumes
+        ok 2 - older pinned published form saves incomplete answers, replays without another audit, and resumes
+          ---
+          duration_ms: 105.401228
+          type: 'test'
+          ...
+        # Subtest: same absent draft UUID concurrent saves commit once
+        ok 3 - same absent draft UUID concurrent saves commit once
+          ---
+          duration_ms: 66.128299
+          type: 'test'
+          ...
+        # Subtest: same ID cannot be resumed or overwritten by a different authorized person
+        ok 4 - same ID cannot be resumed or overwritten by a different authorized person
+          ---
+          duration_ms: 69.015175
+          type: 'test'
+          ...
+        # Subtest: SQL refuses foreign identity, missing coverage and changed observation even for a full copied scope
+        ok 5 - SQL refuses foreign identity, missing coverage and changed observation even for a full copied scope
+          ---
+          duration_ms: 12.772081
+          type: 'test'
+          ...
+        # Subtest: an unpublished form and unknown field cannot be saved
+        ok 6 - an unpublished form and unknown field cannot be saved
+          ---
+          duration_ms: 40.281132
+          type: 'test'
+          ...
+        # Subtest: raw SQL validates schema and intent hashes independently of application validation
+        ok 7 - raw SQL validates schema and intent hashes independently of application validation
+          ---
+          duration_ms: 83.266898
+          type: 'test'
+          ...
+        # Subtest: Unicode selection key matches JS UTF16 sorting without normalization
+        ok 8 - Unicode selection key matches JS UTF16 sorting without normalization
+          ---
+          duration_ms: 1.915137
+          type: 'test'
+          ...
+        # Subtest: suppressed audit forces rollback instead of returning a saved draft
+        ok 9 - suppressed audit forces rollback instead of returning a saved draft
+          ---
+          duration_ms: 46.408174
+          type: 'test'
+          ...
+        # Subtest: native opaque selector does not trim a literal v and preserves UTF16 bounds
+        ok 10 - native opaque selector does not trim a literal v and preserves UTF16 bounds
+          ---
+          duration_ms: 3.359124
+          type: 'test'
+          ...
+        # Subtest: historical observations never prevent owner resume after a current read-grant refresh
+        ok 11 - historical observations never prevent owner resume after a current read-grant refresh
+          ---
+          duration_ms: 126.36439
+          type: 'test'
+          ...
+        # Subtest: app has no direct table rights, private hash helper or ticket writer in this module
+        ok 12 - app has no direct table rights, private hash helper or ticket writer in this module
+          ---
+          duration_ms: 5.478207
+          type: 'test'
+          ...
+        1..12
+    ok 222 - M09b published catalogue and owner-only drafts on restricted PostgreSQL17
+      ---
+      duration_ms: 753.679461
+      type: 'test'
+      ...
+    # Subtest: M09c atomic opening and receipt on restricted PostgreSQL17
+        # Subtest: unconfigured legacy boundary refuses opening; prior allocator negative control demonstrates old default
+        ok 1 - unconfigured legacy boundary refuses opening; prior allocator negative control demonstrates old default
+          ---
+          duration_ms: 168.080218
+          type: 'test'
+          ...
+        # Subtest: preview allocates no protocol; one opening persists every effect and pinned published snapshot
+        ok 2 - preview allocates no protocol; one opening persists every effect and pinned published snapshot
+          ---
+          duration_ms: 189.341437
+          type: 'test'
+          ...
+        # Subtest: concurrent same intention returns one immutable receipt and one email queue entry
+        ok 3 - concurrent same intention returns one immutable receipt and one email queue entry
+          ---
+          duration_ms: 209.714272
+          type: 'test'
+          ...
+        # Subtest: different keys cannot consume the same draft twice
+        ok 4 - different keys cannot consume the same draft twice
+          ---
+          duration_ms: 213.314549
+          type: 'test'
+          ...
+        # Subtest: preview change and CAS failure leave counter and effects untouched
+        ok 5 - preview change and CAS failure leave counter and effects untouched
+          ---
+          duration_ms: 160.05799
+          type: 'test'
+          ...
+        # Subtest: receipt survives draft TTL with current authorization and never permits draft resurrection
+        ok 6 - receipt survives draft TTL with current authorization and never permits draft resurrection
+          ---
+          duration_ms: 2174.309028
+          type: 'test'
+          ...
+        # Subtest: key cannot be reused for another intention and another owner sees no receipt
+        ok 7 - key cannot be reused for another intention and another owner sees no receipt
+          ---
+          duration_ms: 187.768374
+          type: 'test'
+          ...
+        # Subtest: suppression of every required effect rolls back ticket, draft consumption and protocol
+        ok 8 - suppression of every required effect rolls back ticket, draft consumption and protocol
+          ---
+          duration_ms: 1423.632014
+          type: 'test'
+          ...
+        # Subtest: raw SQL refuses a forged bundle and wrong receipt despite exact borrowed native scope
+        ok 9 - raw SQL refuses a forged bundle and wrong receipt despite exact borrowed native scope
+          ---
+          duration_ms: 236.334856
+          type: 'test'
+          ...
+        # Subtest: revoked native access denies replay without another allocation
+        ok 10 - revoked native access denies replay without another allocation
+          ---
+          duration_ms: 173.357249
+          type: 'test'
+          ...
+        # Subtest: Unicode subject minimum matches core and preview rejects two characters before persistence
+        ok 11 - Unicode subject minimum matches core and preview rejects two characters before persistence
+          ---
+          duration_ms: 211.193846
+          type: 'test'
+          ...
+        # Subtest: expiry after protocol lock wait rolls back all creation effects
+        ok 12 - expiry after protocol lock wait rolls back all creation effects
+          ---
+          duration_ms: 1087.135261
+          type: 'test'
+          ...
+        # Subtest: real HTTP opening uses restricted durable writer and explicit receipt headers
+        ok 13 - real HTTP opening uses restricted durable writer and explicit receipt headers
+          ---
+          duration_ms: 184.454266
+          type: 'test'
+          ...
+        # Subtest: trigger-altered ticket, snapshot clocks/answers and counter are refused before COMMIT
+        ok 14 - trigger-altered ticket, snapshot clocks/answers and counter are refused before COMMIT
+          ---
+          duration_ms: 614.24657
+          type: 'test'
+          ...
+        # Subtest: real UI state and session/intake adapters reconcile one native PostgreSQL opening after lost ACK
+        ok 15 - real UI state and session/intake adapters reconcile one native PostgreSQL opening after lost ACK
+          ---
+          duration_ms: 282.846092
+          type: 'test'
+          ...
+        # Subtest: new private tables and pure helpers have no direct app access
+        ok 16 - new private tables and pure helpers have no direct app access
+          ---
+          duration_ms: 4.172958
+          type: 'test'
+          ...
+        1..16
+    ok 223 - M09c atomic opening and receipt on restricted PostgreSQL17
+      ---
+      duration_ms: 7680.166433
+      type: 'test'
+      ...
+    # Subtest: M11 restricted notification candidate on owned PostgreSQL17
+        # Subtest: PG17 CASE comparison in IF requires parentheses around the SQL expression
+        ok 1 - PG17 CASE comparison in IF requires parentheses around the SQL expression
+          ---
+          duration_ms: 5.882846
+          type: 'test'
+          ...
+        # Subtest: PG17 RETURN next is a SETOF instruction, not a scalar variable return
+        ok 2 - PG17 RETURN next is a SETOF instruction, not a scalar variable return
+          ---
+          duration_ms: 3.099806
+          type: 'test'
+          ...
+        # Subtest: worker has zero table or column rights and exactly the fixed helper allowlist
+        ok 3 - worker has zero table or column rights and exactly the fixed helper allowlist
+          ---
+          duration_ms: 18.708409
+          type: 'test'
+          ...
+        # Subtest: restricted direct source helper preserves native PostgreSQL diagnostic context
+        ok 4 - restricted direct source helper preserves native PostgreSQL diagnostic context
+          ---
+          duration_ms: 16.516827
+          type: 'test'
+          ...
+        # Subtest: immutable source normalizes actual snapshot/effect/outbox and contains no form or body
+        ok 5 - immutable source normalizes actual snapshot/effect/outbox and contains no form or body
+          ---
+          duration_ms: 47.086891
+          type: 'test'
+          ...
+        # Subtest: incoherent actual outbox refuses normalization even with a valid immutable snapshot
+        ok 6 - incoherent actual outbox refuses normalization even with a valid immutable snapshot
+          ---
+          duration_ms: 37.522215
+          type: 'test'
+          ...
+        # Subtest: unique source plan replays one intent and cannot manufacture a second recipient
+        ok 7 - unique source plan replays one intent and cannot manufacture a second recipient
+          ---
+          duration_ms: 43.589939
+          type: 'test'
+          ...
+        # Subtest: concurrent workers claim one intent and make one provider call
+        ok 8 - concurrent workers claim one intent and make one provider call
+          ---
+          duration_ms: 80.813926
+          type: 'test'
+          ...
+        # Subtest: ACL revocation after authorization but before sending COMMIT prevents provider call
+        ok 9 - ACL revocation after authorization but before sending COMMIT prevents provider call
+          ---
+          duration_ms: 51.070775
+          type: 'test'
+          ...
+        # Subtest: verified email changed between authorization and sending is refused
+        ok 10 - verified email changed between authorization and sending is refused
+          ---
+          duration_ms: 70.246383
+          type: 'test'
+          ...
+        # Subtest: unverified current contact defers delivery without form-address fallback
+        ok 11 - unverified current contact defers delivery without form-address fallback
+          ---
+          duration_ms: 44.680678
+          type: 'test'
+          ...
+        # Subtest: expired external read envelope is retryable while original append-only observations remain intact
+        ok 12 - expired external read envelope is retryable while original append-only observations remain intact
+          ---
+          duration_ms: 74.851361
+          type: 'test'
+          ...
+        # Subtest: pinned template hash changed in an intent suppresses before provider call
+        ok 13 - pinned template hash changed in an intent suppresses before provider call
+          ---
+          duration_ms: 69.765162
+          type: 'test'
+          ...
+        # Subtest: lost COMMIT acknowledgement of sending prevents every provider call
+        ok 14 - lost COMMIT acknowledgement of sending prevents every provider call
+          ---
+          duration_ms: 53.390999
+          type: 'test'
+          ...
+        # Subtest: expired sending recovers UNKNOWN and cannot be claimed after idempotency window
+        ok 15 - expired sending recovers UNKNOWN and cannot be claimed after idempotency window
+          ---
+          duration_ms: 72.657806
+          type: 'test'
+          ...
+        # Subtest: native callback before ACK stays unmatched then correlates atomically by accepted message ID
+        ok 16 - native callback before ACK stays unmatched then correlates atomically by accepted message ID
+          ---
+          duration_ms: 234.605709
+          type: 'test'
+          ...
+        # Subtest: duplicate native ID is idempotent, changed hash conflicts and raw contacts never persist
+        ok 17 - duplicate native ID is idempotent, changed hash conflicts and raw contacts never persist
+          ---
+          duration_ms: 73.198248
+          type: 'test'
+          ...
+        # Subtest: old native timestamp is retained without overwrite and equal/new contradictory terminal flags attention
+        ok 18 - old native timestamp is retained without overwrite and equal/new contradictory terminal flags attention
+          ---
+          duration_ms: 78.868405
+          type: 'test'
+          ...
+        # Subtest: unrelated message receipt and unsupported telemetry do not manufacture ticket ACKs
+        ok 19 - unrelated message receipt and unsupported telemetry do not manufacture ticket ACKs
+          ---
+          duration_ms: 32.517579
+          type: 'test'
+          ...
+        # Subtest: SQL refuses direct worker ACK and unsafe mutation of immutable intent/attempt/lease
+        ok 20 - SQL refuses direct worker ACK and unsafe mutation of immutable intent/attempt/lease
+          ---
+          duration_ms: 38.751642
+          type: 'test'
+          ...
+        # Subtest: ordinary public workflow reply normalizes to requester devolutiva with no reply body in its intent
+        ok 21 - ordinary public workflow reply normalizes to requester devolutiva with no reply body in its intent
+          ---
+          duration_ms: 139.819238
+          type: 'test'
+          ...
+        1..21
+    ok 224 - M11 restricted notification candidate on owned PostgreSQL17
+      ---
+      duration_ms: 1329.782148
+      type: 'test'
+      ...
+    # Subtest: local registry private provisioning and native current-decision admission
+        # Subtest: creates only explicitly declared relationship and atomic grant/publication/observation/receipt
+        ok 1 - creates only explicitly declared relationship and atomic grant/publication/observation/receipt
+          ---
+          duration_ms: 42.552821
+          type: 'test'
+          ...
+        # Subtest: same request replays immutable receipt and stale CAS rolls back
+        ok 2 - same request replays immutable receipt and stale CAS rolls back
+          ---
+          duration_ms: 7.994377
+          type: 'test'
+          ...
+        # Subtest: app login, SET ROLE and client grant attempts cannot provision
+        ok 3 - app login, SET ROLE and client grant attempts cannot provision
+          ---
+          duration_ms: 9.160429
+          type: 'test'
+          ...
+        # Subtest: scopes absent, integration principal or nonexistent human refuse whole declarative change
+        ok 4 - scopes absent, integration principal or nonexistent human refuse whole declarative change
+          ---
+          duration_ms: 60.88851
+          type: 'test'
+          ...
+        # Subtest: a failed work declaration rolls back already staged registry and account changes
+        ok 5 - a failed work declaration rolls back already staged registry and account changes
+          ---
+          duration_ms: 28.292012
+          type: 'test'
+          ...
+        # Subtest: foreign actor and namespace cannot read local picker or authority data
+        ok 6 - foreign actor and namespace cannot read local picker or authority data
+          ---
+          duration_ms: 11.735777
+          type: 'test'
+          ...
+        # Subtest: elapsed cadence truly republishes unchanged decision with exact SQL timestamps and atomic receipt
+        ok 7 - elapsed cadence truly republishes unchanged decision with exact SQL timestamps and atomic receipt
+          ---
+          duration_ms: 30138.395379
+          type: 'test'
+          ...
+        # Subtest: work deactivation blocks old scope, publishes compatible empty reduced coverage and new receipt
+        ok 8 - work deactivation blocks old scope, publishes compatible empty reduced coverage and new receipt
+          ---
+          duration_ms: 35.395795
+          type: 'test'
+          ...
+        # Subtest: revocation remains denied despite historical observations; fresh reads cannot renew TTL
+        ok 9 - revocation remains denied despite historical observations; fresh reads cannot renew TTL
+          ---
+          duration_ms: 12.548245
+          type: 'test'
+          ...
+        # Subtest: current decision SHARE lock serializes operator CAS and retains atomic publication
+        ok 10 - current decision SHARE lock serializes operator CAS and retains atomic publication
+          ---
+          duration_ms: 98.297608
+          type: 'test'
+          ...
+        # Subtest: MRV authorized work survives limit=1 despite newer foreign/work/legacy rows; read-only ceiling needs no contexts:resolve
+        ok 11 - MRV authorized work survives limit=1 despite newer foreign/work/legacy rows; read-only ceiling needs no contexts:resolve
+          ---
+          duration_ms: 90.690876
+          type: 'test'
+          ...
+        # Subtest: search/account filters cannot disclose foreign namespace, unqualified legacy or ungranted work
+        ok 12 - search/account filters cannot disclose foreign namespace, unqualified legacy or ungranted work
+          ---
+          duration_ms: 42.851843
+          type: 'test'
+          ...
+        # Subtest: work deactivation removes rows before an existing cursor or limit; prior observations remain historical
+        ok 13 - work deactivation removes rows before an existing cursor or limit; prior observations remain historical
+          ---
+          duration_ms: 17.61304
+          type: 'test'
+          ...
+        # Subtest: reactivation republished then permission revocation denies the whole current collection
+        ok 14 - reactivation republished then permission revocation denies the whole current collection
+          ---
+          duration_ms: 62.209173
+          type: 'test'
+          ...
+        1..14
+    ok 225 - local registry private provisioning and native current-decision admission
+      ---
+      duration_ms: 30834.59038
+      type: 'test'
+      ...
+    # {"fixture":"disposable-local-registry","code":"PGL02","where":"PL/pgSQL function helpdesk_auth.cg_local_provision(text,text) line 23 at RAISE"}
+    # {"fixture":"disposable-local-registry","code":"PGL01","where":"PL/pgSQL function helpdesk_auth.cg_local_provision(text,text) line 33 at RAISE"}
+    # {"fixture":"disposable-local-registry","code":"PGL01","where":"PL/pgSQL function helpdesk_auth.cg_local_provision(text,text) line 37 at RAISE"}
+    # {"fixture":"disposable-local-registry","code":"PGL01","where":"PL/pgSQL function helpdesk_auth.cg_local_provision(text,text) line 33 at RAISE"}
+    # {"fixture":"disposable-local-registry","code":"PGL01","where":"PL/pgSQL function helpdesk_auth.cg_local_provision(text,text) line 37 at RAISE"}
+    # Subtest: initial Consulte GEO operator delegation and real local opening
+        # Subtest: application login cannot execute bootstrap or read its receipt
+        ok 1 - application login cannot execute bootstrap or read its receipt
+          ---
+          duration_ms: 50.943625
+          type: 'test'
+          ...
+        # Subtest: unverified or mismatched administrator refuses before any business writes
+        ok 2 - unverified or mismatched administrator refuses before any business writes
+          ---
+          duration_ms: 68.002082
+          type: 'test'
+          ...
+        # Subtest: existing account refuses initial namespace setup without modifying its data
+        ok 3 - existing account refuses initial namespace setup without modifying its data
+          ---
+          duration_ms: 71.308768
+          type: 'test'
+          ...
+        # Subtest: native compiler rejects altered SLA and rolls back earlier local/core writes
+        ok 4 - native compiler rejects altered SLA and rolls back earlier local/core writes
+          ---
+          duration_ms: 102.106008
+          type: 'test'
+          ...
+        # Subtest: honest operator bootstrap persists six pinned profiles and distinct namespace once
+        ok 5 - honest operator bootstrap persists six pinned profiles and distinct namespace once
+          ---
+          duration_ms: 106.752356
+          type: 'test'
+          ...
+        # Subtest: same operator intent returns immutable receipt, divergent intent refuses
+        ok 6 - same operator intent returns immutable receipt, divergent intent refuses
+          ---
+          duration_ms: 88.930562
+          type: 'test'
+          ...
+        # Subtest: restricted real source discovers, drafts, previews and atomically opens declared work
+        ok 7 - restricted real source discovers, drafts, previews and atomically opens declared work
+          ---
+          duration_ms: 307.628913
+          type: 'test'
+          ...
+        # Subtest: actual PostgreSQL reader projects pinned profile and protocol in list and detail
+        ok 8 - actual PostgreSQL reader projects pinned profile and protocol in list and detail
+          ---
+          duration_ms: 46.078789
+          type: 'test'
+          ...
+        # Subtest: suppressed required checklist binding rolls back opening and preserves draft and protocol for the same intent
+        ok 9 - suppressed required checklist binding rolls back opening and preserves draft and protocol for the same intent
+          ---
+          duration_ms: 465.284363
+          type: 'test'
+          ...
+        # Subtest: published initial profile supports real local claim, private evidence, checklist, resolution and reopening
+        ok 10 - published initial profile supports real local claim, private evidence, checklist, resolution and reopening
+          ---
+          duration_ms: 649.284474
+          type: 'test'
+          ...
+        # Subtest: current work deactivation blocks earlier summary without exposing pinned receipt
+        ok 11 - current work deactivation blocks earlier summary without exposing pinned receipt
+          ---
+          duration_ms: 27.52669
+          type: 'test'
+          ...
+        1..11
+    ok 226 - initial Consulte GEO operator delegation and real local opening
+      ---
+      duration_ms: 2025.333153
+      type: 'test'
+      ...
+    # Subtest: M11 delayed worker activation reobserves the actual current local decision
+        # Subtest: queued opening sends after observation expiry without a ticket visit, impersonation or TTL rewrite
+        ok 1 - queued opening sends after observation expiry without a ticket visit, impersonation or TTL rewrite
+          ---
+          duration_ms: 3153.774808
+          type: 'test'
+          ...
+        # Subtest: local current work deactivation remains permanently suppressed despite historical grant coverage
+        ok 2 - local current work deactivation remains permanently suppressed despite historical grant coverage
+          ---
+          duration_ms: 60.936136
+          type: 'test'
+          ...
+        # Subtest: local read permission revocation remains permanently suppressed with other permissions active
+        ok 3 - local read permission revocation remains permanently suppressed with other permissions active
+          ---
+          duration_ms: 55.281793
+          type: 'test'
+          ...
+        # Subtest: global account ACL revocation cannot be repaired by the local decision
+        ok 4 - global account ACL revocation cannot be repaired by the local decision
+          ---
+          duration_ms: 40.852414
+          type: 'test'
+          ...
+        # Subtest: current human scope ceiling revocation suppresses even with local permission intact
+        ok 5 - current human scope ceiling revocation suppresses even with local permission intact
+          ---
+          duration_ms: 40.052342
+          type: 'test'
+          ...
+        1..5
+    ok 227 - M11 delayed worker activation reobserves the actual current local decision
+      ---
+      duration_ms: 3671.814674
+      type: 'test'
+      ...
+    # Subtest: capture actual owned full activation catalogue after semantic qualification
+    ok 228 - capture actual owned full activation catalogue after semantic qualification
+      ---
+      duration_ms: 15.588101
+      type: 'test'
+      ...
+    1..228
+ok 1 - PostgreSQL authorization and integrity
+  ---
+  duration_ms: 94515.210659
+  type: 'suite'
+  ...
+# Subtest: upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date
+ok 2 - upgrade 001–007 through 008, 009 and 010 preserves every seeded row and technical lifecycle date
+  ---
+  duration_ms: 341.752623
+  type: 'test'
+  ...
+# Subtest: upgrade exposes schema 0.23.0 to a restricted real request login
+ok 3 - upgrade exposes schema 0.23.0 to a restricted real request login
+  ---
+  duration_ms: 26.323804
+  type: 'test'
+  ...
+# Subtest: upgraded grant-only human discovers its legacy workspace through the restricted login
+ok 4 - upgraded grant-only human discovers its legacy workspace through the restricted login
+  ---
+  duration_ms: 2.524982
+  type: 'test'
+  ...
+# Subtest: legacy ticket receives null assignment without changing its version or policy
+ok 5 - legacy ticket receives null assignment without changing its version or policy
+  ---
+  duration_ms: 8.541648
+  type: 'test'
+  ...
+# Subtest: legacy idempotency replay retains its old snapshot without synthesizing assignment
+ok 6 - legacy idempotency replay retains its old snapshot without synthesizing assignment
+  ---
+  duration_ms: 9.277423
+  type: 'test'
+  ...
+# Subtest: public conversation remains readable while old internal note is denied to customer
+ok 7 - public conversation remains readable while old internal note is denied to customer
+  ---
+  duration_ms: 19.412394
+  type: 'test'
+  ...
+# Subtest: live revocation still denies old replay after schema upgrade
+ok 8 - live revocation still denies old replay after schema upgrade
+  ---
+  duration_ms: 4.218566
+  type: 'test'
+  ...
+# Subtest: new assignment works on a legacy ticket without rewriting its policy or publishing an event
+ok 9 - new assignment works on a legacy ticket without rewriting its policy or publishing an event
+  ---
+  duration_ms: 47.284233
+  type: 'test'
+  ...
+# Subtest: creation replay after assignment is still the original response, not a second mutation
+ok 10 - creation replay after assignment is still the original response, not a second mutation
+  ---
+  duration_ms: 12.660764
+  type: 'test'
+  ...
+# Subtest: upgrade009 backfills exactly the previously active human workspace relationships
+ok 11 - upgrade009 backfills exactly the previously active human workspace relationships
+  ---
+  duration_ms: 1.553594
+  type: 'test'
+  ...
+# Subtest: upgrade009 resolves the same existing user while obtaining scopes from its first revision
+ok 12 - upgrade009 resolves the same existing user while obtaining scopes from its first revision
+  ---
+  duration_ms: 1.03239
+  type: 'test'
+  ...
+# Subtest: upgrade010 creates no synthetic receipts for historical messages/events
+ok 13 - upgrade010 creates no synthetic receipts for historical messages/events
+  ---
+  duration_ms: 0.121903
+  type: 'test'
+  ...
+# Subtest: upgrade010 records the new assignment on a legacy ticket without public outbox
+ok 14 - upgrade010 records the new assignment on a legacy ticket without public outbox
+  ---
+  duration_ms: 2.13707
+  type: 'test'
+  ...
+# Subtest: upgrade010 replay of legacy creation does not create a retrospective receipt
+ok 15 - upgrade010 replay of legacy creation does not create a retrospective receipt
+  ---
+  duration_ms: 9.771555
+  type: 'test'
+  ...
+# Subtest: upgrade010 new public response on an old ticket has matched event and outbox
+ok 16 - upgrade010 new public response on an old ticket has matched event and outbox
+  ---
+  duration_ms: 33.838039
+  type: 'test'
+  ...
+# Subtest: upgrade011 preserves stored rows, owner, ACL and private trigger configuration
+ok 17 - upgrade011 preserves stored rows, owner, ACL and private trigger configuration
+  ---
+  duration_ms: 0.231157
+  type: 'test'
+  ...
+# Subtest: upgrade011 note-only operator writes and replays on the legacy ticket without public write or collection read
+ok 18 - upgrade011 note-only operator writes and replays on the legacy ticket without public write or collection read
+  ---
+  duration_ms: 48.244285
+  type: 'test'
+  ...
+
+
+# PostgreSQL isolated cluster 2
+# Subtest: non-super direct login installs the twelve unchanged baseline migrations
+ok 19 - non-super direct login installs the twelve unchanged baseline migrations
+  ---
+  duration_ms: 114.723088
+  type: 'test'
+  ...
+# Subtest: failure after service creation rolls back roles, module objects, data and version
+ok 20 - failure after service creation rolls back roles, module objects, data and version
+  ---
+  duration_ms: 104.101327
+  type: 'test'
+  ...
+# Subtest: M05 still refuses preexisting service membership even with the exact bootstrap flags
+ok 21 - M05 still refuses preexisting service membership even with the exact bootstrap flags
+  ---
+  duration_ms: 43.707008
+  type: 'test'
+  ...
+# Subtest: M05 refuses global operator defaults without normalizing them
+ok 22 - M05 refuses global operator defaults without normalizing them
+  ---
+  duration_ms: 30.014024
+  type: 'test'
+  ...
+# Subtest: M05 refuses local operator defaults without normalizing them
+ok 23 - M05 refuses local operator defaults without normalizing them
+  ---
+  duration_ms: 29.364359
+  type: 'test'
+  ...
+# Subtest: non-super M05 promotion adopts only the qualified bootstrap memberships
+ok 24 - non-super M05 promotion adopts only the qualified bootstrap memberships
+  ---
+  duration_ms: 81.121296
+  type: 'test'
+  ...
+# Subtest: PG17 blocks bootstrap OID10 demotion before 20261013195704_consultegeo_m06_public_conversation.sql
+ok 25 - PG17 blocks bootstrap OID10 demotion before 20261013195704_consultegeo_m06_public_conversation.sql
+  ---
+  duration_ms: 22.487401
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses SET access to service
+ok 26 - 20261013195704_consultegeo_m06_public_conversation.sql refuses SET access to service
+  ---
+  duration_ms: 25.944543
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses INHERIT access to service
+ok 27 - 20261013195704_consultegeo_m06_public_conversation.sql refuses INHERIT access to service
+  ---
+  duration_ms: 33.76584
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses missing ADMIN flag
+ok 28 - 20261013195704_consultegeo_m06_public_conversation.sql refuses missing ADMIN flag
+  ---
+  duration_ms: 35.826063
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses additional incoming member
+ok 29 - 20261013195704_consultegeo_m06_public_conversation.sql refuses additional incoming member
+  ---
+  duration_ms: 28.81251
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses service is member of another role
+ok 30 - 20261013195704_consultegeo_m06_public_conversation.sql refuses service is member of another role
+  ---
+  duration_ms: 32.772768
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses non-bootstrap superuser grantor
+ok 31 - 20261013195704_consultegeo_m06_public_conversation.sql refuses non-bootstrap superuser grantor
+  ---
+  duration_ms: 31.406706
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses unqualified schema owner
+ok 32 - 20261013195704_consultegeo_m06_public_conversation.sql refuses unqualified schema owner
+  ---
+  duration_ms: 22.080509
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses owner missing CREATEROLE
+ok 33 - 20261013195704_consultegeo_m06_public_conversation.sql refuses owner missing CREATEROLE
+  ---
+  duration_ms: 21.890135
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses owner missing BYPASSRLS or SUPERUSER
+ok 34 - 20261013195704_consultegeo_m06_public_conversation.sql refuses owner missing BYPASSRLS or SUPERUSER
+  ---
+  duration_ms: 22.889525
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses extra service column privilege
+ok 35 - 20261013195704_consultegeo_m06_public_conversation.sql refuses extra service column privilege
+  ---
+  duration_ms: 27.032917
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses service flag escalation
+ok 36 - 20261013195704_consultegeo_m06_public_conversation.sql refuses service flag escalation
+  ---
+  duration_ms: 29.499391
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses global defaults drift
+ok 37 - 20261013195704_consultegeo_m06_public_conversation.sql refuses global defaults drift
+  ---
+  duration_ms: 22.657056
+  type: 'test'
+  ...
+# Subtest: 20261013195704_consultegeo_m06_public_conversation.sql refuses local defaults drift
+ok 38 - 20261013195704_consultegeo_m06_public_conversation.sql refuses local defaults drift
+  ---
+  duration_ms: 30.729089
+  type: 'test'
+  ...
+# Subtest: direct operator promotes 20261013195704_consultegeo_m06_public_conversation.sql preserving data
+ok 39 - direct operator promotes 20261013195704_consultegeo_m06_public_conversation.sql preserving data
+  ---
+  duration_ms: 19.745894
+  type: 'test'
+  ...
+# Subtest: PG17 blocks bootstrap OID10 demotion before 20261013233838_consultegeo_m09b_intake.sql
+ok 40 - PG17 blocks bootstrap OID10 demotion before 20261013233838_consultegeo_m09b_intake.sql
+  ---
+  duration_ms: 16.835162
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses SET access to service
+ok 41 - 20261013233838_consultegeo_m09b_intake.sql refuses SET access to service
+  ---
+  duration_ms: 34.325119
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses INHERIT access to service
+ok 42 - 20261013233838_consultegeo_m09b_intake.sql refuses INHERIT access to service
+  ---
+  duration_ms: 33.827802
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses missing ADMIN flag
+ok 43 - 20261013233838_consultegeo_m09b_intake.sql refuses missing ADMIN flag
+  ---
+  duration_ms: 33.350224
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses additional incoming member
+ok 44 - 20261013233838_consultegeo_m09b_intake.sql refuses additional incoming member
+  ---
+  duration_ms: 34.335233
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses service is member of another role
+ok 45 - 20261013233838_consultegeo_m09b_intake.sql refuses service is member of another role
+  ---
+  duration_ms: 35.894104
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses non-bootstrap superuser grantor
+ok 46 - 20261013233838_consultegeo_m09b_intake.sql refuses non-bootstrap superuser grantor
+  ---
+  duration_ms: 37.490032
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses unqualified schema owner
+ok 47 - 20261013233838_consultegeo_m09b_intake.sql refuses unqualified schema owner
+  ---
+  duration_ms: 22.16712
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses owner missing CREATEROLE
+ok 48 - 20261013233838_consultegeo_m09b_intake.sql refuses owner missing CREATEROLE
+  ---
+  duration_ms: 22.112579
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses owner missing BYPASSRLS or SUPERUSER
+ok 49 - 20261013233838_consultegeo_m09b_intake.sql refuses owner missing BYPASSRLS or SUPERUSER
+  ---
+  duration_ms: 21.931736
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses extra service column privilege
+ok 50 - 20261013233838_consultegeo_m09b_intake.sql refuses extra service column privilege
+  ---
+  duration_ms: 34.111327
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses service flag escalation
+ok 51 - 20261013233838_consultegeo_m09b_intake.sql refuses service flag escalation
+  ---
+  duration_ms: 36.158893
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses global defaults drift
+ok 52 - 20261013233838_consultegeo_m09b_intake.sql refuses global defaults drift
+  ---
+  duration_ms: 25.76915
+  type: 'test'
+  ...
+# Subtest: 20261013233838_consultegeo_m09b_intake.sql refuses local defaults drift
+ok 53 - 20261013233838_consultegeo_m09b_intake.sql refuses local defaults drift
+  ---
+  duration_ms: 104.503371
+  type: 'test'
+  ...
+# Subtest: direct operator promotes 20261013233838_consultegeo_m09b_intake.sql preserving data
+ok 54 - direct operator promotes 20261013233838_consultegeo_m09b_intake.sql preserving data
+  ---
+  duration_ms: 25.181927
+  type: 'test'
+  ...
+# Subtest: PG17 blocks bootstrap OID10 demotion before 20261014015714_consultegeo_m09c_atomic_opening.sql
+ok 55 - PG17 blocks bootstrap OID10 demotion before 20261014015714_consultegeo_m09c_atomic_opening.sql
+  ---
+  duration_ms: 18.459672
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses SET access to service
+ok 56 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses SET access to service
+  ---
+  duration_ms: 34.095935
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses INHERIT access to service
+ok 57 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses INHERIT access to service
+  ---
+  duration_ms: 43.051123
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses missing ADMIN flag
+ok 58 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses missing ADMIN flag
+  ---
+  duration_ms: 40.875015
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses additional incoming member
+ok 59 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses additional incoming member
+  ---
+  duration_ms: 35.740103
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses service is member of another role
+ok 60 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses service is member of another role
+  ---
+  duration_ms: 38.082912
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses non-bootstrap superuser grantor
+ok 61 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses non-bootstrap superuser grantor
+  ---
+  duration_ms: 38.911816
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses unqualified schema owner
+ok 62 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses unqualified schema owner
+  ---
+  duration_ms: 25.184522
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses owner missing CREATEROLE
+ok 63 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses owner missing CREATEROLE
+  ---
+  duration_ms: 49.829482
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses owner missing BYPASSRLS or SUPERUSER
+ok 64 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses owner missing BYPASSRLS or SUPERUSER
+  ---
+  duration_ms: 23.373893
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses extra service column privilege
+ok 65 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses extra service column privilege
+  ---
+  duration_ms: 153.262837
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses service flag escalation
+ok 66 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses service flag escalation
+  ---
+  duration_ms: 40.370768
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses global defaults drift
+ok 67 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses global defaults drift
+  ---
+  duration_ms: 23.708355
+  type: 'test'
+  ...
+# Subtest: 20261014015714_consultegeo_m09c_atomic_opening.sql refuses local defaults drift
+ok 68 - 20261014015714_consultegeo_m09c_atomic_opening.sql refuses local defaults drift
+  ---
+  duration_ms: 22.213479
+  type: 'test'
+  ...
+# Subtest: direct operator promotes 20261014015714_consultegeo_m09c_atomic_opening.sql preserving data
+ok 69 - direct operator promotes 20261014015714_consultegeo_m09c_atomic_opening.sql preserving data
+  ---
+  duration_ms: 27.809734
+  type: 'test'
+  ...
+# Subtest: app readiness accepts schema 0.23 and exact bootstrap flags with unchanged inventory
+ok 70 - app readiness accepts schema 0.23 and exact bootstrap flags with unchanged inventory
+  ---
+  duration_ms: 38.262162
+  type: 'test'
+  ...
+# Subtest: PG17 blocks bootstrap OID10 demotion while readiness remains healthy
+ok 71 - PG17 blocks bootstrap OID10 demotion while readiness remains healthy
+  ---
+  duration_ms: 31.223401
+  type: 'test'
+  ...
+# Subtest: app readiness refuses SET access to service
+ok 72 - app readiness refuses SET access to service
+  ---
+  duration_ms: 23.85204
+  type: 'test'
+  ...
+# Subtest: app readiness refuses INHERIT access to service
+ok 73 - app readiness refuses INHERIT access to service
+  ---
+  duration_ms: 23.43917
+  type: 'test'
+  ...
+# Subtest: app readiness refuses missing ADMIN flag
+ok 74 - app readiness refuses missing ADMIN flag
+  ---
+  duration_ms: 23.008554
+  type: 'test'
+  ...
+# Subtest: app readiness refuses additional incoming member
+ok 75 - app readiness refuses additional incoming member
+  ---
+  duration_ms: 23.304829
+  type: 'test'
+  ...
+# Subtest: app readiness refuses service is member of another role
+ok 76 - app readiness refuses service is member of another role
+  ---
+  duration_ms: 23.689346
+  type: 'test'
+  ...
+# Subtest: app readiness refuses non-bootstrap superuser grantor
+ok 77 - app readiness refuses non-bootstrap superuser grantor
+  ---
+  duration_ms: 25.805615
+  type: 'test'
+  ...
+# Subtest: app readiness refuses unqualified schema owner
+ok 78 - app readiness refuses unqualified schema owner
+  ---
+  duration_ms: 32.061359
+  type: 'test'
+  ...
+# Subtest: app readiness refuses owner missing CREATEROLE
+ok 79 - app readiness refuses owner missing CREATEROLE
+  ---
+  duration_ms: 30.919053
+  type: 'test'
+  ...
+# Subtest: app readiness refuses owner missing BYPASSRLS or SUPERUSER
+ok 80 - app readiness refuses owner missing BYPASSRLS or SUPERUSER
+  ---
+  duration_ms: 41.202177
+  type: 'test'
+  ...
+# Subtest: app readiness refuses extra service column privilege
+ok 81 - app readiness refuses extra service column privilege
+  ---
+  duration_ms: 22.570576
+  type: 'test'
+  ...
+# Subtest: app readiness refuses service flag escalation
+ok 82 - app readiness refuses service flag escalation
+  ---
+  duration_ms: 24.505863
+  type: 'test'
+  ...
+# Subtest: app readiness refuses global defaults drift
+ok 83 - app readiness refuses global defaults drift
+  ---
+  duration_ms: 22.730737
+  type: 'test'
+  ...
+# Subtest: app readiness refuses local defaults drift
+ok 84 - app readiness refuses local defaults drift
+  ---
+  duration_ms: 23.434263
+  type: 'test'
+  ...
+# Subtest: request identity cannot qualify as common owner even after attributes are escalated
+ok 85 - request identity cannot qualify as common owner even after attributes are escalated
+  ---
+  duration_ms: 96.910438
+  type: 'test'
+  ...
+
+
+# PostgreSQL isolated cluster 3
+# Subtest: the full sixteen-file prefix has common owner and the exact live PG17 bootstrap membership
+ok 86 - the full sixteen-file prefix has common owner and the exact live PG17 bootstrap membership
+  ---
+  duration_ms: 248.366661
+  type: 'test'
+  ...
+# Subtest: the exact 0.23 prefix admits closed authentication while current business readiness refuses it
+ok 87 - the exact 0.23 prefix admits closed authentication while current business readiness refuses it
+  ---
+  duration_ms: 23.577187
+  type: 'test'
+  ...
+# Subtest: activation refuses real owner, membership, ACL, defaults and partial-installation drift without data loss
+    # Subtest: normal application cannot promote
+    ok 1 - normal application cannot promote
+      ---
+      duration_ms: 89.238896
+      type: 'test'
+      ...
+    # Subtest: operator lacks CREATEROLE
+    ok 2 - operator lacks CREATEROLE
+      ---
+      duration_ms: 119.829566
+      type: 'test'
+      ...
+    # Subtest: operator lacks BYPASSRLS
+    ok 3 - operator lacks BYPASSRLS
+      ---
+      duration_ms: 117.187189
+      type: 'test'
+      ...
+    # Subtest: private schema proprietor changed
+    ok 4 - private schema proprietor changed
+      ---
+      duration_ms: 111.837094
+      type: 'test'
+      ...
+    # Subtest: worker column grant
+    ok 5 - worker column grant
+      ---
+      duration_ms: 114.086372
+      type: 'test'
+      ...
+    # Subtest: worker helper grant
+    ok 6 - worker helper grant
+      ---
+      duration_ms: 122.647489
+      type: 'test'
+      ...
+    # Subtest: worker schema grant
+    ok 7 - worker schema grant
+      ---
+      duration_ms: 129.446631
+      type: 'test'
+      ...
+    # Subtest: outgoing worker membership
+    ok 8 - outgoing worker membership
+      ---
+      duration_ms: 120.372502
+      type: 'test'
+      ...
+    # Subtest: owner defaults
+    ok 9 - owner defaults
+      ---
+      duration_ms: 104.987518
+      type: 'test'
+      ...
+    # Subtest: partial local module
+    ok 10 - partial local module
+      ---
+      duration_ms: 114.161395
+      type: 'test'
+      ...
+    # Subtest: bootstrap incoming ADMIN
+    ok 11 - bootstrap incoming ADMIN
+      ---
+      duration_ms: 114.876188
+      type: 'test'
+      ...
+    # Subtest: bootstrap incoming INHERIT
+    ok 12 - bootstrap incoming INHERIT
+      ---
+      duration_ms: 120.651662
+      type: 'test'
+      ...
+    # Subtest: bootstrap incoming SET
+    ok 13 - bootstrap incoming SET
+      ---
+      duration_ms: 123.968312
+      type: 'test'
+      ...
+    # Subtest: application BYPASSRLS
+    ok 14 - application BYPASSRLS
+      ---
+      duration_ms: 99.362089
+      type: 'test'
+      ...
+    # Subtest: application CREATEROLE
+    ok 15 - application CREATEROLE
+      ---
+      duration_ms: 96.391208
+      type: 'test'
+      ...
+    # Subtest: application non-inheriting membership
+    ok 16 - application non-inheriting membership
+      ---
+      duration_ms: 94.761951
+      type: 'test'
+      ...
+    1..16
+ok 88 - activation refuses real owner, membership, ACL, defaults and partial-installation drift without data loss
+  ---
+  duration_ms: 1796.656165
+  type: 'test'
+  ...
+# Subtest: final catalogue failures roll back all new objects and preserve every original row
+ok 89 - final catalogue failures roll back all new objects and preserve every original row
+  ---
+  duration_ms: 270.245078
+  type: 'test'
+  ...
+# Subtest: a direct non-superuser executes the complete seventeen-file promotion with current restricted readiness
+ok 90 - a direct non-superuser executes the complete seventeen-file promotion with current restricted readiness
+  ---
+  duration_ms: 212.95147
+  type: 'test'
+  ...
+# Subtest: activation replay is refused and preserves the completed 0.24 installation
+ok 91 - activation replay is refused and preserves the completed 0.24 installation
+  ---
+  duration_ms: 65.850282
+  type: 'test'
+  ...
+# Subtest: the final migration guard refuses administrative application drift even when the ordinary ACLs remain unchanged
+    # Subtest: application BYPASSRLS
+    ok 1 - application BYPASSRLS
+      ---
+      duration_ms: 120.026481
+      type: 'test'
+      ...
+    # Subtest: application CREATEROLE
+    ok 2 - application CREATEROLE
+      ---
+      duration_ms: 102.451075
+      type: 'test'
+      ...
+    # Subtest: application non-inheriting membership
+    ok 3 - application non-inheriting membership
+      ---
+      duration_ms: 105.210919
+      type: 'test'
+      ...
+    1..3
+ok 92 - the final migration guard refuses administrative application drift even when the ordinary ACLs remain unchanged
+  ---
+  duration_ms: 340.738205
+  type: 'test'
+  ...
+# Subtest: current readiness rejects additional worker authority and owner defaults after promotion
+    # Subtest: operator lacks CREATEROLE
+    ok 1 - operator lacks CREATEROLE
+      ---
+      duration_ms: 60.377503
+      type: 'test'
+      ...
+    # Subtest: worker column grant
+    ok 2 - worker column grant
+      ---
+      duration_ms: 52.991229
+      type: 'test'
+      ...
+    # Subtest: worker helper grant
+    ok 3 - worker helper grant
+      ---
+      duration_ms: 57.177947
+      type: 'test'
+      ...
+    # Subtest: outgoing worker membership
+    ok 4 - outgoing worker membership
+      ---
+      duration_ms: 50.552156
+      type: 'test'
+      ...
+    # Subtest: owner defaults
+    ok 5 - owner defaults
+      ---
+      duration_ms: 51.472478
+      type: 'test'
+      ...
+    1..5
+ok 93 - current readiness rejects additional worker authority and owner defaults after promotion
+  ---
+  duration_ms: 284.110734
+  type: 'test'
+  ...
+# Subtest: registration operator publication and native conditional opening on the complete seventeen-migration installation
+    # Subtest: ordinary application identity cannot execute the private registration recipe or read its receipt
+    ok 1 - ordinary application identity cannot execute the private registration recipe or read its receipt
+      ---
+      duration_ms: 226.156801
+      type: 'test'
+      ...
+    # Subtest: unverified current delegating sponsor refuses without publication or local registry effects
+    ok 2 - unverified current delegating sponsor refuses without publication or local registry effects
+      ---
+      duration_ms: 207.684938
+      type: 'test'
+      ...
+    # Subtest: forged approval and expanded local work scope refuse even with recomputed transport hashes
+    ok 3 - forged approval and expanded local work scope refuse even with recomputed transport hashes
+      ---
+      duration_ms: 318.3305
+      type: 'test'
+      ...
+    # Subtest: native configuration compilation rejects altered artifacts after all canonical approval hashes are recomputed
+    ok 4 - native configuration compilation rejects altered artifacts after all canonical approval hashes are recomputed
+      ---
+      duration_ms: 250.486463
+      type: 'test'
+      ...
+    # Subtest: suppress of the immutable local receipt rolls back configuration, coverage, workflows, checklist and registry writes
+    ok 5 - suppress of the immutable local receipt rolls back configuration, coverage, workflows, checklist and registry writes
+      ---
+      duration_ms: 499.799192
+      type: 'test'
+      ...
+    # Subtest: failure of the immutable local receipt rolls back configuration, coverage, workflows, checklist and registry writes
+    ok 6 - failure of the immutable local receipt rolls back configuration, coverage, workflows, checklist and registry writes
+      ---
+      duration_ms: 496.014969
+      type: 'test'
+      ...
+    # Subtest: genuine owner publishes exactly one approved registration profile and five compiled workflow/checklist pairs without changing earlier business effects
+    ok 7 - genuine owner publishes exactly one approved registration profile and five compiled workflow/checklist pairs without changing earlier business effects
+      ---
+      duration_ms: 105.313724
+      type: 'test'
+      ...
+    # Subtest: identical publication replay preserves every row; changed approval under the same request refuses
+    ok 8 - identical publication replay preserves every row; changed approval under the same request refuses
+      ---
+      duration_ms: 305.722584
+      type: 'test'
+      ...
+    # Subtest: publication replay refuses disabled coverage and preserves the disabled row without repairing it
+    ok 9 - publication replay refuses disabled coverage and preserves the disabled row without repairing it
+      ---
+      duration_ms: 157.329768
+      type: 'test'
+      ...
+    # Subtest: earlier question remains readable through the real restricted reader after local revision advances with identical scopes
+    ok 10 - earlier question remains readable through the real restricted reader after local revision advances with identical scopes
+      ---
+      duration_ms: 15.568864
+      type: 'test'
+      ...
+    # Subtest: conditional hidden user fields refuse in the actual published draft path and missing mix requirements block preview
+    ok 11 - conditional hidden user fields refuse in the actual published draft path and missing mix requirements block preview
+      ---
+      duration_ms: 380.603779
+      type: 'test'
+      ...
+    # Subtest: published user registration passes real source, draft, preview, opening and immutable replay
+    ok 12 - published user registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 484.229137
+      type: 'test'
+      ...
+    # Subtest: published mix registration passes real source, draft, preview, opening and immutable replay
+    ok 13 - published mix registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 513.201592
+      type: 'test'
+      ...
+    # Subtest: published plant registration passes real source, draft, preview, opening and immutable replay
+    ok 14 - published plant registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 585.763966
+      type: 'test'
+      ...
+    # Subtest: published laboratory registration passes real source, draft, preview, opening and immutable replay
+    ok 15 - published laboratory registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 600.972307
+      type: 'test'
+      ...
+    # Subtest: published block registration passes real source, draft, preview, opening and immutable replay
+    ok 16 - published block registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 494.31807
+      type: 'test'
+      ...
+    # Subtest: published ceramic registration passes real source, draft, preview, opening and immutable replay
+    ok 17 - published ceramic registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 771.340229
+      type: 'test'
+      ...
+    # Subtest: published cable registration passes real source, draft, preview, opening and immutable replay
+    ok 18 - published cable registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 488.406757
+      type: 'test'
+      ...
+    # Subtest: published supplier registration passes real source, draft, preview, opening and immutable replay
+    ok 19 - published supplier registration passes real source, draft, preview, opening and immutable replay
+      ---
+      duration_ms: 847.358512
+      type: 'test'
+      ...
+    # Subtest: work access release uses the existing fifth action with a manual beneficiary and actual selected work
+    ok 20 - work access release uses the existing fifth action with a manual beneficiary and actual selected work
+      ---
+      duration_ms: 727.32077
+      type: 'test'
+      ...
+    # Subtest: data-only registration leaves the complete qualified security catalogue and genuine operator profile unchanged
+    ok 21 - data-only registration leaves the complete qualified security catalogue and genuine operator profile unchanged
+      ---
+      duration_ms: 14.737808
+      type: 'test'
+      ...
+    1..21
+ok 94 - registration operator publication and native conditional opening on the complete seventeen-migration installation
+  ---
+  duration_ms: 9157.486418
+  type: 'test'
+  ...
+
+
+1..94
+# tests 599
+# suites 0
+# pass 599
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+
