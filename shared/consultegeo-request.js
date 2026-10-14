@@ -1,5 +1,8 @@
 import {copyFormData,freezeFormData,parseFormVersion} from './form-rules.js';
 export const CONSULTE_GEO_ACTION_LABELS=Object.freeze({include:'Novo cadastro',change:'Alterar usuário',disable:'Desativar usuário',resend_access:'Reenviar acesso',grant_work_access:'Liberar usuário em obra',request:'Solicitação'});
+// Previously projected labels remain readable for the same exact actions.
+// Normalize presentation only; service/action/version and access stay strict.
+const historicalLabels=Object.freeze({include:'Incluir usuário',grant_work_access:'Liberar em nova obra'});
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(v);
 const positive=v=>Number.isSafeInteger(v)&&v>0&&v<=2147483647;
 const exact=(v,keys)=>{if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||keys.some(k=>!Object.hasOwn(v,k)))throw Error();return v;};
@@ -11,7 +14,8 @@ export function parseConsulteGeoCustomerConfiguration(raw){try{
  const expected=d.service==='user_access'?['include','change','disable','resend_access','grant_work_access'].map(action=>[action,'normal']):d.service==='problem'?['urgent','high','normal','low'].map(priority=>['request',priority]):['questions','backup','new_work','structure_adjustment'].includes(d.service)?[['request','normal']]:null;
  if(!expected||!Array.isArray(d.entries)||d.entries.length!==expected.length)throw Error();
  const ids=new Set();d.entries=d.entries.map((raw,i)=>{const e=exact(raw,['action','priority','label','form','serviceWindow']);
-  if(e.action!==expected[i][0]||e.priority!==expected[i][1]||e.label!==CONSULTE_GEO_ACTION_LABELS[e.action])throw Error();
+  if(e.action!==expected[i][0]||e.priority!==expected[i][1]||!(e.label===CONSULTE_GEO_ACTION_LABELS[e.action]||Object.hasOwn(historicalLabels,e.action)&&e.label===historicalLabels[e.action]))throw Error();
+  e.label=CONSULTE_GEO_ACTION_LABELS[e.action];
   e.form=parseFormVersion(e.form);if(!uuid(e.form.id)||e.form.status!=='published'||e.form.version!==d.version||ids.has(e.form.id))throw Error();ids.add(e.form.id);
   const publicFields=fields=>fields.every(f=>f.public&&(!f.config.fields||publicFields(f.config.fields)));if(!publicFields(e.form.fields))throw Error();
   const w=exact(e.serviceWindow,['firstResponseHours','resolutionHours','reopenDays','timeZone']);
