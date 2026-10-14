@@ -7,6 +7,7 @@ import {assertRuntimeDatabase} from '../../src/infrastructure/authentication-dat
 import {DATABASE_SECURITY_CONTRACT as current} from '../../src/infrastructure/database-security-contract.ts';
 import {DATABASE_SECURITY_CONTRACT as prior,assertDatabaseSecurity as assertV023Security} from '../../tests/helpers/qualified-v023.ts';
 import {withOperatorFixture} from '../../tests/helpers/operator-fixture.ts';import type {SqlPool} from '../../src/infrastructure/sql.ts';
+import {registerRegistrationOperationSqlTests} from './registration-operation-scenarios.ts';
 const targets=validateDatabaseTestTargets(process.env),operatorUrl=new URL(process.env.HELPDESK_TEST_OPERATOR_URL??''),adminUrl=new URL(targets.adminUrl);
 if(operatorUrl.protocol!==adminUrl.protocol||operatorUrl.host!==adminUrl.host||operatorUrl.pathname!=='/helpdesk_test'||operatorUrl.username!=='helpdesk_operator'||!operatorUrl.password||operatorUrl.search||operatorUrl.hash)throw Error('A dedicated direct operator URL in the third owned cluster is required.');
 const bundle=await loadMigrationBundle(process.cwd());await verifyConsulteGeoActivation(process.cwd());
@@ -102,3 +103,4 @@ test('current readiness rejects additional worker authority and owner defaults a
   await suite.test(drift.name,()=>withDrift(drift,()=>assert.rejects(()=>assertDatabaseSecurity(app),{code:'unsafe_database_policies'})));
  await assertDatabaseSecurity(app);
 });
+registerRegistrationOperationSqlTests(()=>operator,()=>control,()=>app);
