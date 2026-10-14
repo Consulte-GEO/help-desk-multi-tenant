@@ -10,6 +10,9 @@ export function createSessionFetch(session,fetcher=fetch){
   try{proof=await session.authorization();if(!session.current(proof))throw new HumanAuthError('stale_session');}
   catch(error){const safe=error instanceof HumanAuthError?new HumanAuthError(error.code):new HumanAuthError('auth_unavailable');safe.requestSent=false;throw safe;}
   const headers=new Headers(options.headers);headers.set('authorization','Bearer '+proof.accessToken);headers.set('x-workspace-id',proof.workspace);
+  // Some hosted ingress paths consume standard conditional headers. Carry the
+  // same pinned version independently; the server refuses conflicting copies.
+  const version=headers.get('if-match');if(version!==null&&['POST','PUT','PATCH','DELETE'].includes(String(options.method??'GET').toUpperCase()))headers.set('x-helpdesk-if-match',version);
   const init={...options,headers,credentials:'omit',redirect:'error',cache:'no-store',referrerPolicy:'no-referrer'};
   // Acquiring a proof can yield before a sensitive operation reserves the session.
   // Gate dispatch separately; current() must still recognize already-issued responses.
