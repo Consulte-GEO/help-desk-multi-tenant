@@ -4282,6 +4282,9 @@
             "type": "string",
             "format": "date-time",
             "description": "Instante atual em UTC com três ou seis dígitos de fração de segundo. Microssegundos não são arredondados. Reenvios preservam a representação histórica original; não trate date-time como formato fixo de 24 caracteres."
+          },
+          "consultegeo": {
+            "$ref": "#/components/schemas/ConsulteGeoTicketSummary"
           }
         },
         "required": [
@@ -4875,6 +4878,9 @@
           },
           "available_actions": {
             "$ref": "#/components/schemas/TicketActions"
+          },
+          "consultegeo": {
+            "$ref": "#/components/schemas/ConsulteGeoTicketSummary"
           }
         },
         "required": [
@@ -6090,6 +6096,34 @@
           "notification",
           "replayed"
         ]
+      },
+      "ConsulteGeoTicketSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "protocol",
+          "profileVersionId",
+          "workflow",
+          "requesterId"
+        ],
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "pattern": "^CG-[1-9][0-9]{4,17}$"
+          },
+          "profileVersionId": {
+            "type": "string",
+            "pattern": "^cg-wf-[0-9a-f-]+-v[1-9][0-9]*$"
+          },
+          "workflow": {
+            "const": true
+          },
+          "requesterId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "description": "Resumo mínimo de um chamado Consulte GEO com perfil e protocolo fixados na abertura. Somente apresentação após autorização atual; não concede permissões."
       }
     }
   }
