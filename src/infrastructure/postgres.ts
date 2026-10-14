@@ -45,7 +45,15 @@ export class PostgresUnitOfWork implements UnitOfWork{
  }
 }
 type Row=Record<string,unknown>;const str=(r:Row,k:string)=>String(r[k]);const iso=(v:unknown):string=>{try{return canonicalInstant(v);}catch{throw new HelpdeskError(503,'invalid_database_result','Resposta do banco incompatível. Tente atualizar o chamado.');}};
-function ticket(r:Row):Ticket{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),assignedTo:r.assigned_to==null?null:str(r,'assigned_to'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at)};}
+function consulteGeoSummary(value:unknown){
+ const invalid=()=>new HelpdeskError(503,'invalid_database_result','Resumo Consulte GEO indisponível.');
+ if(value===null)return undefined;
+ if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==4)throw invalid();
+ const fields:Record<string,unknown>={};for(const key of ['protocol','profileVersionId','workflow','requesterId']){const field=Object.getOwnPropertyDescriptor(value,key);if(!field||!Object.hasOwn(field,'value')||!field.enumerable)throw invalid();fields[key]=field.value;}
+ if(typeof fields.protocol!=='string'||!/^CG-[1-9][0-9]{0,18}$/.test(fields.protocol)||BigInt(fields.protocol.slice(3))>9223372036854775807n||fields.workflow!==true)throw invalid();
+ try{return {protocol:fields.protocol,profileVersionId:uuidIdentifier(fields.profileVersionId),workflow:true as const,requesterId:uuidIdentifier(fields.requesterId)};}catch{throw invalid();}
+}
+function ticket(r:Row,local=false):Ticket{const summary=local?consulteGeoSummary(r.consultegeo_summary):undefined;return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),productInstanceId:str(r,'product_instance_id'),serviceCode:str(r,'service_code'),createdBy:str(r,'created_by'),assignedTo:r.assigned_to==null?null:str(r,'assigned_to'),subject:str(r,'subject'),description:str(r,'description'),status:r.status as Ticket['status'],priority:r.priority as Ticket['priority'],version:Number(r.version),coverageId:str(r,'coverage_id'),contractVersionId:str(r,'contract_version_id'),contractSnapshot:r.contract_snapshot as Ticket['contractSnapshot'],createdAt:iso(r.created_at),updatedAt:iso(r.updated_at),...(summary?{consulteGeo:summary}:{})};}
 function message(r:Row):PublicMessage{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),actorType:r.actor_type as PublicMessage['actorType'],body:str(r,'body'),createdAt:iso(r.created_at)};}
 function note(r:Row):InternalNote{return {id:str(r,'id'),workspaceId:str(r,'workspace_id'),accountId:str(r,'account_id'),ticketId:str(r,'ticket_id'),actorId:str(r,'actor_id'),body:str(r,'body'),createdAt:iso(r.created_at)};}
 const ticketColumns='id,workspace_id,account_id,product_instance_id,service_code,created_by,subject,description,status,priority,version,coverage_id,contract_version_id,contract_snapshot,created_at,updated_at,assigned_to';
@@ -55,7 +63,7 @@ const timeColumn=(column:'created_at'|'updated_at')=>
   then to_char(${column} at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') end as ${column}`;
 const ticketReadColumns=ticketColumns.split(',').map(c=>c==='created_at'||c==='updated_at'?timeColumn(c):c).join(',');
 class PostgresStore implements Store{
- readonly c:SqlClient;readonly p:Principal;constructor(c:SqlClient,p:Principal){this.c=c;this.p=p;}
+ readonly c:SqlClient;readonly p:Principal;readonly localCollection:boolean;readonly consulteGeoLocal:boolean;constructor(c:SqlClient,p:Principal,localCollection=false,consulteGeoLocal=false){this.c=c;this.p=p;this.localCollection=localCollection;this.consulteGeoLocal=consulteGeoLocal;}
  // Table and column names in this helper are developer-owned constants, never request values.
  private async insert(table:string,columns:string[],values:unknown[]):Promise<void>{const result=await this.c.query(`insert into ${table} (${columns.join(',')}) values (${values.map((_,i)=>'$'+(i+1)).join(',')})`,values);assertSingleWrite(result,'INSERT');}
  async supportContexts(window:CatalogWindow,_at:string):Promise<SupportCatalogEntry[]>{
@@ -66,13 +74,35 @@ class PostgresStore implements Store{
   return rows.map(r=>r.item as SupportCatalogEntry);
  }
  async coverages(context:SupportContext):Promise<Coverage[]>{uuidIdentifier(context.accountId);uuidIdentifier(context.productInstanceId);const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
- async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketReadColumns} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r):null;}
+ async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketReadColumns}${this.consulteGeoLocal?',helpdesk_auth.cg_local_ticket_summary(tickets.id) as consultegeo_summary':''} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r,this.consulteGeoLocal):null;}
  async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
   if(accountId!==undefined)uuidIdentifier(accountId);
   if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
-  // No interpolation of search text, no private-note/message joins. RLS stays in effect.
-  return (await this.c.query(`select ${ticketReadColumns} from helpdesk_core.tickets
+  let localContexts:string|undefined;
+  if(this.localCollection){
+   // Real current-actor refresh, on THIS borrowed transaction, before any page.
+   const result=await this.c.query('select helpdesk_auth.cg_local_prepare_ticket_collection() as source');
+   if(result.command!=='SELECT'||result.rowCount!==1||result.rows.length!==1)throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');
+   const data=result.rows[0]!.source,seen=new Set<string>();
+   if(!Array.isArray(data)||data.length>50)throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');
+   for(const value of data){
+    if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==4)throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');
+    const fields:Record<string,unknown>={};for(const key of ['accountId','productInstanceId','connectionId','tenantId']){const field=Object.getOwnPropertyDescriptor(value,key);if(!field||!Object.hasOwn(field,'value')||!field.enumerable)throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');fields[key]=field.value;}
+    try{uuidIdentifier(fields.accountId);uuidIdentifier(fields.productInstanceId);uuidIdentifier(fields.connectionId);}catch{throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');}
+    if(typeof fields.tenantId!=='string'||fields.tenantId.length<1||fields.tenantId.length>256||fields.tenantId.trim()!==fields.tenantId||/[\u0000-\u001f\u007f-\u009f]/u.test(fields.tenantId)||seen.has(String(fields.accountId)))throw new HelpdeskError(503,'invalid_database_result','Coleção local indisponível.');seen.add(String(fields.accountId));
+   }
+   localContexts=JSON.stringify(data);
+  }
+  // This server-controlled predicate precedes cursor/search/LIMIT. Metadata only
+  // narrows namespaces; directory and ordinary RLS recheck the full current works.
+  const localPredicate=this.localCollection?`and exists(select 1 from jsonb_array_elements($13::jsonb) local_context
+    where local_context->>'accountId'=tickets.account_id::text and local_context->>'productInstanceId'=tickets.product_instance_id::text
+     and local_context->>'connectionId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'connectionId'
+     and local_context->>'tenantId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'tenantId')`:'';
+  // No interpolation of caller search text or private-note/message joins. RLS stays in effect.
+  return (await this.c.query(`select ${ticketReadColumns}${this.consulteGeoLocal?',helpdesk_auth.cg_local_ticket_summary(tickets.id) as consultegeo_summary':''} from helpdesk_core.tickets
    where workspace_id=$1 and ($2::uuid is null or account_id=$2)
+    ${localPredicate}
     and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
     and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6)
     and ($9::text[] is null or status=any($9::text[]))
@@ -81,7 +111,7 @@ class PostgresStore implements Store{
      and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
    order by tickets.created_at desc,id desc limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
-    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id])).rows.map(ticket);
+    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,...(this.localCollection?[localContexts]:[])])).rows.map(row=>ticket(row,this.consulteGeoLocal));
  }
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt,t.assignedTo]);}
  async updateAssignment(t:Ticket,expectedVersion:number):Promise<void>{
@@ -116,4 +146,4 @@ class PostgresStore implements Store{
 }
 
 /** Scoped route adapter: no pool acquisition, nested transaction or identity substitution. */
-export function createBorrowedPostgresUnitOfWork(client:SqlClient,p:Principal):UnitOfWork{return {async run(actor,work){assertBorrowedTransactionIdentity(client,p);if(JSON.stringify(actor)!==JSON.stringify(p))throw new HelpdeskError(403,'transaction_identity_changed','Contexto alterado.');return work(new PostgresStore(client,p));}};}
+export function createBorrowedPostgresUnitOfWork(client:SqlClient,p:Principal,options:{localCollection?:boolean;consulteGeoLocal?:boolean}={}):UnitOfWork{const localCollection=options.localCollection===true,consulteGeoLocal=options.consulteGeoLocal===true;return {async run(actor,work){assertBorrowedTransactionIdentity(client,p);if(JSON.stringify(actor)!==JSON.stringify(p))throw new HelpdeskError(403,'transaction_identity_changed','Contexto alterado.');return work(new PostgresStore(client,p,localCollection,consulteGeoLocal));}};}

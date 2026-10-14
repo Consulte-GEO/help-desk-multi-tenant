@@ -51,7 +51,7 @@ CREATE CONSTRAINT TRIGGER cg_local_permission_receipt AFTER INSERT OR UPDATE OR 
 
 -- Runs under the actual operator, no SECURITY DEFINER role escalation or caller GUC.
 CREATE FUNCTION helpdesk_auth.cg_local_provision(command_text text,command_hash text) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path='' AS $$
-DECLARE v jsonb;w uuid;request uuid;expected int;revision int;old helpdesk_auth.cg_local_registries%rowtype;row_value jsonb;k text;person uuid;account uuid;scope_list text[];required text[];
+DECLARE v jsonb;w uuid;request uuid;expected int;local_revision int;old helpdesk_auth.cg_local_registries%rowtype;row_value jsonb;k text;person uuid;account uuid;scope_list text[];required text[];
  a helpdesk_auth.cg_local_accounts%rowtype;p helpdesk_auth.cg_local_permissions%rowtype;g helpdesk_auth.cg_resource_grant_sets%rowtype;s helpdesk_auth.cg_resource_publication_states%rowtype;
  instant timestamptz;expires timestamptz;as_text text;expires_text text;decision_hash text;prior bigint;next bigint;refs jsonb;target jsonb;snapshot jsonb;snapshot_hash text;target_hash text;publication_hash text;publication_receipt jsonb;result jsonb;saved record;is_active boolean;
 BEGIN
@@ -95,13 +95,13 @@ BEGIN
  IF (SELECT count(DISTINCT value->>'accountId') FROM jsonb_array_elements(v->'accounts'))<>jsonb_array_length(v->'accounts')
  OR (SELECT count(DISTINCT jsonb_build_array(value->'accountId',value->'id')) FROM jsonb_array_elements(v->'works'))<>jsonb_array_length(v->'works')
  OR (SELECT count(DISTINCT jsonb_build_array(value->'accountId',value->'principalId',value->'operation')) FROM jsonb_array_elements(v->'permissions'))<>jsonb_array_length(v->'permissions') THEN RAISE EXCEPTION 'Duplicate local identity' USING ERRCODE='PGL01';END IF;
- revision:=expected+1;instant:=clock_timestamp();expires:=instant+interval '10 minutes';as_text:=helpdesk_auth.hdn_workflow_iso(instant);expires_text:=helpdesk_auth.hdn_workflow_iso(expires);
+ local_revision:=expected+1;instant:=clock_timestamp();expires:=instant+interval '10 minutes';as_text:=helpdesk_auth.hdn_workflow_iso(instant);expires_text:=helpdesk_auth.hdn_workflow_iso(expires);
  decision_hash:=helpdesk_auth.hdni_digest(jsonb_build_object('accounts',v->'accounts','works',v->'works','permissions',v->'permissions','sourceManifest',v->'sourceManifest'));
- INSERT INTO helpdesk_auth.cg_local_registries VALUES(w,revision,decision_hash,instant,expires) ON CONFLICT(workspace_id) DO UPDATE SET revision=excluded.revision,decision_hash=excluded.decision_hash,as_of=excluded.as_of,expires_at=excluded.expires_at;
+ INSERT INTO helpdesk_auth.cg_local_registries VALUES(w,local_revision,decision_hash,instant,expires) ON CONFLICT(workspace_id) DO UPDATE SET revision=excluded.revision,decision_hash=excluded.decision_hash,as_of=excluded.as_of,expires_at=excluded.expires_at;
  -- Full desired snapshot: omission deactivates old local decisions, never deletes history.
- UPDATE helpdesk_auth.cg_local_accounts SET active=false,registry_revision=revision WHERE workspace_id=w;
- UPDATE helpdesk_auth.cg_local_works SET active=false,registry_revision=revision WHERE workspace_id=w;
- UPDATE helpdesk_auth.cg_local_permissions SET active=false,registry_revision=revision WHERE workspace_id=w;
+ UPDATE helpdesk_auth.cg_local_accounts SET active=false,registry_revision=local_revision WHERE workspace_id=w;
+ UPDATE helpdesk_auth.cg_local_works SET active=false,registry_revision=local_revision WHERE workspace_id=w;
+ UPDATE helpdesk_auth.cg_local_permissions SET active=false,registry_revision=local_revision WHERE workspace_id=w;
  FOR row_value IN SELECT value FROM jsonb_array_elements(v->'accounts') LOOP
   IF NOT coalesce(helpdesk_auth.hdn_cfg_object(row_value,ARRAY['accountId','name','productInstanceId','connectionId','bindingId','tenantId','active']),false)
   OR NOT coalesce(helpdesk_auth.hdn_cfg_singleline(row_value->'name',160),false) OR NOT helpdesk_auth.hdni_resource_text(row_value->>'tenantId')
@@ -117,19 +117,19 @@ BEGIN
   IF NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_bindings WHERE workspace_id=w AND account_id=account AND id=(row_value->>'bindingId')::uuid AND connection_id=(row_value->>'connectionId')::uuid AND tenant_id=row_value->>'tenantId') THEN RAISE EXCEPTION 'Binding mismatch' USING ERRCODE='PGL01';END IF;
   INSERT INTO helpdesk_auth.cg_resource_publishers(workspace_id,connection_id,manifest_fingerprint,active) VALUES(w,(row_value->>'connectionId')::uuid,v->>'manifestFingerprint',true) ON CONFLICT(workspace_id,connection_id) DO NOTHING;
   IF NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_publishers WHERE workspace_id=w AND connection_id=(row_value->>'connectionId')::uuid AND manifest_fingerprint=v->>'manifestFingerprint' AND active) THEN RAISE EXCEPTION 'Local provenance mapping required' USING ERRCODE='PGL01';END IF;
-  INSERT INTO helpdesk_auth.cg_local_accounts VALUES(w,account,(row_value->>'bindingId')::uuid,(row_value->>'connectionId')::uuid,(row_value->>'productInstanceId')::uuid,row_value->>'tenantId',row_value->>'name',(row_value->>'active')::boolean,revision)
+  INSERT INTO helpdesk_auth.cg_local_accounts VALUES(w,account,(row_value->>'bindingId')::uuid,(row_value->>'connectionId')::uuid,(row_value->>'productInstanceId')::uuid,row_value->>'tenantId',row_value->>'name',(row_value->>'active')::boolean,local_revision)
   ON CONFLICT(workspace_id,account_id) DO UPDATE SET name=excluded.name,active=excluded.active,registry_revision=excluded.registry_revision;
  END LOOP;
  FOR row_value IN SELECT value FROM jsonb_array_elements(v->'works') LOOP
   IF NOT coalesce(helpdesk_auth.hdn_cfg_object(row_value,ARRAY['accountId','id','name','active']),false) OR NOT helpdesk_auth.hdni_resource_text(row_value->>'id') OR NOT coalesce(helpdesk_auth.hdn_cfg_singleline(row_value->'name',160),false) OR jsonb_typeof(row_value->'active') IS DISTINCT FROM 'boolean'
   OR NOT EXISTS(SELECT 1 FROM jsonb_array_elements(v->'accounts') x WHERE x->>'accountId'=row_value->>'accountId') THEN RAISE EXCEPTION 'Invalid local work' USING ERRCODE='PGL01';END IF;
-  INSERT INTO helpdesk_auth.cg_local_works VALUES(w,(row_value->>'accountId')::uuid,row_value->>'id',row_value->>'name',(row_value->>'active')::boolean,revision) ON CONFLICT(workspace_id,account_id,id) DO UPDATE SET name=excluded.name,active=excluded.active,registry_revision=excluded.registry_revision;
+  INSERT INTO helpdesk_auth.cg_local_works VALUES(w,(row_value->>'accountId')::uuid,row_value->>'id',row_value->>'name',(row_value->>'active')::boolean,local_revision) ON CONFLICT(workspace_id,account_id,id) DO UPDATE SET name=excluded.name,active=excluded.active,registry_revision=excluded.registry_revision;
  END LOOP;
  FOR row_value IN SELECT value FROM jsonb_array_elements(v->'permissions') LOOP
   account:=(row_value->>'accountId')::uuid;person:=(row_value->>'principalId')::uuid;
   -- Relationship creation/change is explicit operator input; scopes are untouched.
   INSERT INTO helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role,active) VALUES(w,account,person,row_value->>'role',EXISTS(SELECT 1 FROM jsonb_array_elements(v->'permissions') q WHERE q->>'accountId'=account::text AND q->>'principalId'=person::text AND q->'active'='true'::jsonb)) ON CONFLICT(workspace_id,account_id,principal_id) DO UPDATE SET role=excluded.role,active=excluded.active;
-  INSERT INTO helpdesk_auth.cg_local_permissions VALUES(w,account,person,row_value->>'operation',row_value->>'role',(row_value->>'active')::boolean,ARRAY(SELECT jsonb_array_elements_text(row_value->'workIds')),revision)
+  INSERT INTO helpdesk_auth.cg_local_permissions VALUES(w,account,person,row_value->>'operation',row_value->>'role',(row_value->>'active')::boolean,ARRAY(SELECT jsonb_array_elements_text(row_value->'workIds')),local_revision)
   ON CONFLICT(workspace_id,account_id,principal_id,operation) DO UPDATE SET role=excluded.role,active=excluded.active,work_ids=excluded.work_ids,registry_revision=excluded.registry_revision;
  END LOOP;
  IF (SELECT count(*) FROM helpdesk_auth.cg_local_accounts WHERE workspace_id=w)>50 OR (SELECT count(*) FROM helpdesk_auth.cg_local_works WHERE workspace_id=w)>1000 OR (SELECT count(*) FROM helpdesk_auth.cg_local_permissions WHERE workspace_id=w)>1000 THEN RAISE EXCEPTION 'Local registry capacity exceeded' USING ERRCODE='PGL01';END IF;
@@ -147,19 +147,19 @@ BEGIN
   is_active:=a.active AND p.active;
   SELECT coalesce(jsonb_agg(jsonb_build_object('connectionId',a.connection_id,'tenantId',a.tenant_id,'type','work','id',x.id) ORDER BY helpdesk_auth.hdni_utf16(x.id)),'[]') INTO refs FROM helpdesk_auth.cg_local_works x WHERE x.workspace_id=w AND x.account_id=p.account_id AND x.active AND x.id=ANY(p.work_ids) AND is_active;
   target:=jsonb_build_object('workspaceId',w,'accountId',p.account_id,'bindingId',a.binding_id,'principalId',p.principal_id,'operation',p.operation,'connectionId',a.connection_id,'tenantId',a.tenant_id);
-  snapshot:=jsonb_build_object('target',target,'manifestFingerprint',v->>'manifestFingerprint','bindingRevision','local-binding:'||revision::text,'accessRevision','local:'||revision::text,'asOf',as_text,'expiresAt',expires_text,'state',CASE WHEN is_active THEN 'active' ELSE 'revoked' END,'complete',true,'resources',refs);
+  snapshot:=jsonb_build_object('target',target,'manifestFingerprint',v->>'manifestFingerprint','bindingRevision','local-binding:'||local_revision::text,'accessRevision','local:'||local_revision::text,'asOf',as_text,'expiresAt',expires_text,'state',CASE WHEN is_active THEN 'active' ELSE 'revoked' END,'complete',true,'resources',refs);
   snapshot_hash:=helpdesk_auth.hdni_digest(snapshot);target_hash:=helpdesk_auth.hdni_digest(target);publication_hash:=helpdesk_auth.hdni_digest(jsonb_build_object('target',target,'expectedRevision',prior::text));
-  IF prior=0 THEN INSERT INTO helpdesk_auth.cg_resource_grant_sets(workspace_id,account_id,binding_id,principal_id,operation,source_revision,as_of,expires_at,expected_count,active) VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,'local:'||revision::text,instant,expires,0,false);END IF;
+  IF prior=0 THEN INSERT INTO helpdesk_auth.cg_resource_grant_sets(workspace_id,account_id,binding_id,principal_id,operation,source_revision,as_of,expires_at,expected_count,active) VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,'local:'||local_revision::text,instant,expires,0,false);END IF;
   DELETE FROM helpdesk_auth.cg_resource_grant_refs WHERE workspace_id=w AND account_id=p.account_id AND binding_id=a.binding_id AND principal_id=p.principal_id AND operation=p.operation;
   INSERT INTO helpdesk_auth.cg_resource_grant_refs(workspace_id,account_id,binding_id,principal_id,operation,resource_type,resource_id) SELECT w,p.account_id,a.binding_id,p.principal_id,p.operation,'work',value->>'id' FROM jsonb_array_elements(refs);
-  UPDATE helpdesk_auth.cg_resource_grant_sets x SET revision=x.revision+1,source_revision='local:'||revision::text,as_of=instant,expires_at=expires,expected_count=jsonb_array_length(refs),active=is_active WHERE workspace_id=w AND account_id=p.account_id AND binding_id=a.binding_id AND principal_id=p.principal_id AND operation=p.operation RETURNING x.revision INTO next;
-  IF is_active THEN INSERT INTO helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count) VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,next,'local-binding:'||revision::text,'local:'||revision::text,v->>'manifestFingerprint',instant,expires,jsonb_array_length(refs));END IF;
+  UPDATE helpdesk_auth.cg_resource_grant_sets x SET revision=x.revision+1,source_revision='local:'||local_revision::text,as_of=instant,expires_at=expires,expected_count=jsonb_array_length(refs),active=is_active WHERE workspace_id=w AND account_id=p.account_id AND binding_id=a.binding_id AND principal_id=p.principal_id AND operation=p.operation RETURNING x.revision INTO next;
+  IF is_active THEN INSERT INTO helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count) VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,next,'local-binding:'||local_revision::text,'local:'||local_revision::text,v->>'manifestFingerprint',instant,expires,jsonb_array_length(refs));END IF;
   INSERT INTO helpdesk_auth.cg_resource_publication_states VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,next,prior,snapshot,snapshot_hash,request::text,publication_hash,target_hash,pg_current_xact_id()) ON CONFLICT(workspace_id,account_id,binding_id,principal_id,operation) DO UPDATE SET grant_revision=excluded.grant_revision,previous_revision=excluded.previous_revision,snapshot=excluded.snapshot,snapshot_hash=excluded.snapshot_hash,publication_key=excluded.publication_key,command_hash=excluded.command_hash,target_hash=excluded.target_hash,publication_xid=excluded.publication_xid;
   publication_receipt:=jsonb_build_object('key',request::text,'commandHash',publication_hash,'targetHash',target_hash,'previousRevision',prior::text,'revision',next::text,'snapshotHash',snapshot_hash,'state',snapshot->>'state','resourceCount',jsonb_array_length(refs),'asOf',as_text,'expiresAt',expires_text);
   INSERT INTO helpdesk_auth.cg_resource_publication_ledger(workspace_id,account_id,binding_id,principal_id,operation,publication_key,receipt) VALUES(w,p.account_id,a.binding_id,p.principal_id,p.operation,request::text,publication_receipt);
  END LOOP;
- result:=jsonb_build_object('workspaceId',w,'requestId',request,'revision',revision,'commandHash',command_hash,'decisionHash',decision_hash,'sourceManifest',helpdesk_auth.cg_local_manifest(),'asOf',as_text,'expiresAt',expires_text,'recordedBy',session_user::text);
- INSERT INTO helpdesk_audit.cg_local_receipts(workspace_id,request_id,registry_revision,command_hash,decision_hash,reason,receipt) VALUES(w,request,revision,command_hash,decision_hash,v->>'reason',result);RETURN result;
+ result:=jsonb_build_object('workspaceId',w,'requestId',request,'revision',local_revision,'commandHash',command_hash,'decisionHash',decision_hash,'sourceManifest',helpdesk_auth.cg_local_manifest(),'asOf',as_text,'expiresAt',expires_text,'recordedBy',session_user::text);
+ INSERT INTO helpdesk_audit.cg_local_receipts(workspace_id,request_id,registry_revision,command_hash,decision_hash,reason,receipt) VALUES(w,request,local_revision,command_hash,decision_hash,v->>'reason',result);RETURN result;
 EXCEPTION WHEN invalid_text_representation OR numeric_value_out_of_range OR datetime_field_overflow THEN RAISE EXCEPTION 'Invalid local declaration' USING ERRCODE='PGL01';
 END$$;
 
@@ -276,6 +276,21 @@ BEGIN
  END LOOP;RETURN result;
 END$$;
 
+-- Current-human ticket collection preparation requires tickets:read, independently
+-- of picker contexts:resolve. It refreshes only genuine current local targets and
+-- returns bounded namespaces; metadata does not replace ticket RLS or work checks.
+CREATE FUNCTION helpdesk_auth.cg_local_prepare_ticket_collection() RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
+DECLARE a helpdesk_auth.cg_local_accounts%rowtype;access jsonb;result jsonb:='[]';w uuid:=helpdesk_auth.workspace_id();
+BEGIN
+ IF NOT coalesce(helpdesk_auth.is_human(),false) OR NOT coalesce(helpdesk_auth.has_scope(w,'tickets:read'),false) THEN RETURN result;END IF;
+ PERFORM 1 FROM helpdesk_auth.cg_local_registries WHERE workspace_id=w FOR SHARE;
+ FOR a IN SELECT * FROM helpdesk_auth.cg_local_accounts WHERE workspace_id=w AND active ORDER BY account_id FOR SHARE LOOP
+  access:=helpdesk_auth.cg_local_read_access(a.connection_id,a.tenant_id,'tickets.read');
+  IF access IS NULL OR jsonb_array_length(access->'resources')=0 THEN CONTINUE;END IF;
+  result:=result||jsonb_build_array(jsonb_build_object('accountId',a.account_id,'productInstanceId',a.product_instance_id,'connectionId',a.connection_id,'tenantId',a.tenant_id));
+ END LOOP;RETURN result;
+END$$;
+
 -- RLS expressions store function OIDs. Rebind them to the new public wrappers;
 -- the renamed historical bases have no application EXECUTE privilege.
 ALTER POLICY cg_ticket_resource_read ON helpdesk_core.tickets USING(helpdesk_auth.cg_ticket_resource_allowed(workspace_id,account_id,id,'tickets.read'));
@@ -300,4 +315,4 @@ BEGIN
   FOREACH r IN ARRAY ARRAY['anon','authenticated','service_role','helpdesk_maintenance'] LOOP IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname=r) THEN EXECUTE format('REVOKE ALL ON FUNCTION %s FROM %I',obj.signature,r);END IF;END LOOP;
  END LOOP;
 END $local_acl$;
-GRANT EXECUTE ON FUNCTION helpdesk_auth.hdni_lock_scope(jsonb),helpdesk_auth.cg_ticket_resource_allowed(uuid,uuid,uuid,text),helpdesk_auth.cg_local_read_access(uuid,text,text),helpdesk_auth.cg_local_ticket_directory(uuid),helpdesk_auth.cg_local_request_contexts() TO helpdesk_app;
+GRANT EXECUTE ON FUNCTION helpdesk_auth.hdni_lock_scope(jsonb),helpdesk_auth.cg_ticket_resource_allowed(uuid,uuid,uuid,text),helpdesk_auth.cg_local_read_access(uuid,text,text),helpdesk_auth.cg_local_ticket_directory(uuid),helpdesk_auth.cg_local_request_contexts(),helpdesk_auth.cg_local_prepare_ticket_collection() TO helpdesk_app;

@@ -9,11 +9,15 @@ import {runTransaction} from '../../src/infrastructure/transaction.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
 import type {Principal} from '../../src/domain/model.ts';
 import {canonicalJson,requestHash} from '../../src/domain/canonical.ts';
+import {runLocalCollectionSqlScenarios} from './local-collection-scenarios.ts';
+import {installInitialOperationCandidate} from './initial-operation-scenarios.ts';
 export function registerLocalRegistrySqlTests(adminPool:()=>SqlPool,appPool:()=>SqlPool){test('local registry private provisioning and native current-decision admission',async suite=>{
  const admin=adminPool();
  assert.equal((await admin.query("select current_database()='helpdesk_test' and current_setting('server_version_num')::int between 170000 and 179999 as owned")).rows[0]?.owned,true);
  await runTransaction(admin,undefined,async client=>{await client.query("select set_config('app.cg_local_candidate','disposable-pg17',true)");await client.query(await readFile(new URL('../candidates/cg_local_registry.sql',import.meta.url),'utf8'));});
+ await installInitialOperationCandidate(admin);
  await runLocalRegistryScenarios(suite,admin,appPool());
+ await runLocalCollectionSqlScenarios(suite,admin,appPool());
 });}
 export async function runLocalRegistryScenarios(suite:TestContext,admin:SqlPool,app:SqlPool){
  const w=randomUUID(),a=randomUUID(),person=randomUUID(),user=randomUUID(),product=randomUUID(),instance=randomUUID(),connection=randomUUID(),binding=randomUUID();
@@ -27,7 +31,8 @@ export async function runLocalRegistryScenarios(suite:TestContext,admin:SqlPool,
   accounts:[{accountId:a,name:'Disposable declared account',productInstanceId:instance,connectionId:connection,bindingId:binding,tenantId:'0001',active:true}],
   works:[{accountId:a,id:'0001',name:'Disposable work 0001',active:true},{accountId:a,id:'A',name:'Disposable work A',active:true}],
   permissions:['tickets.read','tickets.write'].map(operation=>({accountId:a,principalId:person,role:'requester',operation,active:true,workIds:['0001','A']}))};
- const plan=()=>planConsulteGeoLocalProvisioning(declared),provision=async()=>{const p=plan();return (await admin.query(p.sql,[...p.values])).rows[0]!.receipt as {revision:number;commandHash:string;asOf:string;expiresAt:string;recordedBy:string};};
+ const plan=()=>planConsulteGeoLocalProvisioning(declared),provision=async()=>{const p=plan();try{return (await admin.query(p.sql,[...p.values])).rows[0]!.receipt as {revision:number;commandHash:string;asOf:string;expiresAt:string;recordedBy:string};}
+  catch(error){const e=error as {code?:string;where?:string;position?:string;internalPosition?:string};suite.diagnostic(JSON.stringify({fixture:'disposable-local-registry',code:e.code,where:e.where,position:e.position,internalPosition:e.internalPosition}));throw error;}};
  const p:Principal={id:person,workspaceId:w,kind:'human',workspaceRole:'agent',grants:[{accountId:a,role:'requester'}],scopes:['contexts:resolve','tickets:read','tickets:write']};
  const ports=createPostgresLocalConsulteGeoSourcePorts(app),refs=[{connectionId:connection,tenantId:'0001',type:'work',id:'0001'}];
  const access=()=>ports.authority.readAccess({principalId:person,workspaceId:w,connectionId:connection,tenantId:'0001',operation:'tickets.read',refs},new AbortController().signal) as Promise<any>;
