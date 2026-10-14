@@ -26,7 +26,7 @@ def record(name):
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
     for width in [1440,390]:
-        context,page,errors,_=prepare(browser,advanced_access=False)
+        context,page,errors,_=prepare(browser,advanced_access=False,consultegeo_intake=True)
         page.set_viewport_size({'width':width,'height':1100});page.set_default_timeout(7000)
         state={'created':False,'draft':None,'opening':[],'workflow':[],'opening_lost':True,'workflow_lost':True,'workflow_receipts':{},'messages':[]}
         ticket={'id':TICKET,'account_id':ACCOUNT,'product_instance_id':INSTANCE,'service_code':'questions','subject':'Dúvida sintética da obra','description':'Dados locais de ensaio; nenhum registro externo.','status':'received','internal_status':'new','priority':'normal','version':1,'coverage_id':COVERAGE,'contract_version_id':CONTRACT,'created_at':'2026-10-14T12:00:00.000000Z','updated_at':'2026-10-14T12:00:00.000000Z','assignment':{'state':'unassigned','can_claim':True,'can_release':False},'consultegeo':{'protocol':'CG-10001','profileVersionId':PROFILE,'workflow':True,'requesterId':PRI}}
