@@ -10,7 +10,7 @@ export type ChecklistView=Readonly<{
  review:Readonly<{itemId:string;label:string;status:ChecklistMark['status'];evidenceCount:number;reason:string|null;risk:'ordinary'|'sensitive'}>|null;
  receipt:ChecklistMarkReceipt|null;requiredTotal:number|null;requiredCompleted:number|null;canEdit:boolean;message:string;hasUnconfirmedWrite:boolean;
 }>;
-export type ChecklistControllerOptions={audience:ChecklistAudience;request:(path:string,init:RequestInit)=>Promise<Response>;key?:()=>string;timeoutMs?:number;onState?:(state:ChecklistView)=>void};
+export type ChecklistControllerOptions={audience:ChecklistAudience;request:(path:string,init:RequestInit)=>Promise<Response>;key?:()=>string;timeoutMs?:number;onState?:(state:ChecklistView)=>void;onResponseDiagnostic?:(category:string)=>unknown};
 export interface ChecklistController{
  view():ChecklistView;load():Promise<boolean>;loadEvidence(more?:boolean):Promise<boolean>;toggleEvidence(id:string):boolean;editItem(id:string):boolean;
  setField(name:'status'|'evidenceText'|'reason'|'acknowledgeRisk',value:string|boolean):boolean;

@@ -1,6 +1,6 @@
 import {mkdir,copyFile,rm} from 'node:fs/promises';
 await rm(new URL('../dist/',import.meta.url),{recursive:true,force:true});await mkdir(new URL('../dist/',import.meta.url),{recursive:true});
-for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-operation.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-operation.css','response-diagnostic.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 for(const name of ['support-navigation.js','access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 
 await mkdir(new URL('../dist/shared/',import.meta.url),{recursive:true});

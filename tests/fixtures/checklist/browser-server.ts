@@ -12,7 +12,7 @@ if(process.env.HELPDESK_OWNED_CHECKLIST_BROWSER!=='synthetic-loopback')throw Err
 const root=resolve(fileURLToPath(new URL('../../../',import.meta.url)));
 let fixture=createChecklistCompositionFixture();
 const html=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Checklist — demonstração sintética</title><link rel="stylesheet" href="/web/execution-checklist.css"><link rel="stylesheet" href="/fixture.css"></head><body><main><p class="fixture-label">TESTE LOCAL · Dados sintéticos · Sem acesso ao GEO</p><div id="checklist"></div><button id="fixture-clear" type="button">Sair da sessão sintética</button></main><script type="module" src="/fixture.js"></script></body></html>`;
-const servePaths=new Set(['/web/execution-checklist.js','/web/execution-checklist-state.js','/web/execution-checklist-contract.js','/web/execution-checklist.css','/shared/form-rules.js','/shared/cnpj.js','/shared/instant.js','/shared/checklist-evidence.js']);
+const servePaths=new Set(['/web/response-diagnostic.js','/web/execution-checklist.js','/web/execution-checklist-state.js','/web/execution-checklist-contract.js','/web/execution-checklist.css','/shared/form-rules.js','/shared/cnpj.js','/shared/instant.js','/shared/checklist-evidence.js']);
 const server=createServer(async(req,res)=>{
  const address=server.address();if(!address||typeof address==='string'){res.writeHead(503);res.end();return;}
  const localOrigin='http://127.0.0.1:'+address.port;

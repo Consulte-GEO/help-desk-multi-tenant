@@ -1,3 +1,4 @@
+import {observeResponseDiagnostic} from './response-diagnostic.js';
 import {readEvidencePage} from '../shared/checklist-evidence.js';
 import {copyFormData,freezeFormData} from '../shared/form-rules.js';
 import {checklistAudience,readChecklistPresentation,prepareChecklistMark,readChecklistMarkReceipt} from './execution-checklist-contract.js';
@@ -16,7 +17,7 @@ const failure=()=>new Error('Resposta indisponível.');
  * memory-only session and must never automatically retry mutations. No identity,
  * credential, trace or opaque payload is logged, persisted or put in the URL here.
  */
-async function attempt(request,path,init,controller,timeoutMs){
+async function attempt(request,path,init,controller,timeoutMs,diagnostic){let category='request';
  const deadline=performance.now()+timeoutMs;let timer,abortListener,reader,response,complete=false;
  const cancelled=new WeakSet();
  const discard=value=>{try{if(value instanceof Response&&!cancelled.has(value)){cancelled.add(value);void value.body?.cancel().catch(()=>{});}}catch{/* cleanup only */}};
@@ -31,15 +32,15 @@ async function attempt(request,path,init,controller,timeoutMs){
   // do not adopt it as a new result or leave it retaining network resources.
   void dispatched.then(value=>{if(controller.signal.aborted||performance.now()>=deadline)discard(value);},()=>{});
   response=await Promise.race([dispatched,stopped]);check();
-  if(!(response instanceof Response)||!/^application\/(?:problem\+)?json(?:\s*;|$)/i.test(response.headers.get('content-type')??'')||!response.body)throw failure();
+  category='response_type';if(!(response instanceof Response))throw failure();category='response_content_type';if(!/^application\/(?:problem\+)?json(?:\s*;|$)/i.test(response.headers.get('content-type')??''))throw failure();category='response_body';if(!response.body)throw failure();
   reader=response.body.getReader();const chunks=[];let size=0;
   for(;;){const part=await Promise.race([reader.read(),stopped]);check();if(part.done){complete=true;break;}
    size+=part.value.byteLength;if(size>262144)throw failure();chunks.push(part.value);
   }
   const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}
-  const data=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));check();
+  category='response_json';const data=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));check();
   return {data,status:response.status,etag:response.headers.get('etag')};
- }finally{
+ }catch(error){observeResponseDiagnostic(diagnostic,category);throw error;}finally{
   clearTimeout(timer);controller.signal.removeEventListener('abort',abortListener);
   if(!complete){if(reader)try{void reader.cancel().catch(()=>{});}catch{/* no response details */}else discard(response);}
   try{reader?.releaseLock();}catch{/* pending cancelled read */}
@@ -67,15 +68,16 @@ export function createExecutionChecklistController(options){
  function clear(){if(destroyed)return false;wipe('empty');audience=null;emit();return true;}
  async function load(){
   if(destroyed||!audience||!['idle','ready','refresh_required','error'].includes(state.phase))return false;
-  const person=audience,token=++generation,controller=new AbortController();active?.abort();active=controller;
+  const person=audience,token=++generation,controller=new AbortController();let readCategory=null;active?.abort();active=controller;
   state={...empty('loading'),message:'Carregando o checklist desta revisão…'};emit();
   try{
    if(!alive(token,controller))return false;
-   const result=await attempt(options.request,'/v1/internal/tickets/'+person.ticketId+'/execution-checklist',{method:'GET',cache:'no-store'},controller,timeoutMs);
+   const result=await attempt(options.request,'/v1/internal/tickets/'+person.ticketId+'/execution-checklist',{method:'GET',cache:'no-store'},controller,timeoutMs,options.onResponseDiagnostic);
+   readCategory=result.etag!==JSON.stringify(String(result.data?.snapshot?.revision??0))?'checklist_etag':'checklist_receipt';
    if(!alive(token,controller))return false;if(result.status!==200)throw failure();
    const presentation=readChecklistPresentation(result.data,person,result.etag);
    state={...empty('ready'),...presentation,message:presentation.canEdit?'Confira a execução e registre cada item.':'Consulta interna. Somente o responsável autorizado pode registrar itens.'};return true;
-  }catch{if(alive(token,controller))state={...empty('error'),message:'Não foi possível consultar a revisão. Confira o acesso e tente atualizar.'};return false;}
+  }catch{if(alive(token,controller)){observeResponseDiagnostic(options.onResponseDiagnostic,readCategory);state={...empty('error'),message:'Não foi possível consultar a revisão. Confira o acesso e tente atualizar.'};}return false;}
   finally{controller.abort();if(active===controller)active=null;if(!destroyed&&generation===token)emit();}
  }
  function editItem(itemId){
