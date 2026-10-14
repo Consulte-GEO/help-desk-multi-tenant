@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "site": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "account": "68a35d6f9d3da169c2aa304d",
+  "checkedAt": "2026-10-14T19:42:19.306Z",
+  "expectedCommit": "82385d899e25b9b591697002665dea8f4b527f96",
+  "buildSettings": {
+    "provider": "github",
+    "repo_path": "Consulte-GEO/help-desk-multi-tenant",
+    "repo_url": "https://github.com/Consulte-GEO/help-desk-multi-tenant",
+    "repo_branch": "codex/m1-reproducibilidade",
+    "stop_builds": false,
+    "allowed_branches": [
+      "codex/m1-reproducibilidade"
+    ],
+    "skip_prs": null,
+    "cmd": "npm run verify:release",
+    "dir": "dist",
+    "functions_dir": "netlify/functions",
+    "base": null
+  },
+  "publishedDeploy": {
+    "id": "6acfda6f2bff83f351302eb9",
+    "state": "ready",
+    "branch": "codex/m1-reproducibilidade",
+    "commit_ref": "82385d899e25b9b591697002665dea8f4b527f96",
+    "context": "production",
+    "created_at": "2026-10-14T19:39:27.713Z",
+    "updated_at": "2026-10-14T19:40:20.065Z",
+    "published_at": "2026-10-14T19:40:14.530Z",
+    "build_id": "6acfda6f2bff83f351302eb7",
+    "skipped": null,
+    "locked": null,
+    "function_schedules": [
+      {
+        "cron": "* * * * *",
+        "name": "notification-worker"
+      }
+    ]
+  },
+  "latestDeploys": [
+    {
+      "id": "6acfda6f2bff83f351302eb9",
+      "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+      "build_id": "6acfda6f2bff83f351302eb7",
+      "state": "ready",
+      "branch": "codex/m1-reproducibilidade",
+      "commit_ref": "82385d899e25b9b591697002665dea8f4b527f96",
+      "context": "production",
+      "created_at": "2026-10-14T19:39:27.713Z",
+      "updated_at": "2026-10-14T19:40:20.065Z",
+      "published_at": "2026-10-14T19:40:14.530Z",
+      "skipped": null,
+      "locked": null,
+      "function_schedules": [
+        {
+          "cron": "* * * * *",
+          "name": "notification-worker"
+        }
+      ],
+      "errorPresent": false
+    },
+    {
+      "id": "6acfd4ec6c2cedd86b78686e",
+      "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+      "build_id": "6acfd4ec6c2cedd86b78686c",
+      "state": "ready",
+      "branch": "codex/m1-reproducibilidade",
+      "commit_ref": "99458d90a4e6f311dd9b9a236618e31b8673a3a0",
+      "context": "production",
+      "created_at": "2026-10-14T19:15:56.191Z",
+      "updated_at": "2026-10-14T19:16:54.422Z",
+      "published_at": "2026-10-14T19:16:49.463Z",
+      "skipped": null,
+      "locked": null,
+      "function_schedules": [
+        {
+          "cron": "* * * * *",
+          "name": "notification-worker"
+        }
+      ],
+      "errorPresent": false
+    },
+    {
+      "id": "6acfd2d5bbb38c72d8cb84e6",
+      "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+      "build_id": "6acfd2d5bbb38c72d8cb84e4",
+      "state": "ready",
+      "branch": "codex/consultegeo-operacao-piloto",
+      "commit_ref": "4712a53c27127613392d6e8466680c023afc8f12",
+      "context": "deploy-preview",
+      "created_at": "2026-10-14T19:07:01.051Z",
+      "updated_at": "2026-10-14T19:08:06.273Z",
+      "published_at": null,
+      "skipped": null,
+      "locked": null,
+      "function_schedules": [
+        {
+          "cron": "* * * * *",
+          "name": "notification-worker"
+        }
+      ],
+      "errorPresent": false
+    },
+    {
+      "id": "6acfbfaac248ccbc79f01320",
+      "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+      "build_id": "6acfbfaac248ccbc79f0131e",
+      "state": "ready",
+      "branch": "codex/m1-reproducibilidade",
+      "commit_ref": "e71808bc2eda73c970f5c5edac845ca9f6ec68c4",
+      "context": "production",
+      "created_at": "2026-10-14T17:45:14.833Z",
+      "updated_at": "2026-10-14T19:07:55.529Z",
+      "published_at": "2026-10-14T17:46:10.231Z",
+      "skipped": null,
+      "locked": null,
+      "function_schedules": [
+        {
+          "cron": "* * * * *",
+          "name": "notification-worker"
+        }
+      ],
+      "errorPresent": false
+    },
+    {
+      "id": "6acfbe235d4a377dd520573c",
+      "site_id": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+      "build_id": "6acfbe235d4a377dd520573a",
+      "state": "ready",
+      "branch": "codex/m1-reproducibilidade",
+      "commit_ref": "6f9e389351ca6d430cf7a75151c2524d8e7ba608",
+      "context": "production",
+      "created_at": "2026-10-14T17:38:43.117Z",
+      "updated_at": "2026-10-14T17:39:35.998Z",
+      "published_at": "2026-10-14T17:39:29.306Z",
+      "skipped": null,
+      "locked": null,
+      "function_schedules": [
+        {
+          "cron": "* * * * *",
+          "name": "notification-worker"
+        }
+      ],
+      "errorPresent": false
+    }
+  ],
+  "latestBuilds": [
+    {
+      "id": "6acfda6f2bff83f351302eb7",
+      "deploy_id": "6acfda6f2bff83f351302eb9",
+      "sha": "82385d899e25b9b591697002665dea8f4b527f96",
+      "done": true,
+      "created_at": "2026-10-14T19:39:27.735Z",
+      "errorPresent": false
+    },
+    {
+      "id": "6acfd4ec6c2cedd86b78686c",
+      "deploy_id": "6acfd4ec6c2cedd86b78686e",
+      "sha": "99458d90a4e6f311dd9b9a236618e31b8673a3a0",
+      "done": true,
+      "created_at": "2026-10-14T19:15:56.213Z",
+      "errorPresent": false
+    },
+    {
+      "id": "6acfd2d5bbb38c72d8cb84e4",
+      "deploy_id": "6acfd2d5bbb38c72d8cb84e6",
+      "sha": "pull/35/head",
+      "done": true,
+      "created_at": "2026-10-14T19:07:01.085Z",
+      "errorPresent": false
+    },
+    {
+      "id": "6acfbfaac248ccbc79f0131e",
+      "deploy_id": "6acfbfaac248ccbc79f01320",
+      "sha": "e71808bc2eda73c970f5c5edac845ca9f6ec68c4",
+      "done": true,
+      "created_at": "2026-10-14T17:45:14.865Z",
+      "errorPresent": false
+    },
+    {
+      "id": "6acfbe235d4a377dd520573a",
+      "deploy_id": "6acfbe235d4a377dd520573c",
+      "sha": "6f9e389351ca6d430cf7a75151c2524d8e7ba608",
+      "done": true,
+      "created_at": "2026-10-14T17:38:43.144Z",
+      "errorPresent": false
+    }
+  ],
+  "expectedCommitInLatestDeploys": true,
+  "expectedCommitInLatestBuilds": true,
+  "environmentRead": false,
+  "environmentEnumeration": false,
+  "remoteConfigurationChanged": false,
+  "providerCalled": false,
+  "secretsPrinted": false
+}

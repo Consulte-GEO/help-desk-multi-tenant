@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "site": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "account": "68a35d6f9d3da169c2aa304d",
+  "checkedAt": "2026-10-14T19:49:07.135Z",
+  "source": "Official Netlify OAuth API: fixed eight worker keys only",
+  "keys": [
+    {
+      "key": "HELPDESK_NOTIFICATION_DELIVERY_ENABLED",
+      "exists": true,
+      "isSecret": false,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "production",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": true,
+      "matchesExpectedPublicValue": true,
+      "expectedPublicValue": "true",
+      "publicValue": "true"
+    },
+    {
+      "key": "HELPDESK_RELEASE_APPROVED",
+      "exists": true,
+      "isSecret": false,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "production",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": true,
+      "matchesExpectedPublicValue": true,
+      "expectedPublicValue": "true",
+      "publicValue": "true"
+    },
+    {
+      "key": "HELPDESK_NOTIFICATION_DATABASE_URL",
+      "exists": true,
+      "isSecret": true,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "production",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": true
+    },
+    {
+      "key": "HELPDESK_NOTIFICATION_DATABASE_CA",
+      "exists": true,
+      "isSecret": true,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "production",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": true
+    },
+    {
+      "key": "HELPDESK_CONSULTEGEO_ORIGIN",
+      "exists": true,
+      "isSecret": false,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 5,
+      "contexts": [
+        {
+          "context": "dev",
+          "hasContextParameter": false
+        },
+        {
+          "context": "branch-deploy",
+          "hasContextParameter": false
+        },
+        {
+          "context": "deploy-preview",
+          "hasContextParameter": false
+        },
+        {
+          "context": "production",
+          "hasContextParameter": false
+        },
+        {
+          "context": "dev-server",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": false,
+      "matchesExpectedPublicValue": true,
+      "expectedPublicValue": "https://helpdesk.consultegeo.org",
+      "publicValue": "https://helpdesk.consultegeo.org"
+    },
+    {
+      "key": "RESEND_API_KEY",
+      "exists": true,
+      "isSecret": true,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 5,
+      "contexts": [
+        {
+          "context": "dev",
+          "hasContextParameter": false
+        },
+        {
+          "context": "branch-deploy",
+          "hasContextParameter": false
+        },
+        {
+          "context": "deploy-preview",
+          "hasContextParameter": false
+        },
+        {
+          "context": "production",
+          "hasContextParameter": false
+        },
+        {
+          "context": "dev-server",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": false
+    },
+    {
+      "key": "RESEND_FROM",
+      "exists": true,
+      "isSecret": false,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "all",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": false,
+      "matchesExpectedPublicValue": false,
+      "expectedPublicValue": "helpdesk@consultegeo.org",
+      "publicValue": "Consulte GEO — Help Desk <helpdesk@consultegeo.org>",
+      "matchesExpectedSenderMailbox": true
+    },
+    {
+      "key": "HELPDESK_NOTIFICATION_SENDER_VERIFIED",
+      "exists": true,
+      "isSecret": false,
+      "scopes": [
+        "functions"
+      ],
+      "valueCount": 1,
+      "contexts": [
+        {
+          "context": "production",
+          "hasContextParameter": false
+        }
+      ],
+      "functionsAvailable": true,
+      "productionAvailable": true,
+      "exactProductionFunctions": true,
+      "matchesExpectedPublicValue": true,
+      "expectedPublicValue": "true",
+      "publicValue": "true"
+    }
+  ],
+  "secretValuesAccessed": false,
+  "environmentEnumeration": false,
+  "remoteConfigurationChanged": false,
+  "providerCalled": false
+}
