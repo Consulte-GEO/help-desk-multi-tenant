@@ -1,0 +1,9 @@
+# Cadastros na operação Consulte GEO
+
+O usuário confirmou que cadastro é o tipo mais comum e precisa aparecer na abertura hoje. A implantação inicial publicou somente Dúvidas, Backup e Problemas. Corrigir a lacuna sobre o contrato0.24 já qualificado, preservando as17 migrations, a origem local e os chamados existentes.
+
+1. Publicar uma configuração adicional da família existente `user_access`, com título Cadastros e acessos. A inclusão permite Usuário, Traço, Usina, Laboratório, Bloco de alvenaria, Cerâmica, Cabos e Fornecedor. Campos condicionais escalares exigem os dados de cada tipo e recusam campos de outros tipos. Alteração, desativação, reenvio de acesso e liberação em obra usam identificação declarada e conferência manual; não dependem do Novo GEO nem de lookups ausentes.
+2. Gerar um plano offline e uma receita SQL transacional de operador. Conferir o patrocinador verificado, a inicialização existente, o registro local e a compilação nativa dos artefatos. A publicação preserva clientes/obras/permissões, chamados, contador e filas. Um recibo imutável do cadastro local registra requestId, operador real e o hash da configuração na justificativa, na mesma transação. Replay exige o mesmo conteúdo e verifica os registros publicados.
+3. Expor Cadastros como primeira opção da jornada; usar rótulos Novo cadastro e Alterar cadastro, mantendo as cinco ações e a validação estrita do contrato existente. A administração de configurações continua sob MFA.
+4. Verificar os nove fluxos relevantes, os campos condicionais, a persistência nativa, rollback/replay e a abertura atômica de um cadastro no PostgreSQL descartável. Executar a homologação integral e revisão antes de publicar a configuração real e o código.
+5. Publicar no domínio atual, conferir assets e proteção de acesso e solicitar ao usuário uma atualização da página. Concluir o worker de emails em paralelo com revisão independente, sem criar chamados fictícios em produção.

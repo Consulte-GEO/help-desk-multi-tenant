@@ -1,5 +1,5 @@
 import {copyFormData,freezeFormData,parseFormVersion} from './form-rules.js';
-export const CONSULTE_GEO_ACTION_LABELS=Object.freeze({include:'Incluir usuário',change:'Alterar usuário',disable:'Desativar usuário',resend_access:'Reenviar acesso',grant_work_access:'Liberar em nova obra',request:'Solicitação'});
+export const CONSULTE_GEO_ACTION_LABELS=Object.freeze({include:'Novo cadastro',change:'Alterar usuário',disable:'Desativar usuário',resend_access:'Reenviar acesso',grant_work_access:'Liberar usuário em obra',request:'Solicitação'});
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(v);
 const positive=v=>Number.isSafeInteger(v)&&v>0&&v<=2147483647;
 const exact=(v,keys)=>{if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||keys.some(k=>!Object.hasOwn(v,k)))throw Error();return v;};
