@@ -1,0 +1,622 @@
+{
+  "checked_at": "2026-10-14T20:32:47.977Z",
+  "origin": "https://helpdesk.consultegeo.org",
+  "deploy": "6acfe68833e2901f4c2a5c26",
+  "commit": "038854796d12188e0090ca71f7f5251b2e3115f2",
+  "stage": "released",
+  "source_sha256": "220403aa4b8c09832707822151872e3108ea72d3e6f6b62f9a76b3f7748c0e29",
+  "assets": [
+    {
+      "path": "access-experience.css",
+      "status": 200,
+      "sha256": "13eeb86152df4649364e69bdcbe31fd8f308914c916f4388110d0f1f1b481baa",
+      "same_source": true
+    },
+    {
+      "path": "access-experience.js",
+      "status": 200,
+      "sha256": "d7dbd4511775d39f8bf01c51012acaaedc948d7c75337a798e15928df50940ab",
+      "same_source": true
+    },
+    {
+      "path": "access-feedback.js",
+      "status": 200,
+      "sha256": "04a3e58e95480a41637e4f66385975d3e307c3e54b786c8056d90cf93f008f4b",
+      "same_source": true
+    },
+    {
+      "path": "access-mode.js",
+      "status": 200,
+      "sha256": "d27a9670f362dd9961df2097db39bffc70404115c6971b436988ea3642b57d8c",
+      "same_source": true
+    },
+    {
+      "path": "account-security.js",
+      "status": 200,
+      "sha256": "9cc0d7f495909c79b069b493438b665dc6ea7380e43fafe516485f407ed19852",
+      "same_source": true
+    },
+    {
+      "path": "admin-configuration.js",
+      "status": 200,
+      "sha256": "e375e5000caa31ce1954714605f8a84d93e4fd86e3a1b73fa1e1c1149895538e",
+      "same_source": true
+    },
+    {
+      "path": "admin-experience.css",
+      "status": 200,
+      "sha256": "3975b8429d947456d04cc2c5ff07a157b2528b7234aea6ecd6e083cc980a8413",
+      "same_source": true
+    },
+    {
+      "path": "admin-forms.js",
+      "status": 200,
+      "sha256": "9f7ca726be6d6c65c17c0855d2a0480dfc70c5d8f58628c548724f5ae927531c",
+      "same_source": true
+    },
+    {
+      "path": "admin-members-state.js",
+      "status": 200,
+      "sha256": "fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2",
+      "same_source": true
+    },
+    {
+      "path": "admin-members.css",
+      "status": 200,
+      "sha256": "b9316b65dc44f167b8339f0b718ca7be46eb25c3e409a36dd8ad12362f01b580",
+      "same_source": true
+    },
+    {
+      "path": "admin-members.js",
+      "status": 200,
+      "sha256": "2cd668b2f26eb8a92930d2cb9ce424542bff9de6674c027df127695813d162ac",
+      "same_source": true
+    },
+    {
+      "path": "admin-ui.js",
+      "status": 200,
+      "sha256": "54756dfdea4aa00fcfd9029724df16c9b9f92c706f652c851443f4a9f738521d",
+      "same_source": true
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "sha256": "f32684350744f2c9c77080092f4ff1154a94b57f104a116c194f6235301261a8",
+      "same_source": true
+    },
+    {
+      "path": "approvals.js",
+      "status": 200,
+      "sha256": "58c0247f2b556fd2f2a689c1a42f54811cfd96d934f53ec7f7ff778c3d1df635",
+      "same_source": true
+    },
+    {
+      "path": "assets/consulte-geo-color.png",
+      "status": 200,
+      "sha256": "99f7607e9d4bc74ad7f7e06ca3e1311f9e2e82448286bb500e85cfd7de0199db",
+      "same_source": true
+    },
+    {
+      "path": "assets/consulte-geo-white.png",
+      "status": 200,
+      "sha256": "924d2c378ad237bd23985358509b9d33f5433576468f86c1c59be0564b832bd1",
+      "same_source": true
+    },
+    {
+      "path": "attachments.js",
+      "status": 200,
+      "sha256": "686abc80387e631fef5ac9fa88ee5034359f6007090ece30dd3f406538029c3f",
+      "same_source": true
+    },
+    {
+      "path": "brand-profile.js",
+      "status": 200,
+      "sha256": "10964da32c5e5291c271b8702924811db515a157be2e184f46f12c4789c0add9",
+      "same_source": true
+    },
+    {
+      "path": "brand-shell.js",
+      "status": 200,
+      "sha256": "4462120a94b3b5c2f65407e931a05a8c2ff326e855e5aae9ca6878c761637d2b",
+      "same_source": true
+    },
+    {
+      "path": "consulte-theme.css",
+      "status": 200,
+      "sha256": "728ed9d8ecda4a6187f6eecde04ad2e1d494fc0906418d7dd18423e8f6f2345d",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-configuration.css",
+      "status": 200,
+      "sha256": "54be6e6591f0ae0040124f4d0180931da120b0e589bba04bae9c8941f0e418aa",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-configuration.js",
+      "status": 200,
+      "sha256": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-intake-api.js",
+      "status": 200,
+      "sha256": "de5f451275364eaabf7c5f6820116547d6c18cb4683ac79940f480a399581242",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-operation.css",
+      "status": 200,
+      "sha256": "91d54a24f28e040cbf8a69b56b8429887ac7bca7a7fa80b5f81e682ffddcd024",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-operation.js",
+      "status": 200,
+      "sha256": "dd0041ca629674f9039454ce201c695a63bf47db918ebdeda2158e4b95a8be8e",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-request.css",
+      "status": 200,
+      "sha256": "0c2d0dd3c04dc2af89f6f273be35fbec01896e7d6ecc10823b7b54ca72873149",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-request.js",
+      "status": 200,
+      "sha256": "3e6de587634bd97e3c846930b4092455f94e3951b378782f01cb131a4a97a00d",
+      "same_source": true
+    },
+    {
+      "path": "consultegeo-workflow.js",
+      "status": 200,
+      "sha256": "bd903bf8ba25332281f0a1232703cd5c0617cb74ddf7cabad8ab35e28f2dec77",
+      "same_source": true
+    },
+    {
+      "path": "conversation-state.js",
+      "status": 200,
+      "sha256": "73cf0db75391744164b1da470f28f70d47d1f9c4ff02dc58ef085defd3089a64",
+      "same_source": true
+    },
+    {
+      "path": "customer-portal.js",
+      "status": 200,
+      "sha256": "ecd9fbea157af9da360447b8d66c1dba0756987361825b1e7d908499fc5a0d70",
+      "same_source": true
+    },
+    {
+      "path": "delivery-operations.js",
+      "status": 200,
+      "sha256": "ab6fde2ea1dd19ae33f43a19c00a498b8b1cfc248a5cd852a21cb3e89e1a6e2a",
+      "same_source": true
+    },
+    {
+      "path": "design-tokens.css",
+      "status": 200,
+      "sha256": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca",
+      "same_source": true
+    },
+    {
+      "path": "dynamic-form.css",
+      "status": 200,
+      "sha256": "362a6c9af8fa5c701cd91896a40f468d8ffb0713d24e6103ab6ade07c0a68cda",
+      "same_source": true
+    },
+    {
+      "path": "dynamic-form.js",
+      "status": 200,
+      "sha256": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8",
+      "same_source": true
+    },
+    {
+      "path": "execution-checklist-contract.js",
+      "status": 200,
+      "sha256": "729d64735045ab2d3fc38a025cd0569b0e4914032202ab231af1fa09728e3331",
+      "same_source": true
+    },
+    {
+      "path": "execution-checklist-state.js",
+      "status": 200,
+      "sha256": "d5e4d5273128eaabc9901b3c55cfa0bf90d531de0d83720a75c1e4663d390233",
+      "same_source": true
+    },
+    {
+      "path": "execution-checklist.css",
+      "status": 200,
+      "sha256": "c5acd26f13c3ad510eec98e3086fad94cf3ec6cfea69eb2b453e9564740fa4b7",
+      "same_source": true
+    },
+    {
+      "path": "execution-checklist.js",
+      "status": 200,
+      "sha256": "0f5bd40a434961c905b928c7cb592b599c7226c261180ff483293be7a5091d38",
+      "same_source": true
+    },
+    {
+      "path": "form-experience.css",
+      "status": 200,
+      "sha256": "afb0f90b8dc5e2fe02cba92b078b55a647292b32c68d0467c6fc6ed1b3d0d377",
+      "same_source": true
+    },
+    {
+      "path": "form-feedback.js",
+      "status": 200,
+      "sha256": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e",
+      "same_source": true
+    },
+    {
+      "path": "form-review.js",
+      "status": 200,
+      "sha256": "376f53820b44a0cdc1f6d55ef26ad61ca11bde556af3862b6a215b2655a701d4",
+      "same_source": true
+    },
+    {
+      "path": "geo-auth-callback.js",
+      "status": 200,
+      "sha256": "92abf4eb538ec3b6819e66e6ecf403b8ec955d7dacd2b66db80767312bb0e69b",
+      "same_source": true
+    },
+    {
+      "path": "geo-auth-state.js",
+      "status": 200,
+      "sha256": "49885dd80d205576ceee6dbd45128ee80bbc820120b22d59aee3edce66a9f5a1",
+      "same_source": true
+    },
+    {
+      "path": "human-auth.js",
+      "status": 200,
+      "sha256": "2ac677ed49bbe6d4bdf327a57deb8aec37f4008157cf7acdbe0b2492b5017f59",
+      "same_source": true
+    },
+    {
+      "path": "human-session.js",
+      "status": 200,
+      "sha256": "9f360a51f6dc54c6b93f4fbf8024f2c0f95afd9a5bcf1f0b2aabea41b92f7b96",
+      "same_source": true
+    },
+    {
+      "path": "inbox-view-state.js",
+      "status": 200,
+      "sha256": "6c6b1fab6ed2a5c1eaa1cc63bd0cf5ec7cf06c07e7773f34a832ca69fe106729",
+      "same_source": true
+    },
+    {
+      "path": "inbox-workspace.css",
+      "status": 200,
+      "sha256": "a85bc3ea8ba7465275a129622a681fdb80877367cc0ab1106c9273a355528b0a",
+      "same_source": true
+    },
+    {
+      "path": "inbox-workspace.js",
+      "status": 200,
+      "sha256": "8c16f2a8b8e19e2067f375ce8b4538cb2d700c0db5d040fa443f00d1ca0ebe53",
+      "same_source": true
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "615b0477bc09e3cbebe7b8bd0b3829b9f317f03c97a2548b2e7d76ecb77a6318",
+      "same_source": true
+    },
+    {
+      "path": "mutation-state.js",
+      "status": 200,
+      "sha256": "8b9712e1cc9ca7836e1cf8acd00501af44c65a62f76027dbc586c95df8bca5eb",
+      "same_source": true
+    },
+    {
+      "path": "opening-flow.js",
+      "status": 200,
+      "sha256": "ef4a8f82e1d2fc5e00418044a29cbd6e7fb3ba1518315059aec75f42c2385f92",
+      "same_source": true
+    },
+    {
+      "path": "opening-wizard.js",
+      "status": 200,
+      "sha256": "074e7e5c42f8cf4358837dcbb60a5eebb08acfe5fea98e59d521585afa1066cf",
+      "same_source": true
+    },
+    {
+      "path": "operations-experience.css",
+      "status": 200,
+      "sha256": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac",
+      "same_source": true
+    },
+    {
+      "path": "operations-ui.js",
+      "status": 200,
+      "sha256": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f",
+      "same_source": true
+    },
+    {
+      "path": "optional-support.js",
+      "status": 200,
+      "sha256": "57de37513c7dc77bf71d2e5a36f0c9cc499ebe2dd86fc22de9dc88d025e5e996",
+      "same_source": true
+    },
+    {
+      "path": "portal-format.js",
+      "status": 200,
+      "sha256": "84e33f30200d1e2dab1792d4cee1d971fcfeea1ff3755a94999731382dd9211e",
+      "same_source": true
+    },
+    {
+      "path": "portal-state.js",
+      "status": 200,
+      "sha256": "6a9792fef611863a0bd8eea286751b7a2876b6e6ee4969cd7ed39aff70cab094",
+      "same_source": true
+    },
+    {
+      "path": "portal-ui.js",
+      "status": 200,
+      "sha256": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737",
+      "same_source": true
+    },
+    {
+      "path": "portal.css",
+      "status": 200,
+      "sha256": "48c6b83c40e9d3a8e4094ce8864fe928023614d53373d64e0bfa4a9ab3d944bd",
+      "same_source": true
+    },
+    {
+      "path": "recovery-password.js",
+      "status": 200,
+      "sha256": "3870e93595ebb59f5379c84126d72226799264ec775a2bf36c0aebcd3f1305d2",
+      "same_source": true
+    },
+    {
+      "path": "reports.js",
+      "status": 200,
+      "sha256": "59c9698a65b445b8bfb796f905123669abf9b2d9fe0bedb08d66fdacff26782f",
+      "same_source": true
+    },
+    {
+      "path": "review-state.js",
+      "status": 200,
+      "sha256": "42db5ad8da97e66b5cff319a06a7e06f550ff2b1024ad9130371977261f38061",
+      "same_source": true
+    },
+    {
+      "path": "session-fetch.js",
+      "status": 200,
+      "sha256": "14dd7f45d10ed698cb835d8da87556f955fb0c2c128c27b3850ce7c53d009340",
+      "same_source": true
+    },
+    {
+      "path": "shared/checklist-evidence.js",
+      "status": 200,
+      "sha256": "67487e1b8e5788a8d095292a7960eeea52f52f16d03fe771757c1f4fb5be1e93",
+      "same_source": true
+    },
+    {
+      "path": "shared/cnpj.js",
+      "status": 200,
+      "sha256": "4e03f61cceb0809c16854a00e2eb567918566679fb6874f76a8f1555b0431d03",
+      "same_source": true
+    },
+    {
+      "path": "shared/consultegeo-request.js",
+      "status": 200,
+      "sha256": "90a891eb8bc0ee8ca0bbfe794b777b5e4fad9546bcbbeffaa4f96b1d52ceff58",
+      "same_source": true
+    },
+    {
+      "path": "shared/consultegeo-ticket.js",
+      "status": 200,
+      "sha256": "c58ecd2d15b1a6988bd20603a39b8fce104c970825c3eaa2d902826888344c70",
+      "same_source": true
+    },
+    {
+      "path": "shared/form-rules.js",
+      "status": 200,
+      "sha256": "4d321b7d5239996c0b45581e13608a479dd15ac6ad819a2ab81eee7b5b68b548",
+      "same_source": true
+    },
+    {
+      "path": "shared/instant.js",
+      "status": 200,
+      "sha256": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+      "same_source": true
+    },
+    {
+      "path": "shared/mfa.js",
+      "status": 200,
+      "sha256": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1",
+      "same_source": true
+    },
+    {
+      "path": "styles.css",
+      "status": 200,
+      "sha256": "0c02504971e74dab99b642c1faf47663155d70dd834ed878b79398b8561fd559",
+      "same_source": true
+    },
+    {
+      "path": "support-catalog-state.js",
+      "status": 200,
+      "sha256": "851f406df2bc905ff65cce1890a8baa5c4a1a967168f4da18099a7da599bf8f3",
+      "same_source": true
+    },
+    {
+      "path": "support-experience.css",
+      "status": 200,
+      "sha256": "208bb65e59869f405ebc6b6d3efbe9057f6e1fa3528c115575231edb741aedc6",
+      "same_source": true
+    },
+    {
+      "path": "support-intake.css",
+      "status": 200,
+      "sha256": "c253916aa725af6f891e6ea3fb3cb02df9b62a5441ee47f44d71a7881149a4da",
+      "same_source": true
+    },
+    {
+      "path": "support-intake.js",
+      "status": 200,
+      "sha256": "af49af54bfd12434ca1bc06332df282be1f2610a176e718d6548d0e49f724efc",
+      "same_source": true
+    },
+    {
+      "path": "support-navigation.js",
+      "status": 200,
+      "sha256": "93b6b47891e76737a80b1d0ceddf3310841f9fe88589336649dfff0dad6c0841",
+      "same_source": true
+    },
+    {
+      "path": "support-presentation.js",
+      "status": 200,
+      "sha256": "1fa018592815d029855097cfc336d929843f076ace2e762cd4542ffa373cdb38",
+      "same_source": true
+    },
+    {
+      "path": "support-queue.js",
+      "status": 200,
+      "sha256": "ebfb8f0723f15ae43053b90e9d179c0817d0c593e457f0182490b92a18de996f",
+      "same_source": true
+    },
+    {
+      "path": "theme-init.js",
+      "status": 200,
+      "sha256": "4f40caa7bf0af0e6058b10957ec2311543e831ae1277321ab454f28eef641f4f",
+      "same_source": true
+    },
+    {
+      "path": "ticket-actions.js",
+      "status": 200,
+      "sha256": "a3bd709ca8d68f2df9c50252bf10d7141a0f44dc00a9e8476e90a3a0cae8b8a5",
+      "same_source": true
+    },
+    {
+      "path": "ticket-create-state.js",
+      "status": 200,
+      "sha256": "83c749c70bfbb8113e632317843a06269c2fc9afbfd330dfe271392c47bfb4a2",
+      "same_source": true
+    },
+    {
+      "path": "ticket-detail.js",
+      "status": 200,
+      "sha256": "cdc00590fd4a67081e0552439e7c5dd3255b08a1473581b0c3ca23f674b40881",
+      "same_source": true
+    },
+    {
+      "path": "ticket-list-state.js",
+      "status": 200,
+      "sha256": "1533563761cd449db13cbbc644a2c16225265a7f5a2402ec0ad8388c6de091ff",
+      "same_source": true
+    },
+    {
+      "path": "timeline-state.js",
+      "status": 200,
+      "sha256": "af5dca1ee898946b3d666ce55e2e1b504cfa9e9256f853fc9d5cb6c8b9cdfe2d",
+      "same_source": true
+    },
+    {
+      "path": "totp-qr.js",
+      "status": 200,
+      "sha256": "187e17488e2e549097168768c0acacfc65b725ac51a6e01593119f340e821c19",
+      "same_source": true
+    },
+    {
+      "path": "vendor/qrcodegen.js",
+      "status": 200,
+      "sha256": "3c6b6da401e3725c2853e70d1dff080a3920ec06054c51d3a78fa391e611b706",
+      "same_source": true
+    }
+  ],
+  "http": [
+    {
+      "path": "/v1/public-config",
+      "status": 200,
+      "document": {
+        "supabase_url": "https://xaelbntjnvztznnpcvtm.supabase.co",
+        "publishable_key": "sb_publishable_6kK6p7QpNMtMeYqIENUq_Q_FVK2eu1I",
+        "consultegeo_intake": true
+      }
+    },
+    {
+      "path": "/v1/capabilities",
+      "status": 200,
+      "document": {
+        "api_version": "v1",
+        "release": "0.31.0",
+        "capabilities": {
+          "tickets": true,
+          "ticket_search": true,
+          "ticket_priority_update": true,
+          "ticket_self_assignment": true,
+          "ticket_assignment_filter": true,
+          "ticket_timeline": true,
+          "ticket_action_hints": true,
+          "contract_resolution": true,
+          "support_catalog": true,
+          "public_messages": true,
+          "internal_notes": true,
+          "optimistic_concurrency": true,
+          "idempotency": true,
+          "conversation_pagination": true,
+          "integration_session_revocation": true,
+          "attachments": false,
+          "webhook_delivery": false,
+          "sla_clocks": false,
+          "support_sessions": false,
+          "contract_admin": false,
+          "email": false,
+          "consultegeo_contexts": true,
+          "consultegeo_configuration": false,
+          "support_workflow": true,
+          "execution_checklist": true,
+          "consultegeo_request_catalog": true,
+          "form_drafts": true,
+          "support_requests": true
+        },
+        "consultegeo": {
+          "source_ready": true,
+          "origin_ready": true
+        }
+      }
+    },
+    {
+      "path": "/v1/me",
+      "method": "GET",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "path": "/v1/workspaces",
+      "method": "GET",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "path": "/v1/tickets",
+      "method": "GET",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "path": "/v1/consultegeo/contexts",
+      "method": "GET",
+      "status": 401,
+      "code": "unauthorized"
+    },
+    {
+      "path": "/v1/consultegeo/request-catalog",
+      "method": "POST",
+      "status": 401,
+      "code": "unauthorized"
+    }
+  ],
+  "business_mutations_dispatched": 0,
+  "auth_provider_journey_tested": false,
+  "email_delivery_tested": false,
+  "headers": {
+    "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+    "frame": "DENY",
+    "nosniff": "nosniff",
+    "referrer": "no-referrer"
+  },
+  "wiki_route": {
+    "status": 200
+  },
+  "success": true
+}

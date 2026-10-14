@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-14T20:33:20Z",
+  "origin": "https://helpdesk.consultegeo.org",
+  "siteId": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deployId": "6acfe68833e2901f4c2a5c26",
+  "commit": "038854796d12188e0090ca71f7f5251b2e3115f2",
+  "context": "production",
+  "state": "ready",
+  "publishedAt": "2026-10-14T20:31:56.605Z",
+  "schedule": {"name": "notification-worker", "cron": "* * * * *"},
+  "qualification": {
+    "sourceCommit": "a6963afcc085f94350e345b61a95e842a971f6c2",
+    "runId": "38631069536",
+    "sourceSha256": "220403aa4b8c09832707822151872e3108ea72d3e6f6b62f9a76b3f7748c0e29",
+    "checksPassed": 6107,
+    "logsVerified": true
+  },
+  "automaticInvocations": [
+    {"requestId":"01M4Y1TX8SN4H1AZWQXKH7N8J6","at":"2026-10-14T20:32:05.913Z","method":"POST","status":204,"durationNanoseconds":1386199492,"userAgent":"Netlify Functions Scheduler","functionName":"notification-worker"},
+    {"requestId":"01M4Y1WPMJHC2NV9KHJFWKZN84","at":"2026-10-14T20:33:04.658Z","status":204}
+  ],
+  "publicIngress": {
+    "checkedAt":"2026-10-14T20:32:49.748Z",
+    "checks":[{"method":"GET","status":403,"bytes":0},{"method":"POST","status":403,"bytes":0}],
+    "blocked":true
+  },
+  "readonlyOutbox": {
+    "mrvTickets":0,"openingReceipts":0,"plans":0,"attempts":0,"nativeReceipts":0,"states":{},
+    "activeRoutes":8,"requesterRoutes":["support.created","support.devolutiva","support.resolved"]
+  },
+  "productionCycleVerified":true,
+  "realTicketEmailSent":false,
+  "deliveryCallbackConfigured":false,
+  "fictitiousBusinessRecordsCreated":false,
+  "newGeoIntegrationDeferred":true
+}
