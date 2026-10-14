@@ -2,6 +2,17 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {sid,NOW,LATER} from './helpers/intake-fixture.ts';
 import {createSessionFetch} from '../web/session-fetch.js';
 async function module(){const path='../web/consultegeo-intake-api.js';const m=await import(path).catch((e:any)=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof m.createConsulteGeoIntakeApi,'function','M09a intake transport missing');return m;}
+test('typed precondition diagnostics expose only a closed category and cannot affect the rejection',async()=>{
+ const original=console.warn,lines:string[]=[];console.warn=(value:any)=>{lines.push(value);};
+ try{for(const category of ['missing','invalid_format','out_of_range','PRIVATE_HEADER']){
+  const f=await setup(response({type:'about:blank',status:428,code:'precondition_required'},428,{'x-helpdesk-precondition-state':category}));
+  assert.equal((await f.api.save({...draft,answers:{}},0,new AbortController().signal)).kind,'rejected');assert.equal(f.calls.length,1);
+ }
+ assert.deepEqual(lines.map(v=>JSON.parse(v)),['missing','invalid_format','out_of_range'].map(category=>({component:'helpdesk.draft_precondition',category})));
+ assert.doesNotMatch(JSON.stringify(lines),/PRIVATE|draftId|workspace|Bearer/);
+ console.warn=()=>{throw Error('PRIVATE');};const f=await setup(response({type:'about:blank',status:428,code:'precondition_required'},428,{'x-helpdesk-precondition-state':'missing'}));assert.equal((await f.api.save({...draft,answers:{}},0,new AbortController().signal)).kind,'rejected');
+ }finally{console.warn=original;}
+});
 const refs=[{connectionId:sid(5),tenantId:'001',type:'work',id:'0001'}];
 const context={workspaceId:sid(1),principalId:sid(2),accountId:sid(3),refs,coverageId:sid(30)};
 const draft={id:sid(8),accountId:sid(3),refs,formId:sid(7),formVersion:1};

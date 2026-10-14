@@ -10,8 +10,8 @@ test('draft precondition diagnostic is bounded, private and cannot change refusa
  const m=await module(),events:string[]=[];let writes=0;
  const options={enabled:()=>true,origin:'https://helpdesk.example.test',authenticate:async()=>{throw Error('Must not authenticate');},rateLimiter:{beforeAuthentication:async()=>{},afterAuthentication:async()=>{}},catalog:{} as any,drafts:{saveFormDraft:async()=>{writes++;}} as any};
  const h=m.createConsulteGeoDraftHttpHandler({...options,observePrecondition:(category:string)=>events.push(category)});
- for(const value of [undefined,'PRIVATE_HEADER','"2147483647"']){
-  const r=await h(req('/v1/form-drafts/'+sid(8),'PUT',{private:'PRIVATE_BODY'},value===undefined?{}:{'if-match':value}));assert.equal(r.status,428);assert.equal((await r.json()).code,'precondition_required');
+ for(const [value,category] of [[undefined,'missing'],['PRIVATE_HEADER','invalid_format'],['"2147483647"','out_of_range']] as const){
+  const r=await h(req('/v1/form-drafts/'+sid(8),'PUT',{private:'PRIVATE_BODY'},value===undefined?{}:{'if-match':value}));assert.equal(r.status,428);assert.equal((await r.json()).code,'precondition_required');assert.equal(r.headers.get('x-helpdesk-precondition-state'),category);
  }
  assert.deepEqual(events,['missing','invalid_format','out_of_range']);assert.equal(writes,0);assert.doesNotMatch(JSON.stringify(events),/PRIVATE|214748/);
  for(const observePrecondition of [()=>{throw Error('PRIVATE');},async()=>{throw Error('PRIVATE');}]){

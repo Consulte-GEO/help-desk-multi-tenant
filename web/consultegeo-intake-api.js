@@ -17,6 +17,7 @@ async function body(response,signal){
  }catch{try{void reader.cancel().catch(()=>{});}catch{}throw fail();}finally{clearTimeout(timer);signal.removeEventListener('abort',abort);try{reader.releaseLock();}catch{}}}
 /** Authenticated session closure owns request/credentials. Fixed same-origin paths;
  * no token, URL, provider, retry or source authority is manufactured here. */
+function observeDraftPrecondition(response){try{const category=response.headers.get('x-helpdesk-precondition-state');if(['missing','invalid_format','out_of_range'].includes(category))console.warn(JSON.stringify({component:'helpdesk.draft_precondition',category}));}catch{/* A diagnostic cannot change the authoritative refusal. */}}
 export function createConsulteGeoIntakeApi(options){
  const context=parseConsulteGeoRequestContext(options.context),draft=exact(options.draft,['id','accountId','refs','formId','formVersion']);
  if(typeof options.request!=='function'||!uuid(draft.id)||!uuid(draft.formId)||!positive(draft.formVersion)||draft.accountId!==context.accountId||!sameRefs(draft.refs,context.refs)||options.profileVersionId!=='cg-wf-'+draft.formId+'-v'+draft.formVersion)throw fail();
@@ -24,7 +25,7 @@ export function createConsulteGeoIntakeApi(options){
  async function invoke(path,method,input,headers,signal){
   if(signal.aborted)throw fail();let r;try{r=await request(path,{method,headers:{'content-type':'application/json',...headers},body:JSON.stringify(input),signal});}catch{throw fail();}
   if(signal.aborted||!r||r.redirected)throw fail();const data=await body(r,signal);
-  if(!r.ok){if(data&&data.status===r.status&&typeof data.code==='string'&&Object.hasOwn(known,data.code)&&known[data.code]===r.status)return {rejected:{kind:'rejected',code:data.code}};throw fail();}
+  if(!r.ok){if(data&&data.status===r.status&&typeof data.code==='string'&&Object.hasOwn(known,data.code)&&known[data.code]===r.status){if(data.code==='precondition_required')observeDraftPrecondition(r);return {rejected:{kind:'rejected',code:data.code}};}throw fail();}
   return {r,data};
  }
  function input(raw,commit){const v=exact(raw,['draftId','expectedDraftRevision','subject','description','coverageId',...(commit?['previewHash']:[])]);if(v.draftId!==draft.id||!positive(v.expectedDraftRevision)||v.coverageId!==context.coverageId||typeof v.subject!=='string'||Array.from(v.subject.trim()).length<3||v.subject.length>200||typeof v.description!=='string'||!v.description.trim()||v.description.length>12000||commit&&(typeof v.previewHash!=='string'||!/^[a-f0-9]{64}$/.test(v.previewHash)))throw fail();return v;}
