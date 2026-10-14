@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-14",
+  "sourceCommit": "a2c9cbaa683b1fdc1a0d28bca28eab8aee5f88d5",
+  "runId": 38636898485,
+  "artifactId": 11928243442,
+  "fingerprint": "662f28050cbaff187205f7622e363e77ff7078300bd21a676bf337a8ba9be3b3",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 4952,
+        "pass": 4952,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 609,
+        "pass": 609,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 581,
+        "pass": 581,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "hostedPublication": "pending",
+  "realDelivery": "pending"
+}
