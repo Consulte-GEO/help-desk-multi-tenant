@@ -113,8 +113,20 @@ export function createResendWebhookHandler(o:{configuration:()=>NotificationRunt
  },request.signal);}catch(e){return privateFailure(e);}};
 }
 type PublishedContext={deploy?:{context?:string;published?:boolean}};
-export function createNotificationScheduledHandler(o:{configuration:()=>NotificationRuntimeConfig;runtime:(config:NotificationRuntimeConfig)=>Promise<Pick<NotificationRuntime,'runOnce'>>}){
- return async(_request:Request,context:PublishedContext={}):Promise<Response>=>{try{if(context.deploy?.context!=='production'||context.deploy.published!==true)throw failed();return await budget(async(signal,check)=>{const config=o.configuration();validateNotificationRuntimeConfig(config,'worker');check();const runtime=await o.runtime(config);check();await runtime.runOnce('netlify-worker:'+randomUUID(),signal);check();return new Response(null,{status:204,headers:{'cache-control':'no-store','referrer-policy':'no-referrer','x-content-type-options':'nosniff'}});});}catch(e){return privateFailure(e);}};
+type ScheduledPhase='deploy_guard'|'configuration'|'initialization'|'cycle';
+const observedConfigurationKeys=['enabled','releaseApproved','databaseUrl','databaseCa','origin','resendApiKey','resendFrom','senderVerified'] as const;
+type ConfigurationPresence=Readonly<Record<typeof observedConfigurationKeys[number],boolean>>;
+export type ScheduledWorkerObservation=Readonly<{component:'helpdesk.notifications';event:'scheduled_worker_failed';phase:ScheduledPhase;code:string;deployContext:'production'|'deploy-preview'|'branch-deploy'|'other';publishedDeploy:boolean;configuration:ConfigurationPresence|null}>;
+/** Presence only, from own data properties. Never invoke getters or serialize config. */
+function configurationPresence(raw:NotificationRuntimeConfig):ConfigurationPresence{
+ return Object.freeze(Object.fromEntries(observedConfigurationKeys.map(key=>{const value=raw&&typeof raw==='object'?Object.getOwnPropertyDescriptor(raw,key)?.value:undefined;return [key,['enabled','releaseApproved','senderVerified'].includes(key)?value==='true':typeof value==='string'&&value.trim()!==''];})) as Record<typeof observedConfigurationKeys[number],boolean>);
+}
+export function createNotificationScheduledHandler(o:{configuration:()=>NotificationRuntimeConfig;runtime:(config:NotificationRuntimeConfig)=>Promise<Pick<NotificationRuntime,'runOnce'>>;observe?:(entry:ScheduledWorkerObservation)=>void}){
+ return async(_request:Request,context:PublishedContext={}):Promise<Response>=>{let phase:ScheduledPhase='deploy_guard',presence:ConfigurationPresence|null=null;try{if(context.deploy?.context!=='production'||context.deploy.published!==true)throw failed();return await budget(async(signal,check)=>{phase='configuration';const config=o.configuration();if(o.observe)try{presence=configurationPresence(config);}catch{}validateNotificationRuntimeConfig(config,'worker');check();phase='initialization';const runtime=await o.runtime(config);check();phase='cycle';await runtime.runOnce('netlify-worker:'+randomUUID(),signal);check();return new Response(null,{status:204,headers:{'cache-control':'no-store','referrer-policy':'no-referrer','x-content-type-options':'nosniff'}});});}catch(e){
+  // One closed, private operational event. Observation cannot change the outcome.
+  if(o.observe)try{const raw=e instanceof HelpdeskError?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined,code=['notification_unavailable','notification_configuration_required','notification_database_unqualified','notification_deadline_exceeded'].includes(raw)?raw:'notification_unavailable',candidate=context.deploy?.context,deployContext=candidate==='production'||candidate==='deploy-preview'||candidate==='branch-deploy'?candidate:'other';o.observe(Object.freeze({component:'helpdesk.notifications',event:'scheduled_worker_failed',phase,code,deployContext,publishedDeploy:context.deploy?.published===true,configuration:presence}));}catch{}
+  return privateFailure(e);
+ }};
 }
 /** Warm instance initialization is shared; failure resets it. Configuration is
  * private and immutable per deploy. No environment/driver access on import. */
