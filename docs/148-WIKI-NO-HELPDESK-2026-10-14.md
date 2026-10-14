@@ -20,3 +20,8 @@ CI38590466202 aprovado, commit5d0a80c. lock:passed, install:passed, audit:passed
 ## Ajuste dos headers após a publicação
 
 A política da wiki permite estilos inline usados em diagramas, imagens `data:`/`blob:` e frames de `www.youtube-nocookie.com`, como no site original. A conexão Supabase continua limitada ao host existente. Scripts permanecem limitados à própria origem. A central conserva sua política global sem exceções adicionais. Como `netlify.toml` faz parte do fingerprint, este ajuste exige nova homologação Linux vinculada à fonte antes da publicação, seguida de smoke HTTP dos headers reais na CDN.
+
+
+## Homologação da correção de headers
+
+CI 38596250885 aprovado sobre be821a4e30d4cde8f637bfdbb72a041453a3278d. lock: passed, install: passed, audit: passed, application: passed (4710/4710), postgres: passed (422/422), interface: passed (539/539). Fingerprint 31ea1853c63adee80da697386168c22e32e00b9ce9e4f54fb8ce89a85cb0de88. Artefato oficial 11910946166, sha256:8f3db76af79b070df40f8e099649d6db8ae36c6be25b495b3fe923607d8c7b25, conferido antes da extração. Logs atuais importados sem apagar evidências históricas. Revisão focada sem achados; a publicação segue o mesmo Git/CD e verify:release. O smoke hospedado deve confirmar uma única CSP da wiki nos caminhos exato, home e artigo, além da política global intacta na central e em /wiki-other.
