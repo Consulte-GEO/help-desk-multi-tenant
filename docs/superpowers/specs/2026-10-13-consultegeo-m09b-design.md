@@ -1,29 +1,17 @@
-# Consulte GEO M09b Catálogo e abertura persistentes
+# Consulte GEO M09b — catálogo e rascunho durável
 
-Continuidade autorizada pelo usuário nesta conversa, com decisões delegadas e execução inline. Base785fa2d8aa6e719763f87c8518939dc80fd91f26, mesmo worktree/PR31. Implementar persistência real do catálogo/rascunho/revisão/abertura; origem real M08 permanece porta de construção do servidor, nunca fallback.
+M09b entrega três operações opcionais: catálogo autorizado, leitura e gravação CAS de rascunho próprio. O plano anterior incluiu também abertura; após analisar as fronteiras transacionais, a abertura foi separada em M09c. Isso exige outra rodada de qualificação para protocolo, snapshot, workflow e evento/outbox antes de montar o envio. Essa separação é uma decisão de implementação dentro da autorização de continuidade.
 
-## Jornada e decisões
+- API/interface0.29.0, schema candidato0.22.0, quinze migrations, quatorze anteriores imutáveis.
+- Produto vem da conexão CG; serviço deve existir no produto e corresponder à família M04. Sem inferência de SUPPORT, nomes ou e-mails.
+- Resolver da origem e observação SQL atual, pessoa humana, conta, produto, scopes e conjunto completo de obras são obrigatórios. Nenhuma fonte real é simulada ou ativada.
+- Catálogo só expõe formulários públicos da última versão publicada de cada configuração; rascunho mantém versão publicada anterior fixada. Nunca adota sucessora draft.
+- Rascunho de 30 minutos, dono/conta/obras/formulário/versão/expiração imutáveis, CAS e replay da mesma intenção sem novo efeito. Dados incompletos ordinários são salvos, sem significar aptidão para envio.
+- Duas tabelas privadas com ENABLE/FORCE RLS e nenhum direito direto da app/cliente/worker/publicador. Helpers estreitos repetem ACL/contexto nativo e mantêm o mesmo cliente transacional emprestado. Resposta obrigatória inválida é sticky e impede COMMIT.
+- Lock consistente: origem/grant/observação, chave do rascunho, versão publicada; nenhuma edição concorrente altera a versão fixada. Alteração e audit ficam juntos; efeito suprimido ou fonte expirada antes do COMMIT recusa.
+- Flag HELPDESK_CONSULTEGEO_INTAKE=false; precisa business/workflow/origem HTTPS e portas reais de servidor. Netlify ainda não tem adaptador M08 qualificado; chamadas recusam. UI M09a não montada na aplicação.
+- Sem allocator, criação de ticket, prévia operacional, envio de email, upload, on-behalf, GEO write, migração hospedada ou alteração de grant real nesta fatia.
 
-POST `/v1/consultegeo/request-catalog` recebe somente serviço Consulte GEO e refs seletores. Reautoriza pessoa humana, conta, conexão/tenant/obras e scopes no resolver e PostgreSQL antes de entregar configurações públicas M09a com cobertura. O produto vem da conexão CG e o serviceCode corresponde à família M04 (`user_access`, `questions`, `backup`, `new_work`, `structure_adjustment`, `problem`). Não mapear por nome/e-mail, não criar registros de configuração ou cobertura como seed.
+M09c implementará atomicamente protocolo por workspace, snapshot privado fixado, referência CG selada, estado inicial, core event/audit/outbox e receipt/reconciliação; primeira abertura qualificada: Incluir usuário. Lookup/file exigem fontes qualificadas M08/M11. O perfil M04 com prioridade/SLA fixos já está preparado e testado no domínio.
 
-Perfil de abertura fixa formulário/workflow/checklist/calendário/SLA da versão publicada e prioridade da entrada. Não exigir o campo de impacto sintético do ensaio M09a. Catálogo oferece versões publicadas mais recentes por ID; rascunho antigo conserva a versão publicada original. Calendário fora do horizonte/contrato não vigente recusa abertura. As ações que exigem pessoa/evidência recusam sem lookup/Storage qualificado; incluir usuário é a primeira jornada validada. Execução na origem permanece manual.
-
-## Persistência e autoridade
-
-Migration15 pela CLI oficial, schema0.22.0 sobre0.21.0, prefixo14 imutável. Tabelas privadas de drafts, contador por workspace, snapshot fixado e ledger de abertura, ENABLE/FORCE RLS e nenhum acesso direto de app/clientes/publicador/worker. Helpers limitados de app reautorizam registros CG/observação completos e exatos; nenhum GUC ou bool aprovado substitui ACL. Lock de namespace/grant/observação antes de draft/configuração/coverage/contador/ticket; ordenação fixa, locks de identidade/ACL até o COMMIT.
-
-Salvamento CAS com idempotência pelo hash original e revisão; titular/workspace/conta/refs/formulário/versão/expiração não podem mudar. Diretório de draft retorna metadata somente ao titular atualmente autorizado com cobertura completa. Cache e replay exigem autorização atual; não renovar expiry ou contexto por reenvio.
-
-Abertura atômica: ticket core, refs CG completos/sealed, snapshot público/privado, workflow state ligado ao perfil publicado, protocolo CG10001+, evento core/audit/outbox existentes pelo mesmo ID e ledger imutável. A prévia não reserva protocolo nem produz efeito. Contador é monotônico por workspace e protegido contra reset/delete; nova abertura não reutiliza a sequência consumida. SQL recompõe dados autorizados e confirma efeitos em trigger deferido, não confia no bundle enviado pelo app. INSERT genérico protegido continua recusado, sem alterar policies/guards anteriores.
-
-Lojas recebem o cliente emprestado da transação existente. Validação de ACK/shape/hashes é obrigatória e sticky; falha capturada não permite COMMIT. Publicação, identidade e scopes reais são revalidados no SQL. Nenhuma chamada a provider/API externa dentro do commit.
-
-## HTTP e runtime
-
-Registrar catálogo, GET/PUT draft, POST preview/create. Flag `HELPDESK_CONSULTEGEO_INTAKE=false`, exige workflow/origin/source/business; falhas não encaminham a outro handler. Administração separada continua disponível sob seu gate/MFA. Origem HTTPS configurada, limite de corpo/prazo, autenticação/quotas e admissão sticky ao longo das esperas atéCOMMIT. COMMIT confirmado conserva recibo; perdido exige mesma intenção. Métodos de on-behalf/attachments não montados nesta fatia.
-
-API/interface0.29.0 para cinco operações novas; capabilities refletem portas/flags, não concessões. M09a transport/renderer preservados. A montagem no shell aguarda discovery real M08 e jornadaM10, sem catálogo/obra/pessoa fictícios no browser.
-
-## Verificação e entrega
-
-TDD dos profiles/fixed priority/store/ACK/admissão e HTTP. PG17 próprio deve provar catálogo só publicado/coverage/isolamento, CAS/concorrência, expiry/revogação/contexto, validação diretaSQL, ticket/snapshot/workflow/protocolo/effects atomicidade e receipt/replay após revogação. Provar upgrade/reaplicação/defaults/roles e preservação de dados antigos. Usar CI original Linux/Node22/PG17 e uma revisão fresh-context/fix pass. Relatório144/pacoteM09b/PR31draft com fonte/logs/hashes. Sem instalação remota, escrita GEO/envio, mudança Auth/grants/segredos ou deploy de produção.
+Validação: testes focais RED/GREEN, CI original integral em PostgreSQL17 descartável, inventário nativo contra contrato estático revisado e uma revisão final independente com único fix pass. Nenhum banco hospedado serve como laboratório. PR31 permanece draft, sem merge/deploy.

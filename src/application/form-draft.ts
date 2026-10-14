@@ -35,12 +35,12 @@ export function createFormDraftService(o:{pool:SqlPool;resolver:ReturnType<typeo
    if(current&&current.schemaHash!==requestHash(schema))throw fail('form_schema_changed',409);
    const result=validateFormValues(schema,answers,{audience:'customer'});if(result.issues.some(i=>['unknown_field','hidden_field','invalid_batch'].includes(i.code)))throw fail('invalid_form_values',422);
    // Incomplete ordinary values may be saved. Saving never means they are valid for submission.
-   const d:DraftForm=freezeFormData({id,ownerId:p.id,workspaceId:p.workspaceId,accountId,refs,formId,formVersion,schemaHash:requestHash(schema),revision:expected+1,expiresAt:current?.expiresAt??formatMicros(instantMicros(clock())+BigInt(o.draftTtlSeconds)*1000000n),answers,status:'editing',ticketId:null,sourceHash});
+   const d:DraftForm=freezeFormData({id,ownerId:p.id,workspaceId:p.workspaceId,accountId,refs:current?.refs??refs,formId,formVersion,schemaHash:requestHash(schema),revision:expected+1,expiresAt:current?.expiresAt??formatMicros(instantMicros(clock())+BigInt(o.draftTtlSeconds)*1000000n),answers,status:'editing',ticketId:null,sourceHash});
    expires(d.expiresAt,'draft_expired');await tx.saveDraft(d,expected);return d;
   },signal,admission);
  }catch(e){throw safeIntakeError(e);}}
  async function readFormDraft(person:Principal,rawId:string,signal?:AbortSignal,admission?:()=>void){try{
-  const p=freezeFormData(copyFormData(person)) as Principal,id=uuidIdentifier(rawId),located=await o.directory.locateDraft(p,id,signal);if(!located)throw fail('draft_not_found',404);const refs=parseExternalResourceSelection(located.refs);
+  admission?.();const p=freezeFormData(copyFormData(person)) as Principal,id=uuidIdentifier(rawId),located=await o.directory.locateDraft(p,id,signal);if(!located)throw fail('draft_not_found',404);const refs=parseExternalResourceSelection(located.refs);
   return await runIntakeTransaction({...o,clock},p,refs,'tickets.read',async(tx,scope,expires)=>{const d=checkedDraft(await tx.readDraft(id),p,id,refs,clock(),expires);if(scope.accountId!==d.accountId||located.accountId!==d.accountId)throw fail('draft_forbidden',403);return d;},signal,admission);
  }catch(e){throw safeIntakeError(e);}}
  return Object.freeze({saveFormDraft,readFormDraft});

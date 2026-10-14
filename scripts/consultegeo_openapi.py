@@ -40,3 +40,24 @@ def extend_consultegeo(s):
       for op in methods.values():op['security']=[{scheme:[]}]
     cap=schemas['Capabilities'];cap.setdefault('properties',{})['consultegeo']={'type':'object','additionalProperties':False,'properties':{'source_ready':{'type':'boolean'},'origin_ready':{'type':'boolean'}},'required':['source_ready','origin_ready']}
     for name in ['consultegeo_configuration','support_workflow','execution_checklist']:cap['properties']['capabilities'].setdefault('properties',{})[name]={'type':'boolean'}
+    # M09b publishes catalogue and durable drafts only; no submission contract yet.
+    uuid={'type':'string','format':'uuid'}
+    resource={'type':'object','additionalProperties':False,'properties':{'connectionId':uuid,'tenantId':{'type':'string','minLength':1,'maxLength':256},'type':{'type':'string','pattern':'^[a-z][a-z0-9_]{0,31}$'},'id':{'type':'string','minLength':1,'maxLength':256}},'required':['connectionId','tenantId','type','id']}
+    refs={'type':'array','minItems':1,'maxItems':100,'uniqueItems':True,'items':resource,'description':'Seletores opacos de um único contexto. Não concedem acesso.'}
+    schemas['ConsulteGeoCatalogQuery']={'type':'object','additionalProperties':False,'properties':{'service':{'enum':['user_access','questions','backup','new_work','structure_adjustment','problem']},'refs':refs},'required':['service','refs']}
+    schemas['ConsulteGeoCustomerConfiguration']={'type':'object','additionalProperties':False,'properties':{'schema':{'const':1},'product':{'const':'CONSULTE_GEO'},'id':uuid,'version':{'type':'integer','minimum':1},'contentHash':{'type':'string','pattern':'^[a-f0-9]{64}$'},'service':schemas['ConsulteGeoCatalogQuery']['properties']['service'],'title':{'type':'string','minLength':1,'maxLength':200},'entries':{'type':'array','minItems':1,'maxItems':5,'items':{'type':'object','description':'Ação/prioridade/label, form público publicado e serviceWindow. Sem checklist/capabilities/dados internos.'}}},'required':['schema','product','id','version','contentHash','service','title','entries']}
+    context_fields={k:uuid for k in ['workspaceId','principalId','accountId']};context_fields.update(refs=refs,coverageId={'type':['string','null'],'format':'uuid','description':'Ainda não selecionada nesta etapa.'})
+    schemas['ConsulteGeoCatalogResult']={'type':'object','additionalProperties':False,'properties':{'schema':{'const':1},'context':{'type':'object','additionalProperties':False,'properties':context_fields,'required':list(context_fields)},'configurations':{'type':'array','maxItems':20,'items':ref('ConsulteGeoCustomerConfiguration')}},'required':['schema','context','configurations']}
+    draft_fields={k:uuid for k in ['id','accountId','formId']};draft_fields.update(refs=refs,formVersion={'type':'integer','minimum':1,'maximum':2147483647},answers={'type':'object','description':'Respostas incompletas comuns permitidas; nunca conferem aptidão para envio.'})
+    schemas['ConsulteGeoDraftInput']={'type':'object','additionalProperties':False,'properties':draft_fields,'required':list(draft_fields)}
+    result_fields={**draft_fields,'revision':{'type':'integer','minimum':1},'expiresAt':{'type':'string','format':'date-time'},'status':{'const':'editing'},'ticketId':{'type':'null'}}
+    schemas['ConsulteGeoDraft']={'type':'object','additionalProperties':False,'properties':result_fields,'required':list(result_fields)}
+    params['FormDraftId']={'in':'path','name':'draft_id','required':True,'schema':uuid}
+    base='/consultegeo/request-catalog'
+    s['paths'][base]={'post':operation('POST','queryConsulteGeoRequestCatalog','Consulta formulários públicos após autorização da pessoa, conta, produto e todas as obras.','ConsulteGeoCatalogResult',[pr('Origin')],'ConsulteGeoCatalogQuery')}
+    base='/form-drafts/{draft_id}'
+    s['paths'][base]={'get':operation('GET','getConsulteGeoFormDraft','Retoma rascunho próprio com fonte atual.','ConsulteGeoDraft',[pr('FormDraftId')]),'put':operation('PUT','saveConsulteGeoFormDraft','Salva respostas sob CAS; replay da mesma intenção não cria nova revisão.','ConsulteGeoDraft',[pr('FormDraftId'),pr('Origin'),pr('ChecklistIfMatch')],'ConsulteGeoDraftInput')}
+    for path in ['/consultegeo/request-catalog',base]:
+     for op in s['paths'][path].values():op['security']=[{'bearerAuth':[]}]
+    for op in s['paths'][base].values():op['responses']['200']['headers']={'ETag':{'schema':{'type':'string','pattern':'^"[1-9][0-9]*"$'}}}
+    for name in ['consultegeo_request_catalog','form_drafts','support_requests']:cap['properties']['capabilities'].setdefault('properties',{})[name]={'type':'boolean'}

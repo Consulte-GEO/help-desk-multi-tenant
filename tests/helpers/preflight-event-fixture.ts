@@ -28,7 +28,7 @@ export function eventFixture(mode:EventMode){
   let row:Record<string,unknown>;
   if(sql.includes("current_setting('transaction_read_only')"))row={read_only:'on'};
   else if(sql.includes('session_user as login_name'))row=role;
-  else if(sql.includes('helpdesk_auth.schema_version()'))row={version:'0.21.0'};
+  else if(sql.includes('helpdesk_auth.schema_version()'))row={version:'0.22.0'};
   else if(sql.includes('expected_tables'))row=security;
   else throw Error('Unexpected fixture query');
   return {command:'SELECT',rows:[row],rowCount:1};

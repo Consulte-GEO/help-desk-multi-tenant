@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Consulte Help Desk — API v1",
-    "version": "0.28.0",
+    "version": "0.29.0",
     "description": "Contrato M1: paginação, limites, validação de entrada e isolamento. Produção bloqueada até homologação. Funcionalidades não implementadas não constam como operações disponíveis."
   },
   "servers": [
@@ -3065,6 +3065,460 @@
           }
         }
       }
+    },
+    "/consultegeo/request-catalog": {
+      "post": {
+        "operationId": "queryConsulteGeoRequestCatalog",
+        "summary": "Consulta formulários públicos após autorização da pessoa, conta, produto e todas as obras.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Origin"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoCatalogResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsulteGeoCatalogQuery"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/form-drafts/{draft_id}": {
+      "get": {
+        "operationId": "getConsulteGeoFormDraft",
+        "summary": "Retoma rascunho próprio com fonte atual.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/FormDraftId"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoDraft"
+                }
+              }
+            },
+            "headers": {
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "saveConsulteGeoFormDraft",
+        "summary": "Salva respostas sob CAS; replay da mesma intenção não cria nova revisão.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/FormDraftId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/ChecklistIfMatch"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoDraft"
+                }
+              }
+            },
+            "headers": {
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsulteGeoDraftInput"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3161,6 +3615,15 @@
         "schema": {
           "type": "integer",
           "minimum": 1
+        }
+      },
+      "FormDraftId": {
+        "in": "path",
+        "name": "draft_id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
         }
       }
     },
@@ -3690,6 +4153,15 @@
                 "type": "boolean"
               },
               "execution_checklist": {
+                "type": "boolean"
+              },
+              "consultegeo_request_catalog": {
+                "type": "boolean"
+              },
+              "form_drafts": {
+                "type": "boolean"
+              },
+              "support_requests": {
                 "type": "boolean"
               }
             }
@@ -4678,6 +5150,374 @@
       "ExecutionChecklistResult": {
         "type": "object",
         "description": "Snapshot/recibo privado M03; revisão no ETag. Sem acesso público ou fallback de evidência."
+      },
+      "ConsulteGeoCatalogQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "service": {
+            "enum": [
+              "user_access",
+              "questions",
+              "backup",
+              "new_work",
+              "structure_adjustment",
+              "problem"
+            ]
+          },
+          "refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "connectionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "tenantId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "type": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{0,31}$"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "connectionId",
+                "tenantId",
+                "type",
+                "id"
+              ]
+            },
+            "description": "Seletores opacos de um único contexto. Não concedem acesso."
+          }
+        },
+        "required": [
+          "service",
+          "refs"
+        ]
+      },
+      "ConsulteGeoCustomerConfiguration": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema": {
+            "const": 1
+          },
+          "product": {
+            "const": "CONSULTE_GEO"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "contentHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "service": {
+            "enum": [
+              "user_access",
+              "questions",
+              "backup",
+              "new_work",
+              "structure_adjustment",
+              "problem"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "entries": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "description": "Ação/prioridade/label, form público publicado e serviceWindow. Sem checklist/capabilities/dados internos."
+            }
+          }
+        },
+        "required": [
+          "schema",
+          "product",
+          "id",
+          "version",
+          "contentHash",
+          "service",
+          "title",
+          "entries"
+        ]
+      },
+      "ConsulteGeoCatalogResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema": {
+            "const": 1
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "workspaceId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "principalId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "accountId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "refs": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "connectionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenantId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    },
+                    "type": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{0,31}$"
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    }
+                  },
+                  "required": [
+                    "connectionId",
+                    "tenantId",
+                    "type",
+                    "id"
+                  ]
+                },
+                "description": "Seletores opacos de um único contexto. Não concedem acesso."
+              },
+              "coverageId": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid",
+                "description": "Ainda não selecionada nesta etapa."
+              }
+            },
+            "required": [
+              "workspaceId",
+              "principalId",
+              "accountId",
+              "refs",
+              "coverageId"
+            ]
+          },
+          "configurations": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/ConsulteGeoCustomerConfiguration"
+            }
+          }
+        },
+        "required": [
+          "schema",
+          "context",
+          "configurations"
+        ]
+      },
+      "ConsulteGeoDraftInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "formId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "connectionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "tenantId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "type": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{0,31}$"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "connectionId",
+                "tenantId",
+                "type",
+                "id"
+              ]
+            },
+            "description": "Seletores opacos de um único contexto. Não concedem acesso."
+          },
+          "formVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "answers": {
+            "type": "object",
+            "description": "Respostas incompletas comuns permitidas; nunca conferem aptidão para envio."
+          }
+        },
+        "required": [
+          "id",
+          "accountId",
+          "formId",
+          "refs",
+          "formVersion",
+          "answers"
+        ]
+      },
+      "ConsulteGeoDraft": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "formId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "connectionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "tenantId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "type": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{0,31}$"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "connectionId",
+                "tenantId",
+                "type",
+                "id"
+              ]
+            },
+            "description": "Seletores opacos de um único contexto. Não concedem acesso."
+          },
+          "formVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "answers": {
+            "type": "object",
+            "description": "Respostas incompletas comuns permitidas; nunca conferem aptidão para envio."
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "const": "editing"
+          },
+          "ticketId": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "id",
+          "accountId",
+          "formId",
+          "refs",
+          "formVersion",
+          "answers",
+          "revision",
+          "expiresAt",
+          "status",
+          "ticketId"
+        ]
       }
     }
   }

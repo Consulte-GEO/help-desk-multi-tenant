@@ -1,3 +1,5 @@
+**Ajuste de execução:** M09b qualifica catálogo + GET/PUT de rascunho. Protocolo/prévia/abertura/snapshot/outbox passam para M09c conforme spec revisada. Task1 concluída; Task2 executa duas tabelas e leitores/CAS/audit; Task3 monta três operações opcionais e entrega. Nenhum writer parcial será exposto.
+
 # Consulte GEO M09b Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans. Execução inline com uma revisão final independente.

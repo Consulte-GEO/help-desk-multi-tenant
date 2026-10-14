@@ -1,6 +1,6 @@
-/** Reviewed metadata for schema 0.21.0; expressions require native qualification. */
+/** Reviewed metadata for schema 0.22.0; expressions require native qualification. */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.21.0",
+  "schemaVersion": "0.22.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -22,6 +22,12 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_audit.hdn_workflow_commits",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.hdni_draft_commits",
       "read": false,
       "insert": false,
       "updates": []
@@ -226,6 +232,12 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_core.hdn_workflow_state",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_core.hdni_drafts",
       "read": false,
       "insert": false,
       "updates": []
@@ -655,6 +667,81 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": false
     },
     {
+      "signature": "helpdesk_auth.hdni_canonical(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_catalog(jsonb, text)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_digest(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_draft(jsonb, uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_draft_directory(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_draft_values(jsonb, jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_guard_commit()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_guard_draft()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_lock_scope(jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_profile(jsonb, uuid, integer)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_refs_key(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_require_commit()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_resource_text(text)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_save_draft(jsonb, jsonb, integer)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdni_utf16(text)",
+      "definer": false,
+      "execute": false
+    },
+    {
       "signature": "helpdesk_auth.human_scopes(uuid, uuid)",
       "definer": true,
       "execute": false
@@ -820,6 +907,13 @@ export const DATABASE_SECURITY_CONTRACT = {
       "deferred": false
     },
     {
+      "table": "helpdesk_audit.hdni_draft_commits",
+      "name": "hdni_commit_immutable",
+      "function": "helpdesk_auth.hdni_guard_commit()",
+      "type": 31,
+      "deferred": false
+    },
+    {
       "table": "helpdesk_audit.write_effects",
       "name": "complete_write_effect",
       "function": "helpdesk_audit.require_write_effect()",
@@ -957,6 +1051,20 @@ export const DATABASE_SECURITY_CONTRACT = {
       "name": "hdn_workflow_state_identity",
       "function": "helpdesk_auth.hdn_guard_workflow_state()",
       "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_draft_effect",
+      "function": "helpdesk_auth.hdni_require_commit()",
+      "type": 21,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_draft_identity",
+      "function": "helpdesk_auth.hdni_guard_draft()",
+      "type": 31,
       "deferred": false
     },
     {
@@ -1165,6 +1273,26 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_audit.hdn_workflow_commits",
       "name": "hdn_workflow_commits_workspace_id_profile_version_id_fkey",
       "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdni_draft_commits",
+      "name": "hdni_draft_commits_actor_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdni_draft_commits",
+      "name": "hdni_draft_commits_draft_fk",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdni_draft_commits",
+      "name": "hdni_draft_commits_pk",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.hdni_draft_commits",
+      "name": "hdni_draft_commits_revision_ck",
+      "type": "c"
     },
     {
       "table": "helpdesk_audit.write_effects",
@@ -2069,6 +2197,41 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "table": "helpdesk_core.hdn_workflow_state",
       "name": "hdn_workflow_state_workspace_id_profile_version_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_account_fk",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_configuration_fk",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_document_ck",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_owner_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_pk",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_revision_ck",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdni_drafts",
+      "name": "hdni_drafts_workspace_id_fkey",
       "type": "f"
     },
     {
