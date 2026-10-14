@@ -7,7 +7,10 @@ import {expansionPolicyDigest} from '../src/domain/profile-expansion.ts';
 import {rawExpansion} from './helpers/expansion-fixture.ts';
 import {AT,BEFORE,UNTIL,u,evidenceFor,identity} from './helpers/release-fixtures.ts';
 
-async function setup(timeoutMs=1000){
+// Positive crypto/validation scenarios use the supported full budget under the
+// parallel application suite. The explicit 15 ms hanging-reader case below
+// independently proves the deadline and cancellation behavior.
+async function setup(timeoutMs=5000){
  const path='../src/application/expansion-preflight.ts',m=await import(path).catch(e=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof m.createExpansionPreflight,'function','C17 attested preflight missing');
  const f=rawExpansion();f.after.policySetDigest=expansionPolicyDigest(f.before,f.proposal,f.contract);
  const pair=generateKeyPairSync('ed25519');let tick=AT,enabled=true,reads=0;const signalLog:AbortSignal[]=[],control={afterRead:(_n:number)=>{},reject:false,hang:false};
