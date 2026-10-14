@@ -1,6 +1,8 @@
 import {registerConsulteGeoOpeningSqlTests} from './consultegeo-opening-scenarios.ts';
 import {registerNotificationDeliverySqlTests} from './notification-delivery-scenarios.ts';
 import {registerLocalRegistrySqlTests} from './local-registry-scenarios.ts';
+import {registerInitialOperationSqlTests} from './initial-operation-scenarios.ts';
+import {registerActivationSecurityInventory} from './activation-security-inventory.ts';
 /** Foundation scenarios registered exclusively by rls.test.ts after its fresh-PG17 guard. */
 import {registerConsulteGeoIntakeSqlTests} from './consultegeo-intake-scenarios.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
@@ -24,4 +26,6 @@ export function registerCapacityTests(adminPool:()=>SqlPool,appPool:()=>SqlPool)
  // Their catalog additions do not promote the hosted migration manifest.
  registerNotificationDeliverySqlTests(adminPool);
  registerLocalRegistrySqlTests(adminPool,appPool);
+ registerInitialOperationSqlTests(adminPool,appPool);
+ registerActivationSecurityInventory(adminPool);
 }
