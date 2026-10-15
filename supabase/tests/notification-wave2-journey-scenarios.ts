@@ -116,6 +116,14 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   receipt=await flow.execute(customer,opened.ticketId,refs,{action:'customer_reply',expectedVersion:receipt.version,body:'Owned requester return excluded from mail'},randomUUID(),randomUUID());
   await suite.test('customer reply pins the actual responsible staff and keeps conversation private',async()=>{const returned=await rows('support.customer_reply');assert.equal(returned.length,1);assert.equal(returned[0]!.id,receipt.eventId);assert.equal(returned[0]!.assigned_principal_id,staff);const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.customer_reply');assert.equal(facts.sourceAssigneeId,staff);assert.doesNotMatch(JSON.stringify(facts),/Owned requester return|body|notes/);});
   await suite.test('customer return goes to its pinned staff recipient and never the requester',async()=>{const saved=await audience.materialize(receipt.eventId);assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.ok(saved.records.every(r=>r.intent.recipientId!==requester));});
+  await suite.test('materialized customer return retains its exact source and authorizes the genuine worker lease',async()=>{
+   const before=(await operator.query('select document from helpdesk_integration.hdn_notification_plans where event_id=$1',[receipt.eventId])).rows[0]!.document;
+   const replay=await audience.materialize(receipt.eventId);assert.equal(replay.records.length,1);assert.deepEqual(replay.plan,before);
+   const claim=await audience.claimFor(replay.records[0]!.intent.id),proof=await audience.authorize(claim);
+   assert.equal(proof.decision,'allowed');assert.equal(proof.recipientId,staff);assert.equal(proof.address,email);
+   assert.equal((await audience.authorize(claim)).decision,'allowed');
+   assert.deepEqual((await operator.query('select document from helpdesk_integration.hdn_notification_plans where event_id=$1',[receipt.eventId])).rows[0]!.document,before);
+  });
   await assertOwnedWave2ApprovalOpening(suite,operator,app,{agent,customer,staffAuth,workId:input.workId,oldTicketId:opened.ticketId,formId:entry.form.id,audience,control,local:JSON.parse(extended.values[0] as string)});
   await suite.test('expired finite route seals an actual public reply without delivery or later backfill',async()=>{
    const template=WAVE2_PUBLIC_TEMPLATES.find(t=>t.kind==='support.reply')!;

@@ -1,7 +1,7 @@
 name: Wave2 PostgreSQL development checks
 on:
   push:
-    branches: ['codex/helpdesk-email-wave2']
+    branches: ['codex/helpdesk-email-wave2', 'codex/helpdesk-email-wave2-customer-return']
 permissions:
   contents: read
 concurrency:
