@@ -10,14 +10,16 @@ O monitor é somente leitura e usa autenticação, contexto de autorização, fi
 
 ## Validação executada e limite concreto
 
+**Qualificação concluída da fonte06c0bdb:** [CI38779615398](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38779615398),5728 aplicação +697 PostgreSQL +632 interface, zero falhas/skips/cancel/todo. Recibo e logs íntegros em `evidence/homologation/`; `npm run check:homologation` confirmou a fonte SHA25644831b432decb57e937e68bc81081ab71f917e9958970aa7f0e38c2b9ebc060b. HDA40 candidato/14 cadeia completa/49 DOM e CodeQL também aprovados. Os resultados locais abaixo são histórico complementar; não substituem esse gate Linux real. A documentação/evidência posterior não altera a fonte executável homologada. Consultar o PR para verificações posteriores.
+
 - Suíte focada ampliada:185/185 aprovados, incluindo regras, HTTP, store/cursor cifrado, rollout, HDA, UI, compiler, staging e assets. São testes do código local, não aceite hospedado.
 - SQL auxiliar PGlite:21/21 consultas e18/18 telemetria. Esse ambiente não comprova RLS nem login de autoridade real.
 - Navegador Node/Chrome:22 verificações do componente e32 do shell completo com transportes sintéticos; screenshots desktop/360px inspecionados. A suíte Python portátil foi adicionada ao runner oficial; execução Python local não concluiu, portanto não afirmar aprovação dessa suíte.
 - A suíte ampla Windows não foi aprovada:5719 testes,5568 pass e151 fail antes das últimas correções. Inclui limitações de symlink/socket/processos e timeouts. Duas regressões reais foram isoladas e corrigidas (assets do demo e manifesto na fixture de staging). Não remover testes, aumentar timeouts indiscriminadamente ou converter falhas em skips.
 - Typecheck, build, verificação estrutural OpenAPI e cadeia offline de migrations executados. A verificação OpenAPI é estrutural, não um validador oficial completo.
-- Os16 cenários PG17 reais em `supabase/tests/email-monitor-scenarios.ts` passaram no run38778766099 (f7b7356). Eles usam app/worker restritos e cadeia real; não são apenas diagnóstico PGlite. A compatibilidade SQL do marcador HDA também foi corrigida no append27 e será reconferida no CI final.
+- Os16 cenários PG17 reais em `supabase/tests/email-monitor-scenarios.ts` passaram no run38778766099 (f7b7356) e novamente no gate completo06c0bdb. Eles usam app/worker restritos e cadeia real; não são apenas diagnóstico PGlite. O marcador SQL de armazenamento HDA foi corrigido no append27 e a compatibilidade foi aprovada no CI final.
 
-A recusa inicial de push foi resolvida por autorização humana explícita para enviar esta branch ao repositório correto, abrir PR e executar CI. Essa autorização não inclui publicação em produção. O CI está em qualificação; consultar os resultados mais recentes do PR.
+A recusa inicial de push foi resolvida por autorização humana explícita para enviar esta branch ao repositório correto, abrir PR e executar CI. Essa autorização não inclui publicação em produção. O CI da fonte acima foi aprovado; consultar os resultados mais recentes do PR. A prévia Netlify e qualquer promoção produtiva são estágios separados; não retirar o gate de release para publicá-las.
 
 ## Próximos passos
 
@@ -25,7 +27,7 @@ A recusa inicial de push foi resolvida por autorização humana explícita para 
 2. A branch já foi enviada e o PR52 está aberto para `codex/m1-reproducibilidade`; aguardar o CI do commit exato. Os workflows principal e suplementar de PG17 já contemplam a branch; não afrouxar os gates.
 3. Conferir os resultados mais recentes do CI no PR52: PostgreSQL17 com sessões reais restritas e toda a cadeia de migrations, interface Python e suíte completa Linux. Não repetir gates já aprovados sem mudança de fonte, falha ou preocupação concreta. Inspecionar logs reais antes de declarar aprovação. O teste usa clusters descartáveis próprios, envio sintético e callbacks assinados, sem Resend real.
 4. Tratar falhas de teste com investigação e regressão negativa; não ajustar catálogo ou hashes para esconder drift. Reexecutar somente o necessário após cada correção e depois o gate completo do commit final.
-5. Registrar CI/PR/commit e limites no checkpoint/ledger. A implantação produtiva, início da coleta no provedor e aceite autenticado continuam etapas distintas, sob autorização e processo do projeto.
+5. A qualificação e os limites estão registrados no checkpoint/ledger e na matriz de rastreabilidade. Depois da revisão do PR, a implantação produtiva, início da coleta no provedor e aceite autenticado continuam etapas distintas, sob autorização e processo do projeto.
 
 ## Pontos sensíveis da implementação
 

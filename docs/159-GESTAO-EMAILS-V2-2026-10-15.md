@@ -74,4 +74,10 @@ Sem coleta comprovada, a interface continua útil para fila, aceite, entrega e f
 
 ## Validação
 
+Código `06c0bdbf87cb7e2ed7f0cbf080414effc6eed96f`, merge de teste `8c7cd14d32cb06b5ecd7dcca14af59fc46ac8d0a`: [gate completo aprovado](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38779615398), com5728 testes de aplicação,697 PostgreSQL e632 interface, sem falhas/skips/cancelamentos/todo. HDA também aprovado:40 verificações nativas de candidato,14 com a cadeia completa e49 DOM; CodeQL aprovado. O resultado oficial mais recente e a prévia automática ficam no [PR52](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/52).
+
+O recibo e os logs íntegros dessa execução estão em `evidence/homologation/`. Foram copiados do artefato CI11995732355, sem alterar contagens, datas ou hashes; `validateReport`, `verifyLogs` e `npm run check:homologation` confirmaram compatibilidade com a fonte local. SHA256 da fonte executável: `44831b432decb57e937e68bc81081ab71f917e9958970aa7f0e38c2b9ebc060b`. A documentação posterior não muda essa fonte. Esses resultados homologam testes locais/CI; não atestam o provedor real, implantação ou aceite produtivo.
+
+Para retomar no Claude, usar o [handoff atual](implementation/EMAIL-MONITOR-V2-HANDOFF-CLAUDE.md) e a [matriz de rastreabilidade](implementation/EMAIL-MONITOR-V2-MATRIZ-ACEITE.md). Preservar os registros históricos da especificação e consultar o PR para resultados posteriores.
+
 Os testes incluem validação de filtros e DTOs, HTTP, cursor e contexto, rollout25/26/27, compatibilidade HDA, interface e compiler determinístico. Os cenários PG17 usam logins reais restritos, intake/planner normais, envio sintético e callbacks assinados; não enviam e-mail real. O resultado da execução CI e os achados finais de revisão devem ser consultados no PR e no ledger, que distinguem execução local, ambiente real de teste e produção.
