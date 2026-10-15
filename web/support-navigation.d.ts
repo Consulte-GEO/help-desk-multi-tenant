@@ -1,1 +1,1 @@
-export function captureSupportNavigation(location:{href:string},history:{replaceState(state:unknown,title:string,path:string):void}):Readonly<{discarded:boolean;hasTicket():boolean;takeTicket():string|null;clear():void}>;
+export function captureSupportNavigation(location:{href:string},history:{replaceState(state:unknown,title:string,path:string):void}):Readonly<{discarded:boolean;hasTicket():boolean;takeTicket():string|null;hasApproval():boolean;takeApproval():string|null;clear():void}>;

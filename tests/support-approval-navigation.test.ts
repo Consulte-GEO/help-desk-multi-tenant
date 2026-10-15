@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {captureSupportNavigation} from '../web/support-navigation.js';
+const id='12345678-1234-4000-8000-123456789abc';
+function capture(suffix='',fail=false){const calls:unknown[]=[];const api:any=captureSupportNavigation({href:'https://helpdesk.example/support/approvals/'+id+suffix},{replaceState(...args:unknown[]){calls.push(args);if(fail)throw Error('cleanup failed');}});return {api,calls};}
+test('approval deep link retains only an invitation selector in memory after clearing the URL',()=>{const {api,calls}=capture();assert.equal(typeof api.hasApproval,'function');assert.equal(api.hasApproval(),true);assert.equal(api.hasTicket(),false);assert.deepEqual(calls,[[null,'','/']]);assert.equal(JSON.stringify(api).includes(id),false);assert.equal(api.takeApproval(),id);assert.equal(api.takeApproval(),null);});
+for(const suffix of ['?token=private','#access_token=private','?decision=approve','/approve','?workspace=forged'])test('approval navigation refuses credential/action/selector additions '+suffix,()=>{const {api}=capture(suffix);assert.equal(typeof api.hasApproval,'function');assert.equal(api.hasApproval(),false);assert.equal(api.takeApproval(),null);assert.equal(api.discarded,true);});
+test('identity cleanup drops an unconsumed approval link without any action',()=>{const {api}=capture();assert.equal(typeof api.takeApproval,'function');api.clear();assert.equal(api.takeApproval(),null);});
+test('failed URL cleanup never leaves a pending approval selector',()=>{const {api}=capture('',true);assert.equal(typeof api.hasApproval,'function');assert.equal(api.hasApproval(),false);assert.equal(api.discarded,true);});
