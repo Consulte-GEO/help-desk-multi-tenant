@@ -23,6 +23,11 @@ export async function createOwnedWave2AudienceFixture(suite:TestContext,operator
  const store=createPostgresNotificationDeliveryStore(worker),clock=async()=>String((await operator.query('select helpdesk_auth.hdn_workflow_iso(clock_timestamp()) as at')).rows[0]!.at);
  async function materialize(eventId:string){const at=await clock(),plan=await store.planLocked(eventId,tx=>materializeNotificationIntents(tx,eventId,at));const records=(await operator.query('select record from helpdesk_integration.hdn_notification_records where event_id=$1 order by recipient_id',[eventId])).rows.map(r=>parseDeliveryRecord(r.record));assert.deepEqual(records.map(r=>r.intent.id).sort(),[...plan.intentIds].sort());return {plan,records};}
  async function claim(){const at=await clock(),claims=await store.claimDelivery({workerId:'owned-wave2',at,until:formatMicros(instantMicros(at)+30_000_000n),limit:1});assert.equal(claims.length,1);return parseDeliveryRecord(claims[0]);}
- const authorize=async(record:ReturnType<typeof parseDeliveryRecord>)=>store.authority.authorize(record.intent,new AbortController().signal) as Promise<any>;
+ const authorize=async(record:ReturnType<typeof parseDeliveryRecord>)=>{try{return await store.authority.authorize(record.intent,new AbortController().signal) as any;}catch(error){
+  // Diagnose only owned fixture SQL before the store sanitizes it. Never print
+  // parameters, contacts, credentials, native result rows or provider messages.
+  try{await worker.query('select helpdesk_auth.hdn_notification_authorize($1) as probe',[record.intent.id]);}catch(raw){const e=raw as {code?:string;where?:string;routine?:string;table?:string};suite.diagnostic(JSON.stringify({fixture:'owned-wave2-recipient',code:e.code,where:e.where,routine:e.routine,table:e.table}));}
+  throw error;
+ }};
  return {worker,store,materialize,claim,authorize,scope};
 }
