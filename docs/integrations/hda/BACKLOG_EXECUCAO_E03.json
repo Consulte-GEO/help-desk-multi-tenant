@@ -1,0 +1,723 @@
+{
+  "schema": 2,
+  "document_version": "2.0+E03",
+  "as_of": "2026-10-14",
+  "kind": "development-execution-backlog",
+  "epic": {
+    "key": "HD-DA-CADASTROS",
+    "title": "Cadastros assistidos com Dev Agent Claude CLI e aprovação humana",
+    "scope": "Consulte GEO - piloto de vínculo usuário-obra; expansão por ação após homologação",
+    "initial_action_key": "geo.user.grant_work.v1",
+    "baseline": {
+      "repository": "Consulte-GEO/help-desk-multi-tenant",
+      "branch": "codex/m1-reproducibilidade",
+      "commit": "d5610aca8b4a5ca65567c0c92b2c7a1df5aa6da4"
+    },
+    "status": "in_progress",
+    "deployment_authorized": false,
+    "plan_baseline": {
+      "repository": "Consulte-GEO/help-desk-multi-tenant",
+      "branch": "codex/m1-reproducibilidade",
+      "commit": "78c137f0badb9f56c65b1813f5e9754b9c34b50c"
+    }
+  },
+  "reference_docs": [
+    "plano_v2/01_PLANO_MASTER_INTEGRAVEL_V2.md",
+    "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+    "plano_v2/03_DEPENDENCIAS_E_CONFLITOS_V2.md",
+    "plano_v2/04_CONTRATOS_E_EVENTOS_V2.md",
+    "plano_v2/05_MATRIZ_DE_ACEITE_V2.md"
+  ],
+  "external_dependency_aliases": {
+    "HD-CORE-OPERACAO": "Operação/Schema/Release Help Desk",
+    "HD-CATALOGO-WORKFLOW": "Catálogo, formulários e workflow existentes",
+    "HD-ORIGEM-M08": "Conector real Novo GEO, identidade e recursos",
+    "HD-NOTIFICACOES-M11": "Outbox persistente, worker e canal Resend",
+    "HD-UX-DESIGN": "UX10 e componentes da central",
+    "HD-OBSERVABILIDADE": "Linha do tempo, eventos e monitoramento",
+    "WIKI-CG": "Wiki Consulte GEO e política editorial",
+    "SETUP-IMPLANTACAO": "Ferramenta independente de implantação e planilhas",
+    "NOVO-GEO-API": "Serviço da API Novo GEO para cadastro/ledger",
+    "NOVO-GEO-IDP": "IdentityServer e convite",
+    "HOST-CLAUDE-CLI": "Instalação supervisionada do agent CLI"
+  },
+  "issues": [
+    {
+      "key": "HDA-00",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Qualificar Novo GEO, IdP e Claude CLI",
+      "status": "partially_qualified",
+      "priority": "P0",
+      "phase": "F0",
+      "owner_domain": "Qualificação",
+      "depends_on": [],
+      "external_dependencies": [],
+      "acceptance_criteria": [
+        "Contrato real da ação piloto, escopo e efeitos documentados",
+        "Instalação do agente e limitações documentadas",
+        "Nenhuma escrita na origem ou migração"
+      ],
+      "test_ids": [],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-00",
+      "completed": false,
+      "execution_note": "Repositório/estado e inventários disponíveis; origem real e host CLI não qualificados.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-01",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Contratos de ação e estados",
+      "status": "implemented_locally_acceptance_pending",
+      "priority": "P0",
+      "phase": "F1",
+      "owner_domain": "Domínio Help Desk",
+      "depends_on": [
+        "HDA-00"
+      ],
+      "external_dependencies": [],
+      "acceptance_criteria": [
+        "Parser estrito e máquina de estados com testes",
+        "Action-key fechada e vetores Node/.NET",
+        "Nenhuma autoridade de execução proveniente do agente"
+      ],
+      "test_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A05",
+        "S01",
+        "S02",
+        "F01",
+        "X01",
+        "X03"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-01",
+      "completed": false,
+      "execution_note": "Domínio/schema/parser/vetores/máquina de análise testados localmente; integração completa e .NET pendentes.",
+      "evidence": {
+        "implemented": true,
+        "tested_local": true,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-02",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Fila e persistência privada",
+      "status": "partially_implemented",
+      "priority": "P0",
+      "phase": "F1",
+      "owner_domain": "Banco Help Desk",
+      "depends_on": [
+        "HDA-01"
+      ],
+      "external_dependencies": [
+        "HD-CORE-OPERACAO"
+      ],
+      "acceptance_criteria": [
+        "PostgreSQL 17 real e RLS/ACL",
+        "Transação, idempotência e lease/fencing testados",
+        "Sem migration hospedada automática"
+      ],
+      "test_ids": [
+        "S05",
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "X04"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-02",
+      "completed": false,
+      "execution_note": "E02: contratos/serviço/adaptador de análise testados localmente; SQL candidato e suíte nativa preparados, mas não executados. Migration/upgrade, grants/origem reais e aprovação/execução continuam pendentes.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": true,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false,
+        "implementation_scope": "analysis_subset_only",
+        "sql_candidate_written": true,
+        "sql_candidate_executed": false,
+        "native_harness_admission_tested": true
+      },
+      "e03_note": "ACK/recibo local reforçado; candidato com escopos centrais e queue_hash; runner/suite nativa aprimorados. Prova PostgreSQL continua pendente."
+    },
+    {
+      "key": "HDA-03",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Criar job na abertura atômica",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F1",
+      "owner_domain": "Intake Help Desk",
+      "depends_on": [
+        "HDA-02"
+      ],
+      "external_dependencies": [
+        "HD-CATALOGO-WORKFLOW"
+      ],
+      "acceptance_criteria": [
+        "Ticket e job na mesma transação",
+        "Replay de abertura sem segunda operação",
+        "Fallback manual para ações não suportadas"
+      ],
+      "test_ids": [
+        "S01",
+        "S02",
+        "P01",
+        "P02"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-03",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-04",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Bridge Claude para análise sem escrita",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F1",
+      "owner_domain": "Dev Agent / Bridge",
+      "depends_on": [
+        "HDA-03"
+      ],
+      "external_dependencies": [
+        "HOST-CLAUDE-CLI"
+      ],
+      "acceptance_criteria": [
+        "Processo CLI supervisionado com ferramentas restritas",
+        "Sem credencial de escrita/SQL/AdminScript",
+        "Falhas, limites e retorno inválido não geram efeito"
+      ],
+      "test_ids": [
+        "A01",
+        "A05",
+        "S06",
+        "S07",
+        "S08",
+        "P04",
+        "J01",
+        "J02",
+        "J03",
+        "J04",
+        "OP03",
+        "X02",
+        "X05"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-04",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-05",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Leitura e preview do cadastro",
+      "status": "partially_implemented",
+      "priority": "P0",
+      "phase": "F1/F2",
+      "owner_domain": "Novo GEO + Adapter Help Desk",
+      "depends_on": [
+        "HDA-00"
+      ],
+      "external_dependencies": [
+        "HD-ORIGEM-M08",
+        "NOVO-GEO-API"
+      ],
+      "acceptance_criteria": [
+        "Contrato de preview sem efeitos e revisão da origem",
+        "Isolamento real por contrato/obra",
+        "Fixtures não são aceites da origem"
+      ],
+      "test_ids": [
+        "A04",
+        "S01",
+        "S03",
+        "S04",
+        "O01",
+        "O02",
+        "O03",
+        "X06"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "milestones": [
+        "HDA-05.preview-contract",
+        "HDA-05.preview-real"
+      ],
+      "implementation_heading": "HDA-05",
+      "completed": false,
+      "execution_note": "preview-contract candidato implementado; preview-real/readContext/HTTP/ACL não implementados.",
+      "evidence": {
+        "implemented": true,
+        "tested_local": true,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-06",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Rascunho cadastral na interface",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F1",
+      "owner_domain": "UX Help Desk",
+      "depends_on": [
+        "HDA-03",
+        "HDA-04"
+      ],
+      "external_dependencies": [
+        "HD-UX-DESIGN"
+      ],
+      "acceptance_criteria": [
+        "Revisão/diff e CAS",
+        "Troca de contrato/logout descarta respostas tardias",
+        "Tela não executa ao montar"
+      ],
+      "test_ids": [
+        "A02",
+        "A03",
+        "A04",
+        "S08",
+        "U01",
+        "U02",
+        "U03",
+        "U04",
+        "U05",
+        "X11"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "depends_on_interfaces": [
+        "HDA-05.preview-contract (fixture validada)"
+      ],
+      "implementation_heading": "HDA-06",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-07",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Aprovação humana vinculada ao rascunho",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F2",
+      "owner_domain": "Segurança Help Desk",
+      "depends_on": [
+        "HDA-02",
+        "HDA-05",
+        "HDA-06"
+      ],
+      "external_dependencies": [
+        "HD-CATALOGO-WORKFLOW"
+      ],
+      "acceptance_criteria": [
+        "Finalidade registration_execution distinta da aprovação geral",
+        "Hash/target/efeitos e grants atuais verificados",
+        "Uma intenção por aprovação e replay idempotente"
+      ],
+      "test_ids": [
+        "S03",
+        "P03",
+        "U01",
+        "U04",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "X07"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "depends_on_interfaces": [
+        "HDA-05.preview-real (necessário para execução real)"
+      ],
+      "implementation_heading": "HDA-07",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-08",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Executor e ledger idempotente na origem",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F2",
+      "owner_domain": "Novo GEO / Segurança",
+      "depends_on": [
+        "HDA-00",
+        "HDA-05",
+        "HDA-07"
+      ],
+      "external_dependencies": [
+        "NOVO-GEO-API",
+        "HD-ORIGEM-M08"
+      ],
+      "acceptance_criteria": [
+        "Execução por API de negócio restrita",
+        "Recibo consultável por operationId",
+        "Retry após perda de ACK não duplica cadastro"
+      ],
+      "test_ids": [
+        "S01",
+        "S03",
+        "S04",
+        "S05",
+        "O02",
+        "R04",
+        "R06",
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E08"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-08",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-09",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Callback e conciliação de resultado",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F2",
+      "owner_domain": "Integrações Help Desk",
+      "depends_on": [
+        "HDA-02",
+        "HDA-08"
+      ],
+      "external_dependencies": [
+        "NOVO-GEO-API"
+      ],
+      "acceptance_criteria": [
+        "Assinatura, dedupe, ordenação e replay testados",
+        "unknown não causa retry de escrita",
+        "Estado committed exige prova de origem"
+      ],
+      "test_ids": [
+        "J03",
+        "J05",
+        "E03",
+        "E04",
+        "E05",
+        "E07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "X09"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-09",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-10",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Resultado no portal e notificação M11",
+      "status": "not_started",
+      "priority": "P1",
+      "phase": "F3",
+      "owner_domain": "Notificações Help Desk",
+      "depends_on": [
+        "HDA-09"
+      ],
+      "external_dependencies": [
+        "HD-NOTIFICACOES-M11"
+      ],
+      "acceptance_criteria": [
+        "Resultado público limitado e autenticado",
+        "Outbox sem duplicação de cadastro",
+        "Convite pertence ao IdP/origem"
+      ],
+      "test_ids": [
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "X10"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-10",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-11",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Piloto limitado e aceite operacional",
+      "status": "not_started",
+      "priority": "P0",
+      "phase": "F3",
+      "owner_domain": "Operação / Release",
+      "depends_on": [
+        "HDA-01",
+        "HDA-02",
+        "HDA-03",
+        "HDA-04",
+        "HDA-05",
+        "HDA-06",
+        "HDA-07",
+        "HDA-08",
+        "HDA-09",
+        "HDA-10"
+      ],
+      "external_dependencies": [
+        "HD-CORE-OPERACAO",
+        "HD-ORIGEM-M08",
+        "HD-NOTIFICACOES-M11",
+        "HD-OBSERVABILIDADE"
+      ],
+      "acceptance_criteria": [
+        "Schema e flags reais qualificados",
+        "Canário com uma action-key/contrato/obra",
+        "Aceite humano e runbook de parada/conciliação"
+      ],
+      "test_ids": [
+        "S08",
+        "P05",
+        "OP01",
+        "OP02",
+        "OP03",
+        "OP04",
+        "OP05",
+        "X08"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-11",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-12",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Criar usuário com saga GEO + IdP",
+      "status": "not_started",
+      "priority": "P1",
+      "phase": "F4",
+      "owner_domain": "Origem / Identidade",
+      "depends_on": [
+        "HDA-11"
+      ],
+      "external_dependencies": [
+        "NOVO-GEO-IDP"
+      ],
+      "acceptance_criteria": [
+        "Identidade e vínculos com etapas idempotentes",
+        "Falhas parciais recuperáveis",
+        "Não repetir convite nem tomar posse por e-mail"
+      ],
+      "test_ids": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-12",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    },
+    {
+      "key": "HDA-13",
+      "epic": "HD-DA-CADASTROS",
+      "title": "Expansão por cadastros e setup",
+      "status": "not_started",
+      "priority": "P2",
+      "phase": "F4",
+      "owner_domain": "Produto / Origem",
+      "depends_on": [
+        "HDA-11"
+      ],
+      "external_dependencies": [
+        "SETUP-IMPLANTACAO"
+      ],
+      "acceptance_criteria": [
+        "Cada action-key tem contrato e aceite próprios",
+        "Artefatos da implantação não autorizam escrita",
+        "Lotes e riscos extras tratados separadamente"
+      ],
+      "test_ids": [
+        "OP06",
+        "X12"
+      ],
+      "implementation_ref": "plano_v2/02_BACKLOG_EXECUTAVEL_V2.md",
+      "implementation_heading": "HDA-13",
+      "completed": false,
+      "execution_note": "Sem implementação operacional nesta etapa.",
+      "evidence": {
+        "implemented": false,
+        "tested_local": false,
+        "tested_postgresql": false,
+        "tested_browser": false,
+        "tested_origin": false,
+        "deployed": false,
+        "homologated": false,
+        "operational": false
+      }
+    }
+  ],
+  "test_case_count": 81,
+  "notices": [
+    "IDs externos são aliases de coordenação, não issues já criadas",
+    "Status de todos os itens é planned, nenhum teste da automação V2 foi executado",
+    "JSON para importação manual; não foi efetuada escrita no GitHub",
+    "Não autoriza ativação de execução na origem nem migrations hosted",
+    "E01 não é conclusão do plano nem autorização de deploy.",
+    "O estado operacional do core avançou após V2; não revertê-lo.",
+    "81 casos de negócio e122 testes locais não são equivalentes.",
+    "HDA01 parcialmente satisfaz contrato; .NET e regressão integral continuam pendentes.",
+    "E02 não completa HDA-02. Os 16 testes estáticos de SQL e 11 testes de admissão do runner não são testes PostgreSQL.",
+    "Histórico de execução E01 está preservado; usar os checkpoints E02 como estado corrente do incremento."
+  ],
+  "execution": {
+    "increment": "E02",
+    "local_tests": 227,
+    "e01_preserved": 122,
+    "new_tests": 105,
+    "native_postgres": "blocked_not_executed",
+    "complete_checkout": false,
+    "core_regression": "not_executed",
+    "deployed": false,
+    "operational": false,
+    "review": "self_review"
+  },
+  "last_increment": {
+    "id": "E03",
+    "tests_passed": 275,
+    "new_tests": 48,
+    "native_executed": false,
+    "status": "HDA-02 hardening; native/full-core acceptance pending",
+    "report": "docs/integrations/hda/EXECUCAO_E03.md"
+  }
+}

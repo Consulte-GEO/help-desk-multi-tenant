@@ -1,0 +1,46 @@
+name: HDA candidate and browser qualification
+on:
+  pull_request:
+  push:
+    branches: ['codex/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hda:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - run: npm ci --ignore-scripts
+      - name: Prepare owned PostgreSQL 17 prerequisites
+        run: |
+          test -x /usr/lib/postgresql/17/bin/initdb || (sudo apt-get update && sudo apt-get install -y postgresql-17)
+          mkdir -p evidence/hda-ci
+      - name: Native candidate with explicit synthetic core
+        env:
+          HDA_PG_BINDIR: /usr/lib/postgresql/17/bin
+        run: node --experimental-strip-types scripts/test-registration-db-native.mjs --execute | tee evidence/hda-ci/candidate.json
+      - name: Native candidate against complete immutable migration chain
+        env:
+          HDA_PG_BINDIR: /usr/lib/postgresql/17/bin
+        run: node --experimental-strip-types scripts/test-registration-db-native.mjs --execute --full-core | tee evidence/hda-ci/full-core.json
+      - name: Independent canonical vectors
+        run: python3 scripts/verify-hda-canonical-vectors.py | tee evidence/hda-ci/vectors.log
+      - name: Prepare browser
+        run: |
+          python3 -m venv "$RUNNER_TEMP/hda-browser"
+          "$RUNNER_TEMP/hda-browser/bin/pip" install playwright==1.63.0
+          "$RUNNER_TEMP/hda-browser/bin/python" -m playwright install --with-deps chromium
+      - name: Offline DOM with real Chromium
+        env:
+          HDA_BROWSER_EVIDENCE: evidence/hda-ci/browser
+        run: '"$RUNNER_TEMP/hda-browser/bin/python" tests/browser-registration-automation.py'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hda-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/hda-ci
