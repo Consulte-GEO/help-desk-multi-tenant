@@ -164,20 +164,7 @@ export async function addReviewComment(
   // v5.22.34: notifica cliente fire-and-forget se comentário for PÚBLICO.
   // Internal-only NÃO dispara — cliente não vê esse comentário no /s/:token.
   // Migration 013 garante que o RPC retorna submission_id no payload.
-  if (input.internalOnly !== true && result.submission_id) {
-    void sb.functions
-      .invoke('notify-team-comment', {
-        body: {
-          submission_id: result.submission_id,
-          comment_body: input.body.slice(0, 600),
-          team_author: input.author || '',
-        },
-      })
-      .catch((err) => {
-        // Comentário JÁ está persistido pela RPC. Email é nice-to-have.
-        console.warn('[notify-team-comment] falhou:', err);
-      });
-  }
+  // O backend grava comentário e notificação na mesma transação.
 
   return result as ReviewComment;
 }
@@ -258,20 +245,7 @@ export async function addClientComment(
 
   // v5.22.30 — Notifica equipe fire-and-forget. Sem await, sem
   // bloqueio do retorno. Edge Function resolve dados internamente.
-  if (input.notifyTeam !== false) {
-    void sb.functions
-      .invoke('notify-client-comment', {
-        body: {
-          client_access_token: input.token,
-          body_preview: input.body.slice(0, 600),
-        },
-      })
-      .catch((err) => {
-        // Log apenas — não interrompe nem mostra alerta ao usuário.
-        // O comentário JÁ está persistido pela RPC anterior.
-        console.warn('[notify-client-comment] falhou:', err);
-      });
-  }
+  // A notificação já foi admitida com o comentário, sem segundo envio pelo navegador.
 
   return data as ReviewComment;
 }
@@ -296,6 +270,7 @@ export interface ReturnSubmissionInput {
 }
 
 export interface ReturnSubmissionResult {
+  email_status?: string;
   ok: boolean;
   ticket_number: string;
   email_sent_to: string[];
@@ -334,43 +309,13 @@ export async function returnSubmissionWithComment(
     obra_nome: string;
     reviewer: string;
     reason: string;
+    email_status?: string;
+    email_error?: string | null;
   };
   const rpc = data as ReturnRpcResult;
 
-  // 2. Edge Function dispara email
-  let emailSentTo: string[] = [];
-  let emailError: string | null = null;
-  try {
-    const { data: edgeData, error: edgeErr } = await sb.functions.invoke('notify-return', {
-      body: {
-        ticket_number: rpc.ticket_number,
-        client_access_token: rpc.client_access_token,
-        obra_nome: rpc.obra_nome,
-        reviewer: rpc.reviewer,
-        reason: rpc.reason,
-        email_cc: rpc.email_cc ?? [],
-      },
-    });
-    if (edgeErr) {
-      emailError = `notify_return_invoke_failed: ${edgeErr.message ?? 'unknown'}`;
-    } else if (edgeData && typeof edgeData === 'object') {
-      const d = edgeData as { ok?: boolean; sent_to?: string[]; error?: string };
-      if (d.ok) {
-        emailSentTo = d.sent_to ?? [];
-      } else {
-        emailError = d.error ?? 'notify_return_unknown_error';
-      }
-    }
-  } catch (err) {
-    emailError = `notify_return_exception: ${String(err).slice(0, 200)}`;
-  }
-
-  return {
-    ok: true,
-    ticket_number: rpc.ticket_number,
-    email_sent_to: emailSentTo,
-    email_error: emailError,
-  };
+  // Devolução e notificação já foram registradas atomicamente pelo backend.
+  return {ok:true,ticket_number:rpc.ticket_number,email_sent_to:[],email_status:rpc.email_status,email_error:rpc.email_error??null};
 }
 
 /**

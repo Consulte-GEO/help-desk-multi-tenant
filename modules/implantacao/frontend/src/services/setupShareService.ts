@@ -27,7 +27,8 @@ export interface ShareDraftLinkInput {
 
 export interface ShareDraftLinkResponse {
   ok: boolean;
-  /** Quando ok=true, ID retornado pelo Resend. */
+  email_status?: string;
+  /** Quando ok=true, Identificador legado; fila não comprova entrega. */
   email_id?: string;
   /** Quando ok=false, código de erro legível. */
   error?: string;

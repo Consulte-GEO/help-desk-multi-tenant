@@ -33,10 +33,10 @@
           </div>
 
           <p style="margin: 0 0 12px">
-            A equipe Consulte GEO foi notificada e iniciará a validação em breve.
+            Proposta recebida para validação pela equipe Consulte GEO.
           </p>
 
-          <div v-if="emailSentToVisible.length" class="hint">
+          <p v-if="ticket.email_status" role="status">E-mail: {{ emailStateLabel(ticket.email_status) }}. Consulte a aba E-mails para acompanhar.</p><div v-if="emailSentToVisible.length" class="hint">
             <strong>Notificação enviada a:</strong>
             <ul style="margin: 4px 0 0; padding-left: 20px">
               <li v-for="e in emailSentToVisible" :key="e">{{ e }}</li>
@@ -80,6 +80,7 @@
 </template>
 
 <script lang="ts">
+import {emailStatusLabel as emailStateLabel} from '../support/email-status';
 import { defineComponent, type PropType } from 'vue';
 import type { TicketSubmissionResponse } from '../models/setup.models';
 // v5.22.27 — acessibilidade dos modais centralizada
@@ -134,7 +135,7 @@ export default defineComponent({
     });
     if (this.isOpen) this.a11y.activate();
   },
-  methods: {
+  methods: {emailStateLabel,
     onClose() {
       this.$emit('close');
     },

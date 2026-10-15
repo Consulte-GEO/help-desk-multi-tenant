@@ -18,7 +18,7 @@ else{
  if(versions.initdb&&versions.initdb!==versions.pg_ctl)issues.push('postgres_tool_version_mismatch');
  if(issues.length){console.log(JSON.stringify({...plan,mode:'blocked',issues}));process.exitCode=2;}
  else{
-  const dir=mkdtempSync(join(tmpdir(),'hda02-owned-')),data=join(dir,'data'),socket=join(dir,'socket'),proof=randomBytes(32).toString('hex'),passwords={postgres:randomBytes(32).toString('hex'),helpdesk_app:randomBytes(32).toString('hex')};
+  const dir=mkdtempSync(join(tmpdir(),'hda02-owned-')),data=join(dir,'data'),socket=join(dir,'socket'),proof=randomBytes(32).toString('hex'),passwords={postgres:randomBytes(32).toString('hex'),helpdesk_app:randomBytes(32).toString('hex'),helpdesk_notification_worker:randomBytes(32).toString('hex')};
   writeFileSync(join(dir,'ownership'),proof,{mode:0o600});mkdirSync(socket,{mode:0o700});mkdirSync(join(dir,'home'),{mode:0o700});
   const env={...versionEnv,HOME:join(dir,'home'),TMPDIR:dir},pools=[];let startRequested=false,summary;
   const command=(name,params)=>{const r=spawnSync(binary(name),params,{env,encoding:'utf8',timeout:45000,maxBuffer:2*1024*1024});if(r.status!==0||r.signal||r.error)throw Error('local_cluster_command_failed');};
@@ -42,7 +42,16 @@ else{
    await owner.query(readFileSync(join(root,'supabase/addons/implantacao/20261015180006_implementation_support_addon.sql'),'utf8'));
    await assertDatabaseSecurity(app,'0.27.0');
    const {runImplementationSupportNativeSuite}=await import('../supabase/tests/implementation-support-native-suite.mjs');const result=await runImplementationSupportNativeSuite({owner,app});
-   summary={...plan,mode:'executed',executed:true,postgresVersion:versions.initdb,...result};if(result.failures)process.exitCode=1;
+   // Only this owned cluster gets the minimal synthetic Auth directory. It is
+   // never included in addon deployment SQL and never represents hosted Auth.
+   await owner.query('create schema auth; create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,banned_until timestamptz,deleted_at timestamptz)');
+   await owner.query(`alter role helpdesk_notification_worker login nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls password '${passwords.helpdesk_notification_worker}'`);
+   await owner.query(readFileSync(join(root,'supabase/addons/implantacao/implementation_email_addon.sql'),'utf8'));
+   const worker=new Pool({...base,user:'helpdesk_notification_worker',password:passwords.helpdesk_notification_worker,database:'helpdesk_test',max:4});pools.push(worker);
+   const {runImplementationEmailNativeSuite}=await import('../supabase/tests/implementation-email-native-suite.mjs');
+   const email=await runImplementationEmailNativeSuite({owner,app,worker});
+   await assertDatabaseSecurity(app,'0.27.0');
+   summary={...plan,mode:'executed',executed:true,postgresVersion:versions.initdb,...result,baselineTotal:result.total,email,total:result.total+email.total,failures:result.failures+email.failures};if(summary.failures)process.exitCode=1;
   }catch(error){summary={...plan,mode:'failed',executed:startRequested,code:'native_acceptance_failed',sqlState:typeof error?.code==='string'&&/^[A-Z0-9]{5}$/.test(error.code)?error.code:null,message:typeof error?.message==='string'?error.message.replace(/postgresql:\/\/\S+/g,'[REDACTED]').slice(0,250):'unknown'};process.exitCode=1;}
   finally{
    await Promise.allSettled(pools.map(p=>p.end()));let stopped=!startRequested,cleanup='preserved';
