@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "wiki-private-video-proxy-ci",
+  "pull_request": "https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/51",
+  "source_commit": "017bdae47c4349c81ec754d56b5058cca2e232c9",
+  "ci_commit": "3ead60451c806822150d5cb89d037311509e5c29",
+  "run_id": "38746430538",
+  "run_attempt": "1",
+  "run_conclusion": "success",
+  "artifact_id": "11978644916",
+  "artifact_name": "helpdesk-homologation-3ead60451c806822150d5cb89d037311509e5c29-38746430538-1",
+  "source_sha256": "383b6decddd715e4026106dd3f74daa0bd8da7fa399afb147e8152da8a706f12",
+  "homologation_run": "9a31c25c-b871-47d9-be3a-deb83e9e2438",
+  "checks": {"application": 5627, "postgres": 680, "interface": 617},
+  "total_checks": 6924,
+  "prior_failed_run": "38746380962",
+  "prior_failure": "browser-smoke.py:71 expected notes-retry visible, observed hidden",
+  "intermittence_fixed": false,
+  "source_tests_modified_when_importing": false,
+  "platform_approved": false,
+  "deployed_when_importing": false
+}
