@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-15 19:38:59 UTC",
+  "project_id": "xaelbntjnvztznnpcvtm",
+  "query": "select jsonb_build_object('core_version',helpdesk_auth.schema_version(),'core_forced_rls_tables',(select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('helpdesk_core','helpdesk_auth','helpdesk_audit','helpdesk_integration') and c.relkind='r' and c.relrowsecurity and c.relforcerowsecurity),'addon_owner',(select pg_get_userbyid(nspowner) from pg_namespace where nspname='helpdesk_implantacao'),'addon_forced_rls_tables',(select count(*) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='helpdesk_implantacao' and c.relkind='r' and c.relrowsecurity and c.relforcerowsecurity),'policies',(select count(*) from pg_policies where schemaname='helpdesk_implantacao'),'definer_functions',(select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='helpdesk_implantacao' and p.prosecdef),'client_schema_access',(select jsonb_object_agg(r,has_schema_privilege(r,'helpdesk_implantacao','USAGE')) from unnest(array['anon','authenticated','service_role']) r),'documents',(select count(*) from helpdesk_implantacao.documents),'events',(select count(*) from helpdesk_implantacao.events),'receipts',(select count(*) from helpdesk_implantacao.receipts),'quotas',(select count(*) from helpdesk_implantacao.quotas)) as verification;",
+  "result": [
+    {
+      "verification": {
+        "events": 0,
+        "quotas": 0,
+        "policies": 7,
+        "receipts": 0,
+        "documents": 0,
+        "addon_owner": "postgres",
+        "core_version": "0.27.0",
+        "definer_functions": 0,
+        "client_schema_access": {
+          "anon": false,
+          "service_role": false,
+          "authenticated": false
+        },
+        "core_forced_rls_tables": 88,
+        "addon_forced_rls_tables": 4
+      }
+    }
+  ]
+}

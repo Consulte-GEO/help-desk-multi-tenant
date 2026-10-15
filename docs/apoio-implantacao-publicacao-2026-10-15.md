@@ -37,4 +37,8 @@ Novo GEO permanece preparado por contratos e exportações. A integração real 
 
 Homologação integral aprovada no [CI38792886071](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38792886071): 5.798 testes de aplicação, 697 PostgreSQL e 632 de interface, sem falhas, skips, cancelamentos ou todo. O recibo e os logs originais estão em `evidence/homologation/runs/9cefe85a-2adb-4a59-b2cd-75aaa34c49b5`; `latest.json` aponta para a mesma execução. SHA256 da fonte: `9e13d421a5ad457c254ad36a3609becdef46278260a9250525a9a8320c6cc70c`. A fonte local foi comparada ao relatório por `validateReport`, `verifyLogs` e `check:homologation`, sem alteração de contagens, datas ou hashes.
 
-A publicação está em execução pelo [PR55](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/55). Este registro será atualizado após a conferência HTTPS.
+O [PR55](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/55) foi mesclado em `cc380bfdd985065630cdbe697742ee05e3cb5bd5`. Deploy produtivo `6ad12af460716e72a66bf761`, pronto em 15/10/2026 às 19:36:24 UTC, publicado em [Help Desk — Apoio Implantação](https://helpdesk.consultegeo.org/?apoio=implantacao).
+
+A conferência HTTPS leu os 115 arquivos públicos e comparou seus hashes ao manifesto do deploy, incluindo os 22 assets nativos. Confirmou menu interno oculto inicialmente, PDF worker, modelos Excel, CSP sem unsafe-inline/unsafe-eval, duas recusas401 nos endpoints sem autenticação, quatro caminhos privados404 e disponibilidade pública do atendimento/monitor de e-mails. O arquivo reservado netlify.toml permanece404. Relatórios: `evidence/apoio-implantacao/production-https.json` e `production-database.json`.
+
+A jornada autenticada com o provedor real e a inferência paga não foram executadas por esta publicação. Não houve criação de dados de negócio, manipulação de MFA, migração de identidades antigas, implantação no Novo GEO ou recurso pago no Render.
