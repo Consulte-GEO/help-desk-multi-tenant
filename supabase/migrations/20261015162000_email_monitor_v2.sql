@@ -134,10 +134,15 @@ DO $email_prior$ DECLARE email_catalogue_result record;BEGIN SELECT * INTO email
  (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999
   and pg_catalog.current_setting('row_security')='on'
   and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok) inventory;IF email_catalogue_result.table_count<>86 OR email_catalogue_result.unsafe_tables<>0 OR email_catalogue_result.public_schema_access IS DISTINCT FROM false OR email_catalogue_result.client_schema_access IS DISTINCT FROM false OR email_catalogue_result.public_helper_execute IS DISTINCT FROM false OR email_catalogue_result.schema_contract_ok IS DISTINCT FROM true OR email_catalogue_result.table_contract_ok IS DISTINCT FROM true OR email_catalogue_result.table_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.column_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.client_object_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.helper_contract_ok IS DISTINCT FROM true OR email_catalogue_result.helper_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.helper_settings_ok IS DISTINCT FROM true OR email_catalogue_result.trigger_contract_ok IS DISTINCT FROM true OR email_catalogue_result.constraint_contract_ok IS DISTINCT FROM true OR email_catalogue_result.index_contract_ok IS DISTINCT FROM true OR email_catalogue_result.policy_contract_ok IS DISTINCT FROM true OR email_catalogue_result.execution_settings_ok IS DISTINCT FROM true OR email_catalogue_result.reserved_roles_ok IS DISTINCT FROM true OR email_catalogue_result.owner_defaults_ok IS DISTINCT FROM true THEN RAISE EXCEPTION 'Email monitor prior catalogue mismatch' USING ERRCODE='HDM02';END IF;END$email_prior$;
--- SOURCE hdn_email_monitor_telemetry.sql SHA256 4e3b96f6117d6a8d3dc6eaed8c922c9f32cb0dc97c06dba368f71390d205c0eb
+-- SOURCE hdn_email_monitor_telemetry.sql SHA256 a4336f508d461dad678f573899b966ee6b003cbc4bd407b0c2c884fd941c3d6f
 -- Fragment for the reviewed 0.26 -> 0.27 migration, within its owned transaction.
 -- No BEGIN/COMMIT/schema marker, production execution or coverage start here.
 -- Columns start NULL. Existing receipts/snapshots are not backfilled.
+-- Storage format remains1.0.0; the existing HDA worker must survive this append.
+-- Runtime still qualifies the complete fixed catalogue and its seven RPCs.
+CREATE OR REPLACE FUNCTION helpdesk_auth.hda02_storage_version() RETURNS text LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $$
+ SELECT CASE WHEN helpdesk_auth.schema_version() IN ('0.26.0','0.27.0') THEN '1.0.0'::text ELSE NULL END
+$$;
 ALTER TABLE helpdesk_integration.hdn_notification_native_receipts
  ADD COLUMN event_type text CHECK(event_type IS NULL OR event_type ~ '^email\.[a-z][a-z0-9_]*$');
 ALTER TABLE helpdesk_integration.hdn_notification_records

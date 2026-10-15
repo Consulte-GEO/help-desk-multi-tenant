@@ -1,6 +1,11 @@
 -- Fragment for the reviewed 0.26 -> 0.27 migration, within its owned transaction.
 -- No BEGIN/COMMIT/schema marker, production execution or coverage start here.
 -- Columns start NULL. Existing receipts/snapshots are not backfilled.
+-- Storage format remains1.0.0; the existing HDA worker must survive this append.
+-- Runtime still qualifies the complete fixed catalogue and its seven RPCs.
+CREATE OR REPLACE FUNCTION helpdesk_auth.hda02_storage_version() RETURNS text LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $$
+ SELECT CASE WHEN helpdesk_auth.schema_version() IN ('0.26.0','0.27.0') THEN '1.0.0'::text ELSE NULL END
+$$;
 ALTER TABLE helpdesk_integration.hdn_notification_native_receipts
  ADD COLUMN event_type text CHECK(event_type IS NULL OR event_type ~ '^email\.[a-z][a-z0-9_]*$');
 ALTER TABLE helpdesk_integration.hdn_notification_records

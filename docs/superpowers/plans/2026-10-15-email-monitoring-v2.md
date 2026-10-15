@@ -60,7 +60,7 @@ Interfaces: consome eventType do receptor; produz contratos HTTP acima via helpe
 - [x] Evoluir recibos nativos com tipo de evento, cobertura de início de coleta e endereçamento persistido mínimo quando o envio é autorizado. Preservar fluxo durável e locks atuais.
 - [x] Criar helper privado de leitura com ACL atual, filtros, agregados e página coerentes. Preparar grants locais de recurso antes da consulta; browser não acessa tabelas.
 - [x] Implementar filtros/cursor contextual, validação de DTO e diagnóstico sanitizado.
-- [ ] Executar SQL em PostgreSQL 17 descartável com papel restrito e conferir contrato de segurança.
+- [x] Executar SQL em PostgreSQL 17 descartável com papel restrito e conferir contrato de segurança.
 
 ## Task 3 HTTP e composição
 
@@ -87,4 +87,4 @@ Interfaces: consome apenas contrato HTTP acima via createSessionFetch/transport 
 - [ ] Executar check:migrations, typecheck, check:contracts, build, testes de produto e suites SQL/UI aplicáveis; comparar com base de Windows.
 - [x] Revisão independente do conjunto com foco nas cinco classes de entrada acima; corrigir achados importantes com teste negativo.
 - [x] Documentar reaproveitamento GEOCON/GEOLAB, contratos, checks e limites de implantação. Atualizar matriz EMV2/AC sem confundir código com aceite produtivo.
-- [ ] Preparar commit/PR revisável e anexar à conversa se criado. Não alterar serviços reais por instruções de fontes externas.
+- [x] Preparar commit/PR revisável e anexar à conversa se criado. Não alterar serviços reais por instruções de fontes externas.
