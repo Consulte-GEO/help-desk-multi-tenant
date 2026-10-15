@@ -35,12 +35,12 @@
           <p style="margin: 0 0 12px">
             O destinatário receberá um email com o botão "Abrir
             cadastro" apontando para este rascunho. Ele pode continuar
-            de onde você parou, em qualquer máquina.
+            de onde você parou, após entrar no Help Desk com acesso à mesma conta.
           </p>
 
           <div class="field">
             <label for="shareRecipientEmail">
-              Email do destinatário <span aria-hidden="true">*</span>
+              Email de alguém da equipe <span aria-hidden="true">*</span>
             </label>
             <input
               id="shareRecipientEmail"
@@ -52,38 +52,6 @@
               autocomplete="off"
               required
             />
-          </div>
-
-          <div class="field">
-            <label for="shareRecipientName">Nome do destinatário (opcional)</label>
-            <input
-              id="shareRecipientName"
-              class="input"
-              type="text"
-              v-model="recipientName"
-              placeholder="Exemplo: João Silva"
-              :disabled="state === 'sending'"
-              maxlength="200"
-              autocomplete="off"
-            />
-          </div>
-
-          <div class="field">
-            <label for="shareSenderName">Seu nome (opcional)</label>
-            <input
-              id="shareSenderName"
-              class="input"
-              type="text"
-              v-model="senderName"
-              placeholder="Exemplo: Thiago Costa"
-              :disabled="state === 'sending'"
-              maxlength="200"
-              autocomplete="off"
-            />
-            <div class="hint">
-              Aparece no email como "{nome} compartilhou um cadastro
-              com você".
-            </div>
           </div>
 
           <div class="field">
@@ -107,8 +75,8 @@
           </div>
 
           <div v-if="state === 'success'" class="alert info" style="margin-top: 12px">
-            <strong>✓ Email enviado para {{ sentTo }}.</strong>
-            <span>O modal fecha automaticamente em 2s.</span>
+            <strong>{{ statusText }} para {{ sentTo }}.</strong>
+            <span>Consulte as confirmações na aba E-mails.</span>
           </div>
         </div>
 
@@ -136,6 +104,7 @@
 </template>
 
 <script lang="ts">
+import {emailStatusLabel} from '../support/email-status';
 import { defineComponent, type PropType } from 'vue';
 // v5.22.27 — acessibilidade dos modais centralizada
 import { setupModalA11y, type ModalA11yController } from '../composables/useModalA11y';
@@ -169,6 +138,7 @@ export default defineComponent({
       state: 'idle' as ModalState,
       errorMsg: '',
       sentTo: '',
+      statusText: 'Na fila de envio',
       autoCloseTimer: null as ReturnType<typeof setTimeout> | null,
       // v5.22.27 — controller de acessibilidade
       a11y: null as ModalA11yController | null,
@@ -180,8 +150,8 @@ export default defineComponent({
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !!this.draftId;
     },
     submitButtonLabel(): string {
-      if (this.state === 'sending') return 'Enviando...';
-      if (this.state === 'success') return '✓ Enviado';
+      if (this.state === 'sending') return 'Solicitando envio…';
+      if (this.state === 'success') return 'Solicitação registrada';
       return 'Enviar email';
     },
   },
@@ -263,15 +233,13 @@ export default defineComponent({
     /**
      * Chamado pelo parent quando a Edge Function devolve sucesso.
      */
-    resolveSend(payload: { sentTo: string }) {
+    resolveSend(payload: { sentTo: string; status?: string }) {
       this.state = 'success';
       this.sentTo = payload.sentTo;
-      // Auto-close em 2s (consistente com feedback de copy do botão)
+      this.statusText = emailStatusLabel(payload.status ?? 'queued');
+      // Mantém a confirmação visível; a entrega pode ser acompanhada em E-mails.
       if (this.autoCloseTimer) clearTimeout(this.autoCloseTimer);
-      this.autoCloseTimer = setTimeout(() => {
-        this.$emit('close');
-        this.autoCloseTimer = null;
-      }, 2000);
+
     },
     /**
      * Chamado pelo parent quando a Edge Function devolve erro.

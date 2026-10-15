@@ -808,6 +808,7 @@ export const WIZARD_STEPS_FULL: readonly WizardStep[] = [
 /* ------------------------------------------------------------------ */
 
 export interface TicketSubmissionResponse {
+  email_status?: string;
   ok: boolean;
   ticket_number: string;
   submission_id: string;
