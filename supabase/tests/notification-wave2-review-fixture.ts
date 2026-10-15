@@ -80,6 +80,14 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const next={...current,challenge:{...current.challenge,generation:2}};
    await assert.rejects(runTransaction(app,agent,c=>c.query('select helpdesk_auth.hdnr_challenge($1,$2)',[next,0])),{code:'HDR02'});
    assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where invitation_id=$1',[created.invitationId])).rows[0]!.n,1);
+   const decision={ticketId:opened.ticketId,invitationId:created.invitationId,expectedVersion:1,expectedFormRevision:1,token:prepared.token,decision:'reject',reason:'Owned correction requested; keep justification out of mail'};
+   const decisionKey=randomUUID(),decisionRequest=randomUUID(),decide=()=>auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,decision,decisionKey,decisionRequest,proof));
+   const rejected=await decide();assert.equal(rejected.version,2);assert.equal(rejected.decision,'reject');assert.equal(rejected.replayed,false);
+   const replayedDecision=await decide();assert.equal(replayedDecision.eventId,rejected.eventId);assert.equal(replayedDecision.replayed,true);
+   const state=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0]!;
+   assert.deepEqual(state,{status:'waiting_customer',approval:'pending'});
+   const decisionReceipt=(await operator.query("select bundle from helpdesk_audit.hdnr_receipts where workspace_id=$1 and actor_id=$2 and intent_key=$3",[w,agent.id,decisionKey])).rows[0]!.bundle as any;
+   assert.equal(decisionReceipt.decision.originPermissionGranted,false);assert.equal(decisionReceipt.decision.originExecution,'not_requested');assert.doesNotMatch(JSON.stringify(decisionReceipt),/hd_approval_/);
   });
  });
 }
