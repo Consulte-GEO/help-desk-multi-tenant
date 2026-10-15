@@ -1,0 +1,603 @@
+{
+  "checkedAt": "2026-10-15T16:40:28.620Z",
+  "siteId": "9781cd85-7dc1-4ef5-868b-947e389a9d4d",
+  "deployId": "6ad100d4209092d0529240ef",
+  "source": "e8878675eddf21ed9d0fa4ae3ae89abc90c497a4",
+  "state": "ready",
+  "published": true,
+  "publishedAt": "2026-10-15T16:36:23.815Z",
+  "actualCommit": "e8878675eddf21ed9d0fa4ae3ae89abc90c497a4",
+  "functionNames": [
+    "api",
+    "notification-worker",
+    "registration-worker",
+    "resend-webhook",
+    "runtime-preflight"
+  ],
+  "environment": [
+    {
+      "key": "HELPDESK_REGISTRATION_ANALYSIS_MODE",
+      "secret": false,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ],
+      "value": "manual_review"
+    },
+    {
+      "key": "HELPDESK_REGISTRATION_ANALYSIS_ENABLED",
+      "secret": false,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ],
+      "value": "true"
+    },
+    {
+      "key": "HELPDESK_REGISTRATION_DATABASE_CA",
+      "secret": true,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ]
+    },
+    {
+      "key": "HELPDESK_REGISTRATION_REVIEW_ENABLED",
+      "secret": false,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ],
+      "value": "true"
+    },
+    {
+      "key": "HELPDESK_RELEASE_APPROVED",
+      "secret": false,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ],
+      "value": "true"
+    },
+    {
+      "key": "HELPDESK_REGISTRATION_DATABASE_URL",
+      "secret": true,
+      "scopes": [
+        "functions"
+      ],
+      "contexts": [
+        "production"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "/access-experience.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/access-experience.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/access-feedback.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/access-mode.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/account-security.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-configuration.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-experience.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-forms.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-members-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-members.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-members.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/admin-ui.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/app.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/approvals.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/assets/consulte-geo-color.png",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/assets/consulte-geo-white.png",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/attachments.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/brand-profile.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/brand-shell.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consulte-theme.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-configuration.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-configuration.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-intake-api.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-operation.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-operation.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-request.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-request.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-review.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/consultegeo-workflow.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/conversation-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/customer-portal.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/delivery-operations.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/design-tokens.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/dynamic-form.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/dynamic-form.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/execution-checklist-contract.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/execution-checklist-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/execution-checklist.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/execution-checklist.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/form-experience.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/form-feedback.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/form-review.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/geo-auth-callback.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/geo-auth-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/human-auth.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/human-session.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/inbox-view-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/inbox-workspace.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/inbox-workspace.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/mutation-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/netlify.toml",
+      "status": 404,
+      "matched": true,
+      "verification": "configuration withheld by Netlify; expected404"
+    },
+    {
+      "path": "/opening-flow.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/opening-wizard.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/operations-experience.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/operations-ui.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/optional-support.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/portal-format.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/portal-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/portal-ui.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/portal.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/recovery-password.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/reports.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/response-diagnostic.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/review-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/session-fetch.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/checklist-evidence.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/cnpj.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/consultegeo-request.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/consultegeo-ticket.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/form-rules.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/instant.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/shared/mfa.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/styles.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-catalog-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-experience.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-intake.css",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-intake.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-navigation.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-presentation.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/support-queue.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/theme-init.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/ticket-actions.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/ticket-create-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/ticket-detail.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/ticket-list-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/timeline-state.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/totp-qr.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/vendor/qrcodegen.js",
+      "status": 200,
+      "matched": true
+    },
+    {
+      "path": "/version-receipt.js",
+      "status": 200,
+      "matched": true
+    }
+  ],
+  "checks": [
+    {
+      "route": "/v1/me",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "route": "/v1/tickets",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "route": "/v1/tickets/00000000-0000-4000-8000-000000000001/registration-review",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "route": "/v1/internal/tickets/00000000-0000-4000-8000-000000000001/registration-review",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "route": "/tests/fixtures/registration/sample.ts",
+      "method": "GET",
+      "status": 404,
+      "expected": 404,
+      "pass": true
+    },
+    {
+      "route": "/supabase/candidates/hda06_authorized_review.sql",
+      "method": "GET",
+      "status": 404,
+      "expected": 404,
+      "pass": true
+    },
+    {
+      "route": "/.netlify/functions/registration-worker",
+      "method": "GET",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "route": "/.netlify/functions/registration-worker",
+      "method": "POST",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "route": "/v1/capabilities",
+      "status": 200,
+      "registrationReview": true,
+      "tickets": true,
+      "supportWorkflow": true,
+      "pass": true
+    }
+  ],
+  "pass": true
+}
