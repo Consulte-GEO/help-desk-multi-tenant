@@ -10,6 +10,7 @@ import {withOperatorFixture} from '../../tests/helpers/operator-fixture.ts';impo
 import {registerRegistrationOperationSqlTests} from './registration-operation-scenarios.ts';
 import {registerNotificationPublicationSqlTests} from './notification-publication-scenarios.ts';
 import {registerWave2PublicSqlTests} from './notification-wave2-public-scenarios.ts';
+import {registerWave2JourneySqlTests} from './notification-wave2-journey-scenarios.ts';
 const targets=validateDatabaseTestTargets(process.env),operatorUrl=new URL(process.env.HELPDESK_TEST_OPERATOR_URL??''),adminUrl=new URL(targets.adminUrl);
 if(operatorUrl.protocol!==adminUrl.protocol||operatorUrl.host!==adminUrl.host||operatorUrl.pathname!=='/helpdesk_test'||operatorUrl.username!=='helpdesk_operator'||!operatorUrl.password||operatorUrl.search||operatorUrl.hash)throw Error('A dedicated direct operator URL in the third owned cluster is required.');
 const bundle=await loadMigrationBundle(process.cwd());await verifyConsulteGeoActivation(process.cwd());
@@ -108,3 +109,4 @@ test('current readiness rejects additional worker authority and owner defaults a
 registerRegistrationOperationSqlTests(()=>operator,()=>control,()=>app);
 registerNotificationPublicationSqlTests(()=>operator,()=>control,()=>app);
 registerWave2PublicSqlTests(()=>operator);
+registerWave2JourneySqlTests(()=>operator,()=>control,()=>app);
