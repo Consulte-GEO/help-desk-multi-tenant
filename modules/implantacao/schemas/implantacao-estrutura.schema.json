@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.consultegeo.local/implantacao-estrutura.schema.json",
+  "title": "Consulte GEO - Implantação de Estruturas",
+  "description": "Schema do JSON técnico gerado pelo frontend Vue. Reflete o que o jsonGeneratorService produz em v5.22.8: customerInput com grupos/concretos/usuariosObra/fornecedores, normalizedStructure com unidades expandidas, technicalMapping para tabelas Consulte GEO, validation com 4 buckets, renderTree e audit. Atualizado para incluir usuariosObra (v5.22.6), fornecedores (v5.22.7) e validações CNPJ (v5.22.8).",
+  "type": "object",
+  "required": [
+    "metadata",
+    "customerInput",
+    "normalizedStructure",
+    "technicalMapping",
+    "validation",
+    "renderTree",
+    "audit"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Metadados do documento: schemaVersion, timestamps, identificadores, dados da obra propagados de customerInput.dadosBasicos.",
+      "required": [
+        "schemaVersion",
+        "generatedAt",
+        "source",
+        "projectName"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "description": "Versão do schema (ex: '5.22.8'). Permite migração futura."
+        },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "generatedBy": { "type": "string" },
+        "source": { "type": "string" },
+        "environment": { "type": "string", "enum": ["preview", "prod", "local"] },
+        "projectName": { "type": "string" },
+        "projectVersion": { "type": "string" },
+        "tenantHint": { "type": ["string", "null"] },
+        "draftId": { "type": ["string", "null"] },
+        "submissionId": { "type": ["string", "null"] },
+        "ticketNumber": {
+          "type": ["string", "null"],
+          "description": "Número CG-AAAA-NNNNNN gerado pela Edge Function ao submeter. Null antes de submissão. (v5.20)"
+        },
+        "clientMessage": {
+          "type": ["string", "null"],
+          "description": "Mensagem do cliente preenchida na Etapa 8 (Revisão e envio). (v5.20)"
+        },
+        "resubmittedAt": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Timestamp do último reenvio quando o cliente reenviou um chamado devolvido. (v5.22.6)"
+        }
+      }
+    },
+    "customerInput": {
+      "type": "object",
+      "description": "Snapshot RAW do que o cliente preencheu nas 8 etapas. Preserva o input original sem normalização agressiva. v5.22.6 adiciona usuariosObra; v5.22.7 adiciona fornecedores.",
+      "required": ["mode", "dadosBasicos", "tipoEstrutura", "grupos", "concretos"],
+      "additionalProperties": true,
+      "properties": {
+        "mode": { "const": "estruturas" },
+        "projectDesignerFreeText": { "type": "boolean" },
+        "structureTypeOptions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "Bloco",
+              "Torre",
+              "Contenção",
+              "Área Externa",
+              "Anexos",
+              "Apoio"
+            ]
+          }
+        },
+        "dadosBasicos": {
+          "$ref": "#/$defs/obraMetadata"
+        },
+        "tipoEstrutura": {
+          "enum": ["torres_iguais", "estrutura_unica"],
+          "description": "Modelo de preenchimento escolhido pelo cliente na Etapa 2."
+        },
+        "grupos": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/grupo" }
+        },
+        "concretos": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/concreto" }
+        },
+        "usuariosObra": {
+          "type": "array",
+          "description": "Usuários cadastrados na Etapa 6 que terão acesso ao Consulte GEO desta obra. (v5.22.6)",
+          "items": { "$ref": "#/$defs/usuarioObra" }
+        },
+        "fornecedores": {
+          "type": "array",
+          "description": "Fornecedores cadastrados na Etapa 7: usinas concreteiras e laboratórios. (v5.22.7)",
+          "items": { "$ref": "#/$defs/fornecedor" }
+        }
+      }
+    },
+    "normalizedStructure": {
+      "type": "object",
+      "description": "Versão normalizada do customerInput: ranges expandidos (1 a 24 → [1,2,...,24]), FCK numérico, volume numérico, nomes canônicos.",
+      "additionalProperties": true
+    },
+    "technicalMapping": {
+      "type": "object",
+      "description": "Mapeamento para tabelas Consulte GEO (Ges_Obra, Ges_UnidadeGrupo, Ges_UnidadeTipo, Ges_Unidade, Ges_Classificacao, Pro_Projetista, Utl_Produto, Con_Concreto, CTe_PadraoMoldagem). Usa IDs temporários até implantação real.",
+      "additionalProperties": true,
+      "properties": {
+        "unidadeGrupos": { "type": "array" },
+        "unidadeTipos":  { "type": "array" },
+        "unidades":      { "type": "array" },
+        "concretos":     { "type": "array" },
+        "projetistas":   { "type": "array" }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Resultado da validação em 4 buckets. v5.22.8 inclui códigos USUARIO_*, FORNECEDOR_*, PECA_VOLUME_PRECISAO, FORNECEDOR_CNPJ_DV_INVALIDO.",
+      "required": ["bloqueantes", "alertas", "sugestoes", "pendenciasInternas"],
+      "additionalProperties": true,
+      "properties": {
+        "bloqueantes":        { "type": "array", "items": { "$ref": "#/$defs/validationIssue" } },
+        "alertas":            { "type": "array", "items": { "$ref": "#/$defs/validationIssue" } },
+        "sugestoes":          { "type": "array", "items": { "$ref": "#/$defs/validationIssue" } },
+        "pendenciasInternas": { "type": "array", "items": { "$ref": "#/$defs/validationIssue" } }
+      }
+    },
+    "renderTree": {
+      "type": "object",
+      "description": "Árvore de nós para renderização da prévia visual.",
+      "required": ["nodes"],
+      "additionalProperties": true
+    },
+    "audit": {
+      "type": "array",
+      "description": "Trilha de auditoria local. Eventos como avancar, voltar, fornecedor_add, usuario_remove, exportar_excel.",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "actor", "action"],
+        "additionalProperties": true,
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "actor":     { "type": "string" },
+          "action":    { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "obraMetadata": {
+      "type": "object",
+      "description": "Dados básicos da obra (Etapa 1).",
+      "additionalProperties": true,
+      "properties": {
+        "obraNome":       { "type": "string" },
+        "obraCodigo":     { "type": "string" },
+        "cliente":        { "type": "string" },
+        "regional":       { "type": "string" },
+        "obraEndereco":   { "type": "string" },
+        "cep":            { "type": "string" },
+        "municipio":      { "type": "string" },
+        "uf":             { "type": "string" },
+        "responsavelNome":{ "type": "string" },
+        "responsavelEmail":{ "type": "string", "format": "email" },
+        "responsavelTelefone": { "type": "string" },
+        "observacoes":    { "type": "string" },
+        "modeloPreenchimento": { "enum": ["comum", "modelo_projeto"] },
+        "createdBy": {
+          "type": "object",
+          "properties": {
+            "nome":  { "type": "string" },
+            "email": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "grupo": {
+      "type": "object",
+      "description": "Grupo de estruturas (Bloco, Torre, etc) com lista de peças/pavimentos dentro. (Etapa 3 + Etapa 5)",
+      "required": ["id", "nome", "pecas"],
+      "additionalProperties": true,
+      "properties": {
+        "id":               { "type": "string" },
+        "nome":             { "type": "string" },
+        "edificacoesInput": { "type": "string" },
+        "edificacoesExpanded": { "type": "array" },
+        "tipoEdificacao":   { "type": "string" },
+        "projetista":       { "type": "string" },
+        "observacoes":      { "type": "string" },
+        "pecas": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/peca" }
+        }
+      }
+    },
+    "peca": {
+      "type": "object",
+      "description": "Peça ou pavimento dentro de um grupo. Volume aceita no máximo 2 casas decimais (v5.22.7).",
+      "required": ["id", "local"],
+      "additionalProperties": true,
+      "properties": {
+        "id":          { "type": "string" },
+        "local":       { "type": "string" },
+        "etapa":       { "type": "string" },
+        "fck":         { "type": ["string", "number"] },
+        "volume":      {
+          "type": "string",
+          "description": "Volume bruto digitado. Máximo 2 casas decimais — input mask trava 3ª. Aceita vírgula ou ponto."
+        },
+        "concretoId":  { "type": "string" },
+        "observacoes": { "type": "string" },
+        "ordem":       { "type": "number" }
+      }
+    },
+    "concreto": {
+      "type": "object",
+      "description": "Traço de concreto (Etapa 4).",
+      "required": ["id", "descricao", "fck"],
+      "additionalProperties": true,
+      "properties": {
+        "id":         { "type": "string" },
+        "descricao":  { "type": "string" },
+        "aplicacao":  { "type": "string" },
+        "fck":        { "type": ["string", "number"] },
+        "moldagem":   { "type": "string" },
+        "padroesMoldagem": { "type": "array" }
+      }
+    },
+    "usuarioObra": {
+      "type": "object",
+      "description": "Usuário cadastrado pelo cliente para acesso à obra. v5.22.6.",
+      "required": ["id", "nome", "email", "perfil"],
+      "additionalProperties": true,
+      "properties": {
+        "id":          { "type": "string" },
+        "nome":        { "type": "string" },
+        "email":       { "type": "string" },
+        "cargo":       { "type": "string" },
+        "telefone":    { "type": "string" },
+        "perfil": {
+          "enum": [
+            "operador_campo",
+            "engenheiro",
+            "qualidade",
+            "laboratorio",
+            "analista_gestor",
+            ""
+          ],
+          "description": "Perfil de acesso (fixo no produto). String vazia = ainda não definido."
+        },
+        "observacoes": { "type": "string" }
+      }
+    },
+    "fornecedor": {
+      "type": "object",
+      "description": "Fornecedor cadastrado pelo cliente: usina concreteira ou laboratório. v5.22.7. Aceita até 3 emails de programação (separação operacional+comercial+gerencial).",
+      "required": ["id", "tipo", "nome", "emailsProgramacao"],
+      "additionalProperties": true,
+      "properties": {
+        "id":          { "type": "string" },
+        "tipo": {
+          "enum": ["usina", "laboratorio"],
+          "description": "Discriminador. Usina concreteira ou laboratório de ensaios."
+        },
+        "nome":        { "type": "string" },
+        "cnpj":        {
+          "type": "string",
+          "description": "CNPJ formatado ou só dígitos. v5.22.8 valida DV; cliente pode salvar inválido com sugestão não-bloqueante."
+        },
+        "endereco":    { "type": "string" },
+        "responsavel": { "type": "string" },
+        "telefone":    { "type": "string" },
+        "observacoes": { "type": "string" },
+        "emailsProgramacao": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": { "type": "string" },
+          "description": "Mínimo 1 slot (mesmo que vazio), máximo 3."
+        }
+      }
+    },
+    "validationIssue": {
+      "type": "object",
+      "description": "Issue de validação. Severidades: error (bloqueante), warning (alerta), info (sugestão), pending (pendenciaInterna).",
+      "required": ["code", "severity", "bucket", "message"],
+      "additionalProperties": true,
+      "properties": {
+        "code":              { "type": "string" },
+        "severity":          { "enum": ["error", "warning", "info", "pending"] },
+        "bucket":            { "enum": ["bloqueante", "alerta", "sugestao", "pendenciaInterna"] },
+        "message":           { "type": "string" },
+        "path":              { "type": "string" },
+        "localizacao":       { "type": "string" },
+        "entityTemporaryId": { "type": "string" },
+        "suggestedFix":      { "type": "string" },
+        "campo":             { "type": "string" }
+      }
+    }
+  }
+}

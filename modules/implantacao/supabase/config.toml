@@ -1,0 +1,39 @@
+# =====================================================================
+# supabase/config.toml · v5.0.22-51
+#
+# Configuração por função para o deploy via CLI/CI
+# (.github/workflows/deploy-edge-functions.yml). O deploy via MCP
+# declara verify_jwt na chamada; o CLI lê DAQUI — manter os dois em
+# sincronia (estado vivo confirmado em 10/08/2026).
+#
+# importa-openai é a ÚNICA com verify_jwt=false: é chamada pela página
+# estática importa.html (Copilot), que não tem sessão Supabase.
+# Todas as demais são invocadas via supabase-js (anon key = JWT válido).
+# =====================================================================
+
+project_id = "yglcnirbnbwjqpvalqif"
+
+[functions.submit-for-validation]
+verify_jwt = true
+
+[functions.share-draft-link]
+verify_jwt = true
+
+[functions.notify-return]
+verify_jwt = true
+
+[functions.notify-team-comment]
+verify_jwt = true
+
+[functions.notify-client-comment]
+verify_jwt = true
+
+[functions.importa-openai]
+verify_jwt = false
+
+# laudo-vision (V14) segue o mesmo modelo da importa-openai: é chamada pela
+# página estática laudos.html, que não tem sessão Supabase. A proteção não é o
+# JWT — é origin allowlist + consentimento explícito + quota por origem/sessão
+# (RPC ocr_laudo_reservar_quota, migration 026).
+[functions.laudo-vision]
+verify_jwt = false

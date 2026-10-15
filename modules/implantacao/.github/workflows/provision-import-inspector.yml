@@ -1,0 +1,30 @@
+name: Provision fixed import inspector
+on:
+  workflow_dispatch:
+    inputs:
+      recipient_public_key:
+        description: 'Base64 SPKI RSA public key (3072+ bits); private key stays with the operator'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: provision-fixed-imp02-inspector
+  cancel-in-progress: false
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Provision through Auth Admin API and seal credential
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          INSPECTOR_RECIPIENT_PUBLIC_KEY: ${{ inputs.recipient_public_key }}
+        run: node tools/provision-import-inspector.mjs --execute inspector.sealed
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inspector-sealed-credential
+          path: inspector.sealed
+          retention-days: 1
+          if-no-files-found: error

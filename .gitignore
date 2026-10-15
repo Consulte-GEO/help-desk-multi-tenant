@@ -17,3 +17,7 @@ __pycache__/
 
 # Supabase CLI connection/cache metadata stays local.
 supabase/.temp/
+
+# Implantação frontend is compiled into the host publish directory.
+modules/implantacao/frontend/dist-support/
+modules/implantacao/.support-validation/

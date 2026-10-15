@@ -1,0 +1,45 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+.vite/
+*.tsbuildinfo
+.laudo-build/
+
+# Ambiente — o .env real nunca entra; o .example sim
+.env
+.env.*
+!.env.example
+
+# Saídas de validação geradas pelos gates
+.v8-validation/
+.v13-validation/
+.laudo-validation/
+
+# Corpus de laudos REAIS: nunca versionado.
+# Dado de cliente não vira fixture — só o LEIA-ME da pasta entra no repo.
+tools/corpus-laudos/local/*
+!tools/corpus-laudos/local/LEIA-ME.txt
+
+# .NET (skeleton backend/)
+bin/
+obj/
+
+# Python (tools/)
+__pycache__/
+*.pyc
+.venv/
+
+# Logs e temporários
+*.log
+npm-debug.log*
+.cache/
+tmp/
+
+# Sistema operacional / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

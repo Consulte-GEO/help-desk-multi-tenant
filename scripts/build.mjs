@@ -1,4 +1,6 @@
 import {mkdir,copyFile,rm} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {copyImplementationAssets} from './implantacao-assets.mjs';
 await rm(new URL('../dist/',import.meta.url),{recursive:true,force:true});await mkdir(new URL('../dist/',import.meta.url),{recursive:true});
 for(const name of ['email-monitor.js','email-monitor.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-review.js','consultegeo-operation.css','response-diagnostic.js','version-receipt.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
@@ -58,3 +60,8 @@ for(const name of ['consultegeo-configuration.js','consultegeo-configuration.css
 await copyFile(new URL('../shared/consultegeo-request.js',import.meta.url),new URL('../dist/shared/consultegeo-request.js',import.meta.url));
 
 await copyFile(new URL('../shared/consultegeo-ticket.js',import.meta.url),new URL('../dist/shared/consultegeo-ticket.js',import.meta.url));
+
+// Staff module facade only; the reviewed library build supplies its own closed
+// asset graph later. Historical source, SQL and fixtures never become static.
+for(const name of ['implementation-support.js','implementation-support.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+await copyImplementationAssets(fileURLToPath(new URL('../modules/implantacao/frontend/dist-support/',import.meta.url)),fileURLToPath(new URL('../dist/implantacao/',import.meta.url)));

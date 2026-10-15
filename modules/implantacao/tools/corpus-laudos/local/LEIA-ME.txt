@@ -1,0 +1,6 @@
+Coloque aqui os PDFs de laudos REAIS para medir a qualidade do motor:
+
+  node tools/corpus-laudos/gerar-corpus.mjs tools/corpus-laudos/local
+
+Esta pasta está no .gitignore. Nada daqui pode ser commitado: dado de
+cliente não vira fixture versionada (regra do projeto).

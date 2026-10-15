@@ -1,0 +1,8 @@
+/* The native implementation application stays within the Help Desk design tokens. */
+.hd-ui .implementation-support { color:var(--hd-ink); min-width:0; }
+.hd-ui .implementation-support-heading { margin-bottom:var(--hd-space-6); }
+.hd-ui .implementation-support-heading h1 { margin-bottom:var(--hd-space-2); }
+.hd-ui .implementation-support-root { background:var(--hd-surface); border:1px solid var(--hd-line); border-radius:var(--hd-radius-lg); min-height:240px; padding:var(--hd-space-5); box-shadow:var(--hd-shadow); }
+.hd-ui .implementation-support-application { min-width:0; max-width:100%; }
+.hd-ui .implementation-support :where(input,select,textarea) { color:var(--hd-ink); background:var(--hd-surface); border-color:var(--hd-control-line); }
+@media(max-width:640px){.hd-ui .implementation-support-root { padding:var(--hd-space-3); }}

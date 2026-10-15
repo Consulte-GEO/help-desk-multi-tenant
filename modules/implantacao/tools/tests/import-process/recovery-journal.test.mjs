@@ -1,0 +1,17 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {id} from './fixtures.mjs';
+const M=await import('../../../modules/import-process-client/recovery-journal.ts').catch(()=>({}));
+const identity={workspaceId:id(1),accountId:id(2),actorId:id(4)};
+const marker=()=>({schemaVersion:'1',...identity,caseId:id(3),operationId:id(20),expectedVersion:1,requestHash:'a'.repeat(64)});
+function storage(){const data=new Map();return {data,getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)}}
+function journal(s=storage()){assert.equal(typeof M.createSessionRecoveryJournal,'function');return {s,j:M.createSessionRecoveryJournal(s)}}
+test('R04 marcador persiste somente metadados mínimos e retorna cópia',()=>{const {s,j}=journal();j.write(marker());const read=j.read(identity);assert.deepEqual(read,marker());read.caseId=id(55);assert.deepEqual(j.read(identity),marker());assert.equal(s.data.size,1);assert.deepEqual(Object.keys(JSON.parse([...s.data.values()][0])).sort(),Object.keys(marker()).sort());});
+for(const extra of [{token:'secret'},{snapshot:{}},{reason:'dados privados'},{filename:'cliente.pdf'},{confirmed:true}])test('R04 journal recusa campos extras '+Object.keys(extra),()=>{const {j,s}=journal();assert.throws(()=>j.write({...marker(),...extra}));assert.equal(s.data.size,0)});
+for(const field of ['workspaceId','accountId','actorId'])test('R04 marcador não é lido por outro '+field,()=>{const {j}=journal();j.write(marker());assert.throws(()=>j.read({...identity,[field]:id(90)}),/RECOVERY_SCOPE_MISMATCH/);assert.deepEqual(j.read(identity),marker());});
+test('R04 outra operação não sobrescreve recibo ainda pendente',()=>{const {j}=journal();j.write(marker());assert.throws(()=>j.write({...marker(),operationId:id(30)}),/RECOVERY_PENDING/);assert.deepEqual(j.read(identity),marker());});
+test('R04 gravação idempotente do marcador e remoção compare-and-clear',()=>{const {j}=journal();j.write(marker());j.write(marker());assert.throws(()=>j.clear({...marker(),requestHash:'b'.repeat(64)}),/RECOVERY_MARKER_CHANGED/);j.clear(marker());assert.equal(j.read(identity),null);j.clear(marker());});
+test('R04 storage inacessível não produz fallback silencioso',()=>{const {j}=journal({getItem(){throw Error('quota')},setItem(){},removeItem(){}});assert.throws(()=>j.read(identity),/RECOVERY_STORAGE_UNAVAILABLE/);assert.throws(()=>j.write(marker()),/RECOVERY_STORAGE_UNAVAILABLE/);});
+test('R04 falha no write/readback é detectada antes de envio',()=>{const {j}=journal({getItem:()=>null,setItem(){},removeItem(){}});assert.throws(()=>j.write(marker()),/RECOVERY_STORAGE_UNAVAILABLE/);});
+test('R04 remoção não efetivada não é tratada como cleanup bem sucedido',()=>{const s=storage();s.removeItem=()=>{};const {j}=journal(s);j.write(marker());assert.throws(()=>j.clear(marker()),/RECOVERY_STORAGE_UNAVAILABLE/);});
+for(const raw of ['{oops','x'.repeat(2049),JSON.stringify({...marker(),expectedVersion:-1}),JSON.stringify({...marker(),requestHash:'invalid'})])test('R04 marcador malformado bloqueia sem network '+raw.length,()=>{const s=storage(),{j}=journal(s);s.data.set(M.RECOVERY_STORAGE_KEY,raw);assert.throws(()=>j.read(identity),/RECOVERY_MARKER_INVALID/);});
+test('R04 journal nunca limpa chaves de outros módulos',()=>{const s=storage(),{j}=journal(s);s.setItem('other-module','preserve');j.write(marker());j.clear(marker());assert.equal(s.getItem('other-module'),'preserve');});

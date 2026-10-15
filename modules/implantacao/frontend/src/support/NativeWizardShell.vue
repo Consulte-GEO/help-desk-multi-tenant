@@ -1,0 +1,6 @@
+<template><section class="implementation-wizard"><header class="implementation-heading"><div><p class="kicker">Cadastro da obra</p><h2>{{pageTitle}}</h2><p class="muted" role="status">{{saveState}}</p></div><div class="toolbar"><slot name="top-actions-extra"/><button v-if="currentStep<=2" type="button" class="btn" @click="$emit('load-example-projetista')">Carregar exemplo</button><button type="button" class="btn danger" @click="$emit('reset')">Limpar</button></div></header><nav class="implementation-steps" aria-label="Etapas do cadastro"><button v-for="s in steps" :key="s.id" type="button" class="btn" :class="{active:s.id===currentStep}" :aria-current="s.id===currentStep?'step':undefined" @click="$emit('navigate',s.id)">{{s.id}}. {{s.label||s.title}}</button></nav><div class="implementation-stage"><slot/></div><WizardFooter :current-step="currentStep" :loading="loading" @back="$emit('back')" @save="$emit('save')" @next="$emit('next')"/><slot name="overlays"/></section></template>
+<script setup lang="ts">
+import WizardFooter from '../components/WizardFooter.vue';
+defineProps<{currentStep:number;pageTitle:string;steps:any[]|readonly any[];theme?:string;saveState?:string;loading?:boolean}>();
+defineEmits(['navigate','load-example-projetista','toggle-theme','reset','back','save','next']);
+</script>

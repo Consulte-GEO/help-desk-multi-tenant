@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="app-version" content="5.22.46">
+<title>Pré-análise · Analisar planilha recebida · Consulte GEO</title>
+<meta name="description" content="Triagem da planilha de controle tecnológico: identifica informações ausentes, incompletas e inconsistentes antes da configuração da obra.">
+<link rel="icon" type="image/png" href="./assets/geo-symbol.png">
+<link rel="stylesheet" href="./assets/design-system.css">
+<style>
+  .dropzone{border:2px dashed var(--border-strong);border-radius:var(--radius-xl);padding:44px 24px;text-align:center;cursor:pointer;transition:var(--transition-colors);background:var(--surface)}
+  .dropzone:hover,.dropzone.drag{border-color:var(--brand-magenta);background:var(--tone-brand-bg)}
+  .dropzone .ic{width:44px;height:44px;border-radius:12px;background:var(--brand-gradient);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:900px){.two-col{grid-template-columns:1fr}}
+  details.val-row summary::-webkit-details-marker{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="topbar__brand" href="/">
+      <img class="topbar__badge" src="./assets/geo-symbol.png" alt="">
+      <span><span class="topbar__name">Consulte GEO</span><br><span class="topbar__sub">Concreto · Importação</span></span>
+    </a>
+    <span class="topbar__spacer"></span>
+    <div class="topbar__icons">
+      <a class="iconbtn" href="./importa.html" title="Modos de importação" aria-label="Modos de importação">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </a>
+      <button class="iconbtn" id="btnTheme" title="Tema claro/escuro" aria-label="Alternar tema">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="body">
+    <main class="main" id="main">
+      <div class="page fade-in" style="max-width:1100px">
+
+        <!-- ══════ PASSO 1 · UPLOAD ══════ -->
+        <section id="step1">
+          <div class="page__head">
+            <div>
+              <div class="kicker">Pré-análise · Triagem da planilha</div>
+              <h1 class="h1">Analisar planilha recebida</h1>
+              <p>Identifica rapidamente informações ausentes, campos incompletos, inconsistências e o que precisa ser solicitado ao cliente — antes da configuração da obra e antes da conversão. Nada é convertido nesta etapa.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__body">
+              <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Enviar planilha do cliente">
+                <div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <div class="h4">Arraste a planilha do cliente aqui</div>
+                <div class="text-sm muted" style="margin-top:6px">ou clique para selecionar · .xlsx, .xls, .csv</div>
+                <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsm,.csv" class="sr-only" aria-hidden="true" tabindex="-1">
+              </div>
+              <div class="row between" style="margin-top:16px;flex-wrap:wrap">
+                <span class="tag hidden" id="fileChip"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span id="fileName"></span></span>
+                <span style="flex:1"></span>
+                <button class="btn brand" id="btnAnalyze" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Analisar planilha
+                </button>
+              </div>
+              <div class="alert info" style="margin-top:16px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                <div><b>Processamento 100% local.</b> A planilha é analisada no seu navegador e não é enviada para nenhum servidor ou IA. A triagem funciona sem nenhum cadastro prévio da obra, traços, usinas ou laboratórios.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ PASSO 2 · RESULTADO ══════ -->
+        <section id="step2" class="hidden">
+          <div class="page__head">
+            <div>
+              <div class="kicker">Pré-análise · Resultado</div>
+              <h1 class="h1">Planilha analisada</h1>
+            </div>
+            <div class="page__actions">
+              <button class="btn ghost" id="btnReset2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Analisar outra planilha
+              </button>
+              <button class="btn secondary" id="btnReport">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Baixar relatório de pré-análise
+              </button>
+              <button class="btn brand" id="btnContinue">
+                Continuar para Pré-importação
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="statusBanner" class="alert info" style="margin-bottom:20px"></div>
+
+          <div class="stat-row" style="margin-bottom:20px">
+            <div class="stat"><div class="kicker">Registros</div><div class="v mono" id="stReg">0</div><div class="s">linhas de concreto analisadas</div></div>
+            <div class="stat" style="border-left:3px solid var(--danger-500)"><div class="kicker">Bloqueadores + definições</div><div class="v mono" id="stBloq" style="color:var(--danger-600)">0</div><div class="s">dependem do cliente ou de regra</div></div>
+            <div class="stat" style="border-left:3px solid var(--info-500)"><div class="kicker">Alternativas</div><div class="v mono" id="stAlt" style="color:var(--info-600)">0</div><div class="s">tratáveis internamente</div></div>
+            <div class="stat" style="border-left:3px solid var(--warning-500)"><div class="kicker">Alertas</div><div class="v mono" id="stAlerta" style="color:var(--warning-600)">0</div><div class="s">possíveis inconsistências</div></div>
+          </div>
+
+          <div class="two-col" style="margin-bottom:20px">
+            <div class="card">
+              <div class="card__head"><div><div class="kicker">A · Resumo</div><div class="h4" style="margin-top:4px">Campos essenciais</div></div></div>
+              <div class="card__body" id="essentials"></div>
+            </div>
+            <div class="card">
+              <div class="card__head"><div><div class="kicker">Diagnóstico</div><div class="h4" style="margin-top:4px">Como a planilha foi lida</div></div></div>
+              <div class="card__body" id="diagBody"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:20px">
+            <div class="card__head"><div><div class="kicker">B · Inventário de campos</div><div class="h4" style="margin-top:4px">Campo Consulte GEO × campo encontrado</div></div></div>
+            <div style="overflow-x:auto">
+              <table class="table">
+                <thead><tr><th>Campo Consulte GEO</th><th>Campo encontrado</th><th class="num">Confiança</th><th class="num">Preenchidos</th><th class="num">Vazios</th><th class="num">Inválidos</th><th>Situação</th></tr></thead>
+                <tbody id="invBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:20px">
+            <div class="card__head"><div><div class="kicker">C · Problemas identificados</div><div class="h4" style="margin-top:4px">Agrupados por tipo — expanda para ver amostras (D)</div></div></div>
+            <div class="card__body stack" id="probList"></div>
+          </div>
+
+          <div class="two-col" style="margin-bottom:20px">
+            <div class="card" style="border-left:3px solid var(--success-500)">
+              <div class="card__head"><div><div class="kicker">Podemos tratar internamente</div><div class="h4" style="margin-top:4px">Sem solicitar novos dados</div></div></div>
+              <div class="card__body" id="internalList"></div>
+            </div>
+            <div class="card" style="border-left:3px solid var(--danger-500)">
+              <div class="card__head"><div><div class="kicker">Precisamos do cliente</div><div class="h4" style="margin-top:4px">Complementação obrigatória</div></div></div>
+              <div class="card__body" id="clientList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:20px">
+            <div class="card__head">
+              <div><div class="kicker">Mensagem para o cliente</div><div class="h4" style="margin-top:4px">Somente os problemas realmente encontrados</div></div>
+              <div class="row">
+                <div class="seg"><button id="segWhats" class="on">Mensagem rápida — WhatsApp</button><button id="segEmail">Mensagem detalhada — E-mail</button></div>
+                <button class="btn secondary sm" id="btnCopyMsg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copiar mensagem
+                </button>
+              </div>
+            </div>
+            <div class="card__body">
+              <textarea id="msgBox" class="textarea mono" style="min-height:260px;font-size:12.5px" readonly aria-label="Mensagem gerada para o cliente"></textarea>
+              <div class="hint" style="margin-top:8px">Texto determinístico, gerado localmente. Tom colaborativo — sem linguagem acusatória. A melhoria opcional por IA (apenas do texto, com resumo agregado) está descrita em docs/INTEGRACAO-IMPORTA.md.</div>
+            </div>
+          </div>
+
+          <div class="row between" style="flex-wrap:wrap">
+            <button class="btn ghost" id="btnReset">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Voltar ao upload
+            </button>
+            <button class="btn ghost sm" id="btnSelfTest">Executar self-test (C1–C20 + extras)</button>
+          </div>
+          <div id="selftestOut" class="card hidden" style="margin-top:16px;padding:16px"></div>
+        </section>
+
+        <p class="text-xs muted" style="margin-top:28px;text-align:center">Implantação Consulte GEO · <span id="appVersion"></span> · Pré-análise determinística, sem envio de dados</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;bottom:20px;right:20px;z-index:1500;display:none;max-width:420px">
+  <div class="card raised" style="border-left:3px solid var(--brand-magenta);padding:12px 16px;font-size:13px" id="toastMsg"></div>
+</div>
+
+<script src="./vendor/xlsx.full.min.js"></script>
+<script src="./assets/intake-auditor.js"></script>
+<script src="./assets/intake-selftest.js"></script>
+<script src="./assets/pre-analise.js"></script>
+</body>
+</html>

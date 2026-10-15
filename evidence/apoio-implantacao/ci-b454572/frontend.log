@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: page extraction retains real controls and contains no standalone scripts or topbar
+ok 1 - page extraction retains real controls and contains no standalone scripts or topbar
+  ---
+  duration_ms: 4.158712
+  type: 'test'
+  ...
+# Subtest: inline layout becomes external CSS selectors without loosening CSP
+ok 2 - inline layout becomes external CSS selectors without loosening CSP
+  ---
+  duration_ms: 0.26218
+  type: 'test'
+  ...
+# Subtest: full importer factory keeps IMP01 adapter and all report engines; AI has one injected port
+ok 3 - full importer factory keeps IMP01 adapter and all report engines; AI has one injected port
+  ---
+  duration_ms: 4.936427
+  type: 'test'
+  ...
+# Subtest: public asset manifest contains readers, worker, pure engines and both models only
+ok 4 - public asset manifest contains readers, worker, pure engines and both models only
+  ---
+  duration_ms: 1.392115
+  type: 'test'
+  ...
+# Subtest: DOM and storage stay session local; destroy clears private data and prevents writes
+ok 5 - DOM and storage stay session local; destroy clears private data and prevents writes
+  ---
+  duration_ms: 114.870525
+  type: 'test'
+  ...
+# Subtest: late response cannot restore a disposed session or leak into a replacement account
+ok 6 - late response cannot restore a disposed session or leak into a replacement account
+  ---
+  duration_ms: 51.834828
+  type: 'test'
+  ...
+# Subtest: source async catches cannot perform fallback writes after account/session changes
+ok 7 - source async catches cannot perform fallback writes after account/session changes
+  ---
+  duration_ms: 28.865582
+  type: 'test'
+  ...
+# Subtest: facade tracks nested submission, draft and scope versions; images use returned version
+ok 8 - facade tracks nested submission, draft and scope versions; images use returned version
+  ---
+  duration_ms: 176.218234
+  type: 'test'
+  ...
+# Subtest: facade client keeps its original runtime and cannot dispatch into a new account
+ok 9 - facade client keeps its original runtime and cannot dispatch into a new account
+  ---
+  duration_ms: 121.601499
+  type: 'test'
+  ...
+# Subtest: transport reports plain errors without exposing backend codes or upstream details
+ok 10 - transport reports plain errors without exposing backend codes or upstream details
+  ---
+  duration_ms: 143.053698
+  type: 'test'
+  ...
+# Subtest: lost draft acknowledgement reconciles only an identical intended payload
+ok 11 - lost draft acknowledgement reconciles only an identical intended payload
+  ---
+  duration_ms: 145.66224
+  type: 'test'
+  ...
+# Subtest: laudo provenance uses the actual primary, retry and final models returned by the provider
+ok 12 - laudo provenance uses the actual primary, retry and final models returned by the provider
+  ---
+  duration_ms: 68.084983
+  type: 'test'
+  ...
+# Subtest: native dashboard retains export while using only the host logout action
+ok 13 - native dashboard retains export while using only the host logout action
+  ---
+  duration_ms: 37.819674
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1518.319412

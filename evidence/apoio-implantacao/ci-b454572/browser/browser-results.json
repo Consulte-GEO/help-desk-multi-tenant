@@ -1,0 +1,100 @@
+{
+  "checks": [
+    {
+      "name": "seven-stage native wizard and authenticated save",
+      "result": "passed"
+    },
+    {
+      "name": "technical XLSX export through real writer",
+      "result": "passed"
+    },
+    {
+      "name": "GEO Controle JSON export",
+      "result": "passed"
+    },
+    {
+      "name": "pre-analysis real XLSX and same-File handoff into conversion",
+      "result": "passed"
+    },
+    {
+      "name": "native mapping, proposals, IMP-01 adapter validation and saved process",
+      "result": "passed"
+    },
+    {
+      "name": "post-import audit mounted",
+      "result": "passed"
+    },
+    {
+      "name": "native laudo controller without iframe",
+      "result": "passed"
+    },
+    {
+      "name": "real local PDF load, worker and deterministic parser",
+      "result": "passed"
+    },
+    {
+      "name": "laudo XLSX contains all six required sheets",
+      "result": "passed"
+    },
+    {
+      "name": "laudo parsed/review snapshot persistence",
+      "result": "passed"
+    },
+    {
+      "name": "no source login, iframe or private localStorage",
+      "result": "passed"
+    },
+    {
+      "name": "mobile page fits viewport",
+      "result": "passed"
+    },
+    {
+      "name": "full paginated revision history and authenticated single-snapshot download",
+      "result": "passed"
+    },
+    {
+      "name": "saved laudo reopens from metadata list through private detail with exact reviewed data",
+      "result": "passed"
+    },
+    {
+      "name": "unsaved MPa correction survives changing tabs and reactivating the saved process",
+      "result": "passed"
+    },
+    {
+      "name": "authenticated fresh-session draft deep link reloads and saves same draft without bearer token",
+      "result": "passed"
+    },
+    {
+      "name": "real review View paginates 123 comments through Vue reactive arrays in chronological order",
+      "result": "passed"
+    },
+    {
+      "name": "real review View loads older submission audit metadata without loading snapshots",
+      "result": "passed"
+    },
+    {
+      "name": "dashboard export includes every paginated audit row and exposes no second logout",
+      "result": "passed"
+    },
+    {
+      "name": "autosave failure keeps dirty state and manual retry reuses reserved draft UUID",
+      "result": "passed"
+    },
+    {
+      "name": "lost creation acknowledgement remains dirty and retry reconciles matching payload without duplication",
+      "result": "passed"
+    },
+    {
+      "name": "lost acknowledgement never adopts a conflicting server version or overwrites another staff edit",
+      "result": "passed"
+    },
+    {
+      "name": "host logout destroys private UI, file inputs and listeners",
+      "result": "passed"
+    },
+    {
+      "name": "no browser exceptions or console errors",
+      "result": "passed"
+    }
+  ]
+}
