@@ -13,14 +13,20 @@ begin
  from helpdesk_integration.hda02_jobs j
  join helpdesk_integration.hda02_operations o on o.workspace_id=j.workspace_id and o.id=j.operation_id and o.current_job_id=j.id
  join helpdesk_integration.hda02_bindings b on b.workspace_id=o.workspace_id and b.account_id=o.account_id and b.id=o.binding_id and b.enabled and b.valid_until>clock_timestamp()
+ and b.ticket_id=o.ticket_id and o.state->'snapshot'->>'targetHash'=b.target_hash
  join helpdesk_integration.hda02_grants g on g.workspace_id=b.workspace_id and g.binding_id=b.id and g.enabled and g.valid_until>clock_timestamp() and g.permissions @> array['read','claim','complete','fail']::text[]
  join helpdesk_auth.principals p on p.id=g.principal_id and p.active and p.kind='integration'
  join helpdesk_auth.integration_connections c on c.workspace_id=b.workspace_id and c.principal_id=p.id and c.active and c.scopes @> array['tickets:read']::text[]
  join helpdesk_auth.source_scope_bindings s on s.workspace_id=c.workspace_id and s.connection_id=c.id and s.account_id=b.account_id and s.active
  join helpdesk_core.tickets t on t.workspace_id=o.workspace_id and t.account_id=o.account_id and t.id=o.ticket_id and t.product_instance_id=c.product_instance_id
+ and t.created_by=p.id
  where (j.status='queued' or (j.status='leased' and j.lease_until<=clock_timestamp()))
  and t.status not in ('cancelled','closed','resolved')
- and helpdesk_auth.cg_unscoped_product(t.workspace_id,t.product_instance_id)
+ -- This discovery runs before an actor/workspace transaction exists. The core
+ -- predicate also checks that context, so use only its private protection
+ -- catalogue here. Full contextual authorization still happens on claim/load.
+ and not exists(select 1 from helpdesk_auth.cg_resource_connections protected
+ where protected.workspace_id=t.workspace_id and protected.product_instance_id=t.product_instance_id)
  order by o.created_at,o.workspace_id,o.id,p.id limit 1;
  return selected;
 end $$;

@@ -11,7 +11,7 @@ export const REGISTRATION_BASELINE_SHA256='016430031e1bdb8a4e99c52d7c36a0a406b55
 export const REGISTRATION_COMPONENTS=[
  {file:'hda02_analysis_persistence.sql',sha256:'35b25267037fc7fc194cc88e8ec7385628e0d222504007c9a3427cfffa7491bf'},
  {file:'hda06_authorized_review.sql',sha256:'3c8411ddbc5118126988888aaf4f7b0973e245072fb005366c798d479655b455'},
- {file:'hda06_worker_runtime.sql',sha256:'4e3a4ffc90ac8f231c4f7539d1c1c543cd2b497491e57253cf2a5ef898104d00'}
+ {file:'hda06_worker_runtime.sql',sha256:'01b5a2c86292d3f0dc837b73aa91b2abd76ebe865e1938c5e21e3d9dc9d791a3'}
 ] as const;
 const digest=(s:string)=>createHash('sha256').update(s).digest('hex');
 const failure=()=>Error('HDA storage promotion is not the exact append after nineteen qualified migrations. Nothing executed.');

@@ -13,4 +13,6 @@ Base: github/codex/m1-reproducibilidade 4ba72e3. Escopo autorizado pelo usuário
 - O core recusa integração técnica em recursos CG protegidos. Esse controle permanece integral. Instalar armazenamento/worker não garante uma tarefa operacional elegível.
 - Histórico editável/CAS, preparação de novos jobs e aprovação/execução não são cobertos por esta promoção. Consulta permanece somente leitura com audiência fixa.
 - RED inicial: registration-runtime.test.ts falhou ERR_MODULE_NOT_FOUND antes da implementação.
+- RED nativo38762865884: cadeia0.26 e catálogo/ACL passaram; selector indevidamente chamou helper dependente de workspace antes da resolução da identidade. Corrigido para consultar somente o catálogo privado de proteção na descoberta, mantendo autorização contextual integral no claim. O mesmo teste nativo agora exige explicitamente contexto vazio e um job CG protegido anterior que deve ser ignorado.
+- Inventário real desse PG17:86 tabelas,229 funções,85 triggers,504 constraints (46 HDA), três papéis. Fixado integralmente no contrato0.26; o novo ensaio compara também todas as constraints.
 - Fetch remoto exigiu execução escalonada por DNS da sandbox. Worktree anterior estava limpo; arquivos não rastreados da árvore principal foram preservados.
