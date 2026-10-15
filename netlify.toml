@@ -52,7 +52,7 @@
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Cross-Origin-Opener-Policy = "same-origin"
-    Content-Security-Policy = "default-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data: blob:; font-src 'self'; frame-src https://www.youtube-nocookie.com; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data: blob:; font-src 'self'; media-src 'self' blob:; frame-src https://www.youtube-nocookie.com; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
 [[headers]]
   for = "/wiki/*"
   [headers.values]
@@ -61,4 +61,4 @@
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Cross-Origin-Opener-Policy = "same-origin"
-    Content-Security-Policy = "default-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data: blob:; font-src 'self'; frame-src https://www.youtube-nocookie.com; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data: blob:; font-src 'self'; media-src 'self' blob:; frame-src https://www.youtube-nocookie.com; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
