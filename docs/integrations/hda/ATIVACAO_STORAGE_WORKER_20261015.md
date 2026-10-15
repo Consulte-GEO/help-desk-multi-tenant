@@ -1,6 +1,18 @@
 # E06 — armazenamento oficial e worker sem Claude
 
-Estado desta frente: código preparado; promoção/credenciais/publicação remotas pertencem à coordenação root. Não declarar ativação hospedada com base neste documento.
+Estado desta frente: armazenamento oficial e worker ativados em produção pela coordenação root em15/10/2026, no modo `manual_review`. Três ciclos nativos204 e a publicação foram conferidos; evidências sanitizadas em `evidence/e06-storage-worker-20261015/hosted`. A integração Novo GEO e o fluxo de negócio completo continuam sujeitos aos limites abaixo.
+
+## Ativação hospedada
+
+Código integrado em `codex/m1-reproducibilidade`: `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`, mesma fonte executável qualificada0d56dc8/fingerprint5a0b2eefb1e05502904ec886be4043cf10266d6402dfe8bc40678461549d94b8. Primeiro foi publicado o deploy compatível `6ad0fe63f924d4352db92043` com as flags novas ausentes. Depois a migration oficial20 foi aplicada no projeto HelpDesk `xaelbntjnvztznnpcvtm`, registrada pelo provedor como `20261015162611_registration_storage_worker`. SHA256 exato6b8500844c7d655deb388cac35391af396156aaa44165c590235c3a7e1667d9a; schema0.26.0, storage1.0.0,86 tabelas/229 funções/85 triggers/504 constraints, zero tabelas privadas sem FORCE RLS.
+
+O login exclusivo `helpdesk_registration_worker` foi provisionado sem superuser, BYPASSRLS, INHERIT, criação de banco/papel, memberships próprios ou leitura de auth.users. A senha aleatória não foi incluída na migration, no commit ou em arquivo local. Após autorização específica do usuário para a transferência, URL e CA foram salvas como secrets exclusivamente Functions/production no site HelpDesk. O bloqueio inicial da revisão automática foi resolvido por essa autorização, sem contorno por outro canal.
+
+Deploy ativado `6ad100d4209092d0529240ef`, publicado às16:36:23.815UTC. `HELPDESK_REGISTRATION_ANALYSIS_ENABLED=true`, modo `manual_review`, `HELPDESK_REGISTRATION_REVIEW_ENABLED=true`; liberação, atendimento e configuração Consulte GEO existente preservados. O manifesto publicado foi conferido:89 arquivos públicos idênticos ao SHA1 do provedor e netlify.toml corretamente protegido com404. Capabilities200 informa registration_review=true, tickets=true e support_workflow=true. APIs de consulta sem sessão retornam401; GET/POST públicos do worker retornam403; fixtures/SQL privados não são publicados.
+
+Observabilidade do provedor, filtrada por `FunctionName=registration-worker` e `UserAgent=Netlify Functions Scheduler`, registrou POST204 às16:37,16:38 e16:39UTC após a publicação. O handler só retorna204 depois do preflight real de catálogo completo, ACL efetivo, identidade exclusiva e TLS, repetido a cada ciclo. A fila está vazia: nenhum binding, grant, job, operação, rascunho, snapshot ou inbox foi criado. Esse resultado comprova disponibilidade ociosa, sem simular processamento de negócio. Antes da publicação ativada, flags/credenciais ausentes produziram503 fechado, como previsto.
+
+O worker de emails também registrou três POST204 nos mesmos minutos. Advisors não acrescentaram WARN/ERROR para HDA; o INFO de RLS sem políticas nas tabelas privadas é compatível com acesso somente por helpers. Avisos anteriores da Wiki e proteção de senhas continuam fora desta promoção; não declarar o projeto inteiro livre de avisos de segurança.
 
 ## Implementação
 
@@ -26,7 +38,7 @@ O modo permitido é explicitamente `manual_review`. O engine não chama modelo/o
 
 ## Limites reais
 
-Novo GEO continua preparado/desabilitado por decisão do usuário. Seu contrato/auth/URLs e referências autorizadas não existem nesta frente. Um target HDA exige dados qualificados do Novo GEO; não se convertem cadastros locais em autoridade da origem. Nenhuma identidade, concessão ou fila de produção foi criada.
+Novo GEO continua preparado/desabilitado por decisão do usuário. Seu contrato/auth/URLs e referências autorizadas não existem nesta frente. Um target HDA exige dados qualificados do Novo GEO; não se convertem cadastros locais em autoridade da origem. Nenhuma identidade, concessão ou fila de negócio foi criada em produção.
 
 Sem origem/qualificação de atores de análise e sem jornadas de preparação/edição/CAS, não há promessa de proposta operacional para os chamados ativos da Consulte GEO. O core também permite ao analisador técnico ler somente seus próprios chamados genéricos; não concede leitura dos chamados humanos nem de obras CG por instalar um worker. A consulta existente é somente leitura; pode devolver404 autorizado quando não há operação, nunca um rascunho fictício. Aprovação, escrita na origem e notificação de execução permanecem fora desta promoção.
 
@@ -38,7 +50,7 @@ Sem origem/qualificação de atores de análise e sem jornadas de preparação/e
 - `npm test` Windows na primeira execução:5632 verificações,5487 aprovadas/145 falhas, zero skips/cancelamentos. Cinco expectativas históricas de schema/contagem foram atualizadas e reexecutadas focalmente. Sockets/links/subprocessos/Python/Git staging têm recusas do ambiente Windows; CI Linux integral continua obrigatório.
 - PostgreSQL/WSL indisponíveis neste host. O CI Linux executou PG17 real: run38766649791, fonte0d56dc888c0ac69db5063e703c781415c6618af7,40 candidato+14 core/worker,49 DOM,14 vetores válidos+12 recusados, zero falhas, clusters removidos. Evidência canônica em `evidence/e06-storage-worker-20261015/hda`; inventário SHA256acc83f2b2874c3907fc28d484c670cfdc94eadd4a821f3b5412d5170914dcd08.
 - A primeira tentativa nativa reproduziu a falha de descoberta antes de contexto; a revisão independente também identificou risco de starvation por autor/binding divergentes. O fixpass preservou as autorizações do core. O cenário nativo passou com três jobs antigos inelegíveis (autor humano, target alterado e ticket alterado) e um job próprio elegível liquidado em manual_review, sem mudança do chamado/outbox.
-- TLS/credenciais e scheduler hospedados, promoção remota e aceite de negócio exigem sua prova operacional própria. CI nativo não cria autorização da origem ou dados de produção.
+- TLS/credenciais, promoção remota e scheduler hospedados foram conferidos na ativação acima, com evidência própria. O aceite de negócio continua pendente; CI nativo e disponibilidade ociosa não criam autorização da origem ou dados de produção.
 
 ## Checkpoint integral da fonte final
 

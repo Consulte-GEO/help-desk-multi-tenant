@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-15T16:41:27.429Z",
+  "project": "xaelbntjnvztznnpcvtm",
+  "officialMigrationSha256": "6b8500844c7d655deb388cac35391af396156aaa44165c590235c3a7e1667d9a",
+  "catalog": {
+    "jobs": 0,
+    "inbox": 0,
+    "drafts": 0,
+    "grants": 0,
+    "tables": 86,
+    "bindings": 0,
+    "triggers": 85,
+    "functions": 229,
+    "snapshots": 0,
+    "operations": 0,
+    "workerRole": {
+      "login": true,
+      "inherit": false,
+      "createDB": false,
+      "bypassRLS": false,
+      "superuser": false,
+      "createRole": false
+    },
+    "constraints": 504,
+    "unsafeTables": 0,
+    "schemaVersion": "0.26.0",
+    "storageVersion": "1.0.0",
+    "latestMigration": {
+      "name": "registration_storage_worker",
+      "version": "20261015162611"
+    },
+    "workerMemberOfRoles": 0,
+    "workerCanReadAuthUsers": false
+  }
+}
