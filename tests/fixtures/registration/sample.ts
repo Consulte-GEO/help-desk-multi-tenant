@@ -1,0 +1,4 @@
+export const id=(n:number)=>`10000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+export const target=()=>({system:'NOVO_GEO' as const,workspaceId:id(1),accountId:id(2),sourceConnectionId:id(3),sourceInstanceId:'instance-A',sourceTenantKey:'tenant-A',sourceContractCode:'0001',sourceWorkKey:'0007',sourceBeneficiaryKey:'0009',originAccessRevision:null});
+export const input=()=>({operationId:id(10),ticketId:id(11),inputRevision:1,formVersion:'form.v1',actionKey:'geo.user.grant_work.v1',target:target(),answers:{requestConfirmation:true,note:'Vincular a uma obra existente.'},attachmentRefs:[]});
+export const output=(job:any,disposition='proposal')=>({schema:1,jobId:job.jobId,operationId:job.operationId,inputRevision:job.inputRevision,disposition,proposedFields:disposition==='proposal'?{kind:'add_work_link',preserveExistingLinks:true}:{},missingFields:disposition==='needs_information'?['sourceBeneficiaryKey']:[],warnings:[],knowledgeRefs:[]});

@@ -1,0 +1,12 @@
+/* HDA read-only component; consumes existing UX10 semantics, no new brand tokens. */
+.hd-ops[data-ops-panel="registration-review"] .hd-ops-actions { margin: 0 0 20px; }
+.hd-registration-heading { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:20px 0; }
+.hd-registration-heading p { margin:0; }
+.hd-registration-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.hd-registration-grid .hd-ops-facts { grid-template-columns:minmax(0,1fr); }
+.hd-registration-section { margin:0 0 20px; }
+.hd-registration-section li { margin:6px 0; overflow-wrap:anywhere; }
+.hd-registration-history { margin-top:24px; border-top:1px solid var(--hd-line); padding-top:12px; }
+.hd-registration-history summary { display:list-item; padding-block:10px; }
+.hd-registration-history code { display:block; font:12px/1.6 var(--hd-mono); overflow-wrap:anywhere; }
+@media(max-width:760px){.hd-registration-grid{grid-template-columns:minmax(0,1fr);gap:0;}}
