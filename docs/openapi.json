@@ -29,16 +29,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -50,6 +40,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -78,16 +78,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -99,6 +89,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -131,16 +131,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -152,6 +142,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -185,16 +185,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -206,6 +196,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -234,16 +234,6 @@
               "Cache-Control": {
                 "schema": {
                   "const": "no-store"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -278,16 +268,6 @@
               }
             }
           },
-          "503": {
-            "description": "Encerramento indisponível ou confirmação transacional incerta; não considerar logout concluído.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -299,6 +279,26 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Encerramento indisponível ou confirmação transacional incerta; não considerar logout concluído.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -336,16 +336,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -357,6 +347,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -428,16 +428,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -449,6 +439,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -482,16 +482,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Resolution"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -536,16 +526,6 @@
               }
             }
           },
-          "503": {
-            "description": "invalid_coverage_result: formato, contexto, datas ou política incompatíveis. Nenhuma informação contratual parcial é devolvida.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -557,6 +537,26 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "invalid_coverage_result: formato, contexto, datas ou política incompatíveis. Nenhuma informação contratual parcial é devolvida.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -690,16 +690,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -711,6 +701,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -739,8 +739,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Operação concluída.",
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -761,18 +761,8 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -833,16 +823,6 @@
               }
             }
           },
-          "503": {
-            "description": "Indisponibilidade, cobertura inconsistente ou confirmação incerta. Nunca repetir automaticamente com outra chave.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -854,6 +834,26 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Indisponibilidade, cobertura inconsistente ou confirmação incerta. Nunca repetir automaticamente com outra chave.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -913,16 +913,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -934,6 +924,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -996,48 +996,8 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "408": {
-            "description": "Prazo de recebimento do corpo excedido.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "413": {
-            "description": "Corpo acima de 64 KiB.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "415": {
-            "description": "Content-Type ou compressão não suportados.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1066,6 +1026,16 @@
               }
             }
           },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Estado terminal, conflito de chave ou dados.",
             "content": {
@@ -1086,8 +1056,8 @@
               }
             }
           },
-          "428": {
-            "description": "If-Match obrigatório.",
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1096,8 +1066,18 @@
               }
             }
           },
-          "503": {
-            "description": "Resultado indisponível ou incerto. Não presumir ausência de gravação.",
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "If-Match obrigatório.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1117,6 +1097,26 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Resultado indisponível ou incerto. Não presumir ausência de gravação.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1192,16 +1192,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
             "content": {
@@ -1212,38 +1202,18 @@
               }
             }
           },
-          "408": {
-            "description": "Prazo de recebimento do corpo excedido.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "413": {
-            "description": "Corpo acima de 64 KiB.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "415": {
-            "description": "Content-Type ou compressão não suportados.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Não operador, scope ausente ou release de outro sem papel admin.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Prazo de recebimento do corpo excedido.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1272,8 +1242,8 @@
               }
             }
           },
-          "428": {
-            "description": "If-Match ausente.",
+          "413": {
+            "description": "Corpo acima de 64 KiB.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1282,8 +1252,18 @@
               }
             }
           },
-          "503": {
-            "description": "Indisponível ou resultado incerto; não repetir com outra chave automaticamente.",
+          "415": {
+            "description": "Content-Type ou compressão não suportados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "If-Match ausente.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1303,6 +1283,26 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Indisponível ou resultado incerto; não repetir com outra chave automaticamente.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1392,16 +1392,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -1413,6 +1403,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1443,8 +1443,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Operação concluída.",
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1465,18 +1465,8 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1548,6 +1538,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1636,16 +1636,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -1657,6 +1647,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1687,8 +1687,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Operação concluída.",
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1709,18 +1709,8 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1792,6 +1782,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1860,16 +1860,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
             "content": {
@@ -1921,6 +1911,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1990,16 +1990,6 @@
               }
             }
           },
-          "default": {
-            "description": "Erro seguro padronizado.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -2011,6 +2001,16 @@
                 }
               }
             },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2186,6 +2186,16 @@
               }
             }
           },
+          "201": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoConfigurationResult"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -2292,16 +2302,6 @@
               "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Operação concluída; no-store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConsulteGeoConfigurationResult"
                 }
               }
             }
@@ -3625,6 +3625,16 @@
               }
             }
           },
+          "422": {
+            "description": "Formulário ou cobertura indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "428": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -3647,16 +3657,6 @@
           },
           "503": {
             "description": "Requisição recusada ou confirmação indisponível.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Formulário ou cobertura indisponível.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3700,6 +3700,16 @@
         ],
         "responses": {
           "200": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoOpeningReceipt"
+                }
+              }
+            }
+          },
+          "201": {
             "description": "Operação concluída; no-store.",
             "content": {
               "application/json": {
@@ -3789,6 +3799,16 @@
               }
             }
           },
+          "422": {
+            "description": "Formulário ou cobertura indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "428": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -3818,26 +3838,6 @@
                 }
               }
             }
-          },
-          "201": {
-            "description": "Operação concluída; no-store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConsulteGeoOpeningReceipt"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Formulário ou cobertura indisponível.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -3851,6 +3851,1906 @@
           }
         },
         "description": "Mesma intenção/chave recupera recibo original após autorização atual, mesmo após TTL do rascunho consumido. Sem envio externo durante a transação. Resultado desconhecido exige conciliação; nunca trocar a chave automaticamente."
+      }
+    },
+    "/tickets/{ticket_id}/approval-invitations": {
+      "post": {
+        "operationId": "requestSupportApproval",
+        "summary": "Solicitar aprovação ao aprovador delegado atual.",
+        "description": "MFA e capacidade approvals.request. Uma chave fixa por intenção; não muda a versão do chamado. Disponível somente com schema0.25 e gates reais de workflow/intake/revisão. Notificação pendente não comprova envio ou entrega.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._:-]{16,128}$"
+            },
+            "description": "Mesma chave e mesmo corpo em toda conciliação; nunca gerar outra chave após resultado desconhecido."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewInvitationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Resultado no-store; reconferir o recurso após confirmação.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewInvitationReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/approval-challenge": {
+      "post": {
+        "operationId": "prepareSupportApproval",
+        "summary": "Conferir convite e preparar desafio de curta duração.",
+        "description": "MFA e capacidade approvals.decide. Apenas este POST explícito cria desafio; GET e scanners nunca aprovam. Disponível somente com schema0.25 e gates reais de workflow/intake/revisão. Notificação pendente não comprova envio ou entrega.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewChallengeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado no-store; reconferir o recurso após confirmação.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewChallenge"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/approval-decisions": {
+      "post": {
+        "operationId": "decideSupportApproval",
+        "summary": "Registrar aprovação ou solicitar correção.",
+        "description": "MFA e capacidade approvals.decide, destinatário/revisões/escopo atuais. Aprovar não executa ação nem concede acesso no GEO. Disponível somente com schema0.25 e gates reais de workflow/intake/revisão. Notificação pendente não comprova envio ou entrega.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._:-]{16,128}$"
+            },
+            "description": "Mesma chave e mesmo corpo em toda conciliação; nunca gerar outra chave após resultado desconhecido."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewDecisionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado no-store; reconferir o recurso após confirmação.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/form-preview": {
+      "post": {
+        "operationId": "previewSupportFormRevision",
+        "summary": "Conferir alterações de um rascunho salvo.",
+        "description": "Solicitante autenticado com forms.revise; comparação pública, sem gravar revisão. Disponível somente com schema0.25 e gates reais de workflow/intake/revisão. Notificação pendente não comprova envio ou entrega.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewPreviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado no-store; reconferir o recurso após confirmação.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/form-revisions": {
+      "post": {
+        "operationId": "reviseSupportForm",
+        "summary": "Registrar revisão conferida e invalidar convites antigos.",
+        "description": "Solicitante autenticado com forms.revise e hash da prévia atual. Consome rascunho e retorna à aprovação exigida pelo perfil fixado. Disponível somente com schema0.25 e gates reais de workflow/intake/revisão. Notificação pendente não comprova envio ou entrega.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          },
+          {
+            "$ref": "#/components/parameters/Origin"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._:-]{16,128}$"
+            },
+            "description": "Mesma chave e mesmo corpo em toda conciliação; nunca gerar outra chave após resultado desconhecido."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRevisionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado no-store; reconferir o recurso após confirmação.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/review-context": {
+      "get": {
+        "operationId": "getSupportReviewContext",
+        "summary": "Consultar formulário público e ações disponíveis para a sessão.",
+        "description": "Leitura autenticada em escopo tickets.write. Null quando o chamado não pertence ao perfil inicial publicado; capacidades são indicativas e cada POST reautoriza.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leitura no-store, sem efeito de workflow.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticket_id}/notification-attention": {
+      "get": {
+        "operationId": "getTicketNotificationAttention",
+        "summary": "Consultar até 20 estados de notificação sem reenviar.",
+        "description": "Administrador atual com MFA e obras autorizadas. accepted significa aceito pelo provedor; somente delivered confirma o callback de entrega. Não inclui contato, ID do provedor ou token.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leitura no-store, sem efeito de workflow.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationAttention"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/approval-invitations/{invitation_id}": {
+      "get": {
+        "operationId": "getSupportApprovalLanding",
+        "summary": "Resolver navegação autorizada de um convite vigente.",
+        "description": "Leitura apenas para o aprovador atual. Sem desafio, decisão ou token. Convite vencido, consumido ou com revisão antiga é recusado.",
+        "parameters": [
+          {
+            "name": "invitation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leitura no-store, sem efeito de workflow.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewLanding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requisição recusada ou confirmação indisponível; nenhuma repetição com chave nova para uma escrita desconhecida.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -6128,6 +8028,720 @@
           }
         },
         "description": "Resumo mínimo de um chamado Consulte GEO com perfil e protocolo fixados na abertura. Somente apresentação após autorização atual; não concede permissões."
+      },
+      "ReviewInvitationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "ReviewChallengeInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "invitationId"
+        ],
+        "properties": {
+          "invitationId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ReviewDecisionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "invitationId",
+          "expectedFormRevision",
+          "token",
+          "decision",
+          "reason"
+        ],
+        "properties": {
+          "invitationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedFormRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "token": {
+            "type": "string",
+            "pattern": "^hd_approval_[A-Za-z0-9_-]{43}$",
+            "writeOnly": true,
+            "description": "Credencial efêmera apenas em memória e neste POST. Não usar em URL, log ou armazenamento."
+          },
+          "decision": {
+            "enum": [
+              "approve",
+              "reject"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12000
+          }
+        }
+      },
+      "ReviewPreviewInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expectedFormRevision",
+          "draftId",
+          "expectedDraftRevision",
+          "comment"
+        ],
+        "properties": {
+          "expectedFormRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedDraftRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 12000
+          }
+        }
+      },
+      "ReviewRevisionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expectedFormRevision",
+          "draftId",
+          "expectedDraftRevision",
+          "comment",
+          "previewHash"
+        ],
+        "properties": {
+          "expectedFormRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "draftId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedDraftRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "previewHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      },
+      "ReviewInvitationReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ticketId",
+          "workspaceId",
+          "accountId",
+          "actorId",
+          "invitationId",
+          "ticketVersion",
+          "formRevision",
+          "notification",
+          "replayed"
+        ],
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "invitationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "formRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "notification": {
+            "const": "pending"
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReviewChallenge": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "invitationId",
+          "ticketId",
+          "ticketVersion",
+          "formRevision",
+          "token",
+          "expiresAt",
+          "generation",
+          "decisionApplied"
+        ],
+        "properties": {
+          "invitationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "formRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "token": {
+            "type": "string",
+            "pattern": "^hd_approval_[A-Za-z0-9_-]{43}$",
+            "description": "Resposta no-store. Guardar somente em memória até a decisão ou limpeza da tela."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "decisionApplied": {
+            "const": false
+          }
+        }
+      },
+      "ReviewReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ticketId",
+          "workspaceId",
+          "accountId",
+          "actorId",
+          "eventId",
+          "version",
+          "formRevision",
+          "action",
+          "invitationId",
+          "decision",
+          "notification",
+          "replayed"
+        ],
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "formRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "action": {
+            "enum": [
+              "approval",
+              "revision"
+            ]
+          },
+          "invitationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "enum": [
+                  "approve",
+                  "reject"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notification": {
+            "const": "pending"
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReviewPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ticketId",
+          "version",
+          "formRevision",
+          "previewHash",
+          "publicDiff",
+          "commitAuthorized"
+        ],
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "formRevision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "previewHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "publicDiff": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "beforePresent",
+                "afterPresent",
+                "before",
+                "after"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "beforePresent": {
+                  "type": "boolean"
+                },
+                "afterPresent": {
+                  "type": "boolean"
+                },
+                "before": {},
+                "after": {}
+              }
+            }
+          },
+          "commitAuthorized": {
+            "const": false
+          }
+        }
+      },
+      "ReviewLanding": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "workspaceId",
+          "ticketId",
+          "invitationId"
+        ],
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "invitationId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ReviewContext": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "schema",
+              "context",
+              "protocol",
+              "status",
+              "approval",
+              "form",
+              "capabilities",
+              "decision"
+            ],
+            "properties": {
+              "schema": {
+                "const": 1
+              },
+              "context": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "principalId",
+                  "workspaceId",
+                  "accountId",
+                  "ticketId",
+                  "version",
+                  "formRevision",
+                  "invitationId"
+                ],
+                "properties": {
+                  "principalId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "workspaceId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "accountId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "ticketId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "formRevision": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "invitationId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              },
+              "protocol": {
+                "type": "string",
+                "pattern": "^CG-[1-9][0-9]{4,17}$"
+              },
+              "status": {
+                "enum": [
+                  "new",
+                  "triage",
+                  "open",
+                  "waiting_customer",
+                  "waiting_internal",
+                  "waiting_third_party",
+                  "resolved",
+                  "closed",
+                  "cancelled"
+                ]
+              },
+              "approval": {
+                "enum": [
+                  "not_required",
+                  "pending",
+                  "approved"
+                ]
+              },
+              "form": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "definition",
+                  "formId",
+                  "formVersion",
+                  "schemaHash",
+                  "answers",
+                  "refs"
+                ],
+                "properties": {
+                  "definition": {
+                    "type": "object",
+                    "description": "DSL publicada e fixada ao chamado, apenas campos públicos."
+                  },
+                  "formId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "formVersion": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "schemaHash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "answers": {
+                    "type": "object",
+                    "description": "Respostas públicas validadas."
+                  },
+                  "refs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "capabilities": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "requestApproval",
+                  "decideApproval",
+                  "reviseForm"
+                ],
+                "properties": {
+                  "requestApproval": {
+                    "type": "boolean"
+                  },
+                  "decideApproval": {
+                    "type": "boolean"
+                  },
+                  "reviseForm": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "decision": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "decision",
+                      "version",
+                      "formRevision",
+                      "at",
+                      "reason"
+                    ],
+                    "properties": {
+                      "decision": {
+                        "enum": [
+                          "approve",
+                          "reject"
+                        ]
+                      },
+                      "version": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9007199254740991
+                      },
+                      "formRevision": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9007199254740991
+                      },
+                      "at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "NotificationAttention": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ticketId",
+          "workspaceId",
+          "accountId",
+          "items",
+          "limit",
+          "resendAvailable"
+        ],
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workspaceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "kind",
+                "state",
+                "attempts",
+                "attention",
+                "updatedAt",
+                "nextAttemptAt",
+                "reason"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "state": {
+                  "enum": [
+                    "pending",
+                    "retry_wait",
+                    "leased",
+                    "sending",
+                    "unknown",
+                    "accepted",
+                    "delivered",
+                    "failed",
+                    "suppressed"
+                  ]
+                },
+                "attempts": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "attention": {
+                  "type": "boolean"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "nextAttemptAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "reason": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 80
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "limit": {
+            "const": 20
+          },
+          "resendAvailable": {
+            "const": false
+          }
+        }
       }
     }
   }

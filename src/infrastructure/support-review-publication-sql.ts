@@ -41,7 +41,7 @@ BEGIN
   PERFORM 1 FROM helpdesk_auth.principals p JOIN auth.users u ON u.id=p.supabase_user_id WHERE p.id=person AND p.active AND p.kind='human' AND lower(u.email)=CASE WHEN person=sponsor THEN c->>'administratorEmail' ELSE c->>'requesterEmail' END AND u.email_confirmed_at IS NOT NULL AND u.email_confirmed_at<=clock_timestamp() AND u.deleted_at IS NULL AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp()) FOR SHARE OF p,u;
   IF NOT FOUND OR NOT 'tickets:read'=ANY(helpdesk_auth.human_scopes(w,person)) OR NOT 'tickets:write'=ANY(helpdesk_auth.human_scopes(w,person)) THEN RAISE EXCEPTION 'Verified current participant required' USING ERRCODE='HRP01';END IF;
   FOREACH operation_name IN ARRAY ARRAY['tickets.read','tickets.write'] LOOP
-   PERFORM 1 FROM helpdesk_auth.cg_local_permissions p WHERE p.workspace_id=w AND p.account_id=a AND p.principal_id=person AND p.operation=operation_name AND p.active AND p.registry_revision=local_registry.revision AND p.work_ids @> to_jsonb(selected_works) FOR SHARE;
+   PERFORM 1 FROM helpdesk_auth.cg_local_permissions p WHERE p.workspace_id=w AND p.account_id=a AND p.principal_id=person AND p.operation=operation_name AND p.active AND p.registry_revision=local_registry.revision AND p.work_ids @> selected_works FOR SHARE;
    IF NOT FOUND THEN RAISE EXCEPTION 'Participant work permission required' USING ERRCODE='HRP01';END IF;
   END LOOP;
  END LOOP;
