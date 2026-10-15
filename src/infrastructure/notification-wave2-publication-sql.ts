@@ -47,7 +47,7 @@ BEGIN
   ELSE
    SELECT * INTO r FROM helpdesk_integration.hdn_notification_routes WHERE workspace_id=w AND kind=e->>'kind' AND revision=(e->>'revision')::bigint FOR SHARE;
    IF NOT FOUND OR r.audience IS DISTINCT FROM e->>'audience' OR r.template_id IS DISTINCT FROM e->>'templateId' OR r.template_version IS DISTINCT FROM (e->>'templateVersion')::int
-   OR r.effective_after IS DISTINCT FROM CASE WHEN e->>'effectiveAfter' IS NULL THEN NULL ELSE helpdesk_auth.hdn_notification_stamp(e->>'effectiveAfter') END
+   OR r.effective_after IS DISTINCT FROM (CASE WHEN e->>'effectiveAfter' IS NULL THEN NULL ELSE helpdesk_auth.hdn_notification_stamp(e->>'effectiveAfter') END)
    OR coalesce(to_jsonb(r.recipient_ids),'null'::jsonb) IS DISTINCT FROM e->'recipientIds'
    OR r.template_id IS NOT NULL AND NOT EXISTS(SELECT 1 FROM helpdesk_integration.hdn_notification_templates WHERE id=r.template_id AND version=r.template_version AND kind=r.kind AND sha256=e->>'templateHash') THEN RAISE EXCEPTION 'Observed route changed' USING ERRCODE='HNP03';END IF;
    IF NOT replay AND r.revision<>(SELECT max(revision) FROM helpdesk_integration.hdn_notification_routes WHERE workspace_id=w AND kind=r.kind) THEN RAISE EXCEPTION 'Route revision changed' USING ERRCODE='HNP03';END IF;
