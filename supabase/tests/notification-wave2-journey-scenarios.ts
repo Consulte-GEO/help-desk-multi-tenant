@@ -7,6 +7,7 @@ import {createConsulteGeoRequestCatalog} from '../../src/application/consultegeo
 import {createFormDraftService} from '../../src/application/form-draft.ts';import {createSupportIntake} from '../../src/application/support-intake.ts';
 import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirectory} from '../../src/infrastructure/consultegeo-intake-store.ts';
 import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
+import {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
 /** Last suite in an owned disposable cluster. Real ordinary app sessions see the
  * committed candidate. Schema/upgrade readiness remains a separate release gate. */
 export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
@@ -38,6 +39,7 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   await operator.query(extended.sql,[...extended.values]);
   const customer:Principal={id:requester,workspaceId:w,kind:'human',workspaceRole:null,grants:[{accountId:input.accountId,role:'requester'}],scopes:['contexts:resolve','tickets:read','tickets:write']};
   const agent:Principal={...customer,id:staff,workspaceRole:'admin',grants:[{accountId:input.accountId,role:'agent'}],scopes:['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']};
+  const audience=await createOwnedWave2AudienceFixture(suite,operator,control,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester});
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(customer,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref];
   const options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(customer,{service:'questions',refs}),entry=catalog.configurations[0]!.entries[0]!;
@@ -49,15 +51,25 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
    const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[queue[0]!.id])).rows[0]!.result as any;
    assert.equal(facts.source.type,'internal.queue_created');assert.equal(facts.requesterId,requester);assert.equal(facts.protocol,opened.protocol);assert.doesNotMatch(JSON.stringify(facts),/Private source isolation probe|Owned native details|body|notes/);
   });
+  let queueClaim:Awaited<ReturnType<typeof audience.claim>>;
+  await suite.test('worker enumerates the private source and materializes only the qualified explicit staff member',async()=>{
+   const queue=(await rows('internal.queue_created'))[0]!;
+   assert.deepEqual((await audience.worker.query('select helpdesk_auth.hdn_notification_sources(1) as ids')).rows[0]!.ids,[queue.id]);
+   const saved=await audience.materialize(String(queue.id));assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.equal(saved.records[0]!.intent.kind,'internal.queue_created');
+   queueClaim=await audience.claim();assert.equal(queueClaim.intent.recipientId,staff);const proof=await audience.authorize(queueClaim);assert.equal(proof.decision,'allowed');assert.equal(proof.address,email);
+  });
   const flow=createDurablePostgresSupportWorkflow({pool:app,resolver:source.resolver});
   let receipt=await flow.execute(agent,opened.ticketId,refs,{action:'start',expectedVersion:1},randomUUID(),randomUUID());
   await suite.test('staff start has its own qualified public kind',async()=>{const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.transition');assert.equal(facts.wave2Eligible,true);});
   receipt=await flow.execute(agent,opened.ticketId,refs,{action:'transfer',expectedVersion:receipt.version,targetPrincipalId:staff,reason:'Owned assignment qualification'},randomUUID(),randomUUID());
   await suite.test('transfer emits one private assignment projection and never a public assignment outbox',async()=>{const assigned=await rows('internal.assignment_changed');assert.equal(assigned.length,1);assert.equal(assigned[0]!.assigned_principal_id,staff);assert.equal(assigned[0]!.parent_event_id,receipt.eventId);assert.equal((await operator.query('select count(*)::int as n from helpdesk_integration.outbox_events where id=$1',[receipt.eventId])).rows[0]!.n,0);});
+  await suite.test('queued new-ticket notice is revoked after the ticket is assigned',async()=>{assert.ok(queueClaim);const proof=await audience.authorize(queueClaim);assert.equal(proof.decision,'revoked');assert.equal(proof.address,null);});
+  await suite.test('assignment intent stays bound to the actual staff recipient',async()=>{const source=(await rows('internal.assignment_changed'))[0]!;const saved=await audience.materialize(String(source.id));assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.equal(saved.records[0]!.intent.kind,'internal.assignment_changed');});
   receipt=await flow.execute(agent,opened.ticketId,refs,{action:'reply',expectedVersion:receipt.version,body:'Owned public answer excluded from mail'},randomUUID(),randomUUID());
   await suite.test('ordinary reply no longer becomes a request for customer information',async()=>{const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.reply');assert.doesNotMatch(JSON.stringify(facts),/Owned public answer|body/);});
   receipt=await flow.execute(agent,opened.ticketId,refs,{action:'request_customer',expectedVersion:receipt.version,body:'Owned customer information request'},randomUUID(),randomUUID());
   receipt=await flow.execute(customer,opened.ticketId,refs,{action:'customer_reply',expectedVersion:receipt.version,body:'Owned requester return excluded from mail'},randomUUID(),randomUUID());
   await suite.test('customer reply pins the actual responsible staff and keeps conversation private',async()=>{const returned=await rows('support.customer_reply');assert.equal(returned.length,1);assert.equal(returned[0]!.id,receipt.eventId);assert.equal(returned[0]!.assigned_principal_id,staff);const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.customer_reply');assert.equal(facts.sourceAssigneeId,staff);assert.doesNotMatch(JSON.stringify(facts),/Owned requester return|body|notes/);});
+  await suite.test('customer return goes to its pinned staff recipient and never the requester',async()=>{const saved=await audience.materialize(receipt.eventId);assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.ok(saved.records.every(r=>r.intent.recipientId!==requester));});
  });
 }
