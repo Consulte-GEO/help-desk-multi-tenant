@@ -30,5 +30,5 @@
 - [x] Adaptar IA para SDK oficial/Netlify, modelos verificados e contratos antigos validados; testes sem custo com SDK injetado.
 - [x] Incluir biblioteca/assets explicitamente em build/demo, locks/CI e fingerprint; ampliar CSP só onde recursos exigem.
 - [x] Rodar tipos, contratos, motores/frontend, segurança, build e CI integral/PG/browser. Corrigir achados de revisão independente.
-- [ ] Commit/merge/publicar código compatível, aplicar somente addon qualificado e conferir produção sem dados fictícios ou inferência paga.
-- [ ] Registrar evidências, paridade, pendências reais e preservação do site/histórico Setup.
+- [x] Commit/merge/publicar código compatível, aplicar somente addon qualificado e conferir produção sem dados fictícios ou inferência paga.
+- [x] Registrar evidências, paridade, pendências reais e preservação do site/histórico Setup.
