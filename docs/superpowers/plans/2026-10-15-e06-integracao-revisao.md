@@ -11,7 +11,7 @@
 - [x] Revisar autorização, cancelamento, persistência, projeções e compatibilidade de UI. Reproduzir cada defeito antes da correção.
 - [x] Executar PostgreSQL descartável e navegador em CI Linux, incluindo candidato HDA sem promover DDL remoto.
 - [x] Revisão independente Codex; resolver achados importantes e atualizar evidência ligada à fonte.
-- [ ] Commit, PR e CI aprovados; concluir merge e verificação da publicação e dos módulos que permanecem indisponíveis.
+- [x] Commit, PR44, CI, merge3efbdc6 e publicação6ad04f13 verificados;88 assets e fronteiras conferidos.
 
 ## Restrições e foco
 
@@ -22,3 +22,5 @@ Preservar atendimento ativo, isolamento de contas/obras, API/schema existentes e
 15/10: cópia antiga 132 commits atrás; área isolada criada do remoto atual. E06 aplica sem conflito. R05 é outro repositório e terá relatório próprio.
 
 CI integral38677788026 aprovado5.427/609/581, nativo38677793525 aprovado40+6, DOM49, fingerprints/logs validados. Revisão independente encerrada sem achados acionáveis.
+
+Fechamento: ambos os projetos publicados e evidências preservadas. HDA e IMP-02 permanecem parciais nos aceites de negócio explicitados no relatório; nenhum candidato SQL ou capacidade fictícia foi ativado.
