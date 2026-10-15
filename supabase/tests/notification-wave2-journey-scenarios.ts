@@ -8,6 +8,7 @@ import {createFormDraftService} from '../../src/application/form-draft.ts';impor
 import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirectory} from '../../src/infrastructure/consultegeo-intake-store.ts';
 import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
 import {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
+import {assertOwnedWave2ApprovalOpening} from './notification-wave2-review-fixture.ts';
 /** Last suite in an owned disposable cluster. Real ordinary app sessions see the
  * committed candidate. Schema/upgrade readiness remains a separate release gate. */
 export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
@@ -15,7 +16,7 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   const operator=operatorPool(),control=controlPool(),app=appPool();
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
   await operator.query('BEGIN');try{
-   for(const file of ['hdn_notification_wave2_public.sql','hdn_notification_wave2_internal.sql','hdn_notification_wave2_audiences.sql'])await operator.query(await readFile(new URL('../candidates/'+file,import.meta.url),'utf8'));
+   for(const file of ['hdn_notification_wave2_public.sql','hdn_notification_wave2_internal.sql','hdn_notification_wave2_audiences.sql','hdn_review_authority.sql'])await operator.query(await readFile(new URL('../candidates/'+file,import.meta.url),'utf8'));
    await operator.query('COMMIT');
   }catch(e){await operator.query('ROLLBACK');throw e;}
   const hadAuth=Boolean((await control.query("select to_regclass('auth.users') as users")).rows[0]?.users);
@@ -105,5 +106,6 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   receipt=await flow.execute(customer,opened.ticketId,refs,{action:'customer_reply',expectedVersion:receipt.version,body:'Owned requester return excluded from mail'},randomUUID(),randomUUID());
   await suite.test('customer reply pins the actual responsible staff and keeps conversation private',async()=>{const returned=await rows('support.customer_reply');assert.equal(returned.length,1);assert.equal(returned[0]!.id,receipt.eventId);assert.equal(returned[0]!.assigned_principal_id,staff);const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.customer_reply');assert.equal(facts.sourceAssigneeId,staff);assert.doesNotMatch(JSON.stringify(facts),/Owned requester return|body|notes/);});
   await suite.test('customer return goes to its pinned staff recipient and never the requester',async()=>{const saved=await audience.materialize(receipt.eventId);assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.ok(saved.records.every(r=>r.intent.recipientId!==requester));});
+  await assertOwnedWave2ApprovalOpening(suite,operator,app,{agent,customer,staffAuth,workId:input.workId,oldTicketId:opened.ticketId,formId:entry.form.id});
  });
 }
