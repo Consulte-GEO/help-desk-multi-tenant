@@ -12,3 +12,11 @@ export function restoreHostedVersionPrecondition(request:Request):Request{
  const headers=new Headers(request.headers);headers.set('if-match',carrier);headers.delete('x-helpdesk-if-match');
  return new Request(request,{headers});
 }
+/** Preserve the handler's canonical business revision before the host handles
+ * HTTP representation validators. No revision is inferred from payload/state. */
+export function carryHostedVersionReceipt(response:Response):Response{
+ const tag=response.headers.get('etag');if(tag===null||tag.length>20||!/^"(0|[1-9]\d*)"$/.test(tag)||!Number.isSafeInteger(Number(tag.slice(1,-1))))return response;
+ if(response.headers.get('x-helpdesk-etag')===tag)return response;
+ const headers=new Headers(response.headers);headers.set('x-helpdesk-etag',tag);
+ return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}

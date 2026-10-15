@@ -1,3 +1,4 @@
+import {readVersionReceiptHeader} from './version-receipt.js';
 import {copyFormData,freezeFormData} from '../shared/form-rules.js';
 import {parseConsulteGeoRequestContext} from '../shared/consultegeo-request.js';
 import {isCanonicalInstant} from '../shared/instant.js';
@@ -33,7 +34,7 @@ export function createConsulteGeoIntakeApi(options){
   async save(raw,expected,signal){
    const v=exact(raw,['id','accountId','refs','formId','formVersion','answers']);if(!Number.isSafeInteger(expected)||expected<0||expected>=Number.MAX_SAFE_INTEGER||v.id!==draft.id||v.accountId!==draft.accountId||v.formId!==draft.formId||v.formVersion!==draft.formVersion||!sameRefs(v.refs,draft.refs))throw fail();
    const {r,data,rejected}=await invoke('/form-drafts/'+draft.id,'PUT',v,{'if-match':'"'+expected+'"'},signal);if(rejected)return rejected;
-   const x=exact(data,['id','accountId','refs','formId','formVersion','revision','expiresAt','answers','status','ticketId']);if(r.status!==200||r.headers.get('etag')!=='"'+(expected+1)+'"'||x.id!==draft.id||x.accountId!==draft.accountId||x.formId!==draft.formId||x.formVersion!==draft.formVersion||x.revision!==expected+1||x.status!=='editing'||x.ticketId!==null||!sameRefs(x.refs,draft.refs)||!isCanonicalInstant(x.expiresAt)||canonical(x.answers)!==canonical(v.answers))throw fail();
+   const x=exact(data,['id','accountId','refs','formId','formVersion','revision','expiresAt','answers','status','ticketId']);if(r.status!==200||readVersionReceiptHeader(r)!=='"'+(expected+1)+'"'||x.id!==draft.id||x.accountId!==draft.accountId||x.formId!==draft.formId||x.formVersion!==draft.formVersion||x.revision!==expected+1||x.status!=='editing'||x.ticketId!==null||!sameRefs(x.refs,draft.refs)||!isCanonicalInstant(x.expiresAt)||canonical(x.answers)!==canonical(v.answers))throw fail();
    return {kind:'confirmed',value:freezeFormData(x)};
   },
   async preview(raw,signal){const v=input(raw,false),{r,data,rejected}=await invoke('/support-requests/preview','POST',v,{},signal);if(rejected)throw new Error('Revise o acesso, os dados e a versão do rascunho.');
@@ -41,7 +42,7 @@ export function createConsulteGeoIntakeApi(options){
   },
   async create(raw,key,signal){const v=input(raw,true);if(typeof key!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(key))throw fail();const {r,data,rejected}=await invoke('/support-requests','POST',v,{'if-match':'"'+v.expectedDraftRevision+'"','idempotency-key':key},signal);if(rejected)return rejected;
    const x=exact(data,['ticketId','protocol','sequence','workspaceId','accountId','actorId','requesterId','draftId','draftRevision','version','profileVersionId','formId','formVersion','priority','createdAt','notification','replayed']);
-   if(!uuid(x.ticketId)||x.workspaceId!==context.workspaceId||x.accountId!==context.accountId||x.actorId!==context.principalId||x.requesterId!==context.principalId||x.draftId!==draft.id||x.draftRevision!==v.expectedDraftRevision||x.formId!==draft.formId||x.formVersion!==draft.formVersion||x.profileVersionId!==profile||x.version!==1||x.notification!=='pending'||typeof x.sequence!=='string'||!/^[1-9]\d{4,17}$/.test(x.sequence)||x.protocol!=='CG-'+x.sequence||!isCanonicalInstant(x.createdAt)||!['low','normal','high','urgent'].includes(x.priority)||typeof x.replayed!=='boolean'||r.status!==(x.replayed?200:201)||r.headers.get('idempotency-replayed')!==String(x.replayed)||r.headers.get('etag')!=='"1"'||r.headers.get('location')!=='/v1/tickets/'+x.ticketId)throw fail();return {kind:'confirmed',value:freezeFormData(x)};
+   if(!uuid(x.ticketId)||x.workspaceId!==context.workspaceId||x.accountId!==context.accountId||x.actorId!==context.principalId||x.requesterId!==context.principalId||x.draftId!==draft.id||x.draftRevision!==v.expectedDraftRevision||x.formId!==draft.formId||x.formVersion!==draft.formVersion||x.profileVersionId!==profile||x.version!==1||x.notification!=='pending'||typeof x.sequence!=='string'||!/^[1-9]\d{4,17}$/.test(x.sequence)||x.protocol!=='CG-'+x.sequence||!isCanonicalInstant(x.createdAt)||!['low','normal','high','urgent'].includes(x.priority)||typeof x.replayed!=='boolean'||r.status!==(x.replayed?200:201)||r.headers.get('idempotency-replayed')!==String(x.replayed)||readVersionReceiptHeader(r)!=='"1"'||r.headers.get('location')!=='/v1/tickets/'+x.ticketId)throw fail();return {kind:'confirmed',value:freezeFormData(x)};
   }
  });
 }

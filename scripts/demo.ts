@@ -23,7 +23,7 @@ for(const file of ['form-rules.js','cnpj.js']) assets['/shared/'+file]={file:'..
 for(const file of ['design-tokens.css','consulte-theme.css','inbox-workspace.css','form-experience.css','admin-experience.css','admin-members.css','portal.css','support-intake.css']) assets['/'+file]={file,type:'text/css; charset=utf-8'};
 for(const name of ['consulte-geo-color.png','consulte-geo-white.png']) { const file='assets/'+name;assets['/'+file]={file,type:'image/png'}; }
 // UX06: closed native operational asset graph. Does not register operational API handlers.
-for(const file of ['response-diagnostic.js','operations-ui.js','attachments.js','approvals.js','form-review.js','delivery-operations.js','review-state.js','portal-format.js','execution-checklist.js','execution-checklist-state.js','execution-checklist-contract.js']) assets['/'+file]={file,type:'application/javascript; charset=utf-8'};
+for(const file of ['version-receipt.js','response-diagnostic.js','operations-ui.js','attachments.js','approvals.js','form-review.js','delivery-operations.js','review-state.js','portal-format.js','execution-checklist.js','execution-checklist-state.js','execution-checklist-contract.js']) assets['/'+file]={file,type:'application/javascript; charset=utf-8'};
 for(const file of ['operations-experience.css','execution-checklist.css']) assets['/'+file]={file,type:'text/css; charset=utf-8'};
 // UX07 presentation assets only; fixture scripts remain private.
 for(const file of ['optional-support.js','support-presentation.js']) assets['/'+file]={file,type:'application/javascript; charset=utf-8'};
