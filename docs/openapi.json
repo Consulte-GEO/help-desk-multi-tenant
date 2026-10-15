@@ -5752,6 +5752,212 @@
           }
         }
       }
+    },
+    "/tickets/{ticket_id}/registration-review": {
+      "get": {
+        "operationId": "getRegistrationReviewCustomer",
+        "summary": "Consulta preparada da automação de cadastro; desabilitada até qualificação HDA.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta autorizada; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationReviewCustomer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem operação persistida visível; nenhum rascunho é fabricado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Consulta preparada, bloqueada por qualificação ou persistência HDA indisponível. Não representa rascunho ausente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-status": "prepared/gated",
+        "description": "Flag de servidor ausente/false em produção: 503 antes de autenticação e SQL. Após qualificação formal, consulta transacional com ACL atual da conta, chamado, todas as obras e grant HDA. Visibilidade fixa pela rota; nenhum parâmetro audience, bindingId ou operationId é aceito. A rota interna exige operador atual no banco. Não aceita corpo nem query string. Sem edição, aprovação, execução, ledger, fila ou histórico inventado; janela máxima de observação de 60 segundos."
+      }
+    },
+    "/internal/tickets/{ticket_id}/registration-review": {
+      "get": {
+        "operationId": "getRegistrationReviewInternal",
+        "summary": "Consulta preparada da automação de cadastro; desabilitada até qualificação HDA.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "$ref": "#/components/parameters/TicketId"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta autorizada; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationReviewInternal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem operação persistida visível; nenhum rascunho é fabricado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Consulta preparada, bloqueada por qualificação ou persistência HDA indisponível. Não representa rascunho ausente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-status": "prepared/gated",
+        "description": "Flag de servidor ausente/false em produção: 503 antes de autenticação e SQL. Após qualificação formal, consulta transacional com ACL atual da conta, chamado, todas as obras e grant HDA. Visibilidade fixa pela rota; nenhum parâmetro audience, bindingId ou operationId é aceito. A rota interna exige operador atual no banco. Não aceita corpo nem query string. Sem edição, aprovação, execução, ledger, fila ou histórico inventado; janela máxima de observação de 60 segundos."
+      }
     }
   },
   "components": {
@@ -6399,6 +6605,11 @@
               },
               "support_requests": {
                 "type": "boolean"
+              },
+              "registration_review": {
+                "type": "boolean",
+                "default": false,
+                "description": "False em produção até promoção formal de HDA e qualificação da montagem."
               }
             }
           },
@@ -8742,6 +8953,284 @@
             "const": false
           }
         }
+      },
+      "RegistrationReviewField": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "value",
+          "truncated"
+        ]
+      },
+      "RegistrationReviewCapabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edit": {
+            "const": false
+          },
+          "approve": {
+            "const": false
+          },
+          "execute": {
+            "const": false
+          }
+        },
+        "required": [
+          "edit",
+          "approve",
+          "execute"
+        ]
+      },
+      "RegistrationReviewDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requested": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "$ref": "#/components/schemas/RegistrationReviewField"
+            }
+          },
+          "targets": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "$ref": "#/components/schemas/RegistrationReviewField"
+            }
+          },
+          "proposal": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "$ref": "#/components/schemas/RegistrationReviewField"
+            }
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "draftRevision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "draftHash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "historyLoaded": {
+            "const": false
+          }
+        },
+        "required": [
+          "requested",
+          "targets",
+          "proposal",
+          "effects",
+          "blockers",
+          "draftRevision",
+          "draftHash",
+          "historyLoaded"
+        ]
+      },
+      "RegistrationReviewCustomer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema": {
+            "const": 1
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "workspaceId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "accountId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "ticketId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "operationId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "workspaceId",
+              "accountId",
+              "ticketId",
+              "operationId"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "inputRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "enum": [
+              "queued_analysis",
+              "analyzing",
+              "draft_ready",
+              "needs_information",
+              "manual_review",
+              "analysis_failed",
+              "cancelled"
+            ]
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/RegistrationReviewCapabilities"
+          },
+          "audience": {
+            "const": "customer"
+          },
+          "detail": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "schema",
+          "context",
+          "revision",
+          "inputRevision",
+          "status",
+          "observedAt",
+          "expiresAt",
+          "capabilities",
+          "audience",
+          "detail"
+        ]
+      },
+      "RegistrationReviewInternal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema": {
+            "const": 1
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "workspaceId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "accountId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "ticketId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "operationId": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "workspaceId",
+              "accountId",
+              "ticketId",
+              "operationId"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "inputRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "enum": [
+              "queued_analysis",
+              "analyzing",
+              "draft_ready",
+              "needs_information",
+              "manual_review",
+              "analysis_failed",
+              "cancelled"
+            ]
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/RegistrationReviewCapabilities"
+          },
+          "audience": {
+            "const": "internal"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/RegistrationReviewDetail"
+          }
+        },
+        "required": [
+          "schema",
+          "context",
+          "revision",
+          "inputRevision",
+          "status",
+          "observedAt",
+          "expiresAt",
+          "capabilities",
+          "audience",
+          "detail"
+        ]
       }
     }
   }
