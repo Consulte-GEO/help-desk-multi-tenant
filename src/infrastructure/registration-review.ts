@@ -6,6 +6,7 @@ import {assertBorrowedTransactionIdentity,rejectTransactionValidation} from './t
 import {createPostgresRegistrationStore} from './registration-store.ts';
 import {projectRegistrationDraftReview} from '../application/registration-drafts.ts';
 import {registrationRecord,registrationUuid,registrationHash,registrationFailure as fail} from '../domain/registration-canonical.ts';
+import {requestHash} from '../domain/canonical.ts';import {copyFormData} from '../../shared/form-rules.js';
 import {parseRegistrationScopeRequest,parseLockedRegistrationScope,parseLockedRegistration} from '../domain/registration-persistence.ts';
 import {parseExternalResourceSelection} from '../domain/external-resource.ts';import {isOperator} from '../domain/policy.ts';import {HelpdeskError} from '../domain/errors.ts';
 import type {RegistrationReviewQueries} from '../http/registration-review.ts';
@@ -23,8 +24,11 @@ function safe(error:unknown){
 export function createPostgresRegistrationReviewQueries(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:ReviewDirectory;enabled:()=>boolean}):RegistrationReviewQueries{
  return Object.freeze({async readReview(p,ticketId,audience,signal,admission){
   try{
-   const id=registrationUuid(ticketId),fingerprint=registrationHash(p);let deadline=Infinity;
-   const check=()=>{admission?.();if(o.enabled()!==true)throw fail('release_gate_closed',503);if(signal?.aborted)throw fail('request_cancelled',409);if(performance.now()>=deadline)throw fail('registration_scope_expired',409);if(registrationHash(p)!==fingerprint||p.kind!=='human'||!p.scopes.includes('tickets:read')||!['internal','customer'].includes(audience))throw fail('registration_scope_denied',403);};
+   // Principal grants use the core identity bounds (up to 1000), independently
+   // of HDA payload arrays. Copy exact data descriptors before canonical hashing.
+   const identityHash=()=>requestHash(copyFormData(p));
+   const id=registrationUuid(ticketId),fingerprint=identityHash();let deadline=Infinity;
+   const check=()=>{admission?.();if(o.enabled()!==true)throw fail('release_gate_closed',503);if(signal?.aborted)throw fail('request_cancelled',409);if(performance.now()>=deadline)throw fail('registration_scope_expired',409);if(identityHash()!==fingerprint||p.kind!=='human'||!p.scopes.includes('tickets:read')||!['internal','customer'].includes(audience))throw fail('registration_scope_denied',403);};
    check();const located=await o.directory.locateTicket(p,id,signal);check();if(!located)throw fail('registration_review_not_found',404);
    const accountId=registrationUuid(located.accountId),refs=parseExternalResourceSelection(located.refs);
    if(audience==='internal'&&!isOperator(p,p.workspaceId,accountId))throw fail('registration_scope_denied',403);
