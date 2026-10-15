@@ -14,6 +14,7 @@ import {createSupportReview} from '../../src/application/support-review.ts';
 import {createPostgresSupportReviewStore} from '../../src/infrastructure/support-review-store.ts';
 import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
 import {runTransaction} from '../../src/infrastructure/transaction.ts';
+import {assertOwnedReviewAuthorityGuards} from './notification-wave2-review-authority-races.ts';
 export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
@@ -69,6 +70,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
    assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
    assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
+   await assertOwnedReviewAuthorityGuards(invitationSuite,operator,app,{agent,accountId:a,ticketId:opened.ticketId,profileVersionId:entry.workflow.versionId});
    await assert.rejects(review.prepareApproval(agent,opened.ticketId,created.invitationId,1,randomUUID()),{code:'review_step_up_required'});
    assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where invitation_id=$1',[created.invitationId])).rows[0]!.n,0);
    await assert.rejects(runTransaction(app,customer,c=>c.query('select helpdesk_auth.hdnr_invitation($1)',[created.invitationId])),{code:'HDR01'});
