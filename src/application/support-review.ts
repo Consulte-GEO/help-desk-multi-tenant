@@ -152,7 +152,8 @@ export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof c
    else{const x=await tx.lockLookup(q,s);if(x.status!=='verified'||x.queryHash!==requestHash(q))throw fail();expires(x.expiresAt,'review_draft_invalid');evidence.push({path:r.path,id,hash:x.queryHash});}
   }
   const rawDecision=decideFormRevision(p,target(a),{versionId:a.approvalPolicy.versionId,requiresApproval:a.profile.approvalRequired},{expectedVersion:c.expectedVersion,expectedFormRevision:c.expectedFormRevision,answers:values.answers,comment:c.comment},a.form.answers,clock());
-  const decision=freezeFormData({...rawDecision,after:{...rawDecision.after,priority:derivePriority(values.answers[a.profile.impactField],a.profile.priorityPolicy)}});
+  const fixed=a.profile.fixedPriority;if(fixed!==undefined&&!['low','normal','high','urgent'].includes(fixed))throw fail();
+  const decision=freezeFormData({...rawDecision,after:{...rawDecision.after,priority:fixed??derivePriority(values.answers[a.profile.impactField],a.profile.priorityPolicy)}});
   const form:ReviewFormSnapshot=freezeFormData({formId:d.formId,formVersion:d.formVersion,schemaHash:d.schemaHash,revision:a.form.revision+1,answers:values.answers,publicAnswers:values.publicAnswers,evidence,draftId:d.id,draftRevision:d.revision});
   const publicDiff=diffFormAnswers(a.form.publicAnswers,values.publicAnswers),previewHash=requestHash({ticketId:c.ticketId,expectedVersion:c.expectedVersion,expectedFormRevision:c.expectedFormRevision,draftId:d.id,draftRevision:d.revision,form,profile:a.profile,approvalPolicy:a.approvalPolicy,comment:c.comment,refs:externalResourceSelectionKey(s.refs)});
   return {decision,form,publicDiff,previewHash};

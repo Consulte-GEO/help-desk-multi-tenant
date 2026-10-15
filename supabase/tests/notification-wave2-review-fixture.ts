@@ -13,6 +13,9 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
  const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async()=>{
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
+  const configurationSponsor=randomUUID();
+  await operator.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[configurationSponsor,randomUUID()]);
+  for(const capability of ['forms.read','forms.write','forms.publish'])await operator.query("insert into helpdesk_auth.hdn_cfg_capabilities values($1,$2,$3,$4,1,'Owned explicit configuration qualification policy','WAVE2-NATIVE',$5,null,true)",[randomUUID(),w,agent.id,capability,configurationSponsor]);
   // This mirrors the existing native configuration suite: only the provider is
   // synthetic. Actual application role, capability store, publication and CAS run.
   const auth=createAuthentication({query:async()=>({rows:[{principal:agent}],rowCount:1}),connect:async()=>{throw Error('Unexpected fixture authentication connection');},end:async()=>{}},{supabaseUrl:'https://auth.example.invalid',publishableKey:'synthetic'},async()=>Response.json({id:staffAuth,factors:[{id:randomUUID(),status:'verified',factor_type:'totp'}]}));
