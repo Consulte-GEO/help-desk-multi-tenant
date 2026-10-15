@@ -10,6 +10,7 @@ const plan={mode:'plan',executed:false,approval:false,database:'helpdesk_test',t
 const report=j=>console.log(JSON.stringify(j));
 const stop=code=>{report({...plan,mode:'blocked',code});process.exitCode=2;};
 const args=process.argv.slice(2);
+if(args.includes('--full-core'))plan.scope='HDA candidate against the complete immutable migration chain; no origin or hosted acceptance';
 if(args.length>2||new Set(args).size!==args.length||args.some(x=>!['--execute','--plan','--full-core'].includes(x))||args.includes('--execute')&&args.includes('--plan'))stop('invalid_arguments');
 else if(!args.includes('--execute'))report(plan);
 else if(Object.keys(process.env).some(k=>/^PG[A-Z_]+$/.test(k)||/^(DATABASE_URL|SUPABASE_DB_URL|HELPDESK_DATABASE_URL|HELPDESK_TEST_(ADMIN|APP|OPERATOR)_URL|HDA_DATABASE_URL|HDA_TEST_DATABASE_URL)$/.test(k)))stop('external_database_configuration_refused');

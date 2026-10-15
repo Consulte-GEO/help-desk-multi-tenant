@@ -45,10 +45,28 @@ export async function runNativeSuite({owner,app}){
  }
  await owner.query("insert into helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count) select workspace_id,account_id,binding_id,principal_id,operation,revision,'binding-1',source_revision,$3,as_of,expires_at,expected_count from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2",[w,cgBinding,'a'.repeat(64)]);
  await test('protected read uses actual CG observation and bounds HDA deadline',async()=>{await read();await runTransaction(app,person,async c=>{const r=await c.query('select helpdesk_auth.hda02_lock_scope($1::jsonb) value',[JSON.stringify(scope('read'))]);assert.ok(Date.parse(r.rows[0].value.expiresAt)-Date.now()<610000);});});
+ await test('write-only revocation preserves private read and denies cancellation',async()=>{
+  await owner.query("update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and binding_id=$2 and operation='tickets.write'",[w,cgBinding]);
+  await read();await assert.rejects(invoke({type:'cancel',commandId:randomUUID(),operationId:op,expectedRevision:1}));
+ });
  await owner.query("update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and binding_id=$2 and operation='tickets.read'",[w,cgBinding]);
  await test('CG revocation overrides HDA grant for reads, replay and cancellation without writes',async()=>{
   await assert.rejects(read());await assert.rejects(invoke(prepare));await assert.rejects(invoke({type:'cancel',commandId:randomUUID(),operationId:op,expectedRevision:1}));
   assert.equal(Number((await owner.query('select count(*) n from helpdesk_integration.hda02_inbox')).rows[0].n),1);
+ });
+ await test('CG expiry after command staging refuses COMMIT and rolls back cancellation',async()=>{
+  await owner.query('update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and binding_id=$2',[w,cgBinding]);
+  await owner.query("update helpdesk_auth.cg_resource_grant_sets set expires_at=clock_timestamp()+interval '2 seconds' where workspace_id=$1 and binding_id=$2",[w,cgBinding]);
+  await owner.query('update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and binding_id=$2',[w,cgBinding]);
+  await owner.query("insert into helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count) select workspace_id,account_id,binding_id,principal_id,operation,revision,'binding-1',source_revision,$3,as_of,expires_at,expected_count from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2",[w,cgBinding,'a'.repeat(64)]);
+  let staged=false;
+  await assert.rejects(runTransaction(app,person,async c=>{
+   const store=createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)});
+   await executeRegistrationCommand(store,scope('cancel'),{type:'cancel',commandId:randomUUID(),operationId:op,expectedRevision:1});staged=true;
+   await c.query('select pg_sleep(2.1)');
+  }));
+  assert.equal(staged,true);assert.equal(Number((await owner.query('select count(*) n from helpdesk_integration.hda02_inbox')).rows[0].n),1);
+  assert.equal((await owner.query('select state from helpdesk_integration.hda02_operations where id=$1',[op])).rows[0].state.status,'queued_analysis');
  });
  return {checks,total:checks.length,failures:checks.filter(x=>x.result!=='passed').length,fullCore:true,origin:false,hosted:false};
 }
