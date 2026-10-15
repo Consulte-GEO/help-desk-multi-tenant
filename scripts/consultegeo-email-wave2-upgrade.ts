@@ -63,14 +63,18 @@ export const QUALIFIED_WAVE2_COMPONENTS=Object.freeze([
   {
     "file": "hdn_review_portal.sql",
     "sha256": "f6d1320ba138030b5235b8778f4179d7e7436ed355c586e938426a1c5819326f"
+  },
+  {
+    "file": "hdn_notification_wave2_expiry.sql",
+    "sha256": "081df7e573532de2eff6e369f8ef36b33580de5f2d020d76378c574abdfae341"
   }
 ].map(component=>Object.freeze(component)));
 export const WAVE2_QUALIFICATION=Object.freeze({
-  "workflowRun": "38690483513",
-  "commit": "07e82c79dcaa491ec9165340e0048f89290fcbfa",
-  "sourceSha256": "e41c80cfce110329e658ee82bad4bf0bed4f49bda6ee03dbbd73f1bf279561c4",
-  "artifactId": 11951439169,
-  "artifactSha256": "52b1e771ae568d3c312c13141527f97c999d7c575073a454a58bbaff57533812",
+  "workflowRun": "38697366337",
+  "commit": "971950c2f055b93ad2b718f5fceac739bde87ea7",
+  "sourceSha256": "78788790a3d37cd1e65e1e8005efda68d528eb98725ea8c7890be5fd674d2074",
+  "artifactId": 11954452102,
+  "artifactSha256": "5464a985ed5b6b91b2e6ac8ed1daee431fc13064780b253751f612dd8c696ea6",
   "inventorySha256": "76ce3065fdc0b930daac7e1b003a88f1f355a1f6cd2112f8c170006beca5eb67"
 });
 export const WAVE2_CONTRACT_SHA256='1b9505055d78650b653c18324dbd31bbaddfb1bedb4a23745be81a5aadf04e7f';

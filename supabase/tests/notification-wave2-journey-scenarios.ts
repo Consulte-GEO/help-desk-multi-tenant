@@ -118,6 +118,14 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
    await operator.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) select workspace_id,kind,revision+1,audience,template_id,template_version,clock_timestamp()+interval '10 minutes',effective_after,recipient_ids from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind='support.reply' order by revision desc limit 1",[w]);
    assert.deepEqual(await audience.materialize(receipt.eventId),first);
   });
+  await suite.test('an expired explicit queue roster suppresses a genuine new ticket without blocking the worker',async()=>{
+   const newDraft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:input.accountId,refs,formId:entry.form.id,formVersion:2,answers:{details:'Owned expired staff roster qualification'}},0);
+   const query={draftId:newDraft.id,expectedDraftRevision:1,subject:'Owned queue expiry qualification',description:'No delivery expected for expired roster',coverageId:null},freshPreview=await intake.previewSupportRequest(customer,query);
+   await operator.query("insert into helpdesk_integration.hdn_notification_queue_rosters(workspace_id,account_id,revision,member_ids,max_recipients,expires_at,request_id,reason) select workspace_id,account_id,revision+1,member_ids,max_recipients,clock_timestamp()+interval '500 milliseconds',$3,'Owned finite roster expiry' from helpdesk_integration.hdn_notification_queue_rosters where workspace_id=$1 and account_id=$2 order by revision desc limit 1",[w,input.accountId,randomUUID()]);
+   const fresh=await intake.createSupportRequest(customer,{...query,previewHash:freshPreview.previewHash},randomUUID(),randomUUID());await operator.query('select pg_sleep(0.7)');
+   const event=(await operator.query("select id from helpdesk_integration.hdn_notification_private_sources where workspace_id=$1 and ticket_id=$2 and kind='internal.queue_created'",[w,fresh.ticketId])).rows[0]!;
+   const saved=await audience.materialize(String(event.id));assert.equal(saved.plan.state,'no_recipients');assert.deepEqual(saved.records,[]);
+  });
   await suite.test('operator recipes qualify against genuine current participants and local publication',publicationSuite=>assertOwnedWave2Publication(publicationSuite,operator,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester,workId:input.workId}));
  });
 }

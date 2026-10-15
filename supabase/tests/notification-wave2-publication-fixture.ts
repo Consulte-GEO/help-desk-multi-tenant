@@ -17,6 +17,15 @@ export async function assertOwnedWave2Publication(suite:TestContext,operator:Sql
  await suite.test('stale preparation refuses all effects before publishing configuration or authority',async()=>{
   const stale=planSupportReviewPublication({...raw,requestId:randomUUID(),expectedLocalRevision:raw.expectedLocalRevision-1});await assert.rejects(execute(buildSupportReviewPublicationSql(stale)),{code:'HRP03'});assert.deepEqual(await counts(),before);
  });
+ await suite.test('a suppressed authority append rolls back the configuration policy queue audit and all grants',async()=>{
+  const child=command.childIds.formsRevise;
+  await operator.query(`create function helpdesk_auth.hdn_wave2_recipe_fault() returns trigger language plpgsql set search_path='' as $$begin if NEW.request_id='${child}'::uuid then return null;end if;return NEW;end$$`);
+  try{
+   await operator.query('create trigger zzz_wave2_recipe_fault before insert on helpdesk_auth.hdnr_grants for each row execute function helpdesk_auth.hdn_wave2_recipe_fault()');
+   await assert.rejects(execute(sql),{code:'HRP04'});assert.deepEqual(await counts(),before);
+   assert.equal(Number((await operator.query('select revision from helpdesk_core.hdn_cfg_catalog where workspace_id=$1',[w])).rows[0]!.revision),raw.expectedCatalogRevision);
+  }finally{await operator.query('drop trigger if exists zzz_wave2_recipe_fault on helpdesk_auth.hdnr_grants');await operator.query('drop function helpdesk_auth.hdn_wave2_recipe_fault()');}
+ });
  await suite.test('delegated native recipe atomically appends profile policy exact staff queue and three bounded grants',async()=>{
   await execute(sql);const after=await counts();
   for(const table of ['helpdesk_auth.principals','helpdesk_auth.workspace_memberships','helpdesk_auth.account_grants','helpdesk_auth.cg_local_permissions','helpdesk_integration.outbox_events','helpdesk_integration.hdn_notification_routes'])assert.equal(after[table],before[table],table+' must remain untouched');
@@ -35,7 +44,13 @@ export async function assertOwnedWave2Publication(suite:TestContext,operator:Sql
     const observed=await operator.query('select r.*,helpdesk_auth.hdn_workflow_iso(r.effective_after) as effective_after_text,t.sha256 as template_hash from helpdesk_integration.hdn_notification_routes r left join helpdesk_integration.hdn_notification_templates t on (t.id,t.version)=(r.template_id,r.template_version) where r.workspace_id=$1 and r.kind=any($2::text[]) and r.revision=(select max(x.revision) from helpdesk_integration.hdn_notification_routes x where x.workspace_id=r.workspace_id and x.kind=r.kind)',[w,groups[group].map(t=>t.kind)]);
     const expectedRoutes=groups[group].map(t=>{const r=observed.rows.find(r=>r.kind===t.kind);return r?{kind:t.kind,revision:Number(r.revision),audience:r.audience,templateId:r.template_id,templateVersion:r.template_version,templateHash:r.template_hash,effectiveAfter:r.effective_after===null?null:String(r.effective_after_text),recipientIds:r.recipient_ids}:{kind:t.kind,revision:0,audience:'none',templateId:null,templateVersion:null,templateHash:null,effectiveAfter:null,recipientIds:null};});
     const rawGroup={workspaceId:w,administratorId:staff,administratorEmail:participantEmail(staff),operatorName:'helpdesk_operator',requestId:randomUUID(),reason:'Owned fixed group '+group+' '+phase,group,phase,recipientIds:recipients,expiresAt:new Date(Date.now()+86400000).toISOString(),expectedRoutes};
-    const prepared=planNotificationWave2Publication(rawGroup),statement=buildNotificationWave2PublicationSql(prepared);await execute(statement);const count=await counts();await execute(statement);assert.deepEqual(await counts(),count);
+    const prepared=planNotificationWave2Publication(rawGroup),statement=buildNotificationWave2PublicationSql(prepared);
+    if(group==='public'&&phase==='pause'){
+     const admission=await operator.connect();let completed=false;let pending:Promise<unknown>|undefined;
+     try{await admission.query('BEGIN');await admission.query("select pg_advisory_xact_lock(hashtextextended('helpdesk-notification-ledger-v1',0))");pending=execute(statement).finally(()=>{completed=true;});await new Promise(resolve=>setTimeout(resolve,200));assert.equal(completed,false,'pause must serialize after an in-flight provider admission');await admission.query('COMMIT');await pending;}
+     finally{await admission.query('ROLLBACK');admission.release();if(pending)await pending;}
+    }else await execute(statement);
+    const count=await counts();await execute(statement);assert.deepEqual(await counts(),count);
     const actual=await operator.query('select audience,recipient_ids from helpdesk_integration.hdn_notification_routes r where workspace_id=$1 and kind=any($2::text[]) and revision=(select max(x.revision) from helpdesk_integration.hdn_notification_routes x where x.workspace_id=r.workspace_id and x.kind=r.kind)',[w,groups[group].map(t=>t.kind)]);
     assert.equal(actual.rows.length,groups[group].length);assert.ok(actual.rows.every(r=>phase==='activate'?r.audience!=='none':r.audience==='none'));assert.ok(actual.rows.every(r=>JSON.stringify(r.recipient_ids)===JSON.stringify(recipients)));
     await assert.rejects(execute(buildNotificationWave2PublicationSql(planNotificationWave2Publication({...rawGroup,requestId:randomUUID()}))),{code:'HNP03'});assert.deepEqual(await counts(),count);

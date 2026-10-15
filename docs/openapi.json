@@ -29,6 +29,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -40,16 +50,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -78,6 +78,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -89,16 +99,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -131,6 +131,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -142,16 +152,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -185,6 +185,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -196,16 +206,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -234,6 +234,16 @@
               "Cache-Control": {
                 "schema": {
                   "const": "no-store"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -268,6 +278,16 @@
               }
             }
           },
+          "503": {
+            "description": "Encerramento indisponível ou confirmação transacional incerta; não considerar logout concluído.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -279,26 +299,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Encerramento indisponível ou confirmação transacional incerta; não considerar logout concluído.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -336,6 +336,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -347,16 +357,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -428,6 +428,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -439,16 +449,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -482,6 +482,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Resolution"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -526,6 +536,16 @@
               }
             }
           },
+          "503": {
+            "description": "invalid_coverage_result: formato, contexto, datas ou política incompatíveis. Nenhuma informação contratual parcial é devolvida.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -537,26 +557,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "invalid_coverage_result: formato, contexto, datas ou política incompatíveis. Nenhuma informação contratual parcial é devolvida.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -690,6 +690,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -701,16 +711,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -739,8 +739,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -761,8 +761,18 @@
               }
             }
           },
-          "201": {
-            "description": "Operação concluída.",
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -823,6 +833,16 @@
               }
             }
           },
+          "503": {
+            "description": "Indisponibilidade, cobertura inconsistente ou confirmação incerta. Nunca repetir automaticamente com outra chave.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -834,26 +854,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Indisponibilidade, cobertura inconsistente ou confirmação incerta. Nunca repetir automaticamente com outra chave.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -913,6 +913,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -924,16 +934,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -996,6 +996,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
             "content": {
@@ -1006,48 +1016,8 @@
               }
             }
           },
-          "403": {
-            "description": "Operador ou capacidade não autorizados.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recurso não visível.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "408": {
             "description": "Prazo de recebimento do corpo excedido.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Estado terminal, conflito de chave ou dados.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "Versão divergente. Recarregue e revise antes de confirmar.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1076,8 +1046,58 @@
               }
             }
           },
+          "403": {
+            "description": "Operador ou capacidade não autorizados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso não visível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Estado terminal, conflito de chave ou dados.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Versão divergente. Recarregue e revise antes de confirmar.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "428": {
             "description": "If-Match obrigatório.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Resultado indisponível ou incerto. Não presumir ausência de gravação.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1097,26 +1117,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Resultado indisponível ou incerto. Não presumir ausência de gravação.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1192,6 +1192,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
             "content": {
@@ -1202,38 +1212,8 @@
               }
             }
           },
-          "403": {
-            "description": "Não operador, scope ausente ou release de outro sem papel admin.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "408": {
             "description": "Prazo de recebimento do corpo excedido.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Ocupado, terminal ou conflito da chave.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "Versão desatualizada.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1262,8 +1242,48 @@
               }
             }
           },
+          "403": {
+            "description": "Não operador, scope ausente ou release de outro sem papel admin.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Ocupado, terminal ou conflito da chave.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Versão desatualizada.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "428": {
             "description": "If-Match ausente.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Indisponível ou resultado incerto; não repetir com outra chave automaticamente.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1283,26 +1303,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Indisponível ou resultado incerto; não repetir com outra chave automaticamente.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1392,6 +1392,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -1403,16 +1413,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1443,8 +1443,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1465,8 +1465,18 @@
               }
             }
           },
-          "201": {
-            "description": "Operação concluída.",
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1538,16 +1548,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1636,6 +1636,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -1647,16 +1657,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1687,8 +1687,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Resposta original reproduzida, ou operação concluída.",
+          "201": {
+            "description": "Operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1709,8 +1709,18 @@
               }
             }
           },
-          "201": {
-            "description": "Operação concluída.",
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Resposta original reproduzida, ou operação concluída.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1782,16 +1792,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1860,6 +1860,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "400": {
             "description": "JSON, UTF-8, campos ou comprimento inválidos.",
             "content": {
@@ -1911,16 +1921,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1990,6 +1990,16 @@
               }
             }
           },
+          "default": {
+            "description": "Erro seguro padronizado.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
@@ -2001,16 +2011,6 @@
                 }
               }
             },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Erro seguro padronizado.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2186,16 +2186,6 @@
               }
             }
           },
-          "201": {
-            "description": "Operação concluída; no-store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConsulteGeoConfigurationResult"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -2302,6 +2292,16 @@
               "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoConfigurationResult"
                 }
               }
             }
@@ -3625,16 +3625,6 @@
               }
             }
           },
-          "422": {
-            "description": "Formulário ou cobertura indisponível.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "428": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -3657,6 +3647,16 @@
           },
           "503": {
             "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Formulário ou cobertura indisponível.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3700,16 +3700,6 @@
         ],
         "responses": {
           "200": {
-            "description": "Operação concluída; no-store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConsulteGeoOpeningReceipt"
-                }
-              }
-            }
-          },
-          "201": {
             "description": "Operação concluída; no-store.",
             "content": {
               "application/json": {
@@ -3799,16 +3789,6 @@
               }
             }
           },
-          "422": {
-            "description": "Formulário ou cobertura indisponível.",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "428": {
             "description": "Requisição recusada ou confirmação indisponível.",
             "content": {
@@ -3831,6 +3811,26 @@
           },
           "503": {
             "description": "Requisição recusada ou confirmação indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operação concluída; no-store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsulteGeoOpeningReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Formulário ou cobertura indisponível.",
             "content": {
               "application/problem+json": {
                 "schema": {

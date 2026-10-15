@@ -3,7 +3,7 @@ import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-lim
 import {uuidIdentifier} from '../domain/input-values.ts';import {HelpdeskError} from '../domain/errors.ts';
 import {reviewRecord} from '../domain/support-review.ts';import {safeReviewError,type createSupportReview} from '../application/support-review.ts';
 import {controlledJson,privateJson,httpFailure} from './controlled-json.ts';
-/** Optional route group: not mounted by the production runtime or existing OpenAPI.
+/** Optional route group, mounted only by the qualified schema25 runtime gates.
  * withIdentity must preserve the owned server-side step-up proof throughout callback.
  * Never accept a proof/role/capability from request JSON. */
 export function createSupportReviewHandler(o:{origin:string;service:ReturnType<typeof createSupportReview>;rateLimiter:RateLimiter;withIdentity:<T>(request:Request,work:(p:Principal,stepUp:unknown)=>Promise<T>)=>Promise<T>}){
