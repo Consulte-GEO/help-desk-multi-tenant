@@ -21,6 +21,7 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
    await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_public.sql',import.meta.url),'utf8'));
    await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_internal.sql',import.meta.url),'utf8'));
    await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_audiences.sql',import.meta.url),'utf8'));
+   await c.query(await readFile(new URL('../candidates/hdn_review_authority.sql',import.meta.url),'utf8'));
    const now=new Date().toISOString(),until=new Date(Date.now()+86400000).toISOString();
    for(const kind of ['support.transition','support.reply','support.handoff','support.closed','support.reopened','support.cancelled','internal.queue_created','internal.assignment_changed']){
     await suite.test(kind,async()=>{
@@ -31,6 +32,14 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
    }
    await suite.test('private internal sources and queue authority are isolated',()=>assertWave2InternalRelations(c));
    await suite.test('approval policies profiles capabilities and approver history are private',()=>assertWave2ReviewRelations(c));
+   await suite.test('initial native review policy refuses self approval weak assurance or alternative outcome hints',async()=>{
+    const policy={versionId:'cg_initial_approval_v1',status:'published',selfApprovalAllowed:false,sensitive:true,onApproved:'open',onRejected:'waiting_customer',challengeTtlSeconds:300};
+    assert.equal((await c.query('select helpdesk_auth.hdnr_valid_policy($1) as valid',[policy])).rows[0]?.valid,true);
+    for(const patch of [{selfApprovalAllowed:true},{sensitive:false},{onApproved:'triage'},{onRejected:'closed'},{challengeTtlSeconds:0},{challengeTtlSeconds:900},{decision:'approve'},{status:'draft'}])
+     assert.equal((await c.query('select helpdesk_auth.hdnr_valid_policy($1) as valid',[{...policy,...patch}])).rows[0]?.valid,false);
+    for(const role of ['helpdesk_app','helpdesk_notification_worker'])for(const signature of ['helpdesk_auth.hdnr_valid_policy(jsonb)','helpdesk_auth.hdnr_profile_pin()'])
+     assert.equal((await c.query("select has_function_privilege($1,$2,'EXECUTE') as allowed",[role,signature])).rows[0]?.allowed,false);
+   });
    await captureM05SecurityInventory({query:c.query.bind(c)} as SqlPool,{directory:'evidence/email-wave2/public-candidate',schemaVersion:'0.25.0',notificationWorker:true});
    assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.24.0','Candidate test does not promote the schema');
   }finally{await c.query('ROLLBACK');c.release();}
