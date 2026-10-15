@@ -12,7 +12,7 @@ export {DATABASE_SECURITY_CONTRACT,DATABASE_SECURITY_QUERY};
 const baseline=JSON.parse(await readFile(new URL('../fixtures/migration-baselines/v023.json',import.meta.url),'utf8')) as {format:1;schemaVersion:string;migrations:{file:string;sha256:string}[]};
 export async function loadQualifiedV023Bundle(root:string):Promise<MigrationBundle>{
  const bundle=await loadMigrationBundle(root);
- if(!((bundle.schemaVersion==='0.23.0'&&bundle.migrations.length===16)||(bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&bundle.migrations.length===18))
+ if(!((bundle.schemaVersion==='0.23.0'&&bundle.migrations.length===16)||(bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&(bundle.migrations.length===18||bundle.migrations.length===19)))
   ||JSON.stringify(bundle.migrations.slice(0,16).map(({file,sha256})=>({file,sha256})))!==JSON.stringify(baseline.migrations))
   throw Error('The qualified 0.23 migration prefix changed.');
  if(bundle.migrations.length>=17){const {verifyConsulteGeoUpgrade}=await import('../../scripts/consultegeo-upgrade.ts');await verifyConsulteGeoUpgrade(root);}
