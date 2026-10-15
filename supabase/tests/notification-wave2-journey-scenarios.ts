@@ -16,7 +16,7 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   const operator=operatorPool(),control=controlPool(),app=appPool();
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
   await operator.query('BEGIN');try{
-   for(const file of ['hdn_notification_wave2_public.sql','hdn_notification_wave2_internal.sql','hdn_notification_wave2_audiences.sql','hdn_review_authority.sql','hdn_review_opening_guard.sql','hdn_review_intake.sql','hdn_review_store.sql','hdn_review_invitation.sql','hdn_review_challenge.sql'])await operator.query(await readFile(new URL('../candidates/'+file,import.meta.url),'utf8'));
+   for(const file of ['hdn_notification_wave2_public.sql','hdn_notification_wave2_internal.sql','hdn_notification_wave2_audiences.sql','hdn_review_authority.sql','hdn_review_opening_guard.sql','hdn_review_intake.sql','hdn_review_store.sql','hdn_review_invitation.sql','hdn_review_challenge.sql','hdn_review_approval.sql'])await operator.query(await readFile(new URL('../candidates/'+file,import.meta.url),'utf8'));
    await operator.query('COMMIT');
   }catch(e){await operator.query('ROLLBACK');throw e;}
   const hadAuth=Boolean((await control.query("select to_regclass('auth.users') as users")).rows[0]?.users);
