@@ -1,0 +1,204 @@
+{
+  "mode": "offline-dom",
+  "typescriptVersion": "5.8.3",
+  "checks": [
+    {
+      "name": "opening panel performs no request",
+      "passed": true
+    },
+    {
+      "name": "initial screen has no approval or edit controls",
+      "passed": true
+    },
+    {
+      "name": "one explicit read 1440-light",
+      "passed": true
+    },
+    {
+      "name": "loaded validated draft 1440-light",
+      "passed": true
+    },
+    {
+      "name": "no overflow 1440-light",
+      "passed": true
+    },
+    {
+      "name": "visible requested data 1440-light",
+      "passed": true
+    },
+    {
+      "name": "opaque work ID preserved 1440-light",
+      "passed": true
+    },
+    {
+      "name": "approval remains absent 1440-light",
+      "passed": true
+    },
+    {
+      "name": "read button at least 44px 1440-light",
+      "passed": true
+    },
+    {
+      "name": "status announces result 1440-light",
+      "passed": true
+    },
+    {
+      "name": "one explicit read 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "loaded validated draft 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "no overflow 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "visible requested data 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "opaque work ID preserved 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "approval remains absent 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "read button at least 44px 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "status announces result 1440-dark",
+      "passed": true
+    },
+    {
+      "name": "one explicit read 390-light",
+      "passed": true
+    },
+    {
+      "name": "loaded validated draft 390-light",
+      "passed": true
+    },
+    {
+      "name": "no overflow 390-light",
+      "passed": true
+    },
+    {
+      "name": "visible requested data 390-light",
+      "passed": true
+    },
+    {
+      "name": "opaque work ID preserved 390-light",
+      "passed": true
+    },
+    {
+      "name": "approval remains absent 390-light",
+      "passed": true
+    },
+    {
+      "name": "read button at least 44px 390-light",
+      "passed": true
+    },
+    {
+      "name": "status announces result 390-light",
+      "passed": true
+    },
+    {
+      "name": "one explicit read 390-dark",
+      "passed": true
+    },
+    {
+      "name": "loaded validated draft 390-dark",
+      "passed": true
+    },
+    {
+      "name": "no overflow 390-dark",
+      "passed": true
+    },
+    {
+      "name": "visible requested data 390-dark",
+      "passed": true
+    },
+    {
+      "name": "opaque work ID preserved 390-dark",
+      "passed": true
+    },
+    {
+      "name": "approval remains absent 390-dark",
+      "passed": true
+    },
+    {
+      "name": "read button at least 44px 390-dark",
+      "passed": true
+    },
+    {
+      "name": "status announces result 390-dark",
+      "passed": true
+    },
+    {
+      "name": "customer has no internal addresses",
+      "passed": true
+    },
+    {
+      "name": "customer has no origin references",
+      "passed": true
+    },
+    {
+      "name": "customer can follow progress",
+      "passed": true
+    },
+    {
+      "name": "markup is text not HTML",
+      "passed": true
+    },
+    {
+      "name": "logout removes current DOM",
+      "passed": true
+    },
+    {
+      "name": "logout also scrubs detached node",
+      "passed": true
+    },
+    {
+      "name": "loading announces busy",
+      "passed": true
+    },
+    {
+      "name": "late response cannot restore logged out content",
+      "passed": true
+    },
+    {
+      "name": "errors are safe",
+      "passed": true
+    },
+    {
+      "name": "error allows explicit consultation retry",
+      "passed": true
+    },
+    {
+      "name": "expired view removes private content",
+      "passed": true
+    },
+    {
+      "name": "expiry does not poll",
+      "passed": true
+    },
+    {
+      "name": "keyboard activates consultation",
+      "passed": true
+    },
+    {
+      "name": "result focus is controlled",
+      "passed": true
+    },
+    {
+      "name": "no runtime errors",
+      "passed": true
+    }
+  ],
+  "passed": 49,
+  "failed": 0
+}

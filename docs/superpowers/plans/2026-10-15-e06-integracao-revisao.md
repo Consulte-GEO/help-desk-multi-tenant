@@ -6,12 +6,12 @@
 **Autorização:** usuário autorizou análise, correções, melhorias, commit, merge e publicação sem Claude em 15/10/2026.
 
 - [x] Inspecionar estado remoto e isolar branch; verificar SHA256 dos 408 arquivos do pacote.
-- [ ] Aplicar cumulativo único sem copiar contexto de verificação nem substituir lock.
-- [ ] Executar instalação canônica, regressão, tipos, contratos, migrations, scanner e build.
-- [ ] Revisar autorização, cancelamento, persistência, projeções e compatibilidade de UI. Reproduzir cada defeito antes da correção.
-- [ ] Executar PostgreSQL descartável e navegador em CI Linux, incluindo candidato HDA sem promover DDL remoto.
-- [ ] Revisão independente Codex; resolver achados importantes e atualizar evidência ligada à fonte.
-- [ ] Commit, PR, CI, merge e verificação da publicação e dos módulos que permanecem indisponíveis.
+- [x] Aplicar cumulativo único sem copiar contexto de verificação nem substituir lock.
+- [x] Executar instalação canônica, regressão, tipos, contratos, migrations, scanner e build.
+- [x] Revisar autorização, cancelamento, persistência, projeções e compatibilidade de UI. Reproduzir cada defeito antes da correção.
+- [x] Executar PostgreSQL descartável e navegador em CI Linux, incluindo candidato HDA sem promover DDL remoto.
+- [x] Revisão independente Codex; resolver achados importantes e atualizar evidência ligada à fonte.
+- [ ] Commit, PR e CI aprovados; concluir merge e verificação da publicação e dos módulos que permanecem indisponíveis.
 
 ## Restrições e foco
 
@@ -20,3 +20,5 @@ Preservar atendimento ativo, isolamento de contas/obras, API/schema existentes e
 ## Registro
 
 15/10: cópia antiga 132 commits atrás; área isolada criada do remoto atual. E06 aplica sem conflito. R05 é outro repositório e terá relatório próprio.
+
+CI integral38677788026 aprovado5.427/609/581, nativo38677793525 aprovado40+6, DOM49, fingerprints/logs validados. Revisão independente encerrada sem achados acionáveis.
