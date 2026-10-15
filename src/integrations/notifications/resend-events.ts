@@ -5,7 +5,7 @@ import {isCanonicalInstant,zonedInstantMicros} from '../../../shared/instant.js'
 
 const verifiedBrand:unique symbol=Symbol('verified-native-resend-event');
 export type VerifiedResendEvent=Readonly<{
- [verifiedBrand]:true;eventId:string;eventHash:string;providerMessageId:string;
+ [verifiedBrand]:true;eventId:string;eventHash:string;eventType:string;providerMessageId:string;
  occurredAt:string;outcome:ProviderDeliveryEvent['outcome']|null;
 }>;
 const verified=new WeakSet<object>();
@@ -68,7 +68,7 @@ export function createResendDeliveryEvents(config:{secrets:readonly string[];max
    if(!native.type.startsWith('email.'))throw Error();
    const message=uuidIdentifier(native.data.email_id);if(message!==native.data.email_id)throw Error();
    const event=Object.freeze({eventId:id,eventHash:createHash('sha256').update(bytes).digest('hex'),providerMessageId:message,
-    occurredAt:native.created_at as string,outcome:outcomes[native.type]??null}) as VerifiedResendEvent;
+    occurredAt:native.created_at as string,eventType:native.type,outcome:outcomes[native.type]??null}) as VerifiedResendEvent;
    verified.add(event);return event;
   }catch{throw invalid();}
  }});

@@ -7,7 +7,7 @@ import {createPostgresRegistrationStore} from '../../src/infrastructure/registra
 import {executeRegistrationCommand} from '../../src/application/registration-persistence.ts';
 import {createRegistrationInputSnapshot} from '../../src/domain/registration-contracts.ts';
 import {input,id} from '../../tests/fixtures/registration/sample.ts';
-import {REGISTRATION_SECURITY_CONTRACT as DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/registration-security-contract.ts';
+import {EMAIL_MONITOR_SECURITY_CONTRACT as DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/email-monitor-security-contract.ts';
 import {assertDatabaseSecurity} from '../../src/infrastructure/database-security.ts';
 import {runRegistrationStorageChecks} from './registration-storage-checks.mjs';
 export async function runNativeSuite({owner,app,worker}){
@@ -34,7 +34,7 @@ export async function runNativeSuite({owner,app,worker}){
  const invoke=command=>runTransaction(app,person,async c=>executeRegistrationCommand(createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)}),scope(command.type),command));
  const prepare={type:'prepare',commandId:randomUUID(),snapshot,jobId:randomUUID(),configuration:{agentVersionRef:'fixture.v1',knowledgeRefs:[],policyVersion:'policy.v1'}};
  const read=()=>runTransaction(app,person,async c=>{const store=createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)});await store.lockScope(scope('read'));return store.lockOperation(op);});
- await test('complete immutable migration chain matches the current fixed schema contract',async()=>assert.equal((await owner.query('select helpdesk_auth.schema_version() version')).rows[0].version,DATABASE_SECURITY_CONTRACT.schemaVersion));
+ await test('complete immutable migration chain matches the current fixed schema contract',async()=>{assert.equal((await owner.query('select helpdesk_auth.schema_version() version')).rows[0].version,DATABASE_SECURITY_CONTRACT.schemaVersion);await assertDatabaseSecurity(app,DATABASE_SECURITY_CONTRACT.schemaVersion);});
  await test('unprotected core permits prepare through the real transaction service',async()=>{await invoke(prepare);assert.equal((await read()).state.snapshot.operationId,op);});
  const review=internal=>runTransaction(app,person,async c=>(await c.query('select helpdesk_auth.hda06_review_target($1::uuid,$2::boolean) result',[ticket,internal])).rows[0].result);
  await test('HDA customer target resolves only the authorized operation and never returns state or queue',async()=>{assert.deepEqual(await review(false),{workspaceId:w,accountId:a,ticketId:ticket,bindingId:binding,operationId:op});});

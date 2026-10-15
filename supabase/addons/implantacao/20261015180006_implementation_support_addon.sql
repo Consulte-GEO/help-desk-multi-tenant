@@ -1,4 +1,4 @@
--- Independent addon v1. Not part of the immutable 20-file core ledger.
+-- Independent addon v1. Not part of the immutable 21-file core ledger.
 -- Apply as the same trusted schema owner used by the core (postgres in Supabase).
 -- Never authenticate an ordinary request as that owner.
 BEGIN;
@@ -6,7 +6,7 @@ DO $$ BEGIN
  IF current_user='helpdesk_app' OR NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='helpdesk_app' AND NOT rolsuper AND NOT rolbypassrls AND NOT rolcreaterole AND NOT rolcreatedb) THEN
   RAISE EXCEPTION 'SEPARATE_OWNER_AND_RESTRICTED_RUNTIME_REQUIRED';
  END IF;
- IF helpdesk_auth.schema_version()<>'0.26.0' THEN RAISE EXCEPTION 'CORE_026_REQUIRED'; END IF;
+ IF helpdesk_auth.schema_version()<>'0.27.0' THEN RAISE EXCEPTION 'CORE_027_REQUIRED'; END IF;
 END $$;
 CREATE SCHEMA helpdesk_implantacao;
 REVOKE ALL ON SCHEMA helpdesk_implantacao FROM PUBLIC,anon,authenticated,service_role;

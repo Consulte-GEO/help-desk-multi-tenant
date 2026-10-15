@@ -1,0 +1,125 @@
+{
+  "data": "2026-10-15",
+  "status": "aprovado",
+  "escopo": "Protótipo HTML local com dados fictícios. Não comprova autorização de backend, telemetria real, isolamento SQL ou produção.",
+  "navegador": "155.0.8059.40",
+  "sha256_html": "a234eebce9739e2c2189f2845ac747999a374b17bab765997a64b7f2ac51e721",
+  "viewports": [
+    "1280x1060",
+    "360x800",
+    "640x400"
+  ],
+  "requisicoes_externas": 0,
+  "erros_javascript": [],
+  "verificacoes": [
+    {
+      "nome": "Modal abre com nome e descrição acessíveis",
+      "passou": true
+    },
+    {
+      "nome": "Quatro cartões e seis destinatários",
+      "passou": true
+    },
+    {
+      "nome": "Equipe começa com endereços mascarados na tabela demonstrativa",
+      "passou": true
+    },
+    {
+      "nome": "Cartões atuais 4/6, 3/6, 2/6 e 1/6",
+      "passou": true
+    },
+    {
+      "nome": "Estado desconhecido permanece em atenção",
+      "passou": true
+    },
+    {
+      "nome": "Foco inicial no fechamento",
+      "passou": true
+    },
+    {
+      "nome": "Foco reverso permanece no modal",
+      "passou": true
+    },
+    {
+      "nome": "Foco direto permanece no modal",
+      "passou": true
+    },
+    {
+      "nome": "Detalhe de desconhecido orienta conciliação e não reenvia",
+      "passou": true
+    },
+    {
+      "nome": "Ocultar detalhe devolve foco à linha",
+      "passou": true
+    },
+    {
+      "nome": "Admin demonstra seis endereços completos fictícios",
+      "passou": true
+    },
+    {
+      "nome": "Histórico mantém enviado e entregue sem inventar abertura/clique",
+      "passou": true
+    },
+    {
+      "nome": "Histórico tem doze células N/D",
+      "passou": true
+    },
+    {
+      "nome": "Cobertura parcial usa quatro elegíveis",
+      "passou": true
+    },
+    {
+      "nome": "Cobertura parcial tem duas linhas sem coleta",
+      "passou": true
+    },
+    {
+      "nome": "Diálogo desktop dentro do viewport",
+      "passou": true
+    },
+    {
+      "nome": "Fechar retorna foco ao acionador",
+      "passou": true
+    },
+    {
+      "nome": "Escape fecha o diálogo",
+      "passou": true
+    },
+    {
+      "nome": "Diálogo mobile 360 px dentro do viewport",
+      "passou": true
+    },
+    {
+      "nome": "Tabela mobile permite rolagem horizontal",
+      "passou": true
+    },
+    {
+      "nome": "Fechamento mobile permanece visível",
+      "passou": true
+    },
+    {
+      "nome": "Sem overflow horizontal da página",
+      "passou": true
+    },
+    {
+      "nome": "Fechamento acessível em viewport reduzido 640x400",
+      "passou": true
+    },
+    {
+      "nome": "Zero requisições de rede e zero erros JavaScript",
+      "passou": true
+    },
+    {
+      "nome": "Nenhuma ação de envio ou reprocessamento",
+      "passou": true
+    }
+  ],
+  "capturas": [
+    "emails-v2-desktop.png",
+    "emails-v2-mobile.png"
+  ],
+  "limites": [
+    "Verificação de teclado básica; não substitui avaliação com leitor de tela.",
+    "Viewport reduzido não substitui teste de zoom real de 200%.",
+    "Perfil simulado demonstra a apresentação; máscara de servidor ainda será implementada no produto."
+  ]
+}

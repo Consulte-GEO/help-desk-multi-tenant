@@ -1,0 +1,64 @@
+{
+  "data": "2026-10-15",
+  "finalidade": "Adendo ativo ao planejamento anterior; conserva os IDs e a fotografia dos pacotes históricos.",
+  "base": {
+    "tarefas_hd": 49,
+    "grupos_aux": 32,
+    "requisitos_rf": 107
+  },
+  "itens": [
+    {
+      "id": "MEL-09",
+      "titulo": "Localizar quem recebeu uma orientação depois corrigida",
+      "tipo": "Capacidade adicional",
+      "esforco": "L",
+      "momento": "Após base prevista",
+      "beneficio": "Tratar o impacto de instruções antigas incorretas, além de atualizar o artigo para atendimentos futuros.",
+      "exemplo": "Uma macro sobre acesso de laboratório é retirada; a equipe identifica os atendimentos que usaram aquela versão e avalia uma correção.",
+      "incremento": "Rastrear versão de artigo/macro usada em cada orientação e abrir revisão dos usos afetados após retirada ou substituição.",
+      "previsto": "HD-030/031/032, RF-BC-05/08 e AUX-20 já preveem revisão factual, validade e atualizações. O rastreamento retrospectivo da orientação entregue não está especificado.",
+      "escopo": [
+        "Registrar referência e versão quando o analista aplica conteúdo revisado.",
+        "Ao retirar orientação, listar somente usos identificáveis e autorizados.",
+        "Registrar análise e eventual comunicação corretiva decidida por uma pessoa."
+      ],
+      "dependencias": [
+        "Conhecimento/macros versionados e publicados por audiência.",
+        "A revisão factual Novo GEO continua adiada; preparar rastreabilidade não a reativa."
+      ],
+      "aceite": [
+        "Mensagem e artigo históricos não são reescritos silenciosamente.",
+        "Destinatários são reautorizados antes de eventual correção.",
+        "Não há envio em massa automático nem promessa de detectar todos os textos colados manualmente."
+      ],
+      "medida": "Cobertura dos usos registrados e tempo para revisar os casos potencialmente afetados.",
+      "cuidado": "Uma mudança editorial comum não implica que todos os atendimentos antigos estavam errados; exigir motivo e impacto para iniciar a revisão.",
+      "evidencia": [
+        "HD-030/031/032",
+        "RF-BC-05/08",
+        "RF-IA-09",
+        "AUX-20"
+      ],
+      "refs": [],
+      "decisao": "Incluir",
+      "observacao_decisao": "Aprovação expressa do titular nesta conversa, preservado o escopo proposto.",
+      "estado": "incluida_no_planejamento",
+      "implementacao": "nao_iniciada",
+      "prioridade_prazo": "Não definidos pelo titular",
+      "especificacao": "DECISOES-E-BACKLOG-ADICIONAL.md"
+    }
+  ],
+  "email_monitoramento": {
+    "estado": "escopo_definido_apos_analise",
+    "referencia": "ANALISE-GEOLAB-E-MONITORAMENTO.md",
+    "decisoes": "DECISOES.json",
+    "entregas_propostas": [
+      "MON-01",
+      "MON-02",
+      "MON-03",
+      "MON-04",
+      "MON-05"
+    ],
+    "nota": "As entregas MON organizam o recorte solicitado. Nenhum código de produto foi implementado nesta análise."
+  }
+}

@@ -45,7 +45,7 @@ export async function probeDatabaseReadOnly(client:SqlClient):Promise<DatabasePr
   mark(checks,stage,'passed');
   stage='database_role';await assertSafeDatabaseRole(borrowed);mark(checks,stage,'passed');
   stage='schema';const schema=await borrowed.query('select helpdesk_auth.schema_version() as version'),version=schema.rows[0]?.version;
-  if(version!=='0.24.0'&&version!=='0.25.0'&&version!=='0.26.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+  if(version!=='0.24.0'&&version!=='0.25.0'&&version!=='0.26.0'&&version!=='0.27.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
   await assertSchemaCompatibility(borrowed,version);mark(checks,stage,'passed');
   stage='database_security';await assertDatabaseSecurity(borrowed,version);mark(checks,stage,'passed');
  }catch(error){mark(checks,stage,'failed',safeCode(error,stage+'_check_failed'));}

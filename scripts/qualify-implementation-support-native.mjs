@@ -4,7 +4,7 @@ import {mkdtempSync,writeFileSync,appendFileSync,readFileSync,mkdirSync,rmSync} 
 import {tmpdir} from 'node:os';import {join,resolve} from 'node:path';import {fileURLToPath} from 'node:url';import {randomBytes} from 'node:crypto';
 import {nativeBinaryVersion,isolatedPostgresSettings,ownsRegistrationCluster,registrationNativeSourceIssues} from './registration-native-safety.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url)),args=process.argv.slice(2);
-const plan={module:'implementation-support',executed:false,hosted:false,coreSchema:'0.26.0',coreMigrations:20,required:['Linux non-root','PostgreSQL 17','pinned pg 8.16.3','complete immutable core chain']};
+const plan={module:'implementation-support',executed:false,hosted:false,coreSchema:'0.27.0',coreMigrations:21,required:['Linux non-root','PostgreSQL 17','pinned pg 8.16.3','complete immutable core chain']};
 if(args.length!==1||args[0]!=='--execute'){console.log(JSON.stringify({...plan,mode:args.length?'blocked':'plan',...(args.length?{code:'invalid_arguments'}:{})}));if(args.length)process.exitCode=2;}
 else if(Object.keys(process.env).some(k=>/^PG[A-Z_]+$/.test(k)||/^(DATABASE_URL|SUPABASE_DB_URL|HELPDESK_DATABASE_URL|HELPDESK_TEST_(ADMIN|APP|OPERATOR)_URL|HDA_DATABASE_URL|HDA_TEST_DATABASE_URL)$/.test(k))){console.log(JSON.stringify({...plan,mode:'blocked',code:'external_database_configuration_refused'}));process.exitCode=2;}
 else{
@@ -31,12 +31,12 @@ else{
    const identity=(await owner.query("select current_database() db,current_user actor,inet_server_addr() addr,current_setting('server_version_num') v")).rows[0];if(identity.db!=='postgres'||identity.actor!=='postgres'||identity.addr!==null||Math.floor(Number(identity.v)/10000)!==17)throw Error('owned_cluster_identity_mismatch');
    await owner.query('create database helpdesk_test');await owner.end();pools.pop();owner=new Pool({...base,user:'postgres',password:passwords.postgres,database:'helpdesk_test',max:4});pools.push(owner);
    await owner.query(`create role helpdesk_app login nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls password '${passwords.helpdesk_app}'`);
-   const {loadMigrationBundle}=await import('./migration-files.ts'),bundle=await loadMigrationBundle(root);if(bundle.schemaVersion!=='0.26.0'||bundle.migrations.length!==20)throw Error('immutable_core_026_required');
+   const {loadMigrationBundle}=await import('./migration-files.ts'),bundle=await loadMigrationBundle(root);if(bundle.schemaVersion!=='0.27.0'||bundle.migrations.length!==21)throw Error('immutable_core_027_required');
    for(const migration of bundle.migrations)await owner.query(migration.sql);
    const app=new Pool({...base,user:'helpdesk_app',password:passwords.helpdesk_app,database:'helpdesk_test',max:4});pools.push(app);
-   const {assertDatabaseSecurity}=await import('../src/infrastructure/database-security.ts');await assertDatabaseSecurity(app,'0.26.0');
+   const {assertDatabaseSecurity}=await import('../src/infrastructure/database-security.ts');await assertDatabaseSecurity(app,'0.27.0');
    await owner.query(readFileSync(join(root,'supabase/addons/implantacao/20261015180006_implementation_support_addon.sql'),'utf8'));
-   await assertDatabaseSecurity(app,'0.26.0');
+   await assertDatabaseSecurity(app,'0.27.0');
    const {runImplementationSupportNativeSuite}=await import('../supabase/tests/implementation-support-native-suite.mjs');const result=await runImplementationSupportNativeSuite({owner,app});
    summary={...plan,mode:'executed',executed:true,postgresVersion:versions.initdb,...result};if(result.failures)process.exitCode=1;
   }catch(error){summary={...plan,mode:'failed',executed:startRequested,code:'native_acceptance_failed',sqlState:typeof error?.code==='string'&&/^[A-Z0-9]{5}$/.test(error.code)?error.code:null,message:typeof error?.message==='string'?error.message.replace(/postgresql:\/\/\S+/g,'[REDACTED]').slice(0,250):'unknown'};process.exitCode=1;}

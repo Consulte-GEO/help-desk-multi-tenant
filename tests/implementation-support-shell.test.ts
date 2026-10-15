@@ -43,3 +43,18 @@ test('shell ships a hidden staff menu, native mount root and generalized view ha
  const source=(path:string)=>readFileSync(new URL('../'+path,import.meta.url),'utf8');const html=source('web/index.html'),app=source('web/app.js');
  assert.match(html,/<button[^>]+id="implementation-support-nav"[^>]+hidden[^>]*>/);assert.match(html,/Apoio Implantação/);assert.match(html,/id="implementation-support-view" hidden/);assert.match(html,/id="implementation-support-root"/);assert.match(app,/implementationSupport\?\.destroy\(\)/);assert.match(app,/function navigateView\(/);assert.doesNotMatch(html,/<iframe/i);
 });
+
+test('integrated sidebar suspends email polling and destroys implementation before changing views',()=>{
+ const source=readFileSync(new URL('../web/app.js',import.meta.url),'utf8');
+ const body=source.match(/function navigateView\(view\)\{[\s\S]*?\n\}\n/)?.[0];assert.ok(body);
+ const nodes=new Map<string,any>(),buttons=['tickets','guide','email','implementation-support'].map(view=>({dataset:{view},classList:{toggle(){}}}));
+ const $=(id:string)=>{if(!nodes.has(id))nodes.set(id,{hidden:true,textContent:''});return nodes.get(id);};
+ const visible:boolean[]=[];let mounts=0,destroys=0;
+ const create=new Function('s','$','document','emailMonitor','isImplementationSupportStaff','mountImplementationSupport','operationalRequest',`let activeView='tickets',implementationSupport=null;${body};return navigateView;`);
+ const state:any={me:staff,demo:null,epoch:1,workspace:'workspace'};
+ const navigate=create(state,$,{querySelectorAll:()=>buttons},{setVisible:(value:boolean)=>visible.push(value)},(p:any)=>p===staff,()=>{mounts++;return {destroy(){destroys++;}};},()=>async()=>Response.json({}));
+ navigate('implementation-support');assert.equal(mounts,1);assert.equal($('implementation-support-view').hidden,false);assert.equal($('email-view').hidden,true);
+ navigate('email');assert.equal(destroys,1);assert.equal($('implementation-support-view').hidden,true);assert.equal($('email-view').hidden,false);assert.equal(visible.at(-1),true);
+ navigate('tickets');assert.equal($('email-view').hidden,true);assert.equal($('tickets-view').hidden,false);assert.equal(visible.at(-1),false);
+ state.me={kind:'human',grants:[]};navigate('implementation-support');assert.equal(mounts,1);assert.equal($('tickets-view').hidden,false);
+});

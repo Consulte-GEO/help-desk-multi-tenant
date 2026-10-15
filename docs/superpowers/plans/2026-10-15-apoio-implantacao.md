@@ -13,7 +13,7 @@
 ## Restrições e revisão
 
 - Nunca conceder acesso a clientes/integrações por simplesmente mostrar/ocultar menu.
-- Preservar20 migrations/quatro schemas/core0.26, autores e snapshots existentes.
+- Preservar21 migrations/quatro schemas/core0.27, autores e snapshots existentes.
 - Não publicar fontes privadas, funções legadas administrativas ou segredos.
 - Não marcar arquivo clean/ready sem evidência; antivírus não integra esta entrega.
 - Não perder rascunhos após logout/conta trocada nem aceitar respostas de sessão antiga.

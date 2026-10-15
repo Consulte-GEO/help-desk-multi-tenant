@@ -1,0 +1,58 @@
+# SDD ledger — plan: docs/superpowers/plans/2026-10-15-email-monitoring-v2.md
+
+Base: 91ccdf95db44b11a3906a4c39cf070ff5e91f2a5. Branch: codex/email-monitoring-v2.
+
+Ruling: executar a especificação já aprovada sem nova confirmação intermediária — titular pediu implementação completa; tarefas e método nativo seguem a autorização explícita.
+
+Ruling: ferramenta nativa de worktree recusou a referência conhecida no contexto do chat — trabalhar em branch própria no checkout Help Desk, preservando documentos não rastreados anteriores. Nenhum checkout concorrente será sobrescrito.
+
+Pre-flight: tarefa 1 fornece eventType à 2; tarefa 2 fornece DTO à 3; tarefa 4 consome contrato HTTP fixado no plano e pode ser desenvolvida em arquivos próprios em paralelo. Integração e contratos ficam sob responsabilidade principal.
+
+Baseline npm test em Windows: 5625 testes, 5487 pass, 138 fail, sem skips. Log ../.analysis/email-v2-baseline.log. Falhas incluem EPERM em symlink e EACCES em sockets UNIX; investigar e distinguir ambiente/regressão. Nenhuma falha foi ignorada como aprovação.
+
+Reaproveitamento conferido por análises independentes: GEOCON fornece composição visual e cadência; GEOLAB fornece princípios de paginação/count exato e agregação no servidor. Não copiar senders, infraestrutura, inferências de funil, payload bruto ou consultas limitadas como total.
+
+Tasks 1–4: implementadas; integração/revisão/CI da tarefa5 em andamento. Fontes históricas de especificação permanecem como registro da fase anterior; checkpoint159 descreve a implementação.
+
+Ruling: incorporado upstream e8878675 por fast-forward, preservando HDA e Wiki. HDA ocupa schema0.26/migration20; monitor será append0.27/migration21. Contratos históricos permanecem íntegros, incluindo o contrato HDA e seus 7 RPCs de worker.
+
+Validação local:150/150 testes focais;28/28 de integração do compiler, staging de fontes e assets; typecheck, contratos e build executados sem erros. Suíte completa Windows:5719 testes,5568 pass,151 fail. Além das restrições ambientais já observadas e timeouts de CLI sob concorrência, duas regressões reais foram encontradas e corrigidas: allowlist do demo sem novos assets e fixture de staging sem manifesto novo. Não considerar a suíte ampla local aprovada; execução Linux/PG17 real deve decidir o gate.
+
+Diagnósticos auxiliares em PGlite:18/18 consultas,18/18 telemetria. Não qualificam RLS/login PostgreSQL real. Browser auxiliar Node/Chrome:22 verificações do componente e32 do shell com transportes sintéticos; suíte Python portátil registrada para CI.
+
+Fechamento local:185/185 na suíte focada ampliada, incluindo teste do cursor cifrado real contra mudanças de filtro, identidade, acesso e snapshot. Consultas PGlite finais21/21; telemetria18/18. Browser Node/Chrome reexecutado após as últimas alterações:22/22 componente e32/32 shell. Typecheck/build/contratos/migrations encerraram com exit0. A execução Python local não concluiu; não a considerar aprovada. A verificação heurística ampla de segredos também não teve término confirmado; permanece parte do gate completo de CI.
+
+Ampliações finais exigidas pela própria spec: lacunas de coleta por sinal em tabela privada com FORCE RLS/zero grants e cinco constraints; idade desde enfileiramento calculada no servidor; identificação opaca da intenção/evento; motivos normalizados com descrição segura; callbacks legados rotulados. Contrato final88 tabelas/233 funções/516 constraints. Migration27 SHA256 `3d048151816a7650490e9bfd66309da29b79e40e1aa0ec8a9955e69f54c3113d`. Revisão independente reconferiu esse compiler/hash e UI19/19; sem Critical/Important remanescente.
+
+Bloqueio concreto de continuidade: tentativa de push da branch foi rejeitada pelo auto-review porque autorização de implementação não foi considerada autorização explícita para transferir código privado ao GitHub. Pergunta ao titular enviada e pendente. Nenhum envio foi feito, nenhum PR foi criado e CI/16 cenários PG17 reais ainda não foram executados. Não contornar a rejeição por outro canal. Handoff atual em `docs/implementation/EMAIL-MONITOR-V2-HANDOFF-CLAUDE.md`.
+
+Revisão independente do conjunto: nenhum Critical; Important de cronologia de falha sem callback e rótulos de eventos corrigidos com regressões próprias. Coorte parcial passou a mostrar fatos observados sem taxa enganosa (15/15 testes UI após os ajustes). Minor de filtro failed duplicado/rotulado como supressão e comentário de versão corrigidos. Revisão de segurança cobriu ACL antes de agregação, máscara no SQL, DTO fechado, cursor/revogação, sinais independentes e rollout25/26/27.
+
+Publicação: nenhuma migration, configuração do provedor ou dado de produção foi alterado nesta implementação. Cobertura inicial fica nula até comprovação operacional dos sinais. Apenas validação sintética e branch de desenvolvimento autorizadas nesta etapa.
+
+Continuação autorizada: titular aprovou expressamente push/PR/CI. Branch enviada, PR52 aberto e anexado ao chat. A base recebeu somente documentação HDA adicional emc4ebfe8; sem conflito de código.
+
+Primeiro CI PostgreSQL real (run38776167306) recusou o append27 com SQLSTATE55000: variável record `r` do bloco de catálogo sombreava alias `r` da consulta interna. O mesmo erro impediu HDA full-core (run38776167317); o prefixo e os cenários anteriores passaram. Reprodução mínima confirmou a causa e a correção com variável `email_catalogue_result`. Compiler/migration/manifests recompostos;20 migrations anteriores preservadas. Hash27 corrigido `3f7e7886d7b7820ce47a64fa1c97cdda6c9f2f04f4b8f8b95ac2628e6a289784`. Dois testes offline e verificador da cadeia aprovados; nova execução real necessária.
+
+Segundo diagnóstico CI (191fa0f, run38777117270): SQLSTATE42704 durante REVOKE porque os papéis opcionais Supabase não existem no PostgreSQL vanilla. Correção: revogar PUBLIC/app/worker normalmente e revogar anon/authenticated/service_role condicionalmente quando existentes; não criar papéis na fixture nem relaxar o contrato. Também fixadas as versões explícitas dos testes: cenário novo qualifica0.27 e HDA full-core compara catálogo completo0.27, sem alterar os contratos históricos. Hash27 após correção `5b638aea27818e25a5a0d35f9d11ddd28a958cd71b8ceaac5991002493e2ba5f`.
+
+Evidência parcial preservada do primeiro gate Linux/PR (run38776262346, commit de merge b76523b): aplicação5728/5728 e typecheck/contratos/check:secrets/build aprovados. Essa execução foi cancelada quando a correção foi enviada, portanto não é homologação completa; PostgreSQL e interface devem terminar no commit final.
+
+Rodada4110b73: cadeia27 executada no PostgreSQL17 real;15 dos16 novos cenários aprovados. Caso restante demonstrou solicitante recebendo conjunto vazio diretamente do helper SQL em vez de42501. Admissão passou a exigir vínculo persistido admin/agent ou grant agent, revalidado após preparação/locks. A consulta HTTP já recusava esse perfil; agora a fronteira SQL também recusa explicitamente. Revisão independente aprovou a correção, sem ampliar contas/obras/chamados.
+
+HDA full-core aprovou13/14 checks, com a única falha em teste compartilhado ainda fixado ao catálogo0.26. Atualizado consumidor único para o contrato0.27 exato, mantendo comparação integral de tabelas/funções/triggers/constraints/policies/roles e os7helpers do worker. Hash27 atual `4ec15e8df287bc8c5827eb3db7330b6a8418ecb9332c346aea2bae25c5376703`. Nova rodada completa exigida.
+
+Rodadaf7b7356: todos16 cenários novos de monitoramento passaram no PG17 real (run38778766099). A cadeia HDA comprovou catálogo completo e ACLs; restou um erro funcional: `hda02_storage_version()` devolviaNULL no schema27 porque o helper original reconhecia somente26. O append27 agora substitui esse helper mantendo formato1.0.0 e aceitando exclusivamente26/27; OR REPLACE preserva ACLs e continuam7RPCs. Versões25/28 permanecem recusadas. Diagnóstico do marcador4/4 e37 testes compiler/compatibilidade aprovados. Hash27 final `5028c17914469cfc524665963e637755e78e127dab572542d81e734efa136e0c`. Gate completo final ainda deve terminar.
+
+Prévia automática Netlify do PR falhou durante build (deploy6ad10f261cfb9735f9a5446d), sem publicação. Configuração mantém `npm run verify:release`; a checagem local de homologação confirmou recusa da evidência histórica após mudança de fonte. O gate de release não foi removido nem alterado para fazer a prévia passar. O resultado completo do CI e a promoção operacional permanecem etapas distintas.
+
+Fechamento da fonte06c0bdb: gate completo PR38779615398 aprovado (merge8c7cd14d),5728 aplicação/697 PostgreSQL/632 interface, todos pass, sem fail/skip/cancel/todo. Gate da branch38779609997 também aprovado. HDA38779609969 e38779615452:40/14 nativos e49 DOM; CodeQL38779611611 aprovado.
+
+Artefato11995732355 baixado e validado por validateReport/verifyLogs contra a fonte local44831b432decb57e937e68bc81081ab71f917e9958970aa7f0e38c2b9ebc060b. Recibo e logs originais copiados para evidence/homologation/runs/003c2491-b018-4f41-ac5d-915539986b7c e latest.json, preservando bytes, datas, contagens e hashes. npm run check:homologation passou. Isso atualiza a evidência histórica incompatível com a fonte atual; não altera nem dispensa o gate de release. Documentação/matriz/recibos são posteriores à fonte homologada e não mudam seu fingerprint. PR52 permanece sem merge ou implantação produtiva.
+
+O HEAD documental ce247ea foi aprovado nos gates completos 38782503324 (PR) e 38782495931 (branch), HDA, PG suplementar e CodeQL. Preview6ad11587f247de5c0b9f3e45 ficou ready. PR52 foi marcado pronto para revisão. Antes da entrega, a base recebeu PR53/14b1974 com o worker Wiki; surgiu conflito apenas em latest.json. A resolução preservou a versão da base e ambos os report.json/logs em runs distintos. A escolha anterior do ponteiro local havia sido recusada pela revisão automática; nenhuma evidência foi descartada para contorná-la.
+
+Integração 7f311bd: typecheck e11 testes focais do worker Wiki aprovados; novos gates completos iniciados (PR38784669764 e branch38784660610). Código funcional do monitor permanece inalterado. Os resultados e recibos anteriores pertencem às suas fontes originais; não comprovar a combinação por soma de aprovações. O ensaio Wiki congelado em26 permanece histórico e não foi alterado para fazê-lo passar em27. Não houve merge do PR52 nem ação produtiva.
+
+
+Conjunto integrado 7f311bd qualificado no [CI38784669764](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38784669764): 5739 aplicação + 697 PostgreSQL17 + 632 interface = 7068 testes, todos aprovados, sem falhas/skips/cancel/todo. Fonte SHA256 377fa67122d2c79bdbd609f541f57202e1eb2f45c8492c2f5a575a71e483f253. O recibo original e os logs estão em evidence/homologation/runs/41ceee85-9c25-41ab-80ac-d5d9bdf77334; latest.json aponta para esse mesmo conjunto. A documentação posterior não altera a fonte executável. HDA, PG suplementar e CodeQL devem ser conferidos nos checks do PR52. Os resultados anteriores abaixo são históricos; não substituem esta qualificação integrada. Não houve merge do PR52 ou implantação produtiva.

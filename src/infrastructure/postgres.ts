@@ -29,11 +29,11 @@ export async function assertSafeDatabaseRole(pool:SqlPool):Promise<void>{
  if(!row||row.name!=='helpdesk_app'||row.login_name!=='helpdesk_app'||unsafe.some(k=>row[k]!==false))
   throw new HelpdeskError(503,'unsafe_database_role','O backend exige conexão autenticada com papel restrito, sem propriedade ou privilégios administrativos.');
 }
-export async function assertSchemaCompatibility(pool:SqlPool,expected:'0.24.0'|'0.25.0'|'0.26.0'=DATABASE_SECURITY_CONTRACT.schemaVersion):Promise<void>{
+export async function assertSchemaCompatibility(pool:SqlPool,expected:'0.24.0'|'0.25.0'|'0.26.0'|'0.27.0'=DATABASE_SECURITY_CONTRACT.schemaVersion):Promise<void>{
  let version:unknown;
  try{version=(await pool.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version;}
  catch{throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');}
- if(!['0.24.0','0.25.0','0.26.0'].includes(expected)||version!==expected)throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+ if(!['0.24.0','0.25.0','0.26.0','0.27.0'].includes(expected)||version!==expected)throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
 }
 export {assertDatabaseSecurity} from './database-security.ts';
 export function observePoolErrors(pool:SqlPool,observe:(event:{component:string;event:string})=>void):void{

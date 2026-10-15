@@ -16,6 +16,8 @@ const assets:Record<string,{file:string;type:string}>={'/access-mode.js':{file:'
 Object.assign(assets,{'/support-navigation.js':{file:'support-navigation.js',type:'application/javascript; charset=utf-8'},'/consultegeo-operation.js':{file:'consultegeo-operation.js',type:'application/javascript; charset=utf-8'},'/consultegeo-workflow.js':{file:'consultegeo-workflow.js',type:'application/javascript; charset=utf-8'},'/consultegeo-review.js':{file:'consultegeo-review.js',type:'application/javascript; charset=utf-8'},'/consultegeo-operation.css':{file:'consultegeo-operation.css',type:'text/css; charset=utf-8'}});
 assets['/support-intake.js']={file:'support-intake.js',type:'application/javascript; charset=utf-8'};
 assets['/portal-ui.js']={file:'portal-ui.js',type:'application/javascript; charset=utf-8'};
+assets['/email-monitor.js']={file:'email-monitor.js',type:'application/javascript; charset=utf-8'};
+assets['/email-monitor.css']={file:'email-monitor.css',type:'text/css; charset=utf-8'};
 // UX01 — exact visual-asset allowlist; the loopback/business boundaries remain unchanged.
 for(const file of ['brand-profile.js','brand-shell.js','inbox-view-state.js','inbox-workspace.js','theme-init.js','opening-flow.js','opening-wizard.js','form-feedback.js']) assets['/'+file]={file,type:'application/javascript; charset=utf-8'};
 // UX05: closed optional-module graph. No administrative API is enabled by these assets.

@@ -19,7 +19,7 @@ O código de origem está em `modules/implantacao`; `SOURCE_IMPORT.json` identif
 
 A cópia vendorizada do SheetJS foi atualizada de 0.18.5 para 0.20.3. O arquivo foi obtido do [CDN oficial](https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js), conforme a [instalação oficial](https://docs.sheetjs.com/docs/getting-started/installation/standalone/). SHA-256: `cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41`. A versão anterior está abrangida pelo [aviso de prototype pollution do fabricante](https://cdn.sheetjs.com/advisories/CVE-2023-30533). Esta dependência está fora do inventário do npm; sua versão e os testes de leitura/gravação são verificados separadamente.
 
-O addon `helpdesk_implantacao` armazena dados estruturados, rascunhos, resultados revisados, histórico e recibos de operação. Os vinte arquivos de migração e a versão 0.26 do core permanecem independentes. Alterações concorrentes exigem a versão lida anteriormente; reenvios com a mesma chave não repetem uma gravação confirmada.
+O addon `helpdesk_implantacao` armazena dados estruturados, rascunhos, resultados revisados, histórico e recibos de operação. Os 21 arquivos de migração e a versão 0.27 do core permanecem independentes. Alterações concorrentes exigem a versão lida anteriormente; reenvios com a mesma chave não repetem uma gravação confirmada.
 
 Planilhas e PDFs originais ficam na memória da sessão. Retomar um processo recupera os dados salvos; uma nova leitura do arquivo exige selecioná-lo novamente. A troca de conta e a saída descartam arquivos, URLs temporárias e tarefas pendentes. Imagens de ajuda são privadas e não recebem classificação de antivírus.
 
