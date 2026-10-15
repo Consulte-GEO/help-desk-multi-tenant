@@ -2,6 +2,8 @@
 
 Referência: checklist AC-01…AC-28 e requisitos EMV2-01…EMV2-19 do pacote aprovado. Esta matriz liga comportamento implementado às evidências; não transforma testes sintéticos em aceite produtivo nem afirma que toda combinação foi exercitada isoladamente.
 
+Conjunto integrado 7f311bd qualificado no [CI38784669764](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38784669764): 5739 aplicação + 697 PostgreSQL17 + 632 interface = 7068 testes, todos aprovados, sem falhas/skips/cancel/todo. Fonte SHA256 377fa67122d2c79bdbd609f541f57202e1eb2f45c8492c2f5a575a71e483f253. O recibo original e os logs estão em evidence/homologation/runs/41ceee85-9c25-41ab-80ac-d5d9bdf77334; latest.json aponta para esse mesmo conjunto. A documentação posterior não altera a fonte executável. HDA, PG suplementar e CodeQL devem ser conferidos nos checks do PR52. Os resultados anteriores abaixo são históricos; não substituem esta qualificação integrada. Não houve merge do PR52 ou implantação produtiva.
+
 Gate completo da fonte06c0bdb:5728 aplicação +697 PostgreSQL +632 interface, zero falhas/skips/cancel/todo. Run38779615398; fonte SHA25644831b432decb57e937e68bc81081ab71f917e9958970aa7f0e38c2b9ebc060b. Ver checkpoint159 e recibo íntegro para a procedência.
 
 Legenda: PG = `supabase/tests/email-monitor-scenarios.ts`, com logins reais restritos e envio/callback sintéticos; UI = testes de estado/DOM e `browser-email-monitor-ui.py`; AUX = diagnóstico SQL auxiliar, sem qualificação de RLS; BASE = testes existentes do ledger, assinatura, autorização e máquina de estados. O teste PG tem16 subcasos; as linhas abaixo podem compartilhar evidência e não são28 novos testes independentes.

@@ -81,3 +81,8 @@ O recibo e os logs íntegros dessa execução estão em `evidence/homologation/`
 Para retomar no Claude, usar o [handoff atual](implementation/EMAIL-MONITOR-V2-HANDOFF-CLAUDE.md) e a [matriz de rastreabilidade](implementation/EMAIL-MONITOR-V2-MATRIZ-ACEITE.md). Preservar os registros históricos da especificação e consultar o PR para resultados posteriores.
 
 Os testes incluem validação de filtros e DTOs, HTTP, cursor e contexto, rollout25/26/27, compatibilidade HDA, interface e compiler determinístico. Os cenários PG17 usam logins reais restritos, intake/planner normais, envio sintético e callbacks assinados; não enviam e-mail real. O resultado da execução CI e os achados finais de revisão devem ser consultados no PR e no ledger, que distinguem execução local, ambiente real de teste e produção.
+
+
+## Qualificação da integração com a base atual
+
+Conjunto integrado 7f311bd qualificado no [CI38784669764](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38784669764): 5739 aplicação + 697 PostgreSQL17 + 632 interface = 7068 testes, todos aprovados, sem falhas/skips/cancel/todo. Fonte SHA256 377fa67122d2c79bdbd609f541f57202e1eb2f45c8492c2f5a575a71e483f253. O recibo original e os logs estão em evidence/homologation/runs/41ceee85-9c25-41ab-80ac-d5d9bdf77334; latest.json aponta para esse mesmo conjunto. A documentação posterior não altera a fonte executável. HDA, PG suplementar e CodeQL devem ser conferidos nos checks do PR52. Os resultados anteriores abaixo são históricos; não substituem esta qualificação integrada. Não houve merge do PR52 ou implantação produtiva.

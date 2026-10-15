@@ -2,13 +2,15 @@
 
 ## Estado que deve ser preservado
 
-O código está na branch local `codex/email-monitoring-v2`, base `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`. A implementação principal está em `bfef03b`; os commits seguintes corrigem/revisam cobertura, diagnóstico e documentação. Consultar `git log` para o HEAD exato. O titular autorizou expressamente push/PR/CI e a branch foi enviada: [PR52](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/52). Não houve deploy, callback real ou mudança de produção nesta rodada.
+O código está na branch `codex/email-monitoring-v2`, base original `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`, posteriormente integrada com a base atual. A implementação principal está em `bfef03b`; os commits seguintes corrigem/revisam cobertura, diagnóstico e documentação. Consultar `git log` para o HEAD exato. O titular autorizou expressamente push/PR/CI e a branch foi enviada: [PR52](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/52). Há preview automático de build. Não houve implantação produtiva, callback real ou alteração de dados de produção nesta rodada.
 
 Leitura inicial: `AGENTS.md`, `docs/159-GESTAO-EMAILS-V2-2026-10-15.md`, especificação V2 e `docs/implementation/EMAIL-MONITOR-V2-PROGRESS.md`. O diretório da especificação é um registro íntegro anterior ao código; seus campos “a desenvolver” não são um inventário atualizado da implementação. Não editar seu manifesto para fingir aceite do produto.
 
 O monitor é somente leitura e usa autenticação, contexto de autorização, fila, planner e workers existentes. GEOCON inspirou a apresentação; GEOLAB, princípios de consultas e indicadores. Não houve cópia de sender, React, laboratório, pixel próprio ou campanhas. Não adicionar reenvio, preferências, ciência, editor de template ou novas permissões de cliente.
 
 ## Validação executada e limite concreto
+
+Conjunto integrado 7f311bd qualificado no [CI38784669764](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38784669764): 5739 aplicação + 697 PostgreSQL17 + 632 interface = 7068 testes, todos aprovados, sem falhas/skips/cancel/todo. Fonte SHA256 377fa67122d2c79bdbd609f541f57202e1eb2f45c8492c2f5a575a71e483f253. O recibo original e os logs estão em evidence/homologation/runs/41ceee85-9c25-41ab-80ac-d5d9bdf77334; latest.json aponta para esse mesmo conjunto. A documentação posterior não altera a fonte executável. HDA, PG suplementar e CodeQL devem ser conferidos nos checks do PR52. Os resultados anteriores abaixo são históricos; não substituem esta qualificação integrada. Não houve merge do PR52 ou implantação produtiva.
 
 **Qualificação concluída da fonte06c0bdb:** [CI38779615398](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38779615398),5728 aplicação +697 PostgreSQL +632 interface, zero falhas/skips/cancel/todo. Recibo e logs íntegros em `evidence/homologation/`; `npm run check:homologation` confirmou a fonte SHA25644831b432decb57e937e68bc81081ab71f917e9958970aa7f0e38c2b9ebc060b. HDA40 candidato/14 cadeia completa/49 DOM e CodeQL também aprovados. Os resultados locais abaixo são histórico complementar; não substituem esse gate Linux real. A documentação/evidência posterior não altera a fonte executável homologada. Consultar o PR para verificações posteriores.
 
@@ -22,6 +24,12 @@ O monitor é somente leitura e usa autenticação, contexto de autorização, fi
 A recusa inicial de push foi resolvida por autorização humana explícita para enviar esta branch ao repositório correto, abrir PR e executar CI. Essa autorização não inclui publicação em produção. O CI da fonte acima foi aprovado; consultar os resultados mais recentes do PR. A prévia Netlify e qualquer promoção produtiva são estágios separados; não retirar o gate de release para publicá-las.
 
 ## Próximos passos
+
+### Integração concorrente de 15/10/2026
+
+A base recebeu o PR53 do worker de contribuição do Wiki (`14b1974`) depois da qualificação original deste monitor. O commit de integração `7f311bd` preserva esse worker e os dois conjuntos de recibos históricos, sem alterar código funcional do monitor. O conflito era exclusivamente no ponteiro `evidence/homologation/latest.json`; ele manteve a versão da base até a emissão de um novo recibo para a fonte combinada. Nenhum recibo isolado comprova essa combinação. Consultar o CI da integração e o registro posterior no ledger antes de declarar o conjunto homologado.
+
+Os avisos do Wiki têm ledger próprio e não entram neste monitor de chamados. O ensaio independente `run-wiki-email-composition.mjs` recebido do PR53 está deliberadamente fixado às fontes/schema0.26: seu recibo anterior é histórico, não prova de composição do Wiki com schema0.27. Não remover seus pins para produzir aprovação aparente. Qualificação operacional ampliada requer ensaio próprio autorizado, além dos gates desta branch.
 
 1. A autorização explícita de push/PR/CI já foi concedida para `Consulte-GEO/help-desk-multi-tenant`. O remote `github` aponta para esse repositório; `origin` é um bundle local antigo e não é o destino de push.
 2. A branch já foi enviada e o PR52 está aberto para `codex/m1-reproducibilidade`; aguardar o CI do commit exato. Os workflows principal e suplementar de PG17 já contemplam a branch; não afrouxar os gates.
