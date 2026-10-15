@@ -9,6 +9,8 @@ export async function assertOwnedReviewPortal(suite:TestContext,operator:SqlPool
   const staff=await queries.readReviewContext(agent,ticketId) as any,requester=await queries.readReviewContext(customer,ticketId) as any;
   assert.equal(staff.context.invitationId,invitationId);assert.equal(staff.capabilities.decideApproval,true);assert.equal(staff.context.version,1);assert.equal(staff.context.formRevision,1);
   assert.equal(requester.context.invitationId,null);assert.equal(requester.capabilities.decideApproval,false);assert.equal(requester.capabilities.reviseForm,false);assert.equal(requester.capabilities.requestApproval,false);
+  assert.deepEqual(await queries.readApprovalLanding(agent,invitationId),{workspaceId:w,ticketId,invitationId});
+  await assert.rejects(queries.readApprovalLanding(customer,invitationId),{code:'approval_forbidden'});
   assert.deepEqual(requester.form.answers,{details:'Owned pending approval details, never mailed'});assert.equal(requester.form.definition.version,2);assert.equal(requester.decision,null);
   assert.doesNotMatch(JSON.stringify(staff),/hd_approval_|"challenge"|"targetHash"|"roster"/);
   assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where workspace_id=$1',[w])).rows[0]!.n,before);

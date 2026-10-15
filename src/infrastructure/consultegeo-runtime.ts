@@ -49,7 +49,7 @@ export function createConsulteGeoRuntimeHandlers(d:{pool:SqlPool;authentication:
   else if(path==='/v1/consultegeo/request-catalog'||/^\/v1\/form-drafts(?:\/|$)/.test(path))selected=intake;
   else if(/^\/v1\/admin\/consultegeo\/configurations(?:\/|$)/.test(path))selected=admin;
   else if(/^\/v1\/tickets\/[^/]+\/(approval-invitations|approval-challenge|approval-decisions|form-preview|form-revisions)(?:\/|$)/.test(path))selected=review;
-  else if(/^\/v1\/tickets\/[^/]+\/(review-context|notification-attention)(?:\/|$)/.test(path))selected=reviewPortal;
+  else if(/^\/v1\/approval-invitations\/[^/]+(?:\/|$)/.test(path)||/^\/v1\/tickets\/[^/]+\/(review-context|notification-attention)(?:\/|$)/.test(path))selected=reviewPortal;
   else if(/^\/v1\/tickets\/[^/]+\/workflow-commands(?:\/|$)/.test(path))selected=workflow;
   else if(/^\/v1\/internal\/tickets\/[^/]+\/execution-checklist(?:\/|$)/.test(path))selected=checklist;
   else if((d.source?.mode==='local'||d.flags.workflow()===true)&&/^\/v1\/tickets(?:\/|$)/.test(path))selected=scoped;

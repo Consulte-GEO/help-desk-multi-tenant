@@ -1,5 +1,5 @@
 import type {Principal} from '../domain/model.ts';import type {SqlClient,SqlPool} from './sql.ts';import type {createResourceAccessResolver,ResourceScopeContext} from '../application/resource-access.ts';import type {ReviewDirectory} from '../application/support-review.ts';
-import {safeReviewError} from '../application/support-review.ts';import {runResourceTicketTransaction} from './resource-access-store.ts';import {assertBorrowedTransactionIdentity} from './transaction.ts';
+import {safeReviewError} from '../application/support-review.ts';import {runResourceTicketTransaction} from './resource-access-store.ts';import {assertBorrowedTransactionIdentity,runTransaction} from './transaction.ts';
 import {reviewRecord,reviewRevision,reviewDigest,reviewText,reviewFailure as fail} from '../domain/support-review.ts';import {parseFormVersion} from '../domain/form-schema.ts';import {uuidIdentifier} from '../domain/input-values.ts';import {parseExternalResourceSelection,externalResourceSelectionKey} from '../domain/external-resource.ts';
 import {copyFormData,freezeFormData,validateFormValues} from '../../shared/form-rules.js';import {requestHash} from '../domain/canonical.ts';import {instantMicros} from '../domain/business-calendar.ts';import {NOTIFICATION_KINDS,notificationRef} from '../domain/notification-delivery.ts';
 export function parseSupportReviewView(raw:unknown,p:Principal,ticketId:string,s:Pick<ResourceScopeContext,'principalId'|'workspaceId'|'accountId'|'refs'>){
@@ -24,7 +24,7 @@ export function parseDeliveryAttention(raw:unknown,p:Principal,ticketId:string,s
  * sender, challenge writer or command. SQL must be promoted before mounting. */
 export function createPostgresSupportReviewQueries(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:ReviewDirectory;assertStepUp:(p:Principal,proof:unknown)=>void;enabled?:()=>boolean}){
  async function read(p:Principal,id:string,attention:boolean,proof:unknown,signal?:AbortSignal,admission?:()=>void){try{
-  const target=uuidIdentifier(id),identity=requestHash(copyFormData(p)),check=()=>{admission?.();if(o.enabled&&o.enabled()!==true)throw fail();if(requestHash(copyFormData(p))!==identity||p.kind!=='human')throw fail('approval_forbidden',403);if(attention){try{o.assertStepUp(p,proof);}catch{throw fail('review_step_up_required',403);}}};check();
+  const target=uuidIdentifier(id),identity=requestHash(copyFormData(p)),check=()=>{admission?.();if(o.enabled&&o.enabled()!==true)throw fail('release_gate_closed',503);if(requestHash(copyFormData(p))!==identity||p.kind!=='human')throw fail('approval_forbidden',403);if(attention){try{o.assertStepUp(p,proof);}catch{throw fail('review_step_up_required',403);}}};check();
   const located=await o.directory.locateTicket(p,target,signal);check();if(!located)throw fail('review_not_found',404);const refs=parseExternalResourceSelection(located.refs),lease=await o.resolver.resolveResourceScope(p,refs,'tickets.write',signal);check();
   return await runResourceTicketTransaction(o.pool,o.resolver,p,target,refs,'tickets.write',lease,async(c:SqlClient,s:ResourceScopeContext)=>{
    check();assertBorrowedTransactionIdentity(c,p);if(s.accountId!==located.accountId)throw fail('approval_forbidden',403);
@@ -32,5 +32,13 @@ export function createPostgresSupportReviewQueries(o:{pool:SqlPool;resolver:Retu
    check();if(result.command!=='SELECT'||result.rowCount!==1||result.rows.length!==1)throw fail();const value=reviewRecord(result.rows[0],['result']).result;return attention?parseDeliveryAttention(value,p,target,s):parseSupportReviewView(value,p,target,s);
   },signal,check);
  }catch(e){throw safeReviewError(e);}}
- return Object.freeze({readReviewContext:(p:Principal,id:string,signal?:AbortSignal,admission?:()=>void)=>read(p,id,false,undefined,signal,admission),readDeliveryAttention:(p:Principal,id:string,proof:unknown,signal?:AbortSignal,admission?:()=>void)=>read(p,id,true,proof,signal,admission)});
+ async function readApprovalLanding(p:Principal,id:string,signal?:AbortSignal,admission?:()=>void){try{
+  const invitationId=uuidIdentifier(id),identity=requestHash(copyFormData(p)),check=()=>{admission?.();if(signal?.aborted)throw fail();if(o.enabled&&o.enabled()!==true)throw fail('release_gate_closed',503);if(p.kind!=='human'||requestHash(copyFormData(p))!==identity)throw fail('approval_forbidden',403);};check();
+  return await runTransaction(o.pool,p,async c=>{
+   check();assertBorrowedTransactionIdentity(c,p);let r;
+   try{r=await c.query('select helpdesk_auth.hdnr_landing($1) as result',[invitationId]);}catch(e){const code=e&&typeof e==='object'?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined;if(code==='HDR01'||code==='HDR05')throw fail('approval_forbidden',403);if(code==='HDR02')throw fail('approval_revision_changed',412);throw fail();}
+   check();if(r.command!=='SELECT'||r.rowCount!==1||r.rows.length!==1)throw fail();const result=reviewRecord(reviewRecord(r.rows[0],['result']).result,['workspaceId','ticketId','invitationId']);if(result.workspaceId!==p.workspaceId||result.invitationId!==invitationId)throw fail();uuidIdentifier(result.ticketId);return freezeFormData(result);
+  },check);
+ }catch(e){throw safeReviewError(e);}}
+ return Object.freeze({readApprovalLanding,readReviewContext:(p:Principal,id:string,signal?:AbortSignal,admission?:()=>void)=>read(p,id,false,undefined,signal,admission),readDeliveryAttention:(p:Principal,id:string,proof:unknown,signal?:AbortSignal,admission?:()=>void)=>read(p,id,true,proof,signal,admission)});
 }
