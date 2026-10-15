@@ -1,7 +1,7 @@
 """Owned Chromium component, real UI modules, synthetic HTTPS API only.
 Does not attach to any user browser, authenticate a real person or send email.
 """
-import json, mimetypes, os, shutil
+import json, mimetypes, os, shutil, sys
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright, expect
@@ -34,7 +34,8 @@ window.panel=mountOperationalReview(document.querySelector('#fixture'),{identity
 await window.panel.load();window.reviewReady=true;
 '''
 HTML='''<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/fixture.css"><title>Revisão · fixture sintética</title></head><body><main id="fixture"></main><script type="module" src="/fixture.js"></script></body></html>'''
-def record(name):checks.append({'check':name,'result':'passed'})
+def record(name):
+ checks.append({'check':name,'result':'passed'});print('Review UI check: '+name,file=sys.stderr,flush=True)
 with sync_playwright() as pw:
  browser=pw.chromium.launch(headless=True,executable_path=os.environ.get('BROWSER_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
  for width in [1440,360]:
