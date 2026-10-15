@@ -42,6 +42,10 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   const opened=await intake.createSupportRequest(customer,{...query,previewHash:preview.previewHash},randomUUID(),randomUUID());
   const result=(await operator.query(`select t.status,s.approval,s.profile_version_id from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0]!;
   assert.equal(result.status,'triage','native opening still ignores the published approval profile');assert.equal(result.approval,'pending');assert.equal(result.profile_version_id,entry.workflow.versionId);
+  const receipt=(await operator.query('select event_id from helpdesk_audit.hdni_receipts where workspace_id=$1 and ticket_id=$2',[w,opened.ticketId])).rows[0]!;
+  const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.event_id])).rows[0]!.result as any;
+  assert.equal(facts.source.type,'support.created');assert.equal(facts.requesterId,customer.id);
+  assert.doesNotMatch(JSON.stringify(facts),/Owned pending approval details|Approval must precede work|body|answers/);
   const old=(await operator.query("select document->'profile'->'approvalRequired' as required,document->'bundle'->'workflow'->>'approval' as approval from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,oldTicketId])).rows[0]!;
   assert.deepEqual(old,{required:false,approval:'not_required'});
  });
