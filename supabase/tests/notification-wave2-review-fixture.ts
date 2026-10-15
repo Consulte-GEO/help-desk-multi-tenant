@@ -1,3 +1,6 @@
+import {createPostgresSupportReviewQueries} from '../../src/infrastructure/support-review-portal.ts';
+import {assertOwnedReviewPortal} from './notification-wave2-portal-fixture.ts';
+import {assertOwnedRevisionRollback} from './notification-wave2-revision-faults.ts';
 import {prepareOwnedReviewDelivery,assertOwnedInvitationDelivery,assertOwnedReviewResultDelivery} from './notification-wave2-review-delivery.ts';
 import type {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
 /** Owned PG17 only. Genuine app transactions; synthetic Auth is confined to this fixture. */
@@ -66,6 +69,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    await operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason)
     values($1,$2,$3,1,$4,true,$5::text[],clock_timestamp()+interval '10 minutes',$6,'Owned exact separate approver')`,[w,a,entry.workflow.versionId,agent.id,[workId],randomUUID()]);
    const review=createSupportReview({pool:traced,resolver:source.resolver,createStore:createPostgresSupportReviewStore,assertStepUp:assertAdministrativeAssurance,directory:{async locateTicket(person,id,signal){const value=await source.directory.readTicketResources(person,id,signal??new AbortController().signal);return value as {accountId:string;refs:readonly ExternalResourceRef[]}|null;}}});
+   const portal=createPostgresSupportReviewQueries({pool:traced,resolver:source.resolver,assertStepUp:assertAdministrativeAssurance,directory:{async locateTicket(person,id,signal){return await source.directory.readTicketResources(person,id,signal??new AbortController().signal) as {accountId:string;refs:readonly ExternalResourceRef[]};}}});
    const key=randomUUID(),requestId=randomUUID();
    const invite=()=>auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,opened.ticketId,1,key,requestId,proof));
    const created=await invite();assert.equal(created.ticketId,opened.ticketId);assert.equal(created.actorId,agent.id);assert.equal(created.formRevision,1);assert.equal(created.replayed,false);
@@ -73,6 +77,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
    assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
    assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
+   await invitationSuite.test('qualified review portal and independent delivery attention use the actual request transaction',portalSuite=>assertOwnedReviewPortal(portalSuite,operator,app,portal,{agent,customer,ticketId:opened.ticketId,invitationId:created.invitationId,oldTicketId,readAssured:work=>auth.withAdministrativeAssurance(request,(_person,proof)=>work(proof))}));
    let consumedInvitation:(()=>Promise<void>)|undefined;
    await invitationSuite.test('the actual worker selects only the frozen separate approver and rechecks queued delegation',async deliverySuite=>{
     const header=(await operator.query('select id from helpdesk_integration.hdnr_sources where workspace_id=$1 and invitation_id=$2',[w,created.invitationId])).rows[0]!;
@@ -96,6 +101,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const replayedDecision=await decide();assert.equal(replayedDecision.eventId,rejected.eventId);assert.equal(replayedDecision.replayed,true);
    const state=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0]!;
    assert.deepEqual(state,{status:'waiting_customer',approval:'pending'});
+   await invitationSuite.test('requester sees the explicit decision justification in the scoped portal rather than email',async()=>{const view=await portal.readReviewContext(customer,opened.ticketId) as any;assert.equal(view.decision.reason,decision.reason);assert.equal(view.decision.formRevision,1);assert.equal(view.context.invitationId,null);});
    if(consumedInvitation)await invitationSuite.test('consumed invitations revoke dispatch while preserving callback source history',consumedInvitation);
    await invitationSuite.test('rejection notice selects the requester without private justification',()=>assertOwnedReviewResultDelivery(audience,rejected.eventId,'support.approval_rejected'));
    const decisionReceipt=(await operator.query("select bundle from helpdesk_audit.hdnr_receipts where workspace_id=$1 and actor_id=$2 and intent_key=$3",[w,agent.id,decisionKey])).rows[0]!.bundle as any;
@@ -124,6 +130,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     const command={ticketId:opened.ticketId,expectedVersion:2,expectedFormRevision:1,draftId:corrected.id,expectedDraftRevision:1,comment:'Owned requested correction'};
     const preview=await review.previewSupportRevision(customer,command);assert.equal(preview.commitAuthorized,false);assert.equal(preview.publicDiff[0]!.path,'details');
     const key=randomUUID(),requestId=randomUUID(),revise=()=>review.reviseSupportForm(customer,{...command,previewHash:preview.previewHash},key,requestId);
+    await assertOwnedRevisionRollback(revisionSuite,operator,{workspaceId:w,ticketId:opened.ticketId,draftId:corrected.id,revise});
     const revised=await revise();assert.equal(revised.version,3);assert.equal(revised.formRevision,2);assert.equal(revised.replayed,false);
     await revisionSuite.test('revision notice selects the requester without answers or comment',()=>assertOwnedReviewResultDelivery(audience,revised.eventId,'support.form_revised'));
     const replay=await revise();assert.equal(replay.eventId,revised.eventId);assert.equal(replay.replayed,true);
