@@ -56,7 +56,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   const old=(await operator.query("select document->'profile'->'approvalRequired' as required,document->'bundle'->'workflow'->>'approval' as approval from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,oldTicketId])).rows[0]!;
   assert.deepEqual(old,{required:false,approval:'not_required'});
   await assertOwnedPendingOpeningFaults(openingSuite,operator,{customer,accountId:a,refs,formId,drafts:createFormDraftService(options),intake});
-  await openingSuite.test('the actual review application creates one pinned approval invitation and replays its own receipt',async()=>{
+  await openingSuite.test('the actual review application creates one pinned approval invitation and replays its own receipt',async invitationSuite=>{
    for(const capability of ['approvals.request','approvals.decide'])await operator.query(`insert into helpdesk_auth.hdnr_grants(workspace_id,account_id,principal_id,capability,revision,active,work_ids,expires_at,request_id,reason)
     values($1,$2,$3,$4,1,true,$5::text[],clock_timestamp()+interval '10 minutes',$6,'Owned explicit approval capability')`,[w,a,agent.id,capability,[workId],randomUUID()]);
    await operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason)
@@ -88,6 +88,21 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    assert.deepEqual(state,{status:'waiting_customer',approval:'pending'});
    const decisionReceipt=(await operator.query("select bundle from helpdesk_audit.hdnr_receipts where workspace_id=$1 and actor_id=$2 and intent_key=$3",[w,agent.id,decisionKey])).rows[0]!.bundle as any;
    assert.equal(decisionReceipt.decision.originPermissionGranted,false);assert.equal(decisionReceipt.decision.originExecution,'not_requested');assert.doesNotMatch(JSON.stringify(decisionReceipt),/hd_approval_/);
+   await invitationSuite.test('approval rejects a wrong token and authorizes only the Help Desk state without changing GEO access',async()=>{
+    const draft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:a,refs,formId,formVersion:2,answers:{details:'Owned separate approval acceptance'}},0);
+    const command={draftId:draft.id,expectedDraftRevision:1,subject:'Owned approved request',description:'Approval never grants external access',coverageId:null},preview=await intake.previewSupportRequest(customer,command);
+    const openedApproval=await intake.createSupportRequest(customer,{...command,previewHash:preview.previewHash},randomUUID(),randomUUID());
+    const invited=await auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,openedApproval.ticketId,1,randomUUID(),randomUUID(),proof));
+    const challenge=await auth.withAdministrativeAssurance(request,(person,proof)=>review.prepareApproval(person,openedApproval.ticketId,invited.invitationId,1,randomUUID(),proof));
+    const approval={ticketId:openedApproval.ticketId,invitationId:invited.invitationId,expectedVersion:1,expectedFormRevision:1,token:challenge.token,decision:'approve',reason:'Owned manual external action remains separate'};
+    const before=(await operator.query('select revision,decision_hash from helpdesk_auth.cg_local_registries where workspace_id=$1',[w])).rows[0];
+    await assert.rejects(review.decideApproval(agent,approval,randomUUID(),randomUUID()),{code:'review_step_up_required'});
+    await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,{...approval,token:'hd_approval_'+Buffer.alloc(32,1).toString('base64url')},randomUUID(),randomUUID(),proof)),{code:'approval_unavailable'});
+    const approved=await auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof));assert.equal(approved.decision,'approve');assert.equal(approved.version,2);
+    const current=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,openedApproval.ticketId])).rows[0];assert.deepEqual(current,{status:'open',approval:'approved'});
+    assert.deepEqual((await operator.query('select revision,decision_hash from helpdesk_auth.cg_local_registries where workspace_id=$1',[w])).rows[0],before);
+    await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof)),{code:'approval_unavailable'});
+   });
   });
  });
 }
