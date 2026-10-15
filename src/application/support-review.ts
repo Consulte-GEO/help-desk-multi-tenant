@@ -103,12 +103,16 @@ export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof c
    if(a.ticket.approval!=='pending'||!['new','triage'].includes(a.ticket.status)||a.profile.approvalRequired!==true)throw fail('approval_unavailable',409);
    // This first policy supports a single active invitation per request revision.
    // Multi-approver/quorum policies require a separate published model, not guessing.
-   if(await tx.findPendingInvitation(ticketId))throw fail('approval_already_pending',409);
    const route=reviewRecord(await tx.lockApprovalRoute(ticketId,s),['principalId','principalKind','workspaceId','accountId','ticketId','policyVersionId','resourceHash','revision','active','expiresAt']);
    const approverId=uuidIdentifier(route.principalId);
    if(route.principalKind!=='human'||route.workspaceId!==p.workspaceId||route.accountId!==a.ticket.accountId||route.ticketId!==ticketId||route.policyVersionId!==a.approvalPolicy.versionId||route.resourceHash!==requestHash(externalResourceSelectionKey(s.refs))||route.active!==true||typeof route.revision!=='string'||!route.revision)throw fail('approval_forbidden',403);
    if(!a.approvalPolicy.selfApprovalAllowed&&(approverId===a.requesterId||approverId===a.ticket.createdBy))throw fail('approval_self_forbidden',403);
    expires(route.expiresAt as string,'approval_unavailable');const at=clock(),invitationId=randomUUID(),id=randomUUID();
+   const pending=await tx.findPendingInvitation(ticketId);
+   if(pending!==null){const old=parseApprovalInvitation(pending);
+    if(old.status!=='pending'||old.ticketId!==ticketId||old.workspaceId!==p.workspaceId||old.accountId!==a.ticket.accountId)throw fail();
+    if(instantMicros(old.expiresAt)>instantMicros(at)&&old.ticketVersion===expected&&old.formRevision===a.form.revision&&old.targetHash===approvalTargetHash(target(a))&&old.approverId===approverId&&old.policyVersionId===a.approvalPolicy.versionId)throw fail('approval_already_pending',409);
+   }
    const invitation:ApprovalInvitation=freezeFormData({id:invitationId,ticketId,workspaceId:p.workspaceId,accountId:a.ticket.accountId,approverId,policyVersionId:a.approvalPolicy.versionId,ticketVersion:expected,formRevision:a.form.revision,targetHash:approvalTargetHash(target(a)),status:'pending',createdAt:at,expiresAt:route.expiresAt as string,challenge:null});
    parseApprovalInvitation(invitation);
    const result:InvitationReceipt=freezeFormData({ticketId,workspaceId:p.workspaceId,accountId:a.ticket.accountId,actorId:p.id,invitationId,ticketVersion:expected,formRevision:a.form.revision,notification:'pending',replayed:false});

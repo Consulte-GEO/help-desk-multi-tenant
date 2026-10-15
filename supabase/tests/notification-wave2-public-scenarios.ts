@@ -6,10 +6,13 @@ import {assertWave2InternalRelations,assertWave2ReviewRelations} from './notific
 import {createNotificationIntent} from '../../src/domain/notification-delivery.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
+import {readFile} from 'node:fs/promises';
 export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
  test('wave2 public intents are accepted by the actual private SQL contract',async suite=>{
   const c=await operatorPool().connect();
   try{
+   // Qualify the unpublished recovery body after actual18 before freezing it.
+   await c.query('BEGIN');await c.query(await readFile(new URL('../candidates/hdn_review_recovery.sql',import.meta.url),'utf8'));await c.query('COMMIT');
    await c.query('BEGIN');
    assert.equal((await c.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
    assert.equal((await c.query('select current_user as who')).rows[0]?.who,'helpdesk_operator');

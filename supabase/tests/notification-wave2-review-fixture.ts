@@ -149,7 +149,13 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     const requestInvite=(version:number,key:string)=>auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,fresh.ticketId,version,key,randomUUID(),proof));
     await roster('2 seconds');const firstKey=randomUUID(),first=await requestInvite(1,firstKey);await operator.query('select pg_sleep(2.2)');await roster('10 minutes');
     const view=await portal.readReviewContext(agent,fresh.ticketId) as any;assert.equal(view.capabilities.requestApproval,true);assert.equal(view.capabilities.decideApproval,false);
-    const secondKey=randomUUID(),second=await requestInvite(1,secondKey);assert.notEqual(second.invitationId,first.invitationId);
+    const secondKey=randomUUID(),beforeReplacement=await operator.query('select (select count(*)::int from helpdesk_audit.hdnr_receipts where workspace_id=$1 and ticket_id=$2) as receipts,(select count(*)::int from helpdesk_integration.hdnr_sources where workspace_id=$1 and ticket_id=$2) as sources',[w,fresh.ticketId]);
+    await recoverySuite.test('suppressed revocation rolls back the replacement receipt source and invitation',async()=>{
+     await operator.query(`create function helpdesk_auth.hdn_wave2_renewal_fault() returns trigger language plpgsql set search_path='' as $$begin if OLD.id='${first.invitationId}'::uuid then return null;end if;return NEW;end$$`);
+     try{await operator.query('create trigger zzz_wave2_renewal_fault before update on helpdesk_core.hdnr_invitations for each row execute function helpdesk_auth.hdn_wave2_renewal_fault()');await assert.rejects(requestInvite(1,secondKey),{code:'approval_unavailable'});assert.deepEqual((await operator.query('select (select count(*)::int from helpdesk_audit.hdnr_receipts where workspace_id=$1 and ticket_id=$2) as receipts,(select count(*)::int from helpdesk_integration.hdnr_sources where workspace_id=$1 and ticket_id=$2) as sources',[w,fresh.ticketId])).rows,beforeReplacement.rows);}
+     finally{await operator.query('drop trigger if exists zzz_wave2_renewal_fault on helpdesk_core.hdnr_invitations');await operator.query('drop function helpdesk_auth.hdn_wave2_renewal_fault()');}
+    });
+    const second=await requestInvite(1,secondKey);assert.notEqual(second.invitationId,first.invitationId);
     assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,first.invitationId])).rows[0]!.status,'revoked');
     assert.equal((await requestInvite(1,firstKey)).invitationId,first.invitationId,'replaying the earlier key must not renew it');
     await recoverySuite.test('a valid pending invitation still rejects a competing key',()=>assert.rejects(requestInvite(1,randomUUID()),{code:'approval_already_pending'}));
