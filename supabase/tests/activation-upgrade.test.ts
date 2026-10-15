@@ -2,9 +2,11 @@
 import test,{before,after} from 'node:test';import assert from 'node:assert/strict';
 import {validateDatabaseTestTargets} from '../../scripts/database-target.ts';import {loadMigrationBundle} from '../../scripts/migration-files.ts';
 import {verifyConsulteGeoActivation,compileActivationCatalogueGuard} from '../../scripts/consultegeo-activation-upgrade.ts';
-import {assertSafeDatabaseRole,assertSchemaCompatibility,assertDatabaseSecurity} from '../../src/infrastructure/postgres.ts';
+import {assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';
+import {assertSchemaCompatibility,assertDatabaseSecurity} from '../../tests/helpers/qualified-v024.ts';
+import {registerWave2UpgradeTests} from './notification-wave2-upgrade-scenarios.ts';
 import {assertRuntimeDatabase} from '../../src/infrastructure/authentication-database.ts';
-import {DATABASE_SECURITY_CONTRACT as current} from '../../src/infrastructure/database-security-contract.ts';
+import {DATABASE_SECURITY_CONTRACT as current} from '../../src/infrastructure/consultegeo-v024-security-contract.ts';
 import {DATABASE_SECURITY_CONTRACT as prior,assertDatabaseSecurity as assertV023Security} from '../../tests/helpers/qualified-v023.ts';
 import {withOperatorFixture} from '../../tests/helpers/operator-fixture.ts';import type {SqlPool} from '../../src/infrastructure/sql.ts';
 import {registerRegistrationOperationSqlTests} from './registration-operation-scenarios.ts';
@@ -14,7 +16,7 @@ import {registerWave2JourneySqlTests} from './notification-wave2-journey-scenari
 const targets=validateDatabaseTestTargets(process.env),operatorUrl=new URL(process.env.HELPDESK_TEST_OPERATOR_URL??''),adminUrl=new URL(targets.adminUrl);
 if(operatorUrl.protocol!==adminUrl.protocol||operatorUrl.host!==adminUrl.host||operatorUrl.pathname!=='/helpdesk_test'||operatorUrl.username!=='helpdesk_operator'||!operatorUrl.password||operatorUrl.search||operatorUrl.hash)throw Error('A dedicated direct operator URL in the third owned cluster is required.');
 const bundle=await loadMigrationBundle(process.cwd());await verifyConsulteGeoActivation(process.cwd());
-if(bundle.schemaVersion!=='0.24.0'||bundle.migrations.length!==17||(current.schemaVersion as string)!=='0.24.0')throw Error('The complete reviewed activation migration set is required.');
+if(!((bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&bundle.migrations.length===18))||(current.schemaVersion as string)!=='0.24.0')throw Error('The complete reviewed activation migration set is required.');
 const sql=bundle.migrations[16]!.sql;let operator:SqlPool,control:SqlPool,app:SqlPool;
 async function identity(){assert.deepEqual((await operator.query('select current_user,session_user,rolsuper,rolcreaterole,rolbypassrls from pg_roles where rolname=current_user')).rows,[{current_user:'helpdesk_operator',session_user:'helpdesk_operator',rolsuper:false,rolcreaterole:true,rolbypassrls:true}]);}
 async function data(){return Promise.all(prior.tables.map(async table=>({table:table.name,rows:(await control.query(`select coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text),'[]'::jsonb) as rows from ${table.name} t`)).rows[0]?.rows})));}
@@ -108,5 +110,6 @@ test('current readiness rejects additional worker authority and owner defaults a
 });
 registerRegistrationOperationSqlTests(()=>operator,()=>control,()=>app);
 registerNotificationPublicationSqlTests(()=>operator,()=>control,()=>app);
+registerWave2UpgradeTests(()=>operator,()=>control,()=>app,snapshot);
 registerWave2PublicSqlTests(()=>operator);
 registerWave2JourneySqlTests(()=>operator,()=>control,()=>app);

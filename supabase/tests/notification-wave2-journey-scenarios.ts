@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {readFile} from 'node:fs/promises';
+import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';import type {Principal} from '../../src/domain/model.ts';
 import {planConsulteGeoInitialOperation} from '../../src/application/consultegeo-initial-operation.ts';
 import {planConsulteGeoLocalProvisioning} from '../../src/application/consultegeo-local-provisioning.ts';
@@ -9,16 +9,13 @@ import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirec
 import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
 import {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
 import {assertOwnedWave2ApprovalOpening} from './notification-wave2-review-fixture.ts';
-/** Last suite in an owned disposable cluster. Real ordinary app sessions see the
+/** Final journey in an owned disposable cluster. Real ordinary app sessions see the
  * committed candidate. Schema/upgrade readiness remains a separate release gate. */
 export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
  test('wave2 private projection follows genuine opening transfer and customer reply commits',async suite=>{
   const operator=operatorPool(),control=controlPool(),app=appPool();
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
-  await operator.query('BEGIN');try{
-   for(const file of ['hdn_notification_wave2_public.sql','hdn_notification_wave2_internal.sql','hdn_notification_wave2_audiences.sql','hdn_review_authority.sql','hdn_review_opening_guard.sql','hdn_review_intake.sql','hdn_review_store.sql','hdn_review_invitation.sql','hdn_review_challenge.sql','hdn_review_approval.sql','hdn_review_authority_lock.sql','hdn_review_revision.sql','hdn_review_notifications.sql','hdn_review_portal.sql'])await operator.query(await readFile(new URL('../candidates/'+file,import.meta.url),'utf8'));
-   await operator.query('COMMIT');
-  }catch(e){await operator.query('ROLLBACK');throw e;}
+  assert.equal((await operator.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.25.0','Use the actual eighteenth migration, never reapply candidate bodies');
   const hadAuth=Boolean((await control.query("select to_regclass('auth.users') as users")).rows[0]?.users);
   if(!hadAuth){await control.query('create schema if not exists auth');await control.query('create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,banned_until timestamptz,deleted_at timestamptz)');}
   await control.query('grant usage on schema auth to helpdesk_operator');

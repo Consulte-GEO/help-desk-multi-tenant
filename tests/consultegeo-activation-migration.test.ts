@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFile,cp,mkdtemp,mkdir,rm,writeFile} from 'node:fs/promises';import {join} from 'node:path';import {tmpdir} from 'node:os';import {createHash} from 'node:crypto';
-import {DATABASE_SECURITY_CONTRACT as current} from '../src/infrastructure/database-security-contract.ts';
+import {DATABASE_SECURITY_CONTRACT as current} from '../src/infrastructure/consultegeo-v024-security-contract.ts';
 async function recipe(){try{return await import('../scripts/consultegeo-activation-upgrade.ts');}catch(error){assert.fail('The append-only activation recipe is missing: '+String(error));}}
 const guard='DO $candidate$ BEGIN RAISE EXCEPTION \'disposable only\'; END $candidate$;';
 const body='\n\nCREATE FUNCTION helpdesk_auth.example() RETURNS text LANGUAGE sql SET search_path=\'\' AS $$SELECT \'unchanged\'::text$$;\n';
@@ -49,7 +49,7 @@ for(const mode of ['missing','reordered','duplicate','altered-source','altered-h
 async function fixture(work:(root:string)=>Promise<void>){const root=await mkdtemp(join(tmpdir(),'helpdesk-activation-'));try{
  await mkdir(join(root,'supabase'));await cp('supabase/migrations',join(root,'supabase/migrations'),{recursive:true});await cp('supabase/candidates',join(root,'supabase/candidates'),{recursive:true});
  await cp('supabase/migrations.manifest.json',join(root,'supabase/migrations.manifest.json'));await cp('supabase/consultegeo-activation.manifest.json',join(root,'supabase/consultegeo-activation.manifest.json'));
- for(const file of ['consultegeo-upgrade.manifest.json','consultegeo-guard-revision.manifest.json'])await cp(join('supabase',file),join(root,'supabase',file));
+ for(const file of ['consultegeo-upgrade.manifest.json','consultegeo-guard-revision.manifest.json','consultegeo-email-wave2.manifest.json'])await cp(join('supabase',file),join(root,'supabase',file));
  await cp('supabase/qualifications',join(root,'supabase/qualifications'),{recursive:true});await work(root);
  }finally{await rm(root,{recursive:true,force:true});}}
 test('activation verifier binds the CLI-generated append, frozen sources, original sixteen hashes and real native receipt',async()=>{const m=await recipe(),verified=await m.verifyConsulteGeoActivation(process.cwd());assert.equal(verified.schemaVersion,'0.24.0');assert.match(verified.file,/^\d{14}_consultegeo_operational_activation\.sql$/);const manifest=JSON.parse(await readFile('supabase/consultegeo-activation.manifest.json','utf8'));assert.equal(manifest.generatedBy.version,'2.120.0');assert.equal(manifest.baseline.length,16);assert.deepEqual(manifest.qualification,m.ACTIVATION_QUALIFICATION);});
@@ -66,7 +66,7 @@ test('the exact native qualification inventory participates in the source finger
  const corePath='../scripts/homologation-core.mjs', {sourceFingerprint}=await import(corePath),before=await sourceFingerprint(root);
  await writeFile(path,Buffer.concat([bytes,Buffer.from(' ')]));assert.notEqual(await sourceFingerprint(root),before);
 });});
-test('the original standalone M05 verifier also qualifies the complete current seventeen-file bundle',async()=>{const {verifyConsulteGeoUpgrade}=await import('../scripts/consultegeo-upgrade.ts');const verified=await verifyConsulteGeoUpgrade(process.cwd());assert.equal(verified.schemaVersion,'0.20.0');const manifest=JSON.parse(await readFile('supabase/migrations.manifest.json','utf8'));assert.equal(manifest.schemaVersion,'0.24.0');assert.equal(manifest.migrations.length,17);});
+test('the original standalone M05 verifier also qualifies the complete current eighteen-file bundle',async()=>{const {verifyConsulteGeoUpgrade}=await import('../scripts/consultegeo-upgrade.ts');const verified=await verifyConsulteGeoUpgrade(process.cwd());assert.equal(verified.schemaVersion,'0.20.0');const manifest=JSON.parse(await readFile('supabase/migrations.manifest.json','utf8'));assert.equal(manifest.schemaVersion,'0.25.0');assert.equal(manifest.migrations.length,18);});
 for(const mode of ['baseline-rehashed','source-rehashed','sql-rehashed','file-renamed','recipe-extra','receipt-altered'])test('activation verifier rejects '+mode+' without repair',async()=>{const m=await recipe();await fixture(async root=>{
  const manifestPath=join(root,'supabase/migrations.manifest.json'),recipePath=join(root,'supabase/consultegeo-activation.manifest.json'),manifest=JSON.parse(await readFile(manifestPath,'utf8')),r=JSON.parse(await readFile(recipePath,'utf8'));
  const hash=(value:string)=>createHash('sha256').update(value).digest('hex');

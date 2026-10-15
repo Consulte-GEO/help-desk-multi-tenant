@@ -3,7 +3,7 @@ import {UPGRADE_BASELINE} from './consultegeo-upgrade.ts';
 import {GUARD_REVISIONS} from './consultegeo-guard-revision.ts';
 import {createHash} from 'node:crypto';import {constants} from 'node:fs';import {lstat,open,realpath} from 'node:fs/promises';import {join} from 'node:path';
 import {loadMigrationBundle} from './migration-files.ts';
-import {DATABASE_SECURITY_CONTRACT} from '../src/infrastructure/database-security-contract.ts';
+import {DATABASE_SECURITY_CONTRACT} from '../src/infrastructure/consultegeo-v024-security-contract.ts';
 import {DATABASE_SECURITY_CONTRACT as V023} from '../src/infrastructure/consultegeo-v023-security-contract.ts';
 import {DATABASE_SECURITY_QUERY,READINESS_FLAGS} from '../src/infrastructure/database-security.ts';
 import {QUALIFIED_SCHEMA_OWNER_SQL,OWNER_DEFAULTS_OK_SQL,SERVICE_FINAL_GUARD} from './consultegeo-service-membership.ts';
@@ -129,7 +129,7 @@ export async function verifyConsulteGeoActivation(root:string):Promise<{schemaVe
  const path=await realpath(root),bundle=await loadMigrationBundle(path),raw:unknown=JSON.parse(await regular(join(path,'supabase/consultegeo-activation.manifest.json'),65536));
  if(!exact(raw,['format','product','baseSchema','targetSchema','file','sha256','generatedBy','qualification','securityContractSha256','components','baseline'])
   ||raw.format!==1||raw.product!=='CONSULTE_GEO'||raw.baseSchema!=='0.23.0'||raw.targetSchema!=='0.24.0'
-  ||bundle.schemaVersion!=='0.24.0'||bundle.migrations.length!==17
+  ||!((bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&bundle.migrations.length===18))
   ||JSON.stringify(raw.generatedBy)!==JSON.stringify(generatedBy)||JSON.stringify(raw.qualification)!==JSON.stringify(ACTIVATION_QUALIFICATION)
   ||raw.securityContractSha256!==ACTIVATION_CONTRACT_SHA256||JSON.stringify(raw.components)!==JSON.stringify(QUALIFIED_ACTIVATION_COMPONENTS)
   ||JSON.stringify(raw.baseline)!==JSON.stringify(ACTIVATION_BASELINE)

@@ -1,7 +1,6 @@
 /** Owned disposable PostgreSQL only; no production URLs or recipient contact. */
 import test from 'node:test';import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import {readFile} from 'node:fs/promises';
 import {captureM05SecurityInventory} from './m05-security-inventory.ts';
 import {assertWave2InternalRelations,assertWave2ReviewRelations} from './notification-wave2-internal-scenarios.ts';
 import {createNotificationIntent} from '../../src/domain/notification-delivery.ts';
@@ -14,24 +13,8 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
    await c.query('BEGIN');
    assert.equal((await c.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
    assert.equal((await c.query('select current_user as who')).rows[0]?.who,'helpdesk_operator');
-   assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.24.0');
-   // Reviewed candidate body only, inside this owned transaction. The promoted
-   // schema/manifest/guard and runtime remain separate gates; rollback preserves
-   // the existing fixture's qualified v024 installation after these assertions.
-   await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_public.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_internal.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_notification_wave2_audiences.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_authority.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_opening_guard.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_intake.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_store.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_invitation.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_challenge.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_approval.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_authority_lock.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_revision.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_notifications.sql',import.meta.url),'utf8'));
-   await c.query(await readFile(new URL('../candidates/hdn_review_portal.sql',import.meta.url),'utf8'));
+   assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.25.0');
+   // The actual qualified eighteenth migration already installed this catalogue.
    const now=new Date().toISOString(),until=new Date(Date.now()+86400000).toISOString();
    for(const kind of ['support.transition','support.reply','support.handoff','support.closed','support.reopened','support.cancelled','internal.queue_created','internal.assignment_changed']){
     await suite.test(kind,async()=>{
@@ -51,7 +34,7 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
      assert.equal((await c.query("select has_function_privilege($1,$2,'EXECUTE') as allowed",[role,signature])).rows[0]?.allowed,false);
    });
    await captureM05SecurityInventory({query:c.query.bind(c)} as SqlPool,{directory:'evidence/email-wave2/public-candidate',schemaVersion:'0.25.0',notificationWorker:true});
-   assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.24.0','Candidate test does not promote the schema');
+   assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.25.0','The promoted marker remains exact');
   }finally{await c.query('ROLLBACK');c.release();}
  });
 }

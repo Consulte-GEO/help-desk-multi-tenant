@@ -46,7 +46,7 @@ test('a changed file on disk does not replace the bytes already verified',async(
  await assert.rejects(()=>m.loadMigrationBundle(root));
 }));
 test('actual project bundle preserves assignment migration bytes, not DB execution',async()=>{
- const m=await loader(),b=await m.loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,17);assert.equal(b.schemaVersion,'0.24.0');
+ const m=await loader(),b=await m.loadMigrationBundle(process.cwd());assert.equal(b.migrations.length,18);assert.equal(b.schemaVersion,'0.25.0');assert.equal(b.migrations[17]?.file,'20261015014616_consultegeo_email_wave2.sql');
  const bytes=await readFile('supabase/migrations/20260916000800_ticket_assignment.sql','utf8');assert.equal(b.migrations[7].sql,bytes);
 });
 for(const mode of ['manifest-symlink','supabase-symlink','oversized-manifest','oversized-sql','invalid-utf8','empty-sql'])test('migration bytes reject '+mode,async()=>fixture(async(root,manifest)=>{

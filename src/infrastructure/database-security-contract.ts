@@ -1,6 +1,6 @@
-/** Reviewed PG17 metadata for schema 0.24.0; native qualification 38596743873. */
+/** Reviewed owned PG17 metadata for schema0.25; semantic qualification38690483513. Full promotion/release checks remain mandatory. */
 export const DATABASE_SECURITY_CONTRACT = {
-  "schemaVersion": "0.24.0",
+  "schemaVersion": "0.25.0",
   "schemas": [
     "helpdesk_auth",
     "helpdesk_core",
@@ -52,6 +52,24 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_audit.hdni_receipts",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.hdnr_challenges",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.hdnr_openings",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_audit.hdnr_receipts",
       "read": false,
       "insert": false,
       "updates": []
@@ -148,6 +166,18 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_auth.hdn_cfg_registries",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.hdnr_grants",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_auth.hdnr_rosters",
       "read": false,
       "insert": false,
       "updates": []
@@ -303,6 +333,30 @@ export const DATABASE_SECURITY_CONTRACT = {
       "updates": []
     },
     {
+      "name": "helpdesk_core.hdnr_forms",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_core.hdnr_invitations",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_core.hdnr_policies",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_core.hdnr_profiles",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
       "name": "helpdesk_core.internal_notes",
       "read": true,
       "insert": true,
@@ -393,6 +447,18 @@ export const DATABASE_SECURITY_CONTRACT = {
       "updates": []
     },
     {
+      "name": "helpdesk_integration.hdn_notification_private_sources",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdn_notification_queue_rosters",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
       "name": "helpdesk_integration.hdn_notification_records",
       "read": false,
       "insert": false,
@@ -406,6 +472,12 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "name": "helpdesk_integration.hdn_notification_templates",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
+      "name": "helpdesk_integration.hdnr_sources",
       "read": false,
       "insert": false,
       "updates": []
@@ -794,6 +866,16 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": false
     },
     {
+      "signature": "helpdesk_auth.hdn_notification_approver(uuid, uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_attention(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
       "signature": "helpdesk_auth.hdn_notification_authorize(uuid)",
       "definer": true,
       "execute": false
@@ -814,8 +896,28 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": false
     },
     {
+      "signature": "helpdesk_auth.hdn_notification_facts_v024(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_facts_wave2_public(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_facts_wave2_team(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
       "signature": "helpdesk_auth.hdn_notification_immutable()",
       "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_internal_person(uuid, uuid)",
+      "definer": true,
       "execute": false
     },
     {
@@ -830,6 +932,11 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "signature": "helpdesk_auth.hdn_notification_plan(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_project_internal()",
       "definer": true,
       "execute": false
     },
@@ -875,6 +982,11 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "signature": "helpdesk_auth.hdn_notification_valid_intent(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdn_notification_valid_members(uuid[], integer)",
       "definer": false,
       "execute": false
     },
@@ -1059,6 +1171,16 @@ export const DATABASE_SECURITY_CONTRACT = {
       "execute": false
     },
     {
+      "signature": "helpdesk_auth.hdni_profile_document_v024(jsonb, uuid)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdni_profile_v024(jsonb, uuid, integer)",
+      "definer": true,
+      "execute": false
+    },
+    {
       "signature": "helpdesk_auth.hdni_receipt(jsonb, text)",
       "definer": true,
       "execute": true
@@ -1091,6 +1213,151 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "signature": "helpdesk_auth.hdni_utf16(text)",
       "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_aggregate(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_authority_publish()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_authority_read(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_challenge(jsonb, integer)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_challenge_complete()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_commit_approval(jsonb, jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_commit_invitation(jsonb, jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_commit_revision(jsonb, jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_context(uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_diff(jsonb, jsonb, text, boolean, boolean, integer)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_grant(uuid, text, jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_invitation(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_invitation_guard()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_invitation_receipt(text)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_landing(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_opening_complete()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_operator(uuid, uuid, uuid, uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_pending_invitation(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_pending_opening_allowed(uuid, uuid, uuid, uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_profile_pin()",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_receipt(text)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_receipt_complete()",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_route(uuid, jsonb)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_scope_hash(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_scoped_revision(uuid, uuid, uuid, integer, integer, text, text, uuid)",
+      "definer": true,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_target_hash(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_valid_policy(jsonb)",
+      "definer": false,
+      "execute": false
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_view(uuid)",
+      "definer": true,
+      "execute": true
+    },
+    {
+      "signature": "helpdesk_auth.hdnr_view_capability(uuid, text, jsonb)",
+      "definer": true,
       "execute": false
     },
     {
@@ -1308,6 +1575,48 @@ export const DATABASE_SECURITY_CONTRACT = {
       "deferred": false
     },
     {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenge_complete",
+      "function": "helpdesk_auth.hdnr_challenge_complete()",
+      "type": 5,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_opening_complete",
+      "function": "helpdesk_auth.hdnr_opening_complete()",
+      "type": 5,
+      "deferred": true
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_opening_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipt_complete",
+      "function": "helpdesk_auth.hdnr_receipt_complete()",
+      "type": 5,
+      "deferred": true
+    },
+    {
       "table": "helpdesk_audit.write_effects",
       "name": "complete_write_effect",
       "function": "helpdesk_audit.require_write_effect()",
@@ -1383,6 +1692,34 @@ export const DATABASE_SECURITY_CONTRACT = {
       "function": "helpdesk_auth.cg_require_publication_receipt()",
       "type": 21,
       "deferred": true
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_authority_publication",
+      "function": "helpdesk_auth.hdnr_authority_publish()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_authority_publication",
+      "function": "helpdesk_auth.hdnr_authority_publish()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
     },
     {
       "table": "helpdesk_auth.human_scope_versions",
@@ -1497,6 +1834,55 @@ export const DATABASE_SECURITY_CONTRACT = {
       "deferred": false
     },
     {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitation_guard",
+      "function": "helpdesk_auth.hdnr_invitation_guard()",
+      "type": 31,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_authority_publication",
+      "function": "helpdesk_auth.hdnr_authority_publish()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_authority_publication",
+      "function": "helpdesk_auth.hdnr_authority_publish()",
+      "type": 7,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_history_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profile_pin",
+      "function": "helpdesk_auth.hdnr_profile_pin()",
+      "type": 7,
+      "deferred": false
+    },
+    {
       "table": "helpdesk_core.internal_notes",
       "name": "record_note_effect",
       "function": "helpdesk_audit.record_conversation_effect()",
@@ -1509,6 +1895,13 @@ export const DATABASE_SECURITY_CONTRACT = {
       "function": "helpdesk_audit.bind_effect_event()",
       "type": 7,
       "deferred": false
+    },
+    {
+      "table": "helpdesk_core.ticket_events",
+      "name": "hdn_notification_project_internal",
+      "function": "helpdesk_auth.hdn_notification_project_internal()",
+      "type": 5,
+      "deferred": true
     },
     {
       "table": "helpdesk_core.ticket_messages",
@@ -1616,6 +2009,20 @@ export const DATABASE_SECURITY_CONTRACT = {
       "deferred": false
     },
     {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_source_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_roster_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
       "table": "helpdesk_integration.hdn_notification_routes",
       "name": "hdn_notification_route_immutable",
       "function": "helpdesk_auth.hdn_notification_immutable()",
@@ -1625,6 +2032,13 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "table": "helpdesk_integration.hdn_notification_templates",
       "name": "hdn_notification_template_immutable",
+      "function": "helpdesk_auth.hdn_notification_immutable()",
+      "type": 27,
+      "deferred": false
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_history_immutable",
       "function": "helpdesk_auth.hdn_notification_immutable()",
       "type": 27,
       "deferred": false
@@ -1881,6 +2295,136 @@ export const DATABASE_SECURITY_CONTRACT = {
     {
       "table": "helpdesk_audit.hdni_receipts",
       "name": "hdni_receipts_ticket_uk",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenge_complete",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_actor_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_challenge_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_generation_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_target_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_challenges",
+      "name": "hdnr_challenges_workspace_id_account_id_ticket_id_invitati_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_opening_complete",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_actor_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_profile_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_snapshot_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_ticket_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_workspace_id_account_id_profile_version_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_openings",
+      "name": "hdnr_openings_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipt_complete",
+      "type": "t"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_action_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_actor_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_created_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_intent_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_intent_key_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_workspace_id_account_id_ticket_id_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_audit.hdnr_receipts",
+      "name": "hdnr_receipts_workspace_id_actor_id_intent_key_key",
       "type": "u"
     },
     {
@@ -2342,6 +2886,91 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_auth.hdn_cfg_registries",
       "name": "hdn_cfg_registries_workspace_id_fkey",
       "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_capability_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_principal_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_reason_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_work_ids_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_workspace_id_account_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_grants",
+      "name": "hdnr_grants_workspace_id_request_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_approver_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_reason_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_work_ids_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_workspace_id_account_id_profile_version_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_auth.hdnr_rosters",
+      "name": "hdnr_rosters_workspace_id_request_id_key",
+      "type": "u"
     },
     {
       "table": "helpdesk_auth.human_scope_versions",
@@ -2969,6 +3598,176 @@ export const DATABASE_SECURITY_CONTRACT = {
       "type": "f"
     },
     {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_check1",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_source_version_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_workspace_id_account_id_ticket_id_receipt_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_forms",
+      "name": "hdnr_forms_workspace_id_account_id_ticket_id_source_version_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_workspace_id_account_id_ticket_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_workspace_id_account_id_ticket_id_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_core.hdnr_invitations",
+      "name": "hdnr_invitations_workspace_id_account_id_ticket_id_receipt_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_reason_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_recorded_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_sha256_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_workspace_id_account_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_policies",
+      "name": "hdnr_policies_workspace_id_request_id_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_configuration_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_configuration_version_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_reason_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_recorded_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_required_for_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_schema_hash_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_work_ids_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_workspace_id_account_id_form_id_form_version_key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_workspace_id_account_id_policy_version_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_workspace_id_configuration_id_configuration__fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_core.hdnr_profiles",
+      "name": "hdnr_profiles_workspace_id_request_id_key",
+      "type": "u"
+    },
+    {
       "table": "helpdesk_core.internal_notes",
       "name": "internal_notes_actor_id_fkey",
       "type": "f"
@@ -3057,6 +3856,11 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_core.ticket_events",
       "name": "event_visibility_kind",
       "type": "c"
+    },
+    {
+      "table": "helpdesk_core.ticket_events",
+      "name": "hdn_notification_project_internal",
+      "type": "t"
     },
     {
       "table": "helpdesk_core.ticket_events",
@@ -3304,6 +4108,86 @@ export const DATABASE_SECURITY_CONTRACT = {
       "type": "f"
     },
     {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sour_workspace_id_account_id_tick_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sour_workspace_id_parent_event_id__key",
+      "type": "u"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sour_workspace_id_parent_event_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_assigned_principal_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_created_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_kind_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_private_sources",
+      "name": "hdn_notification_private_sources_source_version_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_check1",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_reason_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_revision_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_workspace_id_account_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_queue_rosters",
+      "name": "hdn_notification_queue_rosters_workspace_id_request_id_key",
+      "type": "u"
+    },
+    {
       "table": "helpdesk_integration.hdn_notification_records",
       "name": "hdn_notification_records_channel_id_check",
       "type": "c"
@@ -3350,6 +4234,16 @@ export const DATABASE_SECURITY_CONTRACT = {
     },
     {
       "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_cohort_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
+      "name": "hdn_notification_routes_effective_after_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_notification_routes",
       "name": "hdn_notification_routes_expires_at_check",
       "type": "c"
     },
@@ -3392,6 +4286,41 @@ export const DATABASE_SECURITY_CONTRACT = {
       "table": "helpdesk_integration.hdn_notification_templates",
       "name": "hdn_notification_templates_pkey",
       "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_created_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_kind_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_source_version_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_workspace_id_account_id_ticket_id_receipt_id_fkey",
+      "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdnr_sources",
+      "name": "hdnr_sources_workspace_id_receipt_id_key",
+      "type": "u"
     },
     {
       "table": "helpdesk_integration.outbox_events",

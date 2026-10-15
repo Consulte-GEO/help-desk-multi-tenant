@@ -1,6 +1,7 @@
 import type {SqlPool} from './sql.ts';
 import {HelpdeskError} from '../domain/errors.ts';
 import {DATABASE_SECURITY_CONTRACT} from './database-security-contract.ts';
+import {DATABASE_SECURITY_CONTRACT as V024} from './consultegeo-v024-security-contract.ts';
 import {OWNER_DEFAULTS_OK_SQL,unsafeServiceMembershipSql} from '../../scripts/consultegeo-service-membership.ts';
 
 /** One read-only catalogue query; no ticket, credential, token, or message values. */
@@ -99,10 +100,12 @@ export const READINESS_FLAGS = Object.freeze([
  'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok','reserved_roles_ok','owner_defaults_ok'
 ] as const);
 
-export async function assertDatabaseSecurity(pool:SqlPool):Promise<void>{
- const result=await pool.query(DATABASE_SECURITY_QUERY,[JSON.stringify(DATABASE_SECURITY_CONTRACT),[...DATABASE_SECURITY_CONTRACT.schemas]]);
+export async function assertDatabaseSecurity(pool:SqlPool,version:'0.24.0'|'0.25.0'=DATABASE_SECURITY_CONTRACT.schemaVersion):Promise<void>{
+ if(version!=='0.24.0'&&version!=='0.25.0')throw new HelpdeskError(503,'unsafe_database_policies','Contrato do banco não qualificado.');
+ const contract=version==='0.24.0'?V024:DATABASE_SECURITY_CONTRACT;
+ const result=await pool.query(DATABASE_SECURITY_QUERY,[JSON.stringify(contract),[...contract.schemas]]);
  const row=result.rows[0];
- if(result.rows.length!==1||!row||row.table_count!==DATABASE_SECURITY_CONTRACT.tables.length||row.unsafe_tables!==0
+ if(result.rows.length!==1||!row||row.table_count!==contract.tables.length||row.unsafe_tables!==0
   ||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false
   ||READINESS_FLAGS.some(key=>row[key]!==true))
   throw new HelpdeskError(503,'unsafe_database_policies','Estrutura ou proteções do banco não correspondem à versão homologável.');
