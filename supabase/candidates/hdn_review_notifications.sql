@@ -12,7 +12,7 @@ DECLARE s helpdesk_integration.hdnr_sources%rowtype;r helpdesk_audit.hdnr_receip
  IF s.kind='support.approval_requested' THEN
   SELECT * INTO STRICT i FROM helpdesk_core.hdnr_invitations WHERE(id,workspace_id,account_id,ticket_id)=(s.invitation_id,s.workspace_id,s.account_id,s.ticket_id);
   expected:=expected||jsonb_build_object('invitationId',s.invitation_id);
-  IF r.action<>'invitation' OR r.invitation_id<>s.invitation_id OR i.receipt_id<>r.id OR i.document-ARRAY['status','challenge'] IS DISTINCT FROM r.bundle->'invitation'-ARRAY['status','challenge'] OR i.document->'ticketVersion'<>to_jsonb(s.source_version)
+  IF r.action<>'invitation' OR r.invitation_id<>s.invitation_id OR i.receipt_id<>r.id OR i.document-ARRAY['status','challenge'] IS DISTINCT FROM (r.bundle->'invitation')-ARRAY['status','challenge'] OR i.document->'ticketVersion'<>to_jsonb(s.source_version)
    OR NOT EXISTS(SELECT 1 FROM helpdesk_audit.audit_events e WHERE(e.workspace_id,e.id,e.principal_id,e.action,e.resource_id,e.request_id,e.created_at)=(s.workspace_id,s.id,r.actor_id,'approval.requested',s.ticket_id,s.request_id::text,s.created_at)) THEN RAISE EXCEPTION 'Review invitation source mismatch' USING ERRCODE='HDN05';END IF;
  ELSE
   SELECT * INTO STRICT c FROM helpdesk_audit.hdn_workflow_commits WHERE(workspace_id,account_id,ticket_id,event_id)=(s.workspace_id,s.account_id,s.ticket_id,s.id) FOR SHARE;

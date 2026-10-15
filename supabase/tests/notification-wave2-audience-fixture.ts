@@ -29,5 +29,12 @@ export async function createOwnedWave2AudienceFixture(suite:TestContext,operator
   try{await worker.query('select helpdesk_auth.hdn_notification_authorize($1) as probe',[record.intent.id]);}catch(raw){const e=raw as {code?:string;where?:string;routine?:string;table?:string};suite.diagnostic(JSON.stringify({fixture:'owned-wave2-recipient',code:e.code,where:e.where,routine:e.routine,table:e.table}));}
   throw error;
  }};
- return {worker,store,materialize,claim,authorize,scope};
+ const ownedClaims=new Map<string,ReturnType<typeof parseDeliveryRecord>>();
+ async function claimFor(id:string){
+  if(ownedClaims.has(id))return ownedClaims.get(id)!;
+  const at=await clock(),claims=await store.claimDelivery({workerId:'owned-wave2-review',at,until:formatMicros(instantMicros(at)+180_000_000n),limit:10});
+  for(const raw of claims){const row=parseDeliveryRecord(raw);ownedClaims.set(row.intent.id,row);}
+  assert.ok(ownedClaims.has(id),'the actual bounded worker must lease this intent before recipient authorization');return ownedClaims.get(id)!;
+ }
+ return {worker,store,materialize,claim,claimFor,authorize,scope};
 }

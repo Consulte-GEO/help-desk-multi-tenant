@@ -16,7 +16,7 @@ export async function assertOwnedInvitationDelivery(suite:TestContext,operator:S
  assert.equal(facts.type,'support.approval_requested');assert.equal(facts.invitationId,invitationId);
  assert.doesNotMatch(JSON.stringify(facts),/hd_approval_|challenge|hash|details|reason|email/);
  const enumerated=(await audience.worker.query('select helpdesk_auth.hdn_notification_sources(10) as ids')).rows[0]!.ids as string[];assert.ok(enumerated.includes(eventId));
- const saved=await audience.materialize(eventId);assert.equal(saved.records.length,1);const record=saved.records[0]!;
+ const saved=await audience.materialize(eventId);assert.equal(saved.records.length,1);const record=await audience.claimFor(saved.records[0]!.intent.id);
  assert.equal(record.intent.recipientId,approverId);assert.equal(record.intent.invitationId,invitationId);assert.equal((await audience.authorize(record)).decision,'allowed');
  await suite.test('a queued approval notice loses delivery authority after its exact delegation is revoked',async()=>{
   const publish=(active:boolean)=>operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason)
@@ -31,7 +31,7 @@ export async function assertOwnedInvitationDelivery(suite:TestContext,operator:S
  };
 }
 export async function assertOwnedReviewResultDelivery(audience:Audience,eventId:string,kind:string){
- const saved=await audience.materialize(eventId);assert.equal(saved.records.length,1);const record=saved.records[0]!;
+ const saved=await audience.materialize(eventId);assert.equal(saved.records.length,1);const record=await audience.claimFor(saved.records[0]!.intent.id);
  assert.equal(record.intent.kind,kind);assert.equal(record.intent.recipientId,audience.scope.requesterId);assert.equal(record.intent.invitationId,null);
  assert.equal((await audience.authorize(record)).decision,'allowed');
  assert.doesNotMatch(JSON.stringify(record),/Owned correction|Owned pending approval details|hd_approval_|reason|answers|email/);
