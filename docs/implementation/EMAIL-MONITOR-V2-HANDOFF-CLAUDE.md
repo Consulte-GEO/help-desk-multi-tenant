@@ -2,7 +2,7 @@
 
 ## Estado que deve ser preservado
 
-O código está na branch local `codex/email-monitoring-v2`, base `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`. A implementação principal está em `bfef03b`; os commits seguintes corrigem/revisam cobertura, diagnóstico e documentação. Consultar `git log` para o HEAD exato. Nenhum push, PR, deploy, callback real ou mudança de produção foi concluído nesta rodada.
+O código está na branch local `codex/email-monitoring-v2`, base `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`. A implementação principal está em `bfef03b`; os commits seguintes corrigem/revisam cobertura, diagnóstico e documentação. Consultar `git log` para o HEAD exato. O titular autorizou expressamente push/PR/CI e a branch foi enviada: [PR52](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/52). Não houve deploy, callback real ou mudança de produção nesta rodada.
 
 Leitura inicial: `AGENTS.md`, `docs/159-GESTAO-EMAILS-V2-2026-10-15.md`, especificação V2 e `docs/implementation/EMAIL-MONITOR-V2-PROGRESS.md`. O diretório da especificação é um registro íntegro anterior ao código; seus campos “a desenvolver” não são um inventário atualizado da implementação. Não editar seu manifesto para fingir aceite do produto.
 
@@ -17,12 +17,12 @@ O monitor é somente leitura e usa autenticação, contexto de autorização, fi
 - Typecheck, build, verificação estrutural OpenAPI e cadeia offline de migrations executados. A verificação OpenAPI é estrutural, não um validador oficial completo.
 -16 cenários PG17 reais foram preparados em `supabase/tests/email-monitor-scenarios.ts`, registrados na suíte de ativação. Ainda não foram executados nesta rodada.
 
-O envio da branch foi recusado pela revisão automática de permissões: o pedido de implementação não foi considerado autorização explícita para transferir código privado ao repositório GitHub. A pergunta de autorização ao titular ficou pendente. Não contornar essa recusa usando conector, outra conta, outro repositório ou pipeline alternativo.
+A recusa inicial de push foi resolvida por autorização humana explícita para enviar esta branch ao repositório correto, abrir PR e executar CI. Essa autorização não inclui publicação em produção. O CI está em qualificação; consultar os resultados mais recentes do PR.
 
 ## Próximos passos
 
-1. Obter/confirmar autorização explícita para enviar a branch ao repositório `Consulte-GEO/help-desk-multi-tenant`, abrir PR e executar CI. O remote `github` aponta para esse repositório; `origin` é um bundle local antigo e não é o destino de push.
-2. Enviar a branch de feature, abrir PR para `codex/m1-reproducibilidade` e aguardar o CI do commit exato. Os workflows principal e suplementar de PG17 já contemplam a branch; não afrouxar os gates.
+1. A autorização explícita de push/PR/CI já foi concedida para `Consulte-GEO/help-desk-multi-tenant`. O remote `github` aponta para esse repositório; `origin` é um bundle local antigo e não é o destino de push.
+2. A branch já foi enviada e o PR52 está aberto para `codex/m1-reproducibilidade`; aguardar o CI do commit exato. Os workflows principal e suplementar de PG17 já contemplam a branch; não afrouxar os gates.
 3. Executar/corrigir PostgreSQL17 com sessões reais restritas e toda a cadeia de migrations, mais interface Python e suíte completa Linux. Inspecionar logs reais antes de declarar aprovação. O teste usa clusters descartáveis próprios, envio sintético e callbacks assinados, sem Resend real.
 4. Tratar falhas de teste com investigação e regressão negativa; não ajustar catálogo ou hashes para esconder drift. Reexecutar somente o necessário após cada correção e depois o gate completo do commit final.
 5. Registrar CI/PR/commit e limites no checkpoint/ledger. A implantação produtiva, início da coleta no provedor e aceite autenticado continuam etapas distintas, sob autorização e processo do projeto.
@@ -41,4 +41,4 @@ O envio da branch foi recusado pela revisão automática de permissões: o pedid
 
 ## Prompt para iniciar no Claude
 
-> Continue a implementação da gestão de entrega de e-mails V2 existente nesta branch. Leia AGENTS.md, checkpoint159 e este handoff antes de agir. O código passou revisão e testes focais, mas falta executar PG17 real e CI Linux do commit final. Preserve a especificação aprovada, privacidade, contratos históricos e o piloto. O push anterior foi rejeitado pela revisão automática de permissões e depende de autorização explícita do titular; não contorne essa restrição. Após a autorização, use a branch de feature no repositório correto, corrija quaisquer falhas reais e apresente PR e evidências. Não considere testes sintéticos como aceite produtivo nem faça deploy ou ative coleta sem cumprir o processo operacional autorizado.
+> Continue a implementação da gestão de entrega de e-mails V2 existente nesta branch. Leia AGENTS.md, checkpoint159 e este handoff antes de agir. O código passou revisão e testes focais, mas falta executar PG17 real e CI Linux do commit final. Preserve a especificação aprovada, privacidade, contratos históricos e o piloto. O titular já autorizou explicitamente push, PR e CI para este repositório e a branch está no PR52. Continue corrigindo quaisquer falhas reais e apresente PR e evidências. Não considere testes sintéticos como aceite produtivo nem faça deploy ou ative coleta sem cumprir o processo operacional autorizado.
