@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {supportIo,sid,NOW,LATER} from './support-io-fixture.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
 import {externalResourceSelectionKey} from '../../src/domain/external-resource.ts';
-import {approvalTargetHash} from '../../src/domain/support-review.ts';
+import {approvalTargetHash,reviewFailure} from '../../src/domain/support-review.ts';
 export {sid,NOW,LATER};
 export async function reviewFixture(){
  const path='../../src/application/support-review.ts';const m=await import(path).catch(e=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof m.createSupportReview,'function','C11 application not implemented');
@@ -32,9 +32,10 @@ export async function reviewFixture(){
   commitApproval:async(bundle:any,receipt:any)=>{await f.write(c);if(f.stage().aggregate.ticket.version!==bundle.expectedVersion)throw Error('ticket CAS');f.stage().aggregate.ticket=structuredClone(bundle.decision.after);f.stage().aggregate.events.push(bundle.decision.event);const inv=f.stage().invitations.get(bundle.invitationId);f.stage().invitations.set(inv.id,{...inv,status:'used'});f.stage().receipts.set(receipt.key,structuredClone(receipt));f.stage().audits.push(bundle.audit);f.stage().outbox.push(bundle.outbox);},
   commitRevision:async(bundle:any,receipt:any)=>{await f.write(c);if(f.stage().aggregate.ticket.version!==bundle.expectedVersion)throw Error('ticket CAS');f.stage().revisions.push(structuredClone(f.stage().aggregate.form));f.stage().aggregate.form=structuredClone(bundle.form);f.stage().aggregate.ticket=structuredClone(bundle.decision.after);f.stage().aggregate.events.push(bundle.decision.event);for(const [id,inv] of f.stage().invitations)if(inv.status==='pending')f.stage().invitations.set(id,{...inv,status:'revoked'});f.stage().draft.status='committed';f.stage().draft.ticketId=t.id;f.stage().receipts.set(receipt.key,structuredClone(receipt));f.stage().audits.push(bundle.audit);f.stage().outbox.push(bundle.outbox);}
  });
- const service=m.createSupportReview({...f,directory:{locateTicket:async()=>({accountId:sid(3),refs:f.refs})},createStore,clock:f.clock,assertStepUp:()=>{if(!controls.stepUp)throw Error('private MFA');}});
+ let closed=false;
+ const service=m.createSupportReview({...f,directory:{locateTicket:async()=>({accountId:sid(3),refs:f.refs})},createStore,clock:f.clock,admit:()=>{if(closed)throw reviewFailure('release_gate_closed',503);},assertStepUp:()=>{if(!controls.stepUp)throw Error('private MFA');}});
  const prepare=()=>service.prepareApproval(f.p,sid(20),sid(30),f.current().aggregate.ticket.version,sid(99));
  const decide=(challenge:any,overrides:any={},key='review-decision-0001')=>service.decideApproval(f.p,{ticketId:sid(20),invitationId:sid(30),expectedVersion:1,expectedFormRevision:1,token:challenge.token,decision:'approve',reason:'Conferido',...overrides},key,sid(99));
  function editing(approvalRequired=false){const a=f.current().aggregate;a.ticket.status='waiting_customer';a.ticket.approval=approvalRequired?'pending':'not_required';a.profile.approvalRequired=approvalRequired;a.events[0].to='waiting_customer';f.current().draft={id:sid(61),workspaceId:sid(1),accountId:sid(3),ownerId:f.p.id,refs:f.refs,formId:sid(7),formVersion:1,schemaHash:requestHash(schema),revision:1,answers:{summary:'Corrigido',impact:'major'},status:'editing',createdAt:NOW,expiresAt:LATER,ticketId:null,sourceHash:'a'.repeat(64)};return {ticketId:sid(20),expectedVersion:1,expectedFormRevision:1,draftId:sid(61),expectedDraftRevision:1,comment:'Correção solicitada'};}
- return {...f,service,controls,prepare,decide,editing,createStore};
+ return {...f,service,controls,prepare,decide,editing,createStore,close:()=>{closed=true;}};
 }
