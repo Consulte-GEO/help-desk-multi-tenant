@@ -34,6 +34,11 @@ export async function runNativeSuite({owner,app}){
  const read=()=>runTransaction(app,person,async c=>{const store=createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)});await store.lockScope(scope('read'));return store.lockOperation(op);});
  await test('complete immutable migration chain matches the current fixed schema contract',async()=>assert.equal((await owner.query('select helpdesk_auth.schema_version() version')).rows[0].version,DATABASE_SECURITY_CONTRACT.schemaVersion));
  await test('unprotected core permits prepare through the real transaction service',async()=>{await invoke(prepare);assert.equal((await read()).state.snapshot.operationId,op);});
+ const review=internal=>runTransaction(app,person,async c=>(await c.query('select helpdesk_auth.hda06_review_target($1::uuid,$2::boolean) result',[ticket,internal])).rows[0].result);
+ await test('HDA customer target resolves only the authorized operation and never returns state or queue',async()=>{assert.deepEqual(await review(false),{workspaceId:w,accountId:a,ticketId:ticket,bindingId:binding,operationId:op});});
+ await test('HDA account manager cannot choose the private operator audience',async()=>{await assert.rejects(review(true),{code:'HDJ01'});});
+ await test('HDA private reader uses current database operator grant and refuses after revocation',async()=>{await owner.query("update helpdesk_auth.account_grants set role='agent' where workspace_id=$1 and account_id=$2 and principal_id=$3",[w,a,who]);assert.equal((await review(true)).operationId,op);await owner.query("update helpdesk_auth.account_grants set role='account_manager' where workspace_id=$1 and account_id=$2 and principal_id=$3",[w,a,who]);await assert.rejects(review(true),{code:'HDJ01'});});
+ await test('HDA binding read grant revocation overrides core account access',async()=>{await owner.query('update helpdesk_integration.hda02_grants set enabled=false where workspace_id=$1 and binding_id=$2',[w,binding]);await assert.rejects(review(false),{code:'HDJ01'});await owner.query('update helpdesk_integration.hda02_grants set enabled=true where workspace_id=$1 and binding_id=$2',[w,binding]);});
  await owner.query('insert into helpdesk_auth.cg_resource_connections(workspace_id,id,product_instance_id) values($1,$2,$3)',[w,connection,instance]);
  await owner.query("insert into helpdesk_auth.cg_resource_bindings(workspace_id,account_id,id,connection_id,tenant_id) values($1,$2,$3,$4,'Synthetic')",[w,a,cgBinding,connection]);
  await owner.query('insert into helpdesk_core.cg_ticket_resource_sets(workspace_id,account_id,ticket_id,binding_id,expected_count) values($1,$2,$3,$4,1)',[w,a,ticket,cgBinding]);
@@ -52,7 +57,7 @@ export async function runNativeSuite({owner,app}){
  });
  await owner.query("update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and binding_id=$2 and operation='tickets.read'",[w,cgBinding]);
  await test('CG revocation overrides HDA grant for reads, replay and cancellation without writes',async()=>{
-  await assert.rejects(read());await assert.rejects(invoke(prepare));await assert.rejects(invoke({type:'cancel',commandId:randomUUID(),operationId:op,expectedRevision:1}));
+  await assert.rejects(read());await assert.rejects(review(false),{code:'HDJ01'});await assert.rejects(invoke(prepare));await assert.rejects(invoke({type:'cancel',commandId:randomUUID(),operationId:op,expectedRevision:1}));
   assert.equal(Number((await owner.query('select count(*) n from helpdesk_integration.hda02_inbox')).rows[0].n),1);
  });
  await test('CG expiry after command staging refuses COMMIT and rolls back cancellation',async()=>{
