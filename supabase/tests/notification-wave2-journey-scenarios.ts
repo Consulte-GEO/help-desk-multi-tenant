@@ -62,6 +62,36 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
    const saved=await audience.materialize(String(queue.id));assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.equal(saved.records[0]!.intent.kind,'internal.queue_created');
    queueClaim=await audience.claim();assert.equal(queueClaim.intent.recipientId,staff);const proof=await audience.authorize(queueClaim);assert.equal(proof.decision,'allowed');assert.equal(proof.address,email);
   });
+  await suite.test('already queued delivery loses authority when its current published route pauses or excludes the recipient',async()=>{
+   const kind='internal.queue_created';
+   const original=(await operator.query('select * from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind=$2 order by revision desc limit 1',[w,kind])).rows[0]!;
+   const publish=async(audienceName:string,people:string[])=>operator.query(`insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids)
+    select workspace_id,kind,revision+1,$3,$4,$5,$6,$7,$8::uuid[] from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind=$2 order by revision desc limit 1`,[w,kind,audienceName,audienceName==='none'?null:original.template_id,audienceName==='none'?null:original.template_version,original.expires_at,original.effective_after,people]);
+   for(const [name,people] of [['none',[staff,requester]],['queue',[requester]]] as const){
+    await publish(name,[...people]);
+    try{const denied=await audience.authorize(queueClaim);assert.equal(denied.decision,'revoked');assert.equal(denied.address,null);}
+    finally{await publish('queue',[staff,requester].sort());}
+    assert.equal((await audience.authorize(queueClaim)).decision,'allowed');
+   }
+  });
+  await suite.test('current local publication rechecks the exact work and permission before releasing a queued address',async()=>{
+   const canonical=JSON.parse(extended.values[0] as string);let registryRevision=2;
+   const publish=async(overrides:{works?:typeof canonical.works;permissions?:typeof canonical.permissions})=>{
+    const plan=planConsulteGeoLocalProvisioning({workspaceId:w,expectedRegistryRevision:registryRevision,requestId:randomUUID(),reason:'Owned queued recipient revocation qualification',accounts:canonical.accounts,works:overrides.works??canonical.works,permissions:overrides.permissions??canonical.permissions});
+    await operator.query(plan.sql,[...plan.values]);registryRevision++;
+   };
+   const deniedStates=[
+    {works:canonical.works.map((work:any)=>({...work,active:false}))},
+    {permissions:canonical.permissions.map((permission:any)=>permission.principalId===staff&&permission.operation==='tickets.write'?{...permission,active:false}:permission)},
+    {permissions:canonical.permissions.map((permission:any)=>permission.principalId===staff&&permission.operation==='tickets.write'?{...permission,workIds:[]}:permission)},
+   ];
+   for(const state of deniedStates){
+    await publish(state);
+    try{const denied=await audience.authorize(queueClaim);assert.equal(denied.decision,'revoked');assert.equal(denied.address,null);}
+    finally{await publish({});}
+    assert.equal((await audience.authorize(queueClaim)).decision,'allowed');
+   }
+  });
   const flow=createDurablePostgresSupportWorkflow({pool:app,resolver:source.resolver});
   let receipt=await flow.execute(agent,opened.ticketId,refs,{action:'start',expectedVersion:1},randomUUID(),randomUUID());
   await suite.test('staff start has its own qualified public kind',async()=>{const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.transition');assert.equal(facts.wave2Eligible,true);});
