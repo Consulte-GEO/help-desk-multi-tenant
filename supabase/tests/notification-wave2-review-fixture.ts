@@ -8,11 +8,12 @@ import {createPostgresLocalConsulteGeoSourcePorts} from '../../src/infrastructur
 import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirectory} from '../../src/infrastructure/consultegeo-intake-store.ts';
 import {createConsulteGeoRequestCatalog} from '../../src/application/consultegeo-request-catalog.ts';
 import {createFormDraftService} from '../../src/application/form-draft.ts';import {createSupportIntake} from '../../src/application/support-intake.ts';
-import {requestHash} from '../../src/domain/canonical.ts';
+import {requestHash,secretHash} from '../../src/domain/canonical.ts';
 import {assertOwnedPendingOpeningFaults} from './notification-wave2-opening-faults.ts';
 import {createSupportReview} from '../../src/application/support-review.ts';
 import {createPostgresSupportReviewStore} from '../../src/infrastructure/support-review-store.ts';
 import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
+import {runTransaction} from '../../src/infrastructure/transaction.ts';
 export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
@@ -68,6 +69,17 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
    assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
    assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
+   await assert.rejects(review.prepareApproval(agent,opened.ticketId,created.invitationId,1,randomUUID()),{code:'review_step_up_required'});
+   assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where invitation_id=$1',[created.invitationId])).rows[0]!.n,0);
+   await assert.rejects(runTransaction(app,customer,c=>c.query('select helpdesk_auth.hdnr_invitation($1)',[created.invitationId])),{code:'HDR01'});
+   const prepared=await auth.withAdministrativeAssurance(request,(person,proof)=>review.prepareApproval(person,opened.ticketId,created.invitationId,1,randomUUID(),proof));
+   assert.equal(prepared.decisionApplied,false);assert.equal(prepared.generation,1);assert.match(prepared.token,/^hd_approval_[A-Za-z0-9_-]{43}$/);
+   const current=(await operator.query('select document from helpdesk_core.hdnr_invitations where id=$1',[created.invitationId])).rows[0]!.document as any;
+   assert.equal(current.challenge.hash,secretHash(prepared.token));assert.equal(current.challenge.generation,1);assert.doesNotMatch(JSON.stringify(current),/hd_approval_/);
+   assert.equal((await operator.query('select version from helpdesk_core.tickets where workspace_id=$1 and id=$2',[w,opened.ticketId])).rows[0]!.version,1,'preparing or reading an invitation must not apply a decision');
+   const next={...current,challenge:{...current.challenge,generation:2}};
+   await assert.rejects(runTransaction(app,agent,c=>c.query('select helpdesk_auth.hdnr_challenge($1,$2)',[next,0])),{code:'HDR02'});
+   assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where invitation_id=$1',[created.invitationId])).rows[0]!.n,1);
   });
  });
 }
