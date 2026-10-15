@@ -1,0 +1,184 @@
+{
+  "profile": "hda-cjson-v1",
+  "oracle": "canonical strings manually specified; UTF8/sha256 computed with Python hashlib, independently of Node implementation",
+  "dotnetVerified": false,
+  "valid": [
+    {
+      "id": "null",
+      "input": null,
+      "canonical": "null",
+      "utf8Hex": "6e756c6c",
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "id": "false",
+      "input": false,
+      "canonical": "false",
+      "utf8Hex": "66616c7365",
+      "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "id": "zero",
+      "input": 0,
+      "canonical": "0",
+      "utf8Hex": "30",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "id": "max-safe",
+      "input": 9007199254740991,
+      "canonical": "9007199254740991",
+      "utf8Hex": "39303037313939323534373430393931",
+      "sha256": "f40b423c2dd95ff2b2f027e22208f438cf7242862e5e746860e697308c9add26"
+    },
+    {
+      "id": "min-safe",
+      "input": -9007199254740991,
+      "canonical": "-9007199254740991",
+      "utf8Hex": "2d39303037313939323534373430393931",
+      "sha256": "4c933a456bb8f2e9894b2d0b26480439cd72d52fb8a27cbf8fd7f323f22c7815"
+    },
+    {
+      "id": "empty",
+      "input": "",
+      "canonical": "\"\"",
+      "utf8Hex": "2222",
+      "sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "id": "opaque-ids",
+      "input": {
+        "work": "0007",
+        "beneficiary": "0009"
+      },
+      "canonical": "{\"beneficiary\":\"0009\",\"work\":\"0007\"}",
+      "utf8Hex": "7b2262656e6566696369617279223a2230303039222c22776f726b223a2230303037227d",
+      "sha256": "266f871fa64ec04c71c7247d53fedb6db25cdf5cc045b19004c13e443fb7301b"
+    },
+    {
+      "id": "key-order",
+      "input": {
+        "z": null,
+        "a": 0,
+        "b": false
+      },
+      "canonical": "{\"a\":0,\"b\":false,\"z\":null}",
+      "utf8Hex": "7b2261223a302c2262223a66616c73652c227a223a6e756c6c7d",
+      "sha256": "bdf6ec30f7a4f83ce59c4ca54828341d2db2ecaab53ef7643961890c5e6658e7"
+    },
+    {
+      "id": "array-order",
+      "input": [
+        0,
+        false,
+        null,
+        "",
+        "0001"
+      ],
+      "canonical": "[0,false,null,\"\",\"0001\"]",
+      "utf8Hex": "5b302c66616c73652c6e756c6c2c22222c2230303031225d",
+      "sha256": "acd9929a56f6e58346e588c3b6f1297f3ca8ccfb9e0e7bf509104622f80e4ebe"
+    },
+    {
+      "id": "unicode",
+      "input": {
+        "text": "ação 🧱"
+      },
+      "canonical": "{\"text\":\"ação 🧱\"}",
+      "utf8Hex": "7b2274657874223a2261c3a7c3a36f20f09fa7b1227d",
+      "sha256": "60bf91fc240a27c079c024d4a2a85d97daf407c2d4ddaa72b147c4eb2e826d3d"
+    },
+    {
+      "id": "decomposed",
+      "input": {
+        "text": "é"
+      },
+      "canonical": "{\"text\":\"é\"}",
+      "utf8Hex": "7b2274657874223a2265cc81227d",
+      "sha256": "9b53287cd41955684903378d2b1b4a3ddea9d80d67dcd026319a7c5a9a8a8b42"
+    },
+    {
+      "id": "escaping",
+      "input": {
+        "text": "a\n\"\\/\t"
+      },
+      "canonical": "{\"text\":\"a\\n\\\"\\\\/\\t\"}",
+      "utf8Hex": "7b2274657874223a22615c6e5c225c5c2f5c74227d",
+      "sha256": "11a4c57ef5fb6f365977bec7123bd10138b173c1987da2cd09707f90382cac18"
+    },
+    {
+      "id": "nested",
+      "input": {
+        "z": [
+          {
+            "b": 2,
+            "a": 1
+          }
+        ],
+        "a": {}
+      },
+      "canonical": "{\"a\":{},\"z\":[{\"a\":1,\"b\":2}]}",
+      "utf8Hex": "7b2261223a7b7d2c227a223a5b7b2261223a312c2262223a327d5d7d",
+      "sha256": "860f4dfc4c98e232076f5dee7cf0c37f64eab0c175ad9e5e03a40a1708d74258"
+    },
+    {
+      "id": "separators",
+      "input": {
+        "text": "x y z"
+      },
+      "canonical": "{\"text\":\"x y z\"}",
+      "utf8Hex": "7b2274657874223a2278e280a879e280a97a227d",
+      "sha256": "343e5e371c570f9283449400c5f5eeef5e80b172a1065d078092bdf36f7a966b"
+    }
+  ],
+  "invalid": [
+    {
+      "id": "duplicate",
+      "raw": "{\"a\":1,\"a\":2}"
+    },
+    {
+      "id": "escaped-duplicate",
+      "raw": "{\"a\":1,\"\\u0061\":2}"
+    },
+    {
+      "id": "fraction",
+      "raw": "{\"a\":1.0}"
+    },
+    {
+      "id": "exponent",
+      "raw": "{\"a\":1e0}"
+    },
+    {
+      "id": "negative-zero",
+      "raw": "{\"a\":-0}"
+    },
+    {
+      "id": "unsafe",
+      "raw": "{\"a\":9007199254740992}"
+    },
+    {
+      "id": "surrogate",
+      "raw": "{\"a\":\"\\ud800\"}"
+    },
+    {
+      "id": "NUL",
+      "raw": "{\"a\":\"\\u0000\"}"
+    },
+    {
+      "id": "nonascii-key",
+      "raw": "{\"á\":1}"
+    },
+    {
+      "id": "prototype",
+      "raw": "{\"__proto__\":{}}"
+    },
+    {
+      "id": "trailing",
+      "raw": "{} {}"
+    },
+    {
+      "id": "BOM",
+      "raw": "﻿{}"
+    }
+  ]
+}

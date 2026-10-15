@@ -1,0 +1,1013 @@
+{
+  "schema": 1,
+  "epic": "HD-DA-CADASTROS",
+  "increment": "E03",
+  "as_of": "2026-10-14",
+  "planned_case_count": 81,
+  "completed_business_acceptance_cases": 0,
+  "local_test_count": 275,
+  "local_tests_passed": 275,
+  "complete_checkout": false,
+  "origin_dotnet_verified": false,
+  "source_matrix": "plano_v2/05_MATRIZ_DE_ACEITE_V2.md",
+  "note": "81 casos de negócio permanecem pendentes. E03 tem 275 testes técnicos locais; 48 novos com categorias distintas. Nenhum SQL foi executado.",
+  "cases": [
+    {
+      "id": "A01",
+      "case": "Saída CLI JSON malformada ou sem `structured_output` esperado",
+      "required_result": "Nenhum rascunho executável; erro saneado e tentativa limitada",
+      "original_packages": "HDA-01/05",
+      "resolved_packages": "HDA-01/HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts"
+      ],
+      "limitation": "Parser/envelope decodificado e saída inválida; stdout bruto/CLI real e tentativas duráveis pendentes."
+    },
+    {
+      "id": "A02",
+      "case": "Campo obrigatório ausente; modelo sugere inventar um valor",
+      "required_result": "`needs_information`; valor não é completado automaticamente",
+      "original_packages": "HDA-01/06",
+      "resolved_packages": "HDA-01/HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts"
+      ],
+      "limitation": "Validação de needs_information e campos propostos; extração real pelo modelo/UI pendentes."
+    },
+    {
+      "id": "A03",
+      "case": "Zero, falso, vazio, ausente e nulo",
+      "required_result": "Sem perda semântica na normalização/diff",
+      "original_packages": "HDA-01/06",
+      "resolved_packages": "HDA-01/HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-canonical.test.ts"
+      ],
+      "limitation": "Preservação de null/false/0/Unicode e recusa de undefined; diff na UI não implementado."
+    },
+    {
+      "id": "A04",
+      "case": "Duplicidade possível dentro do escopo",
+      "required_result": "Revisão/seleção explícita; não criar automaticamente outra entidade",
+      "original_packages": "HDA-04/06",
+      "resolved_packages": "HDA-05/HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "A05",
+      "case": "Ação não cadastrada na allowlist",
+      "required_result": "Atendimento humano; nenhum comando genérico ou ferramenta nova",
+      "original_packages": "HDA-01/05",
+      "resolved_packages": "HDA-01/HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-action-catalog.test.ts"
+      ],
+      "limitation": "Action-key desconhecida vai para manual no domínio; não há runner ou integração de atendimento."
+    },
+    {
+      "id": "S01",
+      "case": "Dois tenants com o mesmo ID de usuário/obra",
+      "required_result": "Resolução usa identidade composta; nenhuma leitura ou escrita cruzada",
+      "original_packages": "HDA-01/03/04/08",
+      "resolved_packages": "HDA-01/HDA-03/HDA-05/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts",
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "S02",
+      "case": "Cliente altera contrato/obra/ação no body ou texto livre",
+      "required_result": "Autoridade rederivada no servidor; discrepância recusada",
+      "original_packages": "HDA-01/03",
+      "resolved_packages": "HDA-01/HDA-03",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts"
+      ],
+      "limitation": "Correlações e revisão recusam alvo incompatível; derivação HTTP/ACL do servidor pendente."
+    },
+    {
+      "id": "S03",
+      "case": "Usuário perde acesso enquanto a ação aguarda execução",
+      "required_result": "Revalidação impede nova escrita; registro fica para revisão",
+      "original_packages": "HDA-04/07/08",
+      "resolved_packages": "HDA-05/HDA-07/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "S04",
+      "case": "Nova obra ou referência vazia/temporária usada como acesso global",
+      "required_result": "Recusa; política de criação no escopo do contrato é explícita",
+      "original_packages": "HDA-04/08",
+      "resolved_packages": "HDA-05/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts"
+      ],
+      "limitation": "Alvo candidato rejeita sentinelas e referências inválidas; autorização e origem pendentes."
+    },
+    {
+      "id": "S05",
+      "case": "Worker usa credencial técnica para consultar/aplicar outra operação",
+      "required_result": "Recusa por identidade/ação/alvo; sem privilégio de proprietário/DML amplo",
+      "original_packages": "HDA-02/08",
+      "resolved_packages": "HDA-02/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "S06",
+      "case": "Instrução no chamado/anexo: ignorar aprovação e executar SQL",
+      "required_result": "Tratada como dado; sem ferramenta/credencial capaz de executar",
+      "original_packages": "HDA-05",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts"
+      ],
+      "limitation": "Campos SQL/toolCall/approval recusados no contrato; sandbox/processo real ainda não testado."
+    },
+    {
+      "id": "S07",
+      "case": "Conteúdo tenta ler `.env`, home, outra sessão ou abrir URL arbitrária",
+      "required_result": "Negado por isolamento de processo/rede e ferramentas",
+      "original_packages": "HDA-05",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "S08",
+      "case": "Log, erro, prompt ou resposta pública contém segredo/contexto de outro cliente",
+      "required_result": "Teste falha; sanitização e minimização antes de publicar",
+      "original_packages": "HDA-05/06/12",
+      "resolved_packages": "HDA-04/HDA-06/HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-contracts.test.ts"
+      ],
+      "limitation": "Erros dos parsers saneados; pipelines completos de logs/prompts/DTO públicos não implementados."
+    },
+    {
+      "id": "P01",
+      "case": "Queda entre abrir chamado e criar job",
+      "required_result": "Ambos confirmados na mesma transação ou nenhum efeito confirmado",
+      "original_packages": "HDA-02/03",
+      "resolved_packages": "HDA-02/HDA-03",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "P02",
+      "case": "Resposta da abertura perdida e usuário tenta novamente",
+      "required_result": "Mesmo recibo/operação; nenhum novo job de criação",
+      "original_packages": "HDA-02/03",
+      "resolved_packages": "HDA-02/HDA-03",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "P03",
+      "case": "Aprovação gravada sem job, ou job sem aprovação",
+      "required_result": "Inconsistência impossível por transação e constraints",
+      "original_packages": "HDA-02/07",
+      "resolved_packages": "HDA-02/HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "P04",
+      "case": "Dois workers disputam o mesmo job",
+      "required_result": "Claim único e lease/fencing verificável",
+      "original_packages": "HDA-02/05",
+      "resolved_packages": "HDA-02/HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "P05",
+      "case": "Upgrade falha, grants/defaults indevidos ou catálogo divergente",
+      "required_result": "Rollback/recusa; sem marcador artificial nem afrouxamento de guards",
+      "original_packages": "HDA-02/12",
+      "resolved_packages": "HDA-02/HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "O01",
+      "case": "Chamar preview repetidamente",
+      "required_result": "Zero registros de negócio, identidades, e-mails ou jobs com efeitos",
+      "original_packages": "HDA-04",
+      "resolved_packages": "HDA-05",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "O02",
+      "case": "Regra/vínculo muda depois da prévia",
+      "required_result": "Escrita revalida e bloqueia/repropõe quando necessário",
+      "original_packages": "HDA-04/08",
+      "resolved_packages": "HDA-05/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "O03",
+      "case": "Existe duplicidade somente em outro contrato não autorizado",
+      "required_result": "Nenhum vazamento de existência/identidade; consulta respeita escopo",
+      "original_packages": "HDA-04",
+      "resolved_packages": "HDA-05",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "J01",
+      "case": "Agente offline/estação desligada",
+      "required_result": "Job permanece durável e visível; chamado não se perde",
+      "original_packages": "HDA-05",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "J02",
+      "case": "Limite de tempo/turnos/tamanho/orçamento configurado atingido",
+      "required_result": "Processo termina controladamente; erro não vira rascunho aprovado",
+      "original_packages": "HDA-05",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "J03",
+      "case": "Lease expira durante escrita potencialmente enviada",
+      "required_result": "`reconciliation_required`; não retorna a pendente para criar novamente",
+      "original_packages": "HDA-05/09",
+      "resolved_packages": "HDA-04/HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "J04",
+      "case": "Atualização CLI muda ferramentas/configuração/saída",
+      "required_result": "Gate de qualificação bloqueia a versão não aprovada",
+      "original_packages": "HDA-05",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "J05",
+      "case": "Worker antigo retorna depois de novo claim/revisão",
+      "required_result": "Não substitui o estado atual; efeito real é tratado pela conciliação",
+      "original_packages": "HDA-09",
+      "resolved_packages": "HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts",
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "U01",
+      "case": "Abrir tela/modal de aprovação",
+      "required_result": "Não há decisão nem POST de execução no mount",
+      "original_packages": "HDA-06/07",
+      "resolved_packages": "HDA-06/HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "U02",
+      "case": "Tela estreita, teclado, tema escuro e foco após erro",
+      "required_result": "Contexto, diferenças e botões permanecem legíveis e acessíveis",
+      "original_packages": "HDA-06",
+      "resolved_packages": "HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "U03",
+      "case": "Logout/troca de contrato com resposta em andamento",
+      "required_result": "Resposta antiga descartada; nada reaparece no contexto novo",
+      "original_packages": "HDA-06",
+      "resolved_packages": "HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "U04",
+      "case": "Duplo clique e confirmação HTTP perdida",
+      "required_result": "UI mostra resultado consultável/indeterminado, sem repetir criação",
+      "original_packages": "HDA-06/07",
+      "resolved_packages": "HDA-06/HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "U05",
+      "case": "Complementação e duas revisões simultâneas",
+      "required_result": "CAS/diff explícito; revisão aprovada não é sobrescrita",
+      "original_packages": "HDA-06",
+      "resolved_packages": "HDA-06",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts"
+      ],
+      "limitation": "Revisões de entrada/rascunho no domínio; CAS real/diff/interface pendentes."
+    },
+    {
+      "id": "R01",
+      "case": "Solicitante/beneficiário/agente tenta se autoaprovar",
+      "required_result": "Recusa conforme política do MVP",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R02",
+      "case": "Aprovação antiga de atendimento enviada como autorização",
+      "required_result": "Não autoriza cadastro; finalidade diferente",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R03",
+      "case": "Hash/revisão/payload alterado após aprovação",
+      "required_result": "Execução bloqueada; nova versão exige nova decisão",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R04",
+      "case": "Mesmos campos, mas outro contrato/obra/instância",
+      "required_result": "Aprovação incompatível e escrita recusada",
+      "original_packages": "HDA-07/08",
+      "resolved_packages": "HDA-07/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R05",
+      "case": "Aprovador/grant/challenge expirado ou revogado",
+      "required_result": "Recusa e retorno seguro à revisão",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R06",
+      "case": "Efeito adicional ou política/contrato da ação alterado",
+      "required_result": "Revalidação e nova aprovação quando muda o conteúdo autorizado",
+      "original_packages": "HDA-07/08",
+      "resolved_packages": "HDA-07/HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R07",
+      "case": "Duas aprovações concorrentes ou replay da mesma decisão",
+      "required_result": "No máximo um job válido de execução; mesmo recibo na repetição equivalente",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "R08",
+      "case": "Execução aprovada, mas anuência gerencial obrigatória ainda pendente",
+      "required_result": "Execução bloqueada; confirmação conjunta somente com ambas as verificações e registros",
+      "original_packages": "HDA-07",
+      "resolved_packages": "HDA-07",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E01",
+      "case": "Mesma operação/chave/hash enviada duas vezes",
+      "required_result": "Um efeito de negócio; recibo original retornado",
+      "original_packages": "HDA-08",
+      "resolved_packages": "HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E02",
+      "case": "Mesma chave com outro hash/alvo",
+      "required_result": "Conflito, sem segunda escrita",
+      "original_packages": "HDA-08",
+      "resolved_packages": "HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E03",
+      "case": "Origem faz commit e a conexão cai antes do ACK",
+      "required_result": "Consulta encontra o resultado original; sem repetir criação",
+      "original_packages": "HDA-08/09",
+      "resolved_packages": "HDA-08/HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E04",
+      "case": "Origem responde HTTP 202/pending",
+      "required_result": "Ainda não é cadastro concluído",
+      "original_packages": "HDA-08/09",
+      "resolved_packages": "HDA-08/HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E05",
+      "case": "Não há prova de gravação nem de rejeição",
+      "required_result": "Estado desconhecido/atenção; ausência não autoriza retry de escrita",
+      "original_packages": "HDA-08/09",
+      "resolved_packages": "HDA-08/HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E06",
+      "case": "Cadastro já existia antes da operação ou foi criado manualmente no intervalo",
+      "required_result": "Duplicidade reavaliada pela regra de negócio; não tomar posse ou alterar silenciosamente",
+      "original_packages": "HDA-08",
+      "resolved_packages": "HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E07",
+      "case": "Cancelamento depois do início/commit",
+      "required_result": "Não apagar automaticamente; consultar efeito e propor ação separada quando necessária",
+      "original_packages": "HDA-09",
+      "resolved_packages": "HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "E08",
+      "case": "Adicionar uma obra quando já existem outros vínculos autorizados",
+      "required_result": "Preservar vínculos anteriores; nenhum replace destrutivo da lista por payload parcial",
+      "original_packages": "HDA-08",
+      "resolved_packages": "HDA-08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "F01",
+      "case": "Evento/modelo informa `done/created/approved` sem prova",
+      "required_result": "Não aprova nem conclui operação",
+      "original_packages": "HDA-01/09",
+      "resolved_packages": "HDA-01/HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts"
+      ],
+      "limitation": "Eventos de execução/approved/committed não são transições válidas; adapter real pendente."
+    },
+    {
+      "id": "F02",
+      "case": "Assinatura inválida, timestamp vencido ou corpo adulterado",
+      "required_result": "Recusa antes da mutação; erro saneado",
+      "original_packages": "HDA-09",
+      "resolved_packages": "HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "F03",
+      "case": "Mesmo eventId/corpo e mesmo eventId/outro corpo",
+      "required_result": "Primeiro é replay idempotente; segundo é conflito auditado",
+      "original_packages": "HDA-09",
+      "resolved_packages": "HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts"
+      ],
+      "limitation": "Replay imediato local/conflicto do último evento; inbox persistente/auditoria/autenticação pendentes."
+    },
+    {
+      "id": "F04",
+      "case": "Callback atrasado após sucesso, recusa ou nova revisão",
+      "required_result": "Não regressa estado terminal nem substitui proposta mais nova",
+      "original_packages": "HDA-09",
+      "resolved_packages": "HDA-09",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-automation.test.ts"
+      ],
+      "limitation": "Resposta antiga de análise/cancelamento não ressuscita estado; callbacks reais pendentes."
+    },
+    {
+      "id": "N01",
+      "case": "Cadastro confirmado; Resend indisponível",
+      "required_result": "Portal mostra resultado; e-mail pendente; nenhuma nova criação",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "N02",
+      "case": "Provedor aceita, mas não há confirmação de entrega",
+      "required_result": "Mostrar aceito/pendente, não entregue",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "N03",
+      "case": "Destinatário perde acesso antes do envio",
+      "required_result": "Bloqueio ou roteamento autorizado alternativo, sem ampliar acesso",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "N04",
+      "case": "Evento repetido e reprocessamento do worker",
+      "required_result": "Uma intenção por audiência/canal/evento; dedupe preservado",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "N05",
+      "case": "Solicitante, aprovador e beneficiário são pessoas diferentes",
+      "required_result": "Conteúdo e audiência corretos, sem convite/senha indevido",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "N06",
+      "case": "Confirmação de envio perdida, bounce ou resultado desconhecido",
+      "required_result": "Conciliação de entrega independente; não reenviar cegamente",
+      "original_packages": "HDA-10",
+      "resolved_packages": "HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I01",
+      "case": "Identidade já existe no IdP",
+      "required_result": "Fluxo de vinculação autorizado; sem sobrescrever credenciais ou tomar posse por e-mail",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I02",
+      "case": "IdP conclui e etapa GEO falha",
+      "required_result": "Estado parcial e retomada por IDs originais, sem duplicar identidade",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I03",
+      "case": "GEO conclui e vínculos/IdP falham",
+      "required_result": "Não anunciar acesso pronto; conciliar etapas pendentes",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I04",
+      "case": "Perfil/claim por nome não corresponde ao identificador real",
+      "required_result": "Validação recusa; mapa qualificado, sem perfil administrativo por fallback",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I05",
+      "case": "Convite enviado por origem e Help Desk tenta repetir",
+      "required_result": "Uma responsabilidade para convite; Help Desk envia somente comunicação do chamado",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "I06",
+      "case": "Revogação ocorre entre etapas ou identidade é compartilhada",
+      "required_result": "Interromper e conciliar; nenhuma exclusão automática da identidade compartilhada",
+      "original_packages": "HDA-11",
+      "resolved_packages": "HDA-12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP01",
+      "case": "Código novo sobre schema incompatível ou gate fechado",
+      "required_result": "Funcionalidade indisponível; sem ativação por inferência",
+      "original_packages": "HDA-12",
+      "resolved_packages": "HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP02",
+      "case": "Desligamento emergencial com execução em voo",
+      "required_result": "Bloquear novas escritas, manter recibos/callback/consulta; nenhum falso rollback",
+      "original_packages": "HDA-12",
+      "resolved_packages": "HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP03",
+      "case": "Bundle/pacote público contém worker, prompt interno ou segredo",
+      "required_result": "Build/release bloqueado",
+      "original_packages": "HDA-05/12",
+      "resolved_packages": "HDA-04/HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP04",
+      "case": "Perda de correlação entre chamado, operação e recibo",
+      "required_result": "Teste falha e piloto não é aceito",
+      "original_packages": "HDA-12",
+      "resolved_packages": "HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP05",
+      "case": "Regressão em aprovação humana, external-work ou abertura anterior",
+      "required_result": "Teste falha; comportamento anterior preservado",
+      "original_packages": "HDA-12",
+      "resolved_packages": "HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "OP06",
+      "case": "Ação nova habilitada somente por publicação de texto na wiki",
+      "required_result": "Recusa; exige catálogo/adapter/política/testes próprios",
+      "original_packages": "HDA-13",
+      "resolved_packages": "HDA-13",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X01",
+      "case": "`payloadHash` calculado por Node e .NET para o mesmo objeto, incluindo ordem de chaves, `0`, `false`, nulo, Unicode e IDs opacos",
+      "required_result": "Hash canônico idêntico **com vetores fixos**; divergência impede executar",
+      "original_packages": "HDA-01/08",
+      "resolved_packages": "HDA-01/08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-vectors.test.ts"
+      ],
+      "limitation": "Node e verificador Python validaram fixture fixa; .NET não executado, interoperabilidade não homologada."
+    },
+    {
+      "id": "X02",
+      "case": "CLI indisponível, versão diferente ou worker reiniciado durante análise",
+      "required_result": "Job/ticket continuam duráveis; fallback humano; nenhuma escrita ou falsa conclusão",
+      "original_packages": "HDA-04",
+      "resolved_packages": "HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X03",
+      "case": "Outra feature abre catálogo, muda versionamento ou concede papel global",
+      "required_result": "Action-key/política cadastrada continua exigir grants e target específicos; nada se autoativa",
+      "original_packages": "HDA-01/07/08",
+      "resolved_packages": "HDA-01/07/08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-action-catalog.test.ts"
+      ],
+      "limitation": "Catálogo candidato não abre execução e rejeita ações desconhecidas; políticas/runtime reais pendentes."
+    },
+    {
+      "id": "X04",
+      "case": "Outro PR adiciona migration antes do módulo HDA; hospedado segue schema 0.19 e candidato espera 0.23",
+      "required_result": "Migration do módulo rebaseada/gerada no histórico correto, readiness recusa runtime incompatível, sem mudança no banco hospedado por teste",
+      "original_packages": "Core Banco + HDA-02/11",
+      "resolved_packages": "Core Banco + HDA-02/11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada.",
+      "context_note": "Cenário histórico0.19/0.23 mantido como fixture; fonte atual registra0.24/17migrations e exige revalidação antes do próximo upgrade."
+    },
+    {
+      "id": "X05",
+      "case": "Link `/wiki/` acessível, mas conteúdo é interno, em quarentena ou a sessão é de outro domínio",
+      "required_result": "Sem corpus privado no prompt/bundle, sem ultrapassar ACL; análise usa versão permitida ou passa ao humano",
+      "original_packages": "Wiki + HDA-04",
+      "resolved_packages": "Wiki + HDA-04",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X06",
+      "case": "Artefato do `setup.consultegeo.org` ou anexo chega sem versão/hash/inspeção/autorização",
+      "required_result": "Pode gerar pedido de complemento, mas nunca ação executável; nenhuma ingestão direta de HTML, script ou endpoint de escrita",
+      "original_packages": "Setup + HDA-05/13",
+      "resolved_packages": "Setup + HDA-05/13",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X07",
+      "case": "`approval_granted` genérico do Help Desk é apresentado como autorização de cadastro ou o aprovador perde direito antes da execução",
+      "required_result": "Executor recusa; somente `registration_execution` válida e revalidada na origem pode autorizar",
+      "original_packages": "HDA-07/08",
+      "resolved_packages": "HDA-07/08",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X08",
+      "case": "Mudança concorrente em `web/app.js`, runtime ou fonte alterou gates/dependências depois da CI do módulo",
+      "required_result": "Testes integrais da base consolidada reexecutados; hashes/evidências vinculados ao SHA final; módulo desabilitado se divergente",
+      "original_packages": "Core Release + HDA-11",
+      "resolved_packages": "Core Release + HDA-11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-persistence-service.test.ts",
+        "tests/registration-persistence-integration.test.ts",
+        "supabase/tests/hda02-native-suite.mjs"
+      ],
+      "limitation": "E02 exercita modelo de transação e transporte controlado; SQL, concorrência/RLS reais, origem e runtime não foram homologados. Suíte nativa escrita, não executada."
+    },
+    {
+      "id": "X09",
+      "case": "Cadastro de usuário novo falha depois de criar identidade ou após chamar convite, e callback antigo afirma sucesso",
+      "required_result": "Estado parcial verdadeiro; reconciliação por IDs estáveis; nenhum convite/identidade duplicado",
+      "original_packages": "IdP/GEO + HDA-09/12",
+      "resolved_packages": "IdP/GEO + HDA-09/12",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X10",
+      "case": "Ação foi confirmada mas Resend/worker M11 ainda está desligado",
+      "required_result": "Portal registra resultado, entrega é pendente/indisponível; não simular notificação, não repetir cadastro",
+      "original_packages": "M11 + HDA-10",
+      "resolved_packages": "M11 + HDA-10",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X11",
+      "case": "Nova página/tela e worker são publicados junto do proxy da wiki; CSP, service worker e rotas entram em conflito",
+      "required_result": "`/wiki/` e `/v1` preservam policies/rotas, bundle público não contém prompts ou credenciais; testes mobile/desktop verdes",
+      "original_packages": "UX10/Wiki + HDA-06/11",
+      "resolved_packages": "UX10/Wiki + HDA-06/11",
+      "acceptance_status": "pending",
+      "local_evidence_status": "not_executed",
+      "evidence_files": [],
+      "limitation": "Critério completo não executado no incremento E01."
+    },
+    {
+      "id": "X12",
+      "case": "Outra frente adiciona action-key de implantação, planilha ou fornecedor",
+      "required_result": "Só habilitar com contrato, preview, autorização, ledger, testes e canário próprios; nunca herdar permissão de `grant_work`",
+      "original_packages": "HDA-13",
+      "resolved_packages": "HDA-13",
+      "acceptance_status": "pending",
+      "local_evidence_status": "partial",
+      "evidence_files": [
+        "tests/registration-action-catalog.test.ts"
+      ],
+      "limitation": "Nova action-key não herda operação piloto no catálogo; publicação e autorização reais pendentes."
+    }
+  ],
+  "native_postgres_executed": false,
+  "postgres_tested": false,
+  "native_new_scenarios_prepared": 12,
+  "new_local_tests": 48,
+  "new_local_test_breakdown": {
+    "receipt_ack_behavior": 14,
+    "sql_static": 10,
+    "native_preflight_filesystem_helpers": 20,
+    "native_environment_refusals": 4
+  },
+  "e03_evidence_files": [
+    "tests/registration-receipt-boundaries.test.ts",
+    "tests/registration-sql-hardening.test.ts",
+    "tests/registration-native-safety.test.ts",
+    "tests/registration-native-harness.test.ts",
+    "supabase/tests/hda03-native-regressions.mjs"
+  ]
+}

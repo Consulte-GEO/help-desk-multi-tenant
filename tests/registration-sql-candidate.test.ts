@@ -1,0 +1,11 @@
+/** Static source-contract checks. These do NOT execute or validate PostgreSQL SQL. */
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,existsSync} from 'node:fs';
+import {getRegistrationAction} from '../src/domain/registration-action-catalog.ts';
+const path=new URL('../supabase/candidates/hda02_analysis_persistence.sql',import.meta.url);
+const sql=existsSync(path)?readFileSync(path,'utf8'):'';
+for(const name of ['hda02_lock_scope','hda02_receipt','hda02_operation','hda02_next','hda02_apply'])test(`static candidate contains helper ${name}`,()=>assert.match(sql,new RegExp('create function helpdesk_auth\\.'+name+'\\(')));
+for(const table of ['bindings','grants','operations','snapshots','jobs','drafts','inbox'])test(`static candidate contains private ${table} with explicit RLS/FORCE`,()=>{assert.match(sql,new RegExp('create table helpdesk_integration.hda02_'+table));assert.match(sql,new RegExp('alter table helpdesk_integration.hda02_'+table+' enable row level security'));assert.match(sql,new RegExp('alter table helpdesk_integration.hda02_'+table+' force row level security'));});
+test('static candidate cannot be accidentally installed on the hosted database',()=>{assert.match(sql,/current_database\(\)\s*<>\s*'helpdesk_test'/);assert.match(sql,/server_version_num/);assert.match(sql,/hda02\.disposable/);assert.match(sql,/current_user\s*<>\s*'hda_test_owner'/);});
+test('static candidate includes exclusive claim, immutable history and deferred admission',()=>{assert.match(sql,/for update of o skip locked/i);assert.match(sql,/deferrable initially deferred/i);assert.match(sql,/hda02_immutable/);assert.match(sql,/pg_advisory_xact_lock/);assert.match(sql,/lease_deadline/);});
+test('static action contract digest matches E01 source (not .NET proof)',()=>assert.ok(sql.includes(getRegistrationAction('geo.user.grant_work.v1').schemaHash)));
+test('candidate neither replaces core functions nor updates the global marker',()=>{assert.ok(sql.length>100);assert.doesNotMatch(sql,/create or replace/i);assert.doesNotMatch(sql,/update\s+helpdesk_auth\.(?:schema|runtime|version)/i);assert.doesNotMatch(sql,/grant\s+(?:all|select|insert|update|delete)\b[^;]*\bto\s+(?:helpdesk_app|helpdesk_registration_worker|anon|authenticated|service_role)/i);});

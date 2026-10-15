@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "increment": "E06",
+  "repository": "Consulte-GEO/help-desk-multi-tenant",
+  "branch": "codex/m1-reproducibilidade",
+  "commit": "ea7a4454f30c45f35dece6e4a702591c55c79cd5",
+  "upstream_access": "read_only_connector",
+  "complete_checkout": false,
+  "source_package": {
+    "filename": "HelpDesk_DevAgent_E05_2026-10-14.zip",
+    "sha256": "de7074f76403f9645146e224813b2658ad8844eee95b0d8b806ab1e779bf61e8"
+  },
+  "canonical_support_files": [
+    {
+      "path": "web/operations-ui.js",
+      "git_blob_sha1": "7762025a421a0b0086229e02199e70ddfec2e271",
+      "sha256": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f",
+      "included_as": "verification_context_only",
+      "overlay_overwrite": false
+    },
+    {
+      "path": "web/operations-experience.css",
+      "git_blob_sha1": "bad01a291e24f61fce5868c865ae558a58dac548",
+      "sha256": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac",
+      "included_as": "verification_context_only",
+      "overlay_overwrite": false
+    },
+    {
+      "path": "web/design-tokens.css",
+      "git_blob_sha1": "aae724462da7fe1e23ec14fb546edcff93e5ff28",
+      "sha256": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca",
+      "included_as": "verification_context_only",
+      "overlay_overwrite": false
+    }
+  ]
+}
