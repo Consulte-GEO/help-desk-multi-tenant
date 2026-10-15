@@ -101,7 +101,8 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     const approved=await auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof));assert.equal(approved.decision,'approve');assert.equal(approved.version,2);
     const current=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,openedApproval.ticketId])).rows[0];assert.deepEqual(current,{status:'open',approval:'approved'});
     assert.deepEqual((await operator.query('select revision,decision_hash from helpdesk_auth.cg_local_registries where workspace_id=$1',[w])).rows[0],before);
-    await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof)),{code:'approval_unavailable'});
+    await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof)),{code:'approval_revision_changed'});
+    assert.equal((await operator.query('select count(*)::int as n from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2',[w,openedApproval.ticketId])).rows[0]!.n,2);
    });
   });
  });
