@@ -44,10 +44,20 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   await operator.query(extended.sql,[...extended.values]);
   const customer:Principal={id:requester,workspaceId:w,kind:'human',workspaceRole:null,grants:[{accountId:input.accountId,role:'requester'}],scopes:['contexts:resolve','tickets:read','tickets:write']};
   const agent:Principal={...customer,id:staff,workspaceRole:'admin',grants:[{accountId:input.accountId,role:'agent'}],scopes:['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']};
-  const audience=await createOwnedWave2AudienceFixture(suite,operator,control,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester});
+  const audience=await createOwnedWave2AudienceFixture(suite,operator,control,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester,unprepared:true});
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(customer,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref];
   const options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(customer,{service:'questions',refs}),entry=catalog.configurations[0]!.entries[0]!;
+  const darkDraft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:input.accountId,refs,formId:entry.form.id,formVersion:1,answers:{details:'Owned dark promotion interval'}},0);
+  const darkIntake=createSupportIntake(options),darkQuery={draftId:darkDraft.id,expectedDraftRevision:1,subject:'Owned dark deployment interval',description:'A new group must not stop the existing worker',coverageId:null},darkPreview=await darkIntake.previewSupportRequest(customer,darkQuery),darkOpened=await darkIntake.createSupportRequest(customer,{...darkQuery,previewHash:darkPreview.previewHash},randomUUID(),randomUUID());
+  await suite.test('an unprepared new group seals no recipients and does not prevent claiming an existing first-wave intent',async()=>{
+   const root=(await operator.query('select id from helpdesk_integration.outbox_events where workspace_id=$1 and ticket_id=$2',[w,darkOpened.ticketId])).rows[0]!;
+   const legacy=await audience.materialize(String(root.id));assert.equal(legacy.records.length,1);assert.equal(legacy.records[0]!.intent.kind,'support.created');
+   const at=String((await operator.query('select helpdesk_auth.hdn_workflow_iso(clock_timestamp()) as at')).rows[0]!.at);
+   const plans=await audience.store.materializePending(at,1);assert.equal(plans.length,1);assert.equal(plans[0]!.state,'no_recipients');
+   const claimed=await audience.claimFor(legacy.records[0]!.intent.id);assert.equal((await audience.authorize(claimed)).decision,'allowed');
+  });
+  await audience.prepare();
   const draft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:input.accountId,refs,formId:entry.form.id,formVersion:1,answers:{details:'Owned native details; never included in email'}},0);
   const intake=createSupportIntake(options),q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned wave2 qualification',description:'Private source isolation probe',coverageId:null},preview=await intake.previewSupportRequest(customer,q),opened=await intake.createSupportRequest(customer,{...q,previewHash:preview.previewHash},randomUUID(),randomUUID());
   const rows=async(kind:string)=>(await operator.query('select * from helpdesk_integration.hdn_notification_private_sources where workspace_id=$1 and ticket_id=$2 and kind=$3',[w,opened.ticketId,kind])).rows;

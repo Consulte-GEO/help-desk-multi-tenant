@@ -5,10 +5,10 @@ import {WAVE2_INTERNAL_TEMPLATES} from '../../src/integrations/notifications/wav
 import {createPostgresNotificationDeliveryStore} from '../../src/infrastructure/notification-delivery-store.ts';
 import {materializeNotificationIntents} from '../../src/application/notification-outbox.ts';import {parseDeliveryRecord} from '../../src/domain/notification-delivery.ts';
 import {formatMicros,instantMicros} from '../../src/domain/business-calendar.ts';
-export async function createOwnedWave2AudienceFixture(suite:TestContext,operator:SqlPool,control:SqlPool,scope:{workspaceId:string;accountId:string;staffId:string;requesterId:string}){
+export async function createOwnedWave2AudienceFixture(suite:TestContext,operator:SqlPool,control:SqlPool,scope:{workspaceId:string;accountId:string;staffId:string;requesterId:string;unprepared?:boolean}){
  const {workspaceId:w,accountId:a,staffId:staff,requesterId:requester}=scope;
  const members=[staff,requester].sort(),audiences=['queue','assignee','customer_return'];
- const c=await operator.connect();try{await c.query('BEGIN');
+ async function prepare(){const c=await operator.connect();try{await c.query('BEGIN');
   for(const [index,t] of WAVE2_INTERNAL_TEMPLATES.entries()){
    await c.query('insert into helpdesk_integration.hdn_notification_templates(id,version,kind,document,sha256) values($1,$2,$3,$4,$5)',[t.id,t.version,t.kind,t,requestHash(t)]);
    await c.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) values($1,$2,2,$3,$4,1,clock_timestamp()+interval '10 minutes',clock_timestamp(),$5::uuid[])",[w,t.kind,audiences[index],t.id,members]);
@@ -16,7 +16,8 @@ export async function createOwnedWave2AudienceFixture(suite:TestContext,operator
   // A hostile non-operator is listed deliberately: membership is never authority.
   await c.query("insert into helpdesk_integration.hdn_notification_queue_rosters(workspace_id,account_id,revision,member_ids,max_recipients,expires_at,request_id,reason) values($1,$2,1,$3::uuid[],2,clock_timestamp()+interval '10 minutes',$4,'Owned explicit roster; role denial probe')",[w,a,members,randomUUID()]);
   await c.query('COMMIT');
- }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}
+ }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}}
+ if(!scope.unprepared)await prepare();
  const targets=validateDatabaseTestTargets(process.env),password=randomUUID(),command=(await control.query("select format('alter role helpdesk_notification_worker login password %L',$1::text) as command",[password])).rows[0]!.command;await control.query(String(command));
  const url=new URL(targets.appUrl);url.username='helpdesk_notification_worker';url.password=password;const pg=await import('pg'),worker=new pg.Pool({connectionString:url.toString(),max:1}) as unknown as SqlPool;
  suite.after(async()=>{await worker.end();await control.query('alter role helpdesk_notification_worker nologin password null');});
@@ -36,5 +37,5 @@ export async function createOwnedWave2AudienceFixture(suite:TestContext,operator
   for(const raw of claims){const row=parseDeliveryRecord(raw);ownedClaims.set(row.intent.id,row);}
   assert.ok(ownedClaims.has(id),'the actual bounded worker must lease this intent before recipient authorization');return ownedClaims.get(id)!;
  }
- return {worker,store,materialize,claim,claimFor,authorize,scope};
+ return {worker,store,materialize,claim,claimFor,authorize,prepare,scope};
 }

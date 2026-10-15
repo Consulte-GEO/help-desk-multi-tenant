@@ -20,6 +20,7 @@ import {createPostgresSupportReviewStore} from '../../src/infrastructure/support
 import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
 import {runTransaction} from '../../src/infrastructure/transaction.ts';
 import {assertOwnedReviewAuthorityGuards} from './notification-wave2-review-authority-races.ts';
+import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
 export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string;audience:Awaited<ReturnType<typeof createOwnedWave2AudienceFixture>>}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId,audience}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await prepareOwnedReviewDelivery(operator,w,[agent.id,customer.id]);
@@ -140,6 +141,23 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     const form=(await operator.query('select document from helpdesk_core.hdnr_forms where workspace_id=$1 and ticket_id=$2 and revision=2',[w,opened.ticketId])).rows[0]!.document as any;
     assert.deepEqual(form.answers,{details:'Owned corrected details for a new approval'});assert.equal(form.formVersion,2);
     assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdni_drafts where workspace_id=$1 and id=$2",[w,corrected.id])).rows[0]!.status,'committed');
+   });
+   await invitationSuite.test('expired and stale pending invitations recover only through a new explicit authorized request',async recoverySuite=>{
+    const draft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:a,refs,formId,formVersion:2,answers:{details:'Owned invitation renewal qualification'}},0);
+    const q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned invitation renewal',description:'Expired invitation must not strand approval',coverageId:null},preview=await intake.previewSupportRequest(customer,q),fresh=await intake.createSupportRequest(customer,{...q,previewHash:preview.previewHash},randomUUID(),randomUUID());
+    const roster=async(ttl:string)=>operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason) select workspace_id,account_id,profile_version_id,revision+1,approver_id,true,work_ids,clock_timestamp()+$4::interval,$5,'Owned bounded renewal qualification' from helpdesk_auth.hdnr_rosters where(workspace_id,account_id,profile_version_id)=($1,$2,$3) order by revision desc limit 1`,[w,a,entry.workflow.versionId,ttl,randomUUID()]);
+    const requestInvite=(version:number,key:string)=>auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,fresh.ticketId,version,key,randomUUID(),proof));
+    await roster('2 seconds');const firstKey=randomUUID(),first=await requestInvite(1,firstKey);await operator.query('select pg_sleep(2.2)');await roster('10 minutes');
+    const view=await portal.readReviewContext(agent,fresh.ticketId) as any;assert.equal(view.capabilities.requestApproval,true);assert.equal(view.capabilities.decideApproval,false);
+    const secondKey=randomUUID(),second=await requestInvite(1,secondKey);assert.notEqual(second.invitationId,first.invitationId);
+    assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,first.invitationId])).rows[0]!.status,'revoked');
+    assert.equal((await requestInvite(1,firstKey)).invitationId,first.invitationId,'replaying the earlier key must not renew it');
+    await recoverySuite.test('a valid pending invitation still rejects a competing key',()=>assert.rejects(requestInvite(1,randomUUID()),{code:'approval_already_pending'}));
+    const flow=createDurablePostgresSupportWorkflow({pool:app,resolver:source.resolver}),transferred=await flow.execute(agent,fresh.ticketId,refs,{action:'transfer',expectedVersion:1,targetPrincipalId:agent.id,reason:'Owned actual target version change'},randomUUID(),randomUUID());assert.equal(transferred.version,2);
+    assert.equal((await portal.readReviewContext(agent,fresh.ticketId) as any).capabilities.requestApproval,true);
+    const third=await requestInvite(2,randomUUID());assert.notEqual(third.invitationId,second.invitationId);
+    assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,second.invitationId])).rows[0]!.status,'revoked');
+    assert.equal((await operator.query("select count(*)::int as n from helpdesk_core.hdnr_invitations where workspace_id=$1 and ticket_id=$2 and document->>'status'='pending'",[w,fresh.ticketId])).rows[0]!.n,1);
    });
   });
  });
