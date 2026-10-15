@@ -41,9 +41,9 @@ Ler primeiro a especificação V2 em `docs/especificacao-emails-geocon-v2-2026-1
 
 ## Banco, segurança e evolução
 
-O monitor é schema `0.27.0`, migration21 `20261015162000_email_monitor_v2.sql`, append depois da promoção HDA0.26. As primeiras vinte migrations permanecem íntegras. Inventário esperado:87 tabelas,233 funções,511 constraints e três roles reservadas. O contrato histórico0.25 e sua query permanecem congelados, porque compiladores anteriores dependem dos mesmos bytes.
+O monitor é schema `0.27.0`, migration21 `20261015162000_email_monitor_v2.sql`, append depois da promoção HDA0.26. As primeiras vinte migrations permanecem íntegras. Inventário esperado:88 tabelas,233 funções,516 constraints e três roles reservadas. O contrato histórico0.25 e sua query permanecem congelados, porque compiladores anteriores dependem dos mesmos bytes.
 
-A migration adiciona configuração privada de cobertura, tipo nativo de recibo, snapshot de endereço e aceite, índices e helpers privados. Mantém o estado do ledger separado da observação de engajamento. Os guards comparam catálogo anterior e final, operador, defaults e ACL antes de publicar a versão. A configuração inicial de cobertura é nula: aplicar a migration não afirma que o provedor já coleta aberturas/cliques.
+A migration adiciona configuração privada de cobertura e interrupções conhecidas, tipo nativo de recibo, snapshot de endereço e aceite, índices e helpers privados. Mantém o estado do ledger separado da observação de engajamento. Os guards comparam catálogo anterior e final, operador, defaults e ACL antes de publicar a versão. A configuração inicial de cobertura é nula: aplicar a migration não afirma que o provedor já coleta aberturas/cliques.
 
 Os três GETs são `/v1/email-communications`, `/{event_id}` e `/{event_id}/recipients/{intent_id}`. Respostas são `no-store`. O conjunto autorizado é definido antes de filtros, total e agregados. O DTO recusa campos extras. Cursor AES-GCM de cinco minutos é vinculado à identidade, workspace, filtros e hash dos fatos autorizados. Mudança no contexto ou nos dados pode exigir reiniciar a página com409; não tentar reaproveitar o cursor de outra sessão.
 
@@ -55,6 +55,10 @@ Os três GETs são `/v1/email-communications`, `/{event_id}` e `/{event_id}/reci
 4. Confirmar no provedor, para a integração correta, assinatura do webhook e assinatura de eventos `email.opened`/`email.clicked`, com tracking permitido. Não alterar configuração compartilhada de GEOCON/GEOLAB para testar o Help Desk. Usar mensagem sintética controlada para confirmar o caminho completo.
 5. Somente após comprovação, registrar a data real de início de cada sinal na linha singleton privada `helpdesk_integration.hdn_email_monitor_settings`, por operador autorizado e mudança auditada. Consulta de diagnóstico: `SELECT opened_started_at, clicked_started_at FROM helpdesk_integration.hdn_email_monitor_settings WHERE singleton;`. A role da aplicação e o worker não têm acesso direto a esta tabela. Não retroagir datas nem preencher com a data de criação de mensagens antigas.
 6. Confirmar perfil admin completo, equipe mascarada, contexto não autorizado sem dados e ausência de interface para cliente. Verificar que logout remove o histórico da memória e que cliques não alteram os chamados.
+
+Interrupções comprovadas são registradas pelo operador na tabela privada `hdn_email_monitor_coverage_gaps`, com `signal` (`opened` ou `clicked`), `started_at` e `ended_at` (nulo enquanto a interrupção estiver aberta). Intervalos usam início inclusivo e fim exclusivo. Uma intenção cuja janela até a última leitura cruza uma interrupção deixa de ser elegível para taxa daquele sinal; fatos observados continuam visíveis. Ao encerrar a interrupção, novas intenções posteriores ao fim voltam a ser elegíveis, sem recuperar artificialmente a cobertura das antigas. Nunca apagar o intervalo para obter uma taxa aparentemente melhor; registrar a correção operacional e sua justificativa pelo processo de mudança existente.
+
+No detalhe, `pendingAgeSeconds` é calculado pelo banco entre o enfileiramento persistido e `asOf` para os estados ainda pendentes. A interface mostra a idade na última leitura; não usa o relógio do navegador nem apresenta previsão de retry como promessa de entrega.
 
 Sem coleta comprovada, a interface continua útil para fila, aceite, entrega e falhas; abertura/clique sem evidência permanecem indisponíveis. Abertura depende de pixel e é aproximada; clique é um evento observado e pode incluir automação. Nenhum dos dois prova leitura humana ou ciência formal.
 

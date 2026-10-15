@@ -9,6 +9,18 @@ INSERT INTO helpdesk_integration.hdn_email_monitor_settings(singleton) VALUES(tr
 ALTER TABLE helpdesk_integration.hdn_email_monitor_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE helpdesk_integration.hdn_email_monitor_settings FORCE ROW LEVEL SECURITY;
 REVOKE ALL ON helpdesk_integration.hdn_email_monitor_settings FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
+-- Operator-recorded known collection outages. End is exclusive; an omitted end
+-- denotes an outage still affecting the currently observed cohort.
+CREATE TABLE helpdesk_integration.hdn_email_monitor_coverage_gaps(
+ signal text NOT NULL CONSTRAINT hdn_email_monitor_coverage_gaps_signal_check CHECK(signal IN ('opened','clicked')),
+ started_at timestamptz NOT NULL CONSTRAINT hdn_email_monitor_coverage_gaps_started_at_check CHECK(isfinite(started_at)),
+ ended_at timestamptz CONSTRAINT hdn_email_monitor_coverage_gaps_ended_at_check CHECK(ended_at IS NULL OR isfinite(ended_at)),
+ CONSTRAINT hdn_email_monitor_coverage_gaps_pkey PRIMARY KEY(signal,started_at),
+ CONSTRAINT hdn_email_monitor_coverage_gaps_period_check CHECK(ended_at IS NULL OR ended_at>started_at)
+);
+ALTER TABLE helpdesk_integration.hdn_email_monitor_coverage_gaps ENABLE ROW LEVEL SECURITY;
+ALTER TABLE helpdesk_integration.hdn_email_monitor_coverage_gaps FORCE ROW LEVEL SECURITY;
+REVOKE ALL ON helpdesk_integration.hdn_email_monitor_coverage_gaps FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 CREATE INDEX hdn_email_monitor_event ON helpdesk_integration.hdn_notification_records(workspace_id,event_id,id DESC);
 
 -- Only private, already-authorized, minimized rows reach this pure aggregator.
@@ -151,13 +163,18 @@ BEGIN
    CASE WHEN a.accepted_at<=as_of THEN least(a.accepted_at,n.sent_at) ELSE n.sent_at END AS sent_at,
    n.delivered_at,n.opened_at,n.clicked_at,
    a.recipient_address IS NOT NULL AS delivery_eligible,
-   coalesce(helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt')>=s.opened_started_at,false) AS open_eligible,
-   coalesce(helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt')>=s.clicked_started_at,false) AS click_eligible,
+   coalesce(helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt')>=s.opened_started_at,false) AND NOT coverage.open_gap AS open_eligible,
+   coalesce(helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt')>=s.clicked_started_at,false) AND NOT coverage.click_gap AS click_eligible,
+   coverage.open_gap,coverage.click_gap,
    CASE WHEN a.recipient_address IS NULL OR a.recipient_address !~ '^[^[:space:]@]+@[^[:space:]@]+\.[A-Za-z]{2,63}$' THEN 'Destinatário indisponível'
     WHEN full_address THEN a.recipient_address
     ELSE left(split_part(a.recipient_address,'@',1),1)||'***@'||left(split_part(a.recipient_address,'@',2),1)||'***.'||substring(a.recipient_address FROM '\.([A-Za-z]{2,63})$') END AS recipient_display
   FROM authorized a JOIN receipt_facts n ON n.id=a.id
-  CROSS JOIN helpdesk_integration.hdn_email_monitor_settings s WHERE s.singleton
+  CROSS JOIN helpdesk_integration.hdn_email_monitor_settings s
+  CROSS JOIN LATERAL(SELECT
+   EXISTS(SELECT 1 FROM helpdesk_integration.hdn_email_monitor_coverage_gaps gap WHERE gap.signal='opened' AND gap.started_at<=as_of AND (gap.ended_at IS NULL OR gap.ended_at>helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt'))) AS open_gap,
+   EXISTS(SELECT 1 FROM helpdesk_integration.hdn_email_monitor_coverage_gaps gap WHERE gap.signal='clicked' AND gap.started_at<=as_of AND (gap.ended_at IS NULL OR gap.ended_at>helpdesk_auth.hdn_notification_stamp(a.intent->>'createdAt'))) AS click_gap
+  ) coverage WHERE s.singleton
  ),
  filtered AS MATERIALIZED (
   SELECT z.*,jsonb_build_object('state',z.state,'attention',z.attention,'sentAt',z.sent_at,'deliveredAt',z.delivered_at,'openedAt',z.opened_at,'clickedAt',z.clicked_at,'deliveryEligible',z.delivery_eligible,'openEligible',z.open_eligible,'clickEligible',z.click_eligible) AS summary_fact
@@ -173,6 +190,7 @@ BEGIN
   -- invalidate the cursor, including callbacks that do not advance record.revision.
   SELECT helpdesk_auth.hdni_digest(jsonb_build_object('workspace',w,'actor',who,'full',full_address,
    'settings',(SELECT to_jsonb(s) FROM helpdesk_integration.hdn_email_monitor_settings s WHERE s.singleton),
+   'coverageGaps',coalesce((SELECT jsonb_agg(to_jsonb(gap) ORDER BY gap.signal,gap.started_at) FROM helpdesk_integration.hdn_email_monitor_coverage_gaps gap),'[]'::jsonb),
    'rows',coalesce((SELECT jsonb_agg(jsonb_build_object('id',a.id,'intent',a.intent,'record',a.record,'address',a.recipient_address,'acceptedAt',a.accepted_at,'sourceAt',a.communication_at,'subject',a.subject,
     'receipts',coalesce((SELECT jsonb_agg(to_jsonb(n) ORDER BY n.event_id) FROM helpdesk_integration.hdn_notification_native_receipts n WHERE n.intent_id=a.id),'[]'::jsonb),
     'audit',coalesce((SELECT jsonb_agg(jsonb_build_object('revision',history.revision,'type',history.type,'at',history.at) ORDER BY history.revision) FROM helpdesk_audit.hdn_notification_audit history WHERE history.intent_id=a.id),'[]'::jsonb),
@@ -190,6 +208,7 @@ BEGIN
   SELECT z.id,jsonb_build_object('id',z.id,'eventId',z.event_id,'recipientDisplay',z.recipient_display,'visibility',CASE WHEN full_address THEN 'full' ELSE 'masked' END,'state',z.state,'attention',z.attention,
    'reason',CASE WHEN z.record->>'lastReason' ~ '^[a-z][a-z0-9_]{0,119}$' THEN z.record->>'lastReason' ELSE NULL END,
    'nextAttemptAt',CASE WHEN z.record->>'nextAttemptAt' IS NOT NULL THEN helpdesk_auth.hdn_workflow_iso(helpdesk_auth.hdn_notification_stamp(z.record->>'nextAttemptAt')) ELSE NULL END,
+   'pendingAgeSeconds',CASE WHEN z.state IN ('pending','retry_wait','leased','sending','unknown') THEN greatest(0,floor(extract(epoch FROM as_of-helpdesk_auth.hdn_notification_stamp(z.intent->>'createdAt'))))::bigint ELSE NULL END,
    'timeline',coalesce((SELECT jsonb_agg(jsonb_build_object('kind',h.kind,'occurredAt',helpdesk_auth.hdn_workflow_iso(h.at),'receivedAt',CASE WHEN h.received IS NULL THEN NULL ELSE helpdesk_auth.hdn_workflow_iso(h.received) END) ORDER BY h.at,h.kind) FROM (
     SELECT 'communication'::text AS kind,z.communication_at AS at,NULL::timestamptz AS received
     UNION ALL SELECT 'queued',helpdesk_auth.hdn_notification_stamp(z.intent->>'createdAt'),NULL
@@ -230,8 +249,8 @@ BEGIN
    'deliveredAt',CASE WHEN z.delivered_at IS NULL THEN NULL ELSE helpdesk_auth.hdn_workflow_iso(z.delivered_at) END,
    'openedAt',CASE WHEN z.opened_at IS NULL THEN NULL ELSE helpdesk_auth.hdn_workflow_iso(z.opened_at) END,
    'clickedAt',CASE WHEN z.clicked_at IS NULL THEN NULL ELSE helpdesk_auth.hdn_workflow_iso(z.clicked_at) END,
-   'openAvailability',CASE WHEN z.opened_at IS NOT NULL THEN 'observed' WHEN z.open_eligible THEN 'not_observed' ELSE 'not_collected' END,
-   'clickAvailability',CASE WHEN z.clicked_at IS NOT NULL THEN 'observed' WHEN z.click_eligible THEN 'not_observed' ELSE 'not_collected' END) ORDER BY z.communication_at DESC,z.id DESC) FROM page_recipients z),'[]'::jsonb)) FROM groups g WHERE g.event_id=target)
+   'openAvailability',CASE WHEN z.opened_at IS NOT NULL THEN 'observed' WHEN z.open_gap THEN 'unavailable' WHEN z.open_eligible THEN 'not_observed' ELSE 'not_collected' END,
+   'clickAvailability',CASE WHEN z.clicked_at IS NOT NULL THEN 'observed' WHEN z.click_gap THEN 'unavailable' WHEN z.click_eligible THEN 'not_observed' ELSE 'not_collected' END) ORDER BY z.communication_at DESC,z.id DESC) FROM page_recipients z),'[]'::jsonb)) FROM groups g WHERE g.event_id=target)
  WHEN 'recipient' THEN (SELECT r.dto FROM recipient_result r)
  END INTO result FROM snapshot s;
  IF result IS NULL THEN RAISE EXCEPTION 'Email communication unavailable' USING ERRCODE='P0002';END IF;
@@ -243,6 +262,7 @@ DO $email_monitor_clients$ DECLARE r text;BEGIN
  FOREACH r IN ARRAY ARRAY['anon','authenticated','service_role','helpdesk_resource_publisher','helpdesk_maintenance'] LOOP
   IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname=r) THEN
    EXECUTE format('REVOKE ALL ON helpdesk_integration.hdn_email_monitor_settings FROM %I',r);
+   EXECUTE format('REVOKE ALL ON helpdesk_integration.hdn_email_monitor_coverage_gaps FROM %I',r);
    EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.hdn_email_monitor(jsonb),helpdesk_auth.hdn_email_monitor_summary(jsonb) FROM %I',r);
   END IF;
  END LOOP;

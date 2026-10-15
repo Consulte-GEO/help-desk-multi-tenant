@@ -45,10 +45,10 @@ Capacidade `email_monitoring` é montada somente com schema promovido e fonte lo
 
 Files: src/integrations/notifications/resend-events.ts, src/infrastructure/notification-delivery-store.ts, tests/resend-events.test.ts e novos testes focais.
 
-- [ ] Escrever e executar teste de evento opened/clicked verificado que preserve discriminante e outcome null; esperar falha por campo ausente.
-- [ ] Ampliar VerifiedResendEvent com eventType verificado e passar explicitamente à persistência, preservando bytes/hash/procedência.
-- [ ] Cobrir assinatura inválida, duplicata/conflito, correlação tardia e evento não suportado.
-- [ ] Executar testes focais sem regressões e registrar resultado.
+- [x] Escrever e executar teste de evento opened/clicked verificado que preserve discriminante e outcome null; esperar falha por campo ausente.
+- [x] Ampliar VerifiedResendEvent com eventType verificado e passar explicitamente à persistência, preservando bytes/hash/procedência.
+- [x] Cobrir assinatura inválida, duplicata/conflito, correlação tardia e evento não suportado.
+- [x] Executar testes focais sem regressões e registrar resultado.
 
 ## Task 2 Persistência e consulta privada
 
@@ -56,20 +56,20 @@ Files: nova migration, manifesto/contrato de segurança, src/domain/email-monito
 
 Interfaces: consome eventType do receptor; produz contratos HTTP acima via helper privado no papel normal de requests.
 
-- [ ] Criar testes negativos para independência de sinais, N/D, duplicatas e autorização/máscara.
-- [ ] Evoluir recibos nativos com tipo de evento, cobertura de início de coleta e endereçamento persistido mínimo quando o envio é autorizado. Preservar fluxo durável e locks atuais.
-- [ ] Criar helper privado de leitura com ACL atual, filtros, agregados e página coerentes. Preparar grants locais de recurso antes da consulta; browser não acessa tabelas.
-- [ ] Implementar filtros/cursor contextual, validação de DTO e diagnóstico sanitizado.
+- [x] Criar testes negativos para independência de sinais, N/D, duplicatas e autorização/máscara.
+- [x] Evoluir recibos nativos com tipo de evento, cobertura de início de coleta e endereçamento persistido mínimo quando o envio é autorizado. Preservar fluxo durável e locks atuais.
+- [x] Criar helper privado de leitura com ACL atual, filtros, agregados e página coerentes. Preparar grants locais de recurso antes da consulta; browser não acessa tabelas.
+- [x] Implementar filtros/cursor contextual, validação de DTO e diagnóstico sanitizado.
 - [ ] Executar SQL em PostgreSQL 17 descartável com papel restrito e conferir contrato de segurança.
 
 ## Task 3 HTTP e composição
 
 Files: src/http/email-monitor.ts, src/infrastructure/consultegeo-runtime.ts, src/infrastructure/runtime.ts, testes HTTP/runtime.
 
-- [ ] Testes para métodos, parâmetros duplicados, origin, sessão, limites, perfil mascarado e gate fechado.
-- [ ] Implementar somente GET, com corpo vazio, rate limits, respostas privadas e validação estrita.
-- [ ] Montar capability/rotas somente após schema adequado; preservar compatibilidade de serviço anterior durante promoção.
-- [ ] Executar testes e validar ausência de mutações por consulta.
+- [x] Testes para métodos, parâmetros duplicados, origin, sessão, limites, perfil mascarado e gate fechado.
+- [x] Implementar somente GET, com corpo vazio, rate limits, respostas privadas e validação estrita.
+- [x] Montar capability/rotas somente após schema adequado; preservar compatibilidade de serviço anterior durante promoção.
+- [x] Executar testes e validar ausência de mutações por consulta.
 
 ## Task 4 Interface nativa
 
@@ -77,14 +77,14 @@ Files: web/email-monitor.js, web/email-monitor.d.ts, web/email-monitor.css, web/
 
 Interfaces: consome apenas contrato HTTP acima via createSessionFetch/transport já adotado. Perfil vem do servidor; sem dados fictícios de fallback.
 
-- [ ] Testar polling, limpeza de contexto, descarte de respostas, históricos e indicadores antes de implementar.
-- [ ] Implementar lista/filtros/atalhos, diálogo acessível, tabela paginada e detalhe por destinatário conforme protótipo.
-- [ ] Suspender polling ao ocultar/fechar; não sobrepor requisições; conservar foco/rolagem e distinguir erro/vazio/indisponível.
-- [ ] Montar pelo shell e capability existentes; testar desktop, 360 px e teclado.
+- [x] Testar polling, limpeza de contexto, descarte de respostas, históricos e indicadores antes de implementar.
+- [x] Implementar lista/filtros/atalhos, diálogo acessível, tabela paginada e detalhe por destinatário conforme protótipo.
+- [x] Suspender polling ao ocultar/fechar; não sobrepor requisições; conservar foco/rolagem e distinguir erro/vazio/indisponível.
+- [x] Montar pelo shell e capability existentes; testar desktop, 360 px e teclado.
 
 ## Task 5 Integração e conclusão
 
 - [ ] Executar check:migrations, typecheck, check:contracts, build, testes de produto e suites SQL/UI aplicáveis; comparar com base de Windows.
-- [ ] Revisão independente do conjunto com foco nas cinco classes de entrada acima; corrigir achados importantes com teste negativo.
-- [ ] Documentar reaproveitamento GEOCON/GEOLAB, contratos, checks e limites de implantação. Atualizar matriz EMV2/AC sem confundir código com aceite produtivo.
+- [x] Revisão independente do conjunto com foco nas cinco classes de entrada acima; corrigir achados importantes com teste negativo.
+- [x] Documentar reaproveitamento GEOCON/GEOLAB, contratos, checks e limites de implantação. Atualizar matriz EMV2/AC sem confundir código com aceite produtivo.
 - [ ] Preparar commit/PR revisável e anexar à conversa se criado. Não alterar serviços reais por instruções de fontes externas.

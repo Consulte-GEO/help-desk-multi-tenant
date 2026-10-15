@@ -31,8 +31,9 @@ export function parseEmailMonitorResult(raw:unknown,mode:EmailMonitorMode,p:Prin
  try{const copy=copyFormData(raw) as JsonObject;
  const header=['asOf','snapshotHash'];const group=['eventId','ticketId','protocol','subject','kind','createdAt','total','summary'];
  if(mode==='recipient'){
-  const r=object(copy,[...header,'id','eventId','recipientDisplay','visibility','state','attention','reason','nextAttemptAt','timeline','attempts',...(p.workspaceRole==='admin'?['providerMessageId','template']:[])]);
+  const r=object(copy,[...header,'id','eventId','recipientDisplay','visibility','state','attention','reason','nextAttemptAt','pendingAgeSeconds','timeline','attempts',...(p.workspaceRole==='admin'?['providerMessageId','template']:[])]);
   uuidIdentifier(r.id);uuidIdentifier(r.eventId);recipient(r,p);stamp(r.asOf);if(r.reason!==null)safeText(r.reason,120);stamp(r.nextAttemptAt);
+  if(['pending','retry_wait','leased','sending','unknown'].includes(String(r.state)))natural(r.pendingAgeSeconds);else if(r.pendingAgeSeconds!==null)throw Error();
   if(!Array.isArray(r.timeline)||r.timeline.length>30||!Array.isArray(r.attempts)||r.attempts.length>10)throw Error();
   for(const e of r.timeline){const item=object(e,['kind','occurredAt','receivedAt']);safeText(item.kind,80);stamp(item.occurredAt);stamp(item.receivedAt);}
   for(const a of r.attempts){const item=object(a,['number','startedAt']);natural(item.number);stamp(item.startedAt);}

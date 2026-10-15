@@ -65,9 +65,37 @@ export function emailMetric(metric,engagement=false){
 
 const stateNames={pending:'Na fila',retry_wait:'Aguardando nova tentativa',leased:'Em envio',sending:'Em envio',unknown:'Resultado desconhecido',accepted:'Saiu',delivered:'Entregue',failed:'Falhou',suppressed:'Suprimido'};
 const kindNames={'support.created':'Abertura','support.devolutiva':'Informações solicitadas','support.resolved':'Solução','support.closed':'Encerramento','support.reopened':'Reabertura','support.cancelled':'Cancelamento','support.reply':'Resposta pública','support.customer_reply':'Resposta do solicitante','internal.queue_created':'Fila de atendimento','internal.assignment_changed':'Atribuição','email.sent':'Aceite do provedor','email.delivered':'Entrega confirmada','email.opened':'Abertura aproximada','email.clicked':'Acesso a link','email.failed':'Falha','email.bounced':'Falha informada pelo provedor'};
-const timelineNames={communication:'Comunicação criada',queued:'Entrada na fila',accepted:'Aceite do provedor',delivered:'Entrega confirmada',opened:'Abertura aproximada',clicked:'Acesso a link',failed:'Falha',suppressed:'Suprimido'};
+const timelineNames={communication:'Comunicação criada',queued:'Entrada na fila',accepted:'Aceite do provedor',delivered:'Entrega confirmada',opened:'Abertura aproximada',clicked:'Acesso a link',failed:'Falha',suppressed:'Suprimido','provider.accepted':'Aceite do provedor','provider.delivered':'Entrega confirmada','provider.failed':'Falha'};
 export function emailTimelineLabel(kind){return timelineNames[kind]??kindNames[kind]??'Evento registrado';}
 export function emailStatusOptions(){return [['all','Todas'],['queue','Fila'],['attention','Requer atenção'],...Object.entries(stateNames)];}
+// Normalized reasons in notification-delivery.ts, outbox-dispatch.ts and the
+// Resend sender. These descriptions never infer a mailbox or bounce cause.
+const reasonDescriptions={
+ rejected:'Não houve aceite do envio; a tentativa foi recusada.',
+ rate_limited:'O serviço de envio limitou a frequência das solicitações.',
+ temporarily_unavailable:'Foi registrada indisponibilidade temporária no serviço de envio.',
+ send_confirmation_unknown:'Não foi possível confirmar o resultado do envio. A equipe pode verificar a conciliação.',
+ contradictory_provider_event:'Há evidências do provedor conflitantes. A equipe pode verificar a conciliação.',
+ intent_expired:'O prazo autorizado desta intenção de envio expirou.',
+ recipient_unavailable:'A verificação do destinatário não pôde ser concluída.',
+ recipient_revoked:'A autorização de envio ao destinatário não está mais disponível.',
+ recipient_changed:'A verificação do destinatário ou do conteúdo autorizado encontrou uma mudança.',
+ template_unavailable:'Não foi possível usar o modelo de e-mail autorizado.',
+ unsent_lease_expired:'A reserva de processamento expirou antes do envio.',
+ ledger_confirmation_unknown:'O resultado da gravação do envio não foi confirmado.'
+};
+export function emailReason(reason){
+ if(reason===null||reason===undefined)return null;
+ const code=typeof reason==='string'&&/^[a-z][a-z0-9_]{0,119}$/.test(reason)?reason:'unclassified';
+ return {code,description:Object.hasOwn(reasonDescriptions,code)?reasonDescriptions[code]:'Motivo operacional registrado; a equipe responsável pode verificar a configuração e a conciliação.'};
+}
+export function emailPendingAge(detail){
+ const age=detail?.pendingAgeSeconds;
+ if(!['pending','retry_wait','leased','sending','unknown'].includes(detail?.state)||!Number.isSafeInteger(age)||age<0)return null;
+ let remaining=age;const parts=[];
+ for(const [unit,singular,plural] of [[86400,'dia','dias'],[3600,'h','h'],[60,'min','min'],[1,'s','s']]){const amount=Math.floor(remaining/unit);remaining%=unit;if(amount)parts.push(amount+' '+(amount===1?singular:plural));}
+ return 'Pendente desde o enfileiramento: '+(parts.join(' ')||'0 s')+' (na última leitura).';
+}
 
 /** Convert a wall clock filter in the displayed zone. Round-trip verification
  * rejects impossible dates and gaps rather than silently changing the interval. */
@@ -169,8 +197,10 @@ export function mountEmailMonitor(root,options){
   const recipientKey=JSON.stringify(view.recipient);
   if(recipientKey!==lastRecipient){lastRecipient=recipientKey;recipientContent.replaceChildren();const rec=view.recipient;if(rec){
    recipientContent.append(node('h4',rec.recipientDisplay),node('p','Estado operacional: '+(stateNames[rec.state]??'Requer atenção')));
+   recipientContent.append(node('p','Referência da intenção: '+rec.id),node('p','Referência do evento: '+rec.eventId));
    if(rec.attention)recipientContent.append(node('p','Requer atenção.','email-attention'));
-   if(rec.reason)recipientContent.append(node('p',rec.reason));
+   const reason=emailReason(rec.reason);if(reason)recipientContent.append(node('p','Código do motivo: '+reason.code),node('p',reason.description));
+   const pendingAge=emailPendingAge(rec);if(pendingAge)recipientContent.append(node('p',pendingAge));
    recipientContent.append(node('p','Próxima tentativa: '+(rec.nextAttemptAt?emailDate(rec.nextAttemptAt)+' (previsão do agendador)':'Sem previsão registrada')));
    const timeline=node('ol');for(const item of rec.timeline){const li=node('li',emailTimelineLabel(item.kind)+' · Ocorreu em '+emailDate(item.occurredAt)+' · Recebido em '+emailDate(item.receivedAt));timeline.append(li);}recipientContent.append(node('h4','Linha do tempo'),timeline);
    const attempts=node('ul');for(const item of rec.attempts)attempts.append(node('li','Tentativa '+item.number+' · '+emailDate(item.startedAt)));recipientContent.append(node('h4','Tentativas'),attempts);

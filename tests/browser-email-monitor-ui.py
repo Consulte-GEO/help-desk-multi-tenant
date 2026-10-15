@@ -31,7 +31,7 @@ COMPONENT = r"""async(source)=>{
   window.calls.push({path,method:init.method});
   if(window.answer==='denied')throw Object.assign(Error('hidden@secret.invalid'),{status:403});
   if(window.answer==='fail')throw Object.assign(Error('private diagnostic'),{status:503});
-  if(path.includes('/recipients/'))return {asOf:when,id:'intent-1',eventId:'event-1',recipientDisplay:'a***@e***.org',visibility:'masked',state:'failed',attention:false,reason:null,nextAttemptAt:null,timeline:['communication','queued','accepted','delivered','opened','clicked','failed','suppressed'].map(kind=>({kind,occurredAt:when,receivedAt:null})),attempts:[{number:1,startedAt:when}]};
+  if(path.includes('/recipients/'))return {asOf:when,id:'intent-1',eventId:'event-1',recipientDisplay:'a***@e***.org',visibility:'masked',state:window.recipientState??'failed',attention:false,reason:window.recipientReason??'rate_limited',nextAttemptAt:null,pendingAgeSeconds:window.pendingAgeSeconds??null,timeline:['communication','queued','accepted','delivered','opened','clicked','failed','suppressed','provider.accepted','provider.delivered','provider.failed'].map(kind=>({kind,occurredAt:when,receivedAt:null})),attempts:[{number:1,startedAt:when}]};
   if(path.includes('/event-1'))return {asOf:window.revision??when,eventId:'event-1',protocol:'CG-90001',subject:'Aviso <img src=x onerror=alert(1)>',kind:'support.created',createdAt:when,total:4,nextCursor:null,summary,items:[{id:'intent-1',recipientDisplay:'a***@e***.org',visibility:'masked',state:'accepted',badge:'Saiu',sentAt:when,deliveredAt:null,openedAt:null,clickedAt:null,openAvailability:'not_collected',clickAvailability:'not_observed',attention:false}]};
   return {asOf:when,total:51,nextCursor:null,items:[{eventId:'event-1',protocol:'CG-90001',subject:'Aviso autorizado',kind:'support.created',createdAt:when,total:4,summary}]};
  }});
@@ -73,9 +73,27 @@ def component(browser):
     record('Keyboard focus remains inside the native modal')
     dialog.get_by_role('button',name='Detalhes de a***@e***.org — referência intent-1').click()
     expect(dialog.get_by_role('heading',name='Detalhes do destinatário')).to_be_visible()
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Referência da intenção: intent-1')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Referência do evento: event-1')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Código do motivo: rate_limited')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('O serviço de envio limitou a frequência das solicitações.')
     expect(dialog).to_contain_text('Acesso a link');expect(dialog).to_contain_text('Recebido em')
     for label in ['Comunicação criada','Entrada na fila','Aceite do provedor','Entrega confirmada','Abertura aproximada','Falha','Suprimido']:
         expect(dialog.locator('.email-recipient-detail ol')).to_contain_text(label)
+    expect(dialog.locator('.email-recipient-detail ol')).not_to_contain_text('Evento registrado')
+    page.evaluate('()=>{window.recipientReason="future_operational_reason";return monitor.refresh();}')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Código do motivo: future_operational_reason')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Motivo operacional registrado; a equipe responsável pode verificar a configuração e a conciliação.')
+    expect(dialog.locator('.email-recipient-detail')).not_to_contain_text('O serviço de envio limitou a frequência das solicitações.')
+    record('Authorized references, legacy provider evidence and safe known/unknown reason descriptions remain traceable')
+    expect(dialog.locator('.email-recipient-detail')).not_to_contain_text('Pendente desde o enfileiramento')
+    page.evaluate('()=>{window.recipientState="unknown";window.pendingAgeSeconds=65;return monitor.refresh();}')
+    expect(dialog.locator('.email-recipient-detail')).to_contain_text('Pendente desde o enfileiramento: 1 min 5 s (na última leitura).')
+    page.evaluate('()=>{window.pendingAgeSeconds=null;return monitor.refresh();}')
+    expect(dialog.locator('.email-recipient-detail')).not_to_contain_text('Pendente desde o enfileiramento')
+    page.evaluate('()=>{window.recipientState="failed";window.pendingAgeSeconds=500;return monitor.refresh();}')
+    expect(dialog.locator('.email-recipient-detail')).not_to_contain_text('Pendente desde o enfileiramento')
+    record('Pending age uses server seconds at the last reading; null and terminal records never fabricate zero')
     dialog.get_by_role('button',name='Voltar à entrega').click()
     page.evaluate('''()=>{window.revision="2026-10-15T15:00:01.000000Z";document.querySelector('[data-email-focus="recipient-intent-1"]').focus({preventScroll:true});return monitor.refresh();}''')
     assert page.evaluate('document.activeElement.dataset.emailFocus')=='recipient-intent-1'

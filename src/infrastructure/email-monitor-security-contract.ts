@@ -466,6 +466,12 @@ export const EMAIL_MONITOR_SECURITY_CONTRACT = {
       "updates": []
     },
     {
+      "name": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "read": false,
+      "insert": false,
+      "updates": []
+    },
+    {
       "name": "helpdesk_integration.hdn_email_monitor_settings",
       "read": false,
       "insert": false,
@@ -4512,6 +4518,31 @@ export const EMAIL_MONITOR_SECURITY_CONTRACT = {
       "table": "helpdesk_integration.hda02_snapshots",
       "name": "hda02_snapshots_workspace_id_operation_id_fkey",
       "type": "f"
+    },
+    {
+      "table": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "name": "hdn_email_monitor_coverage_gaps_ended_at_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "name": "hdn_email_monitor_coverage_gaps_period_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "name": "hdn_email_monitor_coverage_gaps_pkey",
+      "type": "p"
+    },
+    {
+      "table": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "name": "hdn_email_monitor_coverage_gaps_signal_check",
+      "type": "c"
+    },
+    {
+      "table": "helpdesk_integration.hdn_email_monitor_coverage_gaps",
+      "name": "hdn_email_monitor_coverage_gaps_started_at_check",
+      "type": "c"
     },
     {
       "table": "helpdesk_integration.hdn_email_monitor_settings",

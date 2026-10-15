@@ -10252,7 +10252,8 @@
               "reason",
               "nextAttemptAt",
               "timeline",
-              "attempts"
+              "attempts",
+              "pendingAgeSeconds"
             ],
             "properties": {
               "asOf": {
@@ -10323,7 +10324,10 @@
                       "format": "date-time"
                     },
                     "receivedAt": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "format": "date-time"
                     }
                   }
@@ -10349,6 +10353,14 @@
                     }
                   }
                 }
+              },
+              "pendingAgeSeconds": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Idade calculada no servidor entre intent.createdAt e asOf para pending/retry_wait/leased/sending/unknown. Nula nos demais estados; não equivale a horário de envio."
               }
             }
           },
@@ -10368,7 +10380,8 @@
               "timeline",
               "attempts",
               "providerMessageId",
-              "template"
+              "template",
+              "pendingAgeSeconds"
             ],
             "properties": {
               "asOf": {
@@ -10437,7 +10450,10 @@
                       "format": "date-time"
                     },
                     "receivedAt": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "format": "date-time"
                     }
                   }
@@ -10492,6 +10508,14 @@
                     "pattern": "^[a-f0-9]{64}$"
                   }
                 }
+              },
+              "pendingAgeSeconds": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Idade calculada no servidor entre intent.createdAt e asOf para pending/retry_wait/leased/sending/unknown. Nula nos demais estados; não equivale a horário de envio."
               }
             }
           }
