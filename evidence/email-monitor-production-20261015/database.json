@@ -1,0 +1,46 @@
+{
+  "projectId": "xaelbntjnvztznnpcvtm",
+  "remoteMigration": "20261015190027_email_monitor_v2",
+  "fileSha256": "5028c17914469cfc524665963e637755e78e127dab572542d81e734efa136e0c",
+  "readback": [
+    {
+      "deployed": {
+        "schema": "0.27.0",
+        "tables": 88,
+        "records": 11,
+        "coverage": {
+          "singleton": true,
+          "opened_started_at": null,
+          "clicked_started_at": null
+        },
+        "functions": 233,
+        "eventTypes": [
+          {
+            "count": 122,
+            "event_type": null
+          }
+        ],
+        "constraints": 516,
+        "newPrivateTables": [
+          {
+            "acl": [
+              "postgres=arwdDxtm/postgres"
+            ],
+            "rls": true,
+            "name": "hdn_email_monitor_coverage_gaps",
+            "forceRls": true
+          },
+          {
+            "acl": [
+              "postgres=arwdDxtm/postgres"
+            ],
+            "rls": true,
+            "name": "hdn_email_monitor_settings",
+            "forceRls": true
+          }
+        ],
+        "hdaStorageVersion": "1.0.0"
+      }
+    }
+  ]
+}
