@@ -56,7 +56,7 @@ export async function runNativeSuite({owner,app}){
  });
  await test('CG expiry after command staging refuses COMMIT and rolls back cancellation',async()=>{
   await owner.query('update helpdesk_auth.cg_resource_grant_sets set active=false where workspace_id=$1 and binding_id=$2',[w,cgBinding]);
-  await owner.query("update helpdesk_auth.cg_resource_grant_sets set expires_at=clock_timestamp()+interval '2 seconds' where workspace_id=$1 and binding_id=$2",[w,cgBinding]);
+  await owner.query("update helpdesk_auth.cg_resource_grant_sets set expires_at=clock_timestamp()+interval '2 seconds',revision=revision+1 where workspace_id=$1 and binding_id=$2",[w,cgBinding]);
   await owner.query('update helpdesk_auth.cg_resource_grant_sets set active=true where workspace_id=$1 and binding_id=$2',[w,cgBinding]);
   await owner.query("insert into helpdesk_auth.cg_resource_observations(workspace_id,account_id,binding_id,principal_id,operation,grant_revision,binding_revision,access_revision,manifest_fingerprint,as_of,expires_at,expected_count) select workspace_id,account_id,binding_id,principal_id,operation,revision,'binding-1',source_revision,$3,as_of,expires_at,expected_count from helpdesk_auth.cg_resource_grant_sets where workspace_id=$1 and binding_id=$2",[w,cgBinding,'a'.repeat(64)]);
   let staged=false;
