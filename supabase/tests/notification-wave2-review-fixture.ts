@@ -77,7 +77,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
    assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
    assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
-   await invitationSuite.test('qualified review portal and independent delivery attention use the actual request transaction',portalSuite=>assertOwnedReviewPortal(portalSuite,operator,app,portal,{agent,customer,ticketId:opened.ticketId,invitationId:created.invitationId,oldTicketId,readAssured:work=>auth.withAdministrativeAssurance(request,(_person,proof)=>work(proof))}));
+   await invitationSuite.test('qualified review portal and independent delivery attention use the actual request transaction',portalSuite=>assertOwnedReviewPortal(portalSuite,operator,app,portal,{agent,customer,ticketId:opened.ticketId,invitationId:created.invitationId,oldTicketId,readAssured:work=>auth.withAdministrativeAssurance(request,work)}));
    let consumedInvitation:(()=>Promise<void>)|undefined;
    await invitationSuite.test('the actual worker selects only the frozen separate approver and rechecks queued delegation',async deliverySuite=>{
     const header=(await operator.query('select id from helpdesk_integration.hdnr_sources where workspace_id=$1 and invitation_id=$2',[w,created.invitationId])).rows[0]!;
@@ -144,3 +144,4 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   });
  });
 }
+

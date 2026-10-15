@@ -1,7 +1,7 @@
 /** Genuine owned app sessions only. No challenge or decision is made on read. */
 import assert from 'node:assert/strict';import type {TestContext} from 'node:test';import type {Principal} from '../../src/domain/model.ts';import type {SqlPool} from '../../src/infrastructure/sql.ts';import type {createPostgresSupportReviewQueries} from '../../src/infrastructure/support-review-portal.ts';import {runTransaction} from '../../src/infrastructure/transaction.ts';
 type Queries=ReturnType<typeof createPostgresSupportReviewQueries>;
-export async function assertOwnedReviewPortal(suite:TestContext,operator:SqlPool,app:SqlPool,queries:Queries,input:{agent:Principal;customer:Principal;ticketId:string;invitationId:string;oldTicketId:string;readAssured:<T>(work:(proof:unknown)=>Promise<T>)=>Promise<T>}){
+export async function assertOwnedReviewPortal(suite:TestContext,operator:SqlPool,app:SqlPool,queries:Queries,input:{agent:Principal;customer:Principal;ticketId:string;invitationId:string;oldTicketId:string;readAssured:<T>(work:(person:Principal,proof:unknown)=>Promise<T>)=>Promise<T>}){
  const {agent,customer,ticketId,invitationId,oldTicketId,readAssured}=input,w=agent.workspaceId;
  await suite.test('the authenticated old profile has no invented review context',async()=>assert.equal(await queries.readReviewContext(customer,oldTicketId),null));
  await suite.test('portal reads select only current approver navigation and public pinned answers without preparing a challenge',async()=>{
@@ -19,7 +19,7 @@ export async function assertOwnedReviewPortal(suite:TestContext,operator:SqlPool
   const before=(await operator.query('select count(*)::int as n from helpdesk_integration.outbox_events where workspace_id=$1',[w])).rows[0]!.n;
   await assert.rejects(queries.readDeliveryAttention(agent,ticketId,undefined),{code:'review_step_up_required'});
   await assert.rejects(runTransaction(app,customer,c=>c.query('select helpdesk_auth.hdn_notification_attention($1)',[ticketId])),{code:'HDR01'});
-  const panel=await readAssured(proof=>queries.readDeliveryAttention(agent,ticketId,proof)) as any;
+  const panel=await readAssured(async(person,proof)=>{await assert.rejects(queries.readDeliveryAttention(agent,ticketId,proof),{code:'review_step_up_required'});return queries.readDeliveryAttention(person,ticketId,proof);}) as any;
   assert.equal(panel.ticketId,ticketId);assert.equal(panel.resendAvailable,false);assert.equal(panel.limit,20);assert.ok(panel.items.length<=20);
   assert.doesNotMatch(JSON.stringify(panel),/example.invalid|providerMessageId|contactHash|leaseId|hd_approval_/);
   assert.equal((await operator.query('select count(*)::int as n from helpdesk_integration.outbox_events where workspace_id=$1',[w])).rows[0]!.n,before);
