@@ -31,6 +31,10 @@ else{
    const identity=(await owner.query("select current_database() db,current_user actor,inet_server_addr() addr,current_setting('server_version_num') v")).rows[0];if(identity.db!=='postgres'||identity.actor!=='postgres'||identity.addr!==null||Math.floor(Number(identity.v)/10000)!==17)throw Error('owned_cluster_identity_mismatch');
    await owner.query('create database helpdesk_test');await owner.end();pools.pop();owner=new Pool({...base,user:'postgres',password:passwords.postgres,database:'helpdesk_test',max:4});pools.push(owner);
    await owner.query(`create role helpdesk_app login nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls password '${passwords.helpdesk_app}'`);
+   // Nominal Supabase clients exist only in this owned fixture. No hosted
+   // identities or BYPASSRLS are simulated; their presence exercises every
+   // core/addon REVOKE and the deliberate client-grant rejection test.
+   for(const role of ['anon','authenticated','service_role'])await owner.query(`create role ${role} nologin nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls`);
    const {loadMigrationBundle}=await import('./migration-files.ts'),bundle=await loadMigrationBundle(root);if(bundle.schemaVersion!=='0.27.0'||bundle.migrations.length!==21)throw Error('immutable_core_027_required');
    for(const migration of bundle.migrations)await owner.query(migration.sql);
    const app=new Pool({...base,user:'helpdesk_app',password:passwords.helpdesk_app,database:'helpdesk_test',max:4});pools.push(app);

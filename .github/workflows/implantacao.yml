@@ -55,6 +55,7 @@ jobs:
         if: always()
         with:
           name: implantacao-${{ github.sha }}-${{ github.run_id }}
+          include-hidden-files: true
           path: |
             evidence/implantacao-ci
             modules/implantacao/.support-validation
