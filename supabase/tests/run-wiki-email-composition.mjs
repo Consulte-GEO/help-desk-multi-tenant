@@ -1,12 +1,12 @@
 // Independent local composition qualification. Never accepts a hosted database URL or provider credentials.
 import assert from 'node:assert/strict';
-import {spawnSync} from 'node:child_process';
-import {mkdtempSync,readFileSync,writeFileSync,appendFileSync,existsSync,realpathSync,lstatSync,rmSync,mkdirSync,chmodSync} from 'node:fs';
+import {mkdtempSync,readFileSync,writeFileSync,existsSync,realpathSync,lstatSync,rmSync,mkdirSync,chmodSync,readdirSync} from 'node:fs';
 import {join,resolve,dirname,basename,isAbsolute,relative} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createServer} from 'node:net';
 import {randomBytes,createHash} from 'node:crypto';
 import {pathToFileURL,fileURLToPath} from 'node:url';
+import {createNativePostgresRunner,configureTlsLoopbackPostgres} from './wiki-email-composition-native.mjs';
 const helpdesk=realpathSync(fileURLToPath(new URL('../../',import.meta.url)));
 function localPath(value,label,directory=true){
  assert(value&&isAbsolute(value)&&!/^[/\\]{2}/.test(value)&&!value.includes('://'),`${label} requires an absolute local path.`);
@@ -16,16 +16,19 @@ function localPath(value,label,directory=true){
 }
 const wiki=localPath(process.env.WIKI_EMAIL_SOURCE_ROOT,'WIKI_EMAIL_SOURCE_ROOT');
 assert(existsSync(join(wiki,'.git')),'WIKI_EMAIL_SOURCE_ROOT must be a local Git checkout.');
+const emailMigrations=readdirSync(join(wiki,'supabase/migrations')).filter(name=>/^\d{14}_wiki_cg_contribution_email_v1\.sql$/.test(name));
+assert.equal(emailMigrations.length,1,'Exactly one official Wiki contribution email migration is required.');
+const emailMigration='supabase/migrations/'+emailMigrations[0];
 const suffix=process.platform==='win32'?'.exe':'';
 const bin=localPath(process.env.WIKI_PG_BINDIR,'WIKI_PG_BINDIR');
 const openssl=localPath(process.env.WIKI_OPENSSL_BIN,'WIKI_OPENSSL_BIN',false);
 for(const name of ['initdb','pg_ctl','postgres'])assert(existsSync(join(bin,name+suffix)),`Missing ${name} binary.`);
 const frozen={
  'helpdesk:src/infrastructure/wiki-notification-runtime.ts':'8e1702d2f1d8b2371c9cd977805974d9d0b1d2decc3fa3a4a3672752fee43b47',
- 'helpdesk:src/infrastructure/notification-runtime.ts':'b3e358c0195b8533282c81d108b2594d0cbfb323b35791287a11e022ef229f13',
+ 'helpdesk:src/infrastructure/notification-runtime.ts':'ddac1f82a1322f5a07ee4bbb38e282773120fb274a0b342ec40a8072c779ef37',
  'helpdesk:netlify/functions/wiki-notification-worker.mts':'af052a59633a603c78a56d076ccfbbf4d4790d688fe5956100000d87844f9805',
  'wiki:supabase/changes/wiki_cg_contribution_email_v1.sql':'73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf',
- 'wiki:supabase/migrations/20261015164036_wiki_cg_contribution_email_v1.sql':'73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf'
+ ['wiki:'+emailMigration]:'73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf'
 };
 const sourceBytes=new Map(),sources={};
 function capture(base,file){
@@ -37,8 +40,10 @@ function capture(base,file){
 }
 for(const id of Object.keys(frozen)){const split=id.indexOf(':');capture(id.slice(0,split),id.slice(split+1));}
 for(const file of ['supabase/tests/supabase_stub.sql','supabase/tests/wiki_cg_email.test.sql','supabase/migrations/20261013180000_wiki_cg_backend.sql','supabase/changes/wiki_cg_publication_v2.sql','supabase/changes/wiki_cg_collaboration_v1.sql'])capture('wiki',file);
+for(const file of ['src/infrastructure/notification-delivery-store.ts','src/infrastructure/database-security.ts','src/integrations/notifications/resend-events.ts'])capture('helpdesk',file);
 capture('helpdesk','scripts/migration-files.ts');
 capture('helpdesk','supabase/migrations.manifest.json');
+capture('helpdesk','supabase/tests/wiki-email-composition-native.mjs');
 const tempParent=realpathSync(tmpdir());
 let temp,data,cert,key;
 function cleanup(){
@@ -51,25 +56,26 @@ function cleanup(){
  assert(!existsSync(temp),'Temporary cluster cleanup failed.');
 }
 const env={...process.env};for(const k of Object.keys(env))if(k.startsWith('PG'))delete env[k];
-const run=(command,args,input,ignore=false)=>{const r=spawnSync(command,args,{env,input,encoding:'utf8',windowsHide:true,maxBuffer:16*1024*1024,...(ignore?{stdio:'ignore'}:{})});if(r.status!==0)throw Error(`${command.split(/[\\/]/).at(-1)} failed: ${r.stderr||r.stdout||r.error||r.status}`);return r.stdout;};
 const pgmod=await import(pathToFileURL(join(helpdesk,'node_modules/pg/lib/index.js')).href),pg=pgmod.default;
 const {loadMigrationBundle}=await import(pathToFileURL(join(helpdesk,'scripts/migration-files.ts')).href);
 const {assertNotificationWorkerDatabase,createNotificationRuntime}=await import(pathToFileURL(join(helpdesk,'src/infrastructure/notification-runtime.ts')).href);
 const {assertWikiEmailDatabase,createWikiNotificationRuntime,WIKI_EMAIL_DATABASE_QUERY}=await import(pathToFileURL(join(helpdesk,'src/infrastructure/wiki-notification-runtime.ts')).href);
 const bundle=await loadMigrationBundle(helpdesk);
-assert.equal(bundle.schemaVersion,'0.26.0');assert.equal(bundle.migrations.length,20);
+assert.equal(bundle.schemaVersion,'0.27.0');assert.equal(bundle.migrations.length,21);
+assert.equal(createHash('sha256').update(JSON.stringify(bundle.migrations.slice(0,20).map(({file,sha256})=>({file,sha256})))).digest('hex'),'019eca369064e0d69e238966eb89668c0ce0b21e67b02fa0eaee6a9ee88ca12a','Original20 migration prefix changed.');console.log('PASS original20 immutable migration fingerprints preserved');
 const migrations=bundle.migrations.map(({file,sha256})=>({file,sha256}));
 const socket=createServer();await new Promise((ok,no)=>{socket.once('error',no);socket.listen(0,'127.0.0.1',ok);});const port=socket.address().port;await new Promise(ok=>socket.close(ok));
 const quote=x=>"'"+String(x).replaceAll("'","''")+"'";
 let started=false,admin,worker,oldRuntime,newRuntime,result;
 temp=mkdtempSync(join(tempParent,'wiki-email-composition-'));data=join(temp,'data');cert=join(temp,'server.crt');key=join(temp,'server.key');
+const run=createNativePostgresRunner({bin,suffix,env,temp});
 try{
- run(openssl,['req','-x509','-newkey','rsa:2048','-noenc','-subj','/CN=localhost','-addext','subjectAltName=DNS:localhost,IP:127.0.0.1','-days','1','-keyout',key,'-out',cert]);
+ createNativePostgresRunner({bin:dirname(openssl),suffix:'',env,temp})(basename(openssl),['req','-x509','-newkey','rsa:2048','-noenc','-subj','/CN=localhost','-addext','subjectAltName=DNS:localhost,IP:127.0.0.1','-days','1','-keyout',key,'-out',cert]);
  if(process.platform!=='win32')chmodSync(key,0o600);
- run(join(bin,'initdb'+suffix),['-D',data,'--auth=trust','--no-locale','-E','UTF8','-U','wiki_composition_owner']);
- appendFileSync(join(data,'postgresql.conf'),`\nssl=on\nssl_cert_file=${quote(cert.replaceAll('\\','/'))}\nssl_key_file=${quote(key.replaceAll('\\','/'))}\n`);
+ run('initdb',['-D',data,'--auth=trust','--no-locale','-E','UTF8','-U','wiki_composition_owner']);
+ configureTlsLoopbackPostgres(data,{cert,key});
  started=true;
- run(join(bin,'pg_ctl'+suffix),['-D',data,'-l',join(temp,'server.log'),'-o',`-h 127.0.0.1 -p ${port}`,'-w','start'],undefined,true);
+ run('pg_ctl',['-D',data,'-l',join(temp,'server.log'),'-o',`-h 127.0.0.1 -p ${port}`,'-w','start']);
  const ca=readFileSync(cert,'utf8'),url=`postgresql://wiki_composition_owner@127.0.0.1:${port}/postgres`;
  admin=new pg.Pool({connectionString:url,max:1,ssl:{rejectUnauthorized:true,ca}});
  assert.match((await admin.query('show server_version_num')).rows[0].server_version_num,/^17\d{4}$/,'PostgreSQL 17 is required.');
@@ -122,7 +128,7 @@ try{
 }finally{
  const closed=await Promise.allSettled([newRuntime?.close(),oldRuntime?.close(),worker?.end(),admin?.end()]);
  // Never remove a cluster if stopping it failed.
- if(started)run(join(bin,'pg_ctl'+suffix),['-D',data,'-m','immediate','-w','stop'],undefined,true);
+ if(started)run('pg_ctl',['-D',data,'-m','immediate','-w','stop']);
  cleanup();
  for(const value of closed)if(value.status==='rejected')throw value.reason;
  console.log('PASS disposable cluster, certificates and keys removed');
