@@ -1,4 +1,4 @@
-/** Reviewed owned PG17 metadata for schema0.25; semantic qualification38690483513. Full promotion/release checks remain mandatory. */
+/** Reviewed owned PG17 metadata for schema0.25; semantic qualification38701663290. Full promotion/release checks remain mandatory. */
 export const DATABASE_SECURITY_CONTRACT = {
   "schemaVersion": "0.25.0",
   "schemas": [
