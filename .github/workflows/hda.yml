@@ -18,7 +18,13 @@ jobs:
       - run: npm ci --ignore-scripts
       - name: Prepare owned PostgreSQL 17 prerequisites
         run: |
-          test -x /usr/lib/postgresql/17/bin/initdb || (sudo apt-get update && sudo apt-get install -y postgresql-17)
+          if ! test -x /usr/lib/postgresql/17/bin/initdb; then
+            curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/postgresql.asc"
+            sudo install -D -m 644 "$RUNNER_TEMP/postgresql.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+            echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list
+            sudo apt-get update
+            sudo apt-get install -y postgresql-17
+          fi
           mkdir -p evidence/hda-ci
       - name: Native candidate with explicit synthetic core
         env:
