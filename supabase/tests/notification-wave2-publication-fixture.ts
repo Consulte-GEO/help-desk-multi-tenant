@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';i
 import {planSupportReviewPublication} from '../../src/application/support-review-publication.ts';import {buildSupportReviewPublicationSql} from '../../src/infrastructure/support-review-publication-sql.ts';
 import {planNotificationWave2Publication} from '../../src/application/notification-wave2-publication.ts';import {buildNotificationWave2PublicationSql} from '../../src/infrastructure/notification-wave2-publication-sql.ts';
 import {WAVE2_PUBLIC_TEMPLATES,WAVE2_INTERNAL_TEMPLATES,WAVE2_REVIEW_TEMPLATES} from '../../src/integrations/notifications/wave2-templates.ts';
-export async function assertOwnedWave2Publication(suite:TestContext,operator:SqlPool,scope:{workspaceId:string;accountId:string;staffId:string;requesterId:string;workId:string}){
+export async function assertOwnedWave2Publication(suite:TestContext,operator:SqlPool,scope:{workspaceId:string;accountId:string;staffId:string;requesterId:string;workId:string},admissionPool:SqlPool){
  const {workspaceId:w,accountId:a,staffId:staff,requesterId:requester,workId}=scope;
  const execute=async(sql:string)=>{const c=await operator.connect();try{return await c.query(sql);}catch(error){await c.query('ROLLBACK');throw error;}finally{c.release();}};
  const source=(await operator.query("select helpdesk_auth.hdn_cfg_record(v) as record from helpdesk_core.hdn_cfg_versions v where workspace_id=$1 and definition->>'service'='backup' order by version desc limit 1",[w])).rows[0]!.record as any;
@@ -46,8 +46,8 @@ export async function assertOwnedWave2Publication(suite:TestContext,operator:Sql
     const rawGroup={workspaceId:w,administratorId:staff,administratorEmail:participantEmail(staff),operatorName:'helpdesk_operator',requestId:randomUUID(),reason:'Owned fixed group '+group+' '+phase,group,phase,recipientIds:recipients,expiresAt:new Date(Date.now()+86400000).toISOString(),expectedRoutes};
     const prepared=planNotificationWave2Publication(rawGroup),statement=buildNotificationWave2PublicationSql(prepared);
     if(group==='public'&&phase==='pause'){
-     const admission=await operator.connect();let completed=false;let pending:Promise<unknown>|undefined;
-     try{await admission.query('BEGIN');await admission.query("select pg_advisory_xact_lock(hashtextextended('helpdesk-notification-ledger-v1',0))");pending=execute(statement).finally(()=>{completed=true;});await new Promise(resolve=>setTimeout(resolve,200));assert.equal(completed,false,'pause must serialize after an in-flight provider admission');await admission.query('COMMIT');await pending;}
+     const admission=await admissionPool.connect();let completed=false;let pending:Promise<unknown>|undefined;
+     try{assert.equal((await admission.query('select current_user as who')).rows[0]!.who,'helpdesk_notification_worker');await admission.query('BEGIN');await admission.query("select pg_advisory_xact_lock(hashtextextended('helpdesk-notification-ledger-v1',0))");pending=execute(statement).finally(()=>{completed=true;});await new Promise(resolve=>setTimeout(resolve,200));assert.equal(completed,false,'pause must serialize after an in-flight provider admission');await admission.query('COMMIT');}
      finally{await admission.query('ROLLBACK');admission.release();if(pending)await pending;}
     }else await execute(statement);
     const count=await counts();await execute(statement);assert.deepEqual(await counts(),count);

@@ -126,6 +126,6 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
    const event=(await operator.query("select id from helpdesk_integration.hdn_notification_private_sources where workspace_id=$1 and ticket_id=$2 and kind='internal.queue_created'",[w,fresh.ticketId])).rows[0]!;
    const saved=await audience.materialize(String(event.id));assert.equal(saved.plan.state,'no_recipients');assert.deepEqual(saved.records,[]);
   });
-  await suite.test('operator recipes qualify against genuine current participants and local publication',publicationSuite=>assertOwnedWave2Publication(publicationSuite,operator,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester,workId:input.workId}));
+  await suite.test('operator recipes qualify against genuine current participants and local publication',publicationSuite=>assertOwnedWave2Publication(publicationSuite,operator,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester,workId:input.workId},audience.worker));
  });
 }
