@@ -26,11 +26,13 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   for(const [person,user,address] of [[staff,staffAuth,email],[requester,requesterAuth,'wave2-requester-'+requesterAuth+'@example.invalid']]){
    await operator.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[person,user]);
    await control.query("insert into auth.users(id,email,email_confirmed_at) values($1,$2,clock_timestamp()-interval '1 second')",[user,address]);
-   await operator.query("select helpdesk_auth.set_human_scopes($1,$2,$3::text[],0,'Owned wave2 scope qualification',$4)",[w,person,person===staff?['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write']:['contexts:resolve','tickets:read','tickets:write'],randomUUID()]);
   }
   await operator.query("insert into helpdesk_auth.workspace_memberships(workspace_id,principal_id,role) values($1,$2,'admin')",[w,staff]);
+  await operator.query("select helpdesk_auth.set_human_scopes($1,$2,array['contexts:resolve','tickets:read','tickets:write','notes:read','notes:write'],0,'Owned staff scope qualification',$3)",[w,staff,randomUUID()]);
   const input={workspaceId:w,administratorId:staff,administratorEmail:email,requestId:randomUUID(),accountId:randomUUID(),accountName:'Owned wave2 account',workId:randomUUID(),workName:'Owned wave2 work',productId:randomUUID(),productInstanceId:randomUUID(),connectionId:randomUUID(),bindingId:randomUUID(),contractId:randomUUID(),contractVersionId:randomUUID(),configurationIds:[randomUUID(),randomUUID(),randomUUID()],coverageIds:[randomUUID(),randomUUID(),randomUUID()],calendar:{startDate:new Date(Date.now()-86400000).toISOString().slice(0,10),endDate:new Date(Date.now()+180*86400000).toISOString().slice(0,10),holidays:[]},reason:'Owned native acceptance of wave2 projections'};
   const initial=planConsulteGeoInitialOperation(input);await operator.query(initial.sql,[...initial.values]);
+  await operator.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'requester')",[w,input.accountId,requester]);
+  await operator.query("select helpdesk_auth.set_human_scopes($1,$2,array['contexts:resolve','tickets:read','tickets:write'],0,'Owned requester scope qualification',$3)",[w,requester,randomUUID()]);
   const local=JSON.parse(initial.values[0] as string).local;
   const extended=planConsulteGeoLocalProvisioning({workspaceId:w,expectedRegistryRevision:1,requestId:randomUUID(),reason:'Owned requester access for native wave2 journey',accounts:local.accounts,works:local.works,permissions:[...local.permissions,...['tickets.read','tickets.write'].map(operation=>({accountId:input.accountId,principalId:requester,role:'requester',operation,active:true,workIds:[input.workId]}))]});
   await operator.query(extended.sql,[...extended.values]);
