@@ -1,6 +1,6 @@
 /** Memory-only session state. No roles from Auth/JWT, no cross-tab storage, no request replay. */
 import {HumanAuthError,workspaceId,validatePasswordChange,mfaCleanupCredential,validateRecoveredPassword,validateRecoveryEmail} from './human-auth.js';
-export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{},passwordOnly=false}={}){
+export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{},passwordOnly=false,allowSimpleMfa=false}={}){
  let generation=0,phase='signed_out',workspace=null,session=null,pending=null,refreshAt=0,ending=null;
  const securityReads=new WeakMap();
  const securityStatusCurrent=value=>!!value&&typeof value==='object'&&canDispatch(securityReads.get(value));
@@ -25,7 +25,7 @@ export function createHumanSession(transport,{now=()=>Date.now(),onChange=()=>{}
   try{let value=await op.raw;issued=value;if(id!==generation)throw new HumanAuthError('stale_session');if(!usable(value))throw new HumanAuthError('auth_response_invalid');op.issued=value;
    const factors=value.mfaFactors??[];if(!Array.isArray(factors))throw new HumanAuthError('auth_response_invalid');
    if(factors.length){
-    if(passwordOnly)throw new HumanAuthError('simple_mfa_required');
+    if(passwordOnly&&!allowSimpleMfa)throw new HumanAuthError('simple_mfa_required');
     op.kind='mfa';op.factors=Object.freeze(factors.filter(f=>f.type==='totp').map(f=>Object.freeze({...f})));
     if(!op.factors.length||typeof transport.verifyMfa!=='function')throw new HumanAuthError('unsupported_mfa');
     const completed=new Promise((resolve,reject)=>{op.choose=resolve;op.rejectChoice=reject;});phase='verifying_mfa';notify();
