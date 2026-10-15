@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="app-version" content="5.0.22-51">
+<title>Leitor de Laudos de Rompimento · Consulte GEO</title>
+<meta name="description" content="Leitura de laudos de rompimento de corpos de prova (NBR 5739): extração determinística no navegador, revisão humana linha a linha e exportação técnica em Excel.">
+<link rel="icon" type="image/png" href="./assets/geo-symbol.png">
+<link rel="stylesheet" href="./assets/design-system.css">
+<link rel="stylesheet" href="./assets/laudo-app.css?v=5.0.22-51">
+</head>
+<body>
+
+<header class="topbar">
+  <div>
+    <div class="kicker">Consulte GEO · Controle Tecnológico</div>
+    <strong>Leitor de Laudos de Rompimento</strong>
+  </div>
+  <div class="spacer"></div>
+  <button id="theme-toggle" class="btn ghost sm" type="button" aria-label="Alternar tema claro e escuro">Tema</button>
+</header>
+
+<main class="laudos-wrap">
+
+  <div class="laudos-head">
+    <div>
+      <h1>Leitor de Laudos de Rompimento</h1>
+      <p class="muted">Solte os PDFs dos laudos. A leitura determinística roda no seu navegador; cada linha extraída mantém o valor bruto, a página e a linha de origem para conferência.</p>
+    </div>
+    <div class="status-line">
+      <span id="busy-spinner" class="spinner hidden" role="status" aria-live="polite" aria-label="Processando"></span>
+      <span id="global-status">Nenhum arquivo selecionado.</span>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------------ entrada -->
+  <section class="card laudos-card" aria-labelledby="titulo-entrada">
+    <h2 id="titulo-entrada" class="sr-only">Seleção de arquivos</h2>
+
+    <div id="drop-zone" class="dropzone" role="button" tabindex="0" aria-label="Selecionar PDFs de laudos">
+      <strong>Solte os PDFs dos laudos aqui</strong>
+      <span>ou clique para escolher — vários de uma vez, até 200 páginas por arquivo.</span>
+      <input id="file-input" type="file" accept="application/pdf,.pdf" multiple hidden>
+    </div>
+
+    <div id="file-list-wrap" class="hidden">
+      <ul id="file-list" class="file-list"></ul>
+    </div>
+
+    <div class="toolbar" style="margin-top:var(--space-4)">
+      <div class="field">
+        <label class="label" for="profile-select">Perfil do laudo</label>
+        <select id="profile-select" class="select">
+          <option value="auto" selected>Detectar automaticamente</option>
+          <option value="generico">Genérico</option>
+          <option value="polimix">POLIMIX</option>
+          <option value="concrelab">Concrelab</option>
+          <option value="prisma">Prisma de bloco (NBR 16868)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="file-concurrency">Arquivos em paralelo</label>
+        <select id="file-concurrency" class="select">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="page-concurrency">Páginas por vez na visão</label>
+        <select id="page-concurrency" class="select">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <div class="spacer"></div>
+      <button id="cancel-button" class="btn secondary" type="button">Cancelar lote</button>
+      <button id="clear-button" class="btn ghost" type="button">Limpar</button>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ leitura por IA -->
+  <section class="card laudos-card" aria-labelledby="titulo-ia">
+    <h2 id="titulo-ia">Leitura assistida por IA (páginas escaneadas)</h2>
+    <p class="muted">Páginas com texto são lidas localmente e nunca saem do navegador. Só as páginas <strong>sem texto aproveitável</strong> podem ser enviadas para leitura assistida — e apenas com o consentimento abaixo marcado.</p>
+
+    <label class="check">
+      <input id="vision-enabled" type="checkbox">
+      <span>Usar leitura assistida nas páginas escaneadas</span>
+    </label>
+    <label class="check">
+      <input id="vision-consent" type="checkbox">
+      <span>Autorizo enviar as imagens dessas páginas para processamento no servidor da Consulte GEO</span>
+    </label>
+
+    <p class="privacy-note" style="margin-top:var(--space-3)">
+      <strong>O que acontece quando você autoriza:</strong> a imagem da página é enviada para a função
+      <code>laudo-vision</code> da Consulte GEO, que chama o provedor de IA com <code>store:false</code>
+      (sem retenção para treinamento). Ainda assim existem <strong>retenções técnicas limitadas</strong> de
+      logs e abuso no provedor e na infraestrutura, com prazo definido por eles — por isso a autorização é
+      explícita e por lote. A Consulte GEO grava apenas telemetria de diagnóstico (páginas, modelo, tempo,
+      contagens); nem a imagem nem o texto integral do laudo são persistidos. Nenhuma chave de IA existe
+      neste navegador: a credencial fica somente no servidor.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ resultados -->
+  <section id="result-section" class="card laudos-card hidden" aria-labelledby="titulo-resultados">
+    <h2 id="titulo-resultados">Resultados para revisão</h2>
+
+    <div id="stats-grid" class="stats-grid"></div>
+    <div id="validation-summary" class="validation-summary" style="margin-bottom:var(--space-3)"></div>
+
+    <div class="toolbar" style="margin-bottom:var(--space-3)">
+      <input id="search-input" class="input grow" type="search" placeholder="filtrar por arquivo, CP, NF, idade, MPa…" aria-label="Filtrar resultados">
+      <div class="field">
+        <label class="label" for="status-filter">Situação</label>
+        <select id="status-filter" class="select">
+          <option value="">Todas</option>
+          <option value="pendente">Pendentes</option>
+          <option value="aceito">Aceitos</option>
+          <option value="corrigido">Corrigidos</option>
+          <option value="rejeitado">Rejeitados</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="severity-filter">Achados</label>
+        <select id="severity-filter" class="select">
+          <option value="">Todos</option>
+          <option value="error">Com erro</option>
+          <option value="warning">Com alerta</option>
+          <option value="info">Só informação</option>
+        </select>
+      </div>
+      <span id="result-count-badge" class="badge"></span>
+      <div class="spacer"></div>
+      <button id="accept-visible" class="btn secondary" type="button">Aceitar visíveis</button>
+      <button id="register-review" class="btn secondary" type="button">Registrar revisão</button>
+      <button id="export-button" class="btn brand" type="button">Exportar Excel</button>
+    </div>
+
+    <label class="check" style="margin-bottom:var(--space-3)">
+      <input id="strict-review" type="checkbox" checked>
+      <span>Exportação definitiva: bloquear enquanto houver linha com erro pendente de revisão</span>
+    </label>
+
+    <div class="results-scroll">
+      <table class="results">
+        <thead>
+          <tr>
+            <th>#</th><th>Situação</th><th>Arquivo</th><th>Pág.</th><th>Laudo nº</th>
+            <th>CP</th><th>NF</th><th>Idade</th><th>Un.</th><th>MPa</th>
+            <th>Moldagem</th><th>Rompimento</th><th>Confiança</th><th>Fonte</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+      <p id="empty-results" class="muted hidden" style="padding:var(--space-6);text-align:center">Nenhuma linha corresponde ao filtro.</p>
+    </div>
+
+    <p class="muted" style="margin-top:var(--space-3);font-size:var(--text-xs)">
+      A confiança vem do caminho de extração e da concordância entre leituras: <strong>alta</strong> = idade e NF na
+      própria linha; <strong>média</strong> = herança de seção, página ou formato raro; <strong>baixa</strong> = idade
+      inferida por datas/eixo ou campo crítico ilegível. Campos herdados trazem a origem em “Detalhes”. Nada é
+      salvo em servidor: baixe o Excel ao terminar.
+    </p>
+  </section>
+
+  <p class="muted" style="text-align:center;font-size:var(--text-xs)">
+    Motor de leitura do Consulte GEO · perfis POLIMIX/Concrelab/prisma · leitura de texto 100% no navegador · v5.0.22-51
+  </p>
+</main>
+
+<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+<!-- Motores determinísticos (UMD, sem DOM, cobertos por tools/run-laudo-tests.js) -->
+<script src="./assets/laudo-perfis.js?v=5.0.22-51"></script>
+<script src="./assets/laudo-invariantes.js?v=5.0.22-51"></script>
+<script src="./assets/laudo-parser-core.js?v=5.0.22-51"></script>
+<!-- Aplicação: pdf.js local, writer XLSX do projeto, revisão humana e exportação -->
+<script type="module" src="./assets/laudo-app.js?v=5.0.22-51"></script>
+
+</body>
+</html>

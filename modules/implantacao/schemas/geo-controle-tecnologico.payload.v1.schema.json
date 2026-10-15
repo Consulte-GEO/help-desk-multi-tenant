@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.consultegeo.local/geo-controle-tecnologico.payload.v1.schema.json",
+  "title": "GEO Controle Tecnológico — Payload de implantação (contrato criar_obra) v1",
+  "description": "JSON gerado pelo wizard de implantação (setup.consultegeo.org) e consumido pelo GEO Controle Tecnológico em Nova obra → Importar JSON. As chaves de topo (dadosBasicos, concretos, grupos, pecas, usuarios, fornecedores) são exatamente as lidas pela RPC public.criar_obra(jsonb). O bloco `meta` é apenas rastreabilidade e é ignorado pelo backend/importador.",
+  "type": "object",
+  "required": ["dadosBasicos", "concretos", "grupos", "pecas", "usuarios", "fornecedores"],
+  "additionalProperties": true,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "schema": { "const": "geo-controle-tecnologico.implantacao" },
+        "schemaVersion": { "type": "string" },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" },
+        "target": { "const": "geomat:criar_obra" },
+        "draftId": { "type": ["string", "null"] },
+        "submissionId": { "type": ["string", "null"] },
+        "obraNome": { "type": "string" },
+        "projetistas": { "type": "array", "items": { "type": "string" } },
+        "counts": { "type": "object" }
+      }
+    },
+    "dadosBasicos": {
+      "type": "object",
+      "required": ["obraNome"],
+      "additionalProperties": true,
+      "properties": {
+        "obraNome": { "type": "string" },
+        "obraCodigo": { "type": "string", "description": "Vazio → o backend gera OBRA-<token>." },
+        "cliente": { "type": "string" },
+        "regional": { "type": "string" },
+        "municipio": { "type": "string" },
+        "uf": { "type": "string" },
+        "endereco": { "type": "string" },
+        "cep": { "type": "string" },
+        "responsavelNome": { "type": "string" },
+        "responsavelEmail": { "type": "string" },
+        "responsavelTelefone": { "type": "string" },
+        "observacoes": { "type": "string" }
+      }
+    },
+    "concretos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "descricao"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string", "description": "tempId referenciado por pecas[].concretoTempId" },
+          "descricao": { "type": "string" },
+          "aplicacao": { "type": "string" },
+          "fck": { "type": ["number", "string"] },
+          "slumpPrevisto": { "type": ["number", "string", "null"], "description": "Slump/flow previsto (cm) → operational_materials.slump_previsto_cm. Derivado da descrição (ex.: 'SLUMP 10±2 CM') quando não informado." },
+          "slumpTolerancia": { "type": ["number", "string", "null"], "description": "Tolerância (± cm) → operational_materials.slump_tolerancia_cm. Habilita a NC automática de slump no recebimento." },
+          "validadeMinutos": { "type": ["number", "string", "null"], "description": "Validade do concreto fresco (min) → operational_materials.validade_concreto_minutos." },
+          "padroesMoldagem": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "id": { "type": "string" },
+                "idadeControle": { "type": ["number", "string"] },
+                "unidadeIdade": { "enum": ["dias", "horas"] },
+                "tipoEnsaio": { "enum": ["compressao", "elasticidade", "tracao_flexao"] },
+                "valorEsperado": { "type": ["number", "string"] },
+                "crescimentoPct": { "type": ["number", "string"] },
+                "quantidadeCp": { "type": ["number", "string"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tipos": {
+      "type": "array",
+      "description": "Catálogo de tipos de unidade (Estacas, Laje, Pilar…). OPCIONAL: quando ausente, o importador do geomat deriva os tipos a partir das peças (etapa|fck|concreto) com nome genérico. Quando presente, vira unit_types com nome real.",
+      "items": {
+        "type": "object",
+        "required": ["id", "nome"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string", "description": "tempId referenciado por pecas[].tipoTempId" },
+          "nome": { "type": "string", "description": "Nome real do tipo → unit_types.nome" },
+          "etapa": { "type": "string", "description": "→ unit_types.etapa" },
+          "concretoTempId": { "type": "string", "description": "Referencia concretos[].id. O FCK de projeto do tipo (unit_types.fck_projeto_mpa) é DERIVADO do FCK desse concreto." },
+          "croquiObrigatorio": { "type": "boolean", "description": "→ unit_types.croqui_obrigatorio" },
+          "volumeProjeto": { "type": ["number", "string", "null"], "description": "→ unit_types.volume_projeto_m3" },
+          "projetista": { "type": "string", "description": "OPCIONAL (pode ficar em branco) → catalogado em designers e vinculado (unit_types.designer_id). 'Forma obrigatória' e 'tolerância de resistência' não fazem parte deste contrato." }
+        }
+      }
+    },
+    "grupos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "nome"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string", "description": "tempId referenciado por pecas[].grupoTempId" },
+          "nome": { "type": "string", "description": "Nomenclatura no sistema → unit_groups.nome" },
+          "tipoEdificacao": { "type": "string", "description": "→ unit_groups.tipo_edificacao" },
+          "projetista": { "type": "string", "description": "Texto livre → catalogado em designers e vinculado (unit_groups.designer_id)" },
+          "edificacoes": { "type": "string", "description": "Range bruto (ex.: '1 a 24') → unit_groups.edificacoes" },
+          "observacoes": { "type": "string" }
+        }
+      }
+    },
+    "pecas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["grupoTempId", "local"],
+        "additionalProperties": true,
+        "properties": {
+          "grupoTempId": { "type": "string", "description": "Referencia grupos[].id" },
+          "tipoTempId": { "type": "string", "description": "Referencia tipos[].id. Quando presente, a peça herda etapa/fck/concreto/projetista do tipo. Quando ausente, o geomat deriva o tipo a partir de etapa|fck|concreto." },
+          "concretoTempId": { "type": "string", "description": "Referencia concretos[].id" },
+          "local": { "type": "string", "description": "→ units.nome" },
+          "etapa": { "type": "string", "description": "Fundação | Infraestrutura | Estrutura | Contenção | Anexos" },
+          "fck": { "type": ["number", "string"] },
+          "volume": { "type": ["number", "string"] },
+          "observacoes": { "type": "string" }
+        }
+      }
+    },
+    "usuarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "nome": { "type": "string" },
+          "email": { "type": "string" },
+          "cargo": { "type": "string" },
+          "telefone": { "type": "string" },
+          "perfil": { "enum": ["operador_campo", "engenheiro", "qualidade", "laboratorio", "analista_gestor", ""] }
+        }
+      }
+    },
+    "fornecedores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "tipo": { "enum": ["usina", "laboratorio"] },
+          "nome": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "responsavel": { "type": "string" },
+          "telefone": { "type": "string" },
+          "endereco": { "type": "string" },
+          "emailsProgramacao": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

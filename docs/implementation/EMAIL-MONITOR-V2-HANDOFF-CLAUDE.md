@@ -1,5 +1,9 @@
 # Continuidade da implementação de e-mails V2
 
+## Estado produtivo posterior à entrega
+
+O titular autorizou e o PR52 foi integrado/publicado. O banco HelpDesk já está em0.27 pela migration remota20261015190027; não reaplicar append21 nem bootstrap. Capability do monitor true,91 assets e13 checks HTTPS aprovados, três workers204. A coleta real ainda não foi qualificada e as datas de cobertura permanecem nulas. O painel Resend autenticado é a dependência atual; o pixel/link de e-mails recebidos respondeu, mas nenhum callback de engajamento chegou/persistiu. Ler [checkpoint produtivo](EMAIL-MONITOR-V2-PRODUCTION-2026-10-15.md) e seus recibos. As descrições anteriores de PR sem merge/produção pendente abaixo são históricas. Não reimplantar nem iniciar cobertura por inferência.
+
 ## Estado que deve ser preservado
 
 O código está na branch `codex/email-monitoring-v2`, base original `e8878675eddf21ed9d0fa4ae3ae89abc90c497a4`, posteriormente integrada com a base atual. A implementação principal está em `bfef03b`; os commits seguintes corrigem/revisam cobertura, diagnóstico e documentação. Consultar `git log` para o HEAD exato. O titular autorizou expressamente push/PR/CI e a branch foi enviada: [PR52](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/52). Há preview automático de build. Não houve implantação produtiva, callback real ou alteração de dados de produção nesta rodada.

@@ -1,0 +1,76 @@
+# =====================================================================
+# Deploy automático das Edge Functions · v5.22.48
+#
+# Fecha o backlog PK §2.2 (era o 1 FAIL fixo do smoke). O job é
+# NO-OP seguro enquanto o secret SUPABASE_ACCESS_TOKEN não existir no
+# repositório: ele detecta a ausência, emite warning e termina verde —
+# o deploy manual via MCP/painel continua valendo (docs/EDGE_FUNCTIONS.md).
+#
+# Para ativar de verdade:
+#   Settings → Secrets and variables → Actions → New repository secret
+#   Nome:  SUPABASE_ACCESS_TOKEN
+#   Valor: token pessoal criado em https://supabase.com/dashboard/account/tokens
+#
+# O que deploya (somente EFs vivas do app de implantação):
+#   submit-for-validation · share-draft-link · notify-return ·
+#   notify-team-comment · notify-client-comment · importa-openai ·
+#   laudo-vision (entrou na V14: /laudos passou a ter chamador real)
+# Fora de propósito: admin-bootstrap (sem chamador no frontend).
+#
+# verify_jwt por função vem de supabase/config.toml (importa-openai e
+# laudo-vision são as duas com verify_jwt=false — páginas estáticas
+# sem sessão Supabase).
+#
+# PRÉ-REQUISITO da laudo-vision: migration 026 aplicada (a quota é uma
+# RPC security definer) + segredo OPENAI_API_KEY no projeto.
+# =====================================================================
+name: Deploy Edge Functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+      - 'supabase/config.toml'
+      - '.github/workflows/deploy-edge-functions.yml'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: yglcnirbnbwjqpvalqif
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar secret (no-op sem SUPABASE_ACCESS_TOKEN)
+        id: gate
+        run: |
+          if [ -z "${SUPABASE_ACCESS_TOKEN}" ]; then
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::SUPABASE_ACCESS_TOKEN não configurado — deploy pulado. O deploy manual (MCP/painel) segue valendo. Para ativar o CI, crie o secret (instruções no cabeçalho deste workflow)."
+          else
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Supabase CLI
+        if: steps.gate.outputs.has_token == 'true'
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy Edge Functions
+        if: steps.gate.outputs.has_token == 'true'
+        run: |
+          set -euo pipefail
+          # Comandos explícitos (1 por linha) — o smoke-pipeline confere
+          # cada função nominalmente; não converter em loop.
+          supabase functions deploy submit-for-validation --project-ref "$PROJECT_REF"
+          supabase functions deploy share-draft-link --project-ref "$PROJECT_REF"
+          supabase functions deploy notify-return --project-ref "$PROJECT_REF"
+          supabase functions deploy notify-team-comment --project-ref "$PROJECT_REF"
+          supabase functions deploy notify-client-comment --project-ref "$PROJECT_REF"
+          supabase functions deploy importa-openai --project-ref "$PROJECT_REF"
+          supabase functions deploy laudo-vision --project-ref "$PROJECT_REF"
+          echo "✔ Deploy concluído. Confirme os ezbr_sha256 no painel (gotcha PK #12)."

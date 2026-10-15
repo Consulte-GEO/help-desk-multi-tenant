@@ -86,13 +86,13 @@ export async function verifyLogs(report,directory) {
 }
 /** Hash every relevant source/config/test file, including new/untracked source files. */
 export async function sourceFingerprint(root) {
- const roots=['shared','src','scripts','tests','supabase','profiles','web','workers','netlify','.github','package.json','package-lock.json','tsconfig.json',
+ const roots=['shared','src','scripts','tests','supabase','profiles','web','workers','netlify','modules','.github','package.json','package-lock.json','tsconfig.json',
   'netlify.toml','.gitattributes','.gitignore','.npmrc','.nvmrc','.env.example','docs/openapi.json','docs/knowledge'];
  const files=[];
  async function walk(path){
   let stat;try{stat=await lstat(path);}catch(e){if(e.code==='ENOENT')return;throw e;}
   if(stat.isSymbolicLink())throw Error('Fontes simbólicas não são aceitas para homologação.');
-  if(stat.isDirectory()){for(const name of (await readdir(path)).sort())if(name!=='__pycache__')await walk(join(path,name));}
+  if(stat.isDirectory()){for(const name of (await readdir(path)).sort())if(!['__pycache__','node_modules','dist','dist-support','.support-validation','.laudo-validation','.v8-validation','.v13-validation','.laudo-build','.vite','.cache','.temp'].includes(name))await walk(join(path,name));}
   else if(stat.isFile())files.push(path);
   else throw Error('Tipo de fonte não suportado para homologação.');
  }

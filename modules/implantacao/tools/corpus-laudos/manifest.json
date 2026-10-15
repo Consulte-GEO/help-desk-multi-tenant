@@ -1,0 +1,295 @@
+{
+  "version": "1.0.0",
+  "descricao": "Corpus sintético do Leitor de Laudos. Reproduz layouts reais (POLIMIX em colunas por idade, Concrelab com gráfico, prisma NBR 16868 e laudo com NF só no cabeçalho) SEM usar documento de cliente — regra do projeto: dado real de cliente nunca vira fixture versionada. Cada caso amarra um comportamento que já quebrou em produção.",
+  "comoAmpliar": "Para medir com laudos reais, gere um corpus local (não versionado) com tools/corpus-laudos/local/ e rode npm run test:laudos -- --dir=<pasta>. O manifesto versionado fica sintético.",
+  "cases": [
+    {
+      "id": "polimix-colunas-por-idade",
+      "descricao": "Tabela com uma coluna por idade e gráfico de evolução ao final. O eixo do gráfico já virou falso resultado em produção.",
+      "profile": "polimix",
+      "text": "POLIMIX CONCRETO S/A\nRELATORIO DE ENSAIO No 217723\nOBRA: RESIDENCIAL ALVORADA\nNOTA FISCAL: 100417\nFCK: 30 MPa\n\n                         IDADE\nCP        NF          7 dias    28 dias\n101       100417      25,4      34,7\n102       100417      26,2      35,1\n\nGRAFICO\nEvolucao Obtida aos 28 dias\n40,0\n30,0\n",
+      "expected": {
+        "count": 4,
+        "ages": [
+          [
+            7,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ],
+          [
+            7,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ]
+        ],
+        "mpa": [
+          25.4,
+          34.7,
+          26.2,
+          35.1
+        ],
+        "cp": [
+          "101",
+          "101",
+          "102",
+          "102"
+        ],
+        "nf": [
+          "100417",
+          "100417",
+          "100417",
+          "100417"
+        ],
+        "profileDetected": "polimix",
+        "graphCuts": 1,
+        "context": {
+          "fckProjeto": 30,
+          "obra": "RESIDENCIAL ALVORADA"
+        }
+      }
+    },
+    {
+      "id": "concrelab-corta-grafico",
+      "descricao": "Relatório Concrelab: o corte do gráfico é regra de perfil, não if no motor.",
+      "text": "CONCRELAB CONTROLE TECNOLOGICO LTDA\nRELATORIO DE ENSAIO DE COMPRESSAO No 199518\nNOTA FISCAL 100933\nCP   IDADE    RESISTENCIA (MPa)\n1    7 dias   14,3\n2    7 dias   17,8\n3    28 dias  28,4\nGRAFICO\n35,0\n30,0\n",
+      "expected": {
+        "count": 3,
+        "ages": [
+          [
+            7,
+            "dia"
+          ],
+          [
+            7,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ]
+        ],
+        "mpa": [
+          14.3,
+          17.8,
+          28.4
+        ],
+        "cp": [
+          "1",
+          "2",
+          "3"
+        ],
+        "nf": [
+          "100933",
+          "100933",
+          "100933"
+        ],
+        "profileDetected": "concrelab",
+        "graphCuts": 1
+      }
+    },
+    {
+      "id": "texto-duplicados-legitimos",
+      "descricao": "D5 — dois CPs distintos com a MESMA resistência e idade. O motor antigo deduplicava por valor e perdia a linha.",
+      "text": "LABORATORIO EXEMPLO\nRELATORIO DE ENSAIO No 5512\nNOTA FISCAL 88123\nCP   IDADE   RESISTENCIA (MPa)\n1    28 dias   32,4\n2    28 dias   32,4\n",
+      "expected": {
+        "count": 2,
+        "ages": [
+          [
+            28,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ]
+        ],
+        "mpa": [
+          32.4,
+          32.4
+        ],
+        "cp": [
+          "1",
+          "2"
+        ],
+        "nf": [
+          "88123",
+          "88123"
+        ]
+      }
+    },
+    {
+      "id": "texto-idades-1e2-dias",
+      "descricao": "D6 — 1 e 2 dias continuam 1 e 2 dias. O motor antigo reescrevia tudo para 12 horas.",
+      "text": "LABORATORIO EXEMPLO\nRELATORIO DE ENSAIO No 771\nNOTA FISCAL 90011\nCP   IDADE   RESISTENCIA (MPa)\nA1   1 dia    9,8\nA2   2 dias   14,2\nA3   28 dias  33,0\n",
+      "expected": {
+        "count": 3,
+        "ages": [
+          [
+            1,
+            "dia"
+          ],
+          [
+            2,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ]
+        ],
+        "mpa": [
+          9.8,
+          14.2,
+          33
+        ],
+        "cp": [
+          "A1",
+          "A2",
+          "A3"
+        ],
+        "nf": [
+          "90011",
+          "90011",
+          "90011"
+        ]
+      }
+    },
+    {
+      "id": "prisma-bloco-nbr16868",
+      "descricao": "Prisma de alvenaria: sem nota fiscal, tensão na última coluna decimal.",
+      "profile": "prisma",
+      "text": "LABORATORIO DE MATERIAIS\nENSAIO DE PRISMA DE BLOCO CERAMICO\nRESISTENCIA A COMPRESSAO - NBR 16868\nRELATORIO DE ENSAIO No 4410\nIDADE DO ENSAIO: 28 dias\nCP   LARGURA  ALTURA  CARGA   TENSAO\n1    140      390     220,5   4,12\n2    140      390     231,0   4,35\n3    140      390     215,2   4,02\n",
+      "expected": {
+        "count": 3,
+        "mpa": [
+          4.12,
+          4.35,
+          4.02
+        ],
+        "cp": [
+          "1",
+          "2",
+          "3"
+        ],
+        "profileDetected": "prisma",
+        "graphCuts": 0
+      }
+    },
+    {
+      "id": "prisma-idade-sem-unidade",
+      "descricao": "C4 — idade impressa sem unidade não vira dia nem hora: fica ilegível, com o bruto preservado.",
+      "profile": "prisma",
+      "text": "LABORATORIO DE MATERIAIS\nENSAIO DE PRISMA DE BLOCO\nRESISTENCIA A COMPRESSAO - NBR 16868\nRELATORIO DE ENSAIO No 4411\nIDADE DO ENSAIO: 28\nCP   LARGURA  ALTURA  CARGA   TENSAO\n1    140      390     220,5   4,12\n2    140      390     231,0   4,35\n",
+      "expected": {
+        "count": 2,
+        "mpa": [
+          4.12,
+          4.35
+        ],
+        "ageState": "ilegivel",
+        "ageUnit": null
+      }
+    },
+    {
+      "id": "nf-cabecalho-multiplos-blocos",
+      "descricao": "REGRESSÃO DA V14 — NF impressa uma vez no cabeçalho e várias séries de resultados. Em produção só as duas primeiras linhas recebiam NF; da terceira em diante a coluna vinha vazia.",
+      "text": "CONCRETEIRA EXEMPLO LTDA                       RELATORIO DE ENSAIO No 217723\nCNPJ 01.055.027/0001-44        CEP 30110-005    Fone (31) 3333-4444\nOBRA: RESIDENCIAL ALVORADA - TORRE A\nNOTA FISCAL: 100417            DATA DE MOLDAGEM: 18/03/2025\nFCK: 30 MPa\n\n          IDADE          RESISTENCIA (MPa)\nCP        7 dias         25,4\nCP        12 horas       25,4\n\nSEGUNDA SERIE DE CORPOS DE PROVA\n          IDADE          RESISTENCIA (MPa)\nCP        12 horas       31,0\nCP        63 dias        33,1\n\nTERCEIRA SERIE\n          IDADE          RESISTENCIA (MPa)\nCP        28 dias        36,9\n",
+      "expected": {
+        "count": 5,
+        "ages": [
+          [
+            7,
+            "dia"
+          ],
+          [
+            12,
+            "hora"
+          ],
+          [
+            12,
+            "hora"
+          ],
+          [
+            63,
+            "dia"
+          ],
+          [
+            28,
+            "dia"
+          ]
+        ],
+        "mpa": [
+          25.4,
+          25.4,
+          31,
+          33.1,
+          36.9
+        ],
+        "nf": [
+          "100417",
+          "100417",
+          "100417",
+          "100417",
+          "100417"
+        ],
+        "nfOrigem": [
+          "secao",
+          "secao",
+          "pagina",
+          "pagina",
+          "pagina"
+        ]
+      }
+    },
+    {
+      "id": "nf-formato-com-ponto",
+      "descricao": "NF escrita como 'Nota Fiscal n 100.417' — o regex antigo exigia dígitos colados ao rótulo e devolvia vazio.",
+      "text": "USINA EXEMPLO\nRELATORIO DE ENSAIO No 6001\nNota Fiscal n 100.417\nCP   IDADE     RESISTENCIA (MPa)\n1    28 dias   31,5\n",
+      "expected": {
+        "count": 1,
+        "nf": [
+          "100417"
+        ]
+      }
+    },
+    {
+      "id": "nf-formato-nfe-com-zero",
+      "descricao": "NFe com zero à esquerda: normaliza para o mesmo número da nota.",
+      "text": "USINA EXEMPLO\nRELATORIO DE ENSAIO No 6002\nNFe 0100417\nCP   IDADE     RESISTENCIA (MPa)\n1    28 dias   31,5\n",
+      "expected": {
+        "count": 1,
+        "nf": [
+          "100417"
+        ]
+      }
+    },
+    {
+      "id": "nf-ambigua-nao-herda",
+      "descricao": "Duas notas fiscais no mesmo cabeçalho: a herança NÃO acontece. Preencher seria adivinhar.",
+      "text": "USINA EXEMPLO\nRELATORIO DE ENSAIO No 6003\nNOTA FISCAL 100417 E NOTA FISCAL 100418\nCP   IDADE     RESISTENCIA (MPa)\n1    28 dias   31,5\n2    28 dias   32,7\n",
+      "expected": {
+        "count": 2,
+        "nf": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "paginas-mistas",
+      "descricao": "Documento com uma página de texto e uma página escaneada (sem texto aproveitável).",
+      "text": "LABORATORIO EXEMPLO DE CONTROLE TECNOLOGICO LTDA\nRELATORIO DE ENSAIO DE COMPRESSAO No 7001\nOBRA: EDIFICIO CENTRAL - BLOCO UNICO\nNOTA FISCAL 70011\nCP   IDADE     RESISTENCIA (MPa)\n1    28 dias   30,1\n2    28 dias   31,2\n\f  \n",
+      "expected": {
+        "count": 2,
+        "pages": 2,
+        "scannedPages": 1
+      }
+    }
+  ]
+}

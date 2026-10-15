@@ -1,0 +1,61 @@
+name: Apoio Implantacao qualification
+on:
+  pull_request:
+  push:
+    branches: ['codex/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  implantation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - run: npm ci --ignore-scripts
+      - name: Prepare owned PostgreSQL 17
+        run: |
+          if ! test -x /usr/lib/postgresql/17/bin/initdb; then
+            curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/postgresql.asc"
+            sudo install -D -m 644 "$RUNNER_TEMP/postgresql.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+            echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list
+            sudo apt-get update
+            sudo apt-get install -y postgresql-17
+          fi
+          mkdir -p evidence/implantacao-ci
+      - name: Private addon against complete immutable core
+        env:
+          HELPDESK_IMPLANTACAO_PG_BIN: /usr/lib/postgresql/17/bin
+        run: node --experimental-strip-types scripts/qualify-implementation-support-native.mjs --execute | tee evidence/implantacao-ci/postgres.json
+      - name: Native frontend and closed publication graph
+        run: npm run build
+      - name: Frontend migration contracts
+        run: node --test modules/implantacao/tools/tests/support-frontend/*.test.mjs | tee evidence/implantacao-ci/frontend.log
+      - name: Imported dependency security audit
+        working-directory: modules/implantacao/frontend
+        run: npm audit --audit-level=high
+      - name: Original import integrity and laudo corpus
+        run: |
+          node --test modules/implantacao/tools/tests/import-integrity/*.test.cjs | tee evidence/implantacao-ci/import-engines.log
+          node modules/implantacao/tools/run-laudo-tests.js | tee evidence/implantacao-ci/laudo-engines.log
+      - name: Prepare isolated browser driver
+        run: |
+          npm install --prefix "$RUNNER_TEMP/implantacao-browser" playwright@1.63.0 --ignore-scripts
+          node "$RUNNER_TEMP/implantacao-browser/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "PLAYWRIGHT_DRIVER_PATH=$RUNNER_TEMP/implantacao-browser/node_modules/playwright/index.mjs" >> "$GITHUB_ENV"
+      - name: Native browser journey
+        run: node --experimental-strip-types modules/implantacao/tools/support-browser.mjs | tee evidence/implantacao-ci/browser.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: implantacao-${{ github.sha }}-${{ github.run_id }}
+          include-hidden-files: true
+          path: |
+            evidence/implantacao-ci
+            modules/implantacao/.support-validation

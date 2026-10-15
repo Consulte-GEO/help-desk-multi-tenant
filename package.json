@@ -12,7 +12,7 @@
     "demo": "node --experimental-strip-types scripts/demo.ts",
     "test:db": "node --experimental-strip-types --test --test-reporter=tap --test-concurrency=1 supabase/tests/rls.test.ts supabase/tests/upgrade.test.ts",
     "check:contracts": "node --experimental-strip-types scripts/check-contracts.ts",
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build-implantacao.mjs && node scripts/build.mjs",
     "dev": "netlify dev",
     "verify": "npm run check:migrations && npm run check:consultegeo-upgrade && npm test && npm run typecheck && npm run check:contracts && npm run check:secrets && npm run build",
     "check:secrets": "node scripts/check-secrets.mjs",
@@ -39,6 +39,7 @@
     "check:consultegeo-upgrade": "node --experimental-strip-types scripts/check-consultegeo-upgrade.ts"
   },
   "dependencies": {
+    "openai": "7.34.0",
     "pg": "8.16.3"
   },
   "devDependencies": {

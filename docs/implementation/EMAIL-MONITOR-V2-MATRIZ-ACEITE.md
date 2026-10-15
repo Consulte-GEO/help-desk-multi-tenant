@@ -37,6 +37,6 @@ Legenda: PG = `supabase/tests/email-monitor-scenarios.ts`, com logins reais rest
 | AC-25 | Cursor AES-GCM contextual; testes reais do codec e PG ordenação/página | Mudança de dados/contexto pode exigir reiniciar com409 |
 | AC-26 | Estados preservados, idade no servidor e previsão do ledger; PG/UI/BASE | Horário de retry é previsão, não promessa de entrega |
 | AC-27 | Recibo de engajamento separado do ledger/ticket; PG/AUX/BASE | Não cria ciência ou encerra chamado |
-| AC-28 | Append21, prefixo20 preservado e catálogos/workers qualificados em CI | **Operação produtiva pendente:** deploy, provedor, início da coleta e aceite autenticado |
+| AC-28 | Append21 aplicado em produção, prefixo20 preservado; catálogo27 e workers qualificados;91 assets/13 checks HTTPS aprovados | **Aceite parcial:** faltam callback real de abertura/clique, início comprovado da coleta e validação autenticada da tela. Ver checkpoint produtivo |
 
 O PR e seu CI são a referência para revisões posteriores. A prévia Netlify é um estágio de publicação separado: manter o gate de release e a configuração produtiva intactos. Nenhum critério desta matriz autoriza alteração dos chamados reais do piloto ou das decisões adiadas pelo titular.

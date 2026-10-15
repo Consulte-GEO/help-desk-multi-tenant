@@ -1,0 +1,2147 @@
+/* ==================================================================
+ * Implantação Consulte GEO · Design System v5.22.17
+ *
+ * v5.22.17 — Correções de legibilidade do modo dark + rename
+ *   "Superestrutura" → "Estrutura":
+ *   - Topbar e wizard-footer com opacidade 98% (era 92/94%): o
+ *     radial-gradient magenta do body deixava de atravessar e
+ *     reduzir o contraste percebido do h1.
+ *   - Page title h1 em dark recebe color explícita + text-shadow.
+ *   - Chips ganham bg e borda mais contrastantes em dark.
+ *   - Floor cards (preview Etapa 7) saem do --surface (idêntico ao
+ *     tower-stack) para um tom mais claro com borda visível.
+ *   - Tower-stack escurece levemente para "respirar" do floor card.
+ *   - Botões default em dark com borda mais clara (#5b6a99).
+ *   - Shortcuts roxos (+12 horas etc.) com tint mais saturado em dark.
+ *   - Kicker e card-description com cor mais opaca em dark.
+ *   - Inputs em dark ligeiramente mais claros (#232a45) — bordas
+ *     mais visíveis.
+ *
+ * v5.22.15 — Auditoria CSS de acessibilidade.
+ *   - Floor cards FCK agora usam variáveis *-fg adaptativas por tema
+ *     (light: 4 cores escuras; dark: 4 cores claras). Eliminadas 4
+ *     falhas reais de contraste 1.4.11 (UI components < 3:1) que
+ *     existiam silenciosamente desde a v5.
+ *   - :focus-visible reforçado com outline+offset (não depende só
+ *     do magenta — agora aparece sobre CTAs magenta/navy também).
+ *   - .sr-only adicionada (texto para leitores de tela).
+ *   - @media print: leiaute monocromático B&W para impressão/PDF —
+ *     esconde chrome do app, força preto sobre branco, mantém
+ *     hierarquia via bordas e indentação.
+ *   - @media (forced-colors: active): suporte a Windows High
+ *     Contrast Mode — botões, badges, foco e seleção respeitam
+ *     a paleta do SO.
+ *   - smoke-contrast.ts expandido de 42 para 78 pares cobrindo
+ *     btn.success, btn.nav-back, comment--internal, input-suffix,
+ *     brand-subtitle, kicker, radio-pill.active, status-step.active,
+ *     ticket-number-block, floor-card por FCK.
+ *
+ * v5.22.4 — UX da Etapa 6 + cores nos botões do wizard:
+ *   - .btn.success: verde semântico para CTAs positivos (Exportar Excel,
+ *     Salvar rascunho). Light = bg success-bg + fg success-fg.
+ *     Dark = color-mix mais opaco do success-fg.
+ *   - .btn.nav-back: azul-marinho discreto para o Voltar do wizard.
+ *     Não compete com o CTA principal mas deixa de ser invisível.
+ *
+ * v5.22 — Status público do cliente + comentários internal_only.
+ * v5.21 — Histórico de comentários + mobile pass ReviewView.
+ * v5.20 — Fluxo de chamado + modal.
+ * v5.19 — Auditoria mobile <760px (Etapas 3 e 5).
+ * v5.17 — Correção warning-fg light pelo smoke-contrast.
+ * v5.15 — Auditoria contraste claro/escuro completa.
+ * ================================================================== */
+
+:root {
+  /* Brand anchors */
+  --brand-navy:           #182863;
+  --brand-navy-deep:      #0E1B40;
+  --brand-purple:         #3E2D71;
+  --brand-magenta:        #C5117E;
+  --brand-magenta-light:  #E8459E;
+  --brand-gradient: linear-gradient(
+    135deg,
+    var(--brand-navy)   0%,
+    var(--brand-purple) 55%,
+    var(--brand-magenta) 100%
+  );
+
+  /* Surfaces */
+  --bg:             #f7f6f2;
+  --surface:        #ffffff;
+  --surface-raised: #ffffff;
+
+  /* Foreground */
+  --fg:        #121a36;
+  --fg-muted:  #5d5a52;   /* v5.15: era #6d6a62 (4,1:1 com bg light); subido p/ 4,9:1 */
+
+  /* Borders */
+  --border:        #e7e2d8;
+  --border-strong: #d7d0c2;
+
+  /* Semantic — valor "base" usado em backgrounds/borders/ícones de marca */
+  --info:    #2368a2;
+  --success: #1f7a4a;
+  --warning: #a36500;
+  --danger:  #b42318;
+  --success-bg: #e8f7ee;
+  --warning-bg: #fff6df;
+  --danger-bg:  #fff0ee;
+  --info-bg:    #ebf4ff;
+
+  /* Semantic FOREGROUND — cor de texto/ícone semântico, ajustável por tema.
+     No light a maioria é igual ao base; --warning-fg fica um tom mais
+     escuro porque o bg amarelado tem luminância muito alta e o base
+     #a36500 não passa 4,5:1 contra #fff6df (medido: 4,41:1). */
+  --info-fg:    var(--info);
+  --success-fg: var(--success);
+  --warning-fg: #8d5800;  /* v5.17: era var(--warning) — passa 6:1 contra warning-bg */
+  --danger-fg:  var(--danger);
+  --brand-purple-fg: var(--brand-purple);
+
+  /* Geometry */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --shadow-1: 0 1px 2px rgba(14, 27, 64, .06);
+  --shadow-2: 0 12px 32px rgba(14, 27, 64, .10);
+  --focus:    0 0 0 3px rgba(197, 17, 126, .22);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Typography */
+  --font-sans: "Mona Sans", "Plus Jakarta Sans", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  /* Bootstrap interop */
+  --bs-primary:        var(--brand-navy);
+  --bs-primary-rgb:    24, 40, 99;
+  --bs-body-bg:        var(--bg);
+  --bs-body-color:     var(--fg);
+  --bs-border-color:   var(--border);
+  --bs-border-radius:  var(--radius-md);
+}
+
+[data-theme="dark"] {
+  --bg:             #111626;
+  --surface:        #181e31;
+  --surface-raised: #202842;
+  --fg:             #f8f7f2;
+  --fg-muted:       #b6b5aa;   /* v5.15: era #aaa99e — subido para passar 4,5:1 em surface-raised */
+  --border:         #3a4570;   /* v5.15: era #303a5e — subido p/ tornar bordas (tree/divider) visíveis */
+  --border-strong:  #5b6a99;   /* v5.15: era #45517c */
+  --success-bg:     rgba(31, 122, 74, .18);
+  --warning-bg:     rgba(163, 101, 0, .22);
+  --danger-bg:      rgba(180, 35, 24, .22);
+  --info-bg:        rgba(35, 104, 162, .22);
+
+  /* v5.15: foreground semântico claro — texto/ícone passa 4,5:1 em alert/badge dark */
+  --info-fg:         #7ab8eb;
+  --success-fg:      #6fcf97;
+  --warning-fg:      #f0c674;
+  --danger-fg:       #f08c80;
+  --brand-purple-fg: #c2b3ef;
+
+  /* v5.15: shadows visíveis em dark (rgba navy não rende sobre bg escuro) */
+  --shadow-1: 0 1px 0 rgba(255, 255, 255, .03) inset, 0 2px 4px rgba(0, 0, 0, .35);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, .55);
+
+  /* v5.15: focus ring com mais opacidade — magenta 22% mal aparece em dark */
+  --focus: 0 0 0 3px rgba(197, 17, 126, .42);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top right, rgba(197, 17, 126, .12), transparent 32rem),
+    var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+}
+button, input, select, textarea { font: inherit; }
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible,
+a:focus-visible {
+  /* v5.22.15: anel duplo — outline alto contraste (passa em qualquer fundo,
+     inclusive sobre CTA magenta onde --focus magenta 22% sumia) +
+     box-shadow magenta que mantém o branding. outline-offset garante que
+     o anel não cole na borda do botão. */
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+  box-shadow: var(--focus);
+}
+/* Em superfícies escuras (sidebar/gradient), o outline preto somia. Forçamos
+   branco quando o ancestral tem a classe .sidebar OU é o botão .brand. */
+.sidebar :focus-visible,
+.btn.brand:focus-visible,
+.btn.primary:focus-visible {
+  outline-color: #ffffff;
+}
+
+/* Visually hidden — texto presente no DOM para screen readers, oculto
+   visualmente. Padrão referenciado por WCAG (Webaim/Bootstrap). */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ================== APP SHELL =================== */
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.sidebar {
+  background: var(--brand-gradient);
+  color: #fff;
+  padding: 24px 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.brand-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  /* Frame translúcido sobre o gradient — dá moldura sem clarão */
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .18);
+  backdrop-filter: blur(2px);
+}
+.brand-mark img {
+  width: 34px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(14, 27, 64, .25));
+}
+.brand-title {
+  font-weight: 800;
+  letter-spacing: -.02em;
+  font-size: 18px;
+  line-height: 1.1;
+}
+.brand-subtitle {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: .82;
+  margin-top: 3px;
+}
+.nav-title {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: 10px;
+  opacity: .68;
+  margin: 20px 10px 8px;
+}
+
+.step-nav { display: grid; gap: 6px; }
+.step-link {
+  border: 0;
+  width: 100%;
+  border-radius: 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, .82);
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  align-items: center;
+}
+.step-link:hover  { background: rgba(255, 255, 255, .10); }
+.step-link.active { background: rgba(255, 255, 255, .18); color: #fff; }
+.step-link.done .step-index {
+  background: rgba(255, 255, 255, .96);
+  color: var(--brand-navy);
+}
+.step-index {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .30);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+}
+.step-index svg { display: block; }
+.step-link.done .step-index svg { color: var(--brand-navy); stroke: var(--brand-navy); }
+.step-label strong { display: block; font-size: 13px; }
+.step-label span  { display: block; font-size: 12px; opacity: .70; }
+
+.side-card {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 18px;
+  padding: 16px;
+}
+.side-card strong { display: block; margin-bottom: 6px; }
+.side-card p     { margin: 0; opacity: .80; font-size: 12px; }
+
+/* ================== MAIN / TOPBAR / FOOTER =================== */
+.main { display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  border-bottom: 1px solid var(--border);
+  /* v5.22.6: min-height aumentado de 72px para 88px e padding vertical
+     reforçado para evitar que botões grandes (brand com gradient) sejam
+     cortados quando a topbar tem muitos itens (etapa 7 do cliente). */
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  gap: 16px;
+}
+.page-title h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+}
+.kicker {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: 10px;
+  color: var(--fg-muted);
+  font-weight: 700;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  /* v5.22.8: gap interno entre clusters (não entre botões — esses
+     têm gap menor dentro de cada cluster, ver .actions-cluster). */
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+/* v5.22.8: agrupamento visual.
+   - actions-cluster--primary: save-state + CTAs específicos da etapa
+     (Exportar Excel, Enviar para validação)
+   - actions-cluster--utility: tema, limpar, carregar exemplos
+   Divisor vertical entre os dois grupos para que botões com gradient
+   forte (brand) não se confundam com utilitários neutros. */
+.actions-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.actions-cluster--primary {
+  /* CTAs primárias têm leve respiro à direita */
+  padding-right: 2px;
+}
+.actions-divider {
+  display: inline-block;
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+.save-state {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  /* v5.22.8: leve respiro entre o badge "Rascunho salvo" e o próximo CTA */
+  margin-right: 4px;
+}
+
+.content {
+  padding: 28px;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.wizard-footer {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 12;
+}
+
+/* ================== GRIDS =================== */
+.grid       { display: grid; gap: 16px; }
+.grid-2     { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3     { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4     { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* ================== CARDS =================== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+}
+.card-header {
+  padding: 20px 20px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+.card-title-range {
+  margin-left: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--fg-muted);
+  letter-spacing: 0;
+}
+.card-description {
+  color: var(--fg-muted);
+  margin: 6px 0 0;
+}
+.card-body { padding: 20px; }
+
+/* Input numérico estreito para FCK (10..100 MPa) */
+.input-fck {
+  max-width: 100px;
+  text-align: right;
+}
+.col-fck {
+  width: 110px;
+  white-space: nowrap;
+}
+/* Esconde os "spinners" do type=number em alguns browsers (opcional) */
+.input-fck::-webkit-outer-spin-button,
+.input-fck::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-fck {
+  -moz-appearance: textfield;
+}
+
+/* ================== PADRÃO DE MOLDAGEM (Etapa 4) =================== */
+.padrao-section { margin-top: 4px; }
+.padrao-section > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-muted);
+  user-select: none;
+}
+.padrao-section > summary::-webkit-details-marker { display: none; }
+.padrao-section > summary::before {
+  content: '▸ ';
+  display: inline-block;
+  width: 14px;
+  transition: transform .15s ease;
+}
+.padrao-section[open] > summary::before { content: '▾ '; }
+.padrao-section > summary strong {
+  color: var(--fg);
+  font-size: 12px;
+}
+
+.padrao-moldagem-editor { margin-top: 10px; }
+
+.shortcut-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.shortcut-row .btn.sm {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.btn.shortcut-default {
+  background: color-mix(in srgb, var(--brand-purple-fg) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--brand-purple-fg) 32%, var(--border));
+  color: var(--brand-purple-fg);
+  font-weight: 600;
+}
+.btn.shortcut-default:hover {
+  background: color-mix(in srgb, var(--brand-purple-fg) 18%, var(--surface));
+}
+.btn.shortcut-empty {
+  background: color-mix(in srgb, var(--success-fg) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--success-fg) 35%, var(--border));
+  color: var(--success-fg);
+  font-weight: 600;
+}
+.btn.shortcut-empty:hover {
+  background: color-mix(in srgb, var(--success-fg) 20%, var(--surface));
+}
+
+/* Inputs estreitos dentro das tabelas de padrão de moldagem */
+.input-narrow {
+  max-width: 110px;
+  text-align: right;
+}
+/* Idade — campo mais largo, alinhado ao centro (números pequenos) */
+.input-idade {
+  width: 100%;
+  min-width: 70px;
+  max-width: 110px;
+  text-align: center;
+}
+.col-narrow { width: 1%; white-space: nowrap; }
+.col-idade  { width: 120px; }
+.row-index {
+  font-family: var(--font-mono);
+  color: var(--fg-muted);
+  font-size: 12px;
+  text-align: center;
+}
+.concreto-card .toolbar { gap: 8px; flex-wrap: wrap; }
+
+/* Concreto minimizado: removemos o padding inferior do header pra
+   compactar visual; o body fica oculto via v-show. */
+.concreto-card.is-collapsed .card-header { padding-bottom: 16px; }
+
+/* v5.22.32: badge ⚠ "Falta info" no header quando minimizado.
+   Aparece ao lado da descrição do traço para sinalizar incompletude
+   sem precisar expandir. Cor laranja-âmbar (warning), não vermelho
+   (não é erro bloqueante, é só lembrete). */
+.badge-incompleto {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  cursor: help;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.badge-incompleto:hover {
+  background: #fde68a;
+  border-color: #f59e0b;
+}
+
+/* v5.22.34: badge ✓ "Completo" no header quando minimizado e OK.
+   Reforço positivo. Verde discreto — não quero competir visualmente
+   com o conteúdo principal, só sinalizar "este está pronto". */
+.badge-completo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #14532d;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  border-radius: 50%;
+  cursor: default;
+  vertical-align: middle;
+}
+
+/* v5.22.35: destaque do card com foco de teclado (navegação ↑/↓). */
+.grid:focus { outline: none; }
+.grid:focus-visible {
+  outline: 2px solid var(--brand-fg);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.concreto-card.is-kbd-focused {
+  outline: 2px solid var(--brand-fg);
+  outline-offset: 2px;
+}
+
+/* v5.22.38 — drag-and-drop de reordenação (grupos e peças) */
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: var(--fg-muted, #9ca3af);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  user-select: none;
+  touch-action: none;
+}
+.drag-handle:hover { color: var(--brand-fg); background: rgba(0, 0, 0, 0.04); }
+.drag-handle:active { cursor: grabbing; }
+.col-drag {
+  width: 32px;
+  text-align: center;
+  padding-left: 4px !important;
+  padding-right: 0 !important;
+}
+.dnd-row {
+  transition: background 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+}
+.dnd-row.dnd-dragging {
+  opacity: 0.45;
+}
+.dnd-row.dnd-over {
+  box-shadow: inset 0 3px 0 0 var(--brand-fg);
+}
+tr.dnd-row.dnd-over td:first-child {
+  box-shadow: inset 3px 0 0 0 var(--brand-fg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dnd-row { transition: none; }
+}
+
+/* v5.22.35: dica de atalhos de teclado acima da lista de concretos */
+.kbd-hint {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--fg-muted, #6b7280);
+}
+.kbd-hint kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 1px;
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  line-height: 1.4;
+  color: var(--fg);
+  background: var(--surface-alt, #f3f4f6);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+/* v5.22.34: transição CSS da abertura/fechamento do card-body.
+   Os hooks JS (Vue) controlam height inline (0 → scrollHeight).
+   O CSS só precisa animar a propriedade height + opacity. */
+.card-body-expand-enter-active,
+.card-body-expand-leave-active {
+  transition: height 0.25s ease, opacity 0.2s ease;
+  overflow: hidden;
+}
+.card-body-expand-enter-from,
+.card-body-expand-leave-to {
+  opacity: 0;
+}
+.card-body-expand-enter-to,
+.card-body-expand-leave-from {
+  opacity: 1;
+}
+
+/* Respeita prefers-reduced-motion: usuários com sensibilidade a
+   animação têm transição instantânea (sem snap visual brusco
+   porque opacity ainda anima rapidamente, mas height é instantânea). */
+@media (prefers-reduced-motion: reduce) {
+  .card-body-expand-enter-active,
+  .card-body-expand-leave-active {
+    transition: opacity 0.1s ease;
+  }
+}
+
+/* ================== SECTION TITLE =================== */
+.section-title {
+  margin: 0 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+}
+.section-title h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -.025em;
+}
+.section-title p {
+  margin: 4px 0 0;
+  color: var(--fg-muted);
+}
+
+/* Campos extras do "Modelo com projetista" — 2 colunas para evitar
+   que o card "Responsável" fique absurdamente alto ao lado do card
+   "Identificação". Volta para 1 coluna em viewports estreitos. */
+#modeloProjetoFields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 4px;
+}
+@media (max-width: 760px) {
+  #modeloProjetoFields { grid-template-columns: 1fr; }
+}
+
+/* ================== FORM =================== */
+.field { display: grid; gap: 7px; }
+.field label { font-weight: 700; font-size: 13px; }
+.field .hint { color: var(--fg-muted); font-size: 12px; margin-top: -2px; }
+
+.input, .select, .textarea {
+  width: 100%;
+  background: var(--surface-raised);
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  min-height: 42px;
+  padding: 10px 12px;
+}
+.textarea { min-height: 90px; resize: vertical; }
+
+.input-group { display: flex; align-items: center; }
+.input-group .input { border-radius: 12px 0 0 12px; }
+/* v5.22.10: variant para o campo de Volume.
+   Volume nunca ultrapassa 4 dígitos antes da vírgula + 2 depois (9999,99).
+   Sem essa variant o input herdava largura da célula da tabela, ficando
+   absurdo. Usamos ch (largura do "0" da fonte) para escalar com o tipo.
+   width:auto + flex:0 0 auto trava a expansão; o input fica logo antes
+   do suffix m³.
+   Alinhamento direita para números — leitura natural. */
+.input-group--volume { width: max-content; }
+.input-group--volume .input {
+  width: 9ch;        /* "1234,56" + folga */
+  max-width: 9ch;
+  text-align: right;
+  flex: 0 0 auto;
+}
+.input-group--volume .input-suffix {
+  flex: 0 0 auto;
+  padding: 0 8px;    /* compactar suffix também */
+}
+.input-suffix {
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0 12px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+  color: var(--fg-muted);
+  font-weight: 700;
+}
+
+/* ================== BUTTONS =================== */
+.btn {
+  border: 0;
+  border-radius: 12px;
+  min-height: 40px;
+  padding: 0 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--fg);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+.btn.primary {
+  background: var(--brand-navy);
+  color: #fff;
+  border-color: var(--brand-navy);
+}
+.btn.brand {
+  background: var(--brand-gradient);
+  color: #fff;
+  border-color: transparent;
+}
+.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--fg-muted);
+}
+.btn.danger {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+  border-color: color-mix(in srgb, var(--danger-fg) 35%, var(--border));
+}
+/* v5.22.4: .btn.success — verde semântico para CTAs positivos
+   (ex.: Exportar Excel na Etapa 6 — combina com a paleta sem competir
+   com o magenta do CTA principal "Enviar para validação"). */
+.btn.success {
+  background: var(--success-bg);
+  color: var(--success-fg);
+  border-color: color-mix(in srgb, var(--success-fg) 35%, var(--border));
+}
+.btn.success:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--success-fg) 14%, var(--success-bg));
+  border-color: var(--success-fg);
+}
+[data-theme="dark"] .btn.success {
+  background: color-mix(in srgb, var(--success-fg) 16%, var(--surface));
+  color: var(--success-fg);
+}
+[data-theme="dark"] .btn.success:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--success-fg) 26%, var(--surface));
+}
+/* v5.22.4: .btn.nav-back — azul-marinho discreto para o Voltar do wizard.
+   Não compete visualmente com o CTA principal (Salvar/Avançar à direita)
+   mas deixa de ser invisível como o `.btn` neutro era antes. */
+.btn.nav-back {
+  background: color-mix(in srgb, var(--brand-navy) 8%, var(--surface));
+  color: var(--brand-navy);
+  border-color: color-mix(in srgb, var(--brand-navy) 22%, var(--border));
+}
+.btn.nav-back:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--brand-navy) 16%, var(--surface));
+  border-color: var(--brand-navy);
+}
+[data-theme="dark"] .btn.nav-back {
+  background: color-mix(in srgb, var(--brand-navy) 24%, var(--surface));
+  color: #d2dcff;
+  border-color: color-mix(in srgb, var(--brand-navy) 50%, var(--border));
+}
+[data-theme="dark"] .btn.nav-back:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--brand-navy) 40%, var(--surface));
+}
+.btn.sm {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.btn[disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ================== RADIO CARDS =================== */
+.radio-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.radio-card {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  min-height: 110px;
+  display: block;
+}
+.radio-card input {
+  position: absolute;
+  inset: 16px 16px auto auto;
+}
+.radio-card:has(input:checked) {
+  border-color: var(--brand-magenta);
+  box-shadow: 0 0 0 3px rgba(197, 17, 126, .13);
+}
+.radio-card strong { display: block; margin-bottom: 6px; }
+.radio-card span   { color: var(--fg-muted); }
+
+/* ================== MODELO SWITCH (Etapa 2 — radio pill) =================== */
+.modelo-switch {
+  margin: 0 0 20px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.modelo-switch-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-muted);
+  margin-bottom: 10px;
+}
+.modelo-switch-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.radio-pill {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 12px 14px 12px 38px;
+  cursor: pointer;
+  display: block;
+  transition: border-color .15s ease, background .15s ease;
+}
+.radio-pill input {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+}
+.radio-pill.active {
+  border-color: var(--brand-magenta);
+  background: color-mix(in srgb, var(--brand-magenta) 6%, var(--bg));
+  box-shadow: 0 0 0 2px rgba(197, 17, 126, .12);
+}
+.radio-pill strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.radio-pill span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--fg-muted);
+}
+@media (max-width: 760px) {
+  .modelo-switch-options { grid-template-columns: 1fr; }
+}
+
+/* ================== TOOLBAR / DIVIDER / CHIPS =================== */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--surface-raised);
+  font-weight: 700;
+  font-size: 12px;
+}
+.chip button {
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  padding: 0;
+  font-weight: 900;
+}
+
+/* ================== BADGES =================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid transparent;
+}
+.badge.success { color: var(--success-fg); background: var(--success-bg); }
+.badge.warning { color: var(--warning-fg); background: var(--warning-bg); }
+.badge.danger  { color: var(--danger-fg);  background: var(--danger-bg);  }
+.badge.info    { color: var(--info-fg);    background: var(--info-bg);    }
+.badge.neutral {
+  color: var(--fg-muted);
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+/* ================== TABLES =================== */
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 860px;
+}
+th, td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--bg);
+  color: var(--fg-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .10em;
+}
+td .input, td .select {
+  min-height: 36px;
+  padding: 7px 9px;
+  border-radius: 10px;
+}
+tr:last-child td { border-bottom: 0; }
+
+/* ================== EMPTY / ALERTS =================== */
+.empty {
+  border: 1px dashed var(--border-strong);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 76%, var(--bg));
+  padding: 28px;
+  text-align: center;
+  color: var(--fg-muted);
+}
+.alert {
+  border-radius: 16px;
+  padding: 13px 14px;
+  border: 1px solid;
+  display: grid;
+  gap: 4px;
+}
+.alert strong { display: block; }
+.alert.info {
+  background: var(--info-bg);
+  border-color: color-mix(in srgb, var(--info-fg) 35%, transparent);
+  color: var(--info-fg);
+}
+.alert.success {
+  background: var(--success-bg);
+  border-color: color-mix(in srgb, var(--success-fg) 35%, transparent);
+  color: var(--success-fg);
+}
+.alert.warning {
+  background: var(--warning-bg);
+  border-color: color-mix(in srgb, var(--warning-fg) 35%, transparent);
+  color: var(--warning-fg);
+}
+.alert.danger {
+  background: var(--danger-bg);
+  border-color: color-mix(in srgb, var(--danger-fg) 35%, transparent);
+  color: var(--danger-fg);
+}
+.validation-grid { display: grid; gap: 10px; }
+
+/* ================== TREE =================== */
+.tree {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.tree li {
+  position: relative;
+  padding: 7px 0 7px 24px;
+  border-left: 1px solid var(--border);
+}
+.tree li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 16px;
+  height: 1px;
+  background: var(--border);
+}
+.tree .node {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tree .node button {
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* ================== PREVIEW / STACKS =================== */
+.preview-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.4fr);
+  gap: 16px;
+  align-items: start;
+}
+.stack-board {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.tower-stack {
+  min-width: 150px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface-raised);
+  padding: 10px;
+}
+.tower-title {
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.floor-card {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 7px;
+  margin-top: 6px;
+  font-size: 11px;
+  min-height: 36px;
+  background: var(--bg);
+  cursor: pointer;
+}
+.floor-card.fck-15 { border-left: 5px solid var(--brand-purple-fg); }
+.floor-card.fck-20 { border-left: 5px solid var(--info-fg); }
+.floor-card.fck-25 { border-left: 5px solid var(--success-fg); }
+.floor-card.fck-30 { border-left: 5px solid var(--warning-fg); }
+.floor-card.fck-35 { border-left: 5px solid var(--brand-magenta); }
+.floor-card.fck-40,
+.floor-card.fck-45,
+.floor-card.fck-50 { border-left: 5px solid var(--danger-fg); }
+/* v5.22.15: no dark theme, magenta puro (#c5117e) tem só 2,96:1 contra
+   surface — sobe para magenta-light (#e8459e) para passar 3:1 (1.4.11). */
+[data-theme="dark"] .floor-card.fck-35 {
+  border-left-color: var(--brand-magenta-light);
+}
+
+/* ================== DRAWER =================== */
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(520px, 100%);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-2);
+  z-index: 50;
+  transform: translateX(102%);
+  transition: transform .22s ease;
+  display: flex;
+  flex-direction: column;
+}
+.drawer.open { transform: translateX(0); }
+.drawer header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+.drawer .drawer-body {
+  padding: 20px;
+  overflow: auto;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 27, 64, .24);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 40;
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
+
+/* ================== MODAL PORTAL (v5.22.12) =================== */
+/* Padrão definitivo de modal — à prova de containing block.
+   O `.modal-portal` é position:fixed no viewport com flex centralizado;
+   o `.modal-portal__content` é position:relative dentro do flex.
+   Não usa top/left/translate (que dependem de "containing block" correto
+   e quebram quando algum ancestral tem transform/filter/backdrop-filter).
+   z-index 9999 fica acima de TODO o resto (topbar=10, sticky-footer=10).
+   SEMPRE usado com <Teleport to="body"> para garantir que renderiza
+   como filho direto do body, sem ancestrais problemáticos. */
+.modal-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.modal-portal.open {
+  pointer-events: auto;
+  opacity: 1;
+}
+.modal-portal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 27, 64, .42);
+  cursor: pointer;
+}
+[data-theme="dark"] .modal-portal__backdrop {
+  background: rgba(0, 0, 0, .60);
+}
+.modal-portal__content {
+  position: relative;
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-portal--wide .modal-portal__content {
+  width: min(720px, calc(100% - 32px));
+}
+
+/* ================== MODAL legado (v5.20 — deprecated) =================== */
+/* Mantido por compatibilidade. Novos modais devem usar .modal-portal acima. */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 64px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  padding: 24px 24px 0;
+}
+.modal-body {
+  padding: 16px 24px;
+  overflow: auto;
+  flex: 1 1 auto;
+}
+.modal-footer {
+  padding: 16px 24px 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+.ticket-number-block {
+  background: color-mix(in srgb, var(--brand-magenta) 6%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--brand-magenta) 22%, var(--border));
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.ticket-number {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--fg);
+  margin-top: 4px;
+  user-select: all;
+}
+[data-theme="dark"] .ticket-number-block {
+  background: color-mix(in srgb, var(--brand-magenta) 14%, var(--bg));
+  border-color: color-mix(in srgb, var(--brand-magenta) 30%, var(--border));
+}
+@media (max-width: 760px) {
+  .modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .modal-footer .btn { width: 100%; }
+}
+
+
+/* ================== JSON / STATUS / COMMENT =================== */
+pre.json {
+  background: #0e1b40;
+  color: #eef3ff;
+  border-radius: 18px;
+  padding: 16px;
+  overflow: auto;
+  max-height: 520px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.status-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.status-step {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+}
+.status-step.active {
+  border-color: var(--brand-magenta);
+  box-shadow: 0 0 0 3px rgba(197, 17, 126, .13);
+}
+.status-step small {
+  color: var(--fg-muted);
+  display: block;
+  margin-top: 4px;
+}
+.comment {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--surface-raised);
+}
+.comment + .comment { margin-top: 10px; }
+.comment-meta {
+  color: var(--fg-muted);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+/* v5.21: corpo do comentário preserva quebras de linha digitadas pelo
+   usuário; word-wrap evita estourar o card com URLs/strings longas. */
+.comment-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--fg);
+}
+/* v5.22: comentário interno (não visível ao cliente) com leve
+   destaque amarelado para alertar a equipe visualmente. */
+.comment--internal {
+  background: color-mix(in srgb, var(--warning-fg) 8%, var(--surface-raised));
+  border-left: 3px solid var(--warning-fg);
+}
+[data-theme="dark"] .comment--internal {
+  background: color-mix(in srgb, var(--warning-fg) 14%, var(--surface-raised));
+}
+
+.hidden { display: none !important; }
+
+/* ================== DETAILS / SUMMARY =================== */
+details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "›";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform .12s ease;
+  font-weight: 900;
+  color: var(--fg-muted);
+}
+details[open] > summary::before { transform: rotate(90deg); }
+
+/* ================== RESPONSIVE =================== */
+@media (max-width: 1100px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: relative;
+    height: auto;
+  }
+  .step-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-2, .grid-3, .grid-4, .preview-layout { grid-template-columns: 1fr; }
+  .radio-cards { grid-template-columns: 1fr; }
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  /* v5.22.8: em viewport estreito o divisor entre clusters fica
+     redundante porque os clusters já quebram em linhas separadas. */
+  .actions-divider { display: none; }
+  .top-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .status-flow { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .content, .topbar, .wizard-footer { padding-left: 16px; padding-right: 16px; }
+  .step-nav { grid-template-columns: 1fr; }
+  .wizard-footer { flex-direction: column; align-items: stretch; }
+  .toolbar { justify-content: stretch; }
+  .toolbar .btn { flex: 1 1 auto; }
+  /* v5.21: quando há 3+ botões na toolbar (ex.: card de Ações da
+     ReviewView), permite wrap em duas linhas. Cada botão tem
+     min-width para não ficar minúsculo. */
+  .toolbar { flex-wrap: wrap; }
+  .toolbar .btn { min-width: 140px; }
+
+  /* ===== v5.19 — Mobile audit Etapas 3 e 5 ===== */
+
+  /* M1: .section-title empilha em mobile.
+     Padrão era flex+space-between, em viewport estreito o botão de ação
+     ficava espremido à direita junto do título grande. */
+  .section-title {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .section-title > .btn,
+  .section-title button.btn {
+    width: 100%;
+  }
+
+  /* M2: .card-header com toolbar — empilha em mobile.
+     Etapa 5 ("Pavimentos e peças") tem nome do grupo + 2 botões
+     (Copiar estrutura + Adicionar peça) que competem por espaço. */
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .card-header .toolbar {
+    width: 100%;
+  }
+
+  /* M3: Tabelas com min-width 860px viram scroll horizontal.
+     Sombras inset nas laterais sinalizam "tem mais conteúdo".
+     Não é perfeito (sombra não some quando rolar até o fim) mas é
+     CSS-only e melhor do que silêncio total. */
+  .table-wrap {
+    box-shadow:
+      inset -16px 0 12px -12px rgba(14, 27, 64, .22),
+      inset 16px 0 12px -12px rgba(14, 27, 64, .10);
+  }
+
+  /* M4: Bulk add (.grid-4 da Etapa 5) — o botão "Adicionar range"
+     usa style="align-self: end" inline. Em mobile (grid 1 coluna)
+     vira full-width para coerência com o resto dos campos. */
+  .grid-4 > .btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* M5: Padding dos cards mais enxuto em mobile (20px → 16px) —
+     ganha ~8px de espaço útil por linha em viewport estreito. */
+  .card-header { padding: 16px 16px 0; }
+  .card-body { padding: 16px; }
+
+  /* M6: .alert e .empty também com padding levemente reduzido. */
+  .alert { padding: 12px 12px; }
+  .empty { padding: 20px 16px; }
+
+  /* M7: Botões danger das tabelas (Etapa 3 e 5 — "Remover" no fim
+     da linha) em viewport estreito não precisam ser min-height 40px
+     — apertam contra a célula. Mantém clicável (>=32px). */
+  td .btn.sm { min-height: 32px; padding: 4px 10px; }
+}
+
+/* M3 (cont.): sombra de scroll em dark — versão mais opaca já que
+   --bg dark é #111626 e a borda interna escura precisa ter mais peso
+   para sinalizar overflow horizontal. */
+@media (max-width: 760px) {
+  [data-theme="dark"] .table-wrap {
+    box-shadow:
+      inset -16px 0 12px -12px rgba(0, 0, 0, .55),
+      inset 16px 0 12px -12px rgba(255, 255, 255, .06);
+  }
+}
+
+/* ================== DARK MODE — CONTRAST FIXES (v5.4) =================== */
+
+[data-theme="dark"] {
+  /* Placeholders: muito apagados antes; subir luminância */
+  /* (placeholder padrão usa color: var(--fg-muted) — agora forçamos opaque) */
+}
+
+[data-theme="dark"] .input::placeholder,
+[data-theme="dark"] .select::placeholder,
+[data-theme="dark"] .textarea::placeholder,
+[data-theme="dark"] .input::-webkit-input-placeholder,
+[data-theme="dark"] .textarea::-webkit-input-placeholder {
+  color: #8d8c83;
+  opacity: 1;
+}
+
+/* Primary button no dark — navy sobre dark perde contraste.
+   Usa o brand-magenta como CTA forte. */
+[data-theme="dark"] .btn.primary {
+  background: var(--brand-magenta);
+  color: #fff;
+  border-color: var(--brand-magenta);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .05) inset;
+}
+[data-theme="dark"] .btn.primary:hover {
+  background: var(--brand-magenta-light);
+  border-color: var(--brand-magenta-light);
+}
+
+/* Ghost button no dark fica quase invisível — subir contraste */
+[data-theme="dark"] .btn.ghost {
+  color: #d8d6c9;
+}
+[data-theme="dark"] .btn.ghost:hover {
+  background: rgba(255, 255, 255, .06);
+  color: var(--fg);
+}
+
+/* Botão default no dark — borda mais nítida */
+[data-theme="dark"] .btn {
+  background: var(--surface-raised);
+  border-color: #45517c;
+}
+
+/* Botão disabled no dark — opacidade maior pra continuar legível */
+[data-theme="dark"] .btn[disabled] {
+  opacity: .40;
+}
+
+/* Save state text no dark */
+[data-theme="dark"] .save-state {
+  color: #a8a89e;
+}
+
+/* Topbar background no dark — backdrop-blur fica fraco; reforça */
+[data-theme="dark"] .topbar {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  border-bottom-color: #2a3251;
+}
+
+/* v5.22.8: divisor entre clusters no dark — usa a mesma cor do border-bottom
+   pra coerência visual com o footer e a borda do header. */
+[data-theme="dark"] .actions-divider {
+  background: #2a3251;
+}
+
+/* Wizard footer no dark */
+[data-theme="dark"] .wizard-footer {
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border-top-color: #2a3251;
+}
+
+/* Tabelas no dark — header com mais contraste */
+[data-theme="dark"] th {
+  background: #14192a;
+  color: #c0bfb4;
+}
+
+/* Badges neutras no dark */
+[data-theme="dark"] .badge.neutral {
+  background: var(--surface-raised);
+  color: #c0bfb4;
+  border-color: var(--border-strong);
+}
+
+/* JSON pre no dark — mais escuro pra contrastar com surface */
+[data-theme="dark"] pre.json {
+  background: #07101f;
+}
+
+/* Floor cards no dark — fundo mais escuro */
+[data-theme="dark"] .floor-card {
+  background: var(--surface);
+}
+
+/* ================== v5.15 — DARK MODE CONTRAST + POLISH =================== */
+
+/* Backdrop do EditDrawer: rgba navy 24% sobre bg dark é praticamente
+   invisível. Em dark precisamos escurecer de verdade. */
+[data-theme="dark"] .overlay {
+  background: rgba(0, 0, 0, .56);
+}
+
+/* Input-suffix (% no PadraoMoldagemEditor): em light o suffix usa --bg
+   (off-white) para se diferenciar do input branco. Em dark, --bg é mais
+   escuro que --surface-raised — invertia a hierarquia visual. */
+[data-theme="dark"] .input-suffix {
+  background: var(--surface);
+}
+
+/* .btn:hover box-shadow é navy 6% (--shadow-1) — invisível em dark.
+   --shadow-1 já foi reescrita no token mas reforçamos elevação no hover. */
+[data-theme="dark"] .btn:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .45);
+}
+
+/* Disabled em dark: .40 deixa texto claro fantasma. .55 dá contraste
+   suficiente para sinalizar "desabilitado" sem virar invisível. */
+[data-theme="dark"] .btn[disabled] {
+  opacity: .55;
+}
+
+/* Radio-pill ativo: o bg color-mix 6% é imperceptível. Subir levemente
+   o tint magenta em dark (onde o bg é mais "neutro"). */
+[data-theme="dark"] .radio-pill.active {
+  background: color-mix(in srgb, var(--brand-magenta) 14%, var(--bg));
+}
+
+/* Spinners de <input type="number"> ocultos globalmente — antes só
+   .input-fck tinha a regra; .input-idade e .input-narrow mostravam
+   spinners do user-agent (fundo branco em dark = quadradinho claro). */
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input[type="number"] { -moz-appearance: textfield; }
+
+/* Brand-mark drop-shadow: a sombra navy é invisível sobre o próprio
+   gradient navy. Trocamos por sombra escura para dar leve relevo
+   percebível em ambos os temas (sidebar sempre é escura). */
+.brand-mark img {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+}
+
+/* Page title — h1 levemente maior que default do protótipo */
+.page-title h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  font-weight: 800;
+}
+@media (max-width: 760px) {
+  .page-title h1 { font-size: 20px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* ================================================================== */
+/* v5.22.17 — DARK MODE · CORREÇÕES DE LEGIBILIDADE                    */
+/*                                                                    */
+/* Diagnóstico via screenshots de cliente (Etapas 1, 2, 3, 4, 6, 7):  */
+/* títulos h1, kickers, chips, floor cards, botões secundários e      */
+/* shortcuts roxos com peso visual fraco em fundos navy escuros.      */
+/* Soluções priorizam reforçar contraste percebido SEM mexer nos      */
+/* tokens base — preserva contraste matemático já validado pelo       */
+/* smoke-contrast.ts (78 pares).                                      */
+/* ================================================================== */
+
+/* 1) TOPBAR — em dark, o backdrop-blur de 92% deixava o radial-gradient
+   magenta do body atravessar e reduzir contraste percebido do h1.
+   Solução: opacidade quase total (98%) — gradient não vaza mais. */
+[data-theme="dark"] .topbar {
+  background: color-mix(in srgb, var(--bg) 98%, transparent);
+}
+[data-theme="dark"] .wizard-footer {
+  background: color-mix(in srgb, var(--bg) 98%, transparent);
+}
+
+/* 2) PAGE TITLE h1 — em dark, ganha cor explícita e leve text-shadow
+   para garantir peso visual mesmo se o usuário desativar backdrop.
+   No light o token --fg já é #121a36 (preto suave) que rende bem. */
+[data-theme="dark"] .page-title h1 {
+  color: var(--fg);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .35);
+}
+
+/* 3) CHIPS — em dark, o bg padrão era --surface-raised (#202842) e a
+   borda --border-strong (#5b6a99); visualmente confundiam com o card
+   navy. Subimos o bg em tom (não muda token) e reforçamos a borda. */
+[data-theme="dark"] .chip {
+  background: #2d3554;
+  border-color: #6c7ba8;
+  color: var(--fg);
+}
+
+/* 4) FLOOR CARDS na pilha (preview Etapa 7) — em dark, o bg era
+   --surface (idêntico ao .tower-stack) tornando os cards
+   invisíveis. Sobe para um tom mais claro e reforça borda.
+   v5.22.17b: borda #7986b5 (era #3a4570 que falhava 3:1 sobre #232a45). */
+[data-theme="dark"] .floor-card {
+  background: #232a45;
+  border-color: #7986b5;
+  color: var(--fg);
+}
+[data-theme="dark"] .tower-stack {
+  background: #1a2034;
+}
+
+/* 5) BOTÕES DEFAULT em dark — antes border-color #45517c se mesclava
+   com surface-raised. v5.22.17b: #7986b5 (era #5b6a99 que falhava 3:1
+   sobre surface-raised). */
+[data-theme="dark"] .btn {
+  border-color: #7986b5;
+}
+[data-theme="dark"] .btn:hover {
+  border-color: #9aa6cc;
+}
+
+/* 6) BOTÕES SHORTCUT roxo (Etapa 3 — "+ 12 horas" etc) em dark.
+   Funcionavam em contraste matemático (7,08:1) mas o tint magenta
+   do bg do body os deixava esmaecidos visualmente. Aumentamos a
+   saturação do tint roxo. */
+[data-theme="dark"] .btn.shortcut-default {
+  background: color-mix(in srgb, var(--brand-purple-fg) 22%, var(--surface));
+  border-color: color-mix(in srgb, var(--brand-purple-fg) 50%, var(--border-strong));
+  color: var(--brand-purple-fg);
+}
+[data-theme="dark"] .btn.shortcut-default:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--brand-purple-fg) 34%, var(--surface));
+}
+[data-theme="dark"] .btn.shortcut-empty {
+  background: color-mix(in srgb, var(--success-fg) 22%, var(--surface));
+  border-color: color-mix(in srgb, var(--success-fg) 50%, var(--border-strong));
+  color: var(--success-fg);
+}
+[data-theme="dark"] .btn.shortcut-empty:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--success-fg) 34%, var(--surface));
+}
+
+/* 7) KICKER (texto monospace uppercase pequeno acima do h1) em dark —
+   já passa contraste matemático (8,73:1) mas a percepção é fraca por
+   ser 10px tracking .18em. Subimos opacity para dar mais peso. */
+[data-theme="dark"] .kicker {
+  color: #c9c8be;
+  font-weight: 700;
+}
+
+/* 8) CARD-DESCRIPTION em dark — comum em "Identificação", "Responsável".
+   --fg-muted (#b6b5aa) é OK matematicamente mas o usuário sinalizou que
+   fica apagado. Subir mais um pouco. */
+[data-theme="dark"] .card-description {
+  color: #cfcec4;
+}
+
+/* 9) SECTION-TITLE p em dark — descrições de etapas. */
+[data-theme="dark"] .section-title p {
+  color: #cfcec4;
+}
+
+/* 10) INPUTS em dark — o bg --surface-raised era #202842, similar ao
+    bg do card. Sobe levemente para que campos preenchidos ganhem
+    presença em tabelas e formulários. v5.22.17b: borda #7986b5
+    (era #5b6a99 que falhava 3:1). */
+[data-theme="dark"] .input,
+[data-theme="dark"] .select,
+[data-theme="dark"] .textarea {
+  background: #232a45;
+  border-color: #7986b5;
+}
+[data-theme="dark"] .input:focus,
+[data-theme="dark"] .select:focus,
+[data-theme="dark"] .textarea:focus {
+  border-color: #b1bcde;
+}
+
+/* 11) BOTÃO BRAND (gradient navy→purple→magenta) em dark — o gradient
+    é o mesmo dos dois temas; só garantimos peso visual via leve
+    inset glow. Foco ainda usa o outline duplo da v5.22.15. */
+[data-theme="dark"] .btn.brand {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+/* ================================================================== */
+
+/* ================================================================== */
+/* v5.22.15 — MODO PRETO E BRANCO (impressão) + FORCED-COLORS (WHCM)   */
+/* ================================================================== */
+
+/* @media print — leiaute monocromático para impressão / "Salvar como PDF".
+   Remove cromados (gradient, magenta, sombras), esconde chrome do app
+   (sidebar, topbar, footer sticky, drawer, modais, botões de ação) e
+   força preto sobre branco em todo o conteúdo. Tabelas e tipografia
+   ficam legíveis em impressora B&W comum.
+
+   Estratégia: não tentamos imprimir o app inteiro — só o conteúdo da
+   tela atual (.content). Tudo que é navegação some. JSON viewer e
+   floor-cards perdem cor mas mantêm hierarquia via bordas e
+   indentação. */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --fg: #000000;
+    --fg-muted: #333333;
+    --border: #888888;
+    --border-strong: #444444;
+    --info-fg:    #000000;
+    --success-fg: #000000;
+    --warning-fg: #000000;
+    --danger-fg:  #000000;
+    --brand-purple-fg: #000000;
+    --info-bg:    #ffffff;
+    --success-bg: #ffffff;
+    --warning-bg: #ffffff;
+    --danger-bg:  #ffffff;
+    --shadow-1: none;
+    --shadow-2: none;
+    --brand-gradient: #ffffff;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+  .app-shell {
+    display: block;
+    grid-template-columns: none;
+  }
+  .sidebar,
+  .topbar,
+  .wizard-footer,
+  .drawer,
+  .overlay,
+  .modal-portal,
+  .modal,
+  .actions-divider,
+  .top-actions,
+  .save-state,
+  .toolbar,
+  button,
+  .btn {
+    display: none !important;
+  }
+  .main { display: block; }
+  .content {
+    padding: 0;
+    max-width: 100%;
+    margin: 0;
+  }
+  /* Cards viram blocos discretos com filete simples */
+  .card {
+    border: 1px solid #888 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 12px;
+  }
+  .card-header, .card-body { padding: 12px !important; }
+  /* Badges/alerts viram texto + caixinha preta */
+  .badge, .alert {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  /* Tabelas: bordas sólidas, sem fundo */
+  th { background: #f0f0f0 !important; color: #000000 !important; }
+  table, th, td { border-color: #888 !important; }
+  /* JSON viewer (preto&branco) */
+  pre.json {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+    border-radius: 0 !important;
+    max-height: none;
+  }
+  /* Floor cards: pilha vertical, sem cor — borda esquerda preta
+     mantém pista visual de "tipo" mas em preto */
+  .stack-board {
+    flex-wrap: wrap;
+    overflow: visible;
+    page-break-inside: avoid;
+  }
+  .floor-card {
+    border: 1px solid #888 !important;
+    border-left: 4px solid #000 !important;
+    background: #ffffff !important;
+    color: #000 !important;
+    page-break-inside: avoid;
+  }
+  /* Status flow em uma coluna */
+  .status-flow { grid-template-columns: 1fr; gap: 4px; }
+  .status-step {
+    border: 1px solid #888 !important;
+    background: #ffffff !important;
+  }
+  .status-step.active {
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+  }
+  /* Sem links sublinhados azuis — preto + sublinhado para impressão */
+  a { color: #000000 !important; text-decoration: underline; }
+  /* Anti page-break em títulos */
+  h1, h2, h3, h4, .card-title, .section-title { page-break-after: avoid; }
+  /* URL hint para links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #444;
+  }
+}
+
+/* @media (forced-colors: active) — Windows High Contrast Mode (Edge/Chromium,
+   Firefox em Win HC). O SO sobrescreve TODAS as cores; nosso CSS precisa
+   apenas:
+     1. Não tentar pintar de novo (deixar `forced-color-adjust: auto` — o
+        default) — o SO substitui background, color, border por seu próprio
+        esquema.
+     2. Garantir que estados visuais (foco, ativo, desabilitado, separator)
+        usem `CanvasText`/`Highlight`/`GrayText` etc. para que o SO
+        reconheça e pinte com a paleta do usuário.
+     3. NUNCA esconder o foco — em WHCM o foco precisa ser óbvio.
+
+   Referência: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors */
+@media (forced-colors: active) {
+  /* Foco — força a cor de "Highlight" do sistema (azul/amarelo conforme tema do usuário) */
+  *:focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
+  }
+  /* Botões — borda explícita para o SO renderizar como "button" */
+  .btn,
+  .btn.primary,
+  .btn.brand,
+  .btn.ghost,
+  .btn.danger,
+  .btn.success,
+  .btn.nav-back {
+    border: 1px solid ButtonText !important;
+    background: ButtonFace !important;
+    color: ButtonText !important;
+    forced-color-adjust: none;
+  }
+  .btn[disabled] {
+    color: GrayText !important;
+    border-color: GrayText !important;
+  }
+  /* Badges/alerts — borda canvas e texto canvas */
+  .badge, .alert {
+    border: 1px solid CanvasText !important;
+    background: Canvas !important;
+    color: CanvasText !important;
+    forced-color-adjust: none;
+  }
+  /* Separadores */
+  .divider,
+  .actions-divider,
+  hr {
+    background: CanvasText !important;
+    border-color: CanvasText !important;
+  }
+  /* Selecionado / ativo — usa Highlight do SO */
+  .radio-pill.active,
+  .radio-card:has(input:checked),
+  .status-step.active,
+  .step-link.active {
+    outline: 2px solid Highlight !important;
+    outline-offset: -2px;
+    forced-color-adjust: none;
+  }
+  /* Floor cards — bordas FCK desaparecem em WHCM (cores arbitrárias),
+     então mostramos uma borda esquerda mais grossa com CanvasText
+     para preservar a noção de "card categorizado". Quem precisa
+     diferenciar FCK lê o texto, não a cor. */
+  .floor-card[class*="fck-"] {
+    border: 1px solid CanvasText !important;
+    border-left: 4px solid CanvasText !important;
+    forced-color-adjust: none;
+  }
+  /* JSON viewer — força ColorScheme do SO */
+  pre.json {
+    background: Canvas !important;
+    color: CanvasText !important;
+    border: 1px solid CanvasText !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * v5.22.19 — ResumeDraftBanner
+ *
+ * Banner horizontal que aparece no topo da SetupPage quando há rascunho
+ * salvo neste navegador. Reusa .alert.info como base de cor (par fg/bg
+ * já validado pelo smoke-contrast.ts) e sobrescreve só o layout. Zero
+ * cor nova — sem hex fix, sem variável nova. .alert tem display:grid
+ * por padrão; aqui forçamos flex para layout de uma linha com botões à
+ * direita, com wrap em mobile.
+ * ───────────────────────────────────────────────────────────────────── */
+.resume-draft-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.resume-draft-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.resume-draft-banner__text strong {
+  display: block;
+}
+.resume-draft-banner__text em {
+  font-style: normal;
+  font-weight: 600;
+}
+.resume-draft-banner__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .resume-draft-banner__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * v5.22.20 — PendenciasPanel
+ *
+ * Painel persistente que aparece nas etapas 1–6 listando pendências
+ * (bloqueantes + alertas) com botão "Ir para Etapa N". Reusa
+ * .alert.warning e .alert.danger (pares fg/bg já validados pelo
+ * smoke-contrast.ts) — zero cor nova. Aqui só layout: header
+ * flex, lista sem bullets, badge inline.
+ * ───────────────────────────────────────────────────────────────────── */
+.pendencias-panel {
+  margin-bottom: 12px;
+}
+.pendencias-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pendencias-panel__header strong {
+  display: inline;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pendencias-panel__toggle {
+  flex-shrink: 0;
+}
+.pendencias-panel__list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pendencias-panel__item {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  padding: 4px 0;
+}
+.pendencias-panel__badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  /* Padrão idêntico a .badge.danger / .badge.warning já validados pelo
+     smoke-contrast.ts. Como o badge fica DENTRO do .alert pai (mesma
+     paleta), o destaque vem da borda contrastante via box-shadow inset
+     usando o próprio fg da variante — uma "pinta" sutil sem cor nova. */
+}
+.pendencias-panel__badge--error {
+  color: var(--danger-fg);
+  background: var(--danger-bg);
+  box-shadow: inset 0 0 0 1px var(--danger-fg);
+}
+.pendencias-panel__badge--warning {
+  color: var(--warning-fg);
+  background: var(--warning-bg);
+  box-shadow: inset 0 0 0 1px var(--warning-fg);
+}
+.pendencias-panel__loc {
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.pendencias-panel__loc::after {
+  content: ' —';
+}
+.pendencias-panel__msg {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.pendencias-panel__goto {
+  flex-shrink: 0;
+}
+.pendencias-panel__here {
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .pendencias-panel__item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pendencias-panel__msg {
+    width: 100%;
+  }
+}

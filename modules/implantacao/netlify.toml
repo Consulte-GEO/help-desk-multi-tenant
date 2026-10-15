@@ -1,0 +1,81 @@
+# ============================================================================
+# Netlify · Implantação Consulte GEO
+#
+# O projeto é um monorepo: o app Vue 3 + Vite vive em `frontend/`.
+# Por isso `base = "frontend"` — sem isso o Netlify procura package.json na
+# raiz do repositório e o build falha com ENOENT (deploy 6a75e5be).
+#
+# `command` é declarado AQUI de propósito: netlify.toml tem precedência sobre
+# o comando configurado na UI. Mantém o build reprodutível pelo repositório.
+#
+# Tudo em `frontend/public/` (importa.html, pre-analise.html, laudos.html,
+# assets/, vendor/) é copiado pelo Vite para `frontend/dist/` no build.
+# ============================================================================
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.16.0"
+
+[functions]
+  node_bundler = "esbuild"
+
+# SPA fallback. Arquivos estáticos existentes (ex.: /importa.html,
+# /pre-analise.html, /laudos.html) são servidos antes desta regra.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ----------------------------------------------------------------------------
+# Headers de segurança (v5.22.45 — docs/NETLIFY.md já os previa, mas não
+# existiam na configuração real). Sem CSP restritiva por ora: as páginas
+# importa.html / laudos.html / pre-analise.html executam scripts inline e
+# uma CSP mal calibrada as quebraria. Ver docs/SEGURANCA-RLS-PROPOSTA.md.
+# ----------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Assets versionados pelo Vite (hash no nome) podem ter cache longo.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# v5.0.22-51 — os motores das páginas estáticas NÃO têm hash no nome, então não
+# podem herdar o cache imutável acima. As páginas os chamam com ?v=<versão>,
+# mas a regra explícita evita depender só disso.
+[[headers]]
+  for = "/assets/laudo-*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/laudo-*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/xlsx-style-lite.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# IMP-01 R02: motores sem hash no nome nao usam cache imutavel.
+[[headers]]
+  for = "/assets/import-*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/similarity-*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -1,0 +1,44 @@
+{
+  "name": "implantacao-consulte-geo-frontend",
+  "version": "5.0.22-56",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "prebuild": "node scripts/cleanup-legacy.cjs",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "vue-tsc --noEmit",
+    "cleanup": "node scripts/cleanup-legacy.cjs",
+    "smoke": "tsx smoke-pipeline.ts",
+    "smoke:contrast": "tsx smoke-contrast.ts",
+    "smoke:all": "npm run smoke && npm run smoke:contrast && npm run smoke:xlsx && npm run test:laudos && npm run test:laudo-vision",
+    "smoke:xlsx": "tsx ../tools/test-xlsx-style-lite.ts ../.v8-validation/xlsx-style-lite-selftest.xlsx",
+    "test:laudos": "node ../tools/run-laudo-tests.js",
+    "corpus:laudos": "node ../tools/corpus-laudos/gerar-corpus.mjs",
+    "build:laudo-assets": "node ../tools/build-laudo-assets.mjs",
+    "test:laudo-vision": "node ../tools/test-laudo-vision.mjs",
+    "test:import-integrity": "node --test ../tools/tests/import-integrity/*.test.cjs",
+    "test:import-process": "node --experimental-strip-types --test ../tools/tests/import-process/*.test.mjs",
+    "typecheck:import-process": "tsc -p ../modules/import-process/tsconfig.json",
+    "typecheck:import-process-client": "tsc -p ../modules/import-process-client/tsconfig.json",
+    "test:import-process:postgres": "node --experimental-strip-types ../tools/qualify-import-process-postgres.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "bootstrap": "^5.3.3",
+    "pg": "8.16.3",
+    "vue": "3.5.42",
+    "vue-router": "^4.4.5",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.5",
+    "@types/pg": "8.15.4",
+    "@vitejs/plugin-vue": "5.2.4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.4.5",
+    "vite": "6.4.3",
+    "vue-tsc": "^2.1.6"
+  }
+}

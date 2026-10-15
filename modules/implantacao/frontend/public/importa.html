@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulte GEO · Importação de Planilhas — Copilot V3.4</title>
+  <script src="./vendor/xlsx.full.min.js"></script>
+  <style>
+    :root{
+      --brand:#102a43;--brand-2:#173f5f;--accent:#0b91d0;--accent-soft:#e8f6fd;
+      --bg:#f4f7fb;--surface:#fff;--surface-2:#f8fafc;--surface-3:#eef3f8;
+      --text:#102033;--text-2:#40546a;--muted:#71839a;--line:#dce5ef;--line-2:#c8d5e3;
+      --ok:#118a63;--ok-bg:#eaf8f2;--warn:#b77906;--warn-bg:#fff8e6;
+      --danger:#c73737;--danger-bg:#fff0f0;--info:#1769aa;--info-bg:#edf6ff;
+      --purple:#7357b8;--purple-bg:#f4efff;
+      --r:10px;--r-lg:14px;--r-xl:18px;
+      --shadow:0 1px 3px rgba(15,35,55,.05),0 9px 28px rgba(15,35,55,.05);
+      --shadow-lg:0 18px 60px rgba(15,35,55,.14);
+      --font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--font);min-height:100vh}
+    button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.42}
+    a{color:var(--accent)}.hidden{display:none!important}.mono{font-family:var(--mono)}.muted{color:var(--muted)}
+    .shell{max-width:1640px;margin:0 auto;padding:18px 22px 44px}
+    .topbar{position:sticky;top:0;z-index:80;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+    .topbar-inner{max-width:1640px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px}.brand-mark{width:34px;height:34px;border-radius:10px;background:var(--accent);display:grid;place-items:center;font-weight:900}
+    .brand-title{font-weight:800;letter-spacing:.01em}.brand-sub{font-size:11px;color:rgba(255,255,255,.62)}
+    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.top-select{min-width:150px;background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:7px 30px 7px 10px}.top-select option{color:#111}
+    .api-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.78)}.api-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b}.api-dot.ok{background:#34d399}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow)}
+    .card-flat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+    .panel{padding:18px}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+    .section-title{font-size:17px;font-weight:800;letter-spacing:-.015em}.section-sub{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:820px}
+    .btn{border:0;border-radius:10px;padding:9px 13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.15s;white-space:nowrap}
+    .btn:active:not(:disabled){transform:translateY(1px)}.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover:not(:disabled){background:var(--brand-2)}
+    .btn-accent{background:var(--accent);color:#fff}.btn-accent:hover:not(:disabled){filter:brightness(.94)}.btn-ghost{background:#fff;color:var(--text-2);border:1px solid var(--line)}.btn-ghost:hover:not(:disabled){background:var(--surface-3)}
+    .btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid #f2c3c3}.btn-sm{padding:6px 9px;font-size:12px}.btn-lg{padding:12px 17px;font-size:14px}
+    .field{width:100%;background:#fff;color:var(--text);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;outline:none;transition:.15s}
+    .field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,145,208,.12)}textarea.field{resize:vertical;min-height:90px}.label{display:block;font-weight:750;font-size:12px;color:var(--text-2);margin-bottom:5px}.hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stack{display:flex;flex-direction:column;gap:10px}
+    .dropzone{border:2px dashed var(--line-2);border-radius:14px;padding:18px;text-align:center;background:var(--surface-2);transition:.15s}.dropzone:hover,.dropzone.dragover{border-color:var(--accent);background:var(--accent-soft)}
+    .drop-icon{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto 8px;font-size:20px;font-weight:900}
+    .badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800}.badge-ok{background:var(--ok-bg);color:var(--ok)}.badge-warn{background:var(--warn-bg);color:var(--warn)}.badge-danger{background:var(--danger-bg);color:var(--danger)}.badge-info{background:var(--info-bg);color:var(--info)}.badge-purple{background:var(--purple-bg);color:var(--purple)}.badge-neutral{background:var(--surface-3);color:var(--text-2)}
+    .checkline{display:flex;gap:6px;flex-wrap:wrap}.checkpill{display:inline-flex;gap:5px;align-items:center;padding:4px 8px;border-radius:8px;font-size:11.5px;font-weight:750}.checkpill.ok{background:var(--ok-bg);color:var(--ok)}.checkpill.miss{background:var(--danger-bg);color:var(--danger)}
+    .stepper{display:flex;align-items:center;gap:0;max-width:100%;overflow:auto;padding:4px 0}.step-node{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11.5px;font-weight:750;white-space:nowrap}.step-dot{width:27px;height:27px;border-radius:50%;border:2px solid var(--line-2);background:#fff;display:grid;place-items:center;font-weight:900}.step-node.active{color:var(--text)}.step-node.active .step-dot{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(11,145,208,.12)}.step-node.done{color:var(--ok)}.step-node.done .step-dot{background:var(--ok);border-color:var(--ok);color:#fff}.step-line{height:2px;width:28px;background:var(--line-2);margin:0 3px;flex:0 0 auto}.step-line.done{background:var(--ok)}
+    .mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.mode-card{padding:22px;text-align:left;border:2px solid var(--line);border-radius:18px;background:#fff;transition:.18s}.mode-card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-2px)}.mode-icon{width:48px;height:48px;border-radius:14px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:22px;margin-bottom:13px}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.stat{padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:#fff}.stat-label{text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;font-weight:800;color:var(--muted)}.stat-value{font-size:24px;font-weight:850;margin-top:2px}.stat.ok{background:var(--ok-bg);border-color:#bde7d7}.stat.warn{background:var(--warn-bg);border-color:#f0d89f}.stat.danger{background:var(--danger-bg);border-color:#efc5c5}.stat.info{background:var(--info-bg);border-color:#c6e2f6}
+    .table-wrap{overflow:auto;max-height:58vh;border:1px solid var(--line);border-radius:12px;background:#fff}table{border-collapse:separate;border-spacing:0;width:100%}th,td{padding:7px 9px;border-bottom:1px solid var(--surface-3);font-size:12px;white-space:nowrap;vertical-align:top;text-align:left}th{position:sticky;top:0;z-index:5;background:var(--brand);color:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}tbody tr:hover{background:var(--accent-soft)}td.wrap{white-space:normal;min-width:220px;max-width:420px}.rowno{font-family:var(--mono);color:var(--muted);background:var(--surface-2);font-size:10.5px}.cell-critical{background:var(--danger-bg)!important}.cell-warning{background:var(--warn-bg)!important}.cell-info{background:var(--info-bg)!important}.cell-inferred{background:var(--purple-bg)!important}.header-highlight td{background:#dff3fd;font-weight:800;color:#0b6f9d}
+    .sheet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px}.sheet-card{padding:12px;text-align:left;border:1.5px solid var(--line);border-radius:13px;background:#fff}.sheet-card.active{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(11,145,208,.1)}.sheet-card:hover{border-color:var(--accent)}
+    .issue-card{border-left:4px solid var(--line-2);border-radius:10px;background:var(--surface-2);padding:10px 12px}.issue-card.critical{border-color:var(--danger);background:var(--danger-bg)}.issue-card.warning{border-color:var(--warn);background:var(--warn-bg)}.issue-card.info{border-color:var(--info);background:var(--info-bg)}
+    .tabs{display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:7px}.tab{border:1px solid var(--line);background:#fff;color:var(--text-2);border-radius:9px;padding:7px 10px;font-weight:750}.tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+    .suggestion{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fff}.suggestion-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}.score{font:800 15px var(--mono)}.candidate-box{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:9px;margin-top:8px}.criteria{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+    .toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.toolbar .spacer{flex:1}.pagination{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px}.pagebtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 8px;font-weight:700}.pagebtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .overlay{position:fixed;inset:0;background:rgba(16,42,67,.52);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:200}.loading{width:min(380px,90vw);background:#fff;border-radius:18px;padding:24px;box-shadow:var(--shadow-lg);text-align:center}.spinner{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 10px}@keyframes spin{to{transform:rotate(360deg)}}
+    .toasts{position:fixed;right:16px;top:64px;z-index:250;display:flex;flex-direction:column;gap:8px}.toast{max-width:430px;padding:10px 13px;border-radius:10px;color:#fff;box-shadow:var(--shadow-lg);font-weight:700}.toast.ok{background:#087557}.toast.warn{background:#9a6505}.toast.error{background:#ad2f2f}.toast.info{background:#1e6594}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(16,42,67,.56);display:grid;place-items:center;z-index:180}.modal{width:min(760px,92vw);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:var(--shadow-lg);padding:18px}
+    details{border:1px solid var(--line);border-radius:11px;background:#fff}summary{padding:10px 12px;font-weight:800;cursor:pointer}details>div{padding:0 12px 12px}
+    .warning-strip{padding:10px 12px;border:1px solid #f0d89f;border-radius:10px;background:var(--warn-bg);color:#79510b}.danger-strip{padding:10px 12px;border:1px solid #efc5c5;border-radius:10px;background:var(--danger-bg);color:#982e2e}.info-strip{padding:10px 12px;border:1px solid #c6e2f6;border-radius:10px;background:var(--info-bg);color:#155f91}
+    .codebox{font:11px/1.5 var(--mono);white-space:pre-wrap;background:#0f2137;color:#eaf4ff;border-radius:10px;padding:10px;max-height:220px;overflow:auto}
+    @media(max-width:980px){.grid-2,.grid-3,.grid-4,.mode-grid{grid-template-columns:1fr}.topbar-inner{align-items:flex-start}.top-actions{justify-content:flex-end}.step-node span{display:none}.shell{padding:14px}.panel{padding:14px}}
+  </style>
+</head>
+<body>
+  <div id="toastWrap" class="toasts"></div>
+  <div id="loadingOverlay" class="overlay hidden"><div class="loading"><div class="spinner"></div><div id="loadingText" style="font-weight:850">Processando...</div><div class="muted" style="font-size:12px;margin-top:4px">O arquivo permanece no seu navegador.</div></div></div>
+  <div id="modalRoot"></div>
+  <header class="topbar"><div class="topbar-inner">
+    <div class="brand"><div class="brand-mark">G</div><div><div class="brand-title">Consulte GEO Copilot</div><div class="brand-sub">Pré-importação, inferência assistida e auditoria</div></div></div>
+    <div class="top-actions">
+      <select id="globalModel" class="top-select"><option value="gpt-5.6">GPT-5.6 (Sol)</option><option value="gpt-5.6-terra">GPT-5.6 Terra</option><option value="gpt-5.6-luna">GPT-5.6 Luna</option><option value="gpt-5.5">GPT-5.5</option><option value="gpt-5.4">GPT-5.4</option><option value="gpt-5.4-mini">GPT-5.4-mini</option></select>
+      <button class="btn btn-ghost btn-sm" data-action="open-api-settings" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)">Configurar IA</button>
+      <span class="api-status"><span id="apiDot" class="api-dot"></span><span id="apiText">Motor local ativo</span></span>
+      <span class="badge badge-neutral">V3.0</span>
+    </div>
+  </div></header>
+  <main class="shell"><div id="app"></div></main>
+
+<script src="./assets/intake-auditor.js"></script>
+<script src="./assets/similarity-engine.js?v=2.0.0"></script>
+<script src="./assets/import-integrity.js?v=1.0.0"></script>
+<script src="./assets/import-legacy-adapter.js?v=1.1.0"></script>
+<script>
+'use strict';
+// ============================================================
+// CONFIGURAÇÃO E CONTRATO DE SAÍDA
+// ============================================================
+const APP_VERSION='3.6.0';
+const Similarity=window.SimilarityEngine;
+const PROVENANCE=Similarity.PROVENANCE;
+const AVAILABLE_MODELS=['gpt-5.6','gpt-5.6-terra','gpt-5.6-luna','gpt-5.5','gpt-5.4','gpt-5.4-mini'];
+const MODEL_LABELS={'gpt-5.6':'GPT-5.6 (Sol)','gpt-5.6-terra':'GPT-5.6 Terra','gpt-5.6-luna':'GPT-5.6 Luna','gpt-5.5':'GPT-5.5','gpt-5.4':'GPT-5.4','gpt-5.4-mini':'GPT-5.4-mini'};
+const DEFAULT_MODEL='gpt-5.6';
+const AI_PROXY_URL='https://yglcnirbnbwjqpvalqif.supabase.co/functions/v1/importa-openai';
+const isValidModelId=v=>/^[a-z0-9][a-z0-9._\-]{1,63}$/i.test(String(v||'').trim());
+const resolveModel=v=>{const s=String(v||'').trim();return AVAILABLE_MODELS.includes(s)?s:(isValidModelId(s)?s:DEFAULT_MODEL)};
+const PAGE_SIZE=60;
+const FIXED_OUTPUT_FIELDS=[
+  'Número Concretagem','Data Concretagem','N.F. DANFE','Volume','Placa','Bloco','Unidade','Peça','Concreto','Slump','Flow','Usina','Laboratorio','Hora Carregamento','Hora Chegada','Hora Inicio','Hora Final','Observação Entrega'
+];
+const REQUIRED_FIELDS=['Data Concretagem','N.F. DANFE','Volume','Bloco','Unidade','Concreto','Usina','Laboratorio'];
+const DEFAULT_SETTINGS={
+  plateDefault:'IMPORT',volumeDefault:'',volumeDefaultAuthorized:false,zeroResultAsBlank:true,oldDateYears:3,maxVolume:16,maxSlump:30,maxFlow:70,maxResult:150,
+  canteiroPolicy:'review',nonConcretePolicy:'exclude',nfCleanup:'trim-punctuation',strictMode:true,fillNominalFreshTest:true,
+  maxScanRows:20000,maxScanCols:220,emptyStreak:80,rememberApiKey:false,slumpSourceMeaning:'auto'
+};
+const PLACEHOLDERS=new Set(['','-','_','—','–','N/A','NA','#N/A','NAN','NULL','.',',','S/R','SEM RESULTADO','NÃO ENSAIADO','NAO ENSAIADO']);
+const SYNONYMS={
+  'Data Concretagem':['data','data concretagem','data moldagem','data de moldagem','moldagem','lançamento','dia'],
+  'N.F. DANFE':['nf','n.f.','nota fiscal','nº nf','n° nf','danfe','ticket','remessa','simples remessa','nf/sm'],
+  'Volume':['volume','vol','qtd','quantidade','m3','m³','volume bt','volume real','volume do caminhão'],
+  'Placa':['placa','placa / bt','caminhão','caminhao','betoneira','nº do caminhão','numero do caminhão'],
+  'Bloco':['bloco','torre','grupo unidade','edificação'],
+  'Unidade':['unidade','pavimento','pav','etapa','andar','local/pavimento'],
+  'Peça':['elemento','elemento concretado','peça','peça concretada','local','serviço','estrutura','trecho e frente','área concretada','descrição'],
+  'Concreto':['concreto','traço','traco','cod. do traço','código do traço','fck','fck projeto','fck estimado','resistência projeto'],
+  'Slump':['slump','abatimento','abat.','slump test','abatimento final'],
+  'Flow':['flow','espalhamento'],
+  'Usina':['fornecedor','concreteira','usina','fornecedor de concreto'],
+  'Laboratorio':['laboratorio','laboratório','lab','laboratório de moldagem'],
+  'Hora Carregamento':['hora carregamento','carregamento','saída da concreteira','saida da concreteira','saída usina'],
+  'Hora Chegada':['hora chegada','chegada à obra','chegada do caminhão','chegada'],
+  'Hora Inicio':['hora inicio','hora início','início descarregamento','inicio da descarga','início da descarga'],
+  'Hora Final':['hora final','final descarregamento','fim da descarga','término do lançamento','final aplicação'],
+  'Observação Entrega':['observação entrega','observacao entrega','observação','obs','comentário','comentario']
+};
+const KEYWORDS={
+  date:['data','moldagem','lançamento'],nf:['nf','nota','danfe','ticket','remessa'],volume:['volume','m³','m3'],
+  local:['elemento','peça','local','serviço','pavimento','torre','bloco','unidade'],fck:['fck','traço','concreto','resistência projeto'],
+  usina:['fornecedor','concreteira','usina'],lab:['laboratorio','laboratório'],slump:['slump','abatimento'],flow:['flow','espalhamento'],
+  time:['hora','carregamento','chegada','descarga','aplicação'],result:['rompimento','ruptura','resultado','resistência','mpa','cp'],material:['material']
+};
+const APPLICATION_TAGS={
+  fundacao:['fundacao','fundação','infraestrutura','estaca','helice','hélice','tubulao','tubulão','sapata','radier','bloco de fundacao','bloco de fundação','bloco de coroamento','coroamento','baldrame','viga de fundacao','viga de fundação','viga de travamento'],
+  superestrutura:['superestrutura','estrutura','pilar','pilares','viga','vigas','laje','lajes','pavimento','escada','nucleo','núcleo','cobertura','atico','ático','heliponto'],
+  contencao:['parede diafragma','diafragma','lamela','contenção','contencao','parede moldada'],
+  piso:['piso','piso polido','piso industrial','contrapiso','calçada','calcada'],
+  canteiro:['almoxarifado','segregacao','segregação','canteiro','cimenticios','cimentícios','fiada falsa'],
+  outros:['graute','argamassa','prisma','bloco ceramico','bloco cerâmico']
+};
+
+// ============================================================
+// ESTADO
+// ============================================================
+const appState={
+  mode:null,step:1,model:DEFAULT_MODEL,aiMode:'proxy',proxyUrl:AI_PROXY_URL,apiKey:'',apiRemember:false,settings:{...DEFAULT_SETTINGS},activeSuggestionTab:'proposal',previewPage:0,filterOnlyIssues:false,
+  insumos:{estruturaTexto:'',estrutura:{blocks:[],pairs:[]},usinas:[],labs:[],tracos:[],idades:[]},
+  pre:{
+    file:null,workbook:null,sheets:[],selectedSheet:'',matrix:[],rawMatrix:[],merges:[],headerCandidates:[],headerStart:0,headerDepth:1,columns:[],archetype:'',diagnosis:{},columnProfiles:[],
+    mapping:{fields:{},contextColumns:[],forwardFillColumns:[],resultColumns:[],materialColumn:null},sourceRows:[],excludedRows:[],candidateRows:[],suggestionGroups:[],proposals:[],registrationSuggestions:[],
+    issues:[],corrections:[],decisionLog:[],convertedRows:[],outputColumns:[],summary:{},aiSummary:'',intake:null
+  },
+  post:{files:[],issues:[],summary:{}},lastError:''
+};
+
+// ============================================================
+// UTILITÁRIOS
+// ============================================================
+const Utils={
+  qs:(s,r=document)=>r.querySelector(s),qsa:(s,r=document)=>Array.from(r.querySelectorAll(s)),
+  esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')},
+  slug(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[º°]/g,'').replace(/\s+/g,' ').trim()},
+  isFilled(v){return !(v===null||v===undefined||String(v).trim()==='')},
+  placeholder(v){return PLACEHOLDERS.has(String(v??'').trim().toUpperCase())},
+  cleanPlaceholder(v){return this.placeholder(v)?'':v},
+  uniq(arr,keyFn=x=>typeof x==='string'?x:JSON.stringify(x)){const s=new Set();return (arr||[]).filter(x=>{const k=keyFn(x);if(s.has(k))return false;s.add(k);return true})},
+  clamp(n,min,max){return Math.max(min,Math.min(max,n))},
+  clone(o){return JSON.parse(JSON.stringify(o))},
+  debounce(fn,ms=350){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}},
+  excelCol(i){let s='';for(let n=i+1;n>0;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s},
+  parseSimpleList(text){return this.uniq(String(text||'').split(/\r?\n|;/).map(x=>x.trim()).filter(Boolean),x=>this.slug(x))},
+  parseIdades(text){
+    const items=String(text||'').split(/\r?\n|,|;/).map(x=>x.trim()).filter(Boolean);
+    return this.uniq(items.map(x=>this.normalizeAgeLabel(x)).filter(Boolean),x=>this.slug(x));
+  },
+  normalizeAgeLabel(v){
+    const s=this.slug(v).replace(/\s+/g,' ');
+    let m=s.match(/(\d+)\s*(h|hs|hora|horas)\b/);if(m)return`${Number(m[1])} horas`;
+    m=s.match(/(\d+)\s*(d|dia|dias)\b/);if(m)return`${Number(m[1])} dias`;
+    if(/^\d+$/.test(s))return`${Number(s)} dias`;
+    return String(v||'').trim();
+  },
+  extractAge(v){
+    const s=this.slug(v);let m=s.match(/(\d+)\s*(h|hs|hora|horas)\b/);if(m)return`${Number(m[1])} horas`;
+    m=s.match(/(\d+)\s*(d|dia|dias)\b/);if(m)return`${Number(m[1])} dias`;
+    return'';
+  },
+  parseEstrutura(text){
+    const lines=String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const blocks=[];let block=null,unitType='';
+    const ensureBlock=name=>{let b=blocks.find(x=>this.slug(x.name)===this.slug(name));if(!b){b={name:name||'Bloco Padrão',unitTypes:[]};blocks.push(b)}return b};
+    const ensureType=(b,name)=>{const n=name||'';let t=b.unitTypes.find(x=>this.slug(x.name)===this.slug(n));if(!t){t={name:n,units:[]};b.unitTypes.push(t)}return t};
+    const addUnit=(name,type='')=>{if(!name||/^(unidade|unidade tipo|ordem)$/i.test(name))return;if(!block)block=ensureBlock('Bloco Padrão');const t=ensureType(block,type||unitType);if(!t.units.some(x=>this.slug(x)===this.slug(name)))t.units.push(name.trim())};
+    for(let idx=0;idx<lines.length;idx++){
+      const line=lines[idx],next=lines[idx+1]||'';if(/^(grupo\s*unidade|unidade\s*tipo|ordem(?:\s+unidade.*)?)$/i.test(line))continue;
+      let m=line.match(/^(?:grupo\s*unidade|bloco|torre)\s*:\s*(.+)$/i);if(m){block=ensureBlock(m[1].trim());unitType='';continue}
+      if(/^(?:bloco|torre)\s+[A-Za-z0-9À-ÿ]/i.test(line)){block=ensureBlock(line.trim());unitType='';continue}
+      const repeatedStandalone=lines.filter(x=>this.slug(x)===this.slug(line)).length>1;
+      if(!/[\t:]/.test(line)&&/^(anexos|átrio|atrio|auditório(?:\s+e\s+capela)?|auditorio(?:\s+e\s+capela)?|capela|guarita)$/i.test(line)&&(/^(ordem|unidade\s*tipo)/i.test(next)||!block||repeatedStandalone)){block=ensureBlock(line);unitType='';continue}
+      m=line.match(/^unidade\s*tipo\s*:\s*(.+)$/i);if(m){if(!block)block=ensureBlock('Bloco Padrão');unitType=m[1].trim();ensureType(block,unitType);continue}
+      const cells=line.split(/\t+|\s{2,}/).map(x=>x.trim()).filter(Boolean);if(cells.length>=2&&/^\d+$/.test(cells[0])){const unidade=cells[1],tipo=cells.slice(2).join(' ')||unitType;addUnit(unidade,tipo);continue}
+      m=line.match(/^(?:-|•|–)\s*(?:unidade\s*:\s*)?(.+)$/i)||line.match(/^unidade\s*:\s*(.+)$/i);if(m){addUnit(m[1]);continue}
+      if(block&&/^[\wÀ-ÿ0-9].+/.test(line)&&!/^\d+\s/.test(line))addUnit(line);
+    }
+    const pairs=[];for(const b of blocks)for(const t of b.unitTypes)for(const u of t.units)pairs.push({bloco:b.name,unidadeTipo:t.name,unidade:u});return{blocks,pairs};
+  },
+  parseTracos(text){
+    const lines=String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const groups=[];let current=null;
+    const flush=()=>{if(current&&current.trace)groups.push(current);current=null};
+    for(const line of lines){
+      if(/^concreto\s+fck\s+aplica/i.test(this.slug(line)))continue;
+      const cells=line.split(/\t+/).map(x=>x.trim()).filter(Boolean);if(cells.length>=2&&/\bFCK\s*\d+/i.test(cells[0])){flush();current={trace:cells[0],app:cells.slice(2).join(' ')||''};continue}
+      if(/\bFCK\s*\d+/i.test(line)){flush();const parts=line.split(/\s+[-–—]?\s*aplica[cç][aã]o\s*:\s*/i);current={trace:parts[0].trim(),app:(parts[1]||'').trim()};continue}
+      if(!current)continue;
+      if(/^aplica[cç][aã]o\s*:?/i.test(line)){current.app=[current.app,line.replace(/^aplica[cç][aã]o\s*:?\s*/i,'')].filter(Boolean).join(' / ');continue}
+      if(/\b(?:BRITA|SLUMP|FLOW|ABATIMENTO|ESPALHAMENTO|CM)\b/i.test(line)&&!current.app)current.trace+=` ${line}`;else current.app=[current.app,line].filter(Boolean).join(' / ');
+    }flush();
+    return groups.map((g,idx)=>{const name=g.trace.trim(),app=g.app.trim(),fck=this.extractFck(name),family=this.detectFamily(name),nominal=this.extractNominal(name),tolerance=this.extractTolerance(name),brita=(name.match(/BRITA\s*([^|]+)/i)||[])[1]?.trim()||'';return{id:`trace-${idx}`,nome:name,original:`${name}${app?` Aplicação: ${app}`:''}`,fck,family,nominal,tolerance,brita,aplicacao:app,tags:this.detectApplicationTags(`${app} ${name}`)}});
+  },
+  extractFck(v){const m=String(v??'').match(/(?:FCK\s*)?([1-9]\d(?:[.,]\d+)?)\s*(?:MPA)?/i);return m?Number(m[1].replace(',','.')):null},
+  detectFamily(v){const s=String(v??'');if(/\bFLOW\b|ESPALHAMENTO/i.test(s))return'FLOW';if(/\bSLUMP\b|ABATIMENTO/i.test(s))return'SLUMP';return''},
+  extractNominal(v){const m=String(v??'').match(/(?:FLOW|SLUMP|ABATIMENTO|ESPALHAMENTO)\s*[:=]?\s*([0-9]+(?:[.,][0-9]+)?)/i);return m?Number(m[1].replace(',','.')):null},
+  extractTolerance(v){const m=String(v??'').match(/(?:±|\+\s*\/\s*-|\+\s*-|\+\-)\s*([0-9]+(?:[.,][0-9]+)?)/);return m?Number(m[1].replace(',','.')):null},
+  detectApplicationTags(text){const s=this.slug(text);return Object.entries(APPLICATION_TAGS).filter(([,words])=>words.some(w=>s.includes(this.slug(w)))).map(([k])=>k)},
+  coerceDate(value){
+    if(value instanceof Date&&!isNaN(value))return value;if(typeof value==='number'&&value>1&&value<60000){const d=new Date((value-25569)*86400000);return isNaN(d)?null:d}
+    const s=String(value??'').trim();if(!s||this.placeholder(s))return null;let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);if(m){const y=Number(m[3].length===2?`20${m[3]}`:m[3]);const d=new Date(y,Number(m[2])-1,Number(m[1]));return isNaN(d)?null:d}
+    const d=new Date(s);return isNaN(d)?null:d;
+  },
+  formatDate(v){const d=this.coerceDate(v);if(!d||d.getFullYear()<1990)return'';return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`},
+  normalizeTime(v){if(v instanceof Date&&!isNaN(v))return`${String(v.getHours()).padStart(2,'0')}:${String(v.getMinutes()).padStart(2,'0')}`;if(typeof v==='number'&&v>=0&&v<1){const t=Math.round(v*1440);return`${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`}const m=String(v??'').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);return m?`${String(m[1]).padStart(2,'0')}:${m[2]}`:''},
+  normalizeNumberDetailed(v){
+    const original=v;if(v===null||v===undefined||this.placeholder(v))return{value:'',changed:false,reason:''};if(typeof v==='number'&&Number.isFinite(v))return{value:v,changed:false,reason:''};
+    let s=String(v).trim().replace(/\b(?:MPA|M³|M3|CM|MM|LITROS?|L)\b/gi,'').replace(/\s+/g,'');const before=s;s=s.replace(/,{2,}/g,',').replace(/\.{2,}/g,'.');
+    if(/^[-+]?\d{1,3}(?:\.\d{3})+(?:,\d+)?$/.test(s))s=s.replace(/\./g,'').replace(',','.');else if(s.includes(',')&&!s.includes('.'))s=s.replace(',','.');else if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',','.');
+    s=s.replace(/[^0-9+\-.]/g,'');if(!/\d/.test(s))return{value:'',changed:false,reason:'não numérico'};const n=Number(s);return Number.isFinite(n)?{value:n,changed:String(original).trim()!==String(n)||before!==s,reason:'normalização numérica'}:{value:'',changed:false,reason:'não numérico'};
+  },
+  parseFreshValue(v){
+    if(v===null||v===undefined||this.placeholder(v))return{value:'',tolerance:null,kind:'empty',changed:false};const s=String(v).trim();if(/^\s*\d{1,2}\s*\/\s*\d{1,2}\s*$/.test(s))return{value:'',tolerance:null,kind:'dual',changed:false};
+    const m=s.match(/([0-9]+(?:[.,][0-9]+)?)\s*(?:±|\+\s*\/\s*-|\+\s*-|\+\-)\s*([0-9]+(?:[.,][0-9]+)?)/);if(m)return{value:Number(m[1].replace(',','.')),tolerance:Number(m[2].replace(',','.')),kind:'range',changed:true};
+    const n=this.normalizeNumberDetailed(v);return{value:n.value,tolerance:null,kind:n.value===''?'invalid':'single',changed:n.changed};
+  },
+  parseResult(v,zeroAsBlank=true){
+    if(v===null||v===undefined||this.placeholder(v))return{value:'',age:'',changed:false};const s=String(v).trim();const age=this.extractAge(s);const n=this.normalizeNumberDetailed(s.replace(/\([^)]*(?:dia|hora|h)[^)]*\)/ig,''));if(n.value===0&&zeroAsBlank)return{value:'',age,changed:true};return{value:n.value,age,changed:n.changed||!!age};
+  },
+  normalizeNF(v,policy='trim-punctuation'){let s=String(v??'').trim();if(this.placeholder(s))return{value:'',changed:false};const original=s;if(policy==='trim-punctuation')s=s.replace(/[.,;:]+$/,'');else if(policy==='digits-only')s=s.replace(/\D/g,'');return{value:s,changed:s!==original}},
+  similarity(a,b){const A=this.slug(a),B=this.slug(b);if(!A||!B)return 0;if(A===B)return 1;const canon=s=>s.split(/[^a-z0-9]+/).filter(Boolean).map(w=>/^\d+$/.test(w)?String(Number(w)):w);const aw=canon(A),bw=canon(B),AJ=aw.join(' '),BJ=bw.join(' ');if(AJ&&AJ===BJ)return .97;let score=0;if(AJ.includes(BJ)||BJ.includes(AJ))score+=.58;const inter=aw.filter(x=>bw.includes(x)).length;score+=inter/Math.max(aw.length,bw.length,1)*.62;const an=aw.filter(w=>/^\d+$/.test(w)).map(Number),bn=bw.filter(w=>/^\d+$/.test(w)).map(Number);if(an.length&&bn.length&&!an.some(x=>bn.includes(x)))score*=.45;return Math.min(1,score)},
+  ordinalTokens(text){const s=this.slug(text);const m=s.match(/(?:tipo|pavimento|pav|andar)?\s*0?(\d{1,2})\b/);return m?Number(m[1]):null},
+  rowEmpty(row){return(row||[]).every(v=>!this.isFilled(this.cleanPlaceholder(v)))},
+  downloadBlob(content,name,type){const blob=content instanceof Blob?content:new Blob([content],{type:type||'application/octet-stream'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+};
+
+// ============================================================
+// PERSISTÊNCIA E FEEDBACK
+// ============================================================
+const STORAGE={
+  key:'consulte_geo_copilot_v3',keyApi:'consulte_geo_copilot_v3_api',
+  save(){try{localStorage.setItem(this.key,JSON.stringify({model:appState.model,aiMode:appState.aiMode,proxyUrl:appState.proxyUrl,settings:appState.settings,insumos:{estruturaTexto:appState.insumos.estruturaTexto,usinas:appState.insumos.usinas,labs:appState.insumos.labs,tracos:appState.insumos.tracos.map(t=>t.original),idades:appState.insumos.idades}}));if(appState.apiRemember&&appState.apiKey)localStorage.setItem(this.keyApi,appState.apiKey);else localStorage.removeItem(this.keyApi)}catch(e){}},
+  load(){try{const p=JSON.parse(localStorage.getItem(this.key)||'{}');if(p.model&&isValidModelId(p.model))appState.model=String(p.model).trim();if(p.aiMode==='local'||p.aiMode==='proxy')appState.aiMode=p.aiMode;if(typeof p.proxyUrl==='string'&&/^https:\/\//.test(p.proxyUrl.trim()))appState.proxyUrl=p.proxyUrl.trim();appState.settings={...DEFAULT_SETTINGS,...(p.settings||{})};const i=p.insumos||{};appState.insumos.estruturaTexto=i.estruturaTexto||'';appState.insumos.estrutura=Utils.parseEstrutura(appState.insumos.estruturaTexto);appState.insumos.usinas=i.usinas||[];appState.insumos.labs=i.labs||[];appState.insumos.tracos=Utils.parseTracos((i.tracos||[]).join('\n'));appState.insumos.idades=i.idades||[];const k=localStorage.getItem(this.keyApi);if(k){appState.apiKey=k;appState.apiRemember=true}}catch(e){}},
+  clear(){localStorage.removeItem(this.key);localStorage.removeItem(this.keyApi)}
+};
+const Toast={show(msg,type='info',ms=4200){const root=Utils.qs('#toastWrap');const el=document.createElement('div');el.className=`toast ${type}`;el.textContent=msg;root.appendChild(el);setTimeout(()=>el.remove(),ms)},ok(m){this.show(m,'ok')},warn(m){this.show(m,'warn',5500)},error(m){this.show(m,'error',6500)},info(m){this.show(m,'info')}};
+
+// ============================================================
+// INTERFACE
+// ============================================================
+const UI={
+  loading(show,text='Processando...'){Utils.qs('#loadingText').textContent=text;Utils.qs('#loadingOverlay').classList.toggle('hidden',!show)},
+  apiStatus(){const dot=Utils.qs('#apiDot'),txt=Utils.qs('#apiText');if(!dot||!txt)return;const ready=appState.aiMode==='proxy'?!!appState.proxyUrl:!!appState.apiKey;dot.classList.toggle('ok',ready);txt.textContent=appState.aiMode==='proxy'?'IA via servidor (proxy)':(appState.apiKey?'IA com chave local':'Motor local ativo');const sel=Utils.qs('#globalModel');if(sel){const models=AVAILABLE_MODELS.includes(appState.model)?AVAILABLE_MODELS:[...AVAILABLE_MODELS,appState.model];sel.innerHTML=models.map(m=>`<option value="${Utils.esc(m)}" ${m===appState.model?'selected':''}>${Utils.esc(MODEL_LABELS[m]||m)}</option>`).join('');sel.value=appState.model}},
+  badgeSeverity(s){const v=String(s||'INFO').toUpperCase();return`<span class="badge ${v==='CRÍTICO'?'badge-danger':v==='ALERTA'?'badge-warn':'badge-info'}">${Utils.esc(v)}</span>`},
+  badgeConfidence(score){const n=Number(score||0);return`<span class="badge ${n>=90?'badge-ok':n>=70?'badge-warn':'badge-danger'}">${n}%</span>`},
+  stepper(labels,current){let h='<div class="stepper">';labels.forEach((label,i)=>{const n=i+1,cls=n<current?'done':n===current?'active':'';h+=`<div class="step-node ${cls}"><div class="step-dot">${n<current?'✓':n}</div><span>${Utils.esc(label)}</span></div>`;if(n<labels.length)h+=`<div class="step-line ${n<current?'done':''}"></div>`});return h+'</div>'},
+  render(){
+    const app=Utils.qs('#app');let html='';
+    if(!appState.mode)html=this.home();else if(appState.mode==='pre')html=this.pre();else html=this.post();
+    app.innerHTML=html;const model=Utils.qs('#globalModel');if(model)model.value=appState.model;this.apiStatus();Dropzones.bind();
+  },
+  home(){return`<section style="max-width:920px;margin:56px auto 0;text-align:center">
+    <div class="badge badge-info">ETL ASSISTIDO PARA CONCRETAGENS</div>
+    <h1 style="font-size:31px;line-height:1.15;margin:14px 0 7px;letter-spacing:-.035em">Conversão e auditoria de planilhas Consulte GEO</h1>
+    <p class="muted" style="font-size:14px;max-width:700px;margin:0 auto 25px">Motor determinístico para diferentes formatos de clientes, revisão de inferências, sugestões de cadastro e exportação controlada.</p>
+    <div class="mode-grid">
+      <button class="mode-card" data-action="mode-intake"><div class="mode-icon" style="background:var(--warn-bg,#fdf4e3);color:var(--warn,#9a6a08)">⚲</div><div class="badge badge-warn">PRÉ-ANÁLISE</div><h2 style="font-size:20px;margin:10px 0 5px">Analisar planilha recebida</h2><p class="muted">Identifica rapidamente informações ausentes, campos incompletos, inconsistências e o que precisa ser solicitado ao cliente. Gera mensagem pronta e relatório.</p></button>
+      <button class="mode-card" data-action="mode-pre"><div class="mode-icon">⇄</div><div class="badge badge-info">PRÉ-IMPORTAÇÃO</div><h2 style="font-size:20px;margin:10px 0 5px">Converter planilha do cliente</h2><p class="muted">Diagnóstico de abas e cabeçalhos, tratamento de mesclas, mapeamento, inferência assistida, validação e XLSX de importação.</p></button>
+      <button class="mode-card" data-action="mode-post"><div class="mode-icon" style="background:var(--ok-bg);color:var(--ok)">✓</div><div class="badge badge-ok">PÓS-IMPORTAÇÃO</div><h2 style="font-size:20px;margin:10px 0 5px">Auditar planilha consolidada</h2><p class="muted">NF duplicada por usina, datas, volumes, coerência Slump/Flow × traço e resultados de resistência.</p></button>
+    </div>
+    <div class="info-strip" style="margin-top:18px;text-align:left"><strong>Princípio de segurança:</strong> valores oficiais nunca são inventados. Sugestões de novos cadastros ficam separadas e precisam de validação humana.</div>
+  </section>`},
+  pre(){
+    const labels=['Arquivo','Mapeamento','Valores propostos','Validação','Exportação'];
+    const body=[this.preSetup,this.preMapping,this.preInference,this.prePreview,this.preExport][appState.step-1].call(this);
+    return`<div class="section-head"><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="go-home">← Início</button><div><div class="section-title">Pré-importação</div><div class="section-sub">Versão ${APP_VERSION} · arquivo processado localmente</div></div></div>${this.stepper(labels,appState.step)}</div>${body}`;
+  },
+  preSetup(){
+    const i=appState.insumos,s=appState.settings;const checks={arquivo:!!appState.pre.file,estrutura:i.estrutura.pairs.length>0,usinas:i.usinas.length>0,labs:i.labs.length>0,tracos:i.tracos.length>0,idades:i.idades.length>0};const ready=checks.arquivo;
+    return`<section class="card panel">
+      <div class="section-head"><div><div class="section-title">1. Arquivo e referências opcionais</div><div class="section-sub">Para começar, somente a planilha é obrigatória. Cadastros oficiais melhoram as sugestões, mas podem ser informados depois no fluxo de implantação.</div></div><div class="checkline"><span class="checkpill ${checks.arquivo?'ok':'miss'}">${checks.arquivo?'✓':'✕'} arquivo obrigatório</span>${Object.entries(checks).filter(([k])=>k!=='arquivo').map(([k,v])=>`<span class="checkpill ${v?'ok':'miss'}">${v?'✓':'○'} ${Utils.esc(k)} opcional</span>`).join('')}</div></div>
+      <div class="grid-2" style="grid-template-columns:minmax(320px,.8fr) minmax(0,1.2fr)">
+        <div class="card-flat panel">
+          <label class="label">Planilha do cliente</label><div id="dropPre" class="dropzone"><input id="filePre" type="file" accept=".xlsx,.xls" class="hidden"><div class="drop-icon">↑</div><strong>${appState.pre.file?Utils.esc(appState.pre.file.name):'Arraste ou clique para selecionar'}</strong><div class="hint">.xlsx ou .xls · processamento 100% no navegador</div></div>
+          <div class="toolbar" style="margin-top:10px"><button class="btn btn-ghost btn-sm" data-action="import-config">Importar referências JSON</button><button class="btn btn-ghost btn-sm" data-action="export-config">Exportar referências JSON</button><input id="configFile" type="file" accept=".json" class="hidden"></div>
+          <div class="info-strip" style="margin-top:12px"><strong>Fluxo simplificado:</strong> upload → confirmar mapeamento → revisar propostas → validar → exportar.</div>
+        </div>
+        <div class="card-flat panel">
+          <div class="section-title" style="font-size:14px">Padrões operacionais</div><div class="section-sub">Placa ausente recebe <strong>IMPORT</strong>. Volume só é preenchido quando a autorização abaixo estiver marcada.</div>
+          <div class="grid-2" style="margin-top:10px"><div><label class="label">Volume padrão (m³)</label><input id="setting-volumeDefault" class="field" type="number" step="0.1" min="0" max="16" value="${Utils.esc(s.volumeDefault)}" placeholder="Ex.: 8"></div><div style="display:flex;align-items:flex-end"><label class="checkpill ${s.volumeDefaultAuthorized?'ok':'miss'}" style="min-height:42px"><input id="setting-volumeDefaultAuthorized" type="checkbox" ${s.volumeDefaultAuthorized?'checked':''}> Autorizo aplicar às linhas sem volume</label></div></div>
+          <div class="grid-3" style="margin-top:10px"><div><label class="label">Limite Volume</label><input id="setting-maxVolume" class="field" type="number" step="0.1" value="${s.maxVolume}"></div><div><label class="label">Limite Slump</label><input id="setting-maxSlump" class="field" type="number" value="${s.maxSlump}"></div><div><label class="label">Limite Flow</label><input id="setting-maxFlow" class="field" type="number" value="${s.maxFlow}"></div></div>
+        </div>
+      </div>
+      <details style="margin-top:12px"><summary>Referências oficiais opcionais e políticas avançadas</summary><div>
+        <div class="grid-2"><div><label class="label">Usinas cadastradas</label><textarea id="usinasInput" class="field" placeholder="Uma por linha">${Utils.esc(i.usinas.join('\n'))}</textarea></div><div><label class="label">Laboratórios cadastrados</label><textarea id="labsInput" class="field" placeholder="Um por linha">${Utils.esc(i.labs.join('\n'))}</textarea></div></div>
+        <div style="margin-top:10px"><label class="label">Idades oficiais de controle</label><textarea id="idadesInput" class="field" style="min-height:60px" placeholder="Opcional; idades detectadas no cabeçalho também são usadas">${Utils.esc(i.idades.join(', '))}</textarea></div>
+        <div class="grid-2" style="margin-top:10px"><div><label class="label">Estrutura oficial</label><textarea id="estruturaInput" class="field" style="min-height:250px" placeholder="Bloco: Torre A\n- Unidade: 1º Pavimento">${Utils.esc(i.estruturaTexto)}</textarea></div><div><label class="label">Traços oficiais</label><textarea id="tracosInput" class="field" style="min-height:250px" placeholder="FCK 30 | BRITA 1 | SLUMP 12±2 CM">${Utils.esc(i.tracos.map(t=>t.original).join('\n'))}</textarea></div></div>
+        <div class="grid-4" style="margin-top:10px"><div><label class="label">Data antiga após (anos)</label><input id="setting-oldDateYears" class="field" type="number" value="${s.oldDateYears}"></div><div><label class="label">Máx. resistência</label><input id="setting-maxResult" class="field" type="number" value="${s.maxResult}"></div><div><label class="label">Limpeza de NF</label><select id="setting-nfCleanup" class="field"><option value="preserve" ${s.nfCleanup==='preserve'?'selected':''}>Preservar</option><option value="trim-punctuation" ${s.nfCleanup==='trim-punctuation'?'selected':''}>Remover pontuação final</option><option value="digits-only" ${s.nfCleanup==='digits-only'?'selected':''}>Somente dígitos</option></select></div><div><label class="label">Modo de exportação</label><select id="setting-strictMode" class="field"><option value="true" ${s.strictMode?'selected':''}>Bloquear com críticos</option><option value="false" ${!s.strictMode?'selected':''}>Permitir rascunho</option></select></div></div>
+        <div class="grid-3" style="margin-top:10px"><div><label class="label">Concreto de canteiro</label><select id="setting-canteiroPolicy" class="field"><option value="review" ${s.canteiroPolicy==='review'?'selected':''}>Revisar</option><option value="exclude" ${s.canteiroPolicy==='exclude'?'selected':''}>Excluir</option><option value="include" ${s.canteiroPolicy==='include'?'selected':''}>Incluir</option></select></div><div><label class="label">Materiais ≠ concreto</label><select id="setting-nonConcretePolicy" class="field"><option value="exclude" ${s.nonConcretePolicy==='exclude'?'selected':''}>Excluir e reportar</option><option value="review" ${s.nonConcretePolicy==='review'?'selected':''}>Revisar</option><option value="include" ${s.nonConcretePolicy==='include'?'selected':''}>Incluir</option></select></div><div><label class="label">Slump na origem</label><select id="setting-slumpSourceMeaning" class="field"><option value="auto" ${s.slumpSourceMeaning==='auto'?'selected':''}>Auto detectar</option><option value="measured" ${s.slumpSourceMeaning==='measured'?'selected':''}>Valor medido</option><option value="specification" ${s.slumpSourceMeaning==='specification'?'selected':''}>Especificação</option></select></div></div>
+        <div class="checkline" style="margin-top:10px"><label class="checkpill ok"><input id="setting-zeroResultAsBlank" type="checkbox" ${s.zeroResultAsBlank?'checked':''}> Resultado 0 vira vazio</label><label class="checkpill ok"><input id="setting-fillNominalFreshTest" type="checkbox" ${s.fillNominalFreshTest?'checked':''}> Propor Slump/Flow nominal</label></div>
+      </div></details>
+      <div class="toolbar" style="margin-top:14px"><button class="btn btn-ghost" data-action="save-local">Salvar referências neste navegador</button><button class="btn btn-danger" data-action="clear-local">Limpar</button><span class="spacer"></span><button class="btn btn-primary btn-lg" data-action="analyze" ${ready?'':'disabled'}>Analisar e mapear →</button></div>
+    </section>`;
+  },
+  preDiagnosis(){
+    const p=appState.pre,d=p.diagnosis||{};
+    return`<section class="card panel">
+      <div class="section-head"><div><div class="section-title">2. Diagnóstico da pasta de trabalho</div><div class="section-sub">O programa limita a leitura ao conteúdo real, expande células mescladas e classifica o arquétipo estrutural.</div></div><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="back-setup">← Voltar</button><button class="btn btn-primary btn-sm" data-action="confirm-diagnosis">Confirmar diagnóstico →</button></div></div>
+      <div class="stat-grid" style="margin-bottom:12px"><div class="stat info"><div class="stat-label">Arquétipo</div><div class="stat-value" style="font-size:17px">${Utils.esc(p.archetype||'—')}</div></div><div class="stat"><div class="stat-label">Abas</div><div class="stat-value">${p.sheets.length}</div></div><div class="stat"><div class="stat-label">Linhas úteis estimadas</div><div class="stat-value">${d.usefulRows||0}</div></div><div class="stat"><div class="stat-label">Mesclas</div><div class="stat-value">${d.mergeCount||0}</div></div><div class="stat"><div class="stat-label">Erros de célula</div><div class="stat-value">${d.errorCells||0}</div></div></div>
+      <div class="sheet-grid">${p.sheets.map(s=>`<button class="sheet-card ${s.name===p.selectedSheet?'active':''}" data-action="select-sheet" data-sheet="${Utils.esc(s.name)}"><div class="toolbar"><strong>${Utils.esc(s.name)}</strong><span class="spacer"></span>${s.recommended?'<span class="badge badge-ok">Recomendada</span>':''}${s.hidden?'<span class="badge badge-warn">Oculta</span>':''}</div><div class="hint">${s.rows} linhas · ${s.cols} colunas · score ${s.score}</div><div class="hint">${Utils.esc(s.archetype)} · ${s.merges} mesclas</div></button>`).join('')}</div>
+      <div class="grid-3" style="margin-top:12px">
+        <div><label class="label">Início do cabeçalho</label><select id="headerStart" class="field">${Array.from({length:Math.min(25,p.matrix.length)},(_,i)=>`<option value="${i}" ${i===p.headerStart?'selected':''}>Linha ${i+1}</option>`).join('')}</select></div>
+        <div><label class="label">Profundidade do cabeçalho</label><select id="headerDepth" class="field">${[1,2,3].map(n=>`<option value="${n}" ${n===p.headerDepth?'selected':''}>${n} linha(s)</option>`).join('')}</select></div>
+        <div><label class="label">Candidato automático</label><select id="headerCandidate" class="field">${p.headerCandidates.map((c,i)=>`<option value="${i}" ${c.start===p.headerStart&&c.depth===p.headerDepth?'selected':''}>L${c.start+1} · ${c.depth} nível(is) · score ${c.score.toFixed(1)}</option>`).join('')}</select></div>
+      </div>
+      <div class="table-wrap" style="margin-top:12px;max-height:46vh">${this.rawMatrix(p.matrix,p.headerStart,p.headerDepth,22)}</div>
+      <div class="info-strip" style="margin-top:10px"><strong>Aba selecionada:</strong> ${Utils.esc(p.selectedSheet)} · <strong>Cabeçalho composto:</strong> ${p.columns.length} colunas. Cabeçalhos repetidos são tratados por índice, não pelo texto.</div>
+    </section>`;
+  },
+  rawMatrix(matrix,start,depth,limit){if(!matrix.length)return'<div class="muted" style="padding:20px">Sem dados.</div>';return`<table><tbody>${matrix.slice(0,limit).map((r,i)=>`<tr class="${i>=start&&i<start+depth?'header-highlight':''}"><td class="rowno">${i+1}</td>${(r||[]).map(v=>`<td>${Utils.esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`},
+  sourceOptions(selected,allowBlank=true){return`${allowBlank?`<option value="">(não mapeado)</option>`:''}${appState.pre.columns.map(c=>`<option value="${c.index}" ${Number(selected)===c.index?'selected':''}>${Utils.esc(`${Utils.excelCol(c.index)} — ${c.label}`)}</option>`).join('')}`},
+  preMapping(){
+    const p=appState.pre,m=p.mapping,d=p.diagnosis||{};const resultAges=Utils.uniq([...appState.insumos.idades,...m.resultColumns.map(x=>x.detectedAge).filter(Boolean)],x=>Utils.slug(x));const used=new Set([...Object.values(m.fields).map(x=>x?.sourceIndex).filter(x=>x!==null&&x!==undefined),...m.resultColumns.filter(x=>x.age&&x.kind!=='date').map(x=>x.sourceIndex),...m.contextColumns]);const ignored=p.columns.filter(c=>!used.has(c.index));
+    return`<section class="card panel">
+      <div class="section-head"><div><div class="section-title">2. Confirmar mapeamento</div><div class="section-sub">A sugestão combina sinônimos e perfil do conteúdo. Apenas campos que alimentam a importação ou a proveniência entram no processamento.</div></div><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="back-diagnosis">← Voltar</button><button class="btn btn-primary btn-sm" data-action="prepare-inference">Gerar valores propostos →</button></div></div>
+      <details open><summary>Detecção de aba e cabeçalho · ${Utils.esc(p.selectedSheet)} · ${d.usefulRows||0} linhas úteis · ${d.mergeCount||0} mesclas</summary><div>
+        <div class="sheet-grid">${p.sheets.map(s=>`<button class="sheet-card ${s.name===p.selectedSheet?'active':''}" data-action="select-sheet" data-sheet="${Utils.esc(s.name)}"><strong>${Utils.esc(s.name)}</strong><div class="hint">${s.rows} linhas · ${s.cols} colunas · ${Utils.esc(s.archetype)}</div></button>`).join('')}</div>
+        <div class="grid-3" style="margin-top:10px"><div><label class="label">Início do cabeçalho</label><select id="headerStart" class="field">${Array.from({length:Math.min(25,p.matrix.length)},(_,i)=>`<option value="${i}" ${i===p.headerStart?'selected':''}>Linha ${i+1}</option>`).join('')}</select></div><div><label class="label">Profundidade</label><select id="headerDepth" class="field">${[1,2,3].map(n=>`<option value="${n}" ${n===p.headerDepth?'selected':''}>${n} linha(s)</option>`).join('')}</select></div><div><label class="label">Candidato automático</label><select id="headerCandidate" class="field">${p.headerCandidates.map((c,i)=>`<option value="${i}" ${c.start===p.headerStart&&c.depth===p.headerDepth?'selected':''}>L${c.start+1} · ${c.depth} nível(is) · ${c.score.toFixed(1)}</option>`).join('')}</select></div></div>
+      </div></details>
+      ${(p.diagnosis.mappingWarnings||[]).length?`<div class="warning-strip" style="margin:10px 0"><strong>Revisão recomendada:</strong><br>${p.diagnosis.mappingWarnings.map(x=>`• ${Utils.esc(x)}`).join('<br>')}</div>`:''}
+      <div class="grid-2" style="grid-template-columns:minmax(0,1.5fr) minmax(330px,.7fr);margin-top:12px">
+        <div>
+          <div class="table-wrap" style="max-height:49vh"><table><thead><tr><th>Campo de importação</th><th>Coluna sugerida</th><th>Confiança</th><th>Perfil</th></tr></thead><tbody>${FIXED_OUTPUT_FIELDS.filter(f=>f!=='Número Concretagem').map(f=>{const x=m.fields[f]||{};const prof=p.columnProfiles.find(c=>c.index===Number(x.sourceIndex));return`<tr><td><strong>${Utils.esc(f)}</strong>${REQUIRED_FIELDS.includes(f)?'<br><span class="badge badge-danger">obrigatório no arquivo final</span>':'<br><span class="badge badge-neutral">opcional/condicional</span>'}</td><td><select class="field" data-action="map-field" data-field="${Utils.esc(f)}" style="min-width:250px;padding:6px 8px">${this.sourceOptions(x.sourceIndex)}</select></td><td>${this.badgeConfidence(Math.round((x.score||0)*100))}</td><td class="wrap muted">${prof?Utils.esc(`datas ${prof.datePct}% · números ${prof.numberPct}% · texto ${prof.textPct}% · ${prof.examples.join(' | ')}`):'—'}</td></tr>`}).join('')}</tbody></table></div>
+          <div style="margin-top:12px"><div class="section-title" style="font-size:14px">Resultados de rompimento</div><div class="section-sub">Idades detectadas podem ser usadas sem exigir cadastro interno nesta etapa.</div></div>
+          <div class="table-wrap" style="max-height:27vh;margin-top:7px"><table><thead><tr><th>Origem</th><th>Idade detectada</th><th>Destino</th><th>Tipo</th></tr></thead><tbody>${m.resultColumns.length?m.resultColumns.map((r,i)=>`<tr><td>${Utils.esc(`${Utils.excelCol(r.sourceIndex)} — ${r.sourceLabel}`)}</td><td>${Utils.esc(r.detectedAge||'—')}</td><td><select class="field" data-action="map-result-age" data-result-index="${i}" style="padding:6px 8px"><option value="">Ignorar</option>${resultAges.map(a=>`<option value="${Utils.esc(a)}" ${a===r.age?'selected':''}>${Utils.esc(a)}</option>`).join('')}</select></td><td>${r.kind==='date'?'<span class="badge badge-warn">Data do ensaio</span>':'<span class="badge badge-ok">Resultado</span>'}</td></tr>`).join(''):'<tr><td colspan="4" class="muted">Nenhuma coluna candidata detectada.</td></tr>'}</tbody></table></div>
+        </div>
+        <div class="stack">
+          <div class="card-flat panel"><div class="section-title" style="font-size:14px">Colunas auxiliares de contexto</div><div class="section-sub">Usadas somente para compor Peça e melhorar a associação.</div><div style="max-height:170px;overflow:auto;margin-top:8px">${p.columns.map(c=>`<label style="display:flex;gap:7px;align-items:flex-start;padding:4px 0"><input type="checkbox" data-action="toggle-context" data-col="${c.index}" ${m.contextColumns.includes(c.index)?'checked':''}><span>${Utils.esc(`${Utils.excelCol(c.index)} — ${c.label}`)}</span></label>`).join('')}</div></div>
+          <div class="card-flat panel"><div class="section-title" style="font-size:14px">Forward-fill condicional</div><div class="section-sub">Expande grupos até uma linha totalmente vazia.</div><div style="max-height:150px;overflow:auto;margin-top:8px">${p.columns.map(c=>`<label style="display:flex;gap:7px;align-items:flex-start;padding:4px 0"><input type="checkbox" data-action="toggle-ffill" data-col="${c.index}" ${m.forwardFillColumns.includes(c.index)?'checked':''}><span>${Utils.esc(`${Utils.excelCol(c.index)} — ${c.label}`)}</span></label>`).join('')}</div></div>
+          <div class="card-flat panel"><label class="label">Coluna de Material (opcional)</label><select id="materialColumn" class="field">${this.sourceOptions(m.materialColumn)}</select></div>
+          <div class="card-flat panel"><div class="section-title" style="font-size:14px">Ignoradas (${ignored.length})</div><div class="section-sub">Não alimentam o layout final nem regras auxiliares.</div><div class="hint" style="max-height:120px;overflow:auto">${ignored.length?ignored.map(c=>Utils.esc(`${Utils.excelCol(c.index)} — ${c.label}`)).join('<br>'):'Nenhuma'}</div></div>
+        </div>
+      </div>
+    </section>`;
+  },
+  preInference(){
+    const p=appState.pre;const groups=p.suggestionGroups.filter(g=>g.type===appState.activeSuggestionTab);const pendingProposals=p.proposals.filter(x=>x.status==='pending').length;const counts={proposal:p.proposals.length,concrete:p.suggestionGroups.filter(g=>g.type==='concrete').length,structure:p.suggestionGroups.filter(g=>g.type==='structure').length,registry:p.registrationSuggestions.length,excluded:p.excludedRows.length};
+    return`<section class="card panel">
+      <div class="section-head"><div><div class="section-title">3. Valores propostos e associações</div><div class="section-sub">Nada inferido substitui um valor presente. Cada proposta registra regra, origem e decisão; ambiguidades continuam pendentes até escolha humana.</div></div><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="back-mapping">← Voltar</button>${appState.apiKey?'<button class="btn btn-ghost btn-sm" data-action="refine-ai">Refinar ambiguidades com IA</button>':''}<button class="btn btn-primary btn-sm" data-action="finalize-conversion">Validar e visualizar →</button></div></div>
+      <div class="stat-grid" style="margin-bottom:12px"><div class="stat"><div class="stat-label">Linhas candidatas</div><div class="stat-value">${p.candidateRows.length}</div></div><div class="stat warn"><div class="stat-label">Propostas pendentes</div><div class="stat-value">${pendingProposals}</div></div><div class="stat info"><div class="stat-label">Associações pendentes</div><div class="stat-value">${p.suggestionGroups.filter(g=>g.status==='pending').length}</div></div><div class="stat"><div class="stat-label">Excluídas</div><div class="stat-value">${p.excludedRows.length}</div></div><div class="stat ok"><div class="stat-label">Normalizações</div><div class="stat-value">${p.corrections.length}</div></div></div>
+      <div class="toolbar" style="margin-bottom:9px"><div class="tabs"><button class="tab ${appState.activeSuggestionTab==='proposal'?'active':''}" data-action="suggest-tab" data-tab="proposal">Valores propostos (${counts.proposal})</button><button class="tab ${appState.activeSuggestionTab==='concrete'?'active':''}" data-action="suggest-tab" data-tab="concrete">Traços ambíguos (${counts.concrete})</button><button class="tab ${appState.activeSuggestionTab==='structure'?'active':''}" data-action="suggest-tab" data-tab="structure">Estrutura (${counts.structure})</button><button class="tab ${appState.activeSuggestionTab==='registry'?'active':''}" data-action="suggest-tab" data-tab="registry">Novos cadastros (${counts.registry})</button><button class="tab ${appState.activeSuggestionTab==='excluded'?'active':''}" data-action="suggest-tab" data-tab="excluded">Excluídas (${counts.excluded})</button></div><span class="spacer"></span>${appState.activeSuggestionTab==='proposal'?'<button class="btn btn-accent btn-sm" data-action="accept-all-proposals">Aceitar inequívocas em massa</button><button class="btn btn-danger btn-sm" data-action="reject-all-proposals">Rejeitar pendentes em massa</button>':['concrete','structure'].includes(appState.activeSuggestionTab)?'<button class="btn btn-accent btn-sm" data-action="accept-high">Aceitar alta confiança</button>':''}</div>
+      ${appState.activeSuggestionTab==='proposal'?this.proposalPanel():appState.activeSuggestionTab==='registry'?this.registrationSuggestions():appState.activeSuggestionTab==='excluded'?this.excludedRows():`<div class="stack">${groups.length?groups.map(g=>this.suggestionCard(g)).join(''):'<div class="info-strip">Nenhuma associação deste tipo.</div>'}</div>`}
+    </section>`;
+  },
+  proposalPanel(){const list=appState.pre.proposals;return list.length?`<div class="stack">${list.map(x=>this.proposalCard(x)).join('')}</div>`:'<div class="info-strip">Nenhum valor ausente pôde ser proposto com segurança.</div>'},
+  proposalCard(proposal){const row=appState.pre.candidateRows.find(r=>r._rowId===proposal.rowId);const selected=proposal.candidates?.find(c=>c.id===proposal.selectedCandidateId)||proposal.candidates?.[0];const value=proposal.value||selected?.label||'—';const status=proposal.status==='accepted'?'<span class="badge badge-ok">Aceito</span>':proposal.status==='rejected'?'<span class="badge badge-danger">Rejeitado / pendente</span>':'<span class="badge badge-warn">Aguardando decisão</span>';const source=`${row?`${row._source.sheet} L${row._source.line}`:'linha'} · ${proposal.source||proposal.rule}`;return`<div class="suggestion ${proposal.status==='pending'?'cell-info':''}"><div class="suggestion-head"><div><div class="toolbar"><strong>${Utils.esc(proposal.field)} → ${Utils.esc(value)}</strong>${status}<span class="badge ${proposal.provenance===PROVENANCE.OPERATIONAL?'badge-info':'badge-purple'}">${Utils.esc(proposal.provenance)}</span>${proposal.conflict?'<span class="badge badge-danger">Conflito</span>':''}</div><div class="hint">${Utils.esc(source)}</div></div><span class="badge badge-neutral">${Utils.esc(proposal.rule)}</span></div>${proposal.candidates?.length?`<div class="candidate-box"><label class="label">Candidato</label><select class="field" data-action="select-proposal-candidate" data-proposal="${Utils.esc(proposal.id)}"><option value="">Selecione</option>${proposal.candidates.map(c=>`<option value="${Utils.esc(c.id)}" ${c.id===proposal.selectedCandidateId?'selected':''}>${Utils.esc(c.label)}</option>`).join('')}</select>${proposal.requiresHuman&&proposal.candidates.length>1?'<div class="hint">Há múltiplos candidatos: escolha humana obrigatória.</div>':''}</div>`:''}<div class="toolbar" style="margin-top:9px"><button class="btn btn-accent btn-sm" data-action="accept-proposal" data-proposal="${Utils.esc(proposal.id)}" ${proposal.status==='accepted'||proposal.conflict?'disabled':''}>Aceitar nesta linha</button><button class="btn btn-danger btn-sm" data-action="reject-proposal" data-proposal="${Utils.esc(proposal.id)}" ${proposal.status==='rejected'?'disabled':''}>Rejeitar</button></div></div>`},
+  suggestionCard(g){
+    const selected=g.candidates.find(c=>c.id===g.selectedCandidateId)||g.candidates[0];return`<div class="suggestion">
+      <div class="suggestion-head"><div><div class="toolbar"><strong>${Utils.esc(g.title)}</strong><span class="badge badge-neutral">${g.rowIndexes.length} linha(s)</span>${g.status==='accepted'?'<span class="badge badge-ok">Aceito</span>':g.status==='rejected'?'<span class="badge badge-danger">Pendente manual</span>':'<span class="badge badge-warn">Aguardando decisão</span>'}</div><div class="hint">${Utils.esc(g.examples.join(' · '))}</div></div>${this.badgeConfidence(selected?.score||0)}</div>
+      <div class="grid-2" style="margin-top:8px"><div class="candidate-box"><label class="label">Candidato selecionado</label><select class="field" data-action="select-candidate" data-group="${g.id}">${g.candidates.map(c=>`<option value="${c.id}" ${c.id===g.selectedCandidateId?'selected':''}>${Utils.esc(c.label)} — ${c.score}%</option>`).join('')}</select><div class="criteria">${(selected?.criteria||[]).map(x=>`<span class="badge badge-info">${Utils.esc(x)}</span>`).join('')}</div></div><div class="candidate-box"><label class="label">Contexto de origem</label><div class="muted">${Utils.esc(g.contextSummary||'—')}</div></div></div>
+      <div class="toolbar" style="margin-top:9px"><button class="btn btn-accent btn-sm" data-action="accept-suggestion" data-group="${g.id}">Aceitar para o grupo</button><button class="btn btn-ghost btn-sm" data-action="accept-one" data-group="${g.id}">Aplicar só à primeira linha</button><button class="btn btn-danger btn-sm" data-action="reject-suggestion" data-group="${g.id}">Manter pendente</button></div>
+    </div>`;
+  },
+  registrationSuggestions(){const list=appState.pre.registrationSuggestions;return list.length?`<div class="warning-strip" style="margin-bottom:10px"><strong>Importante:</strong> estes itens não entram automaticamente no XLSX. São propostas para cadastro e exigem validação de implantação/engenharia.</div><div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Sugestão</th><th>Ocorrências</th><th>Exemplos</th><th>Justificativa</th></tr></thead><tbody>${list.map(x=>`<tr><td>${x.type==='trace'?'<span class="badge badge-purple">Traço</span>':'<span class="badge badge-info">Estrutura</span>'}</td><td class="wrap"><strong>${Utils.esc(x.label)}</strong>${x.unidadeTipo?`<br><span class="muted">Tipo de unidade: ${Utils.esc(x.unidadeTipo)}</span>`:''}</td><td>${x.count}</td><td class="wrap">${Utils.esc(x.examples.join(' · '))}</td><td class="wrap muted">${Utils.esc(x.reason)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="info-strip">Nenhum novo cadastro sugerido.</div>'},
+  excludedRows(){const list=appState.pre.excludedRows;return list.length?`<div class="table-wrap"><table><thead><tr><th>Aba</th><th>Linha</th><th>Motivo</th><th>NF/Data</th><th>Contexto</th></tr></thead><tbody>${list.slice(0,800).map(x=>`<tr><td>${Utils.esc(x.sheet)}</td><td>${x.line}</td><td>${this.badgeSeverity(x.severity||'INFO')} ${Utils.esc(x.reason)}</td><td>${Utils.esc(x.keyValue||'')}</td><td class="wrap muted">${Utils.esc(x.context||'')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="info-strip">Nenhuma linha excluída.</div>'},
+  prePreview(){
+    const p=appState.pre,s=p.summary||{};let rows=p.convertedRows;const issueMap=Validators.issueMap();if(appState.filterOnlyIssues)rows=rows.filter(r=>issueMap.has(r._rowId));const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));appState.previewPage=Math.min(appState.previewPage,pages-1);const start=appState.previewPage*PAGE_SIZE,pageRows=rows.slice(start,start+PAGE_SIZE);
+    return`<section class="card panel">
+      <div class="section-head"><div><div class="section-title">4. Preview, validação e correção manual</div><div class="section-sub">Campos oficiais usam listas fechadas. Após editar, a linha é revalidada automaticamente.</div></div><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="back-inference">← Voltar</button><button class="btn btn-primary btn-sm" data-action="go-export">Resumo e exportação →</button></div></div>
+      <div class="stat-grid" style="margin-bottom:10px"><div class="stat"><div class="stat-label">Convertidas</div><div class="stat-value">${s.total||0}</div></div><div class="stat ok"><div class="stat-label">Sem pendência</div><div class="stat-value">${s.ok||0}</div></div><div class="stat warn"><div class="stat-label">Alertas</div><div class="stat-value">${s.alerts||0}</div></div><div class="stat danger"><div class="stat-label">Críticos</div><div class="stat-value">${s.criticals||0}</div></div><div class="stat info"><div class="stat-label">Excluídas</div><div class="stat-value">${p.excludedRows.length}</div></div></div>
+      <div class="toolbar" style="margin-bottom:8px"><label><input type="checkbox" data-action="toggle-issue-filter" ${appState.filterOnlyIssues?'checked':''}> Mostrar somente linhas com problema</label><span class="spacer"></span><span class="muted">Página ${appState.previewPage+1}/${pages} · ${rows.length} linha(s)</span></div>
+      <div class="table-wrap" style="max-height:59vh"><table><thead><tr><th>#</th>${p.outputColumns.map(c=>`<th>${Utils.esc(c.label)}</th>`).join('')}</tr></thead><tbody>${pageRows.map((r,i)=>`<tr><td class="rowno">${start+i+1}</td>${p.outputColumns.map(c=>this.editableCell(r,c,issueMap)).join('')}</tr>`).join('')}</tbody></table></div>
+      ${pages>1?`<div class="pagination"><button class="pagebtn" data-action="page-prev" ${appState.previewPage===0?'disabled':''}>‹</button>${this.pageButtons(pages,appState.previewPage)}<button class="pagebtn" data-action="page-next" ${appState.previewPage>=pages-1?'disabled':''}>›</button></div>`:''}
+      <div style="margin-top:13px"><div class="section-title" style="font-size:14px">Central de problemas</div><div class="table-wrap" style="max-height:30vh;margin-top:7px">${this.issueTable(p.issues)}</div></div>
+    </section>`;
+  },
+  pageButtons(pages,current){const max=8;let first=Math.max(0,current-3);if(first+max>pages)first=Math.max(0,pages-max);return Array.from({length:Math.min(max,pages)},(_,i)=>first+i).map(p=>`<button class="pagebtn ${p===current?'active':''}" data-action="page-go" data-page="${p}">${p+1}</button>`).join('')},
+  provenanceBadge(meta){if(!meta)return'';const map={[PROVENANCE.NORMALIZED]:['badge-info','normalizado'],[PROVENANCE.INFERRED]:['badge-purple','inferido'],[PROVENANCE.OPERATIONAL]:['badge-info','padrão'],[PROVENANCE.PENDING]:['badge-danger','pendente']};const cfg=map[meta.provenance];return cfg?`<span class="badge ${cfg[0]}" title="${Utils.esc(meta.detail||meta.provenance)}">${cfg[1]}</span>`:''},
+  editableCell(row,col,issueMap){const issues=(issueMap.get(row._rowId)||[]).filter(i=>i.field===col.label||i.field===col.key);const meta=row._provenance?.[col.key];const inferred=meta&&[PROVENANCE.INFERRED,PROVENANCE.OPERATIONAL].includes(meta.provenance)?'cell-info':'';const sev=issues.some(i=>i.severity==='CRÍTICO')?'cell-critical':issues.some(i=>i.severity==='ALERTA')?'cell-warning':inferred;const title=[...issues.map(i=>i.description),meta?.detail].filter(Boolean).join(' | ');const value=row[col.key]??'';const badge=this.provenanceBadge(meta);
+    if(['Bloco','Unidade','Concreto','Usina','Laboratorio'].includes(col.label)&&({Bloco:appState.insumos.estrutura.blocks.length,Unidade:appState.insumos.estrutura.pairs.length,Concreto:appState.insumos.tracos.length,Usina:appState.insumos.usinas.length,Laboratorio:appState.insumos.labs.length}[col.label]>0)){let options=[];if(col.label==='Bloco')options=appState.insumos.estrutura.blocks.map(x=>x.name);if(col.label==='Unidade')options=appState.insumos.estrutura.pairs.filter(x=>!row.Bloco||x.bloco===row.Bloco).map(x=>x.unidade);if(col.label==='Concreto')options=appState.insumos.tracos.map(x=>x.nome);if(col.label==='Usina')options=appState.insumos.usinas;if(col.label==='Laboratorio')options=appState.insumos.labs;return`<td class="${sev}" title="${Utils.esc(title)}"><select class="field" style="min-width:190px;padding:5px 7px" data-action="edit-official" data-rowid="${row._rowId}" data-key="${Utils.esc(col.key)}"><option value=""></option>${Utils.uniq(options,x=>Utils.slug(x)).map(o=>`<option value="${Utils.esc(o)}" ${o===value?'selected':''}>${Utils.esc(o)}</option>`).join('')}</select>${badge}</td>`}
+    return`<td class="${sev}" title="${Utils.esc(title)}"><div contenteditable="true" data-action="edit-cell" data-rowid="${row._rowId}" data-key="${Utils.esc(col.key)}">${Utils.esc(value)}</div>${badge}</td>`;
+  },
+  issueTable(issues){return`<table><thead><tr><th>Severidade</th><th>Aba/Linha</th><th>Campo</th><th>Tipo</th><th>Descrição</th><th>Sugestão</th></tr></thead><tbody>${issues.length?issues.slice(0,1500).map(i=>`<tr><td>${this.badgeSeverity(i.severity)}</td><td>${Utils.esc(`${i.sheet||''} / ${i.line||''}`)}</td><td>${Utils.esc(i.field||'')}</td><td>${Utils.esc(i.type||'')}</td><td class="wrap">${Utils.esc(i.description||'')}</td><td class="wrap muted">${Utils.esc(i.suggestion||'')}</td></tr>`).join(''):'<tr><td colspan="6" class="muted">Nenhuma pendência.</td></tr>'}</tbody></table>`},
+  preExport(){const p=appState.pre,s=p.summary||{};const blocked=appState.settings.strictMode&&(s.criticals||0)>0;return`<section class="card panel">
+    <div class="section-head"><div><div class="section-title">5. Resumo e exportação</div><div class="section-sub">O arquivo final preserva o layout de importação na aba principal e adiciona uma aba separada de Proveniência.</div></div><button class="btn btn-ghost btn-sm" data-action="back-preview">← Voltar</button></div>
+    <div class="stat-grid"><div class="stat"><div class="stat-label">Linhas finais</div><div class="stat-value">${s.total||0}</div></div><div class="stat ok"><div class="stat-label">OK</div><div class="stat-value">${s.ok||0}</div></div><div class="stat warn"><div class="stat-label">Alertas</div><div class="stat-value">${s.alerts||0}</div></div><div class="stat danger"><div class="stat-label">Críticos</div><div class="stat-value">${s.criticals||0}</div></div><div class="stat info"><div class="stat-label">Sugestões cadastro</div><div class="stat-value">${p.registrationSuggestions.length}</div></div></div>
+    ${blocked?'<div class="danger-strip" style="margin-top:12px"><strong>Exportação final bloqueada:</strong> existem pendências críticas não resolvidas. Exporte pendências e sugestões, corrija os campos e volte a esta etapa.</div>':'<div class="info-strip" style="margin-top:12px"><strong>Pronto para exportar.</strong> Linha de label = 1; dados iniciam na linha 2.</div>'}
+    <div class="grid-2" style="margin-top:12px"><button class="btn btn-accent btn-lg" data-action="download-import" ${blocked?'disabled':''}>📥 Planilha de importação XLSX</button><button class="btn btn-ghost btn-lg" data-action="download-pendencias">📋 Pendências e rastreabilidade XLSX</button><button class="btn btn-ghost btn-lg" data-action="download-suggestions">＋ Sugestões de novos cadastros XLSX</button><button class="btn btn-ghost btn-lg" data-action="download-diagnostic">⌁ Diagnóstico e log JSON</button></div>
+    ${!appState.settings.strictMode&&(s.criticals||0)>0?'<div class="warning-strip" style="margin-top:10px">Modo não estrito ativo: o botão gera um arquivo com nome <strong>RASCUNHO_NAO_IMPORTAR</strong>.</div>':''}
+    <details style="margin-top:12px"><summary>Contrato de saída</summary><div class="codebox">${Utils.esc(p.outputColumns.map(c=>c.label).join('\n'))}</div></details>
+  </section>`},
+  post(){const p=appState.post;return`<div class="section-head"><div class="toolbar"><button class="btn btn-ghost btn-sm" data-action="go-home">← Início</button><div><div class="section-title">Pós-importação</div><div class="section-sub">Auditoria sem alterar os arquivos originais</div></div></div></div><section class="card panel">
+    <div class="section-head"><div><div class="section-title">Auditar planilhas consolidadas</div><div class="section-sub">A aba mais provável e o cabeçalho são detectados automaticamente para cada arquivo.</div></div><button class="btn btn-primary" data-action="run-post-audit" ${p.files.length?'':'disabled'}>Executar auditoria</button></div>
+    <div class="grid-2" style="grid-template-columns:340px 1fr"><div class="card-flat panel"><div id="dropPost" class="dropzone"><input id="filePost" type="file" accept=".xlsx,.xls" multiple class="hidden"><div class="drop-icon">↑</div><strong>${p.files.length?`${p.files.length} arquivo(s) selecionado(s)`:'Arraste um ou mais consolidados'}</strong></div></div><div class="stat-grid"><div class="stat"><div class="stat-label">Problemas</div><div class="stat-value">${p.issues.length}</div></div><div class="stat danger"><div class="stat-label">Críticos</div><div class="stat-value">${p.issues.filter(x=>x.severity==='CRÍTICO').length}</div></div><div class="stat warn"><div class="stat-label">Alertas</div><div class="stat-value">${p.issues.filter(x=>x.severity==='ALERTA').length}</div></div></div></div>
+    ${p.issues.length?`<div class="table-wrap" style="margin-top:12px;max-height:56vh">${this.postIssueTable(p.issues)}</div><div class="toolbar" style="margin-top:10px"><span class="spacer"></span><button class="btn btn-ghost" data-action="download-post-audit">Baixar relatório XLSX</button></div>`:'<div class="info-strip" style="margin-top:12px">Nenhuma auditoria executada.</div>'}
+  </section>`},
+  postIssueTable(list){return`<table><thead><tr><th>Arquivo</th><th>Aba/Linha</th><th>Severidade</th><th>Tipo</th><th>Descrição</th><th>NF</th><th>Usina</th><th>Data</th><th>Volume</th><th>Bloco/Unidade</th></tr></thead><tbody>${list.map(i=>`<tr><td>${Utils.esc(i.file)}</td><td>${Utils.esc(`${i.sheet}/${i.line}`)}</td><td>${this.badgeSeverity(i.severity)}</td><td>${Utils.esc(i.type)}</td><td class="wrap">${Utils.esc(i.description)}</td><td>${Utils.esc(i.nf||'')}</td><td>${Utils.esc(i.usina||'')}</td><td>${Utils.esc(i.date||'')}</td><td>${Utils.esc(i.volume??'')}</td><td class="wrap">${Utils.esc(`${i.bloco||''} / ${i.unidade||''}`)}</td></tr>`).join('')}</tbody></table>`},
+  apiModal(){return`<div class="modal-backdrop" data-action="close-modal-backdrop"><div class="modal"><div class="section-head"><div><div class="section-title">Configuração opcional da IA</div><div class="section-sub">O motor local é determinístico. A IA serve apenas para refinar ambiguidades agrupadas.</div></div><button class="btn btn-ghost btn-sm" data-action="close-modal">✕</button></div><div class="warning-strip"><strong>Segurança:</strong> não embuta a chave no HTML. Para produção em nuvem, use um backend/proxy e um gerenciador de segredos.</div><div class="grid-2" style="margin-top:12px"><div><label class="label">Como conectar a IA</label><select id="aiModeInput" class="field"><option value="proxy" ${appState.aiMode==='proxy'?'selected':''}>Servidor Consulte GEO (recomendado — sem chave no navegador)</option><option value="local" ${appState.aiMode==='local'?'selected':''}>Chave própria neste navegador</option></select></div><div><label class="label">Modelo</label><select id="apiModelInput" class="field">${AVAILABLE_MODELS.map(m=>`<option value="${m}" ${appState.model===m?'selected':''}>${Utils.esc(MODEL_LABELS[m]||m)}</option>`).join('')}<option value="__custom__" ${AVAILABLE_MODELS.includes(appState.model)?'':'selected'}>Outro modelo (digitar ID)…</option></select></div></div><div id="customModelWrap" style="margin-top:10px" class="${AVAILABLE_MODELS.includes(appState.model)?'hidden':''}"><label class="label">ID do modelo customizado</label><input id="customModelInput" class="field" value="${AVAILABLE_MODELS.includes(appState.model)?'':Utils.esc(appState.model)}" placeholder="ex.: gpt-5.6-sol"><div class="hint">Use o ID exato publicado pela OpenAI. Modelos novos podem ser usados aqui sem atualizar o programa.</div></div><div id="proxyWrap" style="margin-top:10px" class="${appState.aiMode==='proxy'?'':'hidden'}"><label class="label">URL do proxy (Supabase Edge Function)</label><input id="proxyUrlInput" class="field" value="${Utils.esc(appState.proxyUrl)}"><div class="hint">A chave OpenAI fica somente no servidor (secret OPENAI_API_KEY do projeto Supabase).</div></div><div id="keyWrap" style="margin-top:10px" class="${appState.aiMode==='local'?'':'hidden'}"><label class="label">API Key</label><input id="apiKeyInput" type="password" class="field" value="${Utils.esc(appState.apiKey)}" placeholder="sk-..."><label style="display:block;margin-top:8px"><input id="apiRemember" type="checkbox" ${appState.apiRemember?'checked':''}> Lembrar chave neste navegador</label></div><div class="toolbar" style="margin-top:14px"><button class="btn btn-ghost" data-action="test-api">Testar conexão</button><span class="spacer"></span><button class="btn btn-primary" data-action="save-api">Salvar</button></div></div></div>`},
+  showModal(html){Utils.qs('#modalRoot').innerHTML=html},closeModal(){Utils.qs('#modalRoot').innerHTML=''}
+};
+
+// ============================================================
+// LEITURA SEGURA DE WORKBOOK E PERFIL DE ABAS
+// ============================================================
+const SheetReader={
+  safeMatrix(ws){
+    const keys=Object.keys(ws).filter(k=>!k.startsWith('!'));let maxR=0,maxC=0,errorCells=0;
+    for(const key of keys){const addr=XLSX.utils.decode_cell(key);if(addr.r>=appState.settings.maxScanRows||addr.c>=appState.settings.maxScanCols)continue;const cell=ws[key];if(cell?.t==='e')errorCells++;if(cell&&Utils.isFilled(cell.v)){maxR=Math.max(maxR,addr.r);maxC=Math.max(maxC,addr.c)}}
+    maxR=Math.min(maxR,appState.settings.maxScanRows-1);maxC=Math.min(maxC,appState.settings.maxScanCols-1);const matrix=Array.from({length:maxR+1},()=>[]);
+    for(const key of keys){const a=XLSX.utils.decode_cell(key);if(a.r>maxR||a.c>maxC)continue;const cell=ws[key];matrix[a.r][a.c]=cell?.v??''}
+    const merges=(ws['!merges']||[]).filter(m=>m.s.r<=maxR&&m.s.c<=maxC);for(const m of merges){const anchor=matrix[m.s.r]?.[m.s.c]??'';for(let r=m.s.r;r<=Math.min(m.e.r,maxR);r++){if(!matrix[r])matrix[r]=[];for(let c=m.s.c;c<=Math.min(m.e.c,maxC);c++)if(!Utils.isFilled(matrix[r][c]))matrix[r][c]=anchor}}
+    let last=-1,streak=0;for(let r=0;r<matrix.length;r++){const meaningful=(matrix[r]||[]).some(v=>Utils.isFilled(Utils.cleanPlaceholder(v)));if(meaningful){last=r;streak=0}else streak++;if(streak>=appState.settings.emptyStreak&&r>last+appState.settings.emptyStreak)break}
+    const trimmed=matrix.slice(0,Math.max(last+1,1));const cols=trimmed.reduce((m,r)=>Math.max(m,r.length),0);return{matrix:trimmed,merges,errorCells,rows:trimmed.length,cols};
+  },
+  workbookSheets(wb){
+    const meta=wb.Workbook?.Sheets||[];return wb.SheetNames.map((name,i)=>{const ws=wb.Sheets[name],safe=this.safeMatrix(ws);const hidden=!!meta[i]?.Hidden;const header=HeaderEngine.detect(safe.matrix);const archetype=ArchetypeEngine.detect({sheetCount:wb.SheetNames.length,hidden,merges:safe.merges,matrix:safe.matrix,header});const score=WorkbookProfiler.scoreSheet(name,safe,header,hidden);return{name,ws,hidden,...safe,header,archetype,score,recommended:false}}).sort((a,b)=>b.score-a.score).map((s,i)=>({...s,recommended:i===0}));
+  }
+};
+const WorkbookProfiler={
+  scoreSheet(name,safe,header,hidden){const top=safe.matrix.slice(0,Math.min(35,safe.matrix.length));let hits=0,filled=0,total=0;for(const row of top)for(const v of row){total++;if(Utils.isFilled(v))filled++;const s=Utils.slug(v);for(const group of Object.values(KEYWORDS))if(group.some(k=>s.includes(Utils.slug(k))))hits++}const density=total?filled/total:0;let score=hits+density*10+(safe.rows>10?4:0)+(header.score||0)/5-(hidden?5:0)-(/instru|orienta|painel|dashboard|resumo|legenda|auxiliar|gráfico|grafico/i.test(name)?7:0)-(safe.errorCells>10?3:0);if(/concreto|nota|controle|rastre|import/i.test(name))score+=5;return Number(score.toFixed(1))}
+};
+const HeaderEngine={
+  compose(matrix,start,depth){const cols=matrix.slice(start,start+depth).reduce((m,r)=>Math.max(m,(r||[]).length),0);const filledRows=[];for(let d=0;d<depth;d++){const row=matrix[start+d]||[],filled=[];let carry='';for(let c=0;c<cols;c++){const v=String(row[c]??'').trim();if(v)carry=v;filled[c]=v||carry}filledRows.push(filled)}
+    const seen=new Map(),columns=[];for(let c=0;c<cols;c++){const parts=Utils.uniq(filledRows.map(r=>String(r[c]||'').trim()).filter(Boolean),x=>Utils.slug(x));let raw=parts.join(' › ')||`Coluna ${c+1}`;const base=raw;const n=(seen.get(Utils.slug(base))||0)+1;seen.set(Utils.slug(base),n);if(n>1)raw=`${base} [${n}]`;columns.push({index:c,label:raw,rawLabel:base})}return columns;
+  },
+  candidateScore(matrix,start,depth){const cols=this.compose(matrix,start,depth);const labels=cols.map(c=>c.rawLabel);let kw=0,nonGeneric=0;for(const label of labels){const s=Utils.slug(label);if(!/^coluna \d+$/.test(s))nonGeneric++;for(const group of Object.values(KEYWORDS))if(group.some(k=>s.includes(Utils.slug(k))))kw++}
+    const data=matrix.slice(start+depth,start+depth+8);const useful=data.filter(r=>!Utils.rowEmpty(r)).length;const numericHeader=labels.filter(x=>/^\d+(?:[.,]\d+)?$/.test(x)).length;return kw*2+nonGeneric*.15+useful*.5-numericHeader*.8;
+  },
+  detect(matrix){const candidates=[];for(let start=0;start<Math.min(25,matrix.length);start++)for(let depth=1;depth<=3;depth++){if(start+depth>=matrix.length)continue;const score=this.candidateScore(matrix,start,depth);candidates.push({start,depth,score,columns:this.compose(matrix,start,depth)})}candidates.sort((a,b)=>(b.score-a.score)||(a.depth-b.depth)||(b.start-a.start));return{...(candidates[0]||{start:0,depth:1,score:0,columns:[]}),candidates:candidates.slice(0,12)}}
+};
+const ArchetypeEngine={
+  detect({sheetCount,merges,matrix,header}){const vertical=(merges||[]).filter(m=>m.e.r>m.s.r).length;const wide=(header.columns||[]).length>24;const multi=header.depth>1;const labels=(header.columns||[]).map(x=>Utils.slug(x.rawLabel)).join(' | ');if(/obrigatorio|obrigatória|numero concretagem/.test(labels)&&/data concretagem/.test(labels))return'A5 · Modelo GEO antigo';if(wide&&multi)return'A4 · Bandas horizontais / cabeçalho multinível';if(vertical>=8)return'A3 · Grupos com células mescladas';if(sheetCount>=4)return'A2 · Formulário multiaba';return'A1 · Tabela plana'}
+};
+
+// ============================================================
+// PERFIL DE CONTEÚDO E MAPEAMENTO
+// ============================================================
+const ColumnProfiler={
+  profile(matrix,columns,startRow){const sample=matrix.slice(startRow,startRow+160);return columns.map(col=>{const vals=sample.map(r=>Utils.cleanPlaceholder(r[col.index])).filter(v=>Utils.isFilled(v));const total=Math.max(vals.length,1);let dates=0,numbers=0,times=0,nfs=0,texts=0,ranges=0,fcks=0,results=0,embeddedAge=0;
+      for(const v of vals){const s=String(v).trim();if(Utils.coerceDate(v)&&!/^\d{1,3}(?:[.,]\d+)?$/.test(s))dates++;const n=Utils.normalizeNumberDetailed(v).value;if(n!==''){numbers++;if(n>=0&&n<=250)results++}if(Utils.normalizeTime(v))times++;if(/^[A-Z0-9][A-Z0-9.\-\/]{2,20}$/i.test(s)&&!Utils.coerceDate(v))nfs++;if(typeof v==='string'&&/[A-Za-zÀ-ÿ]/.test(v))texts++;if(/(?:±|\+\s*\/\s*-|\+\-)/.test(s))ranges++;if(/FCK\s*\d+/i.test(s)||((n!=='')&&n>=15&&n<=100))fcks++;if(Utils.extractAge(s))embeddedAge++}
+      const pct=x=>Math.round(x/total*100);return{index:col.index,label:col.label,filled:vals.length,datePct:pct(dates),numberPct:pct(numbers),timePct:pct(times),nfPct:pct(nfs),textPct:pct(texts),rangePct:pct(ranges),fckPct:pct(fcks),resultPct:pct(results),embeddedAgePct:pct(embeddedAge),examples:vals.slice(0,4).map(x=>String(x).slice(0,45))}
+    })},
+  officialContentScore(profile,field,matrix,start,official){const vals=matrix.slice(start,start+120).map(r=>r[profile.index]).filter(v=>Utils.isFilled(Utils.cleanPlaceholder(v)));if(!vals.length)return 0;const list=field==='Bloco'?official.blocks.map(x=>x.name):official.pairs.map(x=>x.unidade);const matches=vals.filter(v=>list.some(o=>Utils.similarity(v,o)>=.82)).length;return matches/vals.length}
+};
+const HeuristicMapper={
+  typeScore(field,p){if(!p)return 0;if(field==='Data Concretagem')return p.datePct/100*.45;if(field==='N.F. DANFE')return p.nfPct/100*.35;if(field==='Volume')return p.numberPct/100*.25;if(['Hora Carregamento','Hora Chegada','Hora Inicio','Hora Final'].includes(field))return p.timePct/100*.4;if(['Slump','Flow'].includes(field))return(p.numberPct+p.rangePct)/200*.3;if(field==='Concreto')return Math.max(p.textPct,p.fckPct)/100*.28;if(['Usina','Laboratorio','Peça','Bloco','Unidade','Observação Entrega','Placa'].includes(field))return p.textPct/100*.15;return 0},
+  mapFields(columns,profiles,matrix,start){const fields={};for(const field of FIXED_OUTPUT_FIELDS.filter(x=>x!=='Número Concretagem')){const candidates=columns.map(c=>{const p=profiles.find(x=>x.index===c.index);const leaf=String(c.rawLabel||c.label||'').split('›').pop().trim();let leafScore=0,fullScore=0;for(const syn of[SYNONYMS[field]||[],[field]].flat()){leafScore=Math.max(leafScore,Utils.similarity(leaf,syn));fullScore=Math.max(fullScore,Utils.similarity(c.rawLabel,syn))}let score=leafScore*.72+fullScore*.08+this.typeScore(field,p);if(field==='Bloco'||field==='Unidade')score+=ColumnProfiler.officialContentScore(p,field,matrix,start,appState.insumos.estrutura)*.35;return{sourceIndex:c.index,label:c.label,score:Math.min(1,score),alternatives:[]}}).sort((a,b)=>b.score-a.score||a.sourceIndex-b.sourceIndex);const best=candidates[0]||{};fields[field]={sourceIndex:best.score>=.38?best.sourceIndex:null,score:best.score||0,alternatives:candidates.slice(1,4)}}return fields},
+  detectContextColumns(columns){return columns.filter(c=>{const s=Utils.slug(c.rawLabel);return SYNONYMS.Peça.some(x=>s.includes(Utils.slug(x)))||SYNONYMS.Bloco.some(x=>s.includes(Utils.slug(x)))||SYNONYMS.Unidade.some(x=>s.includes(Utils.slug(x)))}).map(c=>c.index)},
+  detectForwardFill(columns,profiles,matrix,start){return columns.filter(c=>{const leaf=String(c.rawLabel||c.label||'').split('›').pop().trim(),s=Utils.slug(leaf),p=profiles.find(x=>x.index===c.index);if(!['data','elemento','peça','local','pavimento','torre','bloco','unidade','fck','concreto','fornecedor','laboratorio'].some(k=>s.includes(Utils.slug(k))))return false;const vals=matrix.slice(start,start+100).map(r=>r[c.index]);let blankRuns=0;for(let i=1;i<vals.length;i++)if(!Utils.isFilled(vals[i])&&Utils.isFilled(vals[i-1]))blankRuns++;return blankRuns>=2||(p&&p.filled<60)}).map(c=>c.index)},
+  detectResults(columns,profiles){const out=[];for(const c of columns){const p=profiles.find(x=>x.index===c.index);const age=Utils.extractAge(c.rawLabel);const header=Utils.slug(c.rawLabel);const hasResultWord=KEYWORDS.result.some(k=>header.includes(Utils.slug(k)));if(age&&(hasResultWord||p.numberPct>20||p.datePct>40)){out.push({sourceIndex:c.index,sourceLabel:c.label,detectedAge:age,age:appState.insumos.idades.find(a=>Utils.slug(a)===Utils.slug(age))||age,kind:p.datePct>Math.max(p.numberPct,35)?'date':'result',score:Math.max(p.numberPct,p.datePct)})}else if(p.embeddedAgePct>5&&p.numberPct>10)out.push({sourceIndex:c.index,sourceLabel:c.label,detectedAge:'',age:'',kind:'result',score:p.embeddedAgePct})}return out},
+  detectMaterialColumn(columns){return columns.find(c=>KEYWORDS.material.some(k=>Utils.slug(c.rawLabel).includes(Utils.slug(k))))?.index??null},
+  build(columns,profiles,matrix,start){return{fields:this.mapFields(columns,profiles,matrix,start),contextColumns:this.detectContextColumns(columns),forwardFillColumns:this.detectForwardFill(columns,profiles,matrix,start),resultColumns:this.detectResults(columns,profiles),materialColumn:this.detectMaterialColumn(columns)}}
+};
+
+// ============================================================
+// PREPARAÇÃO DE LINHAS E FILTROS
+// ============================================================
+const RowEngine={
+  mappedValue(values,field){const idx=appState.pre.mapping.fields[field]?.sourceIndex;return idx===null||idx===undefined?'':values[idx]},
+  context(values){return appState.pre.mapping.contextColumns.map(i=>values[i]).filter(v=>Utils.isFilled(Utils.cleanPlaceholder(v))).map(String).join(' | ')},
+  prepare(){
+    const p=appState.pre,start=p.headerStart+p.headerDepth;const source=p.matrix.slice(start);const memories=new Map(),rows=[],excluded=[];
+    for(let i=0;i<source.length;i++){
+      const original=source[i]||[];if(Utils.rowEmpty(original)){memories.clear();continue}const values=original.slice();for(const idx of p.mapping.forwardFillColumns){if(Utils.isFilled(Utils.cleanPlaceholder(values[idx])))memories.set(idx,values[idx]);else if(memories.has(idx))values[idx]=memories.get(idx)}
+      const row={rowId:`${p.selectedSheet}:${start+i+1}`,sheet:p.selectedSheet,line:start+i+1,values,context:this.context(values)};const verdict=this.classify(row);if(verdict.include){row.review=verdict.review||'';rows.push(row)}else excluded.push({sheet:row.sheet,line:row.line,reason:verdict.reason,severity:verdict.severity||'INFO',keyValue:String(this.mappedValue(values,'N.F. DANFE')||this.mappedValue(values,'Data Concretagem')||''),context:row.context.slice(0,240)})
+    }
+    p.sourceRows=rows;p.excludedRows=excluded;return rows;
+  },
+  classify(row){
+    const v=row.values,nf=Utils.cleanPlaceholder(this.mappedValue(v,'N.F. DANFE')),dateRaw=Utils.cleanPlaceholder(this.mappedValue(v,'Data Concretagem')),date=Utils.coerceDate(dateRaw),vol=Utils.cleanPlaceholder(this.mappedValue(v,'Volume')),con=Utils.cleanPlaceholder(this.mappedValue(v,'Concreto'));const ctx=Utils.slug(row.context);const matIdx=appState.pre.mapping.materialColumn;const material=matIdx===null||matIdx===undefined?'':Utils.slug(v[matIdx]);
+    if(material&&!material.includes('concreto')){if(appState.settings.nonConcretePolicy==='exclude')return{include:false,reason:`Material fora do escopo: ${v[matIdx]}`,severity:'INFO'};if(appState.settings.nonConcretePolicy==='review')return{include:true,review:`Material fora do escopo mantido para revisão: ${v[matIdx]}`}}
+    if(ctx.includes('bomba')&&!nf)return{include:false,reason:'Linha de bomba/taxa sem DANFE',severity:'INFO'};
+    const canteiro=APPLICATION_TAGS.canteiro.some(x=>ctx.includes(Utils.slug(x)));if(canteiro&&appState.settings.canteiroPolicy==='exclude')return{include:false,reason:'Concreto de canteiro excluído pela política',severity:'INFO'};if(canteiro&&appState.settings.canteiroPolicy==='review')return{include:true,review:'Concreto de canteiro mantido para revisão (política: revisar)'};
+    const nfSlug=Utils.slug(nf),summarySlug=Utils.slug(`${dateRaw||''} ${nf||''} ${row.context||''}`);if(!nf&&/(^|\s)(total|subtotal|resumo)(\s|$)/.test(summarySlug))return{include:false,reason:'Linha de total/resumo',severity:'INFO'};if(!date&&/(aprovado|total|status|satisfatorio|satisfatório|rscnc)/.test(nfSlug))return{include:false,reason:'Linha de resumo/estado',severity:'INFO'};
+    const content=[vol,con,row.context].some(x=>Utils.isFilled(x));if(!nf&&!date&&!content)return{include:false,reason:'Linha vazia ou template pré-formatado',severity:'INFO'};
+    if(!nf&&!date)return{include:false,reason:'Resíduo sem NF e sem Data válida',severity:'INFO'};
+    return{include:true};
+  }
+};
+
+// ============================================================
+// RANKING DE ESTRUTURA E TRAÇO
+// ============================================================
+const StructureEngine={
+  rank(rawBlock,rawUnit,context){
+    const pairs=appState.insumos.estrutura.pairs;if(!pairs.length)return[];const rb=String(rawBlock||''),ru=String(rawUnit||''),ctx=String(context||'');const ord=Utils.ordinalTokens(`${ru} ${ctx}`),tags=Utils.detectApplicationTags(`${ru} ${ctx}`);return pairs.map((pair,i)=>{let score=0,criteria=[];const eb=Utils.slug(rb)&&Utils.slug(rb)===Utils.slug(pair.bloco),eu=Utils.slug(ru)&&Utils.slug(ru)===Utils.slug(pair.unidade);if(eb){score+=45;criteria.push('Bloco exato')}else{const s=Utils.similarity(rb,pair.bloco);score+=Math.round(s*30);if(s>.55)criteria.push('Bloco semelhante')}
+      if(eu){score+=40;criteria.push('Unidade exata')}else{const s=Math.max(Utils.similarity(ru,pair.unidade),Utils.similarity(ctx,pair.unidade));score+=Math.round(s*30);if(s>.5)criteria.push('Unidade/contexto semelhante')}
+      const po=Utils.ordinalTokens(pair.unidade);if(ord!==null&&po===ord){score+=12;criteria.push('Pavimento compatível')}
+      const pt=Utils.detectApplicationTags(`${pair.unidadeTipo} ${pair.unidade}`);if(tags.some(t=>pt.includes(t))){score+=10;criteria.push('Contexto estrutural compatível')}
+      if(appState.insumos.estrutura.blocks.length===1&&!rb){score+=8;criteria.push('Único bloco oficial')}
+      return{id:`structure-${i}`,label:`${pair.bloco} / ${pair.unidade}`,value:pair,score:Utils.clamp(score,0,100),criteria}
+    }).sort((a,b)=>b.score-a.score).slice(0,5)},
+  exactOrSafe(cands){if(!cands.length)return null;const diff=(cands[0].score-(cands[1]?.score||0));return cands[0].score>=92&&diff>=7?cands[0]:null}
+};
+const TraceEngine={
+  rawInfo(rawConcrete,rawSlump,rawFlow,context){const text=String(rawConcrete||'');const fck=Utils.extractFck(text);const slump=Utils.parseFreshValue(rawSlump),flow=Utils.parseFreshValue(rawFlow);const family=Utils.detectFamily(text)||(flow.value!==''?'FLOW':slump.value!==''?'SLUMP':'');const nominal=family==='FLOW'?flow.value:family==='SLUMP'?slump.value:Utils.extractNominal(text);return{text,fck,family,nominal,tolerance:Utils.extractTolerance(text)||(family==='FLOW'?flow.tolerance:slump.tolerance),tags:Utils.detectApplicationTags(`${text} ${context}`)}} ,
+  rank(rawConcrete,rawSlump,rawFlow,context,block,unit){
+    const info=this.rawInfo(rawConcrete,rawSlump,rawFlow,`${context} ${block} ${unit}`);return appState.insumos.tracos.map(t=>{let score=0,criteria=[];const exact=Utils.slug(info.text)&&Utils.slug(info.text)===Utils.slug(t.nome);if(exact){score=100;criteria.push('Traço textual exato')}else{
+        if(info.fck!==null&&t.fck!==null){if(Number(info.fck)===Number(t.fck)){score+=40;criteria.push('FCK exato')}else score-=35}
+        const common=info.tags.filter(x=>t.tags.includes(x));if(common.length){score+=Math.min(25,15+common.length*5);criteria.push(`Aplicação: ${common.join(', ')}`)}
+        const unitTags=Utils.detectApplicationTags(`${block} ${unit} ${context}`);if(unitTags.some(x=>t.tags.includes(x))){score+=15;criteria.push('Unidade/peça compatível')}
+        if(info.family&&t.family===info.family){score+=5;criteria.push('Família compatível');if(info.nominal!==''&&info.nominal!==null&&t.nominal!==null){const tol=t.tolerance??2;if(Math.abs(Number(info.nominal)-Number(t.nominal))<=tol){score+=5;criteria.push('Slump/Flow compatível')}}}
+        const sim=Utils.similarity(info.text,t.nome);if(sim>.2){score+=Math.round(sim*10);criteria.push('Texto semelhante')}
+      }
+      return{id:t.id,label:t.nome,value:t,score:Utils.clamp(Math.round(score),0,100),criteria}
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5)},
+  exactOrSafe(cands){if(!cands.length)return null;const diff=cands[0].score-(cands[1]?.score||0);return cands[0].score>=92&&diff>=7?cands[0]:null},
+  nominal(trace){if(!trace)return{slump:'',flow:''};return trace.family==='SLUMP'?{slump:trace.nominal??'',flow:''}:trace.family==='FLOW'?{slump:'',flow:trace.nominal??''}:{slump:'',flow:''}}
+};
+const CatalogEngine={
+  resolve(value,list){if(!Utils.isFilled(value))return'';const original=String(value).trim();if(!list.length)return original;const exact=list.find(x=>Utils.slug(x)===Utils.slug(original));if(exact)return exact;const ranked=list.map(x=>({x,s:Utils.similarity(original,x)})).sort((a,b)=>b.s-a.s);return ranked[0]?.s>=.97?ranked[0].x:original}
+};
+
+// ============================================================
+// SUGESTÕES DE NOVOS CADASTROS
+// ============================================================
+const RegistrationSuggestionEngine={
+  unitFromContext(context){const s=Utils.slug(context),ord=Utils.ordinalTokens(s),tags=Utils.detectApplicationTags(s);let unidadeTipo='',unidade='';if(tags.includes('fundacao')){unidadeTipo='Fundação';if(s.includes('tubulao'))unidade='Tubulão';else if(s.includes('bloco de coroamento')||/\bbc\d*\b/.test(s))unidade='Bloco de Coroamento';else if(s.includes('bloco de fundacao'))unidade='Bloco de Fundação';else if(s.includes('viga de fundacao')||s.includes('viga de travamento')||s.includes('baldrame'))unidade='Viga de Fundação';else if(s.includes('sapata'))unidade='Sapata';else if(s.includes('radier'))unidade='Radier';else unidade='Fundação'}else if(tags.includes('contencao')){unidadeTipo='Contenção';unidade=s.includes('diafragma')||s.includes('lamela')?'Parede Diafragma':'Contenção'}else if(tags.includes('piso')){unidadeTipo='Áreas Externas / Pisos';unidade=s.includes('calcada')?'Calçada':'Piso'}else if(s.includes('terreo')){unidadeTipo='Pavimentos';unidade='Térreo'}else if(s.includes('atico')){unidadeTipo='Cobertura';unidade='Ático'}else if(s.includes('heliponto')){unidadeTipo='Cobertura';unidade='Heliponto'}else if(ord!==null){unidadeTipo='Pavimentos';unidade=`${ord}º Pavimento`}else{unidadeTipo='A DEFINIR';unidade=String(context||'').split('|')[0].trim().slice(0,80)||'A DEFINIR'}
+    const bm=String(context||'').match(/(?:bloco|torre)\s*[-:]?\s*([A-Za-z0-9]+)/i);const bloco=bm?`${/torre/i.test(bm[0])?'Torre':'Bloco'} ${bm[1]}`:'A DEFINIR';return{bloco,unidadeTipo,unidade}},
+  traceFromRow(row){const raw=row._raw||{};const info=TraceEngine.rawInfo(raw.concrete,raw.slump,raw.flow,row.Peça);if(info.fck===null)return null;const family=info.family||((raw.flow!==''&&raw.flow!==undefined)?'FLOW':'SLUMP');const nominal=info.nominal!==null&&info.nominal!==''?info.nominal:'A DEFINIR';const tol=info.tolerance!==null&&info.tolerance!==undefined?`±${info.tolerance}`:'';const app=info.tags.length?info.tags.map(x=>({fundacao:'Fundação',superestrutura:'Superestrutura',contencao:'Parede Diafragma / Contenção',piso:'Pisos',canteiro:'Canteiro'}[x]||x)).join(' / '):'A DEFINIR';return{type:'trace',key:`${info.fck}|${family}|${nominal}|${app}`,label:`FCK ${info.fck} | BRITA A DEFINIR | ${family} ${nominal}${tol} CM — Aplicação: ${app}`,reason:'Nenhum traço oficial obteve confiança suficiente. Confirmar brita, tolerância e aplicação antes do cadastro.'}},
+  structureFromRow(row){const x=this.unitFromContext(`${row._raw?.block||''} ${row._raw?.unit||''} ${row.Peça||''}`);return{type:'structure',key:`${Utils.slug(x.bloco)}|${Utils.slug(x.unidadeTipo)}|${Utils.slug(x.unidade)}`,label:`Bloco: ${x.bloco} | Unidade: ${x.unidade}`,unidadeTipo:x.unidadeTipo,reason:'Texto recorrente sem correspondência segura na estrutura oficial. Validar hierarquia e nomenclatura antes do cadastro.'}},
+  aggregate(items,rows){const map=new Map();for(const item of items.filter(Boolean)){if(!map.has(item.key))map.set(item.key,{...item,count:0,examples:[]});const x=map.get(item.key);x.count++;const r=rows.find(row=>row._registrationKeys?.includes(item.key));if(r&&x.examples.length<4)x.examples.push(`${r._source.sheet} L${r._source.line}: ${r.Peça||r._raw?.context||''}`)}return[...map.values()].sort((a,b)=>b.count-a.count)}
+};
+
+// ============================================================
+// CONVERSOR E MOTOR DE INFERÊNCIA ASSISTIDA
+// ============================================================
+const Converter={
+  mapped(row,field){return RowEngine.mappedValue(row.values,field)},
+  correction(row,field,original,normalized,reason){appState.pre.corrections.push({sheet:row.sheet,line:row.line,field,original:String(original??''),normalized:String(normalized??''),reason})},
+  issue(row,field,severity,type,description,suggestion=''){return{rowId:row._rowId||row.rowId,sheet:row._source?.sheet||row.sheet,line:row._source?.line||row.line,field,severity,type,description,suggestion}},
+  buildOutputDescriptors(resultDescriptorMap){const cols=FIXED_OUTPUT_FIELDS.map(label=>({key:label,label}));for(const d of resultDescriptorMap.values())cols.push(d);return cols},
+  mergeDetail(src,field){const idx=appState.pre.mapping.fields[field]?.sourceIndex;if(idx===null||idx===undefined)return'';const row=(src.line||1)-1;const merge=(appState.pre.merges||[]).find(m=>row>=m.s.r&&row<=m.e.r&&idx>=m.s.c&&idx<=m.e.c&&(row!==m.s.r||idx!==m.s.c));return merge?`Valor expandido de célula mesclada a partir de ${Utils.excelCol(merge.s.c)}${merge.s.r+1}`:''},
+  sourceMark(row,field,original,normalized,reason=''){
+    if(!Utils.isFilled(normalized))return;const merged=this.mergeDetail(row._source,field);const changed=String(original??'').trim()!==String(normalized??'').trim();
+    if(merged||changed||reason)Similarity.mark(row,field,PROVENANCE.NORMALIZED,[merged,reason].filter(Boolean).join(' · ')||'Normalização automática',original,true);
+    else Similarity.seed(row,field,normalized,'Valor presente na planilha do cliente');
+  },
+  queueProposal(proposal){if(!proposal)return null;const p=appState.pre;if(!p.proposals.some(x=>x.id===proposal.id))p.proposals.push(proposal);return proposal},
+  queueFreshProposals(row){if(!appState.settings.fillNominalFreshTest)return;const traceText=row.Concreto||row._raw?.concrete||'';for(const proposal of Similarity.freshProposals(row,traceText))this.queueProposal(proposal)},
+  exactStructure(rawBlock,rawUnit){return appState.insumos.estrutura.pairs.find(x=>Utils.slug(x.bloco)===Utils.slug(rawBlock)&&Utils.slug(x.unidade)===Utils.slug(rawUnit))||null},
+  exactTrace(raw){return appState.insumos.tracos.find(x=>Utils.slug(x.nome)===Utils.slug(raw)||Utils.slug(x.original)===Utils.slug(raw))||null},
+  prepare(){
+    const p=appState.pre;p.candidateRows=[];p.suggestionGroups=[];p.proposals=[];p.registrationSuggestions=[];p.issues=[];p.corrections=[];p.decisionLog=[];const sourceRows=RowEngine.prepare();const groups=new Map(),registrationItems=[],resultDescriptors=new Map();
+    const addGroup=(type,key,row,candidates,title,contextSummary,fillNominal=false)=>{const id=`${type}:${key}`;if(!groups.has(id))groups.set(id,{id,type,title,contextSummary,candidates,selectedCandidateId:candidates[0]?.id||'',rowIndexes:[],examples:[],status:'pending',fillNominal});const g=groups.get(id);g.rowIndexes.push(p.candidateRows.length);if(g.examples.length<4)g.examples.push(`${row.sheet} L${row.line}`)};
+    for(const src of sourceRows){
+      const raw={date:this.mapped(src,'Data Concretagem'),nf:this.mapped(src,'N.F. DANFE'),volume:this.mapped(src,'Volume'),plate:this.mapped(src,'Placa'),block:this.mapped(src,'Bloco'),unit:this.mapped(src,'Unidade'),piece:this.mapped(src,'Peça'),concrete:this.mapped(src,'Concreto'),slump:this.mapped(src,'Slump'),flow:this.mapped(src,'Flow'),usina:this.mapped(src,'Usina'),lab:this.mapped(src,'Laboratorio'),hc:this.mapped(src,'Hora Carregamento'),hch:this.mapped(src,'Hora Chegada'),hi:this.mapped(src,'Hora Inicio'),hf:this.mapped(src,'Hora Final'),obs:this.mapped(src,'Observação Entrega'),context:src.context};
+      const nf=Utils.normalizeNF(raw.nf,appState.settings.nfCleanup);if(nf.changed)this.correction(src,'N.F. DANFE',raw.nf,nf.value,'limpeza de NF');const vol=Utils.normalizeNumberDetailed(raw.volume);const volume=vol.value;if(vol.changed&&volume!=='')this.correction(src,'Volume',raw.volume,volume,vol.reason);
+      const piece=Utils.uniq([raw.piece,src.context].filter(x=>Utils.isFilled(x)).map(String),x=>Utils.slug(x)).join(' | ');if(src.review)p.issues.push({rowId:src.rowId,sheet:src.sheet,line:src.line,field:'Linha',severity:'ALERTA',type:'revisão_de_política',description:src.review,suggestion:'Confirmar se a linha deve ser importada; ajustar a política ou editar/excluir manualmente.'});
+      const row={_rowId:src.rowId,_source:{sheet:src.sheet,line:src.line},_raw:raw,_registrationKeys:[],_provenance:{},'Número Concretagem':'','Data Concretagem':Utils.formatDate(raw.date),'N.F. DANFE':nf.value,Volume:volume,Placa:String(raw.plate||'').trim(),Bloco:'',Unidade:'',Peça:piece,Concreto:'',Slump:'',Flow:'',Usina:CatalogEngine.resolve(raw.usina,appState.insumos.usinas),Laboratorio:CatalogEngine.resolve(raw.lab,appState.insumos.labs),'Hora Carregamento':Utils.normalizeTime(raw.hc),'Hora Chegada':Utils.normalizeTime(raw.hch),'Hora Inicio':Utils.normalizeTime(raw.hi),'Hora Final':Utils.normalizeTime(raw.hf),'Observação Entrega':String(raw.obs||'').trim()};
+      this.sourceMark(row,'Data Concretagem',raw.date,row['Data Concretagem']);this.sourceMark(row,'N.F. DANFE',raw.nf,row['N.F. DANFE'],nf.changed?'Limpeza de NF':'');this.sourceMark(row,'Volume',raw.volume,row.Volume,vol.changed?vol.reason:'');this.sourceMark(row,'Placa',raw.plate,row.Placa);this.sourceMark(row,'Peça',raw.piece,row.Peça,Utils.slug(raw.piece)!==Utils.slug(row.Peça)?'Composição com colunas de contexto':'');this.sourceMark(row,'Usina',raw.usina,row.Usina,Utils.slug(raw.usina)!==Utils.slug(row.Usina)?'Normalização contra referência oficial':'');this.sourceMark(row,'Laboratorio',raw.lab,row.Laboratorio,Utils.slug(raw.lab)!==Utils.slug(row.Laboratorio)?'Normalização contra referência oficial':'');this.sourceMark(row,'Hora Carregamento',raw.hc,row['Hora Carregamento']);this.sourceMark(row,'Hora Chegada',raw.hch,row['Hora Chegada']);this.sourceMark(row,'Hora Inicio',raw.hi,row['Hora Inicio']);this.sourceMark(row,'Hora Final',raw.hf,row['Hora Final']);this.sourceMark(row,'Observação Entrega',raw.obs,row['Observação Entrega']);
+      // Estrutura: preserva o texto do cliente quando não há cadastro oficial; com cadastro, apenas correspondência exata entra sem decisão.
+      if(!appState.insumos.estrutura.pairs.length){row.Bloco=String(raw.block||'').trim();row.Unidade=String(raw.unit||'').trim();this.sourceMark(row,'Bloco',raw.block,row.Bloco);this.sourceMark(row,'Unidade',raw.unit,row.Unidade)}else{const exact=this.exactStructure(raw.block,raw.unit);if(exact){row.Bloco=exact.bloco;row.Unidade=exact.unidade;this.sourceMark(row,'Bloco',raw.block,row.Bloco,Utils.slug(raw.block)!==Utils.slug(row.Bloco)?'Normalização para cadastro oficial':'');this.sourceMark(row,'Unidade',raw.unit,row.Unidade,Utils.slug(raw.unit)!==Utils.slug(row.Unidade)?'Normalização para cadastro oficial':'')}else{const sc=StructureEngine.rank(raw.block,raw.unit,piece);if(sc.length)addGroup('structure',`${Utils.slug(raw.block)}|${Utils.slug(raw.unit)}|${Utils.slug(piece).slice(0,80)}`,src,sc,'Associar Bloco e Unidade',`${raw.block||'—'} | ${raw.unit||'—'} | ${piece.slice(0,160)}`);if(!sc.length||(sc[0]?.score||0)<55){const sug=RegistrationSuggestionEngine.structureFromRow(row);registrationItems.push(sug);row._registrationKeys.push(sug.key)}}}
+      // Ensaio fresco medido na origem.
+      let slump=Utils.parseFreshValue(raw.slump),flow=Utils.parseFreshValue(raw.flow);if(slump.kind==='range')this.correction(src,'Slump',raw.slump,slump.value,'faixa convertida para valor nominal');if(flow.kind==='range')this.correction(src,'Flow',raw.flow,flow.value,'faixa convertida para valor nominal');if(slump.value!==''&&Number(slump.value)>30&&Number(slump.value)<=300){const old=slump.value;slump.value=Number(slump.value)/10;this.correction(src,'Slump',old,slump.value,'mm convertido para cm')}if(flow.value!==''&&Number(flow.value)>99&&Number(flow.value)<=990){const old=flow.value;flow.value=Number(flow.value)/10;this.correction(src,'Flow',old,flow.value,'mm convertido para cm')}const slumpIsSpec=appState.settings.slumpSourceMeaning==='specification'||(appState.settings.slumpSourceMeaning==='auto'&&slump.kind==='range');const flowIsSpec=appState.settings.slumpSourceMeaning==='specification'||(appState.settings.slumpSourceMeaning==='auto'&&flow.kind==='range');row.Slump=slump.kind==='dual'||slumpIsSpec?'':slump.value;row.Flow=flow.kind==='dual'||flowIsSpec?'':flow.value;if(row.Slump!=='')this.sourceMark(row,'Slump',raw.slump,row.Slump,slump.changed?'Normalização do ensaio fresco':'');if(row.Flow!=='')this.sourceMark(row,'Flow',raw.flow,row.Flow,flow.changed?'Normalização do ensaio fresco':'');if(slumpIsSpec&&slump.value!=='')this.correction(src,'Slump',raw.slump,'','especificação mantida como origem de proposta, não como valor medido');if(flowIsSpec&&flow.value!=='')this.correction(src,'Flow',raw.flow,'','especificação mantida como origem de proposta, não como valor medido');if(slump.kind==='dual')p.issues.push(this.issue(row,'Slump','CRÍTICO','valor_ambíguo','Valor dual como 08/17 não pode ser interpretado com segurança.','Informar o valor medido ou a especificação correta.'));
+      // Concreto: texto original é preservado sem catálogo. Com catálogo, correspondência exata é normalização; demais casos viram proposta.
+      if(!appState.insumos.tracos.length){row.Concreto=String(raw.concrete||'').trim();this.sourceMark(row,'Concreto',raw.concrete,row.Concreto)}else{const exactT=this.exactTrace(raw.concrete);if(exactT){row.Concreto=exactT.nome;row._traceId=exactT.id;this.sourceMark(row,'Concreto',raw.concrete,row.Concreto,Utils.slug(raw.concrete)!==Utils.slug(row.Concreto)?'Normalização para traço oficial':'')}else{const extractor=window.IntakeAuditor?._internals?.extractFcksFromText;const proposal=Similarity.traceProposal(row,{fck:Utils.extractFck(raw.concrete),traceText:raw.concrete,observation:raw.obs,application:piece,location:`${raw.block||''} ${raw.unit||''}`},appState.insumos.tracos,extractor);if(proposal)this.queueProposal(proposal);else{const tc=TraceEngine.rank(raw.concrete,raw.slump,raw.flow,piece,'','');if(tc.length)addGroup('concrete',`${Utils.extractFck(raw.concrete)}|${Utils.detectFamily(raw.concrete)}|${Utils.slug(raw.concrete)}`,src,tc,'Associar concreto oficial',`${raw.concrete||'—'} · ${piece.slice(0,180)}`,false)}const sug=RegistrationSuggestionEngine.traceFromRow(row);if(sug&&!proposal){registrationItems.push(sug);row._registrationKeys.push(sug.key)}}}
+      // Padrões operacionais: placa sempre; volume apenas com autorização explícita.
+      for(const proposal of Similarity.operationalProposals(row,{volumeDefault:appState.settings.volumeDefault,volumeDefaultAuthorized:appState.settings.volumeDefaultAuthorized})){Similarity.apply(row,proposal);proposal.status='accepted';this.queueProposal(proposal);p.decisionLog.push({sheet:src.sheet,line:src.line,type:'padrão_operacional',action:'aplicado',value:`${proposal.field}=${proposal.value}`,score:100})}
+      this.queueFreshProposals(row);
+      // Resultados: usa a idade detectada mesmo sem cadastro interno; cadastro fornecido apenas valida/normaliza.
+      row._results={};for(const rm of p.mapping.resultColumns){if(!rm.age||rm.kind==='date')continue;const rawResult=src.values[rm.sourceIndex],parsed=Utils.parseResult(rawResult,appState.settings.zeroResultAsBlank);const configured=parsed.age?appState.insumos.idades.find(a=>Utils.slug(a)===Utils.slug(parsed.age)):null;if(parsed.age&&appState.insumos.idades.length&&!configured){p.issues.push(this.issue(row,`Rompimento ${parsed.age}`,'INFO','idade_não_configurada',`Resultado com idade ${parsed.age} foi mantido como coluna detectada.`,'Confirmar a idade antes da importação.'))}const age=configured||parsed.age||rm.age;const key=`result:${rm.sourceIndex}:${age}`;if(!resultDescriptors.has(key))resultDescriptors.set(key,{key,label:`Rompimento ${age}`,age,sourceIndex:rm.sourceIndex});row._results[key]=parsed.value;if(parsed.value!=='')Similarity.mark(row,key,parsed.changed?PROVENANCE.NORMALIZED:PROVENANCE.ORIGINAL,parsed.changed?'Normalização do resultado de rompimento':'Valor presente na planilha',rawResult,true);if(parsed.changed&&parsed.value!=='')this.correction(src,`Rompimento ${age}`,rawResult,parsed.value,'normalização de resultado')}
+      p.candidateRows.push(row);
+    }
+    p.suggestionGroups=[...groups.values()];
+    for(const proposal of Similarity.uniqueFieldProposals(p.candidateRows,'Usina','UNIQUE_USINA'))this.queueProposal(proposal);for(const proposal of Similarity.uniqueFieldProposals(p.candidateRows,'Laboratorio','UNIQUE_LAB'))this.queueProposal(proposal);
+    p.registrationSuggestions=RegistrationSuggestionEngine.aggregate(registrationItems,p.candidateRows);p.outputColumns=this.buildOutputDescriptors(resultDescriptors);for(const row of p.candidateRows)for(const d of resultDescriptors.values())row[d.key]=row._results[d.key]??'';this.refreshSummary();
+  },
+  group(id){return appState.pre.suggestionGroups.find(g=>g.id===id)},
+  proposal(id){return appState.pre.proposals.find(x=>x.id===id)},
+  rowById(rowId){return appState.pre.candidateRows.find(r=>r._rowId===rowId)},
+  applyProposal(id,selectedCandidateId=''){const proposal=this.proposal(id);if(!proposal)return false;const row=this.rowById(proposal.rowId);if(!row)return false;let selectedValue=proposal.value;let selected=null;if(proposal.candidates?.length){selected=proposal.candidates.find(c=>c.id===selectedCandidateId||c.label===selectedCandidateId)||proposal.candidates.find(c=>c.id===proposal.selectedCandidateId)||proposal.candidates[0];if(proposal.requiresHuman&&proposal.candidates.length>1&&!selectedCandidateId&&!proposal.selectedCandidateId){Toast.warn('Escolha um candidato antes de aceitar.');return false}selectedValue=selected?.label||selectedValue;proposal.selectedCandidateId=selected?.id||''}if(!Similarity.apply(row,proposal,selectedValue))return false;if(proposal.field==='Concreto'){row._traceId=selected?.value?.id||appState.insumos.tracos.find(t=>t.nome===selectedValue)?.id||'';this.queueFreshProposals(row)}appState.pre.decisionLog.push({sheet:row._source.sheet,line:row._source.line,type:'valor_proposto',action:'aceito',value:`${proposal.field}=${selectedValue}`,score:proposal.requiresHuman?0:100});this.refreshSummary();return true},
+  rejectProposal(id){const proposal=this.proposal(id);if(!proposal)return;const row=this.rowById(proposal.rowId);Similarity.reject(row,proposal);if(row)appState.pre.decisionLog.push({sheet:row._source.sheet,line:row._source.line,type:'valor_proposto',action:'rejeitado',value:proposal.field,score:0});this.refreshSummary()},
+  acceptAllProposals(){let count=0;for(const proposal of appState.pre.proposals.filter(x=>x.status==='pending'&&!x.conflict)){if(proposal.requiresHuman&&proposal.candidates?.length>1)continue;if(this.applyProposal(proposal.id,proposal.candidates?.length===1?proposal.candidates[0].id:''))count++}Toast.ok(`${count} proposta(s) inequívoca(s) aceita(s).`)},
+  rejectAllProposals(){let count=0;for(const proposal of appState.pre.proposals.filter(x=>x.status==='pending')){this.rejectProposal(proposal.id);count++}Toast.warn(`${count} proposta(s) mantida(s) como pendência.`)},
+  applyGroup(id,onlyFirst=false){const g=this.group(id);if(!g)return;const cand=g.candidates.find(c=>c.id===g.selectedCandidateId)||g.candidates[0];if(!cand)return;const indexes=onlyFirst?g.rowIndexes.slice(0,1):g.rowIndexes.slice();for(const idx of indexes){const row=appState.pre.candidateRows[idx];if(!row)continue;if(g.type==='structure'){row.Bloco=cand.value.bloco;row.Unidade=cand.value.unidade;Similarity.mark(row,'Bloco',PROVENANCE.INFERRED,`Associação aceita: ${cand.label}`,row._raw.block,true);Similarity.mark(row,'Unidade',PROVENANCE.INFERRED,`Associação aceita: ${cand.label}`,row._raw.unit,true)}else if(g.type==='concrete'){row.Concreto=cand.value.nome;row._traceId=cand.value.id;Similarity.mark(row,'Concreto',PROVENANCE.INFERRED,`Associação aceita: ${cand.label}`,row._raw.concrete,true);this.queueFreshProposals(row)}else if(g.type==='slump'){row.Slump=cand.value.slump;row.Flow=cand.value.flow;if(row.Slump!=='')Similarity.mark(row,'Slump',PROVENANCE.INFERRED,'Valor nominal derivado do traço','',true);if(row.Flow!=='')Similarity.mark(row,'Flow',PROVENANCE.INFERRED,'Valor nominal derivado do traço','',true)}appState.pre.decisionLog.push({sheet:row._source.sheet,line:row._source.line,type:g.type,action:onlyFirst?'aceito_linha':'aceito_grupo',value:cand.label,score:cand.score})}
+    if(onlyFirst){g.rowIndexes=g.rowIndexes.slice(1);g.examples=g.examples.slice(1);if(!g.rowIndexes.length)g.status='accepted'}else g.status='accepted';Toast.ok(`Sugestão aplicada a ${indexes.length} linha(s).`);this.refreshSummary();
+  },
+  rejectGroup(id){const g=this.group(id);if(!g)return;g.status='rejected';for(const idx of g.rowIndexes){const row=appState.pre.candidateRows[idx];if(row){if(g.type==='structure'){Similarity.pending(row,'Bloco','Associação de estrutura rejeitada');Similarity.pending(row,'Unidade','Associação de estrutura rejeitada')}else if(g.type==='concrete')Similarity.pending(row,'Concreto','Associação de traço rejeitada');appState.pre.decisionLog.push({sheet:row._source.sheet,line:row._source.line,type:g.type,action:'mantido_pendente',value:'',score:0})}}Toast.warn('Grupo mantido como pendência.')},
+  acceptHigh(type){const list=appState.pre.suggestionGroups.filter(g=>g.type===type&&g.status==='pending');let n=0;for(const g of list){const c=g.candidates.find(x=>x.id===g.selectedCandidateId)||g.candidates[0];if(c?.score>=90){this.applyGroup(g.id);n++}}if(!n)Toast.info('Nenhum grupo pendente com confiança alta.')},
+  finalize(){const rows=appState.pre.candidateRows.slice().sort((a,b)=>{const da=Utils.coerceDate(a['Data Concretagem'])?.getTime()||0,db=Utils.coerceDate(b['Data Concretagem'])?.getTime()||0;return da-db||String(a.Bloco).localeCompare(String(b.Bloco))||String(a.Unidade).localeCompare(String(b.Unidade))||a._source.line-b._source.line});const map=new Map();let seq=1;for(const r of rows){const key=JSON.stringify([r['Data Concretagem'],r.Bloco,r.Unidade]);if(!map.has(key))map.set(key,seq++);r['Número Concretagem']=map.get(key);Similarity.mark(r,'Número Concretagem',PROVENANCE.NORMALIZED,'Numeração sequencial gerada por data/bloco/unidade','',true);for(const field of REQUIRED_FIELDS)if(!Utils.isFilled(r[field]))Similarity.pending(r,field,'Campo obrigatório não resolvido antes da exportação')}appState.pre.convertedRows=rows;Validators.validateAll();this.refreshSummary()},
+  refreshSummary(){const p=appState.pre,issues=p.issues||[];const affectedCritical=new Set(issues.filter(x=>x.severity==='CRÍTICO').map(x=>x.rowId)),affectedAlert=new Set(issues.filter(x=>x.severity==='ALERTA').map(x=>x.rowId));const total=(p.convertedRows.length||p.candidateRows.length);p.summary={total,criticals:issues.filter(x=>x.severity==='CRÍTICO').length,alerts:issues.filter(x=>x.severity==='ALERTA').length,infos:issues.filter(x=>x.severity==='INFO').length,ok:Math.max(0,total-new Set([...affectedCritical,...affectedAlert]).size)}}
+};
+
+// ============================================================
+// VALIDAÇÕES E RASTREABILIDADE
+// ============================================================
+const Validators={
+  issue(row,field,severity,type,description,suggestion=''){return{rowId:row._rowId,sheet:row._source.sheet,line:row._source.line,field,severity,type,description,suggestion}},
+  officialContains(field,value,block=''){if(!value)return false;if(field==='Bloco')return!appState.insumos.estrutura.blocks.length||appState.insumos.estrutura.blocks.some(x=>x.name===value);if(field==='Unidade')return!appState.insumos.estrutura.pairs.length||appState.insumos.estrutura.pairs.some(x=>x.bloco===block&&x.unidade===value);if(field==='Concreto')return!appState.insumos.tracos.length||appState.insumos.tracos.some(x=>x.nome===value);if(field==='Usina')return!appState.insumos.usinas.length||appState.insumos.usinas.includes(value);if(field==='Laboratorio')return!appState.insumos.labs.length||appState.insumos.labs.includes(value);return true},
+  validateAll(){
+    const p=appState.pre;const retained=(p.issues||[]).filter(i=>['valor_ambíguo','idade_não_configurada','revisão_de_política'].includes(i.type));const issues=[...retained];const today=new Date(),oldLimit=new Date();oldLimit.setFullYear(today.getFullYear()-Number(appState.settings.oldDateYears||3));
+    for(const row of p.convertedRows){
+      for(const field of REQUIRED_FIELDS)if(!Utils.isFilled(row[field])){Similarity.pending(row,field,'Campo obrigatório não resolvido');issues.push(this.issue(row,field,'CRÍTICO','campo_obrigatório',`${field} não foi resolvido.`,'Revisar o mapeamento, aceitar uma proposta ou preencher manualmente.'));}
+      if(row.Bloco&&!this.officialContains('Bloco',row.Bloco))issues.push(this.issue(row,'Bloco','CRÍTICO','fora_do_cadastro','Bloco não pertence à estrutura oficial.','Selecionar um bloco cadastrado.'));
+      if(row.Unidade&&!this.officialContains('Unidade',row.Unidade,row.Bloco))issues.push(this.issue(row,'Unidade','CRÍTICO','fora_do_cadastro','Unidade não pertence ao bloco oficial selecionado.','Selecionar uma unidade cadastrada no bloco.'));
+      if(row.Concreto&&!this.officialContains('Concreto',row.Concreto))issues.push(this.issue(row,'Concreto','CRÍTICO','fora_do_cadastro','Concreto não pertence à lista oficial.','Selecionar um traço cadastrado.'));
+      if(row.Usina&&!this.officialContains('Usina',row.Usina))issues.push(this.issue(row,'Usina','CRÍTICO','fora_do_cadastro','Usina não cadastrada.','Selecionar uma usina oficial.'));
+      if(row.Laboratorio&&!this.officialContains('Laboratorio',row.Laboratorio))issues.push(this.issue(row,'Laboratorio','CRÍTICO','fora_do_cadastro','Laboratório não cadastrado.','Selecionar um laboratório oficial.'));
+      const date=Utils.coerceDate(row['Data Concretagem']);if(date){if(date>today)issues.push(this.issue(row,'Data Concretagem','CRÍTICO','data_futura','Data de concretagem no futuro.','Corrigir a data.'));if(date<oldLimit)issues.push(this.issue(row,'Data Concretagem','ALERTA','data_antiga',`Data anterior a ${appState.settings.oldDateYears} anos.`,'Confirmar obra e período.'))}
+      const vol=Utils.normalizeNumberDetailed(row.Volume).value;if(vol!==''&&(Number(vol)<=0||Number(vol)>Number(appState.settings.maxVolume)))issues.push(this.issue(row,'Volume','CRÍTICO','volume_inválido',`Volume ${vol} fora da faixa >0 e ≤${appState.settings.maxVolume} m³.`,'Corrigir o volume.'));
+      const trace=appState.insumos.tracos.find(t=>t.nome===row.Concreto);if(trace){if(trace.family==='SLUMP'){if(row.Slump==='')issues.push(this.issue(row,'Slump','CRÍTICO','slump_ausente','Traço com SLUMP e valor ausente.','Preencher valor medido ou aceitar o nominal do traço.'));if(row.Flow!=='')issues.push(this.issue(row,'Flow','ALERTA','flow_indevido','Traço com SLUMP possui Flow preenchido.','Revisar ensaio fresco.'));if(row.Slump!==''&&trace.nominal!==null&&trace.tolerance!==null&&Math.abs(Number(row.Slump)-trace.nominal)>trace.tolerance)issues.push(this.issue(row,'Slump','ALERTA','fora_da_tolerância',`Slump ${row.Slump} fora de ${trace.nominal}±${trace.tolerance} cm.`,'Confirmar valor medido e traço.'))}
+        if(trace.family==='FLOW'){if(row.Flow==='')issues.push(this.issue(row,'Flow','CRÍTICO','flow_ausente','Traço com FLOW e valor ausente.','Preencher valor medido ou aceitar o nominal do traço.'));if(row.Slump!=='')issues.push(this.issue(row,'Slump','ALERTA','slump_indevido','Traço com FLOW possui Slump preenchido.','Revisar ensaio fresco.'));if(row.Flow!==''&&trace.nominal!==null&&trace.tolerance!==null&&Math.abs(Number(row.Flow)-trace.nominal)>trace.tolerance)issues.push(this.issue(row,'Flow','ALERTA','fora_da_tolerância',`Flow ${row.Flow} fora de ${trace.nominal}±${trace.tolerance} cm.`,'Confirmar valor medido e traço.'))}}
+      if(row.Slump!==''&&Number(row.Slump)>Number(appState.settings.maxSlump))issues.push(this.issue(row,'Slump','CRÍTICO','limite_absoluto',`Slump superior a ${appState.settings.maxSlump} cm.`,'Revisar unidade e valor.'));
+      if(row.Flow!==''&&Number(row.Flow)>Number(appState.settings.maxFlow))issues.push(this.issue(row,'Flow','CRÍTICO','limite_absoluto',`Flow superior a ${appState.settings.maxFlow} cm.`,'Revisar unidade e valor.'));
+      for(const c of p.outputColumns.filter(x=>x.key.startsWith('result:'))){const v=row[c.key];if(v==='')continue;const n=Utils.normalizeNumberDetailed(v).value;if(n==='')issues.push(this.issue(row,c.label,'CRÍTICO','resultado_não_numérico','Resultado de rompimento não numérico.','Corrigir o valor.'));else if(Number(n)>Number(appState.settings.maxResult))issues.push(this.issue(row,c.label,'CRÍTICO','resultado_impossível',`Resultado ${n} MPa acima do limite ${appState.settings.maxResult}.`,'Revisar resultado e unidade.'))}
+    }
+    const same=new Map(),across=new Map();for(const row of p.convertedRows){if(!row['N.F. DANFE'])continue;const nf=Utils.slug(row['N.F. DANFE']),us=Utils.slug(row.Usina),key=`${us}|${nf}`;if(!same.has(key))same.set(key,[]);same.get(key).push(row);if(!across.has(nf))across.set(nf,new Map());if(!across.get(nf).has(us))across.get(nf).set(us,[]);across.get(nf).get(us).push(row)}
+    for(const rows of same.values())if(rows.length>1)for(const row of rows)issues.push(this.issue(row,'N.F. DANFE','CRÍTICO','nf_duplicada_mesma_usina','NF repetida para a mesma usina.','Comparar os registros e corrigir/excluir a duplicidade.'));
+    for(const usinas of across.values())if(usinas.size>1)for(const rows of usinas.values())for(const row of rows)issues.push(this.issue(row,'N.F. DANFE','ALERTA','nf_repetida_usinas_diferentes','NF repetida em usinas diferentes.','Pode ser válido; confirmar antes da importação.'));
+    p.issues=Utils.uniq(issues,i=>`${i.rowId}|${i.field}|${i.type}|${i.description}`);Converter.refreshSummary();
+  },
+  issueMap(){const m=new Map();for(const i of appState.pre.issues){if(!m.has(i.rowId))m.set(i.rowId,[]);m.get(i.rowId).push(i)}return m},
+  preInputsReady(){return!!appState.pre.file}
+};
+
+// ============================================================
+// OPENAI OPCIONAL — APENAS PARA AMBIGUIDADES AGRUPADAS
+// ============================================================
+const OpenAIClient={
+  async chatJSON(prompt,timeout=60000){const useProxy=appState.aiMode==='proxy';if(useProxy&&!appState.proxyUrl)throw new Error('URL do proxy não configurada.');if(!useProxy&&!appState.apiKey)throw new Error('API key não configurada.');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);try{const url=useProxy?appState.proxyUrl:'https://api.openai.com/v1/chat/completions';const headers={'Content-Type':'application/json'};if(!useProxy)headers.Authorization=`Bearer ${appState.apiKey}`;const res=await fetch(url,{method:'POST',headers,signal:controller.signal,body:JSON.stringify({model:appState.model,temperature:.1,max_tokens:5000,response_format:{type:'json_object'},messages:[{role:'system',content:'Retorne somente JSON válido. Nunca invente cadastro. Escolha somente IDs fornecidos.'},{role:'user',content:prompt}]})});if(!res.ok)throw new Error(`${useProxy?'Proxy':'OpenAI'} ${res.status}: ${(await res.text()).slice(0,250)}`);const data=await res.json();if(data?.error)throw new Error(String(data.error).slice(0,250));const content=data?.choices?.[0]?.message?.content;if(!content)throw new Error('Resposta vazia.');return JSON.parse(content)}catch(e){if(e.name==='AbortError')throw new Error('Tempo limite da IA excedido.');throw e}finally{clearTimeout(timer)}},
+  async test(){return this.chatJSON('Retorne {"ok":true}.',15000)},
+  async refineSuggestions(){const groups=appState.pre.suggestionGroups.filter(g=>g.status==='pending'&&['concrete','structure'].includes(g.type)).slice(0,80);if(!groups.length)return;const payload=groups.map(g=>({group_id:g.id,type:g.type,context:g.contextSummary,examples:g.examples,candidates:g.candidates.map(c=>({id:c.id,label:c.label,score_local:c.score}))}));const result=await this.chatJSON(`Analise ambiguidades de importação de concreto. Você NÃO pode criar valores. Escolha apenas candidate_id existente ou null. Retorne {"resolutions":[{"group_id":"...","candidate_id":"...|null","confidence":0-100,"justification":"..."}]}.\n${JSON.stringify(payload)}`,70000);for(const r of result.resolutions||[]){const g=Converter.group(r.group_id);if(!g)continue;if(r.candidate_id&&g.candidates.some(c=>c.id===r.candidate_id)){g.selectedCandidateId=r.candidate_id;const c=g.candidates.find(x=>x.id===r.candidate_id);c.score=Math.max(c.score,Number(r.confidence||0));c.criteria=Utils.uniq([...(c.criteria||[]),`IA: ${r.justification||'refinamento semântico'}`])}}}
+};
+
+// ============================================================
+// EXPORTAÇÃO
+// ============================================================
+const Exporter={
+  finalAOA(){const cols=appState.pre.outputColumns;return[cols.map(c=>c.label),...appState.pre.convertedRows.map(r=>cols.map(c=>{if(c.label==='Data Concretagem'){const d=Utils.coerceDate(r[c.key]);return d||''}return r[c.key]??''}))]},
+  provenanceRows(){const p=appState.pre,fields=p.outputColumns.map(c=>c.key);for(const row of p.convertedRows){for(const field of fields){if(Utils.isFilled(row[field])&&!row._provenance?.[field])Similarity.seed(row,field,row[field],'Valor confirmado no preview');if(!Utils.isFilled(row[field])&&REQUIRED_FIELDS.includes(field))Similarity.pending(row,field,'Campo obrigatório vazio na exportação')}}return Similarity.auditRows(p.convertedRows,fields).map(x=>({'Aba Original':x.sheet,'Linha Original':x.line,'ID da Linha':x.rowId,'Campo':x.field,'Valor Exportado':x.value,'Proveniência':x.provenance,'Regra / Detalhe':x.detail,'Valor Original':x.original,'Aceito pelo Operador':x.accepted?'SIM':'NÃO'}))},
+  downloadImport(){const s=appState.pre.summary||{},blocked=appState.settings.strictMode&&(s.criticals||0)>0;if(blocked){Toast.error('A exportação final está bloqueada por pendências críticas.');return}const ws=XLSX.utils.aoa_to_sheet(this.finalAOA(),{cellDates:true});ws['!cols']=appState.pre.outputColumns.map(c=>({wch:Math.max(12,Math.min(38,c.label.length+4))}));ws['!autofilter']={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:Math.max(0,appState.pre.convertedRows.length),c:appState.pre.outputColumns.length-1}})};for(let r=1;r<=appState.pre.convertedRows.length;r++){const addr=XLSX.utils.encode_cell({r,c:1});if(ws[addr])ws[addr].z='dd/mm/yyyy'}const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Importação');const provenance=XLSX.utils.json_to_sheet(this.provenanceRows());provenance['!cols']=[18,15,28,24,24,29,60,24,18].map(wch=>({wch}));XLSX.utils.book_append_sheet(wb,provenance,'Proveniência');const name=(!appState.settings.strictMode&&(s.criticals||0)>0)?'RASCUNHO_NAO_IMPORTAR_Consulte_GEO.xlsx':'Planilha_Importacao_Consulte_GEO.xlsx';XLSX.writeFile(wb,name);Toast.ok('Arquivo XLSX gerado com aba de Proveniência.')},
+  downloadPendencias(){const p=appState.pre,wb=XLSX.utils.book_new();const issues=p.issues.map(i=>({'Aba Original':i.sheet,'Linha Original':i.line,'Campo':i.field,'Severidade':i.severity,'Tipo':i.type,'Descrição':i.description,'Sugestão de Correção':i.suggestion}));const excluded=p.excludedRows.map(x=>({'Aba Original':x.sheet,'Linha Original':x.line,'Severidade':x.severity,'Motivo da Exclusão':x.reason,'Valor-chave':x.keyValue,'Contexto':x.context}));const corrections=p.corrections.map(x=>({'Aba Original':x.sheet,'Linha Original':x.line,'Campo':x.field,'Valor Original':x.original,'Valor Normalizado':x.normalized,'Regra Aplicada':x.reason}));const decisions=p.decisionLog.map(x=>({'Aba Original':x.sheet,'Linha Original':x.line,'Tipo':x.type,'Ação':x.action,'Valor':x.value,'Confiança':x.score}));XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(issues),'Pendências');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(excluded),'Linhas Excluídas');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(corrections),'Correções');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(decisions),'Decisões');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this.provenanceRows()),'Proveniência');XLSX.writeFile(wb,'Pendencias_e_Rastreabilidade_Consulte_GEO.xlsx');Toast.ok('Relatório de pendências gerado.')},
+  downloadSuggestions(){const rows=appState.pre.registrationSuggestions.map(x=>({Tipo:x.type==='trace'?'Novo Traço':'Nova Estrutura','Sugestão':x.label,'Tipo de unidade':x.unidadeTipo||'','Ocorrências':x.count,'Exemplos':x.examples.join(' | '),'Justificativa':x.reason,'Status':'REVISÃO OBRIGATÓRIA'}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Sugestões de Cadastro');XLSX.writeFile(wb,'Sugestoes_Novos_Cadastros_Consulte_GEO.xlsx');Toast.ok('Sugestões de cadastro exportadas.')},
+  diagnosticObject(){const p=appState.pre;return{appVersion:APP_VERSION,similarityVersion:Similarity.VERSION,generatedAt:new Date().toISOString(),file:p.file?.name||'',selectedSheet:p.selectedSheet,archetype:p.archetype,diagnosis:p.diagnosis,header:{start:p.headerStart+1,depth:p.headerDepth,columns:p.columns},mapping:p.mapping,summary:p.summary,settings:{...appState.settings},counts:{sourceRows:p.sourceRows.length,excludedRows:p.excludedRows.length,proposals:p.proposals.length,suggestions:p.suggestionGroups.length,registrationSuggestions:p.registrationSuggestions.length,corrections:p.corrections.length,issues:p.issues.length},proposals:p.proposals,decisionLog:p.decisionLog,provenance:this.provenanceRows()}},
+  downloadDiagnostic(){Utils.downloadBlob(JSON.stringify(this.diagnosticObject(),null,2),'Diagnostico_e_Log_Consulte_GEO.json','application/json')},
+  exportConfig(){const data={version:APP_VERSION,model:appState.model,settings:appState.settings,insumos:{estrutura:appState.insumos.estruturaTexto,usinas:appState.insumos.usinas,laboratorios:appState.insumos.labs,tracos:appState.insumos.tracos.map(x=>x.original),idades:appState.insumos.idades}};Utils.downloadBlob(JSON.stringify(data,null,2),'Configuracao_Obra_Consulte_GEO.json','application/json')},
+  importConfig(data){appState.model=data.model&&isValidModelId(data.model)?String(data.model).trim():appState.model;appState.settings={...DEFAULT_SETTINGS,...(data.settings||{})};const i=data.insumos||{};appState.insumos.estruturaTexto=i.estrutura||'';appState.insumos.estrutura=Utils.parseEstrutura(appState.insumos.estruturaTexto);appState.insumos.usinas=i.usinas||[];appState.insumos.labs=i.laboratorios||[];appState.insumos.tracos=Utils.parseTracos((i.tracos||[]).join('\n'));appState.insumos.idades=i.idades||[];STORAGE.save();UI.render();Toast.ok('Configuração importada.')}
+};
+
+// ============================================================
+// AUDITORIA PÓS-IMPORTAÇÃO
+// ============================================================
+const PostAuditor={
+  async run(){const issues=[];for(const file of appState.post.files){const wb=XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true,raw:true});const sheets=SheetReader.workbookSheets(wb),sheet=sheets[0],h=sheet.header,columns=h.columns,profiles=ColumnProfiler.profile(sheet.matrix,columns,h.start+h.depth),mapping=HeuristicMapper.build(columns,profiles,sheet.matrix,h.start+h.depth);const get=(vals,field)=>{const idx=mapping.fields[field]?.sourceIndex;return idx===null||idx===undefined?'':vals[idx]};const rows=[];for(let i=h.start+h.depth;i<sheet.matrix.length;i++){const vals=sheet.matrix[i]||[];if(Utils.rowEmpty(vals))continue;const nf=Utils.normalizeNF(get(vals,'N.F. DANFE'),appState.settings.nfCleanup).value,date=Utils.formatDate(get(vals,'Data Concretagem')),volume=Utils.normalizeNumberDetailed(get(vals,'Volume')).value,concrete=String(get(vals,'Concreto')||''),slump=Utils.parseFreshValue(get(vals,'Slump')).value,flow=Utils.parseFreshValue(get(vals,'Flow')).value,usina=String(get(vals,'Usina')||''),bloco=String(get(vals,'Bloco')||''),unidade=String(get(vals,'Unidade')||'');if(!nf&&!date&&!Utils.isFilled(volume))continue;const row={file:file.name,sheet:sheet.name,line:i+1,nf,date,volume,concrete,slump,flow,usina,bloco,unidade,values:vals};rows.push(row)}
+      const same=new Map(),across=new Map();for(const r of rows){if(!r.nf)continue;const k=`${Utils.slug(r.usina)}|${Utils.slug(r.nf)}`;if(!same.has(k))same.set(k,[]);same.get(k).push(r);const nk=Utils.slug(r.nf);if(!across.has(nk))across.set(nk,new Map());if(!across.get(nk).has(Utils.slug(r.usina)))across.get(nk).set(Utils.slug(r.usina),[]);across.get(nk).get(Utils.slug(r.usina)).push(r)}
+      for(const rs of same.values())if(rs.length>1)rs.forEach(r=>issues.push(this.issue(r,'CRÍTICO','NF duplicada por usina','Mesma NF repetida para a mesma usina.')));for(const us of across.values())if(us.size>1)for(const rs of us.values())rs.forEach(r=>issues.push(this.issue(r,'ALERTA','NF repetida entre usinas','NF repetida em usinas diferentes.')));
+      const highVolumes=rows.filter(r=>Number(r.volume)>12).length;if(rows.length&&highVolumes/rows.length>.15)issues.push({file:file.name,sheet:sheet.name,line:'—',severity:'ALERTA',type:'Frequência de volumes altos',description:`${highVolumes} de ${rows.length} linhas possuem volume >12 m³.`,nf:'',usina:'',date:'',volume:'',bloco:'',unidade:''});
+      for(const r of rows){const d=Utils.coerceDate(r.date),old=new Date();old.setFullYear(old.getFullYear()-5);if(d&&d>new Date())issues.push(this.issue(r,'CRÍTICO','Data futura','Data de concretagem no futuro.'));if(d&&d<old)issues.push(this.issue(r,'ALERTA','Data muito antiga','Data anterior a cinco anos.'));if(r.volume===''||Number(r.volume)===0)issues.push(this.issue(r,'CRÍTICO','Volume zero/vazio','Volume igual a zero ou ausente.'));else if(Number(r.volume)>16)issues.push(this.issue(r,'CRÍTICO','Volume >16','Volume superior a 16 m³.'));
+        const fam=Utils.detectFamily(r.concrete);if(fam==='SLUMP'){if(r.slump===''||Number(r.slump)===0)issues.push(this.issue(r,'CRÍTICO','Slump ausente','Traço com SLUMP e campo vazio.'));if(r.flow!=='')issues.push(this.issue(r,'ALERTA','Flow indevido','Traço com SLUMP e Flow preenchido.'))}else if(fam==='FLOW'){if(r.flow===''||Number(r.flow)===0)issues.push(this.issue(r,'CRÍTICO','Flow ausente','Traço com FLOW e campo vazio.'));if(r.slump!=='')issues.push(this.issue(r,'ALERTA','Slump indevido','Traço com FLOW e Slump preenchido.'))}else if(r.concrete)issues.push(this.issue(r,'ALERTA','Traço incompleto','Concreto não contém SLUMP nem FLOW.'));if(r.slump!==''&&Number(r.slump)>30)issues.push(this.issue(r,'CRÍTICO','Slump impossível','Slump superior a 30 cm.'));if(r.flow!==''&&Number(r.flow)>99)issues.push(this.issue(r,'CRÍTICO','Flow impossível','Flow superior a 99 cm.'));
+        for(const rm of mapping.resultColumns.filter(x=>x.kind==='result')){const parsed=Utils.parseResult(r.values[rm.sourceIndex],false);if(parsed.value!==''&&Number(parsed.value)>200)issues.push(this.issue(r,'CRÍTICO','Resistência impossível',`${rm.sourceLabel}: ${parsed.value} MPa.`))}
+      }
+    }appState.post.issues=Utils.uniq(issues,x=>`${x.file}|${x.sheet}|${x.line}|${x.type}|${x.description}`)},
+  issue(r,severity,type,description){return{file:r.file,sheet:r.sheet,line:r.line,severity,type,description,nf:r.nf,usina:r.usina,date:r.date,volume:r.volume,bloco:r.bloco,unidade:r.unidade}},
+  download(){const wb=XLSX.utils.book_new(),rows=appState.post.issues.map(i=>({Arquivo:i.file,Aba:i.sheet,'Linha Original':i.line,Severidade:i.severity,Tipo:i.type,'Descrição':i.description,'N.F. DANFE':i.nf,Usina:i.usina,'Data Concretagem':i.date,Volume:i.volume,Bloco:i.bloco,Unidade:i.unidade}));XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Auditoria');XLSX.writeFile(wb,'Relatorio_Pos_Importacao_Consulte_GEO.xlsx')}
+};
+
+// ============================================================
+// ORQUESTRAÇÃO DE AÇÕES
+// ============================================================
+const Actions={
+  setupIds:new Set(['estruturaInput','tracosInput','usinasInput','labsInput','idadesInput','setting-volumeDefault','setting-volumeDefaultAuthorized','setting-maxVolume','setting-oldDateYears','setting-maxSlump','setting-maxFlow','setting-maxResult','setting-nfCleanup','setting-canteiroPolicy','setting-nonConcretePolicy','setting-slumpSourceMeaning','setting-strictMode','setting-zeroResultAsBlank','setting-fillNominalFreshTest']),
+  syncSetup(){
+    const get=id=>Utils.qs(`#${id}`);
+    if(get('estruturaInput'))appState.insumos.estruturaTexto=get('estruturaInput').value;
+    appState.insumos.estrutura=Utils.parseEstrutura(appState.insumos.estruturaTexto);
+    if(get('usinasInput'))appState.insumos.usinas=Utils.parseSimpleList(get('usinasInput').value);
+    if(get('labsInput'))appState.insumos.labs=Utils.parseSimpleList(get('labsInput').value);
+    if(get('tracosInput'))appState.insumos.tracos=Utils.parseTracos(get('tracosInput').value);
+    if(get('idadesInput'))appState.insumos.idades=Utils.parseIdades(get('idadesInput').value);
+    const s=appState.settings;
+    if(get('setting-plateDefault'))s.plateDefault=get('setting-plateDefault').value.trim()||'IMPORT';
+    if(get('setting-volumeDefault'))s.volumeDefault=get('setting-volumeDefault').value===''?'':Number(get('setting-volumeDefault').value);
+    if(get('setting-volumeDefaultAuthorized'))s.volumeDefaultAuthorized=!!get('setting-volumeDefaultAuthorized').checked;
+    if(get('setting-maxVolume'))s.maxVolume=Number(get('setting-maxVolume').value)||16;
+    if(get('setting-oldDateYears'))s.oldDateYears=Number(get('setting-oldDateYears').value)||3;
+    if(get('setting-maxSlump'))s.maxSlump=Number(get('setting-maxSlump').value)||30;
+    if(get('setting-maxFlow'))s.maxFlow=Number(get('setting-maxFlow').value)||70;
+    if(get('setting-maxResult'))s.maxResult=Number(get('setting-maxResult').value)||150;
+    if(get('setting-nfCleanup'))s.nfCleanup=get('setting-nfCleanup').value;
+    if(get('setting-canteiroPolicy'))s.canteiroPolicy=get('setting-canteiroPolicy').value;
+    if(get('setting-nonConcretePolicy'))s.nonConcretePolicy=get('setting-nonConcretePolicy').value;
+    if(get('setting-slumpSourceMeaning'))s.slumpSourceMeaning=get('setting-slumpSourceMeaning').value;
+    if(get('setting-strictMode'))s.strictMode=get('setting-strictMode').value==='true';
+    if(get('setting-zeroResultAsBlank'))s.zeroResultAsBlank=get('setting-zeroResultAsBlank').checked;
+    if(get('setting-fillNominalFreshTest'))s.fillNominalFreshTest=get('setting-fillNominalFreshTest').checked;
+    this.updateSetupIndicators();
+  },
+  updateSetupIndicators(){const btn=Utils.qs('[data-action="analyze"]');if(btn)btn.disabled=!appState.pre.file},
+  saveSetupDebounced:Utils.debounce(()=>STORAGE.save(),650),
+  resetPreDerived(){Object.assign(appState.pre,{workbook:null,sheets:[],selectedSheet:'',matrix:[],rawMatrix:[],merges:[],headerCandidates:[],headerStart:0,headerDepth:1,columns:[],archetype:'',diagnosis:{},columnProfiles:[],mapping:{fields:{},contextColumns:[],forwardFillColumns:[],resultColumns:[],materialColumn:null},sourceRows:[],excludedRows:[],candidateRows:[],suggestionGroups:[],proposals:[],registrationSuggestions:[],issues:[],corrections:[],decisionLog:[],convertedRows:[],outputColumns:[],summary:{},aiSummary:''});appState.previewPage=0;appState.filterOnlyIssues=false},
+  selectSheet(name){
+    const p=appState.pre,s=p.sheets.find(x=>x.name===name);if(!s)return;
+    p.selectedSheet=s.name;p.matrix=s.matrix.map(r=>(r||[]).slice());p.rawMatrix=s.matrix.map(r=>(r||[]).slice());p.merges=s.merges.slice();p.headerCandidates=(s.header.candidates||[]).map(x=>({...x,columns:x.columns.map(c=>({...c}))}));p.headerStart=s.header.start;p.headerDepth=s.header.depth;p.columns=HeaderEngine.compose(p.matrix,p.headerStart,p.headerDepth);p.archetype=s.archetype;p.diagnosis={usefulRows:Math.max(0,p.matrix.length-(p.headerStart+p.headerDepth)),mergeCount:s.merges.length,errorCells:s.errorCells,selectedScore:s.score};
+  },
+  refreshMapping(){const p=appState.pre;p.columnProfiles=ColumnProfiler.profile(p.matrix,p.columns,p.headerStart+p.headerDepth);p.mapping=HeuristicMapper.build(p.columns,p.columnProfiles,p.matrix,p.headerStart+p.headerDepth);const bySource=new Map();for(const [field,x] of Object.entries(p.mapping.fields)){if(x.sourceIndex===null||x.sourceIndex===undefined)continue;if(!bySource.has(x.sourceIndex))bySource.set(x.sourceIndex,[]);bySource.get(x.sourceIndex).push(field)}const duplicated=[...bySource.entries()].filter(([,fields])=>fields.length>1).map(([idx,fields])=>`Coluna ${Utils.excelCol(idx)} mapeada para ${fields.join(', ')}`);const missing=REQUIRED_FIELDS.filter(f=>p.mapping.fields[f]?.sourceIndex===null||p.mapping.fields[f]?.sourceIndex===undefined);p.diagnosis.mappingWarnings=[...duplicated,...missing.map(f=>`${f} não foi mapeado; poderá ser inferido ou virar pendência.`)]},
+  applyHeader(start,depth){const p=appState.pre;p.headerStart=Utils.clamp(Number(start)||0,0,Math.max(0,p.matrix.length-1));p.headerDepth=Utils.clamp(Number(depth)||1,1,3);p.columns=HeaderEngine.compose(p.matrix,p.headerStart,p.headerDepth);this.refreshMapping()},
+  async analyze(){try{this.syncSetup();if(!Validators.preInputsReady())throw new Error('Selecione a planilha do cliente.');UI.loading(true,'Lendo workbook, detectando cabeçalho e sugerindo mapeamento...');const p=appState.pre,buffer=await p.file.arrayBuffer();p.workbook=XLSX.read(buffer,{type:'array',cellDates:true,raw:true,bookVBA:false});p.sheets=SheetReader.workbookSheets(p.workbook);if(!p.sheets.length)throw new Error('Nenhuma aba legível foi encontrada.');this.selectSheet(p.sheets[0].name);this.refreshMapping();appState.step=2;UI.loading(false);UI.render()}catch(e){UI.loading(false);Toast.error(e.message||'Falha ao analisar a planilha.')}},
+  confirmDiagnosis(){try{this.refreshMapping();appState.step=2;UI.render()}catch(e){Toast.error(e.message||'Falha ao criar o mapeamento.')}},
+  prepareInference(){try{this.refreshMapping();UI.loading(true,'Normalizando linhas e construindo propostas rastreáveis...');setTimeout(()=>{try{Converter.prepare();appState.activeSuggestionTab='proposal';appState.step=3;UI.loading(false);UI.render()}catch(e){UI.loading(false);Toast.error(e.message||'Falha ao preparar propostas.')}},30)}catch(e){UI.loading(false);Toast.error(e.message)}},
+  finalizeConversion(){try{UI.loading(true,'Gerando numeração e validando os registros...');setTimeout(()=>{Converter.finalize();appState.previewPage=0;appState.step=4;UI.loading(false);UI.render()},25)}catch(e){UI.loading(false);Toast.error(e.message)}},
+  renumberAndValidate(){Converter.finalize()},
+  findRow(rowId){return appState.pre.convertedRows.find(r=>r._rowId===rowId)||appState.pre.candidateRows.find(r=>r._rowId===rowId)},
+  normalizeEditedValue(key,value){
+    const v=String(value??'').trim();if(key==='Data Concretagem')return Utils.formatDate(v);if(key==='N.F. DANFE')return Utils.normalizeNF(v,appState.settings.nfCleanup).value;if(['Volume','Slump','Flow'].includes(key)||key.startsWith('result:')||key==='Número Concretagem'){const n=Utils.normalizeNumberDetailed(v);return n.value===''?v:n.value}if(['Hora Carregamento','Hora Chegada','Hora Inicio','Hora Final'].includes(key))return Utils.normalizeTime(v);return v;
+  },
+  editRow(rowId,key,value){
+    const row=this.findRow(rowId);if(!row)return;const before=row[key];row[key]=this.normalizeEditedValue(key,value);Similarity.mark(row,key,Utils.isFilled(row[key])?PROVENANCE.ORIGINAL:PROVENANCE.PENDING,'Valor confirmado/ajustado manualmente pelo operador',before,Utils.isFilled(row[key]));if(key==='Bloco'&&appState.insumos.estrutura.pairs.length&&!appState.insumos.estrutura.pairs.some(x=>x.bloco===row.Bloco&&x.unidade===row.Unidade)){row.Unidade='';Similarity.pending(row,'Unidade','Unidade limpa após alteração manual do bloco')}this.renumberAndValidate();UI.render();
+  },
+  async refineAI(){
+    try{if(appState.aiMode!=='proxy'&&!appState.apiKey)throw new Error('Configure a IA (proxy do servidor ou API key) antes do refinamento.');UI.loading(true,'Refinando apenas os grupos ambíguos...');await OpenAIClient.refineSuggestions();UI.loading(false);UI.render();Toast.ok('Candidatos refinados. Nenhum valor foi aplicado automaticamente.')}catch(e){UI.loading(false);Toast.error(e.message)}
+  },
+  async runPostAudit(){try{UI.loading(true,'Auditando os arquivos consolidados...');await PostAuditor.run();UI.loading(false);UI.render();Toast.ok(`Auditoria concluída: ${appState.post.issues.length} ocorrência(s).`)}catch(e){UI.loading(false);Toast.error(e.message||'Falha na auditoria.')}},
+  async loadConfigFile(file){try{const data=JSON.parse(await file.text());Exporter.importConfig(data)}catch(e){Toast.error('Arquivo JSON de configuração inválido.')}},
+  openApi(){UI.showModal(UI.apiModal())},
+  resolveModalModel(){const sel=Utils.qs('#apiModelInput')?.value||appState.model;if(sel==='__custom__'){const c=Utils.qs('#customModelInput')?.value.trim()||'';if(c&&isValidModelId(c))return c;if(c){Toast.warn('ID de modelo inválido; mantendo o anterior.');return appState.model}return appState.model}return resolveModel(sel)},
+  saveApi(){const key=Utils.qs('#apiKeyInput')?.value.trim()||'',remember=!!Utils.qs('#apiRemember')?.checked;const mode=Utils.qs('#aiModeInput')?.value==='local'?'local':'proxy';const proxy=Utils.qs('#proxyUrlInput')?.value.trim()||appState.proxyUrl;appState.model=this.resolveModalModel();appState.aiMode=mode;if(/^https:\/\//.test(proxy))appState.proxyUrl=proxy;appState.apiKey=key;appState.apiRemember=remember&&mode==='local';STORAGE.save();UI.closeModal();UI.apiStatus();Toast.ok(mode==='proxy'?'IA configurada via servidor (proxy).':(key?'Configuração da IA salva.':'Chave removida; o motor local continua disponível.'))},
+  async testApi(){const old={key:appState.apiKey,model:appState.model,mode:appState.aiMode,proxy:appState.proxyUrl};try{const mode=Utils.qs('#aiModeInput')?.value==='local'?'local':'proxy';const key=Utils.qs('#apiKeyInput')?.value.trim()||'';const proxy=Utils.qs('#proxyUrlInput')?.value.trim()||appState.proxyUrl;if(mode==='local'&&!key)throw new Error('Digite uma API key para testar.');appState.aiMode=mode;appState.apiKey=key;if(/^https:\/\//.test(proxy))appState.proxyUrl=proxy;appState.model=Actions.resolveModalModel();UI.loading(true,mode==='proxy'?'Testando o proxy do servidor...':'Testando conexão com a OpenAI...');await OpenAIClient.test();UI.loading(false);Toast.ok('Conexão validada.')}catch(e){UI.loading(false);Toast.error(e.message||'Falha no teste da API.')}finally{appState.apiKey=old.key;appState.model=old.model;appState.aiMode=old.mode;appState.proxyUrl=old.proxy}},
+  clearAll(){if(!confirm('Limpar insumos, políticas e chave lembrada neste navegador?'))return;STORAGE.clear();appState.apiKey='';appState.apiRemember=false;appState.settings={...DEFAULT_SETTINGS};appState.insumos={estruturaTexto:'',estrutura:{blocks:[],pairs:[]},usinas:[],labs:[],tracos:[],idades:[]};appState.pre.file=null;this.resetPreDerived();UI.render();Toast.ok('Dados locais removidos.')}
+};
+
+// ============================================================
+// DROPZONES E ARQUIVOS
+// ============================================================
+const Dropzones={
+  bind(){this.one('#dropPre','#filePre',files=>{const f=files.find(x=>/\.xls[x]?$/i.test(x.name));if(!f){Toast.error('Selecione um arquivo .xlsx ou .xls.');return}appState.pre.file=f;Actions.resetPreDerived();appState.pre.file=f;UI.render()});this.one('#dropPost','#filePost',files=>{const valid=files.filter(x=>/\.xls[x]?$/i.test(x.name));if(!valid.length){Toast.error('Selecione arquivos .xlsx ou .xls.');return}appState.post.files=valid;appState.post.issues=[];UI.render()},true)},
+  one(dropSel,inputSel,handler,multiple=false){const dz=Utils.qs(dropSel),input=Utils.qs(inputSel);if(!dz||!input||dz.dataset.bound)return;dz.dataset.bound='1';dz.addEventListener('click',()=>input.click());input.addEventListener('change',()=>handler(Array.from(input.files||[])));for(const type of['dragenter','dragover'])dz.addEventListener(type,e=>{e.preventDefault();dz.classList.add('dragover')});for(const type of['dragleave','drop'])dz.addEventListener(type,e=>{e.preventDefault();dz.classList.remove('dragover')});dz.addEventListener('drop',e=>handler(Array.from(e.dataTransfer.files||[])))}
+};
+
+// ============================================================
+// EVENT DELEGATION
+// ============================================================
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]');if(!el)return;const a=el.dataset.action;
+  if(a==='mode-intake'){window.location.href='./pre-analise.html';return}
+  if(a==='mode-pre'){appState.mode='pre';appState.step=1;UI.render()}
+  else if(a==='mode-post'){appState.mode='post';appState.step=1;UI.render()}
+  else if(a==='go-home'){appState.mode=null;appState.step=1;UI.render()}
+  else if(a==='open-api-settings')Actions.openApi();
+  else if(a==='close-modal')UI.closeModal();
+  else if(a==='close-modal-backdrop'){if(e.target===el)UI.closeModal()}
+  else if(a==='save-api')Actions.saveApi();
+  else if(a==='test-api')Actions.testApi();
+  else if(a==='save-local'){Actions.syncSetup();STORAGE.save();Toast.ok('Insumos e políticas salvos neste navegador.')}
+  else if(a==='clear-local')Actions.clearAll();
+  else if(a==='analyze')Actions.analyze();
+  else if(a==='back-setup'){appState.step=1;UI.render()}
+  else if(a==='confirm-diagnosis')Actions.confirmDiagnosis();
+  else if(a==='back-diagnosis'){appState.step=1;UI.render()}
+  else if(a==='prepare-inference')Actions.prepareInference();
+  else if(a==='back-mapping'){appState.step=2;UI.render()}
+  else if(a==='suggest-tab'){appState.activeSuggestionTab=el.dataset.tab;UI.render()}
+  else if(a==='accept-suggestion'){Converter.applyGroup(el.dataset.group);UI.render()}
+  else if(a==='accept-one'){Converter.applyGroup(el.dataset.group,true);UI.render()}
+  else if(a==='reject-suggestion'){Converter.rejectGroup(el.dataset.group);UI.render()}
+  else if(a==='accept-high'){Converter.acceptHigh(appState.activeSuggestionTab);UI.render()}
+  else if(a==='accept-proposal'){Converter.applyProposal(el.dataset.proposal);UI.render()}
+  else if(a==='reject-proposal'){Converter.rejectProposal(el.dataset.proposal);UI.render()}
+  else if(a==='accept-all-proposals'){Converter.acceptAllProposals();UI.render()}
+  else if(a==='reject-all-proposals'){Converter.rejectAllProposals();UI.render()}
+  else if(a==='refine-ai')Actions.refineAI();
+  else if(a==='finalize-conversion')Actions.finalizeConversion();
+  else if(a==='back-inference'){appState.step=3;UI.render()}
+  else if(a==='go-export'){Validators.validateAll();appState.step=5;UI.render()}
+  else if(a==='back-preview'){appState.step=4;UI.render()}
+  else if(a==='page-prev'){appState.previewPage=Math.max(0,appState.previewPage-1);UI.render()}
+  else if(a==='page-next'){appState.previewPage++;UI.render()}
+  else if(a==='page-go'){appState.previewPage=Number(el.dataset.page)||0;UI.render()}
+  else if(a==='download-import')Exporter.downloadImport();
+  else if(a==='download-pendencias')Exporter.downloadPendencias();
+  else if(a==='download-suggestions')Exporter.downloadSuggestions();
+  else if(a==='download-diagnostic')Exporter.downloadDiagnostic();
+  else if(a==='export-config')Exporter.exportConfig();
+  else if(a==='import-config')Utils.qs('#configFile')?.click();
+  else if(a==='run-post-audit')Actions.runPostAudit();
+  else if(a==='download-post-audit')PostAuditor.download();
+});
+
+document.addEventListener('change',e=>{
+  const t=e.target,a=t.dataset.action;
+  if(t.id==='globalModel'){appState.model=resolveModel(t.value);STORAGE.save();return}
+  if(Actions.setupIds.has(t.id)){Actions.syncSetup();STORAGE.save();return}
+  if(t.id==='configFile'){const f=t.files?.[0];if(f)Actions.loadConfigFile(f);return}
+  if(t.id==='aiModeInput'){Utils.qs('#proxyWrap')?.classList.toggle('hidden',t.value!=='proxy');Utils.qs('#keyWrap')?.classList.toggle('hidden',t.value!=='local');return}
+  if(t.id==='apiModelInput'){Utils.qs('#customModelWrap')?.classList.toggle('hidden',t.value!=='__custom__');return}
+  if(t.id==='headerStart'){Actions.applyHeader(Number(t.value),appState.pre.headerDepth);UI.render();return}
+  if(t.id==='headerDepth'){Actions.applyHeader(appState.pre.headerStart,Number(t.value));UI.render();return}
+  if(t.id==='headerCandidate'){const c=appState.pre.headerCandidates[Number(t.value)];if(c){Actions.applyHeader(c.start,c.depth);UI.render()}return}
+  if(t.id==='materialColumn'){appState.pre.mapping.materialColumn=t.value===''?null:Number(t.value);return}
+  if(a==='select-sheet'){Actions.selectSheet(t.dataset.sheet);Actions.refreshMapping();UI.render();return}
+  if(a==='map-field'){const f=t.dataset.field;if(appState.pre.mapping.fields[f]){appState.pre.mapping.fields[f].sourceIndex=t.value===''?null:Number(t.value);appState.pre.mapping.fields[f].score=1}return}
+  if(a==='map-result-age'){const r=appState.pre.mapping.resultColumns[Number(t.dataset.resultIndex)];if(r)r.age=t.value;return}
+  if(a==='toggle-context'){const c=Number(t.dataset.col),list=appState.pre.mapping.contextColumns;t.checked&&!list.includes(c)?list.push(c):!t.checked&&list.splice(list.indexOf(c),1);return}
+  if(a==='toggle-ffill'){const c=Number(t.dataset.col),list=appState.pre.mapping.forwardFillColumns;t.checked&&!list.includes(c)?list.push(c):!t.checked&&list.splice(list.indexOf(c),1);return}
+  if(a==='select-candidate'){const g=Converter.group(t.dataset.group);if(g)g.selectedCandidateId=t.value;UI.render();return}
+  if(a==='select-proposal-candidate'){const proposal=Converter.proposal(t.dataset.proposal);if(proposal)proposal.selectedCandidateId=t.value;UI.render();return}
+  if(a==='toggle-fill-nominal'){const g=Converter.group(t.dataset.group);if(g)g.fillNominal=t.checked;return}
+  if(a==='toggle-issue-filter'){appState.filterOnlyIssues=t.checked;appState.previewPage=0;UI.render();return}
+  if(a==='edit-official'){Actions.editRow(t.dataset.rowid,t.dataset.key,t.value);return}
+});
+
+document.addEventListener('input',e=>{if(Actions.setupIds.has(e.target.id)){Actions.syncSetup();Actions.saveSetupDebounced()}});
+document.addEventListener('blur',e=>{const t=e.target;if(t.dataset.action==='edit-cell'){const clean=t.textContent.replace(/\u00a0/g,' ').trim();t.textContent=clean;Actions.editRow(t.dataset.rowid,t.dataset.key,clean)}},true);
+
+// ============================================================
+// AUTO-TESTES LOCAIS
+// ============================================================
+const SelfTest={
+  run(){const tests=[];const assert=(name,condition,detail='')=>tests.push({name,ok:!!condition,detail});
+    const structure=Utils.parseEstrutura('Bloco: Torre A\nUnidade Tipo: Pavimentos\n- Unidade: Térreo\n- Unidade: 1º Pavimento');assert('parser de estrutura',structure.pairs.length===2,JSON.stringify(structure));
+    const traces=Utils.parseTracos('FCK 30 | BRITA 1 | SLUMP 10±2 CM\nAplicação: Lajes, vigas e pilares');assert('parser de traço',traces.length===1&&traces[0].fck===30&&traces[0].nominal===10&&traces[0].tolerance===2,JSON.stringify(traces));
+    assert('número brasileiro',Utils.normalizeNumberDetailed('1.234,56').value===1234.56,String(Utils.normalizeNumberDetailed('1.234,56').value));
+    assert('slump em faixa',Utils.parseFreshValue('14+-2').value===14,String(Utils.parseFreshValue('14+-2').value));
+    assert('data Excel',!!Utils.coerceDate(45000));assert('idade',Utils.extractAge('Resultado CP 28 dias')==='28 dias',Utils.extractAge('Resultado CP 28 dias'));
+    const matrix=[['RELATÓRIO','',''],['Data Moldagem','Nota Fiscal','Volume'],['01/01/2026','123',8]];const h=HeaderEngine.detect(matrix);assert('detecção de cabeçalho',h.start===1,JSON.stringify(h));
+    assert('número inválido não vira zero',Utils.normalizeNumberDetailed('abc').value==='',String(Utils.normalizeNumberDetailed('abc').value));
+    assert('typo numérico 36,,2',Utils.normalizeNumberDetailed('36,,2').value===36.2,String(Utils.normalizeNumberDetailed('36,,2').value));
+    assert('torres com números distintos',Utils.similarity('Torre 1','Torre 19')<.6,String(Utils.similarity('Torre 1','Torre 19')));
+    assert('torre igual continua alta',Utils.similarity('TORRE 04','Torre 4')>=.55,String(Utils.similarity('TORRE 04','Torre 4')));
+    assert('NF com ponto final',Utils.normalizeNF('133965.').value==='133965',Utils.normalizeNF('133965.').value);
+    assert('slump dual detectado',Utils.parseFreshValue('08/17').kind==='dual',Utils.parseFreshValue('08/17').kind);
+    assert('resultado com idade embutida',(()=>{const r=Utils.parseResult('33,3(12 DIAS)');return r.value===33.3&&r.age==='12 dias'})(),JSON.stringify(Utils.parseResult('33,3(12 DIAS)')));
+    assert('modelo customizado aceito',isValidModelId('gpt-7-preview')&&resolveModel('gpt-7-preview')==='gpt-7-preview',resolveModel('gpt-7-preview'));
+    assert('modelo inválido cai no padrão',resolveModel('<script>')===DEFAULT_MODEL,resolveModel('<script>'));
+    const mapMatrix=[['CONTROLE TECNOLÓGICO DO CONCRETO','',''],['Data','N.F.','Resistência / Traço'],['01/01/2026','123','FCK 30 | BRITA 1 | SLUMP 12±2 CM']];const mapHeader={start:0,depth:2,columns:HeaderEngine.compose(mapMatrix,0,2)};const mapProfiles=ColumnProfiler.profile(mapMatrix,mapHeader.columns,2);const mapped=HeuristicMapper.mapFields(mapHeader.columns,mapProfiles,mapMatrix,2);assert('cabeçalho mesclado preserva coluna folha de traço',mapped.Concreto.sourceIndex===2,JSON.stringify(mapped.Concreto));
+    const priorMapping=appState.pre.mapping;appState.pre.mapping={fields:{'N.F. DANFE':{sourceIndex:1},'Data Concretagem':{sourceIndex:0},Volume:{sourceIndex:2},Concreto:{sourceIndex:3}},contextColumns:[],forwardFillColumns:[],resultColumns:[],materialColumn:null};const totalVerdict=RowEngine.classify({values:['TOTAL','',87.5,''],context:''});appState.pre.mapping=priorMapping;assert('linha TOTAL não vira concretagem',!totalVerdict.include,totalVerdict.reason||JSON.stringify(totalVerdict));
+    const failed=tests.filter(x=>!x.ok);window.__CG_SELFTEST__={ok:failed.length===0,tests};const banner=document.createElement('div');banner.id='selfTestResult';banner.style.cssText=`position:fixed;left:12px;bottom:12px;z-index:9999;padding:10px 13px;border-radius:10px;color:#fff;background:${failed.length?'#b42318':'#087a55'};font:12px system-ui`;banner.textContent=failed.length?`Self-test: ${failed.length} falha(s)`:`Self-test: ${tests.length} testes OK`;document.body.appendChild(banner);return window.__CG_SELFTEST__}
+};
+
+// ============================================================
+// BOOT
+// ============================================================
+// IMP-01 R02: montagem explícita; componentes incompatíveis impedem o BOOT.
+try {
+  if (!window.ImportLegacyAdapter || window.ImportLegacyAdapter.VERSION!=="1.1.0") throw new Error("INCOMPATIBLE_IMPORT_ADAPTER");
+  window.ImportLegacyAdapter.install({appState,Converter,Actions,Validators,Exporter,UI,Utils,Toast,Similarity,
+    integrity:window.ImportIntegrity,requiredFields:REQUIRED_FIELDS,document});
+} catch (error) {
+  const notice=document.createElement("p");notice.setAttribute("role","alert");
+  notice.textContent="A atualização do importador está incompleta. Recarregue a página ou procure o suporte. Nenhum arquivo foi importado.";
+  document.getElementById("app").replaceChildren(notice);throw error;
+}
+STORAGE.load();
+UI.render();
+if(new URLSearchParams(location.search).get('selftest')==='1')SelfTest.run();
+</script>
+</body>
+</html>
