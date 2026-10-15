@@ -21,7 +21,8 @@ import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
 import {runTransaction} from '../../src/infrastructure/transaction.ts';
 import {assertOwnedReviewAuthorityGuards} from './notification-wave2-review-authority-races.ts';
 import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
-export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string;audience:Awaited<ReturnType<typeof createOwnedWave2AudienceFixture>>}){
+import {planConsulteGeoLocalProvisioning} from '../../src/application/consultegeo-local-provisioning.ts';
+export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string;audience:Awaited<ReturnType<typeof createOwnedWave2AudienceFixture>>;control:SqlPool;local:{accounts:unknown;works:unknown;permissions:any[]}}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId,audience}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await prepareOwnedReviewDelivery(operator,w,[agent.id,customer.id]);
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
@@ -145,7 +146,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    await invitationSuite.test('expired and stale pending invitations recover only through a new explicit authorized request',async recoverySuite=>{
     const draft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:a,refs,formId,formVersion:2,answers:{details:'Owned invitation renewal qualification'}},0);
     const q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned invitation renewal',description:'Expired invitation must not strand approval',coverageId:null},preview=await intake.previewSupportRequest(customer,q),fresh=await intake.createSupportRequest(customer,{...q,previewHash:preview.previewHash},randomUUID(),randomUUID());
-    const roster=async(ttl:string)=>operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason) select workspace_id,account_id,profile_version_id,revision+1,approver_id,true,work_ids,clock_timestamp()+$4::interval,$5,'Owned bounded renewal qualification' from helpdesk_auth.hdnr_rosters where(workspace_id,account_id,profile_version_id)=($1,$2,$3) order by revision desc limit 1`,[w,a,entry.workflow.versionId,ttl,randomUUID()]);
+    const roster=async(ttl:string,approver=agent.id)=>operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason) select workspace_id,account_id,profile_version_id,revision+1,$6,true,work_ids,clock_timestamp()+$4::interval,$5,'Owned bounded renewal qualification' from helpdesk_auth.hdnr_rosters where(workspace_id,account_id,profile_version_id)=($1,$2,$3) order by revision desc limit 1`,[w,a,entry.workflow.versionId,ttl,randomUUID(),approver]);
     const requestInvite=(version:number,key:string)=>auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,fresh.ticketId,version,key,randomUUID(),proof));
     await roster('2 seconds');const firstKey=randomUUID(),first=await requestInvite(1,firstKey);await operator.query('select pg_sleep(2.2)');await roster('10 minutes');
     const view=await portal.readReviewContext(agent,fresh.ticketId) as any;assert.equal(view.capabilities.requestApproval,true);assert.equal(view.capabilities.decideApproval,false);
@@ -159,11 +160,21 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,first.invitationId])).rows[0]!.status,'revoked');
     assert.equal((await requestInvite(1,firstKey)).invitationId,first.invitationId,'replaying the earlier key must not renew it');
     await recoverySuite.test('a valid pending invitation still rejects a competing key',()=>assert.rejects(requestInvite(1,randomUUID()),{code:'approval_already_pending'}));
-    const flow=createDurablePostgresSupportWorkflow({pool:app,resolver:source.resolver}),transferred=await flow.execute(agent,fresh.ticketId,refs,{action:'transfer',expectedVersion:1,targetPrincipalId:agent.id,reason:'Owned actual target version change'},randomUUID(),randomUUID());assert.equal(transferred.version,2);
-    assert.equal((await portal.readReviewContext(agent,fresh.ticketId) as any).capabilities.requestApproval,true);
-    const third=await requestInvite(2,randomUUID());assert.notEqual(third.invitationId,second.invitationId);
-    assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,second.invitationId])).rows[0]!.status,'revoked');
-    assert.equal((await operator.query("select count(*)::int as n from helpdesk_core.hdnr_invitations where workspace_id=$1 and ticket_id=$2 and document->>'status'='pending'",[w,fresh.ticketId])).rows[0]!.n,1);
+    const flow=createDurablePostgresSupportWorkflow({pool:app,resolver:source.resolver});await assert.rejects(flow.execute(agent,fresh.ticketId,refs,{action:'transfer',expectedVersion:1,targetPrincipalId:agent.id,reason:'Owned forbidden pre-approval transition'},randomUUID(),randomUUID()),{code:'workflow_approval_required'});
+    // A third SYNTHETIC owned principal is used only to prove a legitimate
+    // replacement of the approver. The real two-person production cohort is
+    // never extended by these disposable-cluster tests.
+    const alternate=randomUUID(),alternateAuth=randomUUID();await input.control.query("insert into auth.users(id,email,email_confirmed_at) values($1,$2,clock_timestamp()-interval '1 second')",[alternateAuth,'owned-replacement-'+alternateAuth+'@example.invalid']);
+    await operator.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[alternate,alternateAuth]);await operator.query("insert into helpdesk_auth.workspace_memberships(workspace_id,principal_id,role) values($1,$2,'admin')",[w,alternate]);await operator.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[w,a,alternate]);
+    await operator.query("select helpdesk_auth.set_human_scopes($1,$2,array['contexts:resolve','tickets:read','tickets:write'],0,'Owned replacement qualification',$3)",[w,alternate,randomUUID()]);
+    await operator.query("insert into helpdesk_auth.hdnr_grants(workspace_id,account_id,principal_id,capability,revision,active,work_ids,expires_at,request_id,reason) values($1,$2,$3,'approvals.decide',1,true,$4::text[],clock_timestamp()+interval '10 minutes',$5,'Owned replacement explicit capability')",[w,a,alternate,[workId],randomUUID()]);
+    const publishLocal=async(permissions:any[])=>{const revision=Number((await operator.query('select revision from helpdesk_auth.cg_local_registries where workspace_id=$1',[w])).rows[0]!.revision);const plan=planConsulteGeoLocalProvisioning({workspaceId:w,expectedRegistryRevision:revision,requestId:randomUUID(),reason:'Owned approver replacement exact work access',accounts:input.local.accounts,works:input.local.works,permissions});await operator.query(plan.sql,[...plan.values]);};
+    await publishLocal([...input.local.permissions,...['tickets.read','tickets.write'].map(operation=>({accountId:a,principalId:alternate,role:'agent',operation,active:true,workIds:[workId]}))]);
+    try{await roster('10 minutes',alternate);assert.equal((await portal.readReviewContext(agent,fresh.ticketId) as any).capabilities.requestApproval,true);const third=await requestInvite(1,randomUUID());assert.notEqual(third.invitationId,second.invitationId);
+     assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,second.invitationId])).rows[0]!.status,'revoked');
+     assert.equal((await operator.query("select document->>'approverId' as approver from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2",[w,third.invitationId])).rows[0]!.approver,alternate);
+     assert.equal((await operator.query("select count(*)::int as n from helpdesk_core.hdnr_invitations where workspace_id=$1 and ticket_id=$2 and document->>'status'='pending'",[w,fresh.ticketId])).rows[0]!.n,1);
+    }finally{await roster('10 minutes');await publishLocal(input.local.permissions);}
    });
   });
  });
