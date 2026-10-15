@@ -2,7 +2,7 @@
 import {createHash} from 'node:crypto';import {constants} from 'node:fs';import {lstat,open,realpath} from 'node:fs/promises';import {join} from 'node:path';
 import {loadMigrationBundle} from './migration-files.ts';import {ACTIVATION_BASELINE} from './consultegeo-activation-upgrade.ts';
 import {DATABASE_SECURITY_CONTRACT as V024} from '../src/infrastructure/consultegeo-v024-security-contract.ts';import {DATABASE_SECURITY_CONTRACT as V025} from '../src/infrastructure/database-security-contract.ts';
-import {DATABASE_SECURITY_QUERY,READINESS_FLAGS} from '../src/infrastructure/database-security.ts';import {QUALIFIED_SCHEMA_OWNER_SQL,OWNER_DEFAULTS_OK_SQL,SERVICE_FINAL_GUARD} from './consultegeo-service-membership.ts';
+import {DATABASE_SECURITY_QUERY,READINESS_FLAGS} from '../src/infrastructure/database-security.ts';import {QUALIFIED_SCHEMA_OWNER_SQL,OWNER_DEFAULTS_OK_SQL} from './consultegeo-service-membership.ts';
 const failure=()=>Error('Consulte GEO wave2 upgrade is not the qualified append. Nothing executed or repaired.');
 const digest=(v:string|Buffer)=>createHash('sha256').update(v).digest('hex');
 const exact=(v:unknown,keys:readonly string[]):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v)&&Reflect.ownKeys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
@@ -113,7 +113,7 @@ END $wave2$;
 export function compileConsulteGeoEmailWave2(components:readonly {file:string;sha256:string;sql:string}[]):string{try{
  if((V025.schemaVersion as string)!=='0.25.0'||(V024.schemaVersion as string)!=='0.24.0'||digest(JSON.stringify(V025))!==WAVE2_CONTRACT_SHA256||!Array.isArray(components)||components.length!==QUALIFIED_WAVE2_COMPONENTS.length||Reflect.ownKeys(components).length!==components.length+1)throw failure();
  const bodies=components.map((c,i)=>{const expected=QUALIFIED_WAVE2_COMPONENTS[i]!;if(!exact(c,['file','sha256','sql'])||c.file!==expected.file||c.sha256!==expected.sha256||typeof c.sql!=='string'||digest(c.sql)!==expected.sha256||Buffer.byteLength(c.sql)>2*1024*1024)throw failure();return '-- SOURCE '+c.file+' SHA256 '+c.sha256+'\n'+c.sql+'\n';});
- return prelude+SERVICE_FINAL_GUARD.replaceAll("'HDU06'","'HDE04'")+'\n'+catalogueGuard('base')+'\n'+bodies.join('\n')+'\n-- WAVE2 FINAL CATALOGUE\n'+catalogueGuard('final')+"CREATE OR REPLACE FUNCTION helpdesk_auth.schema_version() RETURNS text LANGUAGE sql IMMUTABLE SET search_path='' AS $$SELECT '0.25.0'::text$$;\nCOMMIT;\n";
+ return prelude+catalogueGuard('base')+'\n'+bodies.join('\n')+'\n-- WAVE2 FINAL CATALOGUE\n'+catalogueGuard('final')+"CREATE OR REPLACE FUNCTION helpdesk_auth.schema_version() RETURNS text LANGUAGE sql IMMUTABLE SET search_path='' AS $$SELECT '0.25.0'::text$$;\nCOMMIT;\n";
  }catch{throw failure();}}
 async function regular(path:string,max:number){const s=await lstat(path);if(!s.isFile()||s.isSymbolicLink()||s.size>max)throw failure();const h=await open(path,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);try{const a=await h.stat();if(!a.isFile()||a.size>max)throw failure();const b=Buffer.alloc(max+1),r=await h.read(b,0,max+1,0);if(r.bytesRead>max)throw failure();return new TextDecoder('utf8',{fatal:true}).decode(b.subarray(0,r.bytesRead));}finally{await h.close();}}
 export async function verifyConsulteGeoEmailWave2(root:string):Promise<{schemaVersion:string;file:string;sha256:string}>{try{

@@ -24,7 +24,7 @@ export function registerWave2UpgradeTests(operatorPool:()=>SqlPool,controlPool:(
   ])await suite.test(name,()=>refuses(sql.replace(marker,fault+'\n'+marker),'HDE06'));
  });
  test('a genuine operator promotes the actual eighteenth file with exact application and worker authority and no data activation',async()=>{
-  const before=await priorRows(),bundle=await loadMigrationBundle(process.cwd());await operatorPool().query(bundle.migrations[17]!.sql);
+  const before=await priorRows(),bundle=await loadMigrationBundle(process.cwd());try{await operatorPool().query(bundle.migrations[17]!.sql);}catch(e){await operatorPool().query('ROLLBACK');throw e;}
   await assertSafeDatabaseRole(appPool());await assertSchemaCompatibility(appPool());await assertDatabaseSecurity(appPool());assert.equal(await assertRuntimeDatabase(appPool(),mode),'0.25.0');assert.deepEqual(await priorRows(),before);
   assert.equal((await operatorPool().query("select count(*)::int as n from helpdesk_integration.hdn_notification_routes where effective_after is not null or recipient_ids is not null")).rows[0]!.n,0);
   const added=V025.tables.filter(t=>!V024.tables.some(old=>old.name===t.name));assert.equal(added.length,12);for(const t of added)assert.equal((await operatorPool().query('select count(*)::int as n from '+t.name)).rows[0]!.n,0,'Migration does not provision participants invitations policies or recipients');
