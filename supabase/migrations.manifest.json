@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "schemaVersion": "0.25.0",
+  "schemaVersion": "0.26.0",
   "migrations": [
     {
       "file": "20260915000100_restrict_existing_definer.sql",
@@ -77,6 +77,10 @@
     {
       "file": "20261015104831_consultegeo_customer_return_source.sql",
       "sha256": "2548cb772f48a665608fd082646434c4017460666d2d30e6fa50ac8ed8e7657a"
+    },
+    {
+      "file": "20261015150000_registration_storage_worker.sql",
+      "sha256": "655b49f4a68ea7562dfcf70e76eefda090f98e72015c6823888696decc6120cf"
     }
   ]
 }

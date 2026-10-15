@@ -8,7 +8,7 @@ const hosted=createHostedHandler(()=>createHostedRuntime({
  databaseUrl:Netlify.env.get('HELPDESK_DATABASE_URL'),supabaseUrl:Netlify.env.get('SUPABASE_URL'),
  publishableKey:Netlify.env.get('SUPABASE_PUBLISHABLE_KEY'),databaseCa:Netlify.env.get('HELPDESK_DATABASE_CA'),
  releaseApproved:Netlify.env.get('HELPDESK_RELEASE_APPROVED'),rateLimitHmacKey:Netlify.env.get('HELPDESK_RATE_LIMIT_HMAC_KEY'),
- consulteGeoAdministration:Netlify.env.get('HELPDESK_CONSULTEGEO_ADMINISTRATION'),consulteGeoWorkflow:Netlify.env.get('HELPDESK_CONSULTEGEO_WORKFLOW'),consulteGeoIntake:Netlify.env.get('HELPDESK_CONSULTEGEO_INTAKE'),consulteGeoOrigin:Netlify.env.get('HELPDESK_CONSULTEGEO_ORIGIN'),consulteGeoSourceMode:Netlify.env.get('HELPDESK_CONSULTEGEO_SOURCE_MODE')
+ consulteGeoAdministration:Netlify.env.get('HELPDESK_CONSULTEGEO_ADMINISTRATION'),consulteGeoWorkflow:Netlify.env.get('HELPDESK_CONSULTEGEO_WORKFLOW'),consulteGeoIntake:Netlify.env.get('HELPDESK_CONSULTEGEO_INTAKE'),consulteGeoOrigin:Netlify.env.get('HELPDESK_CONSULTEGEO_ORIGIN'),consulteGeoSourceMode:Netlify.env.get('HELPDESK_CONSULTEGEO_SOURCE_MODE'),registrationReview:Netlify.env.get('HELPDESK_REGISTRATION_REVIEW_ENABLED')
 }).then(runtime=>async(request:Request,context?:{clientIp?:string})=>carryHostedVersionReceipt(await runtime(restoreHostedVersionPrecondition(request),context))),consoleHttpObserver);
 export default function handler(request:Request,context:{ip?:string}={}):Promise<Response>{
  return hosted(request,{clientIp:context.ip});

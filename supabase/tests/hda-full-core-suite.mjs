@@ -7,8 +7,10 @@ import {createPostgresRegistrationStore} from '../../src/infrastructure/registra
 import {executeRegistrationCommand} from '../../src/application/registration-persistence.ts';
 import {createRegistrationInputSnapshot} from '../../src/domain/registration-contracts.ts';
 import {input,id} from '../../tests/fixtures/registration/sample.ts';
-import {DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/database-security-contract.ts';
-export async function runNativeSuite({owner,app}){
+import {REGISTRATION_SECURITY_CONTRACT as DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/registration-security-contract.ts';
+import {assertDatabaseSecurity} from '../../src/infrastructure/database-security.ts';
+import {runRegistrationStorageChecks} from './registration-storage-checks.mjs';
+export async function runNativeSuite({owner,app,worker}){
  const checks=[];const test=async(name,fn)=>{try{await fn();checks.push({name,result:'passed'});}catch(e){checks.push({name,result:'failed',code:e.code??'assertion_or_runtime_error',message:String(e.message).slice(0,250)});}};
  const w=id(1),a=id(2),who=id(20),product=id(30),instance=id(4),contract=id(31),version=id(32),connection=id(33),cgBinding=id(34);
  await owner.query("insert into helpdesk_core.workspaces(id,name) values($1,'HDA complete chain')",[w]);
@@ -74,5 +76,6 @@ export async function runNativeSuite({owner,app}){
   assert.equal(staged,true);assert.equal(Number((await owner.query('select count(*) n from helpdesk_integration.hda02_inbox')).rows[0].n),1);
   assert.equal((await owner.query('select state from helpdesk_integration.hda02_operations where id=$1',[op])).rows[0].state.status,'queued_analysis');
  });
+ await runRegistrationStorageChecks({owner,app,worker,test});
  return {checks,total:checks.length,failures:checks.filter(x=>x.result!=='passed').length,fullCore:true,origin:false,hosted:false};
 }

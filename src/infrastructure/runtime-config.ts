@@ -2,7 +2,7 @@ import {HelpdeskError} from '../domain/errors.ts';
 
 export type RuntimeConfig={
  databaseUrl?:string;supabaseUrl?:string;publishableKey?:string;databaseCa?:string;
- releaseApproved?:string;rateLimitHmacKey?:string;consulteGeoAdministration?:string;consulteGeoWorkflow?:string;consulteGeoIntake?:string;consulteGeoOrigin?:string;consulteGeoSourceMode?:string;
+ releaseApproved?:string;rateLimitHmacKey?:string;consulteGeoAdministration?:string;consulteGeoWorkflow?:string;consulteGeoIntake?:string;consulteGeoOrigin?:string;consulteGeoSourceMode?:string;registrationReview?:string;
 };
 export type BackendConfig={
  databaseUrl:string;supabaseUrl:string;publishableKey:string;databaseCa?:string;rateLimitHmacKey:string;

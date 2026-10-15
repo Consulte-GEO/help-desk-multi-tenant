@@ -44,8 +44,10 @@ export async function probeDatabaseReadOnly(client:SqlClient):Promise<DatabasePr
   if(state.rows.length!==1||state.rows[0]?.read_only!=='on')throw new HelpdeskError(503,'read_only_required','Diagnóstico exige transação somente leitura.');
   mark(checks,stage,'passed');
   stage='database_role';await assertSafeDatabaseRole(borrowed);mark(checks,stage,'passed');
-  stage='schema';await assertSchemaCompatibility(borrowed);mark(checks,stage,'passed');
-  stage='database_security';await assertDatabaseSecurity(borrowed);mark(checks,stage,'passed');
+  stage='schema';const schema=await borrowed.query('select helpdesk_auth.schema_version() as version'),version=schema.rows[0]?.version;
+  if(version!=='0.24.0'&&version!=='0.25.0'&&version!=='0.26.0')throw new HelpdeskError(503,'schema_version_mismatch','Banco incompatível com esta versão da API.');
+  await assertSchemaCompatibility(borrowed,version);mark(checks,stage,'passed');
+  stage='database_security';await assertDatabaseSecurity(borrowed,version);mark(checks,stage,'passed');
  }catch(error){mark(checks,stage,'failed',safeCode(error,stage+'_check_failed'));}
  // Even uncertain BEGIN acknowledgement is cleaned up. This is not a retry or a COMMIT.
  try{

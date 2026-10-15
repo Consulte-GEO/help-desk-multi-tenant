@@ -61,9 +61,11 @@ else {
     const bundle=await loadMigrationBundle(root);
     for(const migration of bundle.migrations)await owner.query(migration.sql);
    }else await owner.query(readFileSync(join(root,'supabase/tests/fixtures/hda02-core-local.sql'),'utf8'));
-   const install=await owner.connect();
-   try{await install.query("set hda02.disposable='owned-local-cluster'");await install.query(readFileSync(join(root,'supabase/candidates/hda02_analysis_persistence.sql'),'utf8'));if(args.includes('--full-core'))await install.query(readFileSync(join(root,'supabase/candidates/hda06_authorized_review.sql'),'utf8'));}
-   catch(e){await install.query('ROLLBACK').catch(()=>{});throw e;}finally{install.release();}
+   if(!args.includes('--full-core')){
+    const install=await owner.connect();
+    try{await install.query("set hda02.disposable='owned-local-cluster'");await install.query(readFileSync(join(root,'supabase/candidates/hda02_analysis_persistence.sql'),'utf8'));}
+    catch(e){await install.query('ROLLBACK').catch(()=>{});throw e;}finally{install.release();}
+   }
    const app=new Pool({...base,user:'helpdesk_app',password:passwords.helpdesk_app,database:'helpdesk_test',max:4});
    const worker=new Pool({...base,user:'helpdesk_registration_worker',password:passwords.helpdesk_registration_worker,database:'helpdesk_test',max:4});pools.push(app,worker);
    const {runNativeSuite}=await import(args.includes('--full-core')?'../supabase/tests/hda-full-core-suite.mjs':'../supabase/tests/hda02-native-suite.mjs');const result=await runNativeSuite({owner,app,worker});

@@ -74,7 +74,7 @@ export const NOTIFICATION_DATABASE_QUERY=`with
  coalesce((select ssl from pg_catalog.pg_stat_ssl where pid=pg_catalog.pg_backend_pid()),false) as tls`;
 const notificationTables=['helpdesk_integration.hdn_notification_templates','helpdesk_integration.hdn_notification_routes','helpdesk_integration.hdn_notification_plans','helpdesk_integration.hdn_notification_records','helpdesk_integration.hdn_notification_attempts','helpdesk_integration.hdn_notification_events','helpdesk_integration.hdn_notification_native_receipts','helpdesk_audit.hdn_notification_audit'];
 export async function assertNotificationWorkerDatabase(pool:Pick<SqlPool,'query'>,contract?:NotificationDatabaseContract):Promise<void>{
- const versions=contract?[promotion(contract)]:[promotion(DATABASE_SECURITY_CONTRACT),'0.24.0'];
+ const versions=contract?[promotion(contract)]:[promotion(DATABASE_SECURITY_CONTRACT),'0.26.0','0.24.0'];
  try{for(const [index,version] of versions.entries()){
   const r=await pool.query(NOTIFICATION_DATABASE_QUERY,[version,signatures,notificationTables]),row=r.rows[0];
   if(r.command!=='SELECT'||r.rowCount!==1||r.rows.length!==1||row?.sessionUser!=='helpdesk_notification_worker'||row.currentUser!=='helpdesk_notification_worker'||['role','acl','helpers','tables','clients','settings','tls'].some(k=>row[k]!==true))throw Error();
