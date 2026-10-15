@@ -5958,6 +5958,637 @@
         "x-status": "prepared/gated",
         "description": "Flag de servidor ausente/false em produção: 503 antes de autenticação e SQL. Após qualificação formal, consulta transacional com ACL atual da conta, chamado, todas as obras e grant HDA. Visibilidade fixa pela rota; nenhum parâmetro audience, bindingId ou operationId é aceito. A rota interna exige operador atual no banco. Não aceita corpo nem query string. Sem edição, aprovação, execução, ledger, fila ou histórico inventado; janela máxima de observação de 60 segundos."
       }
+    },
+    "/email-communications": {
+      "get": {
+        "operationId": "listEmailCommunications",
+        "summary": "Histórico de comunicações por evento lógico; agregado antes da paginação.",
+        "description": "Somente leitura. Autenticação humana atual e tickets:read. Administradores Consulte GEO e equipe dentro das contas, obras e chamados autorizados. Máscara aplicada no servidor para equipe. Parâmetros desconhecidos/duplicados e corpo são recusados. Clique não prova abertura ou entrega; abertura é aproximada. Histórico sem coleta comprovada permanece indisponível.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Tamanho da página. Total e indicadores abrangem todo o conjunto autorizado.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Cursor opaco cifrado vinculado ao contexto, filtros e snapshot; expira em cinco minutos. Mudança exige reiniciar a consulta.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "Início inclusivo, UTC canônico; precisão até microssegundos.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Fim exclusivo, posterior a from.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "description": "Conta autorizada.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "work_id",
+            "in": "query",
+            "required": false,
+            "description": "Obra autorizada.",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "description": "Tipo nativo de notificação dos chamados.",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Estado operacional; queue agrega pendentes e attention agrega ocorrências a verificar.",
+            "schema": {
+              "enum": [
+                "all",
+                "queue",
+                "attention",
+                "pending",
+                "retry_wait",
+                "leased",
+                "sending",
+                "unknown",
+                "accepted",
+                "delivered",
+                "failed",
+                "suppressed"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Busca por protocolo/assunto; não busca identidade do destinatário.",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "recipient",
+            "in": "query",
+            "required": false,
+            "description": "Busca por e-mail apenas para administradores; equipe recebe 403.",
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 254
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta autorizada, sem payload bruto ou metadados privados. Count null indica ausência de cobertura e de observações; nunca converter em zero.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorCollection"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Filtro inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autenticação necessária.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permissão insuficiente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inexistente ou fora do contexto autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cursor/contexto alterado, expirado ou cancelamento; reiniciar consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Limite temporário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Montagem, schema, configuração ou banco indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email-communications/{event_id}": {
+      "get": {
+        "operationId": "getEmailCommunicationDelivery",
+        "summary": "Entrega por destinatário/intenção, sem multiplicar por tentativas.",
+        "description": "Somente leitura. Autenticação humana atual e tickets:read. Administradores Consulte GEO e equipe dentro das contas, obras e chamados autorizados. Máscara aplicada no servidor para equipe. Parâmetros desconhecidos/duplicados e corpo são recusados. Clique não prova abertura ou entrega; abertura é aproximada. Histórico sem coleta comprovada permanece indisponível.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Tamanho da página. Total e indicadores abrangem todo o conjunto autorizado.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Cursor opaco cifrado vinculado ao contexto, filtros e snapshot; expira em cinco minutos. Mudança exige reiniciar a consulta.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta autorizada, sem payload bruto ou metadados privados. Count null indica ausência de cobertura e de observações; nunca converter em zero.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorDelivery"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Filtro inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autenticação necessária.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permissão insuficiente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inexistente ou fora do contexto autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cursor/contexto alterado, expirado ou cancelamento; reiniciar consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Limite temporário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Montagem, schema, configuração ou banco indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email-communications/{event_id}/recipients/{intent_id}": {
+      "get": {
+        "operationId": "getEmailRecipientDelivery",
+        "summary": "Detalhe de entrega com linha do tempo; identificadores técnicos somente para administradores.",
+        "description": "Somente leitura. Autenticação humana atual e tickets:read. Administradores Consulte GEO e equipe dentro das contas, obras e chamados autorizados. Máscara aplicada no servidor para equipe. Parâmetros desconhecidos/duplicados e corpo são recusados. Clique não prova abertura ou entrega; abertura é aproximada. Histórico sem coleta comprovada permanece indisponível.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "intent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta autorizada, sem payload bruto ou metadados privados. Count null indica ausência de cobertura e de observações; nunca converter em zero.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorDetail"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Filtro inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autenticação necessária.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permissão insuficiente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inexistente ou fora do contexto autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cursor/contexto alterado, expirado ou cancelamento; reiniciar consulta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Limite temporário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Montagem, schema, configuração ou banco indisponível.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailMonitorError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -6565,72 +7196,76 @@
         ]
       },
       "Capabilities": {
-        "type": "object",
-        "required": [
-          "api_version",
-          "release",
-          "capabilities"
-        ],
-        "properties": {
-          "operational": {
-            "type": "boolean",
-            "description": "False enquanto somente autenticação está disponível."
+      "type": "object",
+      "required": [
+        "api_version",
+        "release",
+        "capabilities"
+      ],
+      "properties": {
+        "operational": {
+          "type": "boolean",
+          "description": "False enquanto somente autenticação está disponível."
+        },
+        "api_version": {
+          "const": "v1"
+        },
+        "release": {
+          "type": "string"
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
           },
-          "api_version": {
-            "const": "v1"
-          },
-          "release": {
-            "type": "string"
-          },
-          "capabilities": {
-            "type": "object",
-            "additionalProperties": {
+          "properties": {
+            "consultegeo_configuration": {
               "type": "boolean"
             },
-            "properties": {
-              "consultegeo_configuration": {
-                "type": "boolean"
-              },
-              "support_workflow": {
-                "type": "boolean"
-              },
-              "execution_checklist": {
-                "type": "boolean"
-              },
-              "consultegeo_request_catalog": {
-                "type": "boolean"
-              },
-              "form_drafts": {
-                "type": "boolean"
-              },
-              "support_requests": {
-                "type": "boolean"
-              },
-              "registration_review": {
-                "type": "boolean",
-                "default": false,
-                "description": "False em produção até promoção formal de HDA e qualificação da montagem."
-              }
+            "support_workflow": {
+              "type": "boolean"
+            },
+            "execution_checklist": {
+              "type": "boolean"
+            },
+            "consultegeo_request_catalog": {
+              "type": "boolean"
+            },
+            "form_drafts": {
+              "type": "boolean"
+            },
+            "support_requests": {
+              "type": "boolean"
+            },
+            "registration_review": {
+              "type": "boolean",
+              "default": false,
+              "description": "False em produção até promoção formal de HDA e qualificação da montagem."
+            },
+            "email_monitoring": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "consultegeo": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source_ready": {
+              "type": "boolean"
+            },
+            "origin_ready": {
+              "type": "boolean"
             }
           },
-          "consultegeo": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "source_ready": {
-                "type": "boolean"
-              },
-              "origin_ready": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "source_ready",
-              "origin_ready"
-            ]
-          }
+          "required": [
+            "source_ready",
+            "origin_ready"
+          ]
         }
-      },
+      }
+    },
       "Principal": {
         "type": "object",
         "required": [
@@ -6686,35 +7321,39 @@
         }
       },
       "PublicConfig": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "supabase_url": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "publishable_key": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "operational": {
-            "type": "boolean",
-            "description": "False enquanto atendimento permanece bloqueado."
-          },
-          "consultegeo_intake": {
-            "type": "boolean",
-            "description": "Descoberta do formulário local Consulte GEO montado e liberado no servidor. Não concede acesso a clientes, obras ou chamados."
-          }
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "supabase_url": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
-        "required": [
-          "supabase_url",
-          "publishable_key"
-        ]
+        "publishable_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operational": {
+          "type": "boolean",
+          "description": "False enquanto atendimento permanece bloqueado."
+        },
+        "consultegeo_intake": {
+          "type": "boolean",
+          "description": "Descoberta do formulário local Consulte GEO montado e liberado no servidor. Não concede acesso a clientes, obras ou chamados."
+        },
+        "email_monitoring": {
+          "type": "boolean",
+          "description": "Recurso montado somente no schema0.27 com origem e fluxos qualificados; não concede permissão de acesso."
+        }
       },
+      "required": [
+        "supabase_url",
+        "publishable_key"
+      ]
+    },
       "WorkspacePage": {
         "type": "object",
         "additionalProperties": false,
@@ -9230,6 +9869,632 @@
           "capabilities",
           "audience",
           "detail"
+        ]
+      },
+      "EmailMonitorMetric": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "count",
+          "eligible",
+          "total"
+        ],
+        "properties": {
+          "count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "eligible": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "EmailMonitorSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sent",
+          "delivered",
+          "opened",
+          "clicked",
+          "states",
+          "attention"
+        ],
+        "properties": {
+          "sent": {
+            "$ref": "#/components/schemas/EmailMonitorMetric"
+          },
+          "delivered": {
+            "$ref": "#/components/schemas/EmailMonitorMetric"
+          },
+          "opened": {
+            "$ref": "#/components/schemas/EmailMonitorMetric"
+          },
+          "clicked": {
+            "$ref": "#/components/schemas/EmailMonitorMetric"
+          },
+          "states": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "pending",
+              "retry_wait",
+              "leased",
+              "sending",
+              "unknown",
+              "accepted",
+              "delivered",
+              "failed",
+              "suppressed"
+            ],
+            "properties": {
+              "pending": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "retry_wait": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "leased": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sending": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unknown": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "accepted": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "delivered": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "suppressed": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "attention": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "EmailMonitorGroup": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "eventId",
+          "ticketId",
+          "protocol",
+          "subject",
+          "kind",
+          "createdAt",
+          "total",
+          "summary"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "summary": {
+            "$ref": "#/components/schemas/EmailMonitorSummary"
+          }
+        }
+      },
+      "EmailMonitorRecipient": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "recipientDisplay",
+          "visibility",
+          "state",
+          "badge",
+          "sentAt",
+          "deliveredAt",
+          "openedAt",
+          "clickedAt",
+          "openAvailability",
+          "clickAvailability",
+          "attention"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipientDisplay": {
+            "type": "string"
+          },
+          "visibility": {
+            "enum": [
+              "full",
+              "masked"
+            ]
+          },
+          "state": {
+            "enum": [
+              "pending",
+              "retry_wait",
+              "leased",
+              "sending",
+              "unknown",
+              "accepted",
+              "delivered",
+              "failed",
+              "suppressed"
+            ]
+          },
+          "badge": {
+            "type": "string"
+          },
+          "sentAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "deliveredAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "openedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "clickedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "openAvailability": {
+            "enum": [
+              "observed",
+              "not_observed",
+              "not_collected",
+              "unavailable"
+            ]
+          },
+          "clickAvailability": {
+            "enum": [
+              "observed",
+              "not_observed",
+              "not_collected",
+              "unavailable"
+            ]
+          },
+          "attention": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EmailMonitorCollection": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asOf",
+          "total",
+          "nextCursor",
+          "items"
+        ],
+        "properties": {
+          "asOf": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailMonitorGroup"
+            }
+          }
+        }
+      },
+      "EmailMonitorDelivery": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "eventId",
+          "ticketId",
+          "protocol",
+          "subject",
+          "kind",
+          "createdAt",
+          "total",
+          "summary",
+          "asOf",
+          "nextCursor",
+          "items"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "summary": {
+            "$ref": "#/components/schemas/EmailMonitorSummary"
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailMonitorRecipient"
+            }
+          }
+        }
+      },
+      "EmailMonitorError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "detail",
+          "request_id"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "EmailMonitorDetail": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "asOf",
+              "id",
+              "eventId",
+              "recipientDisplay",
+              "visibility",
+              "state",
+              "attention",
+              "reason",
+              "nextAttemptAt",
+              "timeline",
+              "attempts"
+            ],
+            "properties": {
+              "asOf": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "eventId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "recipientDisplay": {
+                "type": "string"
+              },
+              "visibility": {
+                "enum": [
+                  "masked"
+                ]
+              },
+              "state": {
+                "enum": [
+                  "pending",
+                  "retry_wait",
+                  "leased",
+                  "sending",
+                  "unknown",
+                  "accepted",
+                  "delivered",
+                  "failed",
+                  "suppressed"
+                ]
+              },
+              "attention": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nextAttemptAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "timeline": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "occurredAt",
+                    "receivedAt"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "receivedAt": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    }
+                  }
+                }
+              },
+              "attempts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "number",
+                    "startedAt"
+                  ],
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "startedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "asOf",
+              "id",
+              "eventId",
+              "recipientDisplay",
+              "visibility",
+              "state",
+              "attention",
+              "reason",
+              "nextAttemptAt",
+              "timeline",
+              "attempts",
+              "providerMessageId",
+              "template"
+            ],
+            "properties": {
+              "asOf": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "eventId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "recipientDisplay": {
+                "type": "string"
+              },
+              "visibility": {
+                "const": "full"
+              },
+              "state": {
+                "enum": [
+                  "pending",
+                  "retry_wait",
+                  "leased",
+                  "sending",
+                  "unknown",
+                  "accepted",
+                  "delivered",
+                  "failed",
+                  "suppressed"
+                ]
+              },
+              "attention": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nextAttemptAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "timeline": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "occurredAt",
+                    "receivedAt"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "occurredAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "receivedAt": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    }
+                  }
+                }
+              },
+              "attempts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "number",
+                    "startedAt"
+                  ],
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "startedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              },
+              "providerMessageId": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "template": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "version",
+                  "hash"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "hash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            }
+          }
         ]
       }
     }

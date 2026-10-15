@@ -1,0 +1,93 @@
+{
+  "data": "2026-10-15",
+  "repositorio": "Consulte-GEO/geocon",
+  "ref": "main",
+  "commit": "61bc63935d5e84cebadfe080cee2317467b8171d",
+  "arquivos": [
+    {
+      "path": "src/pages/admin/Broadcast.tsx",
+      "blob_sha": "ed8bcd31d7958531e9f2ed7d0da3256a2d7c6ca5",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/src/pages/admin/Broadcast.tsx",
+      "lines": 1179
+    },
+    {
+      "path": "src/lib/api.ts",
+      "blob_sha": "ef5648a2aaee9fcff93117d656a59264dd7c9ceb",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/src/lib/api.ts",
+      "lines": 5494
+    },
+    {
+      "path": "supabase/functions/dispatch-broadcast-emails/index.ts",
+      "blob_sha": "50ed964adedbcd553eeaf2fe9b756953dbb795e4",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/functions/dispatch-broadcast-emails/index.ts",
+      "lines": 325
+    },
+    {
+      "path": "supabase/functions/email-track/index.ts",
+      "blob_sha": "79fa480d9b88036723ecd03ccaff875ef3354146",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/functions/email-track/index.ts",
+      "lines": 77
+    },
+    {
+      "path": "supabase/functions/resend-webhook/index.ts",
+      "blob_sha": "ca10c843b59301e49d231aa84a04db36e21257d2",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/functions/resend-webhook/index.ts",
+      "lines": 175
+    },
+    {
+      "path": "supabase/migrations/v246_dispatch_log_self_hosted_tracking.sql",
+      "blob_sha": "125691e75cac568176090a6c033d2dc6b950e9ae",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/migrations/v246_dispatch_log_self_hosted_tracking.sql",
+      "lines": 13
+    },
+    {
+      "path": "supabase/migrations/v247_register_email_track_rpc.sql",
+      "blob_sha": "b7ec0644052add792fae2bd0fa838b3d46480738",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/migrations/v247_register_email_track_rpc.sql",
+      "lines": 46
+    },
+    {
+      "path": "supabase/migrations/v248_apply_resend_event_rpc.sql",
+      "blob_sha": "c6239a4bdbdc5d3b7be82de40406940899112d86",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/migrations/v248_apply_resend_event_rpc.sql",
+      "lines": 68
+    },
+    {
+      "path": "supabase/migrations/v245_broadcast_ack_ciencia.sql",
+      "blob_sha": "4329ae8987b5d3a4a95eeeafc9b77f4bf653427f",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/supabase/migrations/v245_broadcast_ack_ciencia.sql",
+      "lines": 139
+    },
+    {
+      "path": "docs/release-v252.md",
+      "blob_sha": "9415a6088bc5d8358dd0d2238e2ff76a7f615bee",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/docs/release-v252.md",
+      "lines": 51
+    },
+    {
+      "path": "src/components/ui/Modal.tsx",
+      "blob_sha": "252f66a63c6fc8c61f8f866b4f69c8ed615cf018",
+      "url": "https://github.com/Consulte-GEO/geocon/blob/61bc63935d5e84cebadfe080cee2317467b8171d/src/components/ui/Modal.tsx",
+      "lines": 73
+    }
+  ],
+  "imagem": {
+    "referencia": "codex-clipboard-88939ea4-970f-4389-a624-540df1de6712.png",
+    "origem": "Anexo enviado pelo titular nesta conversa",
+    "incluida_no_pacote": false,
+    "motivo": "Contém endereços reais; a documentação e o protótipo usam apenas dados fictícios."
+  },
+  "url_visual": "https://consultegeo.org/admin/broadcast",
+  "limite": "Código remoto e imagem analisados. A URL não forneceu conteúdo autenticado pela ferramenta web; isso não diagnostica a disponibilidade do serviço nem confirma a versão implantada.",
+  "fontes_publicas": [
+    {
+      "url": "https://resend.com/blog/open-and-click-tracking",
+      "uso": "Mecanismo de pixel e redirecionamento para sinais de abertura/clique."
+    },
+    {
+      "url": "https://resend.com/docs/webhooks/introduction",
+      "uso": "Eventos de entrega, abertura e clique via webhook."
+    }
+  ],
+  "observacao": "Nenhum código ou dado operacional dos sistemas de referência foi copiado para executar no Help Desk."
+}
