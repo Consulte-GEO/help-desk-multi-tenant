@@ -1,3 +1,5 @@
+import {prepareOwnedReviewDelivery,assertOwnedInvitationDelivery,assertOwnedReviewResultDelivery} from './notification-wave2-review-delivery.ts';
+import type {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
 /** Owned PG17 only. Genuine app transactions; synthetic Auth is confined to this fixture. */
 import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import type {TestContext} from 'node:test';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';import type {Principal} from '../../src/domain/model.ts';
@@ -15,8 +17,9 @@ import {createPostgresSupportReviewStore} from '../../src/infrastructure/support
 import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
 import {runTransaction} from '../../src/infrastructure/transaction.ts';
 import {assertOwnedReviewAuthorityGuards} from './notification-wave2-review-authority-races.ts';
-export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string}){
- const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
+export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string;audience:Awaited<ReturnType<typeof createOwnedWave2AudienceFixture>>}){
+ const {agent,customer,staffAuth,workId,oldTicketId,formId,audience}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
+ await prepareOwnedReviewDelivery(operator,w,[agent.id,customer.id]);
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
   const configurationSponsor=randomUUID();
@@ -70,6 +73,11 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
    assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
    assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
+   let consumedInvitation:(()=>Promise<void>)|undefined;
+   await invitationSuite.test('the actual worker selects only the frozen separate approver and rechecks queued delegation',async()=>{
+    const header=(await operator.query('select id from helpdesk_integration.hdnr_sources where workspace_id=$1 and invitation_id=$2',[w,created.invitationId])).rows[0]!;
+    consumedInvitation=await assertOwnedInvitationDelivery(invitationSuite,operator,audience,{eventId:String(header.id),invitationId:created.invitationId,ticketId:opened.ticketId,profileVersionId:entry.workflow.versionId,approverId:agent.id});
+   });
    await assertOwnedReviewAuthorityGuards(invitationSuite,operator,app,{agent,accountId:a,ticketId:opened.ticketId,profileVersionId:entry.workflow.versionId});
    await assert.rejects(review.prepareApproval(agent,opened.ticketId,created.invitationId,1,randomUUID()),{code:'review_step_up_required'});
    assert.equal((await operator.query('select count(*)::int as n from helpdesk_audit.hdnr_challenges where invitation_id=$1',[created.invitationId])).rows[0]!.n,0);
@@ -88,6 +96,8 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
    const replayedDecision=await decide();assert.equal(replayedDecision.eventId,rejected.eventId);assert.equal(replayedDecision.replayed,true);
    const state=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0]!;
    assert.deepEqual(state,{status:'waiting_customer',approval:'pending'});
+   if(consumedInvitation)await invitationSuite.test('consumed invitations revoke dispatch while preserving callback source history',consumedInvitation);
+   await invitationSuite.test('rejection notice selects the requester without private justification',()=>assertOwnedReviewResultDelivery(audience,rejected.eventId,'support.approval_rejected'));
    const decisionReceipt=(await operator.query("select bundle from helpdesk_audit.hdnr_receipts where workspace_id=$1 and actor_id=$2 and intent_key=$3",[w,agent.id,decisionKey])).rows[0]!.bundle as any;
    assert.equal(decisionReceipt.decision.originPermissionGranted,false);assert.equal(decisionReceipt.decision.originExecution,'not_requested');assert.doesNotMatch(JSON.stringify(decisionReceipt),/hd_approval_/);
    await invitationSuite.test('approval rejects a wrong token and authorizes only the Help Desk state without changing GEO access',async()=>{
@@ -101,6 +111,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     await assert.rejects(review.decideApproval(agent,approval,randomUUID(),randomUUID()),{code:'review_step_up_required'});
     await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,{...approval,token:'hd_approval_'+Buffer.alloc(32,1).toString('base64url')},randomUUID(),randomUUID(),proof)),{code:'approval_unavailable'});
     const approved=await auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof));assert.equal(approved.decision,'approve');assert.equal(approved.version,2);
+    await invitationSuite.test('approval notice selects the requester without external execution claims',()=>assertOwnedReviewResultDelivery(audience,approved.eventId,'support.approval_granted'));
     const current=(await operator.query(`select t.status,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,openedApproval.ticketId])).rows[0];assert.deepEqual(current,{status:'open',approval:'approved'});
     assert.deepEqual((await operator.query('select revision,decision_hash from helpdesk_auth.cg_local_registries where workspace_id=$1',[w])).rows[0],before);
     await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof)),{code:'approval_revision_changed'});
@@ -114,6 +125,7 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     const preview=await review.previewSupportRevision(customer,command);assert.equal(preview.commitAuthorized,false);assert.equal(preview.publicDiff[0]!.path,'details');
     const key=randomUUID(),requestId=randomUUID(),revise=()=>review.reviseSupportForm(customer,{...command,previewHash:preview.previewHash},key,requestId);
     const revised=await revise();assert.equal(revised.version,3);assert.equal(revised.formRevision,2);assert.equal(revised.replayed,false);
+    await invitationSuite.test('revision notice selects the requester without answers or comment',()=>assertOwnedReviewResultDelivery(audience,revised.eventId,'support.form_revised'));
     const replay=await revise();assert.equal(replay.eventId,revised.eventId);assert.equal(replay.replayed,true);
     const current=(await operator.query(`select t.status,t.priority,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0];assert.deepEqual(current,{status:'triage',priority:'normal',approval:'pending'});
     const original=(await operator.query("select document->'bundle'->'form'->'answers' as answers from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,opened.ticketId])).rows[0]!.answers;
