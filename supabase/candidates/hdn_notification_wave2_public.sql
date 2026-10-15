@@ -50,7 +50,15 @@ DECLARE facts jsonb;source jsonb;legacy jsonb;prior jsonb;c helpdesk_audit.hdn_w
  END IF;
  RETURN jsonb_set(facts,'{source}',source,false)||jsonb_build_object('wave2Eligible',coalesce(eligible,false));
 EXCEPTION WHEN no_data_found OR data_exception THEN RAISE EXCEPTION 'Unqualified wave2 source' USING ERRCODE='HDN05';END$$;
-REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_facts(uuid) FROM PUBLIC,helpdesk_app,helpdesk_notification_worker,helpdesk_resource_publisher,helpdesk_maintenance,anon,authenticated,service_role;
+DO $private$
+DECLARE role_name text;BEGIN
+ REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_facts(uuid) FROM PUBLIC;
+ FOREACH role_name IN ARRAY ARRAY['helpdesk_app','helpdesk_notification_worker','helpdesk_resource_publisher','helpdesk_maintenance','anon','authenticated','service_role'] LOOP
+  IF EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname=role_name) THEN
+   EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_facts(uuid) FROM %I',role_name);
+  END IF;
+ END LOOP;
+END $private$;
 
 ALTER TABLE helpdesk_integration.hdn_notification_routes ADD COLUMN effective_after timestamptz;
 ALTER TABLE helpdesk_integration.hdn_notification_routes ADD CONSTRAINT hdn_notification_routes_effective_after_check CHECK(effective_after IS NULL OR isfinite(effective_after));
