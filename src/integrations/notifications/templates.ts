@@ -3,6 +3,8 @@ import {requestHash} from '../../domain/canonical.ts';
 import {parseNotificationIntent,notificationRecord,deliveryFailure,type NotificationIntent} from '../../domain/notification-delivery.ts';
 import {wave1Renderer} from './wave1-templates.ts';
 import {renderWave1Email} from './renderer-v2.ts';
+import {wave2Renderer} from './wave2-templates.ts';
+import {renderWave2Email} from './renderer-wave2.ts';
 export type NotificationTemplate=Readonly<{id:string;version:number;status:'published';visibility:'public';kind:NotificationIntent['kind'];subject:string;title:string;introduction:string;actionLabel:string}>;
 const unavailable=()=>deliveryFailure('notification_template_unavailable');
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
@@ -19,6 +21,7 @@ export function renderNotification(raw:NotificationIntent,source:unknown,portalO
   const path=intent.kind==='support.approval_requested'?'/support/approvals/'+intent.invitationId:'/support/tickets/'+intent.ticketId;
   const href=portalOrigin+path,notice=intent.kind==='support.approval_requested'?'Abrir este link não registra aprovação. Entre com sua conta e confirme a decisão no portal.':'Entre com sua conta para consultar o atendimento autorizado.';
   const why='Você recebeu este e-mail porque participa deste chamado na Consulte GEO.';
+  if(wave2Renderer(t.id,t.version,t.kind))return freezeFormData(renderWave2Email({kind:intent.kind,subject,protocol:intent.protocol,title,introduction:intro,notice,actionLabel:label,href}));
   if(wave1Renderer(t.id,t.version,t.kind))return freezeFormData(renderWave1Email({kind:intent.kind,subject,protocol:intent.protocol,title,introduction:intro,notice,actionLabel:label,href}));
   const html='<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+escape(subject)+'</title></head>'+
    '<body style="margin:0;background:#faf9f7;color:#16213e;font-family:Arial,Helvetica,sans-serif"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all">'+escape(intro)+'</div>'+
