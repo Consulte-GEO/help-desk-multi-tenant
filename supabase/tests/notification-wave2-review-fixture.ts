@@ -1,7 +1,7 @@
 /** Owned PG17 only. Genuine app transactions; synthetic Auth is confined to this fixture. */
 import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import type {TestContext} from 'node:test';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';import type {Principal} from '../../src/domain/model.ts';
-import {createAuthentication} from '../../src/infrastructure/authentication.ts';
+import {createAuthentication,assertAdministrativeAssurance} from '../../src/infrastructure/authentication.ts';
 import {createConsulteGeoConfigurationAdministration} from '../../src/application/consultegeo-configuration.ts';
 import {createPostgresConsulteGeoConfigurationStore} from '../../src/infrastructure/consultegeo-configuration-store.ts';
 import {createPostgresLocalConsulteGeoSourcePorts} from '../../src/infrastructure/consultegeo-local-source.ts';
@@ -10,6 +10,9 @@ import {createConsulteGeoRequestCatalog} from '../../src/application/consultegeo
 import {createFormDraftService} from '../../src/application/form-draft.ts';import {createSupportIntake} from '../../src/application/support-intake.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
 import {assertOwnedPendingOpeningFaults} from './notification-wave2-opening-faults.ts';
+import {createSupportReview} from '../../src/application/support-review.ts';
+import {createPostgresSupportReviewStore} from '../../src/infrastructure/support-review-store.ts';
+import type {ExternalResourceRef} from '../../src/domain/external-resource.ts';
 export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
  await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
@@ -52,5 +55,19 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   const old=(await operator.query("select document->'profile'->'approvalRequired' as required,document->'bundle'->'workflow'->>'approval' as approval from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,oldTicketId])).rows[0]!;
   assert.deepEqual(old,{required:false,approval:'not_required'});
   await assertOwnedPendingOpeningFaults(openingSuite,operator,{customer,accountId:a,refs,formId,drafts:createFormDraftService(options),intake});
+  await openingSuite.test('the actual review application creates one pinned approval invitation and replays its own receipt',async()=>{
+   for(const capability of ['approvals.request','approvals.decide'])await operator.query(`insert into helpdesk_auth.hdnr_grants(workspace_id,account_id,principal_id,capability,revision,active,work_ids,expires_at,request_id,reason)
+    values($1,$2,$3,$4,1,true,$5::text[],clock_timestamp()+interval '10 minutes',$6,'Owned explicit approval capability')`,[w,a,agent.id,capability,[workId],randomUUID()]);
+   await operator.query(`insert into helpdesk_auth.hdnr_rosters(workspace_id,account_id,profile_version_id,revision,approver_id,active,work_ids,expires_at,request_id,reason)
+    values($1,$2,$3,1,$4,true,$5::text[],clock_timestamp()+interval '10 minutes',$6,'Owned exact separate approver')`,[w,a,entry.workflow.versionId,agent.id,[workId],randomUUID()]);
+   const review=createSupportReview({pool:traced,resolver:source.resolver,createStore:createPostgresSupportReviewStore,assertStepUp:assertAdministrativeAssurance,directory:{async locateTicket(person,id,signal){const value=await source.directory.readTicketResources(person,id,signal??new AbortController().signal);return value as {accountId:string;refs:readonly ExternalResourceRef[]}|null;}}});
+   const key=randomUUID(),requestId=randomUUID();
+   const invite=()=>auth.withAdministrativeAssurance(request,(person,proof)=>review.requestApproval(person,opened.ticketId,1,key,requestId,proof));
+   const created=await invite();assert.equal(created.ticketId,opened.ticketId);assert.equal(created.actorId,agent.id);assert.equal(created.formRevision,1);assert.equal(created.replayed,false);
+   const replayed=await invite();assert.equal(replayed.invitationId,created.invitationId);assert.equal(replayed.replayed,true);
+   const row=(await operator.query('select document from helpdesk_core.hdnr_invitations where workspace_id=$1 and id=$2',[w,created.invitationId])).rows[0]!.document as any;
+   assert.equal(row.approverId,agent.id);assert.notEqual(row.approverId,customer.id);assert.equal(row.status,'pending');assert.equal(row.challenge,null);
+   assert.doesNotMatch(JSON.stringify(row),/hd_approval_|Owned pending approval details|Approval must precede work/);
+  });
  });
 }
