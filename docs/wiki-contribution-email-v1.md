@@ -1,10 +1,20 @@
 # Avisos de contribuição do Wiki — contrato v1
 
+## Estado publicado em 15/10/2026
+
+Worker integrado pela [PR53](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/53), merge `14b1974271100c9fde8474329e25fdd1a90b0524`, deploy de produção `6ad117c68e63a65fabd23d5f` confirmado ready. A função `wiki-notification-worker` foi conferida com schedule nativo a cada minuto; chamada pública por URL retorna 403. Variáveis existentes foram preservadas.
+
+Homologação Linux aprovada: 5.650 testes de aplicação, 680 PostgreSQL e 617 de interface, zero falhas/skips. Fingerprint da fonte: `3f185647da939dc5216d0db23a86dee8ce6f67c731f65dfc37fb84d10ffc2a41`. O ensaio adicional de composição com Wiki e TLS real está em `evidence/wiki-email-v17/composition.json`.
+
+Migração do Wiki aplicada e entrega ativada para a conta Auth confirmada `thiago@consultegeo.com.br`, sem alterar o aprovador. Um aviso de homologação foi enfileirado pelo helper privado para o evento real 7 da contribuição 2, preservando a data original do envio: 15/10/2026 às 13:34:34 UTC. O worker nativo concluiu uma tentativa às 18:30:43 UTC; ledger accepted/provider_accepted, recibo Resend `01a140d4-b1f1-7f26-b618-71fecc4eda61`. Não foi criado chamado, usuário ou evento de contribuição fictício. Nenhuma segunda mensagem foi enviada para testar a leitura do recibo.
+
+Aceitação do provedor está comprovada; a consulta administrativa posterior não forneceu status de entrega utilizável. Não se afirma chegada à caixa postal nem leitura. Logs e limitações do desenvolvimento abaixo são históricos e não substituem esta qualificação publicada. A evolução de interface da Wiki é acompanhada na [PR17](https://github.com/Consulte-GEO/wiki_consultegeo/pull/17).
+
 Implementação própria do Wiki, com transporte Resend e configuração já existentes do Help Desk. Não usa o ledger de chamados, não modifica os treze helpers ou o contrato dos quatro schemas e não muda o aprovador textual. A nova Function `wiki-notification-worker` tem agendamento nativo exclusivo a cada minuto; contexto nativo `production` é obrigatório. O bit `published`, corpo e headers da requisição não autorizam execução.
 
 ## Componentes e configuração
 
-Fonte SQL no repositório Wiki: `supabase/changes/wiki_cg_contribution_email_v1.sql`; migration oficial CLI `20261015164036_wiki_cg_contribution_email_v1.sql`. Três tabelas privadas com ENABLE/FORCE RLS, sem policies: `wiki_cg.colab_email_config`, `colab_email_outbox`, `colab_email_attempts`. Nenhum acesso direto dos clientes ou worker às tabelas/schema Wiki/Auth. Os novos wrappers SECURITY DEFINER têm search_path vazio, EXECUTE exclusivo do login existente `helpdesk_notification_worker` e guard `session_user`.
+Fonte SQL no repositório Wiki: `supabase/changes/wiki_cg_contribution_email_v1.sql`; migration oficial CLI `20261015174731_wiki_cg_contribution_email_v1.sql`, reconciliada com o registro remoto sem alterar os bytes. Três tabelas privadas com ENABLE/FORCE RLS, sem policies: `wiki_cg.colab_email_config`, `colab_email_outbox`, `colab_email_attempts`. Nenhum acesso direto dos clientes ou worker às tabelas/schema Wiki/Auth. Os novos wrappers SECURITY DEFINER têm search_path vazio, EXECUTE exclusivo do login existente `helpdesk_notification_worker` e guard `session_user`.
 
 O runtime lê somente as variáveis já usadas pelo worker de notificações: `HELPDESK_NOTIFICATION_DELIVERY_ENABLED`, `HELPDESK_RELEASE_APPROVED`, `HELPDESK_NOTIFICATION_DATABASE_URL`, CA opcional, `HELPDESK_CONSULTEGEO_ORIGIN`, `RESEND_API_KEY`, `RESEND_FROM` e `HELPDESK_NOTIFICATION_SENDER_VERIFIED`. Não há segredo, destino ou flag novos no browser. A origem deve ser exatamente `https://helpdesk.consultegeo.org`.
 
