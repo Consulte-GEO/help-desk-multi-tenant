@@ -20,7 +20,11 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   }catch(e){await operator.query('ROLLBACK');throw e;}
   const hadAuth=Boolean((await control.query("select to_regclass('auth.users') as users")).rows[0]?.users);
   if(!hadAuth){await control.query('create schema if not exists auth');await control.query('create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,banned_until timestamptz,deleted_at timestamptz)');}
-  await control.query('grant usage on schema auth to helpdesk_operator');await control.query('grant select on auth.users to helpdesk_operator');
+  await control.query('grant usage on schema auth to helpdesk_operator');
+  // Synthetic Auth belongs to control, unlike the qualified real operator.
+  // SELECT FOR SHARE needs UPDATE on at least one column; no normal role gains it.
+  await control.query('grant select,update(email) on auth.users to helpdesk_operator');
+  assert.equal((await control.query("select has_table_privilege('helpdesk_notification_worker','auth.users','SELECT,UPDATE') as allowed")).rows[0]!.allowed,false);
   const w=randomUUID(),staff=randomUUID(),staffAuth=randomUUID(),requester=randomUUID(),requesterAuth=randomUUID();
   const email='wave2-staff-'+staffAuth+'@example.invalid';
   await operator.query("insert into helpdesk_core.workspaces(id,name) values($1,'Owned wave2 acceptance')",[w]);
