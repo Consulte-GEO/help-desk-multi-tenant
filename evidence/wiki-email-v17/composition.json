@@ -1,19 +1,23 @@
 {
   "format": 1,
-  "qualifiedAt": "2026-10-15T17:21:36.918Z",
+  "qualifiedAt": "2026-10-15T19:29:03.456Z",
   "sources": {
     "helpdesk:src/infrastructure/wiki-notification-runtime.ts": "8e1702d2f1d8b2371c9cd977805974d9d0b1d2decc3fa3a4a3672752fee43b47",
-    "helpdesk:src/infrastructure/notification-runtime.ts": "b3e358c0195b8533282c81d108b2594d0cbfb323b35791287a11e022ef229f13",
+    "helpdesk:src/infrastructure/notification-runtime.ts": "ddac1f82a1322f5a07ee4bbb38e282773120fb274a0b342ec40a8072c779ef37",
     "helpdesk:netlify/functions/wiki-notification-worker.mts": "af052a59633a603c78a56d076ccfbbf4d4790d688fe5956100000d87844f9805",
     "wiki:supabase/changes/wiki_cg_contribution_email_v1.sql": "73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf",
-    "wiki:supabase/migrations/20261015164036_wiki_cg_contribution_email_v1.sql": "73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf",
+    "wiki:supabase/migrations/20261015174731_wiki_cg_contribution_email_v1.sql": "73f7e428f8326a1f30d7fe7c7c483ae39874a4ccc9d7ab414feeac21ae4246cf",
     "wiki:supabase/tests/supabase_stub.sql": "f5b82d47624c54ca7fa0387529bebfb22f1f849f6c20dcc5d1249c1ea8614fef",
     "wiki:supabase/tests/wiki_cg_email.test.sql": "aed711e5b611d7da39ebb170ca3f5e156a65c02c405e24ff5e7ebc9cf717128b",
     "wiki:supabase/migrations/20261013180000_wiki_cg_backend.sql": "98fb7fa857dfe9f3bac7717a81a2d46155fe56f7d2216a133097eae55f0afd73",
     "wiki:supabase/changes/wiki_cg_publication_v2.sql": "afeac51f3b8159a3efe5de9e9b702db7a22f4426131a51a21721cf470e16cce4",
     "wiki:supabase/changes/wiki_cg_collaboration_v1.sql": "0f5458df6ff7645d1452c52d5de90aa767b1621544d046b5a876a0573b6f9f35",
+    "helpdesk:src/infrastructure/notification-delivery-store.ts": "f9a4df034d90b5db7497bedd277507f659facfa20089450f30cafe2812143049",
+    "helpdesk:src/infrastructure/database-security.ts": "4c30b286f5e4ab27337fbc404a2c1a35227f5079e0d301b52cc7bab900cf1f7b",
+    "helpdesk:src/integrations/notifications/resend-events.ts": "14b576a31f273609ca46a2fade6fdf6ff33762dfdeb89ca56a382c58fc43d573",
     "helpdesk:scripts/migration-files.ts": "841b4d15e3b465afd4e18974040a76e68e8687d78d51202a12d24dea9be8ad6b",
-    "helpdesk:supabase/migrations.manifest.json": "c38b7e2fd9a45a0cda24b419cf513dc953b50b3506bbe07b79f322ff3edb4124"
+    "helpdesk:supabase/migrations.manifest.json": "bf658d960b4c5d652b80b967de2cf9ddf660ea73b7cb4320683512b5193b7f87",
+    "helpdesk:supabase/tests/wiki-email-composition-native.mjs": "50107887e3668c77ed2a61dc82bc05619ced219a9d85ee85ef285242a3122a42"
   },
   "migrations": [
     {
@@ -95,17 +99,21 @@
     {
       "file": "20261015150000_registration_storage_worker.sql",
       "sha256": "6b8500844c7d655deb388cac35391af396156aaa44165c590235c3a7e1667d9a"
+    },
+    {
+      "file": "20261015162000_email_monitor_v2.sql",
+      "sha256": "5028c17914469cfc524665963e637755e78e127dab572542d81e734efa136e0c"
     }
   ],
   "postgres": "17",
-  "helpdeskSchema": "0.26.0",
-  "verifiedMigrations": 20,
+  "helpdeskSchema": "0.27.0",
+  "verifiedMigrations": 21,
   "tls": "TLSv1.3",
   "certificateVerified": true,
   "sessionUser": "helpdesk_notification_worker",
   "helpdeskHelpers": 13,
   "provider": "in-process fake; no email sent",
-  "catalogSha256": "b7d428a32612cb38f5ce166fec266600f59820f71ac5b1dbcbac1d44c1e48fa6",
+  "catalogSha256": "00e9303f571412c19e5e829ce248429b4fe657a37de16328fd8d86db9b8905f0",
   "checks": 9,
   "cleanupVerified": true
 }
