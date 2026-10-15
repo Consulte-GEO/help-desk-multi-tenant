@@ -34,7 +34,9 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   await operator.query(`insert into helpdesk_core.hdnr_profiles(workspace_id,account_id,profile_version_id,configuration_id,configuration_version,configuration_hash,form_id,form_version,schema_hash,policy_version_id,required_for,work_ids,request_id,reason)
    values($1,$2,$3,$4,$5,$6,$7,$5,$8,$9,$10::uuid[],$11::text[],$12,'Owned separately published approval profile')`,[w,a,entry.workflow.versionId,record.id,record.version,record.contentHash,formId,requestHash(entry.form),policy.versionId,[customer.id],[workId],randomUUID()]);
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(customer,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref];
-  const options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
+  const diagnose=async<T>(work:()=>Promise<T>)=>{try{return await work();}catch(error){const e=error as {code?:string;where?:string;routine?:string;constraint?:string};suite.diagnostic(JSON.stringify({fixture:'owned-review-intake',code:e.code,where:e.where,routine:e.routine,constraint:e.constraint}));throw error;}};
+  const traced:SqlPool={query:(sql,values)=>diagnose(()=>app.query(sql,values)),end:()=>app.end(),async connect(){const client=await app.connect();return {query:(sql,values)=>diagnose(()=>client.query(sql,values)),release:error=>client.release(error),on:client.on?.bind(client)};}};
+  const options={pool:traced,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(traced),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(customer,{service:'questions',refs});
   assert.ok(catalog.configurations.some(c=>c.entries.some(e=>e.form.id===formId&&e.form.version===2)));
   const draft=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:a,refs,formId,formVersion:2,answers:{details:'Owned pending approval details, never mailed'}},0);
