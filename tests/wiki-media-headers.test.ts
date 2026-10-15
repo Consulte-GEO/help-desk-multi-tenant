@@ -21,7 +21,11 @@ test('Wiki private videos permit only same-origin and local Blob media', () => {
 });
 test('HelpDesk keeps its own strict policy outside the Wiki', () => {
   const block = header('/*');
-  assert.doesNotMatch(block, /blob:|media-src|youtube-nocookie|unsafe-inline/);
+  assert.doesNotMatch(block, /media-src|youtube-nocookie|unsafe-inline/);
+  assert.match(block, /img-src 'self' data: blob:;/);
+  assert.match(block, /worker-src 'self';/);
+  assert.match(block, /script-src 'self'; style-src 'self';/);
+  assert.doesNotMatch(block, /(?:script-src|worker-src)[^;]*blob:/);
   assert.match(block, /X-Frame-Options = "DENY"/);
   assert.match(block, /frame-ancestors 'none'/);
 });

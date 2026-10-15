@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="app-version" content="5.23.0">
+<title>Importação · Consulte GEO</title>
+<link rel="icon" type="image/png" href="assets/geo-symbol.png">
+<link rel="stylesheet" href="assets/design-system.css">
+<style>
+  /* .mode-grid: 3 cards no desktop, 1 no mobile (requisito da nova etapa) */
+  .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.mode-grid{grid-template-columns:1fr}}
+  .mode-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--fg);transition:var(--transition-colors),box-shadow var(--dur-fast) var(--ease-out)}
+  .mode-card:hover{border-color:var(--brand-magenta);box-shadow:var(--elev-2)}
+  .mode-card .ic{width:40px;height:40px;border-radius:10px;background:var(--brand-gradient);color:#fff;display:inline-flex;align-items:center;justify-content:center}
+  .mode-card.pending{opacity:.72}
+  .mode-card.pending:hover{border-color:var(--border-strong);box-shadow:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="topbar__brand" href="index.html">
+      <img class="topbar__badge" src="assets/geo-symbol.png" alt="">
+      <span><span class="topbar__name">Consulte GEO</span><br><span class="topbar__sub">Concreto · Importação</span></span>
+    </a>
+    <span class="topbar__spacer"></span>
+  </header>
+  <div class="body">
+    <main class="main">
+      <div class="page fade-in" style="max-width:1100px">
+        <div class="page__head">
+          <div>
+            <div class="kicker">Importação de dados</div>
+            <h1 class="h1">O que você precisa fazer?</h1>
+            <p>Três modos: triagem rápida da planilha recebida, conversão para o layout Consulte GEO, e auditoria da planilha consolidada.</p>
+          </div>
+        </div>
+
+        <div class="mode-grid">
+          <a class="mode-card" href="pre-analise.html">
+            <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <span class="pill brand" style="align-self:flex-start"><span class="dot"></span>Novo</span>
+            <div class="h3">Pré-análise</div>
+            <div class="h4" style="font-weight:600;color:var(--fg-muted);font-size:13px">Analisar planilha recebida</div>
+            <p class="text-sm muted" style="margin:0">Identifica rapidamente informações ausentes, campos incompletos, inconsistências e o que precisa ser solicitado ao cliente. Gera mensagem pronta (WhatsApp/e-mail) e relatório em Excel. Funciona sem nenhum cadastro da obra.</p>
+            <span class="btn brand sm" style="align-self:flex-start;margin-top:auto">Começar triagem</span>
+          </a>
+
+          <div class="mode-card pending" role="group" aria-label="Pré-importação (disponível no pacote v5.22.42)">
+            <span class="ic" style="background:var(--navy-700)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="pill neutral" style="align-self:flex-start"><span class="dot"></span>Comportamento atual mantido</span>
+            <div class="h3">Pré-importação</div>
+            <div class="h4" style="font-weight:600;color:var(--fg-muted);font-size:13px">Converter planilha do cliente</div>
+            <p class="text-sm muted" style="margin:0">Converte a planilha do cliente para o modelo Consulte GEO (insumos, estrutura, traços). Modo existente do sistema — nesta prévia publicada, disponível no pacote oficial v5.22.42.</p>
+            <span class="text-xs muted" style="margin-top:auto">Integração: docs/INTEGRACAO-IMPORTA.md</span>
+          </div>
+
+          <div class="mode-card pending" role="group" aria-label="Pós-importação (disponível no pacote v5.22.42)">
+            <span class="ic" style="background:var(--navy-700)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
+            <span class="pill neutral" style="align-self:flex-start"><span class="dot"></span>Comportamento atual mantido</span>
+            <div class="h3">Pós-importação</div>
+            <div class="h4" style="font-weight:600;color:var(--fg-muted);font-size:13px">Auditar planilha consolidada</div>
+            <p class="text-sm muted" style="margin:0">Audita a planilha consolidada exportada do Consulte GEO. Modo existente do sistema — nesta prévia publicada, disponível no pacote oficial v5.22.42.</p>
+            <span class="text-xs muted" style="margin-top:auto">Integração: docs/INTEGRACAO-IMPORTA.md</span>
+          </div>
+        </div>
+
+        <p class="text-xs muted" style="margin-top:28px;text-align:center">Implantação Consulte GEO · v5.23.0</p>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

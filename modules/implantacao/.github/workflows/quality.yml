@@ -1,0 +1,70 @@
+name: Setup full quality and import qualification
+on:
+  pull_request:
+  push:
+    branches: [main, 'claude/**', 'codex/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - run: npm ci --ignore-scripts
+        working-directory: frontend
+      - name: Tooling for disposable acceptance
+        run: |
+          npm install --prefix "$RUNNER_TEMP/qualification" --ignore-scripts --no-save pg@8.16.3
+          curl -fsSL https://github.com/denoland/deno/releases/download/v2.5.4/deno-x86_64-unknown-linux-gnu.zip -o "$RUNNER_TEMP/deno.zip"
+          mkdir -p "$RUNNER_TEMP/deno-bin"
+          unzip -q "$RUNNER_TEMP/deno.zip" -d "$RUNNER_TEMP/deno-bin"
+          echo "$RUNNER_TEMP/deno-bin" >> "$GITHUB_PATH"
+          if ! test -x /usr/lib/postgresql/17/bin/initdb; then
+            curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc -o "$RUNNER_TEMP/postgresql.asc"
+            sudo install -D -m 644 "$RUNNER_TEMP/postgresql.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+            echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list
+            sudo apt-get update
+            sudo apt-get install -y postgresql-17
+          fi
+          python3 -m venv "$RUNNER_TEMP/setup-browser"
+          "$RUNNER_TEMP/setup-browser/bin/pip" install playwright==1.63.0
+          "$RUNNER_TEMP/setup-browser/bin/python" -m playwright install --with-deps chromium
+          mkdir -p evidence/quality
+      - name: All canonical application gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          for gate in typecheck build smoke smoke:contrast smoke:xlsx test:laudos test:laudo-vision test:import-integrity test:import-process typecheck:import-process typecheck:import-process-client; do
+            npm --prefix frontend run "$gate" | tee "evidence/quality/${gate//:/-}.log"
+            if grep -E '^SKIP|^[[:space:]]*SKIP ' "evidence/quality/${gate//:/-}.log"; then exit 1; fi
+          done
+          npm --prefix frontend audit --audit-level=moderate | tee evidence/quality/audit.log
+          frontend/node_modules/.bin/tsc -p frontend/netlify/tsconfig.json | tee evidence/quality/typecheck-hosted.log
+          node tools/run-intake-tests.js | tee evidence/quality/intake.log
+          node tools/run-similarity-tests.js | tee evidence/quality/similarity.log
+          node tools/run-implantacao-import-tests.js | tee evidence/quality/implantacao.log
+      - name: Owned PostgreSQL candidate
+        run: node --experimental-strip-types tools/qualify-import-process-postgres.mjs --execute --pg-bin /usr/lib/postgresql/17/bin --driver "$RUNNER_TEMP/qualification/node_modules/pg" --output "$RUNNER_TEMP/setup-pg"
+      - name: Owned PostgreSQL production hosting and ACL
+        run: node --experimental-strip-types tools/qualify-import-process-postgres.mjs --execute --production --pg-bin /usr/lib/postgresql/17/bin --driver "$RUNNER_TEMP/qualification/node_modules/pg" --output "$RUNNER_TEMP/setup-pg-production"
+      - name: Browser qualification
+        run: |
+          "$RUNNER_TEMP/setup-browser/bin/python" tools/run-import-integrity-browser.py --output "$RUNNER_TEMP/setup-integrity"
+          "$RUNNER_TEMP/setup-browser/bin/python" tools/run-import-process-browser.py --output "$RUNNER_TEMP/setup-http"
+          "$RUNNER_TEMP/setup-browser/bin/python" tools/run-import-review-offline.py --vue-runtime frontend/node_modules/vue/dist/vue.global.js --output "$RUNNER_TEMP/setup-review"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: setup-quality-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/quality
+            ${{ runner.temp }}/setup-pg
+            ${{ runner.temp }}/setup-pg-production
+            ${{ runner.temp }}/setup-integrity
+            ${{ runner.temp }}/setup-http
+            ${{ runner.temp }}/setup-review

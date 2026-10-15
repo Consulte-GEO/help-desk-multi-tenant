@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://setup.consultegeo.org/schemas/laudo-ocr.v1.schema.json",
+  "title": "Contrato de OCR de laudos de rompimento · Consulte GEO",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metadata", "diagnostico", "customerInput", "contexto", "resultados", "validation", "audit"],
+  "$defs": {
+    "estado": {
+      "type": "string",
+      "enum": ["valor", "ausente", "ilegivel"]
+    },
+    "campoTexto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["estado", "valor", "raw", "motivo"],
+      "properties": {
+        "estado": { "$ref": "#/$defs/estado" },
+        "valor": { "type": ["string", "null"] },
+        "raw": { "type": ["string", "null"] },
+        "motivo": { "type": ["string", "null"] }
+      }
+    },
+    "campoNumero": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["estado", "valor", "raw", "motivo"],
+      "properties": {
+        "estado": { "$ref": "#/$defs/estado" },
+        "valor": { "type": ["number", "null"] },
+        "raw": { "type": ["string", "null"] },
+        "motivo": { "type": ["string", "null"] }
+      }
+    },
+    "campoMpa": {
+      "allOf": [
+        { "$ref": "#/$defs/campoNumero" },
+        {
+          "type": "object",
+          "required": ["valorBruto"],
+          "properties": {
+            "valorBruto": { "type": ["number", "null"] }
+          }
+        }
+      ]
+    },
+    "campoIdade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["estado", "valor", "unidade", "raw", "motivo"],
+      "properties": {
+        "estado": { "$ref": "#/$defs/estado" },
+        "valor": { "type": ["number", "null"] },
+        "unidade": { "type": ["string", "null"], "enum": ["dia", "hora", null] },
+        "raw": { "type": ["string", "null"] },
+        "motivo": { "type": ["string", "null"] }
+      }
+    },
+    "resultado": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "cp", "nf", "idade", "mpa", "carga", "area", "dataMoldagem",
+        "dataRompimento", "fckProjeto", "slump", "traco", "localAplicacao",
+        "origem", "confianca", "revisaoHumana", "candidatos"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "cp": { "$ref": "#/$defs/campoTexto" },
+        "nf": { "$ref": "#/$defs/campoTexto" },
+        "idade": { "$ref": "#/$defs/campoIdade" },
+        "mpa": { "$ref": "#/$defs/campoMpa" },
+        "carga": { "$ref": "#/$defs/campoNumero" },
+        "area": { "$ref": "#/$defs/campoNumero" },
+        "dataMoldagem": { "$ref": "#/$defs/campoTexto" },
+        "dataRompimento": { "$ref": "#/$defs/campoTexto" },
+        "fckProjeto": { "$ref": "#/$defs/campoNumero" },
+        "slump": { "$ref": "#/$defs/campoTexto" },
+        "traco": { "$ref": "#/$defs/campoTexto" },
+        "localAplicacao": { "$ref": "#/$defs/campoTexto" },
+        "origem": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pagina", "linha", "coluna", "textoLinha", "fonte"],
+          "properties": {
+            "pagina": { "type": ["integer", "null"] },
+            "linha": { "type": ["integer", "null"] },
+            "coluna": { "type": ["integer", "null"] },
+            "textoLinha": { "type": ["string", "null"] },
+            "fonte": { "type": "string", "enum": ["texto", "prisma", "visao-consenso", "visao-retry", "misto"] }
+          }
+        },
+        "confianca": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nivel", "score", "concordanciaPassadas", "legibilidade"],
+          "properties": {
+            "nivel": { "type": "string", "enum": ["alta", "media", "baixa"] },
+            "score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+            "concordanciaPassadas": { "type": "boolean" },
+            "legibilidade": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+          }
+        },
+        "revisaoHumana": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "valorAnterior", "por", "em"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pendente", "aceito", "corrigido", "rejeitado"] },
+            "valorAnterior": {},
+            "por": { "type": ["string", "null"] },
+            "em": { "type": ["string", "null"], "format": "date-time" }
+          }
+        },
+        "candidatos": { "type": "array", "items": {} }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "message", "path", "entityTemporaryId", "suggestedFix", "metadata"],
+      "properties": {
+        "code": { "type": "string" },
+        "severity": { "type": "string", "enum": ["error", "warning", "info"] },
+        "message": { "type": "string" },
+        "path": { "type": ["string", "null"] },
+        "entityTemporaryId": { "type": ["string", "null"] },
+        "suggestedFix": { "type": ["string", "null"] },
+        "metadata": { "type": ["object", "array", "string", "number", "boolean", "null"] }
+      }
+    }
+  },
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schemaVersion", "pipelineVersion", "promptVersion", "modelo", "arquivo", "perfilDetectado", "fonte"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "pipelineVersion": { "type": "string" },
+        "promptVersion": { "type": ["string", "null"] },
+        "modelo": { "type": ["string", "null"] },
+        "arquivo": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nome", "sha256", "paginas", "bytes"],
+          "properties": {
+            "nome": { "type": "string" },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "paginas": { "type": "integer", "minimum": 1 },
+            "bytes": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "perfilDetectado": { "type": "string" },
+        "fonte": { "type": "string", "enum": ["texto", "prisma", "visao-consenso", "visao-retry", "misto"] }
+      }
+    },
+    "diagnostico": { "type": "object", "additionalProperties": true },
+    "customerInput": { "type": ["object", "null"], "additionalProperties": true },
+    "contexto": { "type": "object", "additionalProperties": true },
+    "resultados": { "type": "array", "items": { "$ref": "#/$defs/resultado" } },
+    "validation": { "type": "array", "items": { "$ref": "#/$defs/validation" } },
+    "audit": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+  }
+}

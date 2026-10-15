@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.consultegeo.local/implantacao-consulte-geo.v4.schema.json",
+  "title": "Implantação Consulte GEO — JSON técnico v4",
+  "type": "object",
+  "required": [
+    "metadata",
+    "customerInput",
+    "normalizedStructure",
+    "technicalMapping",
+    "validation",
+    "renderTree",
+    "audit"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "generatedAt",
+        "generatedBy",
+        "source",
+        "environment",
+        "tenantHint",
+        "draftId",
+        "submissionId",
+        "projectName",
+        "projectVersion"
+      ],
+      "properties": {
+        "schemaVersion":   { "type": "string" },
+        "generatedAt":     { "type": "string", "format": "date-time" },
+        "generatedBy":     { "type": "string" },
+        "source":          { "type": "string" },
+        "environment":     { "type": "string" },
+        "tenantHint":      { "type": ["string", "null"] },
+        "draftId":         { "type": ["string", "null"] },
+        "submissionId":    { "type": ["string", "null"] },
+        "projectName":     { "type": "string" },
+        "projectVersion":  { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "customerInput": {
+      "type": "object",
+      "required": ["obra", "estruturas", "pecas", "mode", "projectDesignerFreeText", "structureTypeOptions"],
+      "additionalProperties": true,
+      "properties": {
+        "mode": { "const": "estruturas" },
+        "projectDesignerFreeText": { "const": true },
+        "structureTypeOptions": {
+          "type": "array",
+          "items": { "enum": ["Bloco", "Torre", "Contenção", "Área Externa", "Anexos", "Apoio"] }
+        },
+        "obra":       { "$ref": "#/$defs/obra" },
+        "estruturas": { "type": "array", "items": { "$ref": "#/$defs/estrutura" } },
+        "pecas":      { "type": "array", "items": { "$ref": "#/$defs/peca" } }
+      }
+    },
+    "normalizedStructure": {
+      "type": "object",
+      "required": ["obra", "estruturas", "pecas", "agrupamentos"],
+      "additionalProperties": true
+    },
+    "technicalMapping": {
+      "type": "object",
+      "required": ["databaseSource", "targetTables", "constants", "rows"],
+      "properties": {
+        "databaseSource": { "type": "string" },
+        "targetTables":   { "type": "array", "items": { "type": "string" } },
+        "constants":      { "type": "object" },
+        "rows":           { "type": "array", "items": { "$ref": "#/$defs/mappingRow" } }
+      },
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "required": ["summary", "issues"],
+      "properties": {
+        "summary": {
+          "type": "object",
+          "required": ["errorCount", "warningCount", "infoCount", "blocking", "issues"],
+          "additionalProperties": true
+        },
+        "issues": { "type": "array", "items": { "$ref": "#/$defs/issue" } }
+      },
+      "additionalProperties": true
+    },
+    "renderTree": {
+      "type": "object",
+      "required": ["root"],
+      "additionalProperties": true
+    },
+    "audit": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "actor", "action", "entity", "source"],
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": {
+    "obra": {
+      "type": "object",
+      "required": ["nome", "codigo"],
+      "additionalProperties": true
+    },
+    "estrutura": {
+      "type": "object",
+      "required": [
+        "temporaryId",
+        "tipoEstrutura",
+        "numeroEstrutura",
+        "nomenclaturaSistema",
+        "projetista",
+        "classificacao",
+        "regraAplicada",
+        "ordem"
+      ],
+      "properties": {
+        "tipoEstrutura": {
+          "enum": ["Bloco", "Torre", "Contenção", "Área Externa", "Anexos", "Apoio"]
+        },
+        "projetista": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "peca": {
+      "type": "object",
+      "required": [
+        "temporaryId",
+        "estruturaTemporaryId",
+        "pecaPavimento",
+        "classificacao",
+        "fckRaw",
+        "volumeRaw",
+        "ordem"
+      ],
+      "additionalProperties": true
+    },
+    "mappingRow": {
+      "type": "object",
+      "required": ["table", "temporaryId", "fields", "source"],
+      "properties": {
+        "table":       { "type": "string" },
+        "temporaryId": { "type": "string" },
+        "fields":      { "type": "object" },
+        "source":      { "type": "array", "items": { "type": "string" } },
+        "dependsOn":   { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "issue": {
+      "type": "object",
+      "required": ["code", "severity", "message", "path"],
+      "properties": {
+        "code":     { "type": "string" },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "message":  { "type": "string" },
+        "path":     { "type": "string" },
+        "entityTemporaryId": { "type": ["string", "null"] },
+        "suggestedFix":      { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  }
+}

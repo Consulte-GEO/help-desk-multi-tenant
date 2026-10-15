@@ -1,0 +1,40 @@
+# ============================================================================
+# Implantação Consulte GEO — arquivos que NÃO vão para o repositório
+# ============================================================================
+
+# Dependências
+node_modules/
+.npm/
+.pnpm-store/
+
+# Artefatos de build (o Netlify gera no deploy — base=frontend, publish=dist)
+frontend/dist/
+dist/
+*.tsbuildinfo
+
+# Ambiente / segredos (nunca commitar chaves reais — usar .env.example)
+.env
+.env.*
+!.env.example
+
+# Logs e caches
+*.log
+npm-debug.log*
+.cache/
+.vite/
+.netlify/
+
+# Sistema operacional / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Artefatos locais dos gates V8
+.v8-baseline/
+.v8-validation/
+
+# Python local
+__pycache__/
+*.pyc

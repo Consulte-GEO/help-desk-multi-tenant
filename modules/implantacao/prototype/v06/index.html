@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implantação Consulte GEO · Cadastro da Estrutura da Obra</title>
+<meta name="description" content="Cadastro simplificado da estrutura da obra — Consulte GEO Concreto.">
+<link rel="icon" type="image/png" href="assets/geo-symbol.png">
+<link rel="stylesheet" href="assets/design-system.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ══════════════ TOPBAR ══════════════ -->
+  <header class="topbar">
+    <a class="topbar__brand" href="#" onclick="return false">
+      <img class="topbar__badge" src="assets/geo-symbol.png" alt="">
+      <span>
+        <span class="topbar__name">Consulte GEO</span><br>
+        <span class="topbar__sub">Concreto · Implantação</span>
+      </span>
+    </a>
+    <button class="topbar__search" onclick="toast('Busca / ⌘K — protótipo')">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Buscar ou executar comando…</span>
+      <span class="topbar__kbd">⌘K</span>
+    </button>
+    <div class="topbar__icons">
+      <button class="iconbtn" title="Densidade" aria-label="Densidade" onclick="cycleDensity()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      </button>
+      <button class="iconbtn" title="Tema claro/escuro" aria-label="Alternar tema" onclick="toggleTheme()">
+        <svg id="themeIcon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <span style="position:relative">
+        <button class="iconbtn" title="Notificações" aria-label="Notificações">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </button>
+        <span style="position:absolute;top:4px;right:4px;min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:var(--brand-magenta);color:#fff;font-size:10px;font-weight:700;font-family:var(--font-mono);display:inline-flex;align-items:center;justify-content:center">2</span>
+      </span>
+      <button class="topbar__user">
+        <span class="topbar__avatar">TC</span>
+        <span>Thiago</span>
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════ BODY ══════════════ -->
+  <div class="body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><span>Concretagens</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><span>Ensaios</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Laudos</span></a>
+        <a class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v8h4"/><path d="M18 9h2a2 2 0 0 1 2 2v11h-4"/><path d="M10 6h4M10 10h4M10 14h4"/></svg><span>Implantação</span></a>
+      </nav>
+      <div class="sidebar__section">
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importação
+      </div>
+      <nav style="padding:0 12px">
+        <a class="nav-item" href="pre-analise.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Pré-análise</span><span class="count">novo</span></a>
+        <a class="nav-item" href="importa.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Importar dados</span></a>
+      </nav>
+      <div class="sidebar__section">
+        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        Administração
+      </div>
+      <nav style="padding:0 12px">
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg><span>Clientes</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Configurações</span></a>
+      </nav>
+      <div class="sidebar__obra">
+        <div class="kicker">Obra ativa</div>
+        <div class="name" id="sbObra">Residencial Alameda das Palmeiras</div>
+        <div class="code" id="sbCod">OBRA-2026-014</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" id="main">
+      <div class="page fade-in">
+        <div class="page__head">
+          <div>
+            <div class="kicker">Implantação de obra</div>
+            <h1 class="h1">Cadastro da estrutura da obra</h1>
+            <p>Cadastre obra, estruturas e peças, valide os dados e gere o JSON técnico e a planilha para implantação no Consulte GEO Concreto.</p>
+          </div>
+          <div class="page__actions">
+            <button class="btn secondary" onclick="loadExample()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Carregar exemplo completo com projetista
+            </button>
+            <button class="btn brand" onclick="saveDraft()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Salvar rascunho
+            </button>
+          </div>
+        </div>
+
+        <!-- STEPPER -->
+        <div class="stepper" style="margin-bottom:24px" id="stepper">
+          <button class="step active" data-step="0" onclick="goStep(0)"><span class="step__n">1</span><span class="step__meta"><span class="step__t">Obra</span><span class="step__s">Dados gerais</span></span></button>
+          <button class="step" data-step="1" onclick="goStep(1)"><span class="step__n">2</span><span class="step__meta"><span class="step__t">Estruturas</span><span class="step__s">Blocos · torres</span></span></button>
+          <button class="step" data-step="2" onclick="goStep(2)"><span class="step__n">3</span><span class="step__meta"><span class="step__t">Peças</span><span class="step__s">Pavimentos</span></span></button>
+          <button class="step" data-step="3" onclick="goStep(3)"><span class="step__n">4</span><span class="step__meta"><span class="step__t">Prévia</span><span class="step__s">Visual</span></span></button>
+          <button class="step" data-step="4" onclick="goStep(4)"><span class="step__n">5</span><span class="step__meta"><span class="step__t">Validação</span><span class="step__s">Erros · avisos</span></span></button>
+          <button class="step" data-step="5" onclick="goStep(5)"><span class="step__n">6</span><span class="step__meta"><span class="step__t">Exportação</span><span class="step__s">JSON · Excel</span></span></button>
+        </div>
+
+        <!-- ════════ TELA 1 · OBRA ════════ -->
+        <section class="screen" data-screen="0">
+          <div class="card">
+            <div class="card__head">
+              <div><div class="kicker">Etapa 1 de 6</div><div class="h3" style="margin-top:4px">Dados da obra</div></div>
+              <span class="pill neutral"><span class="dot"></span>Rascunho</span>
+            </div>
+            <div class="card__body stack">
+              <div class="form-grid cols-2">
+                <div class="field"><label class="label">Nome da obra <span class="req">*</span></label><input class="input" id="f_obra_nome" placeholder="Ex.: Residencial Alameda das Palmeiras"></div>
+                <div class="field"><label class="label">Código da obra <span class="req">*</span></label><input class="input mono" id="f_obra_cod" placeholder="OBRA-2026-000"></div>
+              </div>
+              <div class="form-grid cols-2">
+                <div class="field"><label class="label">Cliente / empresa</label><input class="input" id="f_obra_cliente" placeholder="Construtora Alfa"></div>
+                <div class="field"><label class="label">Regional</label><input class="input" id="f_obra_regional" placeholder="Sudeste"></div>
+              </div>
+              <div class="form-grid cols-2">
+                <div class="field"><label class="label">Endereço</label><input class="input" id="f_obra_end" placeholder="Av. do Contorno, 3900"></div>
+                <div class="form-grid cols-3">
+                  <div class="field"><label class="label">CEP</label><input class="input mono" id="f_obra_cep" placeholder="30110-000"></div>
+                  <div class="field"><label class="label">Município</label><input class="input" id="f_obra_mun" placeholder="Belo Horizonte"></div>
+                  <div class="field"><label class="label">UF</label>
+                    <select class="select" id="f_obra_uf"><option value="">—</option><option>MG</option><option>SP</option><option>RJ</option><option>ES</option><option>PR</option><option>SC</option><option>RS</option><option>BA</option><option>GO</option><option>DF</option></select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-grid cols-3">
+                <div class="field"><label class="label">Responsável</label><input class="input" id="f_obra_resp" placeholder="Eng. responsável"></div>
+                <div class="field"><label class="label">E-mail</label><input class="input" id="f_obra_email" type="email" placeholder="responsavel@construtora.com.br"></div>
+                <div class="field"><label class="label">Telefone</label><input class="input mono" id="f_obra_tel" placeholder="(31) 90000-0000"></div>
+              </div>
+              <div class="field"><label class="label">Observações</label><textarea class="textarea" id="f_obra_obs" placeholder="Notas gerais sobre a obra…"></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ════════ TELA 2 · ESTRUTURAS ════════ -->
+        <section class="screen hidden" data-screen="1">
+          <div class="card">
+            <div class="card__head">
+              <div><div class="kicker">Etapa 2 de 6</div><div class="h3" style="margin-top:4px">Estruturas</div></div>
+              <button class="btn secondary sm" onclick="addEstrutura()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar linha
+              </button>
+            </div>
+            <div style="padding:0">
+              <div style="overflow-x:auto">
+              <table class="table" id="tblEstruturas">
+                <thead><tr>
+                  <th style="width:150px">Tipo de Estrutura</th>
+                  <th style="width:120px">Nº da Estrutura</th>
+                  <th>Nomenclatura no Sistema</th>
+                  <th style="width:150px">Projetista</th>
+                  <th style="width:140px">Classificação / Etapa</th>
+                  <th style="width:130px">Regra Aplicada</th>
+                  <th style="width:44px"></th>
+                </tr></thead>
+                <tbody id="estruturasBody"><!-- linhas via JS --></tbody>
+              </table>
+              </div>
+            </div>
+            <div class="card__foot" style="justify-content:space-between">
+              <span class="text-xs muted">Tipo restrito a: Bloco · Torre · Contenção · Área Externa · Anexos · Apoio. Projetista é texto livre e não bloqueia salvamento.</span>
+              <span class="badge" id="estCount">0 estruturas</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ════════ TELA 3 · PEÇAS ════════ -->
+        <section class="screen hidden" data-screen="2">
+          <div class="card">
+            <div class="card__head">
+              <div><div class="kicker">Etapa 3 de 6</div><div class="h3" style="margin-top:4px">Peças / Pavimentos</div></div>
+              <button class="btn secondary sm" onclick="addPeca()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar linha
+              </button>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table" id="tblPecas">
+                <thead><tr>
+                  <th style="width:150px">Estrutura</th>
+                  <th>Peça / Pavimento</th>
+                  <th style="width:120px">Classificação</th>
+                  <th style="width:110px">FCK</th>
+                  <th class="num" style="width:120px">Volume (m³)</th>
+                  <th style="width:150px">Concreto / Produto</th>
+                  <th class="num" style="width:90px">Overbreak</th>
+                  <th style="width:110px">Flags</th>
+                  <th style="width:44px"></th>
+                </tr></thead>
+                <tbody id="pecasBody"></tbody>
+              </table>
+            </div>
+            <div class="card__foot" style="justify-content:space-between">
+              <span class="text-xs muted">FCK e Volume são normalizados sem sobrescrever o texto digitado. Volume ausente gera aviso, não bloqueia rascunho.</span>
+              <span class="badge" id="pecaCount">0 peças</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ════════ TELA 4 · PRÉVIA ════════ -->
+        <section class="screen hidden" data-screen="3">
+          <div class="stat-row" style="margin-bottom:20px">
+            <div class="stat"><div class="kicker">Estruturas</div><div class="v mono" id="stEst">0</div><div class="s">blocos, torres e demais</div></div>
+            <div class="stat"><div class="kicker">Peças / pavimentos</div><div class="v mono" id="stPec">0</div><div class="s">unidades cadastradas</div></div>
+            <div class="stat"><div class="kicker">Volume total</div><div class="v mono" id="stVol">0 m³</div><div class="s">soma dos volumes válidos</div></div>
+            <div class="stat"><div class="kicker">Faixa de FCK</div><div class="v mono" id="stFck">—</div><div class="s">menor ao maior</div></div>
+          </div>
+          <div class="card">
+            <div class="card__head"><div><div class="kicker">Etapa 4 de 6</div><div class="h3" style="margin-top:4px">Prévia visual</div></div>
+              <span class="pill info"><span class="dot"></span>Somente leitura</span></div>
+            <div class="card__body">
+              <div id="previewTree"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ════════ TELA 5 · VALIDAÇÃO ════════ -->
+        <section class="screen hidden" data-screen="4">
+          <div class="stat-row" style="margin-bottom:20px;grid-template-columns:repeat(3,1fr)">
+            <div class="stat" style="border-left:3px solid var(--danger-500)"><div class="kicker">Erros</div><div class="v mono" id="vErr" style="color:var(--danger-600)">0</div><div class="s">bloqueiam o envio</div></div>
+            <div class="stat" style="border-left:3px solid var(--warning-500)"><div class="kicker">Avisos</div><div class="v mono" id="vWarn" style="color:var(--warning-600)">0</div><div class="s">permitem envio com confirmação</div></div>
+            <div class="stat" style="border-left:3px solid var(--info-500)"><div class="kicker">Orientações</div><div class="v mono" id="vInfo" style="color:var(--info-600)">0</div><div class="s">apenas informativas</div></div>
+          </div>
+          <div class="card">
+            <div class="card__head"><div><div class="kicker">Etapa 5 de 6</div><div class="h3" style="margin-top:4px">Validação dos dados</div></div>
+              <button class="btn secondary sm" onclick="runValidation()">Revalidar</button></div>
+            <div class="card__body"><div class="stack" id="valList"></div></div>
+          </div>
+        </section>
+
+        <!-- ════════ TELA 6 · EXPORTAÇÃO ════════ -->
+        <section class="screen hidden" data-screen="5">
+          <div class="card">
+            <div class="card__head">
+              <div><div class="kicker">Etapa 6 de 6 · Exportação técnica</div><div class="h3" style="margin-top:4px">JSON técnico, Excel e mapeamento</div></div>
+              <div class="seg" id="expSeg">
+                <button class="on" onclick="expTab('json',this)">JSON técnico</button>
+                <button onclick="expTab('excel',this)">Planilha Excel</button>
+                <button onclick="expTab('map',this)">Mapeamento banco</button>
+              </div>
+            </div>
+            <div class="card__body">
+              <!-- JSON -->
+              <div id="exp_json">
+                <div class="row between" style="margin-bottom:12px">
+                  <span class="text-sm muted">Contrato de 7 seções · migrável para .NET 8 + SQL Server</span>
+                  <div class="row">
+                    <button class="btn secondary sm" onclick="copyJson()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar JSON</button>
+                    <button class="btn brand sm" onclick="downloadJson()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar JSON</button>
+                  </div>
+                </div>
+                <pre class="json-viewer" id="jsonView">{ }</pre>
+              </div>
+              <!-- EXCEL -->
+              <div id="exp_excel" class="hidden">
+                <div class="alert info" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><div><div class="t">Planilha técnica preenchida</div>Gera um <b>.xlsx</b> real no navegador com as abas: Resumo, Estruturas, Peças, Tipos Técnicos, Unidades Técnicas, Mapeamento Banco, Validações e JSON Técnico.</div></div>
+                <div class="row wrap" style="gap:8px;margin-bottom:16px">
+                  <span class="tag">Resumo</span><span class="tag">Estruturas</span><span class="tag">Peças</span><span class="tag">Tipos Técnicos</span><span class="tag">Unidades Técnicas</span><span class="tag">Mapeamento Banco</span><span class="tag">Validações</span><span class="tag">JSON Técnico</span>
+                </div>
+                <button class="btn brand" onclick="exportExcel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar planilha Excel</button>
+                <div class="hint" style="margin-top:10px" id="xlsxName">implantacao-consulte-geo-{codigo}-{data}.xlsx</div>
+              </div>
+              <!-- MAPEAMENTO -->
+              <div id="exp_map" class="hidden">
+                <div class="alert warning" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div class="t">Área técnica — equipe Consulte GEO</div>Nomes internos de banco só aparecem aqui e no JSON técnico. Chaves temporárias serão substituídas por IDs reais na implantação.</div></div>
+                <div class="table-wrap">
+                  <table class="table">
+                    <thead><tr><th>Tabela alvo</th><th>Entidade funcional</th><th>Chave temporária</th><th>Registros</th></tr></thead>
+                    <tbody id="mapBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NAV FOOTER -->
+        <div class="row between" style="margin-top:24px">
+          <button class="btn ghost" id="btnBack" onclick="prevStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Voltar
+          </button>
+          <div class="row">
+            <button class="btn secondary" id="btnNext" onclick="nextStep()">Avançar
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <button class="btn brand hidden" id="btnSubmit" onclick="submitForValidation()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg>Submeter para validação
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:20px;right:20px;z-index:1500;display:none">
+  <div class="card raised" style="border-left:3px solid var(--brand-magenta);padding:12px 16px;font-size:13px;min-width:240px" id="toastMsg"></div>
+</div>
+
+<script src="assets/xlsx.full.min.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

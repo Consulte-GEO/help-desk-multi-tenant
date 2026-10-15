@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="pt-BR" data-density="compact">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulte GEO - Cadastro Simplificado de Estruturas</title>
+  <style>
+    :root {
+      --brand-navy:#182863; --brand-purple:#3E2D71; --brand-magenta:#C5117E;
+      --bg:#f7f5f1; --surface:#fff; --surface-2:#fafafa; --fg:#172033; --muted:#6f6f7b;
+      --border:#e5e1da; --primary:#304c9f; --primary-2:#4268d8; --success:#12805c;
+      --warning:#b7791f; --danger:#c2410c; --info:#0f6cbd; --radius:16px;
+      --shadow:0 14px 30px rgba(24,40,99,.08); --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      --sans:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); font-size:14px; }
+    header { background:linear-gradient(135deg,var(--brand-navy),var(--brand-purple) 60%,var(--brand-magenta)); color:white; padding:22px 28px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; max-width:1440px; margin:auto; }
+    .brand { display:flex; align-items:center; gap:14px; }
+    .mark { width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-weight:800;letter-spacing:-1px; }
+    h1 { margin:0; font-size:22px; line-height:1.2; }
+    .subtitle { opacity:.82; margin-top:4px; }
+    .shell { max-width:1440px; margin:22px auto; padding:0 18px; display:grid; grid-template-columns:260px 1fr; gap:18px; }
+    nav { position:sticky; top:14px; align-self:start; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:12px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:12px; cursor:pointer; color:var(--muted); }
+    .nav-item.active { color:var(--primary); background:#eef2ff; font-weight:700; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:18px; overflow:hidden; }
+    .card-h { padding:18px 20px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+    .card-h h2 { margin:0; font-size:18px; }
+    .kicker { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--primary); font-weight:800; }
+    .card-b { padding:20px; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+    .col-2 { grid-column:span 2; } .col-3 { grid-column:span 3; } .col-4 { grid-column:span 4; } .col-5 { grid-column:span 5; } .col-6 { grid-column:span 6; } .col-8 { grid-column:span 8; } .col-12 { grid-column:span 12; }
+    label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:700; }
+    input, select, textarea { width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 11px; font:inherit; background:#fff; color:var(--fg); }
+    textarea { min-height:92px; resize:vertical; }
+    button { border:0; border-radius:11px; padding:10px 14px; font-weight:800; cursor:pointer; font-family:var(--sans); }
+    .btn-primary { color:#fff; background:linear-gradient(135deg,var(--primary),var(--primary-2)); }
+    .btn-secondary { color:var(--primary); background:#eef2ff; }
+    .btn-ghost { color:var(--muted); background:#f5f5f5; }
+    .btn-danger { color:white; background:var(--danger); }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; }
+    table { width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; }
+    th { background:#f8fafc; color:#475569; font-size:12px; text-align:left; padding:10px; border-bottom:1px solid var(--border); }
+    td { padding:8px; border-bottom:1px solid var(--border); vertical-align:top; }
+    td input, td select { min-width:120px; padding:8px; }
+    .table-wrap { overflow:auto; border:1px solid var(--border); border-radius:14px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:5px 10px; font-size:12px; font-weight:800; }
+    .pill.ok { color:#065f46; background:#d1fae5; } .pill.warn { color:#92400e; background:#fef3c7; } .pill.info { color:#1e40af; background:#dbeafe; } .pill.bad { color:#9a3412; background:#ffedd5; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .stat { padding:14px; border:1px solid var(--border); background:#fbfbfb; border-radius:14px; }
+    .stat b { display:block; font-size:22px; }
+    .tree { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; }
+    .tree-card { border:1px solid var(--border); border-radius:14px; background:#fff; padding:14px; }
+    .tree-card h3 { margin:0 0 10px; font-size:15px; }
+    .tree-card ul { margin:0; padding-left:20px; color:#4b5563; }
+    pre { margin:0; white-space:pre-wrap; word-break:break-word; font-family:var(--mono); font-size:12px; background:#0f172a; color:#e5e7eb; padding:16px; border-radius:14px; max-height:540px; overflow:auto; }
+    .export-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; }
+    .note { border:1px dashed #b8c3e8; background:#f5f7ff; border-radius:14px; padding:14px; color:#344054; }
+    .footnote { font-size:12px; color:var(--muted); margin-top:10px; }
+    @media (max-width:980px) { .shell{grid-template-columns:1fr} nav{position:static} .grid,.export-grid{display:block} [class^=col-]{margin-bottom:12px} .stats{grid-template-columns:1fr 1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div class="brand">
+        <div class="mark">GEO</div>
+        <div><h1>Cadastro Simplificado da Estrutura da Obra</h1><div class="subtitle">Protótipo navegável com JSON técnico e exportação Excel preenchida</div></div>
+      </div>
+      <div class="actions"><button class="btn-secondary" onclick="loadCompleteExample()">Carregar exemplo completo com projetista</button><button class="btn-primary" onclick="generateAll()">Gerar prévia</button></div>
+    </div>
+  </header>
+  <div class="shell">
+    <nav>
+      <div class="nav-item active" data-target="dados">1. Dados básicos</div>
+      <div class="nav-item" data-target="estruturas">2. Estruturas</div>
+      <div class="nav-item" data-target="previa">3. Prévia visual</div>
+      <div class="nav-item" data-target="validacao">4. Validação</div>
+      <div class="nav-item" data-target="exportacao">5. Exportação técnica</div>
+    </nav>
+    <main>
+      <section id="dados" class="card">
+        <div class="card-h"><div><div class="kicker">Etapa 1</div><h2>Dados básicos da obra</h2></div><span class="pill info">Rascunho</span></div>
+        <div class="card-b grid">
+          <div class="col-4"><label>Nome da obra</label><input id="obraNome" value="Residencial Parque Modelo"></div>
+          <div class="col-2"><label>Código</label><input id="obraCodigo" value="RPM001"></div>
+          <div class="col-3"><label>Regional</label><input id="obraRegional" value="Única"></div>
+          <div class="col-3"><label>Quantidade estimada de unidades</label><input id="obraUnidades" type="number" value="192"></div>
+          <div class="col-8"><label>Endereço</label><input id="obraEndereco" value="Rua Exemplo, 100 - São Paulo/SP"></div>
+          <div class="col-2"><label>CEP</label><input id="obraCep" value="01001000"></div>
+          <div class="col-2"><label>Status</label><select id="status"><option>Rascunho</option><option>Enviado para validação</option><option>Validado</option></select></div>
+        </div>
+      </section>
+
+      <section id="estruturas" class="card">
+        <div class="card-h"><div><div class="kicker">Etapa 2</div><h2>Estruturas</h2></div><div class="actions"><button class="btn-secondary" onclick="addRow()">Adicionar linha</button><button class="btn-ghost" onclick="clearRows()">Limpar</button></div></div>
+        <div class="card-b">
+          <div class="note">Use <b>Tipo de Estrutura</b> para classificar o agrupador físico. <b>Projetista</b> é texto livre. <b>Nomenclatura no Sistema</b> define como a estrutura será exibida após a implantação.</div>
+          <div class="table-wrap" style="margin-top:14px">
+            <table id="rowsTable">
+              <thead><tr><th>#</th><th>Tipo de Estrutura</th><th>Número da Estrutura</th><th>Nomenclatura no Sistema</th><th>Projetista</th><th>Etapa</th><th>Peça/Pavimento</th><th>FCK</th><th>Volume por unidade</th><th>Concreto</th><th>Regra Aplicada</th><th></th></tr></thead>
+              <tbody id="rowsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="previa" class="card">
+        <div class="card-h"><div><div class="kicker">Etapa 3</div><h2>Prévia visual</h2></div><div class="actions"><button class="btn-primary" onclick="generateAll()">Atualizar prévia</button></div></div>
+        <div class="card-b">
+          <div class="stats" id="stats"></div>
+          <div class="tree" id="tree" style="margin-top:14px"></div>
+        </div>
+      </section>
+
+      <section id="validacao" class="card">
+        <div class="card-h"><div><div class="kicker">Etapa 4</div><h2>Validação</h2></div><span id="validationBadge" class="pill warn">Aguardando geração</span></div>
+        <div class="card-b" id="validationPanel"></div>
+      </section>
+
+      <section id="exportacao" class="card">
+        <div class="card-h"><div><div class="kicker">Etapa 5</div><h2>Exportação técnica</h2></div><div class="actions"><button class="btn-primary" onclick="downloadJson()">Exportar JSON técnico</button><button class="btn-secondary" onclick="downloadExcel()">Exportar planilha Excel preenchida</button></div></div>
+        <div class="card-b export-grid">
+          <div>
+            <div class="note"><b>Mapeamento de banco aplicado:</b> o JSON técnico foi ajustado para as tabelas Ges_UnidadeGrupo, Ges_UnidadeTipo, Ges_Unidade, Utl_Produto, Con_Concreto, CTe_PadraoMoldagem e Pro_Projetista. A planilha exportada replica as abas de resumo, estruturas, mapeamento, validações e JSON técnico.</div>
+            <div class="footnote">Formato do protótipo: arquivo .xls em SpreadsheetML, aberto diretamente pelo Excel. No frontend Vue, a implementação usa pacote <code>xlsx</code> para .xlsx.</div>
+          </div>
+          <pre id="jsonPreview">Clique em Gerar prévia para montar o JSON técnico.</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const SAMPLE = {
+  "metadata": {
+    "schemaVersion": "3.0.0",
+    "generatedAt": "2026-05-18T14:55:00Z",
+    "source": "cadastro-simplificado-estrutura",
+    "draftId": "draft-demo-estrutura-projetista",
+    "protocolo": "IMP-EST-DEMO-0001",
+    "tenant": {
+      "codigoContrato": 0,
+      "databaseMode": "database-per-tenant"
+    },
+    "obra": {
+      "gesObraId": null,
+      "nome": "Residencial Parque Modelo",
+      "codigo": "RPM001",
+      "regional": "Única",
+      "endereco": "Rua Exemplo, 100 - São Paulo/SP",
+      "cep": "01001000",
+      "quantidadeUnidades": 192
+    },
+    "submittedBy": {
+      "nome": "Engenheiro da Obra",
+      "email": "engenharia@exemplo.com"
+    }
+  },
+  "customerInput": {
+    "mode": "estruturas",
+    "projectDesignerFreeText": true,
+    "structureTypeOptions": [
+      "Bloco",
+      "Torre",
+      "Contenção",
+      "Área Externa",
+      "Anexos",
+      "Apoio"
+    ],
+    "structures": [
+      {
+        "clientRowId": "row-001",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Fundação",
+        "peca": "Estacas",
+        "fck": 30,
+        "volumePorUnidade": 2.0,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estruturas agrupadas por repetição confirmada",
+        "ordem": 1
+      },
+      {
+        "clientRowId": "row-002",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Fundação",
+        "peca": "Bloco de Coroamento",
+        "fck": 35,
+        "volumePorUnidade": 8.0,
+        "concreto": "FCK 35 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estruturas agrupadas por repetição confirmada",
+        "ordem": 2
+      },
+      {
+        "clientRowId": "row-003",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Estrutura",
+        "peca": "Térreo",
+        "fck": 25,
+        "volumePorUnidade": 125.5,
+        "concreto": "FCK 25 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Volume informado por pavimento",
+        "ordem": 3
+      },
+      {
+        "clientRowId": "row-004",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Estrutura",
+        "peca": "1º ao 5º Pavimento",
+        "fck": 25,
+        "volumePorUnidade": 110.0,
+        "concreto": "FCK 25 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Range expandido para unidades individuais",
+        "ordem": 4
+      },
+      {
+        "clientRowId": "row-005",
+        "tipoEstrutura": "Contenção",
+        "numeroEstrutura": "-",
+        "nomenclaturaSistema": "Contenção Perimetral",
+        "projetista": "Geocontrole Engenharia",
+        "etapa": "Contenção",
+        "peca": "Cortina de Concreto",
+        "fck": 30,
+        "volumePorUnidade": 177.97,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estrutura avulsa sem numeração",
+        "ordem": 5
+      },
+      {
+        "clientRowId": "row-006",
+        "tipoEstrutura": "Área Externa",
+        "numeroEstrutura": "-",
+        "nomenclaturaSistema": "Área Externa",
+        "projetista": "Equipe Técnica Cliente",
+        "etapa": "Demais Estruturas",
+        "peca": "Piscina Adulto",
+        "fck": 30,
+        "volumePorUnidade": 42.3,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estrutura avulsa sem numeração",
+        "ordem": 6
+      }
+    ]
+  },
+  "normalizedStructure": {
+    "groups": [
+      {
+        "tempId": "grupo-torre-1",
+        "descricao": "Torre 1",
+        "descricaoCompleta": "Torre 1",
+        "chave": "TORRE-1",
+        "tipoEstrutura": "Torre",
+        "numero": "1",
+        "projetista": "RKS Projetos",
+        "ordem": 1,
+        "customerInputRefs": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "grupo-torre-2",
+        "descricao": "Torre 2",
+        "descricaoCompleta": "Torre 2",
+        "chave": "TORRE-2",
+        "tipoEstrutura": "Torre",
+        "numero": "2",
+        "projetista": "RKS Projetos",
+        "ordem": 2,
+        "customerInputRefs": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "grupo-contencao",
+        "descricao": "Contenção Perimetral",
+        "descricaoCompleta": "Contenção Perimetral",
+        "chave": "CONTENCAO",
+        "tipoEstrutura": "Contenção",
+        "numero": "-",
+        "projetista": "Geocontrole Engenharia",
+        "ordem": 3,
+        "customerInputRefs": [
+          "row-005"
+        ]
+      },
+      {
+        "tempId": "grupo-area-externa",
+        "descricao": "Área Externa",
+        "descricaoCompleta": "Área Externa",
+        "chave": "AREA-EXTERNA",
+        "tipoEstrutura": "Área Externa",
+        "numero": "-",
+        "projetista": "Equipe Técnica Cliente",
+        "ordem": 4,
+        "customerInputRefs": [
+          "row-006"
+        ]
+      }
+    ],
+    "unitTypes": [
+      {
+        "tempId": "tipo-estacas-f30",
+        "descricao": "Estacas",
+        "fckProjeto": 30,
+        "volumeProjeto": 2.0,
+        "classificacao": {
+          "descricao": "Fundação",
+          "suggestedId": 100000
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-001"
+        ]
+      },
+      {
+        "tempId": "tipo-bloco-coroamento-f35",
+        "descricao": "Bloco de Coroamento",
+        "fckProjeto": 35,
+        "volumeProjeto": 8.0,
+        "classificacao": {
+          "descricao": "Fundação",
+          "suggestedId": 100000
+        },
+        "produtoRef": "prod-fck35-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-002"
+        ]
+      },
+      {
+        "tempId": "tipo-terreo-f25",
+        "descricao": "Térreo",
+        "fckProjeto": 25,
+        "volumeProjeto": 125.5,
+        "classificacao": {
+          "descricao": "Estrutura",
+          "suggestedId": 100001
+        },
+        "produtoRef": "prod-fck25-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-003"
+        ]
+      },
+      {
+        "tempId": "tipo-pav-1-5-f25",
+        "descricao": "1º ao 5º Pavimento",
+        "fckProjeto": 25,
+        "volumeProjeto": 110.0,
+        "classificacao": {
+          "descricao": "Estrutura",
+          "suggestedId": 100001
+        },
+        "produtoRef": "prod-fck25-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "tipo-cortina-f30",
+        "descricao": "Cortina de Concreto",
+        "fckProjeto": 30,
+        "volumeProjeto": 177.97,
+        "classificacao": {
+          "descricao": "Contenções",
+          "suggestedId": 100004
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-005"
+        ]
+      },
+      {
+        "tempId": "tipo-piscina-adulto-f30",
+        "descricao": "Piscina Adulto",
+        "fckProjeto": 30,
+        "volumeProjeto": 42.3,
+        "classificacao": {
+          "descricao": "Demais Estruturas",
+          "suggestedId": 100003
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-006"
+        ]
+      }
+    ],
+    "units": [
+      {
+        "tempId": "un-grupo-torre-1-1",
+        "descricao": "Estacas",
+        "descricaoCompleta": "Torre 1 / Estacas",
+        "ordem": 1,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-estacas-f30"
+      },
+      {
+        "tempId": "un-grupo-torre-1-2",
+        "descricao": "Bloco de Coroamento",
+        "descricaoCompleta": "Torre 1 / Bloco de Coroamento",
+        "ordem": 2,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-bloco-coroamento-f35"
+      },
+      {
+        "tempId": "un-grupo-torre-1-3",
+        "descricao": "Térreo",
+        "descricaoCompleta": "Torre 1 / Térreo",
+        "ordem": 3,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-terreo-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-1",
+        "descricao": "1º Pavimento",
+        "descricaoCompleta": "Torre 1 / 1º Pavimento",
+        "ordem": 4,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-2",
+        "descricao": "2º Pavimento",
+        "descricaoCompleta": "Torre 1 / 2º Pavimento",
+        "ordem": 5,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-3",
+        "descricao": "3º Pavimento",
+        "descricaoCompleta": "Torre 1 / 3º Pavimento",
+        "ordem": 6,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-4",
+        "descricao": "4º Pavimento",
+        "descricaoCompleta": "Torre 1 / 4º Pavimento",
+        "ordem": 7,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-5",
+        "descricao": "5º Pavimento",
+        "descricaoCompleta": "Torre 1 / 5º Pavimento",
+        "ordem": 8,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-9",
+        "descricao": "Estacas",
+        "descricaoCompleta": "Torre 2 / Estacas",
+        "ordem": 9,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-estacas-f30"
+      },
+      {
+        "tempId": "un-grupo-torre-2-10",
+        "descricao": "Bloco de Coroamento",
+        "descricaoCompleta": "Torre 2 / Bloco de Coroamento",
+        "ordem": 10,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-bloco-coroamento-f35"
+      },
+      {
+        "tempId": "un-grupo-torre-2-11",
+        "descricao": "Térreo",
+        "descricaoCompleta": "Torre 2 / Térreo",
+        "ordem": 11,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-terreo-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-1",
+        "descricao": "1º Pavimento",
+        "descricaoCompleta": "Torre 2 / 1º Pavimento",
+        "ordem": 12,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-2",
+        "descricao": "2º Pavimento",
+        "descricaoCompleta": "Torre 2 / 2º Pavimento",
+        "ordem": 13,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-3",
+        "descricao": "3º Pavimento",
+        "descricaoCompleta": "Torre 2 / 3º Pavimento",
+        "ordem": 14,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-4",
+        "descricao": "4º Pavimento",
+        "descricaoCompleta": "Torre 2 / 4º Pavimento",
+        "ordem": 15,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-5",
+        "descricao": "5º Pavimento",
+        "descricaoCompleta": "Torre 2 / 5º Pavimento",
+        "ordem": 16,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-contencao-cortina",
+        "descricao": "Cortina de Concreto",
+        "descricaoCompleta": "Contenção Perimetral / Cortina de Concreto",
+        "ordem": 17,
+        "groupTempId": "grupo-contencao",
+        "unitTypeTempId": "tipo-cortina-f30"
+      },
+      {
+        "tempId": "un-area-piscina",
+        "descricao": "Piscina Adulto",
+        "descricaoCompleta": "Área Externa / Piscina Adulto",
+        "ordem": 18,
+        "groupTempId": "grupo-area-externa",
+        "unitTypeTempId": "tipo-piscina-adulto-f30"
+      }
+    ]
+  },
+  "technicalMapping": {
+    "databaseSource": "GeoClienteContextModelSnapshot / SQL Server",
+    "targetTables": [
+      {
+        "table": "Ges_UnidadeGrupo",
+        "purpose": "criar estruturas físicas agrupadoras",
+        "requiredFields": [
+          "Ges_MapaId",
+          "Chave",
+          "Descricao",
+          "DescricaoCompleta",
+          "Ordem"
+        ]
+      },
+      {
+        "table": "Ges_UnidadeTipo",
+        "purpose": "criar modelos técnicos por peça/FCK/volume",
+        "requiredFields": [
+          "Descricao",
+          "Ges_ObraId",
+          "Utl_TipoFornecimentoId",
+          "ShowDashboard"
+        ]
+      },
+      {
+        "table": "Ges_Unidade",
+        "purpose": "criar unidades concretáveis individuais",
+        "requiredFields": [
+          "Descricao",
+          "DescricaoCompleta",
+          "Ges_ObraId",
+          "Ges_UnidadeGrupoId",
+          "Ges_UnidadeTipoId",
+          "Ordem"
+        ]
+      },
+      {
+        "table": "Utl_Produto + Con_Concreto",
+        "purpose": "criar ou vincular traços/produtos de concreto",
+        "requiredFields": [
+          "Descricao",
+          "Utl_TipoFornecimentoId",
+          "Fck",
+          "Aplicacao",
+          "Especificacao"
+        ]
+      },
+      {
+        "table": "CTe_PadraoMoldagem",
+        "purpose": "definir corpos de prova por traço",
+        "requiredFields": [
+          "Utl_ProdutoId",
+          "CTe_TipoEnsaioId",
+          "QuantidadeCp",
+          "IdadeControle"
+        ]
+      },
+      {
+        "table": "Pro_Projetista",
+        "purpose": "catalogar projetistas digitados livremente",
+        "requiredFields": [
+          "Descricao"
+        ]
+      }
+    ],
+    "constants": {
+      "utlTipoFornecimentoConcretoId": 1,
+      "defaultCroquiObrigatorio": true,
+      "defaultShowDashboard": true
+    },
+    "implementationNotes": [
+      "O campo Projetista permanece texto livre no formulário e é normalizado por upsert em Pro_Projetista quando informado.",
+      "O campo Volume por unidade é persistido em Ges_UnidadeTipo.QuantidadeProjeto.",
+      "O campo FCK é usado para resolver ou criar o produto técnico em Utl_Produto e o traço em Con_Concreto.",
+      "Ges_UnidadeGrupo exige Ges_MapaId no banco atual; a implantação deve receber mapa existente ou criar mapa padrão antes dos grupos."
+    ]
+  },
+  "validation": {
+    "bloqueantes": [],
+    "alertas": [
+      {
+        "campo": "volumePorUnidade",
+        "mensagem": "Confirme se o volume informado para o range 1º ao 5º Pavimento é por pavimento, não volume agregado.",
+        "localizacao": "row-004"
+      }
+    ],
+    "sugestoes": [
+      {
+        "tipo": "agrupamento",
+        "mensagem": "Torre 1 e Torre 2 compartilham a mesma estrutura; manter agrupadas reduz cadastro manual.",
+        "itensAfetados": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      }
+    ],
+    "pendenciasInternas": [
+      {
+        "campo": "Ges_MapaId",
+        "mensagem": "Selecionar ou criar mapa padrão da obra antes de implantar grupos."
+      }
+    ]
+  },
+  "renderTree": {
+    "nodes": [
+      {
+        "id": "grupo-torre-1",
+        "label": "Torre 1",
+        "children": [
+          "Estacas",
+          "Bloco de Coroamento",
+          "Térreo",
+          "1º Pavimento",
+          "2º Pavimento",
+          "3º Pavimento",
+          "4º Pavimento",
+          "5º Pavimento"
+        ]
+      },
+      {
+        "id": "grupo-torre-2",
+        "label": "Torre 2",
+        "children": [
+          "Estacas",
+          "Bloco de Coroamento",
+          "Térreo",
+          "1º Pavimento",
+          "2º Pavimento",
+          "3º Pavimento",
+          "4º Pavimento",
+          "5º Pavimento"
+        ]
+      },
+      {
+        "id": "grupo-contencao",
+        "label": "Contenção Perimetral",
+        "children": [
+          "Cortina de Concreto"
+        ]
+      },
+      {
+        "id": "grupo-area-externa",
+        "label": "Área Externa",
+        "children": [
+          "Piscina Adulto"
+        ]
+      }
+    ]
+  },
+  "audit": [
+    {
+      "timestamp": "2026-05-18T14:55:00Z",
+      "actor": "engenharia@exemplo.com",
+      "action": "draft.created",
+      "details": "Rascunho criado no protótipo."
+    },
+    {
+      "timestamp": "2026-05-18T14:56:00Z",
+      "actor": "engenharia@exemplo.com",
+      "action": "technical.json.generated",
+      "details": "JSON técnico gerado com mapeamento de banco."
+    }
+  ]
+};
+    const typeOptions = ["Bloco", "Torre", "Contenção", "Área Externa", "Anexos", "Apoio"];
+    const etapaOptions = ["Fundação", "Estrutura", "Infra Estrutura", "Demais Estruturas", "Contenção"];
+    let currentJson = null;
+    function htmlEscape(v){return String(v ?? '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));}
+    function optionList(options, selected){ return options.map(o=>`<option ${o===selected?'selected':''}>${htmlEscape(o)}</option>`).join(''); }
+    function rowTemplate(row={}){
+      const idx = document.querySelectorAll('#rowsBody tr').length + 1;
+      return `<tr>
+        <td class="idx">${idx}</td>
+        <td><select class="tipo">${optionList(typeOptions, row.tipoEstrutura || 'Torre')}</select></td>
+        <td><input class="numero" value="${htmlEscape(row.numeroEstrutura || '')}" placeholder="1 e 2"></td>
+        <td><input class="nome" value="${htmlEscape(row.nomenclaturaSistema || '')}" placeholder="Torre 1"></td>
+        <td><input class="projetista" value="${htmlEscape(row.projetista || '')}" placeholder="Digite livremente"></td>
+        <td><select class="etapa">${optionList(etapaOptions, row.etapa || 'Estrutura')}</select></td>
+        <td><input class="peca" value="${htmlEscape(row.peca || '')}" placeholder="1º ao 5º Pavimento"></td>
+        <td><input class="fck" type="number" step="1" value="${row.fck ?? ''}"></td>
+        <td><input class="volume" type="number" step="0.01" value="${row.volumePorUnidade ?? ''}"></td>
+        <td><input class="concreto" value="${htmlEscape(row.concreto || '')}" placeholder="FCK 30 | BRITA 1"></td>
+        <td><input class="regra" value="${htmlEscape(row.regraAplicada || '')}"></td>
+        <td><button class="btn-danger" onclick="this.closest('tr').remove(); renumber(); generateAll();">×</button></td>
+      </tr>`;
+    }
+    function addRow(row){ document.getElementById('rowsBody').insertAdjacentHTML('beforeend', rowTemplate(row)); }
+    function clearRows(){ document.getElementById('rowsBody').innerHTML=''; currentJson=null; document.getElementById('jsonPreview').textContent='Clique em Gerar prévia para montar o JSON técnico.'; }
+    function renumber(){ [...document.querySelectorAll('#rowsBody tr')].forEach((tr,i)=>tr.querySelector('.idx').textContent=i+1); }
+    function loadCompleteExample(){
+      document.getElementById('obraNome').value = SAMPLE.metadata.obra.nome;
+      document.getElementById('obraCodigo').value = SAMPLE.metadata.obra.codigo;
+      document.getElementById('obraRegional').value = SAMPLE.metadata.obra.regional;
+      document.getElementById('obraEndereco').value = SAMPLE.metadata.obra.endereco;
+      document.getElementById('obraCep').value = SAMPLE.metadata.obra.cep;
+      document.getElementById('obraUnidades').value = SAMPLE.metadata.obra.quantidadeUnidades;
+      clearRows(); SAMPLE.customerInput.structures.forEach(addRow); generateAll(); document.getElementById('estruturas').scrollIntoView({behavior:'smooth'});
+    }
+    function readRows(){
+      return [...document.querySelectorAll('#rowsBody tr')].map((tr,i)=>({
+        clientRowId: `row-${String(i+1).padStart(3,'0')}`, tipoEstrutura: tr.querySelector('.tipo').value,
+        numeroEstrutura: tr.querySelector('.numero').value.trim() || '-', nomenclaturaSistema: tr.querySelector('.nome').value.trim(),
+        projetista: tr.querySelector('.projetista').value.trim(), etapa: tr.querySelector('.etapa').value,
+        peca: tr.querySelector('.peca').value.trim(), fck: Number(tr.querySelector('.fck').value || 0),
+        volumePorUnidade: tr.querySelector('.volume').value === '' ? null : Number(tr.querySelector('.volume').value),
+        concreto: tr.querySelector('.concreto').value.trim(), regraAplicada: tr.querySelector('.regra').value.trim(), ordem: i+1
+      }));
+    }
+    function parseNumbers(value){
+      const v = (value || '-').trim(); if(v==='-' || /^(unico|único)$/i.test(v)) return ['-'];
+      const range = v.match(/^(\d+)\s*(a|ao|até|-)\s*(\d+)$/i); if(range){ const a=+range[1], b=+range[3]; return Array.from({length:Math.abs(b-a)+1},(_,i)=>String(a<=b?a+i:a-i)); }
+      return v.replace(/\s+e\s+/gi, ',').split(',').map(s=>s.trim()).filter(Boolean);
+    }
+    function parsePieces(text){
+      const m = (text||'').match(/^(\d+)[º°]?\s*(a|ao|até|-)\s*(\d+)[º°]?\s*pav/i);
+      if(!m) return [text]; const a=+m[1], b=+m[3]; return Array.from({length:Math.abs(b-a)+1},(_,i)=>`${a<=b?a+i:a-i}º Pavimento`);
+    }
+    function slug(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,30); }
+    function classId(etapa){ return {'Fundação':100000,'Estrutura':100001,'Infra Estrutura':100002,'Demais Estruturas':100003,'Contenção':100004}[etapa] || 100003; }
+    function buildJson(){
+      const rows = readRows(); const groupsByKey = new Map(); const typeByKey = new Map(); const units = [];
+      rows.forEach(row=>{
+        parseNumbers(row.numeroEstrutura).forEach(num=>{
+          const desc = num==='-' ? row.nomenclaturaSistema : `${row.tipoEstrutura} ${num}`;
+          const key = `${row.tipoEstrutura}|${num}|${row.nomenclaturaSistema}`;
+          if(!groupsByKey.has(key)) groupsByKey.set(key, { tempId:`grupo-${slug(desc).toLowerCase()}`, descricao:desc, descricaoCompleta:desc, chave:slug(desc), tipoEstrutura:row.tipoEstrutura, numero:num, projetista:row.projetista, ordem:groupsByKey.size+1, customerInputRefs:[] });
+          groupsByKey.get(key).customerInputRefs.push(row.clientRowId);
+          const typeKey = `${row.peca}|${row.fck}|${row.volumePorUnidade}|${row.etapa}|${row.concreto}`;
+          if(!typeByKey.has(typeKey)) typeByKey.set(typeKey, {tempId:`tipo-${slug(row.peca).toLowerCase()}-${row.fck}`, descricao:row.peca, fckProjeto:row.fck, volumeProjeto:row.volumePorUnidade, classificacao:{descricao:row.etapa, suggestedId:classId(row.etapa)}, produtoRef:`prod-fck${row.fck}`, croquiObrigatorio:true, formaObrigatorio:false, apareceNoDashboard:true, permiteUnidadeAdicional:false, mostrarLegendaMapa:true, localAplicacaoSelecionadoPorEntrega:false, customerInputRefs:[]});
+          typeByKey.get(typeKey).customerInputRefs.push(row.clientRowId);
+          parsePieces(row.peca).forEach(piece=>units.push({tempId:`un-${groupsByKey.get(key).tempId}-${slug(piece).toLowerCase()}-${units.length+1}`, descricao:piece, descricaoCompleta:`${groupsByKey.get(key).descricao} / ${piece}`, ordem:units.length+1, groupTempId:groupsByKey.get(key).tempId, unitTypeTempId:typeByKey.get(typeKey).tempId}));
+        });
+      });
+      const bloqueantes=[], alertas=[], sugestoes=[], pendenciasInternas=[];
+      rows.forEach(r=>{ if(!r.nomenclaturaSistema) bloqueantes.push({campo:'Nomenclatura no Sistema', mensagem:'Informe a nomenclatura exibida no sistema.', localizacao:r.clientRowId}); if(!r.peca) bloqueantes.push({campo:'Peça/Pavimento', mensagem:'Informe a peça ou pavimento.', localizacao:r.clientRowId}); if(!r.fck) bloqueantes.push({campo:'FCK', mensagem:'Informe FCK numérico.', localizacao:r.clientRowId}); if(r.volumePorUnidade===null) alertas.push({campo:'Volume por unidade', mensagem:'Volume não informado. Pode seguir como pendência interna.', localizacao:r.clientRowId}); if(/ao|até|\sa\s/i.test(r.peca||'')) sugestoes.push({tipo:'agrupamento', mensagem:'Range de pavimentos será expandido para unidades individuais. Confirme se o volume é por unidade.', itensAfetados:[r.clientRowId]}); });
+      pendenciasInternas.push({campo:'Ges_MapaId', mensagem:'Selecionar ou criar mapa padrão antes de implantar Ges_UnidadeGrupo.'});
+      const json = JSON.parse(JSON.stringify(SAMPLE));
+      json.metadata.generatedAt = new Date().toISOString();
+      json.metadata.obra = {gesObraId:null,nome:document.getElementById('obraNome').value,codigo:document.getElementById('obraCodigo').value,regional:document.getElementById('obraRegional').value,endereco:document.getElementById('obraEndereco').value,cep:document.getElementById('obraCep').value,quantidadeUnidades:Number(document.getElementById('obraUnidades').value||0)};
+      json.customerInput.structures = rows; json.normalizedStructure.groups = [...groupsByKey.values()]; json.normalizedStructure.unitTypes = [...typeByKey.values()]; json.normalizedStructure.units = units;
+      json.validation = {bloqueantes, alertas, sugestoes, pendenciasInternas};
+      json.renderTree = {nodes:[...groupsByKey.values()].map(g=>({id:g.tempId,label:g.descricao,children:units.filter(u=>u.groupTempId===g.tempId).map(u=>u.descricao)}))};
+      json.audit = [...SAMPLE.audit, {timestamp:new Date().toISOString(), actor:'usuario@obra.local', action:'technical.json.generated', details:'JSON técnico gerado no protótipo.'}];
+      return json;
+    }
+    function generateAll(){
+      currentJson = buildJson(); document.getElementById('jsonPreview').textContent = JSON.stringify(currentJson,null,2);
+      const s = document.getElementById('stats'); const j=currentJson;
+      s.innerHTML = `<div class="stat"><b>${j.normalizedStructure.groups.length}</b>Estruturas</div><div class="stat"><b>${j.normalizedStructure.unitTypes.length}</b>Tipos técnicos</div><div class="stat"><b>${j.normalizedStructure.units.length}</b>Unidades</div><div class="stat"><b>${j.validation.bloqueantes.length}</b>Bloqueantes</div>`;
+      document.getElementById('tree').innerHTML = j.renderTree.nodes.map(n=>`<div class="tree-card"><h3>${htmlEscape(n.label)}</h3><ul>${n.children.map(c=>`<li>${htmlEscape(c)}</li>`).join('')}</ul></div>`).join('');
+      document.getElementById('validationBadge').className = j.validation.bloqueantes.length ? 'pill bad' : 'pill ok';
+      document.getElementById('validationBadge').textContent = j.validation.bloqueantes.length ? 'Com bloqueantes' : 'Apto para validação';
+      document.getElementById('validationPanel').innerHTML = ['bloqueantes','alertas','sugestoes','pendenciasInternas'].map(k=>`<h3>${k}</h3>${j.validation[k].length?j.validation[k].map(v=>`<div class="note" style="margin-bottom:8px"><b>${htmlEscape(v.campo||v.tipo||'Regra')}</b>: ${htmlEscape(v.mensagem)}</div>`).join(''):'<p class="footnote">Nenhum item.</p>'}`).join('');
+    }
+    function downloadBlob(filename, mime, content){ const blob = new Blob([content],{type:mime}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500); }
+    function downloadJson(){ if(!currentJson) generateAll(); downloadBlob('implantacao-estrutura-json-tecnico.json','application/json;charset=utf-8',JSON.stringify(currentJson,null,2)); }
+    function sheetXml(name, rows){ return `<Worksheet ss:Name="${htmlEscape(name)}"><Table>${rows.map(r=>`<Row>${r.map(c=>`<Cell><Data ss:Type="String">${htmlEscape(c ?? '')}</Data></Cell>`).join('')}</Row>`).join('')}</Table></Worksheet>`; }
+    function downloadExcel(){
+      if(!currentJson) generateAll(); const j=currentJson;
+      const resumo = [['Campo','Valor'],['Obra',j.metadata.obra.nome],['Código',j.metadata.obra.codigo],['Estruturas',j.normalizedStructure.groups.length],['Tipos técnicos',j.normalizedStructure.unitTypes.length],['Unidades',j.normalizedStructure.units.length],['Gerado em',j.metadata.generatedAt]];
+      const estruturas = [['Tipo de Estrutura','Número da Estrutura','Nomenclatura no Sistema','Projetista','Etapa','Peça/Pavimento','FCK','Volume por unidade','Concreto','Regra Aplicada'], ...j.customerInput.structures.map(r=>[r.tipoEstrutura,r.numeroEstrutura,r.nomenclaturaSistema,r.projetista,r.etapa,r.peca,r.fck,r.volumePorUnidade,r.concreto,r.regraAplicada])];
+      const mapping = [['Tabela','Finalidade','Campos obrigatórios'], ...j.technicalMapping.targetTables.map(t=>[t.table,t.purpose,t.requiredFields.join(', ')])];
+      const validacoes = [['Nível','Campo/Tipo','Mensagem','Localização'], ...Object.entries(j.validation).flatMap(([k,items])=>items.map(v=>[k,v.campo||v.tipo||'',v.mensagem||'',v.localizacao||(v.itensAfetados||[]).join(', ')]))];
+      const jsonRows = [['JSON Técnico'], [JSON.stringify(j)]];
+      const xml = `<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheetXml('Resumo',resumo)}${sheetXml('Estruturas',estruturas)}${sheetXml('Mapeamento_Banco',mapping)}${sheetXml('Validacoes',validacoes)}${sheetXml('JSON_Tecnico',jsonRows)}</Workbook>`;
+      downloadBlob('implantacao-estrutura-exportacao-tecnica.xls','application/vnd.ms-excel;charset=utf-8',xml);
+    }
+    document.querySelectorAll('.nav-item').forEach(item=>item.addEventListener('click',()=>{ document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); item.classList.add('active'); document.getElementById(item.dataset.target).scrollIntoView({behavior:'smooth'}); }));
+    loadCompleteExample();
+  </script>
+</body>
+</html>

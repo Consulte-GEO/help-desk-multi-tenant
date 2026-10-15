@@ -1,0 +1,619 @@
+{
+  "metadata": {
+    "schemaVersion": "3.0.0",
+    "generatedAt": "2026-05-18T14:55:00Z",
+    "source": "cadastro-simplificado-estrutura",
+    "draftId": "draft-demo-estrutura-projetista",
+    "protocolo": "IMP-EST-DEMO-0001",
+    "tenant": {
+      "codigoContrato": 0,
+      "databaseMode": "database-per-tenant"
+    },
+    "obra": {
+      "gesObraId": null,
+      "nome": "Residencial Parque Modelo",
+      "codigo": "RPM001",
+      "regional": "Única",
+      "endereco": "Rua Exemplo, 100 - São Paulo/SP",
+      "cep": "01001000",
+      "quantidadeUnidades": 192
+    },
+    "submittedBy": {
+      "nome": "Engenheiro da Obra",
+      "email": "engenharia@exemplo.com"
+    }
+  },
+  "customerInput": {
+    "mode": "estruturas",
+    "projectDesignerFreeText": true,
+    "structureTypeOptions": [
+      "Bloco",
+      "Torre",
+      "Contenção",
+      "Área Externa",
+      "Anexos",
+      "Apoio"
+    ],
+    "structures": [
+      {
+        "clientRowId": "row-001",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Fundação",
+        "peca": "Estacas",
+        "fck": 30,
+        "volumePorUnidade": 2.0,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estruturas agrupadas por repetição confirmada",
+        "ordem": 1
+      },
+      {
+        "clientRowId": "row-002",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Fundação",
+        "peca": "Bloco de Coroamento",
+        "fck": 35,
+        "volumePorUnidade": 8.0,
+        "concreto": "FCK 35 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estruturas agrupadas por repetição confirmada",
+        "ordem": 2
+      },
+      {
+        "clientRowId": "row-003",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Estrutura",
+        "peca": "Térreo",
+        "fck": 25,
+        "volumePorUnidade": 125.5,
+        "concreto": "FCK 25 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Volume informado por pavimento",
+        "ordem": 3
+      },
+      {
+        "clientRowId": "row-004",
+        "tipoEstrutura": "Torre",
+        "numeroEstrutura": "1 e 2",
+        "nomenclaturaSistema": "Torre 1 e Torre 2",
+        "projetista": "RKS Projetos",
+        "etapa": "Estrutura",
+        "peca": "1º ao 5º Pavimento",
+        "fck": 25,
+        "volumePorUnidade": 110.0,
+        "concreto": "FCK 25 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Range expandido para unidades individuais",
+        "ordem": 4
+      },
+      {
+        "clientRowId": "row-005",
+        "tipoEstrutura": "Contenção",
+        "numeroEstrutura": "-",
+        "nomenclaturaSistema": "Contenção Perimetral",
+        "projetista": "Geocontrole Engenharia",
+        "etapa": "Contenção",
+        "peca": "Cortina de Concreto",
+        "fck": 30,
+        "volumePorUnidade": 177.97,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estrutura avulsa sem numeração",
+        "ordem": 5
+      },
+      {
+        "clientRowId": "row-006",
+        "tipoEstrutura": "Área Externa",
+        "numeroEstrutura": "-",
+        "nomenclaturaSistema": "Área Externa",
+        "projetista": "Equipe Técnica Cliente",
+        "etapa": "Demais Estruturas",
+        "peca": "Piscina Adulto",
+        "fck": 30,
+        "volumePorUnidade": 42.3,
+        "concreto": "FCK 30 | BRITA 1 | SLUMP 10±2 CM",
+        "regraAplicada": "Estrutura avulsa sem numeração",
+        "ordem": 6
+      }
+    ]
+  },
+  "normalizedStructure": {
+    "groups": [
+      {
+        "tempId": "grupo-torre-1",
+        "descricao": "Torre 1",
+        "descricaoCompleta": "Torre 1",
+        "chave": "TORRE-1",
+        "tipoEstrutura": "Torre",
+        "numero": "1",
+        "projetista": "RKS Projetos",
+        "ordem": 1,
+        "customerInputRefs": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "grupo-torre-2",
+        "descricao": "Torre 2",
+        "descricaoCompleta": "Torre 2",
+        "chave": "TORRE-2",
+        "tipoEstrutura": "Torre",
+        "numero": "2",
+        "projetista": "RKS Projetos",
+        "ordem": 2,
+        "customerInputRefs": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "grupo-contencao",
+        "descricao": "Contenção Perimetral",
+        "descricaoCompleta": "Contenção Perimetral",
+        "chave": "CONTENCAO",
+        "tipoEstrutura": "Contenção",
+        "numero": "-",
+        "projetista": "Geocontrole Engenharia",
+        "ordem": 3,
+        "customerInputRefs": [
+          "row-005"
+        ]
+      },
+      {
+        "tempId": "grupo-area-externa",
+        "descricao": "Área Externa",
+        "descricaoCompleta": "Área Externa",
+        "chave": "AREA-EXTERNA",
+        "tipoEstrutura": "Área Externa",
+        "numero": "-",
+        "projetista": "Equipe Técnica Cliente",
+        "ordem": 4,
+        "customerInputRefs": [
+          "row-006"
+        ]
+      }
+    ],
+    "unitTypes": [
+      {
+        "tempId": "tipo-estacas-f30",
+        "descricao": "Estacas",
+        "fckProjeto": 30,
+        "volumeProjeto": 2.0,
+        "classificacao": {
+          "descricao": "Fundação",
+          "suggestedId": 100000
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-001"
+        ]
+      },
+      {
+        "tempId": "tipo-bloco-coroamento-f35",
+        "descricao": "Bloco de Coroamento",
+        "fckProjeto": 35,
+        "volumeProjeto": 8.0,
+        "classificacao": {
+          "descricao": "Fundação",
+          "suggestedId": 100000
+        },
+        "produtoRef": "prod-fck35-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-002"
+        ]
+      },
+      {
+        "tempId": "tipo-terreo-f25",
+        "descricao": "Térreo",
+        "fckProjeto": 25,
+        "volumeProjeto": 125.5,
+        "classificacao": {
+          "descricao": "Estrutura",
+          "suggestedId": 100001
+        },
+        "produtoRef": "prod-fck25-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-003"
+        ]
+      },
+      {
+        "tempId": "tipo-pav-1-5-f25",
+        "descricao": "1º ao 5º Pavimento",
+        "fckProjeto": 25,
+        "volumeProjeto": 110.0,
+        "classificacao": {
+          "descricao": "Estrutura",
+          "suggestedId": 100001
+        },
+        "produtoRef": "prod-fck25-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-004"
+        ]
+      },
+      {
+        "tempId": "tipo-cortina-f30",
+        "descricao": "Cortina de Concreto",
+        "fckProjeto": 30,
+        "volumeProjeto": 177.97,
+        "classificacao": {
+          "descricao": "Contenções",
+          "suggestedId": 100004
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-005"
+        ]
+      },
+      {
+        "tempId": "tipo-piscina-adulto-f30",
+        "descricao": "Piscina Adulto",
+        "fckProjeto": 30,
+        "volumeProjeto": 42.3,
+        "classificacao": {
+          "descricao": "Demais Estruturas",
+          "suggestedId": 100003
+        },
+        "produtoRef": "prod-fck30-slump10",
+        "croquiObrigatorio": true,
+        "formaObrigatorio": false,
+        "apareceNoDashboard": true,
+        "permiteUnidadeAdicional": false,
+        "mostrarLegendaMapa": true,
+        "localAplicacaoSelecionadoPorEntrega": false,
+        "customerInputRefs": [
+          "row-006"
+        ]
+      }
+    ],
+    "units": [
+      {
+        "tempId": "un-grupo-torre-1-1",
+        "descricao": "Estacas",
+        "descricaoCompleta": "Torre 1 / Estacas",
+        "ordem": 1,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-estacas-f30"
+      },
+      {
+        "tempId": "un-grupo-torre-1-2",
+        "descricao": "Bloco de Coroamento",
+        "descricaoCompleta": "Torre 1 / Bloco de Coroamento",
+        "ordem": 2,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-bloco-coroamento-f35"
+      },
+      {
+        "tempId": "un-grupo-torre-1-3",
+        "descricao": "Térreo",
+        "descricaoCompleta": "Torre 1 / Térreo",
+        "ordem": 3,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-terreo-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-1",
+        "descricao": "1º Pavimento",
+        "descricaoCompleta": "Torre 1 / 1º Pavimento",
+        "ordem": 4,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-2",
+        "descricao": "2º Pavimento",
+        "descricaoCompleta": "Torre 1 / 2º Pavimento",
+        "ordem": 5,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-3",
+        "descricao": "3º Pavimento",
+        "descricaoCompleta": "Torre 1 / 3º Pavimento",
+        "ordem": 6,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-4",
+        "descricao": "4º Pavimento",
+        "descricaoCompleta": "Torre 1 / 4º Pavimento",
+        "ordem": 7,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-1-pav-5",
+        "descricao": "5º Pavimento",
+        "descricaoCompleta": "Torre 1 / 5º Pavimento",
+        "ordem": 8,
+        "groupTempId": "grupo-torre-1",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-9",
+        "descricao": "Estacas",
+        "descricaoCompleta": "Torre 2 / Estacas",
+        "ordem": 9,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-estacas-f30"
+      },
+      {
+        "tempId": "un-grupo-torre-2-10",
+        "descricao": "Bloco de Coroamento",
+        "descricaoCompleta": "Torre 2 / Bloco de Coroamento",
+        "ordem": 10,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-bloco-coroamento-f35"
+      },
+      {
+        "tempId": "un-grupo-torre-2-11",
+        "descricao": "Térreo",
+        "descricaoCompleta": "Torre 2 / Térreo",
+        "ordem": 11,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-terreo-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-1",
+        "descricao": "1º Pavimento",
+        "descricaoCompleta": "Torre 2 / 1º Pavimento",
+        "ordem": 12,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-2",
+        "descricao": "2º Pavimento",
+        "descricaoCompleta": "Torre 2 / 2º Pavimento",
+        "ordem": 13,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-3",
+        "descricao": "3º Pavimento",
+        "descricaoCompleta": "Torre 2 / 3º Pavimento",
+        "ordem": 14,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-4",
+        "descricao": "4º Pavimento",
+        "descricaoCompleta": "Torre 2 / 4º Pavimento",
+        "ordem": 15,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-grupo-torre-2-pav-5",
+        "descricao": "5º Pavimento",
+        "descricaoCompleta": "Torre 2 / 5º Pavimento",
+        "ordem": 16,
+        "groupTempId": "grupo-torre-2",
+        "unitTypeTempId": "tipo-pav-1-5-f25"
+      },
+      {
+        "tempId": "un-contencao-cortina",
+        "descricao": "Cortina de Concreto",
+        "descricaoCompleta": "Contenção Perimetral / Cortina de Concreto",
+        "ordem": 17,
+        "groupTempId": "grupo-contencao",
+        "unitTypeTempId": "tipo-cortina-f30"
+      },
+      {
+        "tempId": "un-area-piscina",
+        "descricao": "Piscina Adulto",
+        "descricaoCompleta": "Área Externa / Piscina Adulto",
+        "ordem": 18,
+        "groupTempId": "grupo-area-externa",
+        "unitTypeTempId": "tipo-piscina-adulto-f30"
+      }
+    ]
+  },
+  "technicalMapping": {
+    "databaseSource": "GeoClienteContextModelSnapshot / SQL Server",
+    "targetTables": [
+      {
+        "table": "Ges_UnidadeGrupo",
+        "purpose": "criar estruturas físicas agrupadoras",
+        "requiredFields": [
+          "Ges_MapaId",
+          "Chave",
+          "Descricao",
+          "DescricaoCompleta",
+          "Ordem"
+        ]
+      },
+      {
+        "table": "Ges_UnidadeTipo",
+        "purpose": "criar modelos técnicos por peça/FCK/volume",
+        "requiredFields": [
+          "Descricao",
+          "Ges_ObraId",
+          "Utl_TipoFornecimentoId",
+          "ShowDashboard"
+        ]
+      },
+      {
+        "table": "Ges_Unidade",
+        "purpose": "criar unidades concretáveis individuais",
+        "requiredFields": [
+          "Descricao",
+          "DescricaoCompleta",
+          "Ges_ObraId",
+          "Ges_UnidadeGrupoId",
+          "Ges_UnidadeTipoId",
+          "Ordem"
+        ]
+      },
+      {
+        "table": "Utl_Produto + Con_Concreto",
+        "purpose": "criar ou vincular traços/produtos de concreto",
+        "requiredFields": [
+          "Descricao",
+          "Utl_TipoFornecimentoId",
+          "Fck",
+          "Aplicacao",
+          "Especificacao"
+        ]
+      },
+      {
+        "table": "CTe_PadraoMoldagem",
+        "purpose": "definir corpos de prova por traço",
+        "requiredFields": [
+          "Utl_ProdutoId",
+          "CTe_TipoEnsaioId",
+          "QuantidadeCp",
+          "IdadeControle"
+        ]
+      },
+      {
+        "table": "Pro_Projetista",
+        "purpose": "catalogar projetistas digitados livremente",
+        "requiredFields": [
+          "Descricao"
+        ]
+      }
+    ],
+    "constants": {
+      "utlTipoFornecimentoConcretoId": 1,
+      "defaultCroquiObrigatorio": true,
+      "defaultShowDashboard": true
+    },
+    "implementationNotes": [
+      "O campo Projetista permanece texto livre no formulário e é normalizado por upsert em Pro_Projetista quando informado.",
+      "O campo Volume por unidade é persistido em Ges_UnidadeTipo.QuantidadeProjeto.",
+      "O campo FCK é usado para resolver ou criar o produto técnico em Utl_Produto e o traço em Con_Concreto.",
+      "Ges_UnidadeGrupo exige Ges_MapaId no banco atual; a implantação deve receber mapa existente ou criar mapa padrão antes dos grupos."
+    ]
+  },
+  "validation": {
+    "bloqueantes": [],
+    "alertas": [
+      {
+        "campo": "volumePorUnidade",
+        "mensagem": "Confirme se o volume informado para o range 1º ao 5º Pavimento é por pavimento, não volume agregado.",
+        "localizacao": "row-004"
+      }
+    ],
+    "sugestoes": [
+      {
+        "tipo": "agrupamento",
+        "mensagem": "Torre 1 e Torre 2 compartilham a mesma estrutura; manter agrupadas reduz cadastro manual.",
+        "itensAfetados": [
+          "row-001",
+          "row-002",
+          "row-003",
+          "row-004"
+        ]
+      }
+    ],
+    "pendenciasInternas": [
+      {
+        "campo": "Ges_MapaId",
+        "mensagem": "Selecionar ou criar mapa padrão da obra antes de implantar grupos."
+      }
+    ]
+  },
+  "renderTree": {
+    "nodes": [
+      {
+        "id": "grupo-torre-1",
+        "label": "Torre 1",
+        "children": [
+          "Estacas",
+          "Bloco de Coroamento",
+          "Térreo",
+          "1º Pavimento",
+          "2º Pavimento",
+          "3º Pavimento",
+          "4º Pavimento",
+          "5º Pavimento"
+        ]
+      },
+      {
+        "id": "grupo-torre-2",
+        "label": "Torre 2",
+        "children": [
+          "Estacas",
+          "Bloco de Coroamento",
+          "Térreo",
+          "1º Pavimento",
+          "2º Pavimento",
+          "3º Pavimento",
+          "4º Pavimento",
+          "5º Pavimento"
+        ]
+      },
+      {
+        "id": "grupo-contencao",
+        "label": "Contenção Perimetral",
+        "children": [
+          "Cortina de Concreto"
+        ]
+      },
+      {
+        "id": "grupo-area-externa",
+        "label": "Área Externa",
+        "children": [
+          "Piscina Adulto"
+        ]
+      }
+    ]
+  },
+  "audit": [
+    {
+      "timestamp": "2026-05-18T14:55:00Z",
+      "actor": "engenharia@exemplo.com",
+      "action": "draft.created",
+      "details": "Rascunho criado no protótipo."
+    },
+    {
+      "timestamp": "2026-05-18T14:56:00Z",
+      "actor": "engenharia@exemplo.com",
+      "action": "technical.json.generated",
+      "details": "JSON técnico gerado com mapeamento de banco."
+    }
+  ]
+}

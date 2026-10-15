@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulte GEO Concreto - Implantação de Estrutura</title>
+  <style>
+    :root {
+      --brand-navy: #182863;
+      --brand-navy-deep: #0E1B40;
+      --brand-purple: #3E2D71;
+      --brand-magenta: #C5117E;
+      --brand-magenta-light: #E8459E;
+      --brand-gradient: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-purple) 55%, var(--brand-magenta) 100%);
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --surface-raised: #ffffff;
+      --fg: #121a36;
+      --fg-muted: #6d6a62;
+      --border: #e7e2d8;
+      --border-strong: #d7d0c2;
+      --info: #2368a2;
+      --success: #1f7a4a;
+      --warning: #a36500;
+      --danger: #b42318;
+      --success-bg: #e8f7ee;
+      --warning-bg: #fff6df;
+      --danger-bg: #fff0ee;
+      --info-bg: #ebf4ff;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-1: 0 1px 2px rgba(14, 27, 64, .06);
+      --shadow-2: 0 12px 32px rgba(14, 27, 64, .10);
+      --focus: 0 0 0 3px rgba(197, 17, 126, .22);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --font-sans: "Mona Sans", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    [data-theme="dark"] {
+      --bg: #111626;
+      --surface: #181e31;
+      --surface-raised: #202842;
+      --fg: #f8f7f2;
+      --fg-muted: #aaa99e;
+      --border: #303a5e;
+      --border-strong: #45517c;
+      --success-bg: rgba(31, 122, 74, .18);
+      --warning-bg: rgba(163, 101, 0, .18);
+      --danger-bg: rgba(180, 35, 24, .18);
+      --info-bg: rgba(35, 104, 162, .18);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top right, rgba(197,17,126,.12), transparent 32rem), var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    button, input, select, textarea { font: inherit; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 0; box-shadow: var(--focus); }
+    .app-shell { min-height: 100vh; display: grid; grid-template-columns: 280px 1fr; }
+    .sidebar {
+      background: var(--brand-gradient);
+      color: #fff;
+      padding: 24px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 28px; }
+    .brand-mark { width: 42px; height: 42px; background: rgba(255,255,255,.96); border-radius: 14px; display: grid; place-items: center; overflow: hidden; }
+    .brand-mark img { width: 36px; height: auto; display: block; }
+    .brand-title { font-weight: 800; letter-spacing: -.02em; font-size: 18px; }
+    .brand-subtitle { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; opacity: .72; }
+    .nav-title { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; opacity: .68; margin: 20px 10px 8px; }
+    .step-nav { display: grid; gap: 6px; }
+    .step-link {
+      border: 0;
+      width: 100%;
+      border-radius: 14px;
+      background: transparent;
+      color: rgba(255,255,255,.82);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      align-items: center;
+    }
+    .step-link:hover { background: rgba(255,255,255,.10); }
+    .step-link.active { background: rgba(255,255,255,.18); color: #fff; }
+    .step-link.done .step-index { background: rgba(255,255,255,.96); color: var(--brand-navy); }
+    .step-index { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,.30); display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+    .step-label strong { display: block; font-size: 13px; }
+    .step-label span { display: block; font-size: 12px; opacity: .70; }
+    .side-card { margin-top: 24px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); border-radius: 18px; padding: 16px; }
+    .side-card strong { display: block; margin-bottom: 6px; }
+    .side-card p { margin: 0; opacity: .80; font-size: 12px; }
+    .main { display: flex; flex-direction: column; min-width: 0; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 84%, transparent);
+      border-bottom: 1px solid var(--border);
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      gap: 16px;
+    }
+    .page-title h1 { margin: 0; font-size: 24px; line-height: 1.1; letter-spacing: -.03em; }
+    .kicker { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; color: var(--fg-muted); font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .save-state { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); }
+    .content { padding: 28px; max-width: 1500px; width: 100%; margin: 0 auto; }
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-1); }
+    .card-header { padding: 20px 20px 0; display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+    .card-title { margin: 0; font-size: 18px; line-height: 1.2; letter-spacing: -.02em; }
+    .card-description { color: var(--fg-muted); margin: 6px 0 0; }
+    .card-body { padding: 20px; }
+    .section-title { margin: 0 0 16px; display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+    .section-title h2 { margin: 0; font-size: 22px; letter-spacing: -.025em; }
+    .section-title p { margin: 4px 0 0; color: var(--fg-muted); }
+    .field { display: grid; gap: 7px; }
+    .field label { font-weight: 700; font-size: 13px; }
+    .field .hint { color: var(--fg-muted); font-size: 12px; margin-top: -2px; }
+    .input, .select, .textarea {
+      width: 100%;
+      background: var(--surface-raised);
+      color: var(--fg);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      min-height: 42px;
+      padding: 10px 12px;
+    }
+    .textarea { min-height: 90px; resize: vertical; }
+    .input-group { display: flex; align-items: center; }
+    .input-group .input { border-radius: 12px 0 0 12px; }
+    .input-suffix { min-height: 42px; display: grid; place-items: center; padding: 0 12px; background: var(--bg); border: 1px solid var(--border-strong); border-left: 0; border-radius: 0 12px 12px 0; color: var(--fg-muted); font-weight: 700; }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      min-height: 40px;
+      padding: 0 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--fg);
+      background: var(--surface-raised);
+      border: 1px solid var(--border-strong);
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-1); }
+    .btn.primary { background: var(--brand-navy); color: #fff; border-color: var(--brand-navy); }
+    .btn.brand { background: var(--brand-gradient); color: #fff; border-color: transparent; }
+    .btn.ghost { background: transparent; border-color: transparent; color: var(--fg-muted); }
+    .btn.danger { background: var(--danger-bg); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 30%, var(--border)); }
+    .btn.sm { min-height: 32px; padding: 0 10px; border-radius: 10px; font-size: 12px; }
+    .btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
+    .radio-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .radio-card { position: relative; border: 1px solid var(--border); background: var(--surface); border-radius: 18px; padding: 16px; cursor: pointer; min-height: 110px; }
+    .radio-card input { position: absolute; inset: 16px 16px auto auto; }
+    .radio-card:has(input:checked) { border-color: var(--brand-magenta); box-shadow: 0 0 0 3px rgba(197,17,126,.13); }
+    .radio-card strong { display: block; margin-bottom: 6px; }
+    .radio-card span { color: var(--fg-muted); }
+    .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 10px; background: var(--surface-raised); font-weight: 700; font-size: 12px; }
+    .chip button { border: 0; background: transparent; color: var(--fg-muted); cursor: pointer; padding: 0; font-weight: 900; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 9px; font-size: 12px; font-weight: 800; border: 1px solid transparent; }
+    .badge.success { color: var(--success); background: var(--success-bg); }
+    .badge.warning { color: var(--warning); background: var(--warning-bg); }
+    .badge.danger { color: var(--danger); background: var(--danger-bg); }
+    .badge.info { color: var(--info); background: var(--info-bg); }
+    .badge.neutral { color: var(--fg-muted); background: var(--bg); border-color: var(--border); }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+    table { border-collapse: collapse; width: 100%; min-width: 860px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 10px; text-align: left; vertical-align: top; }
+    th { background: var(--bg); color: var(--fg-muted); font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .10em; }
+    td .input, td .select { min-height: 36px; padding: 7px 9px; border-radius: 10px; }
+    tr:last-child td { border-bottom: 0; }
+    .empty { border: 1px dashed var(--border-strong); border-radius: 18px; background: color-mix(in srgb, var(--surface) 76%, var(--bg)); padding: 28px; text-align: center; color: var(--fg-muted); }
+    .alert { border-radius: 16px; padding: 13px 14px; border: 1px solid; display: grid; gap: 4px; }
+    .alert strong { display: block; }
+    .alert.info { background: var(--info-bg); border-color: color-mix(in srgb, var(--info) 30%, transparent); color: var(--info); }
+    .alert.success { background: var(--success-bg); border-color: color-mix(in srgb, var(--success) 30%, transparent); color: var(--success); }
+    .alert.warning { background: var(--warning-bg); border-color: color-mix(in srgb, var(--warning) 30%, transparent); color: var(--warning); }
+    .alert.danger { background: var(--danger-bg); border-color: color-mix(in srgb, var(--danger) 30%, transparent); color: var(--danger); }
+    .wizard-footer { position: sticky; bottom: 0; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 12px; z-index: 12; }
+    .validation-grid { display: grid; gap: 10px; }
+    .tree { padding: 0; margin: 0; list-style: none; }
+    .tree li { position: relative; padding: 7px 0 7px 24px; border-left: 1px solid var(--border); }
+    .tree li::before { content: ""; position: absolute; left: 0; top: 18px; width: 16px; height: 1px; background: var(--border); }
+    .tree .node { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .tree .node button { border: 0; background: transparent; color: var(--fg); cursor: pointer; font-weight: 700; }
+    .preview-layout { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.4fr); gap: 16px; align-items: start; }
+    .stack-board { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
+    .tower-stack { min-width: 150px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-raised); padding: 10px; }
+    .tower-title { font-weight: 900; text-align: center; margin-bottom: 8px; font-size: 12px; }
+    .floor-card { border-radius: 10px; border: 1px solid var(--border); padding: 7px; margin-top: 6px; font-size: 11px; min-height: 36px; background: var(--bg); cursor: pointer; }
+    .floor-card.fck-15 { border-left: 5px solid #9d8df1; }
+    .floor-card.fck-20 { border-left: 5px solid #2368a2; }
+    .floor-card.fck-25 { border-left: 5px solid #1f7a4a; }
+    .floor-card.fck-30 { border-left: 5px solid #a36500; }
+    .floor-card.fck-35 { border-left: 5px solid #c5117e; }
+    .floor-card.fck-40, .floor-card.fck-45, .floor-card.fck-50 { border-left: 5px solid #b42318; }
+    .drawer {
+      position: fixed; inset: 0 0 0 auto; width: min(520px, 100%); background: var(--surface); border-left: 1px solid var(--border); box-shadow: var(--shadow-2); z-index: 50; transform: translateX(102%); transition: transform .22s ease; display: flex; flex-direction: column;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .drawer .drawer-body { padding: 20px; overflow: auto; }
+    .overlay { position: fixed; inset: 0; background: rgba(14, 27, 64, .24); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 40; }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    pre.json { background: #0e1b40; color: #eef3ff; border-radius: 18px; padding: 16px; overflow: auto; max-height: 520px; font-size: 12px; line-height: 1.5; }
+    .status-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .status-step { border: 1px solid var(--border); background: var(--surface); border-radius: 14px; padding: 12px; text-align: center; }
+    .status-step.active { border-color: var(--brand-magenta); box-shadow: 0 0 0 3px rgba(197,17,126,.13); }
+    .status-step small { color: var(--fg-muted); display: block; margin-top: 4px; }
+    .comment { border: 1px solid var(--border); border-radius: 16px; padding: 12px; background: var(--surface-raised); }
+    .comment + .comment { margin-top: 10px; }
+    .comment-meta { color: var(--fg-muted); font-size: 12px; margin-bottom: 4px; }
+    .hidden { display: none !important; }
+    @media (max-width: 1100px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .step-nav { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .grid-2, .grid-3, .grid-4, .preview-layout { grid-template-columns: 1fr; }
+      .radio-cards { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .status-flow { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .content, .topbar, .wizard-footer { padding-left: 16px; padding-right: 16px; }
+      .step-nav { grid-template-columns: 1fr; }
+      .wizard-footer { flex-direction: column; align-items: stretch; }
+      .toolbar { justify-content: stretch; }
+      .toolbar .btn { flex: 1 1 auto; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar" aria-label="Etapas do cadastro">
+      <div class="brand">
+        <div class="brand-mark"><img src="logo-color.png" alt="Consulte GEO" /></div>
+        <div>
+          <div class="brand-title">Consulte GEO</div>
+          <div class="brand-subtitle">Concreto</div>
+        </div>
+      </div>
+      <div class="nav-title">Cadastro da obra</div>
+      <div class="step-nav" id="stepNav"></div>
+      <div class="side-card">
+        <strong>Rascunho seguro</strong>
+        <p>As alterações ficam salvas neste navegador. O envio para validação só acontece na última etapa.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title">
+          <div class="kicker">Implantação de estrutura</div>
+          <h1 id="pageTitle">Cadastro simplificado</h1>
+        </div>
+        <div class="top-actions">
+          <span class="save-state" id="saveState">Rascunho salvo</span>
+          <button class="btn sm" id="loadExampleCommon">Carregar exemplo comum</button>
+          <button class="btn sm" id="loadExampleModeloProjeto">Carregar exemplo completo com projetista</button>
+          <button class="btn sm" id="themeToggle">Modo escuro</button>
+          <button class="btn sm danger" id="resetDraft">Limpar</button>
+        </div>
+      </header>
+      <section class="content" id="content"></section>
+      <footer class="wizard-footer">
+        <button class="btn" id="backBtn">Voltar</button>
+        <div class="toolbar">
+          <button class="btn ghost" id="saveBtn">Salvar rascunho</button>
+          <button class="btn primary" id="nextBtn">Avançar</button>
+        </div>
+      </footer>
+    </main>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="editDrawer" aria-label="Edição rápida">
+      <header>
+        <div>
+          <div class="kicker">Edição rápida</div>
+          <h2 class="card-title" id="drawerTitle">Item</h2>
+        </div>
+        <button class="btn sm ghost" id="drawerClose">Fechar</button>
+      </header>
+      <div class="drawer-body" id="drawerBody"></div>
+    </aside>
+  </div>
+
+  <script>
+    const STEPS = [
+      { id: 1, title: 'Dados básicos', subtitle: 'Obra e responsável' },
+      { id: 2, title: 'Tipo de estrutura', subtitle: 'Modelo de preenchimento' },
+      { id: 3, title: 'Blocos e torres', subtitle: 'Grupos iguais ou estrutura' },
+      { id: 4, title: 'Pavimentos e peças', subtitle: 'FCK, volume e etapa' },
+      { id: 5, title: 'Concretos', subtitle: 'Traços e aplicações' },
+      { id: 6, title: 'Revisão visual', subtitle: 'Árvore e pilhas' },
+      { id: 7, title: 'Enviar validação', subtitle: 'Protocolo e JSON' },
+      { id: 8, title: 'Acompanhamento', subtitle: 'Devolução ou implantação' }
+    ];
+
+    const PECAS = ['Estacas hélice', 'Estaca Escavada', 'Broca', 'Bloco de Coroamento', 'Cintamento', 'Lajão estaqueado', 'Radier', 'Sapata', 'Tubulão', 'Térreo', '1º Pavimento', 'Pavimento Tipo', 'Cobertura', 'Platibanda', 'Barrilete', 'Caixa d\'água', 'Muro de Arrimo', 'Parede Diafragma', 'Piscina', 'Guarita', 'Churrasqueira', 'Casa de Bombas'];
+    const TIPOS_ESTRUTURA_MODELO = ['Bloco', 'Torre', 'Contenção', 'Área Externa', 'Anexos', 'Apoio'];
+    const FCKS = [15, 20, 25, 30, 35, 40, 45, 50];
+
+    const uid = (prefix = 'id') => `${prefix}_${Math.random().toString(36).slice(2, 9)}_${Date.now().toString(36)}`;
+    const nowIso = () => new Date().toISOString();
+    const brNumber = value => value === null || value === undefined || value === '' ? '' : Number(value).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+
+    const defaultState = () => ({
+      step: 1,
+      theme: 'light',
+      showJson: false,
+      metadata: {
+        schemaVersion: '1.0.0',
+        obraId: uid('obra'),
+        obraNome: '',
+        obraEndereco: '',
+        obraCEP: '',
+        clienteId: '',
+        clienteNome: '',
+        origem: 'cliente_direto',
+        modeloPreenchimento: 'comum',
+        createdAt: nowIso(),
+        updatedAt: nowIso(),
+        createdBy: { userId: 'usuario_demo', nome: '', email: '' },
+        status: 'rascunho',
+        protocoloEnvio: '',
+        modeloProjetoFields: { idCRM: '', estadoRegional: '', gestorObra: '', gestorExecutivoDiretor: '', versaoRegra: '', superestruturaDrywall: 'SEM' }
+      },
+      tipoEstrutura: 'torres_iguais',
+      grupos: [],
+      concretos: [
+        { id: uid('conc'), descricao: 'FCK 25 | BRITA 1 | SLUMP 10±2 CM', aplicacao: 'Radier, Térreo, Pavimentos', fck: 25, moldagem: '1 CP - 7 dias / 2 CPs - 28 dias / 1 CP - 63 dias' },
+        { id: uid('conc'), descricao: 'FCK 30 | BRITA 1 | FLOW 10±2 CM', aplicacao: 'Sapata, Cortina, Blocos', fck: 30, moldagem: '1 CP - 7 dias / 2 CPs - 28 dias / 1 CP - 63 dias' }
+      ],
+      comentarios: [],
+      audit: []
+    });
+
+    let state = loadState();
+    let saveTimer = null;
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem('cg_implantacao_estrutura_demo_sem_referencia');
+        return saved ? JSON.parse(saved) : defaultState();
+      } catch (error) {
+        return defaultState();
+      }
+    }
+    function persist(action = 'edicao') {
+      state.metadata.updatedAt = nowIso();
+      localStorage.setItem('cg_implantacao_estrutura_demo_sem_referencia', JSON.stringify(state));
+      document.getElementById('saveState').textContent = 'Rascunho salvo';
+      if (action) state.audit.push({ id: uid('aud'), timestamp: nowIso(), autor: state.metadata.createdBy.email || 'usuario_demo', acao: action });
+    }
+    function debouncedPersist(action = 'edicao') {
+      document.getElementById('saveState').textContent = 'Salvando...';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { persist(action); render(); }, 500);
+    }
+
+    function normalizeText(value) {
+      return String(value ?? '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/\b0+(\d+)/g, '$1')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }
+    function parseFck(value) {
+      if (value === null || value === undefined || value === '') return null;
+      const match = String(value).replace(',', '.').match(/(\d+(?:\.\d+)?)/);
+      if (!match) return null;
+      const n = Number(match[1]);
+      return n >= 10 && n <= 100 ? n : null;
+    }
+    function parseVolume(value) {
+      if (value === null || value === undefined || value === '' || value === '-') return null;
+      const clean = String(value).replace(/m³|m3|M³|M3/g, '').trim();
+      const normalized = clean.includes(',') ? clean.replace(/\./g, '').replace(',', '.') : clean;
+      const n = Number(normalized);
+      return Number.isFinite(n) ? n : null;
+    }
+    function formatGroupName(tipo, numero) {
+      if (numero === null || numero === undefined || numero === '') return titleCase(tipo || 'Estrutura');
+      if (numero === 'ANEXOS') return 'Anexos';
+      const label = titleCase(tipo || 'Estrutura');
+      if (/torre|bloco|casa|estrutura|estrutura/i.test(String(numero))) return String(numero).trim();
+      return `${label} ${numero}`;
+    }
+    function titleCase(text) {
+      return String(text || '').toLowerCase().split(' ').filter(Boolean).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+    }
+    function expandRange(input) {
+      const raw = String(input ?? '').trim();
+      if (!raw) return [];
+      const upper = raw.toUpperCase();
+      if (upper === 'ANEXOS') return ['ANEXOS'];
+      if (upper === '-') return [null];
+      const normalized = raw.replace(/\s+/g, ' ').replace(/\s+[Ee]\s+/g, ',').trim();
+      const interval = normalized.match(/^(\d+)\s*(?:A|a|AO|ao|AT[EÉ]|até)\s*(\d+)$/i);
+      if (interval) {
+        const start = Number(interval[1]);
+        const end = Number(interval[2]);
+        if (start <= end && end - start <= 1000) return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+      }
+      const numbersOnly = normalized.replace(/;/g, ',');
+      if (/^[\d\s,]+$/.test(numbersOnly)) return numbersOnly.split(',').map(x => x.trim()).filter(Boolean).map(Number);
+      return [raw];
+    }
+    function detectEtapa(nome) {
+      const n = normalizeText(nome);
+      if (/estaca|broca|sapata|radier|tubulao|coroamento|cintamento|fundacao|lajao/.test(n)) return 'Fundação';
+      if (/muro|arrimo|diafragma|contencao|cortina/.test(n)) return 'Contenção';
+      if (/guarita|piscina|churrasqueira|area externa|garagem|casa de bombas|loja|edicula|pavimentacao/.test(n)) return 'Anexos';
+      if (/terreo|pav|subsolo|atico|cobertura|platibanda|barrilete|caixa/.test(n)) return 'Superestrutura';
+      return 'Estrutura';
+    }
+    function orderOf(local) {
+      const n = normalizeText(local);
+      if (/subsolo/.test(n)) {
+        const m = n.match(/(\d+)/);
+        return m ? -Number(m[1]) : -1;
+      }
+      if (/terreo|térreo/.test(local)) return 0;
+      const m = n.match(/(\d+)/);
+      if (/pav|tipo/.test(n) && m) return Number(m[1]);
+      if (/atico/.test(n)) return 900;
+      if (/cobertura/.test(n)) return 910;
+      if (/platibanda/.test(n)) return 920;
+      if (/barrilete/.test(n)) return 930;
+      if (/caixa/.test(n)) return 940;
+      return 100;
+    }
+
+    function addGroup(seed = {}) {
+      const grupo = {
+        id: uid('grp'),
+        nome: seed.nome || '',
+        edificacoesInput: seed.edificacoesInput || '',
+        edificacoesExpanded: seed.edificacoesExpanded || [],
+        tipoEdificacao: seed.tipoEdificacao || 'Bloco',
+        projetista: seed.projetista || '',
+        observacoes: seed.observacoes || '',
+        pecas: seed.pecas || []
+      };
+      state.grupos.push(grupo);
+      debouncedPersist('grupo_adicionado');
+    }
+    function addPeca(grupoId, seed = {}) {
+      const grupo = state.grupos.find(g => g.id === grupoId);
+      if (!grupo) return;
+      const peca = {
+        id: uid('peca'),
+        local: seed.local || '',
+        etapa: seed.etapa || detectEtapa(seed.local || ''),
+        fck: seed.fck ?? '',
+        volume: seed.volume ?? '',
+        concretoId: seed.concretoId || '',
+        observacoes: seed.observacoes || '',
+        ordem: seed.ordem ?? orderOf(seed.local || '')
+      };
+      grupo.pecas.push(peca);
+      debouncedPersist('peca_adicionada');
+    }
+    function bulkAddFloors(grupoId, start, end, fck, volume) {
+      const s = Number(start); const e = Number(end);
+      if (!Number.isFinite(s) || !Number.isFinite(e) || s > e) return;
+      for (let i = s; i <= e; i++) addPeca(grupoId, { local: `${i}º Pavimento`, fck, volume, etapa: 'Superestrutura', ordem: i });
+      persist('pavimentos_em_massa');
+      render();
+    }
+    function duplicateGroup(sourceId) {
+      const original = state.grupos.find(g => g.id === sourceId);
+      if (!original) return;
+      const clone = JSON.parse(JSON.stringify(original));
+      clone.id = uid('grp');
+      clone.nome = `${clone.nome} - cópia`;
+      clone.edificacoesInput = '';
+      clone.edificacoesExpanded = [];
+      clone.pecas.forEach(p => p.id = uid('peca'));
+      state.grupos.push(clone);
+      debouncedPersist('grupo_duplicado');
+    }
+    function removeGroup(id) {
+      state.grupos = state.grupos.filter(g => g.id !== id);
+      debouncedPersist('grupo_removido');
+    }
+    function removePeca(grupoId, pecaId) {
+      const grupo = state.grupos.find(g => g.id === grupoId);
+      if (!grupo) return;
+      grupo.pecas = grupo.pecas.filter(p => p.id !== pecaId);
+      debouncedPersist('peca_removida');
+    }
+
+    function getExpandedGroupNames(grupo) {
+      if (state.metadata.modeloPreenchimento === 'modelo_projeto') {
+        const expanded = expandRange(grupo.edificacoesInput);
+        grupo.edificacoesExpanded = expanded;
+        return expanded.map(n => formatGroupName(grupo.tipoEdificacao, n));
+      }
+      if (grupo.edificacoesInput) {
+        const expanded = expandRange(grupo.edificacoesInput);
+        grupo.edificacoesExpanded = expanded;
+        const base = grupo.tipoEdificacao || (state.tipoEstrutura === 'obra_horizontal' ? 'Casa' : 'Bloco');
+        return expanded.map(n => formatGroupName(base, n));
+      }
+      return grupo.nome ? [grupo.nome] : [];
+    }
+
+    function validateState() {
+      const bloqueantes = [];
+      const alertas = [];
+      const sugestoes = [];
+      const pendenciasInternas = [];
+      if (!state.grupos.length) bloqueantes.push({ campo: 'blocos', localizacao: 'Etapa 3', mensagem: 'Cadastre pelo menos um bloco, torre ou estrutura.' });
+      if (!state.grupos.some(g => g.pecas.length)) bloqueantes.push({ campo: 'pecas', localizacao: 'Etapa 4', mensagem: 'Cadastre pelo menos uma peça ou pavimento.' });
+      const names = [];
+      state.grupos.forEach((grupo, gi) => {
+        const groupNames = getExpandedGroupNames(grupo);
+        if (!groupNames.length) bloqueantes.push({ campo: `grupos[${gi}]`, localizacao: `Grupo ${gi + 1}`, mensagem: 'Informe quais blocos, torres ou estruturas fazem parte deste grupo.' });
+        groupNames.forEach(name => names.push({ raw: name, normalized: normalizeText(name) }));
+        grupo.pecas.forEach((p, pi) => {
+          if (!String(p.local || '').trim()) bloqueantes.push({ campo: `grupos[${gi}].pecas[${pi}].local`, localizacao: grupo.nome || `Grupo ${gi + 1}`, mensagem: 'Informe o nome da peça ou pavimento.' });
+          const fck = parseFck(p.fck);
+          if (!fck) bloqueantes.push({ campo: `grupos[${gi}].pecas[${pi}].fck`, localizacao: p.local || grupo.nome, mensagem: 'Informe um FCK válido entre 10 e 100 MPa.' });
+          const volume = parseVolume(p.volume);
+          if (p.volume === '' || p.volume === null || p.volume === undefined) alertas.push({ campo: 'volume', localizacao: p.local || grupo.nome, mensagem: 'Volume ainda não informado. Você pode enviar, mas a equipe Consulte GEO precisará revisar.' });
+          if (volume && volume > 1000) alertas.push({ campo: 'volume', localizacao: p.local || grupo.nome, mensagem: 'Volume alto para uma unidade. Confirme se o valor é por unidade, não somado do grupo.' });
+          if (!p.concretoId) pendenciasInternas.push({ campo: 'concreto', mensagem: `Vincular concreto para ${p.local || 'peça sem nome'}.` });
+        });
+      });
+      const duplicates = names.filter((item, index) => names.findIndex(other => other.normalized === item.normalized) !== index);
+      if (duplicates.length) bloqueantes.push({ campo: 'nomes', localizacao: 'Etapa 3', mensagem: `Há blocos/torres duplicados: ${[...new Set(duplicates.map(d => d.raw))].join(', ')}.` });
+      const possibleDuplicates = names.filter(item => /\b0\d/.test(item.raw));
+      if (possibleDuplicates.length) sugestoes.push({ tipo: 'duplicata', itensAfetados: possibleDuplicates.map(i => i.raw), mensagem: 'Há nomes com zero à esquerda. Confirme se Torre 01 e Torre 1 são a mesma estrutura.' });
+      if (state.metadata.modeloPreenchimento === 'modelo_projeto') {
+        state.grupos.forEach(g => {
+          if (!g.edificacoesInput) bloqueantes.push({ campo: 'numeroEstrutura', localizacao: g.tipoEdificacao || 'Estrutura', mensagem: 'Informe o Número da Estrutura, como 1 a 24, 1 e 2, ANEXOS ou -.' });
+        });
+      }
+      if (state.grupos.length > 1) {
+        const signatures = state.grupos.map(g => ({ id: g.id, nome: g.nome, sig: JSON.stringify(g.pecas.map(p => [normalizeText(p.local), parseFck(p.fck), normalizeText(p.etapa)]).sort()) }));
+        signatures.forEach((s, i) => {
+          signatures.slice(i + 1).forEach(other => {
+            if (s.sig !== '[]' && s.sig === other.sig) sugestoes.push({ tipo: 'agrupamento', itensAfetados: [s.nome || s.id, other.nome || other.id], mensagem: `Os grupos ${s.nome || s.id} e ${other.nome || other.id} parecem ter a mesma estrutura. Você pode agrupá-los para reduzir retrabalho.` });
+          });
+        });
+      }
+      return { bloqueantes, alertas, sugestoes, pendenciasInternas };
+    }
+
+    function buildPayload() {
+      const validation = validateState();
+      const unidadeGrupos = [];
+      const unidadeTipos = [];
+      const unidades = [];
+      const renderNodes = [];
+      const tipoBySignature = new Map();
+      state.grupos.forEach((grupo, gi) => {
+        const groupNames = getExpandedGroupNames(grupo);
+        groupNames.forEach((name, ni) => {
+          const ugTempId = uid('ug');
+          unidadeGrupos.push({ tempId: ugTempId, nome: name, tipoEdificacao: grupo.tipoEdificacao, projetista: grupo.projetista, ordem: unidadeGrupos.length + 1, customerInputRef: grupo.id });
+          const children = [];
+          grupo.pecas.forEach((peca, pi) => {
+            const fck = parseFck(peca.fck);
+            const volume = parseVolume(peca.volume);
+            const signature = `${normalizeText(peca.local)}|${fck}|${volume ?? ''}|${normalizeText(peca.etapa)}`;
+            let unidadeTipoTempId = tipoBySignature.get(signature);
+            if (!unidadeTipoTempId) {
+              unidadeTipoTempId = uid('ut');
+              tipoBySignature.set(signature, unidadeTipoTempId);
+              unidadeTipos.push({
+                tempId: unidadeTipoTempId,
+                descricao: peca.local,
+                fckProjeto: fck,
+                volumeProjeto: volume,
+                classificacaoId: etapaToId(peca.etapa),
+                concretoId: peca.concretoId ? Number(peca.concretoId) : undefined,
+                croquiObrigatorio: true,
+                formaObrigatorio: false,
+                apareceNoDashboard: true,
+                permiteUnidadeAdicional: false,
+                mostrarLegendaMapa: true,
+                localAplicacaoSelecionadoPorEntrega: false,
+                percentualOverbreak: undefined,
+                centroDeCustoId: undefined,
+                produtoIndicadoId: undefined
+              });
+            }
+            const unidadeTempId = uid('un');
+            unidades.push({ tempId: unidadeTempId, descricao: peca.local, ordem: orderOf(peca.local), unidadeGrupoTempId: ugTempId, unidadeTipoTempId });
+            children.push({ id: unidadeTempId, label: peca.local, etapa: peca.etapa, fck, volume, status: statusForPeca(peca), unidadeTipoTempId });
+          });
+          renderNodes.push({ id: ugTempId, label: name, type: 'estrutura', children });
+        });
+      });
+      const payload = {
+        metadata: { ...state.metadata, updatedAt: nowIso() },
+        customerInput: {
+          dadosBasicos: { ...state.metadata },
+          tipoEstrutura: state.tipoEstrutura,
+          grupos: state.grupos,
+          concretos: state.concretos
+        },
+        normalizedStructure: {
+          groups: unidadeGrupos.map(g => ({ id: g.tempId, nome: g.nome, tipoEdificacao: g.tipoEdificacao, projetista: g.projetista })),
+          items: unidades.map(u => {
+            const tipo = unidadeTipos.find(t => t.tempId === u.unidadeTipoTempId);
+            return { id: u.tempId, nome: u.descricao, ordem: u.ordem, grupoId: u.unidadeGrupoTempId, fck: tipo?.fckProjeto ?? null, volume: tipo?.volumeProjeto ?? null, etapa: idToEtapa(tipo?.classificacaoId) };
+          })
+        },
+        technicalMapping: {
+          unidadeGrupos,
+          unidadeTipos,
+          unidades,
+          vinculosConcreto: unidadeTipos.filter(t => t.concretoId).map(t => ({ unidadeTipoTempId: t.tempId, concretoId: t.concretoId, aplicacao: t.descricao }))
+        },
+        validation,
+        renderTree: { nodes: renderNodes },
+        audit: state.audit
+      };
+      return payload;
+    }
+    function etapaToId(etapa) { return { 'Fundação': 1, 'Infraestrutura': 2, 'Superestrutura': 3, 'Contenção': 4, 'Anexos': 5, 'Estrutura': 6 }[etapa] || 6; }
+    function idToEtapa(id) { return { 1: 'Fundação', 2: 'Infraestrutura', 3: 'Superestrutura', 4: 'Contenção', 5: 'Anexos', 6: 'Estrutura' }[id] || 'Estrutura'; }
+    function statusForPeca(peca) { if (!parseFck(peca.fck) || !peca.local) return 'erro'; if (!peca.volume || !peca.concretoId) return 'pendente'; return 'ok'; }
+
+    function render() {
+      document.documentElement.dataset.theme = state.theme;
+      document.getElementById('pageTitle').textContent = STEPS[state.step - 1].title;
+      renderNav();
+      const content = document.getElementById('content');
+      content.innerHTML = stepTemplate();
+      wireStepEvents();
+      document.getElementById('backBtn').disabled = state.step === 1;
+      document.getElementById('nextBtn').textContent = state.step === 7 ? 'Enviar para validação' : state.step === 8 ? 'Concluir' : 'Avançar';
+      document.getElementById('nextBtn').disabled = state.step === 8;
+    }
+    function renderNav() {
+      const nav = document.getElementById('stepNav');
+      nav.innerHTML = STEPS.map(step => `<button class="step-link ${state.step === step.id ? 'active' : ''} ${state.step > step.id ? 'done' : ''}" data-goto="${step.id}"><span class="step-index">${state.step > step.id ? '✓' : step.id}</span><span class="step-label"><strong>${step.title}</strong><span>${step.subtitle}</span></span></button>`).join('');
+      nav.querySelectorAll('[data-goto]').forEach(btn => btn.addEventListener('click', () => { state.step = Number(btn.dataset.goto); persist('navegacao_etapa'); render(); }));
+    }
+    function field(id, label, value, placeholder = '', hint = '', type = 'text') {
+      return `<div class="field"><label for="${id}">${label}</label>${hint ? `<div class="hint">${hint}</div>` : ''}<input class="input" id="${id}" type="${type}" value="${escapeHtml(value)}" placeholder="${escapeHtml(placeholder)}" /></div>`;
+    }
+    function selectField(id, label, value, options, hint = '') {
+      return `<div class="field"><label for="${id}">${label}</label>${hint ? `<div class="hint">${hint}</div>` : ''}<select class="select" id="${id}">${options.map(o => `<option value="${escapeHtml(o.value ?? o)}" ${String(value) === String(o.value ?? o) ? 'selected' : ''}>${escapeHtml(o.label ?? o)}</option>`).join('')}</select></div>`;
+    }
+    function stepTemplate() {
+      return [renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7, renderStep8][state.step - 1]();
+    }
+    function renderStep1() {
+      const m = state.metadata;
+      return `<div class="section-title"><div><div class="kicker">Etapa 1 de 8</div><h2>Dados básicos da obra</h2><p>Use os nomes que a equipe de obra já utiliza. Os campos técnicos ficam para a validação interna.</p></div></div>
+      <div class="grid grid-2">
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Identificação</h3><p class="card-description">Dados que aparecem no protocolo de envio.</p></div></div><div class="card-body grid">
+          ${field('obraNome', 'Nome da obra', m.obraNome, 'Ex: Evo Vila Clementino')}
+          ${field('clienteNome', 'Cliente / construtora', m.clienteNome, 'Ex: Bacelar, Tenda, Direcional')}
+          ${field('obraEndereco', 'Endereço', m.obraEndereco, 'Rua, número, bairro, cidade - UF')}
+          ${field('obraCEP', 'CEP', m.obraCEP, '00000-000')}
+        </div></div>
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Responsável</h3><p class="card-description">Quem acompanha a devolução e o reenvio.</p></div></div><div class="card-body grid">
+          ${field('createdByNome', 'Engenheiro ou responsável', m.createdBy.nome, 'Ex: Ana Paula Souza')}
+          ${field('createdByEmail', 'E-mail', m.createdBy.email, 'ana@construtora.com.br', '', 'email')}
+          ${selectField('modeloPreenchimento', 'Modelo de preenchimento', m.modeloPreenchimento, [{value:'comum',label:'Cliente comum'}, {value:'modelo_projeto',label:'Modelo com projetista'}], 'Use este modelo quando houver regras de agrupamento por estrutura, numeração e projetista.')}
+          <div id="modeloProjetoFields" class="grid ${m.modeloPreenchimento === 'modelo_projeto' ? '' : 'hidden'}">
+            ${field('idCRM', 'Código interno opcional', m.modeloProjetoFields.idCRM, 'Opcional')}
+            ${field('estadoRegional', 'Estado - regional', m.modeloProjetoFields.estadoRegional, 'BAHIA - NE1')}
+            ${field('gestorObra', 'Gestor da obra', m.modeloProjetoFields.gestorObra, 'Nome do gestor')}
+            ${field('gestorExecutivoDiretor', 'Gestor executivo / diretor', m.modeloProjetoFields.gestorExecutivoDiretor, 'Nome do diretor')}
+            ${field('versaoRegra', 'Versão da regra', m.modeloProjetoFields.versaoRegra, '')}
+            ${selectField('superestruturaDrywall', 'Superestrutura', m.modeloProjetoFields.superestruturaDrywall, [{value:'SEM',label:'Sem drywall'}, {value:'COM',label:'Com drywall'}])}
+          </div>
+        </div></div>
+      </div>`;
+    }
+    function renderStep2() {
+      const options = [
+        ['torres_iguais', 'Torres ou blocos iguais', 'Um grupo de estrutura é preenchido uma vez e replicado para várias torres.'],
+        ['torres_diferentes', 'Torres ou blocos diferentes', 'Use quando cada torre tem pavimentos ou FCKs próprios.'],
+        ['obra_horizontal', 'Obra horizontal', 'Casas ou unidades repetidas, com poucos níveis e estrutura idêntica.'],
+        ['areas_externas', 'Áreas externas significativas', 'Garagens, piscinas, guaritas, contenções e estruturas avulsas.'],
+        ['modelo_projeto', 'Modelo com projetista', 'Layout com Tipo de Estrutura, Número da Estrutura e Projetista livre.'],
+        ['personalizado', 'Personalizado', 'Tabela flexível para obra industrial, infraestrutura ou caso fora do padrão.']
+      ];
+      return `<div class="section-title"><div><div class="kicker">Etapa 2 de 8</div><h2>Que tipo de estrutura melhor descreve esta obra?</h2><p>A escolha só muda os atalhos de preenchimento. Você pode alterar depois.</p></div></div>
+      <div class="radio-cards">${options.map(([value, title, desc]) => `<label class="radio-card"><input type="radio" name="tipoEstrutura" value="${value}" ${state.tipoEstrutura === value ? 'checked' : ''}/><strong>${title}</strong><span>${desc}</span></label>`).join('')}</div>
+      <div class="divider"></div><div class="alert info"><strong>Decisão de UX</strong><span>O fluxo é sempre sequencial com retorno livre. Isso reduz carga cognitiva e mantém o rascunho simples para usuários de obra.</span></div>`;
+    }
+    function renderStep3() {
+      if (state.metadata.modeloPreenchimento === 'modelo_projeto' || state.tipoEstrutura === 'modelo_projeto') return renderEstruturasModelo();
+      const cards = state.grupos.map(grupo => `<div class="card" data-group="${grupo.id}"><div class="card-header"><div><div class="kicker">Grupo de estrutura</div><h3 class="card-title">${escapeHtml(grupo.nome || 'Novo grupo')}</h3><p class="card-description">Liste os blocos ou torres que compartilham os mesmos pavimentos e FCKs.</p></div><div class="toolbar"><button class="btn sm" data-duplicate-group="${grupo.id}">Duplicar</button><button class="btn sm danger" data-remove-group="${grupo.id}">Remover</button></div></div><div class="card-body grid">
+        ${field(`grupo_nome_${grupo.id}`, 'Nome do grupo', grupo.nome, 'Ex: Torres 1 a 3 ou Blocos 6 a 9')}
+        ${selectField(`grupo_tipo_${grupo.id}`, 'Tipo visível na obra', grupo.tipoEdificacao, ['Bloco','Torre','Casa','Estrutura','Área Externa','Contenção'])}
+        ${field(`grupo_range_${grupo.id}`, 'Quais blocos/torres fazem parte?', grupo.edificacoesInput, 'Ex: 1 a 4 ou Torre A, Torre B', 'Use range quando os nomes seguem uma sequência. Para nomes livres, separe por vírgula.')}
+        <div class="chips">${getExpandedGroupNames(grupo).map(name => `<span class="chip">${escapeHtml(name)}</span>`).join('') || '<span class="hint">Nenhuma estrutura gerada ainda.</span>'}</div>
+      </div></div>`).join('');
+      return `<div class="section-title"><div><div class="kicker">Etapa 3 de 8</div><h2>Quais blocos ou torres existem nesta obra?</h2><p>Cadastre grupos idênticos para preencher uma vez e replicar internamente.</p></div><button class="btn brand" id="addGroup">Adicionar grupo</button></div>
+      <div class="grid">${cards || '<div class="empty"><strong>Nenhum grupo cadastrado.</strong><br/>Clique em Adicionar grupo para começar.</div>'}</div>`;
+    }
+    function renderEstruturasModelo() {
+      const rows = state.grupos.map((grupo, index) => `<tr data-group="${grupo.id}">
+        <td>${selectInline(`grupo_tipo_${grupo.id}`, grupo.tipoEdificacao, TIPOS_ESTRUTURA_MODELO)}</td>
+        <td><input class="input" id="grupo_range_${grupo.id}" value="${escapeHtml(grupo.edificacoesInput)}" placeholder="1 A 24, 1 e 2, ANEXOS, -" /></td>
+        <td><input class="input" id="grupo_projetista_${grupo.id}" value="${escapeHtml(grupo.projetista)}" placeholder="Digite livremente" /></td>
+        <td><input class="input" id="grupo_nome_${grupo.id}" value="${escapeHtml(grupo.nome)}" placeholder="Descrição opcional do grupo" /></td>
+        <td><div class="chips">${getExpandedGroupNames(grupo).slice(0, 8).map(name => `<span class="chip">${escapeHtml(name)}</span>`).join('')}${getExpandedGroupNames(grupo).length > 8 ? `<span class="chip">+${getExpandedGroupNames(grupo).length - 8}</span>` : ''}</div></td>
+        <td><button class="btn sm danger" data-remove-group="${grupo.id}">Remover</button></td>
+      </tr>`).join('');
+      return `<div class="section-title"><div><div class="kicker">Etapa 3 de 8</div><h2>Estruturas</h2><p>Preencha as estruturas usando tipo, numeração e projetista em texto livre.</p></div><button class="btn brand" id="addGroup">Adicionar linha</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Tipo de Estrutura</th><th>Número da Estrutura</th><th>Projetista</th><th>Nomenclatura no Sistema</th><th>Prévia expandida</th><th>Ações</th></tr></thead><tbody>${rows || '<tr><td colspan="6">Nenhuma linha cadastrada.</td></tr>'}</tbody></table></div>
+      <div class="divider"></div><div class="alert info"><strong>Regra Aplicada</strong><span>Intervalos como 1 A 24 são expandidos automaticamente. ANEXOS cria um agrupador especial para estruturas não residenciais.</span></div>`;
+    }
+    function selectInline(id, value, options) { return `<select class="select" id="${id}">${options.map(o => `<option value="${escapeHtml(o)}" ${String(o) === String(value) ? 'selected' : ''}>${escapeHtml(o || 'Selecione')}</option>`).join('')}</select>`; }
+    function selectConcretoInline(id, value) { const options = [''].concat(state.concretos.map(c => c.id)); return `<select class="select" id="${id}">${options.map(o => { const c = state.concretos.find(item => item.id === o); const label = c ? c.descricao : 'Selecione'; return `<option value="${escapeHtml(o)}" ${String(o) === String(value) ? 'selected' : ''}>${escapeHtml(label)}</option>`; }).join('')}</select>`; }
+
+    function renderStep4() {
+      const groups = state.grupos.map(grupo => `<div class="card"><div class="card-header"><div><div class="kicker">Pavimentos e peças</div><h3 class="card-title">${escapeHtml(grupo.nome || grupo.edificacoesInput || 'Grupo sem nome')}</h3><p class="card-description">Edição direta. FCK aceita 30, FCK 30, 30 MPa ou formato semelhante.</p></div><div class="toolbar"><button class="btn sm" data-add-peca="${grupo.id}">Adicionar peça</button></div></div><div class="card-body">
+        <details><summary><strong>Adicionar pavimentos em massa</strong></summary><div class="grid grid-4" style="margin-top:12px">
+          ${field(`bulk_start_${grupo.id}`, 'De', '', '1', '', 'number')}
+          ${field(`bulk_end_${grupo.id}`, 'Até', '', '17', '', 'number')}
+          ${field(`bulk_fck_${grupo.id}`, 'FCK', '', '25')}
+          ${field(`bulk_volume_${grupo.id}`, 'Volume', '', '187,79')}
+          <button class="btn primary" data-bulk="${grupo.id}" style="align-self:end">Adicionar range</button>
+        </div></details>
+        <div class="divider"></div>
+        <div class="table-wrap"><table><thead><tr><th>Peça ou pavimento</th><th>Etapa</th><th>FCK</th><th>Volume por unidade</th><th>Concreto</th><th>Observação</th><th>Ações</th></tr></thead><tbody>${grupo.pecas.map(peca => `<tr data-peca="${peca.id}">
+          <td><input class="input" list="pecasList" id="peca_local_${peca.id}" value="${escapeHtml(peca.local)}" placeholder="Ex: 1º Pavimento" /></td>
+          <td>${selectInline(`peca_etapa_${peca.id}`, peca.etapa, ['Fundação','Infraestrutura','Superestrutura','Contenção','Anexos','Estrutura'])}</td>
+          <td><input class="input" id="peca_fck_${peca.id}" value="${escapeHtml(peca.fck)}" placeholder="FCK 30" /></td>
+          <td><div class="input-group"><input class="input" id="peca_volume_${peca.id}" value="${escapeHtml(peca.volume)}" placeholder="187,79" /><span class="input-suffix">m³</span></div></td>
+          <td>${selectConcretoInline(`peca_concreto_${peca.id}`, peca.concretoId)}</td>
+          <td><input class="input" id="peca_obs_${peca.id}" value="${escapeHtml(peca.observacoes)}" placeholder="Opcional" /></td>
+          <td><button class="btn sm danger" data-remove-peca="${grupo.id}:${peca.id}">Remover</button></td>
+        </tr>`).join('') || '<tr><td colspan="7">Nenhuma peça cadastrada para este grupo.</td></tr>'}</tbody></table></div>
+      </div></div>`).join('');
+      return `<datalist id="pecasList">${PECAS.map(p => `<option value="${escapeHtml(p)}"></option>`).join('')}</datalist>
+      <div class="section-title"><div><div class="kicker">Etapa 4 de 8</div><h2>Quais peças e pavimentos serão concretados?</h2><p>Preencha FCK e volume por unidade. Volume em branco gera pendência, mas não bloqueia o envio.</p></div></div>
+      <div class="grid">${groups || '<div class="empty">Cadastre ao menos um grupo na etapa anterior.</div>'}</div>`;
+    }
+    function renderStep5() {
+      const rows = state.concretos.map(c => `<tr data-concreto="${c.id}"><td><input class="input" id="conc_desc_${c.id}" value="${escapeHtml(c.descricao)}" placeholder="FCK 30 | BRITA 1 | FLOW 10±2 CM" /></td><td><input class="input" id="conc_app_${c.id}" value="${escapeHtml(c.aplicacao)}" placeholder="Sapata, Radier" /></td><td><input class="input" id="conc_fck_${c.id}" value="${escapeHtml(c.fck)}" placeholder="30" /></td><td><input class="input" id="conc_mold_${c.id}" value="${escapeHtml(c.moldagem)}" placeholder="1 CP - 7 dias / 2 CPs - 28 dias" /></td><td><button class="btn sm danger" data-remove-concreto="${c.id}">Remover</button></td></tr>`).join('');
+      return `<div class="section-title"><div><div class="kicker">Etapa 5 de 8</div><h2>Concretos e traços previstos</h2><p>O vínculo com peças pode ficar pendente para revisão interna. Cadastre o catálogo que a obra já usa.</p></div><button class="btn brand" id="addConcreto">Adicionar concreto</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Concreto</th><th>Aplicação</th><th>FCK</th><th>Padrão de moldagem</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+    function renderStep6() {
+      const payload = buildPayload();
+      const v = payload.validation;
+      return `<div class="section-title"><div><div class="kicker">Etapa 6 de 8</div><h2>Revisão visual da estrutura</h2><p>Confira a árvore e as pilhas de pavimentos. Clique em um item para editar.</p></div></div>
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div class="alert ${v.bloqueantes.length ? 'danger' : 'success'}"><strong>${v.bloqueantes.length}</strong><span>erros que bloqueiam o envio</span></div>
+        <div class="alert ${v.alertas.length ? 'warning' : 'success'}"><strong>${v.alertas.length}</strong><span>alertas que permitem envio</span></div>
+        <div class="alert ${v.sugestoes.length ? 'info' : 'success'}"><strong>${v.sugestoes.length}</strong><span>sugestões de melhoria</span></div>
+      </div>
+      <div class="preview-layout">
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Árvore da obra</h3><p class="card-description">Prévia hierárquica para validação.</p></div></div><div class="card-body">${renderTreeHtml(payload.renderTree.nodes)}</div></div>
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Pilhas por bloco/torre</h3><p class="card-description">Cores laterais indicam o FCK informado.</p></div></div><div class="card-body"><div class="stack-board">${renderStacks(payload.renderTree.nodes)}</div></div></div>
+      </div>
+      <div class="divider"></div>${renderValidation(v)}`;
+    }
+    function renderTreeHtml(nodes) {
+      if (!nodes.length) return '<div class="empty">Nada para visualizar.</div>';
+      return `<ul class="tree">${nodes.map(node => `<li><div class="node"><strong>${escapeHtml(node.label)}</strong><span class="badge neutral">${node.children.length} itens</span></div><ul class="tree">${node.children.map(child => `<li><div class="node"><button data-edit-item="${child.id}">${escapeHtml(child.label)}</button><span class="badge ${child.status === 'ok' ? 'success' : child.status === 'pendente' ? 'warning' : 'danger'}">${child.status === 'ok' ? 'Completo' : child.status === 'pendente' ? 'Pendente' : 'Corrigir'}</span><span class="badge neutral">FCK ${child.fck || '-'}</span><span class="badge neutral">${brNumber(child.volume)} m³</span></div></li>`).join('')}</ul></li>`).join('')}</ul>`;
+    }
+    function renderStacks(nodes) {
+      if (!nodes.length) return '<div class="empty">Nada para visualizar.</div>';
+      return nodes.map(node => `<div class="tower-stack"><div class="tower-title">${escapeHtml(node.label)}</div>${[...node.children].sort((a,b)=>orderOf(b.label)-orderOf(a.label)).map(child => `<div class="floor-card fck-${child.fck}" data-edit-item="${child.id}"><strong>${escapeHtml(child.label)}</strong><br/><span>FCK ${child.fck || '-'}</span></div>`).join('')}</div>`).join('');
+    }
+    function renderValidation(v) {
+      const block = (title, items, kind) => `<div class="card"><div class="card-header"><div><h3 class="card-title">${title}</h3></div></div><div class="card-body validation-grid">${items.length ? items.map(i => `<div class="alert ${kind}"><strong>${escapeHtml(i.localizacao || i.tipo || i.campo || 'Item')}</strong><span>${escapeHtml(i.mensagem)}</span></div>`).join('') : `<div class="alert success"><strong>Nenhum item</strong><span>Não há registros nesta categoria.</span></div>`}</div></div>`;
+      return `<div class="grid grid-3">${block('Erros bloqueantes', v.bloqueantes, 'danger')}${block('Alertas', v.alertas, 'warning')}${block('Sugestões', v.sugestoes, 'info')}</div>`;
+    }
+    function renderStep7() {
+      const payload = buildPayload();
+      const v = payload.validation;
+      return `<div class="section-title"><div><div class="kicker">Etapa 7 de 8</div><h2>Envio para validação Consulte GEO</h2><p>Após enviar, o rascunho fica bloqueado para edição do cliente até análise ou devolução.</p></div></div>
+      ${v.bloqueantes.length ? `<div class="alert danger"><strong>Envio bloqueado</strong><span>Corrija ${v.bloqueantes.length} item(ns) na revisão visual antes de enviar.</span></div>` : `<div class="alert success"><strong>Pronto para enviar</strong><span>A equipe Consulte GEO receberá a proposta de estrutura e fará a validação antes da implantação.</span></div>`}
+      <div class="divider"></div><div class="grid grid-2">
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Resumo do envio</h3></div></div><div class="card-body grid">
+          <span class="badge neutral">${payload.technicalMapping.unidadeGrupos.length} blocos/torres gerados</span>
+          <span class="badge neutral">${payload.technicalMapping.unidadeTipos.length} padrões estruturais identificados</span>
+          <span class="badge neutral">${payload.technicalMapping.unidades.length} peças ou pavimentos gerados</span>
+          <span class="badge warning">${v.alertas.length + v.pendenciasInternas.length} pendências para revisão</span>
+        </div></div>
+        <div class="card"><div class="card-header"><div><h3 class="card-title">Exportação técnica</h3><p class="card-description">Visível para implantação e desenvolvimento.</p></div><button class="btn sm" id="toggleJson">${state.showJson ? 'Ocultar JSON' : 'Ver JSON'}</button></div><div class="card-body ${state.showJson ? '' : 'hidden'}"><pre class="json">${escapeHtml(JSON.stringify(payload, null, 2))}</pre></div></div>
+      </div>`;
+    }
+    function renderStep8() {
+      const statusLabels = ['rascunho', 'enviado_validacao', 'em_analise', 'devolvido', 'validado', 'implantado'];
+      const currentIndex = statusLabels.indexOf(state.metadata.status);
+      return `<div class="section-title"><div><div class="kicker">Pós-envio</div><h2>Acompanhamento da validação</h2><p>Comentários da equipe Consulte GEO e status do protocolo ficam centralizados aqui.</p></div></div>
+      <div class="status-flow">${statusLabels.slice(1).map((s, i) => `<div class="status-step ${currentIndex === i + 1 ? 'active' : ''}"><strong>${labelStatus(s)}</strong><small>${i + 1}</small></div>`).join('')}</div>
+      <div class="divider"></div>
+      <div class="grid grid-2"><div class="card"><div class="card-header"><div><h3 class="card-title">Protocolo</h3></div></div><div class="card-body grid"><span class="badge info">${escapeHtml(state.metadata.protocoloEnvio || 'Ainda não enviado')}</span><span>Status atual: <strong>${labelStatus(state.metadata.status)}</strong></span><div class="toolbar"><button class="btn sm" data-status="em_analise">Marcar em análise</button><button class="btn sm" data-status="devolvido">Simular devolução</button><button class="btn sm" data-status="validado">Marcar validado</button><button class="btn sm primary" data-status="implantado">Implantar</button></div></div></div>
+      <div class="card"><div class="card-header"><div><h3 class="card-title">Comentários</h3></div><button class="btn sm" id="addComment">Adicionar comentário</button></div><div class="card-body">${state.comentarios.map(c => `<div class="comment"><div class="comment-meta">${escapeHtml(c.autor)} - ${new Date(c.timestamp).toLocaleString('pt-BR')}</div>${escapeHtml(c.mensagem)}</div>`).join('') || '<div class="empty">Nenhum comentário ainda.</div>'}</div></div></div>`;
+    }
+    function labelStatus(s) { return { rascunho:'Rascunho', enviado_validacao:'Enviado', em_analise:'Em análise', devolvido:'Devolvido', validado:'Validado', implantado:'Implantado' }[s] || s; }
+
+    function wireStepEvents() {
+      const bind = (id, fn, event = 'input') => { const el = document.getElementById(id); if (el) el.addEventListener(event, fn); };
+      if (state.step === 1) {
+        ['obraNome','clienteNome','obraEndereco','obraCEP'].forEach(id => bind(id, e => { state.metadata[id] = e.target.value; debouncedPersist(`campo_${id}`); }));
+        bind('createdByNome', e => { state.metadata.createdBy.nome = e.target.value; debouncedPersist('responsavel_nome'); });
+        bind('createdByEmail', e => { state.metadata.createdBy.email = e.target.value; debouncedPersist('responsavel_email'); });
+        bind('modeloPreenchimento', e => { state.metadata.modeloPreenchimento = e.target.value; if (e.target.value === 'modelo_projeto') state.tipoEstrutura = 'modelo_projeto'; debouncedPersist('modelo_preenchimento'); });
+        ['idCRM','estadoRegional','gestorObra','gestorExecutivoDiretor','versaoRegra','superestruturaDrywall'].forEach(id => bind(id, e => { state.metadata.modeloProjetoFields[id] = e.target.value; debouncedPersist(`modelo_projeto_${id}`); }, id === 'superestruturaDrywall' ? 'change' : 'input'));
+      }
+      if (state.step === 2) document.querySelectorAll('input[name="tipoEstrutura"]').forEach(r => r.addEventListener('change', e => { state.tipoEstrutura = e.target.value; if (e.target.value === 'modelo_projeto') state.metadata.modeloPreenchimento = 'modelo_projeto'; debouncedPersist('tipo_estrutura'); }));
+      if (state.step === 3) {
+        document.getElementById('addGroup')?.addEventListener('click', () => addGroup(state.metadata.modeloPreenchimento === 'modelo_projeto' ? { tipoEdificacao: 'Bloco' } : {}));
+        state.grupos.forEach(g => {
+          bind(`grupo_nome_${g.id}`, e => { g.nome = e.target.value; debouncedPersist('grupo_nome'); });
+          bind(`grupo_tipo_${g.id}`, e => { g.tipoEdificacao = e.target.value; debouncedPersist('grupo_tipo'); }, 'change');
+          bind(`grupo_range_${g.id}`, e => { g.edificacoesInput = e.target.value; debouncedPersist('grupo_range'); });
+          bind(`grupo_projetista_${g.id}`, e => { g.projetista = e.target.value; debouncedPersist('grupo_projetista'); });
+        });
+        document.querySelectorAll('[data-remove-group]').forEach(b => b.addEventListener('click', () => removeGroup(b.dataset.removeGroup)));
+        document.querySelectorAll('[data-duplicate-group]').forEach(b => b.addEventListener('click', () => duplicateGroup(b.dataset.duplicateGroup)));
+      }
+      if (state.step === 4) {
+        document.querySelectorAll('[data-add-peca]').forEach(b => b.addEventListener('click', () => addPeca(b.dataset.addPeca)));
+        document.querySelectorAll('[data-remove-peca]').forEach(b => b.addEventListener('click', () => { const [g,p] = b.dataset.removePeca.split(':'); removePeca(g,p); }));
+        document.querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => bulkAddFloors(b.dataset.bulk, document.getElementById(`bulk_start_${b.dataset.bulk}`).value, document.getElementById(`bulk_end_${b.dataset.bulk}`).value, document.getElementById(`bulk_fck_${b.dataset.bulk}`).value, document.getElementById(`bulk_volume_${b.dataset.bulk}`).value)));
+        state.grupos.forEach(g => g.pecas.forEach(p => {
+          bind(`peca_local_${p.id}`, e => { p.local = e.target.value; p.etapa = detectEtapa(p.local); p.ordem = orderOf(p.local); debouncedPersist('peca_local'); });
+          bind(`peca_etapa_${p.id}`, e => { p.etapa = e.target.value; debouncedPersist('peca_etapa'); }, 'change');
+          bind(`peca_fck_${p.id}`, e => { p.fck = e.target.value; debouncedPersist('peca_fck'); });
+          bind(`peca_volume_${p.id}`, e => { p.volume = e.target.value; debouncedPersist('peca_volume'); });
+          bind(`peca_concreto_${p.id}`, e => { p.concretoId = e.target.value; debouncedPersist('peca_concreto'); }, 'change');
+          bind(`peca_obs_${p.id}`, e => { p.observacoes = e.target.value; debouncedPersist('peca_obs'); });
+        }));
+      }
+      if (state.step === 5) {
+        document.getElementById('addConcreto')?.addEventListener('click', () => { state.concretos.push({ id: uid('conc'), descricao: '', aplicacao: '', fck: '', moldagem: '' }); debouncedPersist('concreto_adicionado'); });
+        document.querySelectorAll('[data-remove-concreto]').forEach(b => b.addEventListener('click', () => { state.concretos = state.concretos.filter(c => c.id !== b.dataset.removeConcreto); debouncedPersist('concreto_removido'); }));
+        state.concretos.forEach(c => {
+          bind(`conc_desc_${c.id}`, e => { c.descricao = e.target.value; debouncedPersist('concreto_desc'); });
+          bind(`conc_app_${c.id}`, e => { c.aplicacao = e.target.value; debouncedPersist('concreto_app'); });
+          bind(`conc_fck_${c.id}`, e => { c.fck = e.target.value; debouncedPersist('concreto_fck'); });
+          bind(`conc_mold_${c.id}`, e => { c.moldagem = e.target.value; debouncedPersist('concreto_moldagem'); });
+        });
+      }
+      if (state.step === 6) wirePreviewClicks();
+      if (state.step === 7) {
+        document.getElementById('toggleJson')?.addEventListener('click', () => { state.showJson = !state.showJson; persist('toggle_json'); render(); });
+      }
+      if (state.step === 8) {
+        document.querySelectorAll('[data-status]').forEach(b => b.addEventListener('click', () => { state.metadata.status = b.dataset.status; state.audit.push({ id: uid('aud'), timestamp: nowIso(), autor: 'Equipe Consulte GEO', acao: `status_${b.dataset.status}` }); persist('status_alterado'); render(); }));
+        document.getElementById('addComment')?.addEventListener('click', () => { const mensagem = prompt('Comentário da equipe Consulte GEO:'); if (mensagem) { state.comentarios.push({ id: uid('com'), autor: 'Equipe Consulte GEO', mensagem, timestamp: nowIso(), itemReferenciado: '' }); persist('comentario_adicionado'); render(); } });
+      }
+    }
+    function wirePreviewClicks() {
+      document.querySelectorAll('[data-edit-item]').forEach(el => el.addEventListener('click', () => openEditDrawer(el.dataset.editItem)));
+    }
+    function openEditDrawer(unidadeId) {
+      const payload = buildPayload();
+      let found;
+      state.grupos.forEach(g => g.pecas.forEach(p => {
+        const child = payload.renderTree.nodes.flatMap(n => n.children).find(c => c.id === unidadeId && c.label === p.local);
+        if (child && !found) found = { grupo: g, peca: p };
+      }));
+      if (!found) return;
+      document.getElementById('drawerTitle').textContent = found.peca.local || 'Item sem nome';
+      document.getElementById('drawerBody').innerHTML = `<div class="grid">
+        ${field('drawer_local', 'Peça ou pavimento', found.peca.local, 'Ex: 1º Pavimento')}
+        ${selectField('drawer_etapa', 'Etapa', found.peca.etapa, ['Fundação','Infraestrutura','Superestrutura','Contenção','Anexos','Estrutura'])}
+        ${field('drawer_fck', 'FCK', found.peca.fck, 'FCK 30')}
+        ${field('drawer_volume', 'Volume por unidade', found.peca.volume, '187,79')}
+        ${field('drawer_obs', 'Observação', found.peca.observacoes, 'Opcional')}
+        <button class="btn primary" id="drawerSave">Salvar item</button>
+      </div>`;
+      document.getElementById('overlay').classList.add('open');
+      document.getElementById('editDrawer').classList.add('open');
+      document.getElementById('drawerSave').addEventListener('click', () => {
+        found.peca.local = document.getElementById('drawer_local').value;
+        found.peca.etapa = document.getElementById('drawer_etapa').value;
+        found.peca.fck = document.getElementById('drawer_fck').value;
+        found.peca.volume = document.getElementById('drawer_volume').value;
+        found.peca.observacoes = document.getElementById('drawer_obs').value;
+        closeDrawer(); persist('edicao_inline_previa'); render();
+      });
+    }
+    function closeDrawer() { document.getElementById('overlay').classList.remove('open'); document.getElementById('editDrawer').classList.remove('open'); }
+
+    document.getElementById('backBtn').addEventListener('click', () => { if (state.step > 1) { state.step--; persist('voltar'); render(); } });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (state.step === 7) {
+        const v = validateState();
+        if (v.bloqueantes.length) { state.step = 6; render(); return; }
+        state.metadata.status = 'enviado_validacao';
+        state.metadata.protocoloEnvio = `CGE-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+        state.audit.push({ id: uid('aud'), timestamp: nowIso(), autor: state.metadata.createdBy.email || 'usuario_demo', acao: 'enviado_validacao', after: { protocoloEnvio: state.metadata.protocoloEnvio } });
+        state.step = 8;
+        persist('enviado_validacao');
+        render();
+        return;
+      }
+      if (state.step < 8) { state.step++; persist('avancar'); render(); }
+    });
+    document.getElementById('saveBtn').addEventListener('click', () => { persist('salvar_manual'); render(); });
+    document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+    document.getElementById('overlay').addEventListener('click', closeDrawer);
+    document.getElementById('themeToggle').addEventListener('click', () => { state.theme = state.theme === 'light' ? 'dark' : 'light'; persist('tema'); render(); });
+    document.getElementById('resetDraft').addEventListener('click', () => { if (confirm('Limpar todo o rascunho local?')) { state = defaultState(); persist('rascunho_limpo'); render(); } });
+    document.getElementById('loadExampleCommon').addEventListener('click', () => { state = exampleCommon(); persist('exemplo_comum'); render(); });
+    document.getElementById('loadExampleModeloProjeto').addEventListener('click', () => { state = exampleModeloProjeto(); persist('exemplo_modelo_projeto'); render(); });
+
+    function exampleCommon() {
+      const s = defaultState();
+      s.metadata.obraNome = 'Evo Vila Clementino';
+      s.metadata.clienteNome = 'Bacelar';
+      s.metadata.obraEndereco = 'São Paulo - SP';
+      s.metadata.obraCEP = '00000-000';
+      s.metadata.createdBy = { userId: 'eng_demo', nome: 'Engenheira da Obra', email: 'engenharia@bacelar.com.br' };
+      s.tipoEstrutura = 'torres_iguais';
+      s.grupos = [{ id: uid('grp'), nome: 'Torre Única', edificacoesInput: '', edificacoesExpanded: [], tipoEdificacao: 'Torre', projetista: '', observacoes: '', pecas: [
+        { id: uid('peca'), local: 'Cortina de Concreto', etapa: 'Contenção', fck: 'FCK 30', volume: '177,97', concretoId: s.concretos[1].id, observacoes: '', ordem: 1 },
+        { id: uid('peca'), local: 'Estaca Escavada', etapa: 'Fundação', fck: 'FCK 25', volume: '2,00', concretoId: s.concretos[0].id, observacoes: '', ordem: 2 },
+        { id: uid('peca'), local: 'Broca', etapa: 'Fundação', fck: 'FCK 30', volume: '8,00', concretoId: s.concretos[1].id, observacoes: '', ordem: 3 },
+        { id: uid('peca'), local: 'Sapata', etapa: 'Fundação', fck: 'FCK 30', volume: '164,84', concretoId: s.concretos[1].id, observacoes: '', ordem: 4 },
+        { id: uid('peca'), local: '1º subsolo até 9º pavimento / Ático e Cobertura', etapa: 'Superestrutura', fck: 'FCK 30', volume: '1121,46', concretoId: s.concretos[1].id, observacoes: 'Confirmar se volume é por unidade ou agregado.', ordem: 5 }
+      ] }];
+      return s;
+    }
+    function exampleModeloProjeto() {
+      const s = defaultState();
+      s.metadata.modeloPreenchimento = 'modelo_projeto';
+      s.tipoEstrutura = 'modelo_projeto';
+      s.metadata.obraNome = 'Parque dos Condes';
+      s.metadata.clienteNome = 'Construtora Exemplo';
+      s.metadata.createdBy = { userId: 'modelo_projeto_demo', nome: 'Gestor da Obra', email: 'gestor.obra@construtora.com.br' };
+      s.metadata.modeloProjetoFields = { idCRM: '123e4567-e89b-42d3-a456-426614174000', estadoRegional: 'BAHIA - NE1', gestorObra: 'Gestor da Obra', gestorExecutivoDiretor: 'Diretoria Regional', versaoRegra: '', superestruturaDrywall: 'SEM' };
+      const basePecas = [
+        { local: 'Estacas hélice', etapa: 'Fundação', fck: 30, volume: '12,50' },
+        { local: 'Bloco de Coroamento', etapa: 'Fundação', fck: 30, volume: '18,20' },
+        { local: 'Radier', etapa: 'Fundação', fck: 25, volume: '170,00' },
+        { local: 'Térreo', etapa: 'Superestrutura', fck: 20, volume: '92,00' },
+        { local: '1º pav', etapa: 'Superestrutura', fck: 20, volume: '87,00' },
+        { local: '2º pav', etapa: 'Superestrutura', fck: 20, volume: '87,00' },
+        { local: '3º pav', etapa: 'Superestrutura', fck: 20, volume: '87,00' },
+        { local: '4º pav', etapa: 'Superestrutura', fck: 20, volume: '87,00' },
+        { local: 'Cobertura', etapa: 'Superestrutura', fck: 20, volume: '54,00' }
+      ];
+      s.grupos = [
+        { id: uid('grp'), nome: 'Blocos padrão', edificacoesInput: '1 A 24', edificacoesExpanded: [], tipoEdificacao: 'Bloco', projetista: 'Projetista Estrutural Exemplo', observacoes: '', pecas: basePecas.map(p => ({ id: uid('peca'), ...p, concretoId: s.concretos.find(c => Number(c.fck) === Number(p.fck))?.id || '', observacoes: '', ordem: orderOf(p.local) })) },
+        { id: uid('grp'), nome: 'Anexos', edificacoesInput: 'ANEXOS', edificacoesExpanded: [], tipoEdificacao: 'Anexos', projetista: 'Projetista de Anexos Exemplo', observacoes: '', pecas: [
+          { id: uid('peca'), local: 'Guarita', etapa: 'Anexos', fck: 25, volume: '-', concretoId: s.concretos[0].id, observacoes: 'Anexo sem volumetria obrigatória.', ordem: 1 },
+          { id: uid('peca'), local: 'Piscina', etapa: 'Anexos', fck: 25, volume: '-', concretoId: s.concretos[0].id, observacoes: '', ordem: 2 }
+        ] }
+      ];
+      return s;
+    }
+
+    render();
+  </script>
+</body>
+</html>

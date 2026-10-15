@@ -1,3 +1,5 @@
+import {isImplementationSupportStaff,mountImplementationSupport} from './implementation-support.js';
+let implementationSupport=null,activeView='tickets';
 import {ADVANCED_ACCESS} from './access-mode.js';
 import {mountOperationalJourney} from './consultegeo-operation.js';
 import {mountOperationalWorkflow} from './consultegeo-workflow.js';
@@ -80,7 +82,7 @@ const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='wai
 const product=(id,consultegeo=false)=>consultegeo?'Consulte GEO':s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 // Presentation only: this is an abbreviated UUID, never a business protocol.
 const compactTicketId=id=>(id.length>18?id.slice(0,8)+'…'+id.slice(-6):id).toUpperCase();
-function clearSession(){cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){implementationSupport?.destroy();implementationSupport=null;$('implementation-support-nav').hidden=true;$('implementation-support-view').hidden=true;activeView='tickets';$('tickets-view').hidden=false;$('guide-view').hidden=true;$('breadcrumb').textContent='Operação / Chamados';for(const button of document.querySelectorAll('[data-view]'))button.classList.toggle('active',button.dataset.view==='tickets');cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
@@ -96,7 +98,7 @@ function renderServiceAvailability(){
  }
 }
 async function login(){
- s.me=await api('/me');renderWorkspaceChange();
+ s.me=await api('/me');renderWorkspaceChange();$('implementation-support-nav').hidden=!!s.demo||!isImplementationSupportStaff(s.me);
  // The preserved advanced flow keeps its existing authentication-only screen.
  if(!serviceAvailable()&&ADVANCED_ACCESS){$('login-screen').hidden=false;$('app').hidden=true;$('login-status').textContent='Identidade e acesso ao workspace confirmados. O atendimento ainda não foi liberado.';return;}
  $('assignment-filter-label').hidden=!(s.me.kind==='human'&&(s.me.workspace_role==='admin'||s.me.grants.some(g=>g.role==='agent')));
@@ -108,6 +110,7 @@ async function login(){
   try{const landing=await api('/approval-invitations/'+invitation);if(landing?.workspaceId!==s.workspace||landing.invitationId!==invitation||typeof landing.ticketId!=='string'||!/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/.test(landing.ticketId))throw Error('Convite indisponível.');await detail(landing.ticketId,{navigate:true});}
   catch{notice('O convite está indisponível para esta sessão ou revisão. Consulte os chamados autorizados.',true);}
  }else if(linked)await detail(linked,{navigate:true});}
+ if(!s.demo&&serviceAvailable()&&isImplementationSupportStaff(s.me)&&new URLSearchParams(location.search).get('apoio')==='implantacao')navigateView('implementation-support');
 
 }
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
@@ -463,7 +466,22 @@ $('transition').onclick=()=>run(async()=>{
  }catch(error){if(mutations.finish(op,false,outcomeUnknown(error)).current||mutations.current(op))throw error;}
  finally{renderComposer();}
 });
-for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);for(const n of document.querySelectorAll('[data-view]'))n.onclick=()=>{const tickets=n.dataset.view==='tickets';$('tickets-view').hidden=!tickets;$('guide-view').hidden=tickets;$('breadcrumb').textContent=tickets?'Operação / Chamados':'Projeto / Arquitetura e estágio';for(const b of document.querySelectorAll('[data-view]'))b.classList.toggle('active',b===n);};
+function navigateView(view){
+ const labels={tickets:'Operação / Chamados',guide:'Projeto / Arquitetura e estágio','implementation-support':'Operação / Apoio Implantação'};
+ if(!Object.hasOwn(labels,view))return;
+ if(view==='implementation-support'&&(!s.me||s.demo||!isImplementationSupportStaff(s.me)))return;
+ if(activeView!==view){implementationSupport?.destroy();implementationSupport=null;}
+ activeView=view;
+ for(const name of Object.keys(labels))$(name+'-view').hidden=name!==view;
+ $('breadcrumb').textContent=labels[view];
+ for(const button of document.querySelectorAll('[data-view]'))button.classList.toggle('active',button.dataset.view===view);
+ if(view==='implementation-support'&&!implementationSupport){
+  const epoch=s.epoch;
+  implementationSupport=mountImplementationSupport($('implementation-support-root'),{principal:s.me,getPrincipal:()=>s.me,session:{id:s.me.id,workspaceId:s.workspace},request:operationalRequest(),isCurrent:()=>epoch===s.epoch&&activeView==='implementation-support'&&!s.demo});
+ }
+}
+for(const b of document.querySelectorAll('[data-mode]'))b.onclick=()=>mode(b.dataset.mode);
+for(const button of document.querySelectorAll('[data-view]'))button.onclick=()=>navigateView(button.dataset.view);
 $('refresh').onclick=()=>run(async()=>{await list();if(s.ticket)await detail(s.ticket.id);});$('more').onclick=()=>run(()=>list(false));$('new-ticket').onclick=()=>run(startCreate);$('create-dialog').addEventListener('close',()=>{if(!$('create-dialog').open)resetOpening();});$('close-dialog').onclick=()=>$('create-dialog').close();$('cancel-create').onclick=()=>$('create-dialog').close();$('profile').onchange=e=>run(()=>profile(e.target.value));$('start-demo').onclick=()=>run(()=>profile(s.demo.profiles[0].key));async function leaveHumanSession(scope='local'){
  loginAttempt++;
  if(s.demo||!humanSession){clearSession();$('app').hidden=true;$('login-screen').hidden=false;$('password').value='';return;}
