@@ -9,6 +9,8 @@ import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirec
 import {createDurablePostgresSupportWorkflow} from '../../src/infrastructure/support-workflow-store.ts';
 import {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fixture.ts';
 import {assertOwnedWave2ApprovalOpening} from './notification-wave2-review-fixture.ts';
+import {WAVE2_PUBLIC_TEMPLATES} from '../../src/integrations/notifications/wave2-templates.ts';
+import {requestHash} from '../../src/domain/canonical.ts';
 /** Final journey in an owned disposable cluster. Real ordinary app sessions see the
  * committed candidate. Schema/upgrade readiness remains a separate release gate. */
 export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
@@ -104,5 +106,16 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
   await suite.test('customer reply pins the actual responsible staff and keeps conversation private',async()=>{const returned=await rows('support.customer_reply');assert.equal(returned.length,1);assert.equal(returned[0]!.id,receipt.eventId);assert.equal(returned[0]!.assigned_principal_id,staff);const facts=(await operator.query('select helpdesk_auth.hdn_notification_facts($1) as result',[receipt.eventId])).rows[0]!.result as any;assert.equal(facts.source.type,'support.customer_reply');assert.equal(facts.sourceAssigneeId,staff);assert.doesNotMatch(JSON.stringify(facts),/Owned requester return|body|notes/);});
   await suite.test('customer return goes to its pinned staff recipient and never the requester',async()=>{const saved=await audience.materialize(receipt.eventId);assert.deepEqual(saved.records.map(r=>r.intent.recipientId),[staff]);assert.ok(saved.records.every(r=>r.intent.recipientId!==requester));});
   await assertOwnedWave2ApprovalOpening(suite,operator,app,{agent,customer,staffAuth,workId:input.workId,oldTicketId:opened.ticketId,formId:entry.form.id,audience});
+  await suite.test('expired finite route seals an actual public reply without delivery or later backfill',async()=>{
+   const template=WAVE2_PUBLIC_TEMPLATES.find(t=>t.kind==='support.reply')!;
+   await operator.query('insert into helpdesk_integration.hdn_notification_templates(id,version,kind,document,sha256) values($1,$2,$3,$4,$5)',[template.id,template.version,template.kind,template,requestHash(template)]);
+   await operator.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) values($1,'support.reply',2,'requester',$2,1,clock_timestamp()+interval '10 minutes',clock_timestamp(),$3::uuid[])",[w,template.id,[requester]]);
+   receipt=await flow.execute(agent,opened.ticketId,refs,{action:'reply',expectedVersion:receipt.version,body:'Owned expired route probe; never sent'},randomUUID(),randomUUID());
+   await operator.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) select workspace_id,kind,revision+1,audience,template_id,template_version,clock_timestamp()+interval '500 milliseconds',effective_after,recipient_ids from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind='support.reply' order by revision desc limit 1",[w]);
+   await operator.query('select pg_sleep(0.7)');
+   const first=await audience.materialize(receipt.eventId);assert.equal(first.plan.state,'no_recipients');assert.deepEqual(first.records,[]);
+   await operator.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) select workspace_id,kind,revision+1,audience,template_id,template_version,clock_timestamp()+interval '10 minutes',effective_after,recipient_ids from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind='support.reply' order by revision desc limit 1",[w]);
+   assert.deepEqual(await audience.materialize(receipt.eventId),first);
+  });
  });
 }
