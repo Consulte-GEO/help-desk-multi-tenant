@@ -36,5 +36,6 @@ with sync_playwright() as p:
     assert not errors and not posts,errors
     checks.append('Simple login waits for MFA, preserves explicit retry and discovers authorized business access only after verified code')
     context.close();browser.close()
+checks=[{'check':check,'result':'passed'} for check in checks]
 (ROOT/'evidence/browser-wave2-self-security.json').write_text(json.dumps({'scope':'isolated DOM with synthetic Auth/API; no real MFA setup','checks':checks},ensure_ascii=False,indent=2))
 print(json.dumps(checks,ensure_ascii=False))
