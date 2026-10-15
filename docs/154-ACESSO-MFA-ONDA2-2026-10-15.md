@@ -14,4 +14,6 @@ Esta entrega não altera fatores, permissões, segredos, política de autoaprova
 
 ## Limites e publicação
 
-Auth real, fator real e aprovação de negócio não são comprovados por fixtures. A produção e a configuração pelo titular serão verificadas separadamente. O PR45 entrega somente esta dependência; não publica o backend incompleto nem ativa os13 templates da segunda onda.
+O [PR45](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/45) foi integrado em `d39c801eab2c9ce6445e8b04622a329d70c0d45e`. Produção `6ad055640436102e5070df6d` pronta em15/10/2026 às04:24:51Z. Os88 arquivos públicos correspondem byte a byte ao build qualificado; public-config/capabilities respondem200 e me/tickets recusam acesso sem credencial com401. Recibo em `Entregas/Implantacao_Onda2_2026-10-14/02-mfa-publicacao-verificada.json` no workspace.
+
+Auth real, fator real e aprovação de negócio não são comprovados por fixtures. A configuração do autenticador pelo titular e a entrada com MFA permanecem pendentes de confirmação. Esta entrega publica somente a dependência de acesso; não ativa os13 templates da segunda onda.

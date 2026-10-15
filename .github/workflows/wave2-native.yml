@@ -1,0 +1,44 @@
+name: Wave2 PostgreSQL development checks
+on:
+  push:
+    branches: ['codex/helpdesk-email-wave2']
+permissions:
+  contents: read
+concurrency:
+  group: wave2-native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-development:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Stage exact committed source
+        id: source
+        run: node scripts/stage-ci-source.mjs
+      - name: Verify lock and install existing audited dependencies
+        working-directory: ${{ steps.source.outputs.root }}
+        run: |
+          npm run check:lock
+          npm ci --ignore-scripts
+      # Supplemental RED/GREEN feedback only. This job never generates the full
+      # homologation receipt and cannot qualify verify:release or a deployment.
+      - name: Run genuine restricted sessions in owned disposable PostgreSQL17
+        working-directory: ${{ steps.source.outputs.root }}
+        run: |
+          set -o pipefail
+          mkdir -p evidence/wave2-native-development
+          npm run test:db:local 2>&1 | tee evidence/wave2-native-development/native.log
+      - name: Preserve development results including failures
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave2-native-development-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ steps.source.outputs.root }}/evidence/
+          retention-days: 14
+          if-no-files-found: error

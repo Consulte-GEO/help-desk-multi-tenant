@@ -73,7 +73,14 @@ export const NOTIFICATION_DATABASE_QUERY=`with
  (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999 and pg_catalog.current_setting('row_security')='on' and pg_catalog.current_setting('session_replication_role')='origin') as settings,
  coalesce((select ssl from pg_catalog.pg_stat_ssl where pid=pg_catalog.pg_backend_pid()),false) as tls`;
 const notificationTables=['helpdesk_integration.hdn_notification_templates','helpdesk_integration.hdn_notification_routes','helpdesk_integration.hdn_notification_plans','helpdesk_integration.hdn_notification_records','helpdesk_integration.hdn_notification_attempts','helpdesk_integration.hdn_notification_events','helpdesk_integration.hdn_notification_native_receipts','helpdesk_audit.hdn_notification_audit'];
-export async function assertNotificationWorkerDatabase(pool:Pick<SqlPool,'query'>,contract:NotificationDatabaseContract=DATABASE_SECURITY_CONTRACT):Promise<void>{const version=promotion(contract);try{const r=await pool.query(NOTIFICATION_DATABASE_QUERY,[version,signatures,notificationTables]),row=r.rows[0];if(r.command!=='SELECT'||r.rowCount!==1||r.rows.length!==1||row?.sessionUser!=='helpdesk_notification_worker'||row.currentUser!=='helpdesk_notification_worker'||['schema','role','acl','helpers','tables','clients','settings','tls'].some(k=>row[k]!==true))throw Error();}catch{throw failed('notification_database_unqualified');}}
+export async function assertNotificationWorkerDatabase(pool:Pick<SqlPool,'query'>,contract?:NotificationDatabaseContract):Promise<void>{
+ const versions=contract?[promotion(contract)]:[promotion(DATABASE_SECURITY_CONTRACT),'0.24.0'];
+ try{for(const [index,version] of versions.entries()){
+  const r=await pool.query(NOTIFICATION_DATABASE_QUERY,[version,signatures,notificationTables]),row=r.rows[0];
+  if(r.command!=='SELECT'||r.rowCount!==1||r.rows.length!==1||row?.sessionUser!=='helpdesk_notification_worker'||row.currentUser!=='helpdesk_notification_worker'||['role','acl','helpers','tables','clients','settings','tls'].some(k=>row[k]!==true))throw Error();
+  if(row.schema===true)return;if(row.schema!==false||index===versions.length-1)throw Error();
+ }}catch{throw failed('notification_database_unqualified');}throw failed('notification_database_unqualified');
+}
 
 async function budget<T>(work:(signal:AbortSignal,check:()=>void)=>Promise<T>,parent?:AbortSignal):Promise<T>{const control=new AbortController(),start=performance.now();let timer:ReturnType<typeof setTimeout>|undefined;const stop=new Promise<never>((_,reject)=>{timer=setTimeout(()=>{control.abort();reject(failed('notification_deadline_exceeded'));},BUDGET_MS);});const signal=parent?AbortSignal.any([parent,control.signal]):control.signal;const check=()=>{if(signal.aborted||performance.now()-start>=BUDGET_MS)throw failed('notification_deadline_exceeded');};try{check();const result=await Promise.race([work(signal,check),stop]);check();return result;}finally{clearTimeout(timer);control.abort();}}
 type CycleStore=Pick<PostgresNotificationDeliveryStore,'authority'|'materializePending'|'claimDelivery'|'locked'|'getTemplate'>;

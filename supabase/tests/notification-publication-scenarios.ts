@@ -3,7 +3,7 @@ import type {SqlPool} from '../../src/infrastructure/sql.ts';
 import {planConsulteGeoInitialOperation} from '../../src/application/consultegeo-initial-operation.ts';
 import {planNotificationTemplatePublication} from '../../src/application/notification-template-publication.ts';
 import {buildNotificationTemplatePublicationSql} from '../../src/infrastructure/notification-template-publication-sql.ts';
-import {assertDatabaseSecurity,assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';
+import {assertSafeDatabaseRole} from '../../src/infrastructure/postgres.ts';import {assertDatabaseSecurity} from '../../tests/helpers/qualified-v024.ts';
 export function registerNotificationPublicationSqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
  test('wave1 publication uses a genuine operator and commits templates routes and receipt atomically',async suite=>{
   const operator=operatorPool(),control=controlPool(),app=appPool();

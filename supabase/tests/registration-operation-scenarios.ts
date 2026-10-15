@@ -1,8 +1,9 @@
+import {assertSchemaCompatibility,assertDatabaseSecurity} from '../../tests/helpers/qualified-v024.ts';
 /** Genuine NOSUPER operator publication of registration DATA on the qualified 0.24 catalogue. */
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';import type {Principal} from '../../src/domain/model.ts';
-import {DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/database-security-contract.ts';
-import {assertSafeDatabaseRole,assertSchemaCompatibility,assertDatabaseSecurity,createBorrowedPostgresUnitOfWork} from '../../src/infrastructure/postgres.ts';
+import {DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/consultegeo-v024-security-contract.ts';
+import {assertSafeDatabaseRole,createBorrowedPostgresUnitOfWork} from '../../src/infrastructure/postgres.ts';
 import {runTransaction} from '../../src/infrastructure/transaction.ts';import {HelpdeskService} from '../../src/application/helpdesk.ts';
 import {planConsulteGeoInitialOperation} from '../../src/application/consultegeo-initial-operation.ts';
 import {planConsulteGeoRegistrationOperation} from '../../src/application/consultegeo-registration-operation.ts';

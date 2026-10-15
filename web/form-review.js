@@ -9,7 +9,7 @@ export function mountFormReview(root, options) {
  const diff = node('section', undefined, {'aria-label': 'Diferenças públicas do formulário'}), list = node('ol', undefined, {class: 'hd-ops-diff-list'});
  diff.append(node('h3', 'O que será alterado'), list);
  const actions = node('div', undefined, {class: 'hd-ops-actions'});
- const preview = ui.button('Conferir alterações salvas', 'preview-revision', async () => {
+ const preview = ui.button(options.saveOnPreview ? 'Salvar e conferir alterações' : 'Conferir alterações salvas', 'preview-revision', async () => {
   if (destroyed || waitingForDraft || state.snapshot().phase !== 'ready') return;
   const stamp = epoch; waitingForDraft = true; draw(state.snapshot()); let failed = false;
   try {
@@ -60,6 +60,7 @@ export function mountFormReview(root, options) {
    else if (['error', 'confirmed'].includes(s.phase)) ui.status.focus();
   }
   lastPhase = s.phase;
+  try { options.onChange?.(s); } catch { /* presentation observer only */ }
  }
  async function run(fn) {
   if (destroyed || state.snapshot().phase === 'cleared') return;

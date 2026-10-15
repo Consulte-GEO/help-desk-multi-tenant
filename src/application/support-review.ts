@@ -50,7 +50,7 @@ export type RevisionBundle=Readonly<{expectedVersion:number;expectedFormRevision
 export interface ReviewDirectory {locateTicket(p:Principal,id:string,signal?:AbortSignal):Promise<{accountId:string;refs:readonly ExternalResourceRef[]}|null>}
 export function reviewAuthorityKey(s:ResourceScopeContext){return requestHash({principalId:s.principalId,workspaceId:s.workspaceId,accountId:s.accountId,bindingId:s.bindingId,bindingRevision:s.bindingRevision,accessRevision:s.accessRevision,manifestFingerprint:s.manifestFingerprint,refs:externalResourceSelectionKey(s.refs)});}
 const keyOf=(v:string)=>{if(typeof v!=='string'||!/^[A-Za-z0-9._:-]{16,128}$/.test(v))throw fail('invalid_review_input',400);return v;};
-const errors:Record<string,number>={invalid_review_input:400,approval_forbidden:403,approval_already_pending:409,approval_revision_changed:412,approval_unavailable:409,approval_self_forbidden:403,review_state_conflict:409,review_no_changes:409,review_time_conflict:409,review_capability_required:403,review_step_up_required:403,review_not_found:404,review_idempotency_conflict:409,review_draft_invalid:409,review_preview_changed:409,invalid_form_values:422,attachment_not_clean_or_changed:409,resource_scope_denied:403,resource_scope_unavailable:503,resource_scope_database_mismatch:403,resource_scope_database_unavailable:503,transaction_outcome_unknown:503,transaction_identity_changed:403,transaction_work_incomplete:503,transaction_statement_failed:503,calendar_horizon_exceeded:503};
+const errors:Record<string,number>={release_gate_closed:503,invalid_review_input:400,approval_forbidden:403,approval_already_pending:409,approval_revision_changed:412,approval_unavailable:409,approval_self_forbidden:403,review_state_conflict:409,review_no_changes:409,review_time_conflict:409,review_capability_required:403,review_step_up_required:403,review_not_found:404,review_idempotency_conflict:409,review_draft_invalid:409,review_preview_changed:409,invalid_form_values:422,attachment_not_clean_or_changed:409,resource_scope_denied:403,resource_scope_unavailable:503,resource_scope_database_mismatch:403,resource_scope_database_unavailable:503,transaction_outcome_unknown:503,transaction_identity_changed:403,transaction_work_incomplete:503,transaction_statement_failed:503,calendar_horizon_exceeded:503};
 export function safeReviewError(e:unknown){try{if(e instanceof HelpdeskError){const c=Object.getOwnPropertyDescriptor(e,'code')?.value;if(typeof c==='string'&&Object.hasOwn(errors,c))return fail(c,errors[c]);}}catch{}return fail();}
 function formHash(f:ReviewFormSnapshot){return requestHash({formId:f.formId,formVersion:f.formVersion,schemaHash:f.schemaHash,answers:f.answers,evidence:f.evidence});}
 function target(a:ReviewAggregate):ApprovalTarget{return {ticket:a.ticket,requesterId:a.requesterId,formRevision:a.form.revision,formHash:formHash(a.form),refsHash:requestHash(externalResourceSelectionKey(a.refs))};}
@@ -66,11 +66,11 @@ function revisionInput(raw:unknown,commit:boolean):RevisionInput{const r=reviewR
 /** Optional C11 composition; requires qualified directory, RLS-backed store and
  * current capability grants. No default role promotion, issuer, recipient or owner.
  * Email landing is informational; challenge and decision are explicit POSTs. */
-export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:ReviewDirectory;createStore:(c:SqlClient,p:Principal)=>ReviewTransaction;clock?:()=>string;assertStepUp?:(p:Principal,proof:unknown)=>void}){
+export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof createResourceAccessResolver>;directory:ReviewDirectory;createStore:(c:SqlClient,p:Principal)=>ReviewTransaction;clock?:()=>string;admit?:()=>void;assertStepUp?:(p:Principal,proof:unknown)=>void}){
  const clock=o.clock??(()=>new Date().toISOString());
  async function run<T>(p:Principal,ticketId:string,cap:'approvals.request'|'approvals.decide'|'forms.revise',proof:unknown,signal:AbortSignal|undefined,work:(tx:ReviewTransaction,a:ReviewAggregate,s:ResourceScopeContext,expires:Expiry)=>Promise<T>):Promise<T>{
   const original=requestHash(copyFormData(p));const limits:{at:bigint;code:string;status:number}[]=[];let sensitive=false;
-  const check=()=>{if(requestHash(copyFormData(p))!==original)throw fail('approval_forbidden',403);for(const l of limits)if(instantMicros(clock())>=l.at)throw fail(l.code,l.status);if(sensitive){if(!o.assertStepUp)throw fail('review_step_up_required',403);try{o.assertStepUp(p,proof);}catch{throw fail('review_step_up_required',403);}}};
+  const check=()=>{o.admit?.();if(requestHash(copyFormData(p))!==original)throw fail('approval_forbidden',403);for(const l of limits)if(instantMicros(clock())>=l.at)throw fail(l.code,l.status);if(sensitive){if(!o.assertStepUp)throw fail('review_step_up_required',403);try{o.assertStepUp(p,proof);}catch{throw fail('review_step_up_required',403);}}};
   const expires:Expiry=(until,code,status=409)=>{limits.push({at:instantMicros(until),code,status});check();};
   check();const located=await o.directory.locateTicket(p,ticketId,signal);check();if(!located)throw fail('review_not_found',404);const refs=parseExternalResourceSelection(located.refs);
   const lease=await o.resolver.resolveResourceScope(p,refs,'tickets.write',signal);check();
@@ -103,12 +103,16 @@ export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof c
    if(a.ticket.approval!=='pending'||!['new','triage'].includes(a.ticket.status)||a.profile.approvalRequired!==true)throw fail('approval_unavailable',409);
    // This first policy supports a single active invitation per request revision.
    // Multi-approver/quorum policies require a separate published model, not guessing.
-   if(await tx.findPendingInvitation(ticketId))throw fail('approval_already_pending',409);
    const route=reviewRecord(await tx.lockApprovalRoute(ticketId,s),['principalId','principalKind','workspaceId','accountId','ticketId','policyVersionId','resourceHash','revision','active','expiresAt']);
    const approverId=uuidIdentifier(route.principalId);
    if(route.principalKind!=='human'||route.workspaceId!==p.workspaceId||route.accountId!==a.ticket.accountId||route.ticketId!==ticketId||route.policyVersionId!==a.approvalPolicy.versionId||route.resourceHash!==requestHash(externalResourceSelectionKey(s.refs))||route.active!==true||typeof route.revision!=='string'||!route.revision)throw fail('approval_forbidden',403);
    if(!a.approvalPolicy.selfApprovalAllowed&&(approverId===a.requesterId||approverId===a.ticket.createdBy))throw fail('approval_self_forbidden',403);
    expires(route.expiresAt as string,'approval_unavailable');const at=clock(),invitationId=randomUUID(),id=randomUUID();
+   const pending=await tx.findPendingInvitation(ticketId);
+   if(pending!==null){const old=parseApprovalInvitation(pending);
+    if(old.status!=='pending'||old.ticketId!==ticketId||old.workspaceId!==p.workspaceId||old.accountId!==a.ticket.accountId)throw fail();
+    if(instantMicros(old.expiresAt)>instantMicros(at)&&old.ticketVersion===expected&&old.formRevision===a.form.revision&&old.targetHash===approvalTargetHash(target(a))&&old.approverId===approverId&&old.policyVersionId===a.approvalPolicy.versionId)throw fail('approval_already_pending',409);
+   }
    const invitation:ApprovalInvitation=freezeFormData({id:invitationId,ticketId,workspaceId:p.workspaceId,accountId:a.ticket.accountId,approverId,policyVersionId:a.approvalPolicy.versionId,ticketVersion:expected,formRevision:a.form.revision,targetHash:approvalTargetHash(target(a)),status:'pending',createdAt:at,expiresAt:route.expiresAt as string,challenge:null});
    parseApprovalInvitation(invitation);
    const result:InvitationReceipt=freezeFormData({ticketId,workspaceId:p.workspaceId,accountId:a.ticket.accountId,actorId:p.id,invitationId,ticketVersion:expected,formRevision:a.form.revision,notification:'pending',replayed:false});
@@ -152,7 +156,8 @@ export function createSupportReview(o:{pool:SqlPool;resolver:ReturnType<typeof c
    else{const x=await tx.lockLookup(q,s);if(x.status!=='verified'||x.queryHash!==requestHash(q))throw fail();expires(x.expiresAt,'review_draft_invalid');evidence.push({path:r.path,id,hash:x.queryHash});}
   }
   const rawDecision=decideFormRevision(p,target(a),{versionId:a.approvalPolicy.versionId,requiresApproval:a.profile.approvalRequired},{expectedVersion:c.expectedVersion,expectedFormRevision:c.expectedFormRevision,answers:values.answers,comment:c.comment},a.form.answers,clock());
-  const decision=freezeFormData({...rawDecision,after:{...rawDecision.after,priority:derivePriority(values.answers[a.profile.impactField],a.profile.priorityPolicy)}});
+  const fixed=a.profile.fixedPriority;if(fixed!==undefined&&!['low','normal','high','urgent'].includes(fixed))throw fail();
+  const decision=freezeFormData({...rawDecision,after:{...rawDecision.after,priority:fixed??derivePriority(values.answers[a.profile.impactField],a.profile.priorityPolicy)}});
   const form:ReviewFormSnapshot=freezeFormData({formId:d.formId,formVersion:d.formVersion,schemaHash:d.schemaHash,revision:a.form.revision+1,answers:values.answers,publicAnswers:values.publicAnswers,evidence,draftId:d.id,draftRevision:d.revision});
   const publicDiff=diffFormAnswers(a.form.publicAnswers,values.publicAnswers),previewHash=requestHash({ticketId:c.ticketId,expectedVersion:c.expectedVersion,expectedFormRevision:c.expectedFormRevision,draftId:d.id,draftRevision:d.revision,form,profile:a.profile,approvalPolicy:a.approvalPolicy,comment:c.comment,refs:externalResourceSelectionKey(s.refs)});
   return {decision,form,publicDiff,previewHash};

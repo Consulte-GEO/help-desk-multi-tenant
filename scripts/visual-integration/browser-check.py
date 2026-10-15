@@ -86,7 +86,11 @@ with sync_playwright() as p:
   if a.match and a.match not in name:continue
   start=len(checks);context=None;errors=[]
   try:
-   context=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');page=context.new_page();page.set_default_timeout(2500);page.on('pageerror',lambda e:errors.append(str(e)));context.route('**/*',lambda r:r.abort());f=Transport(ROOT,**kw);setup_offline(page,f);expect(page.locator('#submit-login')).to_be_enabled();page.wait_for_timeout(30);inline_logos(page,ROOT);fn(page,f);ck(name+': sem exceções JS',not errors,errors);ck(name+': rotas conhecidas',not f.missing,f.missing)
+   context=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');page=context.new_page();page.set_default_timeout(2500);page.on('pageerror',lambda e:errors.append(str(e)));context.route('**/*',lambda r:r.abort());f=Transport(ROOT,**kw);setup_offline(page,f)
+   # The full, nested offline ES-module graph must finish before any scenario.
+   # CI can exceed Playwright's 5s expectation default while evaluating it.
+   # Keep every scenario assertion and its normal action budget unchanged.
+   expect(page.locator('#submit-login')).to_be_enabled(timeout=20_000);inline_logos(page,ROOT);fn(page,f);ck(name+': sem exceções JS',not errors,errors);ck(name+': rotas conhecidas',not f.missing,f.missing)
   except Exception as e:
    ck(name+': execução completa',False,str(e).split('Call log:')[0][-900:])
    if context:

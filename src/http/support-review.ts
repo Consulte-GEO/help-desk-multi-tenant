@@ -3,7 +3,7 @@ import type {RateLimiter,TrustedRequestContext} from '../infrastructure/rate-lim
 import {uuidIdentifier} from '../domain/input-values.ts';import {HelpdeskError} from '../domain/errors.ts';
 import {reviewRecord} from '../domain/support-review.ts';import {safeReviewError,type createSupportReview} from '../application/support-review.ts';
 import {controlledJson,privateJson,httpFailure} from './controlled-json.ts';
-/** Optional route group: not mounted by the production runtime or existing OpenAPI.
+/** Optional route group, mounted only by the qualified schema25 runtime gates.
  * withIdentity must preserve the owned server-side step-up proof throughout callback.
  * Never accept a proof/role/capability from request JSON. */
 export function createSupportReviewHandler(o:{origin:string;service:ReturnType<typeof createSupportReview>;rateLimiter:RateLimiter;withIdentity:<T>(request:Request,work:(p:Principal,stepUp:unknown)=>Promise<T>)=>Promise<T>}){
@@ -32,7 +32,8 @@ export function createSupportReviewHandler(o:{origin:string;service:ReturnType<t
    });
    return privateJson(result,match[2]==='approval-invitations'?202:200,{'x-request-id':requestId});
   }catch(e){const httpCodes=['structured_intake_required','not_found','origin_required','unknown_parameter','precondition_required','invalid_idempotency_key','unsupported_media_type','invalid_json','request_cancelled','request_timeout','payload_too_large','invalid_identifier'];
-   const safe=e instanceof HelpdeskError&&httpCodes.includes(e.code)?httpFailure(e.status,e.code):safeReviewError(e);
+   const boundaryStatuses:Record<string,number>={unauthorized:401,membership_required:403,mfa_required:403,rate_limit_exceeded:429,auth_unavailable:503};
+   const safe=e instanceof HelpdeskError&&Object.hasOwn(boundaryStatuses,e.code)?httpFailure(boundaryStatuses[e.code]!,e.code):e instanceof HelpdeskError&&httpCodes.includes(e.code)?httpFailure(e.status,e.code):safeReviewError(e);
    return privateJson({code:safe.code,status:safe.status,detail:safe.message,request_id:requestId},safe.status,{'x-request-id':requestId});
   }
  };

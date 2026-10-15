@@ -1,7 +1,7 @@
 import {copyFormData,freezeFormData} from '../../shared/form-rules.js';
 import {uuidIdentifier} from './input-values.ts';import {requestHash} from './canonical.ts';
 import {instantMicros,formatMicros} from './business-calendar.ts';import {HelpdeskError} from './errors.ts';
-export const NOTIFICATION_KINDS=['support.created','support.devolutiva','support.customer_reply','support.form_revised','support.resolved','support.approval_requested','support.approval_granted','support.approval_rejected'] as const;
+export const NOTIFICATION_KINDS=['support.created','support.devolutiva','support.customer_reply','support.form_revised','support.resolved','support.approval_requested','support.approval_granted','support.approval_rejected','support.transition','support.reply','support.handoff','support.closed','support.reopened','support.cancelled','internal.queue_created','internal.assignment_changed'] as const;
 export type NotificationKind=typeof NOTIFICATION_KINDS[number];
 export type NotificationIntent=Readonly<{id:string;workspaceId:string;accountId:string;ticketId:string;eventId:string;recipientId:string;channelId:string;templateId:string;templateVersion:number;templateHash:string;kind:NotificationKind;sourceVersion:number;resourceHash:string;protocol:string;invitationId:string|null;createdAt:string;expiresAt:string;idempotencyKey:string}>;
 export type DeliveryState='pending'|'retry_wait'|'leased'|'sending'|'unknown'|'accepted'|'delivered'|'failed'|'suppressed';

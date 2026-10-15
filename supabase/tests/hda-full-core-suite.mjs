@@ -7,6 +7,7 @@ import {createPostgresRegistrationStore} from '../../src/infrastructure/registra
 import {executeRegistrationCommand} from '../../src/application/registration-persistence.ts';
 import {createRegistrationInputSnapshot} from '../../src/domain/registration-contracts.ts';
 import {input,id} from '../../tests/fixtures/registration/sample.ts';
+import {DATABASE_SECURITY_CONTRACT} from '../../src/infrastructure/database-security-contract.ts';
 export async function runNativeSuite({owner,app}){
  const checks=[];const test=async(name,fn)=>{try{await fn();checks.push({name,result:'passed'});}catch(e){checks.push({name,result:'failed',code:e.code??'assertion_or_runtime_error',message:String(e.message).slice(0,250)});}};
  const w=id(1),a=id(2),who=id(20),product=id(30),instance=id(4),contract=id(31),version=id(32),connection=id(33),cgBinding=id(34);
@@ -31,7 +32,7 @@ export async function runNativeSuite({owner,app}){
  const invoke=command=>runTransaction(app,person,async c=>executeRegistrationCommand(createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)}),scope(command.type),command));
  const prepare={type:'prepare',commandId:randomUUID(),snapshot,jobId:randomUUID(),configuration:{agentVersionRef:'fixture.v1',knowledgeRefs:[],policyVersion:'policy.v1'}};
  const read=()=>runTransaction(app,person,async c=>{const store=createPostgresRegistrationStore(c,person,{assertCurrent:()=>assertBorrowedTransactionIdentity(c,person),reject:e=>rejectTransactionValidation(c,e)});await store.lockScope(scope('read'));return store.lockOperation(op);});
- await test('full core schema 0.24 and 17 migrations installed',async()=>assert.equal((await owner.query('select helpdesk_auth.schema_version() version')).rows[0].version,'0.24.0'));
+ await test('complete immutable migration chain matches the current fixed schema contract',async()=>assert.equal((await owner.query('select helpdesk_auth.schema_version() version')).rows[0].version,DATABASE_SECURITY_CONTRACT.schemaVersion));
  await test('unprotected core permits prepare through the real transaction service',async()=>{await invoke(prepare);assert.equal((await read()).state.snapshot.operationId,op);});
  await owner.query('insert into helpdesk_auth.cg_resource_connections(workspace_id,id,product_instance_id) values($1,$2,$3)',[w,connection,instance]);
  await owner.query("insert into helpdesk_auth.cg_resource_bindings(workspace_id,account_id,id,connection_id,tenant_id) values($1,$2,$3,$4,'Synthetic')",[w,a,cgBinding,connection]);
