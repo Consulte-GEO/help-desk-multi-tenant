@@ -35,3 +35,9 @@ Até a leitura19:28:26Z, nenhum recibo com event_type havia sido persistido. A c
 A permissão para usar segredos existentes foi concedida, mas a API Netlify não devolve seus valores utilizáveis e o navegador integrado não conectou. Foi solicitada abertura/autorização de aba Resend autenticada no Chrome; essa ação do titular permanece pendente. Não criar chave nova, ampliar acesso ou adicionar endpoint de diagnóstico que exponha segredos. A validação autenticada da tela e a coleta de eventos reais não foram concluídas.
 
 Atualizar este checkpoint com os callbacks comprovados e eventual início da cobertura. Testes sintéticos/CI não substituem esses registros. Não repetir seeds, bootstrap ou migration19; não alterar CG-10001/CG-10002, MFA ou adiamentos de novos clientes.
+
+## Atualização concorrente e próximo acesso
+
+Após essa implantação, a base recebeu PR55 de Apoio Implantação, publicado emcc380bf/deploy6ad12af460716e72a66bf761 às19:36:24.795Z. Foi incorporado por fast-forward, preservando código e recibo de homologação dessa frente; não restaurar o recibo antigo377fa671 sobre a fonte ampliada. A qualificação completa91 assets/13 checks acima pertence ao commit178dfb5. Na versão concorrente foram reconferidos especificamente os dois assets do monitor por SHA256, a capability ativa e a recusa401 de consulta anônima, em `current-monitor.json`. Não afirmar que o fingerprint atual permanece igual ao da fonte anterior ao PR55.
+
+Correção da solicitação de acesso ao navegador: o navegador externo conectado é o **Edge**, não o Chrome. O pedido anterior sobre Chrome foi substituído pela pergunta de autorização/abertura da conta Resend no Edge. Essa dependência continua pendente; não selecionar outra conta, obter chaves novas ou ampliar acesso para contorná-la.
