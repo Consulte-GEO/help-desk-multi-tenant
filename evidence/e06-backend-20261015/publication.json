@@ -1,0 +1,947 @@
+{
+  "at": "2026-10-15T10:35:55.236Z",
+  "helpdesk": {
+    "commit": "1596ec7c5053669f314e1d8ad145ac4f76745925",
+    "deploy": "6ad0ab2146910e26376edcf5",
+    "assets": {
+      "total": 89,
+      "matched": 89,
+      "files": [
+        {
+          "path": "access-experience.css",
+          "status": 200,
+          "sha256": "13eeb86152df4649364e69bdcbe31fd8f308914c916f4388110d0f1f1b481baa",
+          "matches": true
+        },
+        {
+          "path": "access-experience.js",
+          "status": 200,
+          "sha256": "d7dbd4511775d39f8bf01c51012acaaedc948d7c75337a798e15928df50940ab",
+          "matches": true
+        },
+        {
+          "path": "access-feedback.js",
+          "status": 200,
+          "sha256": "04a3e58e95480a41637e4f66385975d3e307c3e54b786c8056d90cf93f008f4b",
+          "matches": true
+        },
+        {
+          "path": "access-mode.js",
+          "status": 200,
+          "sha256": "fa3d0aed8efebafd7a7dec301e55be9fa505d399d4dfad8e5bc0fdf269766752",
+          "matches": true
+        },
+        {
+          "path": "account-security.js",
+          "status": 200,
+          "sha256": "9cc0d7f495909c79b069b493438b665dc6ea7380e43fafe516485f407ed19852",
+          "matches": true
+        },
+        {
+          "path": "admin-configuration.js",
+          "status": 200,
+          "sha256": "e375e5000caa31ce1954714605f8a84d93e4fd86e3a1b73fa1e1c1149895538e",
+          "matches": true
+        },
+        {
+          "path": "admin-experience.css",
+          "status": 200,
+          "sha256": "3975b8429d947456d04cc2c5ff07a157b2528b7234aea6ecd6e083cc980a8413",
+          "matches": true
+        },
+        {
+          "path": "admin-forms.js",
+          "status": 200,
+          "sha256": "9f7ca726be6d6c65c17c0855d2a0480dfc70c5d8f58628c548724f5ae927531c",
+          "matches": true
+        },
+        {
+          "path": "admin-members-state.js",
+          "status": 200,
+          "sha256": "fe584274645bb49984cca8c36109c29948d2daceaa651a63c7ec0d94ec8fb3c2",
+          "matches": true
+        },
+        {
+          "path": "admin-members.css",
+          "status": 200,
+          "sha256": "b9316b65dc44f167b8339f0b718ca7be46eb25c3e409a36dd8ad12362f01b580",
+          "matches": true
+        },
+        {
+          "path": "admin-members.js",
+          "status": 200,
+          "sha256": "2cd668b2f26eb8a92930d2cb9ce424542bff9de6674c027df127695813d162ac",
+          "matches": true
+        },
+        {
+          "path": "admin-ui.js",
+          "status": 200,
+          "sha256": "54756dfdea4aa00fcfd9029724df16c9b9f92c706f652c851443f4a9f738521d",
+          "matches": true
+        },
+        {
+          "path": "app.js",
+          "status": 200,
+          "sha256": "afb4b02387b818578a7945f7c83420f93a4bc35e8a8a93e334302f0bc5a26b72",
+          "matches": true
+        },
+        {
+          "path": "approvals.js",
+          "status": 200,
+          "sha256": "e562d64ddd0e3d776b2ad7ffadb6ef00e9a2affdf5063dcd80b3ba18113cb02c",
+          "matches": true
+        },
+        {
+          "path": "assets/consulte-geo-color.png",
+          "status": 200,
+          "sha256": "99f7607e9d4bc74ad7f7e06ca3e1311f9e2e82448286bb500e85cfd7de0199db",
+          "matches": true
+        },
+        {
+          "path": "assets/consulte-geo-white.png",
+          "status": 200,
+          "sha256": "924d2c378ad237bd23985358509b9d33f5433576468f86c1c59be0564b832bd1",
+          "matches": true
+        },
+        {
+          "path": "attachments.js",
+          "status": 200,
+          "sha256": "686abc80387e631fef5ac9fa88ee5034359f6007090ece30dd3f406538029c3f",
+          "matches": true
+        },
+        {
+          "path": "brand-profile.js",
+          "status": 200,
+          "sha256": "10964da32c5e5291c271b8702924811db515a157be2e184f46f12c4789c0add9",
+          "matches": true
+        },
+        {
+          "path": "brand-shell.js",
+          "status": 200,
+          "sha256": "4462120a94b3b5c2f65407e931a05a8c2ff326e855e5aae9ca6878c761637d2b",
+          "matches": true
+        },
+        {
+          "path": "consulte-theme.css",
+          "status": 200,
+          "sha256": "728ed9d8ecda4a6187f6eecde04ad2e1d494fc0906418d7dd18423e8f6f2345d",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-configuration.css",
+          "status": 200,
+          "sha256": "54be6e6591f0ae0040124f4d0180931da120b0e589bba04bae9c8941f0e418aa",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-configuration.js",
+          "status": 200,
+          "sha256": "901712275f1e68851f8c44e1be4a23f8aed80e643dcd9aeb17d4beed44c014c7",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-intake-api.js",
+          "status": 200,
+          "sha256": "aa35542e68441c715c1d7ed839eb16df9e176381c38e4277b9eef5ca95148067",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-operation.css",
+          "status": 200,
+          "sha256": "91d54a24f28e040cbf8a69b56b8429887ac7bca7a7fa80b5f81e682ffddcd024",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-operation.js",
+          "status": 200,
+          "sha256": "823ec528d7b4dd1c1928e2edd1871c284448596eceff31a69b6f4a5091bfcb52",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-request.css",
+          "status": 200,
+          "sha256": "0c2d0dd3c04dc2af89f6f273be35fbec01896e7d6ecc10823b7b54ca72873149",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-request.js",
+          "status": 200,
+          "sha256": "3e6de587634bd97e3c846930b4092455f94e3951b378782f01cb131a4a97a00d",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-review.js",
+          "status": 200,
+          "sha256": "75cc4d662deec1ff849126b06627bf5eaf5e9562a2c209924a0f06bb2afc440a",
+          "matches": true
+        },
+        {
+          "path": "consultegeo-workflow.js",
+          "status": 200,
+          "sha256": "a8c8b28ac8244f052b8628f53a2119ca816b9f7a9319ee8213fa05ebc538ac04",
+          "matches": true
+        },
+        {
+          "path": "conversation-state.js",
+          "status": 200,
+          "sha256": "73cf0db75391744164b1da470f28f70d47d1f9c4ff02dc58ef085defd3089a64",
+          "matches": true
+        },
+        {
+          "path": "customer-portal.js",
+          "status": 200,
+          "sha256": "ecd9fbea157af9da360447b8d66c1dba0756987361825b1e7d908499fc5a0d70",
+          "matches": true
+        },
+        {
+          "path": "delivery-operations.js",
+          "status": 200,
+          "sha256": "ab6fde2ea1dd19ae33f43a19c00a498b8b1cfc248a5cd852a21cb3e89e1a6e2a",
+          "matches": true
+        },
+        {
+          "path": "design-tokens.css",
+          "status": 200,
+          "sha256": "baa6c52e4bed6a20ee0972049ed28e92ad2e2cdfb18bc2a1af123f26db485aca",
+          "matches": true
+        },
+        {
+          "path": "dynamic-form.css",
+          "status": 200,
+          "sha256": "362a6c9af8fa5c701cd91896a40f468d8ffb0713d24e6103ab6ade07c0a68cda",
+          "matches": true
+        },
+        {
+          "path": "dynamic-form.js",
+          "status": 200,
+          "sha256": "34b10e284e80b9fb3638c71209976fa95f685444db7a2e8790e566f697a775e8",
+          "matches": true
+        },
+        {
+          "path": "execution-checklist-contract.js",
+          "status": 200,
+          "sha256": "729d64735045ab2d3fc38a025cd0569b0e4914032202ab231af1fa09728e3331",
+          "matches": true
+        },
+        {
+          "path": "execution-checklist-state.js",
+          "status": 200,
+          "sha256": "80af1538cf441d48467bc70cccbf64deb7f1ae8ab3f4154e07804894d0a0d535",
+          "matches": true
+        },
+        {
+          "path": "execution-checklist.css",
+          "status": 200,
+          "sha256": "c5acd26f13c3ad510eec98e3086fad94cf3ec6cfea69eb2b453e9564740fa4b7",
+          "matches": true
+        },
+        {
+          "path": "execution-checklist.js",
+          "status": 200,
+          "sha256": "44138de315cb5db92183adb5e3c8b69e4da18c837c92cb70e616b0a2daff0958",
+          "matches": true
+        },
+        {
+          "path": "form-experience.css",
+          "status": 200,
+          "sha256": "afb0f90b8dc5e2fe02cba92b078b55a647292b32c68d0467c6fc6ed1b3d0d377",
+          "matches": true
+        },
+        {
+          "path": "form-feedback.js",
+          "status": 200,
+          "sha256": "b3010bebcd13392c3498d0fc5eb19fe55ada681406404eafd1fa0ea6c4925e0e",
+          "matches": true
+        },
+        {
+          "path": "form-review.js",
+          "status": 200,
+          "sha256": "797f80fe04a1eebef0c877d608fb3d3d9736ccf07e4fec3810403353cc21f607",
+          "matches": true
+        },
+        {
+          "path": "geo-auth-callback.js",
+          "status": 200,
+          "sha256": "92abf4eb538ec3b6819e66e6ecf403b8ec955d7dacd2b66db80767312bb0e69b",
+          "matches": true
+        },
+        {
+          "path": "geo-auth-state.js",
+          "status": 200,
+          "sha256": "49885dd80d205576ceee6dbd45128ee80bbc820120b22d59aee3edce66a9f5a1",
+          "matches": true
+        },
+        {
+          "path": "human-auth.js",
+          "status": 200,
+          "sha256": "2ac677ed49bbe6d4bdf327a57deb8aec37f4008157cf7acdbe0b2492b5017f59",
+          "matches": true
+        },
+        {
+          "path": "human-session.js",
+          "status": 200,
+          "sha256": "8b417414b1d13282de9d46a8e045d7082d7a5432e92e0216d30e390fa37ceee6",
+          "matches": true
+        },
+        {
+          "path": "inbox-view-state.js",
+          "status": 200,
+          "sha256": "6c6b1fab6ed2a5c1eaa1cc63bd0cf5ec7cf06c07e7773f34a832ca69fe106729",
+          "matches": true
+        },
+        {
+          "path": "inbox-workspace.css",
+          "status": 200,
+          "sha256": "a85bc3ea8ba7465275a129622a681fdb80877367cc0ab1106c9273a355528b0a",
+          "matches": true
+        },
+        {
+          "path": "inbox-workspace.js",
+          "status": 200,
+          "sha256": "8c16f2a8b8e19e2067f375ce8b4538cb2d700c0db5d040fa443f00d1ca0ebe53",
+          "matches": true
+        },
+        {
+          "path": "index.html",
+          "status": 200,
+          "sha256": "e25b2f961521928582643eee41895a906c01e4c0e7452a83ecb776fad5af343c",
+          "matches": true
+        },
+        {
+          "path": "mutation-state.js",
+          "status": 200,
+          "sha256": "8b9712e1cc9ca7836e1cf8acd00501af44c65a62f76027dbc586c95df8bca5eb",
+          "matches": true
+        },
+        {
+          "path": "opening-flow.js",
+          "status": 200,
+          "sha256": "ef4a8f82e1d2fc5e00418044a29cbd6e7fb3ba1518315059aec75f42c2385f92",
+          "matches": true
+        },
+        {
+          "path": "opening-wizard.js",
+          "status": 200,
+          "sha256": "074e7e5c42f8cf4358837dcbb60a5eebb08acfe5fea98e59d521585afa1066cf",
+          "matches": true
+        },
+        {
+          "path": "operations-experience.css",
+          "status": 200,
+          "sha256": "d3681f420c9bb7d0d18e17e18ac59a86a5e4a5532e3eedef417f7536d74ac0ac",
+          "matches": true
+        },
+        {
+          "path": "operations-ui.js",
+          "status": 200,
+          "sha256": "b5b04cc7e4b62e876bfd7ae9281ddd7c5991cff0197a707c9c9313ed492c3e7f",
+          "matches": true
+        },
+        {
+          "path": "optional-support.js",
+          "status": 200,
+          "sha256": "57de37513c7dc77bf71d2e5a36f0c9cc499ebe2dd86fc22de9dc88d025e5e996",
+          "matches": true
+        },
+        {
+          "path": "portal-format.js",
+          "status": 200,
+          "sha256": "84e33f30200d1e2dab1792d4cee1d971fcfeea1ff3755a94999731382dd9211e",
+          "matches": true
+        },
+        {
+          "path": "portal-state.js",
+          "status": 200,
+          "sha256": "6a9792fef611863a0bd8eea286751b7a2876b6e6ee4969cd7ed39aff70cab094",
+          "matches": true
+        },
+        {
+          "path": "portal-ui.js",
+          "status": 200,
+          "sha256": "b69dc5cbcace60603e7f1e058fce7a92524a8b5b1f1581c371b12a0d7959f737",
+          "matches": true
+        },
+        {
+          "path": "portal.css",
+          "status": 200,
+          "sha256": "48c6b83c40e9d3a8e4094ce8864fe928023614d53373d64e0bfa4a9ab3d944bd",
+          "matches": true
+        },
+        {
+          "path": "recovery-password.js",
+          "status": 200,
+          "sha256": "3870e93595ebb59f5379c84126d72226799264ec775a2bf36c0aebcd3f1305d2",
+          "matches": true
+        },
+        {
+          "path": "reports.js",
+          "status": 200,
+          "sha256": "59c9698a65b445b8bfb796f905123669abf9b2d9fe0bedb08d66fdacff26782f",
+          "matches": true
+        },
+        {
+          "path": "response-diagnostic.js",
+          "status": 200,
+          "sha256": "e0bac77a20894665a06cfecbc916fea77b0ae2a9c3be065d613eb80472d22ace",
+          "matches": true
+        },
+        {
+          "path": "review-state.js",
+          "status": 200,
+          "sha256": "42db5ad8da97e66b5cff319a06a7e06f550ff2b1024ad9130371977261f38061",
+          "matches": true
+        },
+        {
+          "path": "session-fetch.js",
+          "status": 200,
+          "sha256": "984ee47cad93f799ec45ac12f6e0e23d74641b3c9b77a3a4d2d141fb21031d6c",
+          "matches": true
+        },
+        {
+          "path": "shared/checklist-evidence.js",
+          "status": 200,
+          "sha256": "67487e1b8e5788a8d095292a7960eeea52f52f16d03fe771757c1f4fb5be1e93",
+          "matches": true
+        },
+        {
+          "path": "shared/cnpj.js",
+          "status": 200,
+          "sha256": "4e03f61cceb0809c16854a00e2eb567918566679fb6874f76a8f1555b0431d03",
+          "matches": true
+        },
+        {
+          "path": "shared/consultegeo-request.js",
+          "status": 200,
+          "sha256": "90a891eb8bc0ee8ca0bbfe794b777b5e4fad9546bcbbeffaa4f96b1d52ceff58",
+          "matches": true
+        },
+        {
+          "path": "shared/consultegeo-ticket.js",
+          "status": 200,
+          "sha256": "c58ecd2d15b1a6988bd20603a39b8fce104c970825c3eaa2d902826888344c70",
+          "matches": true
+        },
+        {
+          "path": "shared/form-rules.js",
+          "status": 200,
+          "sha256": "4d321b7d5239996c0b45581e13608a479dd15ac6ad819a2ab81eee7b5b68b548",
+          "matches": true
+        },
+        {
+          "path": "shared/instant.js",
+          "status": 200,
+          "sha256": "8a86c0b7ab152b88ba3608846da6f39de66a0189b86edf1db73f9ed77f87b0d3",
+          "matches": true
+        },
+        {
+          "path": "shared/mfa.js",
+          "status": 200,
+          "sha256": "6ea55f4309b7b42334c2d200845be2ab37f8b4ca47a886c2664ae20ffb5f58f1",
+          "matches": true
+        },
+        {
+          "path": "styles.css",
+          "status": 200,
+          "sha256": "0c02504971e74dab99b642c1faf47663155d70dd834ed878b79398b8561fd559",
+          "matches": true
+        },
+        {
+          "path": "support-catalog-state.js",
+          "status": 200,
+          "sha256": "851f406df2bc905ff65cce1890a8baa5c4a1a967168f4da18099a7da599bf8f3",
+          "matches": true
+        },
+        {
+          "path": "support-experience.css",
+          "status": 200,
+          "sha256": "208bb65e59869f405ebc6b6d3efbe9057f6e1fa3528c115575231edb741aedc6",
+          "matches": true
+        },
+        {
+          "path": "support-intake.css",
+          "status": 200,
+          "sha256": "c253916aa725af6f891e6ea3fb3cb02df9b62a5441ee47f44d71a7881149a4da",
+          "matches": true
+        },
+        {
+          "path": "support-intake.js",
+          "status": 200,
+          "sha256": "af49af54bfd12434ca1bc06332df282be1f2610a176e718d6548d0e49f724efc",
+          "matches": true
+        },
+        {
+          "path": "support-navigation.js",
+          "status": 200,
+          "sha256": "6ade5e07ee73e956d397c6ed832a56d60b5b675173da5ca7e80f71abc0aa0c70",
+          "matches": true
+        },
+        {
+          "path": "support-presentation.js",
+          "status": 200,
+          "sha256": "1fa018592815d029855097cfc336d929843f076ace2e762cd4542ffa373cdb38",
+          "matches": true
+        },
+        {
+          "path": "support-queue.js",
+          "status": 200,
+          "sha256": "ebfb8f0723f15ae43053b90e9d179c0817d0c593e457f0182490b92a18de996f",
+          "matches": true
+        },
+        {
+          "path": "theme-init.js",
+          "status": 200,
+          "sha256": "4f40caa7bf0af0e6058b10957ec2311543e831ae1277321ab454f28eef641f4f",
+          "matches": true
+        },
+        {
+          "path": "ticket-actions.js",
+          "status": 200,
+          "sha256": "a3bd709ca8d68f2df9c50252bf10d7141a0f44dc00a9e8476e90a3a0cae8b8a5",
+          "matches": true
+        },
+        {
+          "path": "ticket-create-state.js",
+          "status": 200,
+          "sha256": "83c749c70bfbb8113e632317843a06269c2fc9afbfd330dfe271392c47bfb4a2",
+          "matches": true
+        },
+        {
+          "path": "ticket-detail.js",
+          "status": 200,
+          "sha256": "cdc00590fd4a67081e0552439e7c5dd3255b08a1473581b0c3ca23f674b40881",
+          "matches": true
+        },
+        {
+          "path": "ticket-list-state.js",
+          "status": 200,
+          "sha256": "1533563761cd449db13cbbc644a2c16225265a7f5a2402ec0ad8388c6de091ff",
+          "matches": true
+        },
+        {
+          "path": "timeline-state.js",
+          "status": 200,
+          "sha256": "af5dca1ee898946b3d666ce55e2e1b504cfa9e9256f853fc9d5cb6c8b9cdfe2d",
+          "matches": true
+        },
+        {
+          "path": "totp-qr.js",
+          "status": 200,
+          "sha256": "187e17488e2e549097168768c0acacfc65b725ac51a6e01593119f340e821c19",
+          "matches": true
+        },
+        {
+          "path": "vendor/qrcodegen.js",
+          "status": 200,
+          "sha256": "3c6b6da401e3725c2853e70d1dff080a3920ec06054c51d3a78fa391e611b706",
+          "matches": true
+        },
+        {
+          "path": "version-receipt.js",
+          "status": 200,
+          "sha256": "ad1e4a28c3ef948f61710ddb1ad971a3b2fd67c6d1611c3f9d8a57f84a7392c6",
+          "matches": true
+        }
+      ]
+    }
+  },
+  "setup": {
+    "commit": "5768a05e530217bc459d798932f7bfd934afcb9f",
+    "deploy": "6ad0ab25de679dbc8384c0e6",
+    "assets": {
+      "method": "Netlify published manifest SHA1; static input Git blob SHA256; build timestamp retained",
+      "total": 49,
+      "matched": 49,
+      "files": [
+        {
+          "path": "/apple-touch-icon.png",
+          "status": 200,
+          "sha256": "ca1770feaf76f366f00b5042a5f35a23055ceb4eaf7b5a16039bf905be3c3fd7",
+          "matches": true
+        },
+        {
+          "path": "/assets/design-system.css",
+          "status": 200,
+          "sha256": "cd44ec4666bd44402a54831df1c4828eba1bbcce916889df9adea3d8be4dd452",
+          "matches": true
+        },
+        {
+          "path": "/assets/excelexportservice-bxoa_oil.js",
+          "status": 200,
+          "sha256": "d81e8ca8d4c57e3029f711c554144bc7cdefc425616131d41b9681611e816da2",
+          "matches": true
+        },
+        {
+          "path": "/assets/geo-symbol.png",
+          "status": 200,
+          "sha256": "e0568c85641e47d1b726a7d466f93cc2a433178c12a356fbcc413c294c2204af",
+          "matches": true
+        },
+        {
+          "path": "/assets/implantacao-import-core.js",
+          "status": 200,
+          "sha256": "a4f8c4b41c326d6facf531a92a6ca4c782360289b4e59f76e7a93ebbadbfe570",
+          "matches": true
+        },
+        {
+          "path": "/assets/import-integrity.js",
+          "status": 200,
+          "sha256": "6cd3bbaeb906e0f56ca6a60f044dd78156c866b6e1cef1d1e11b0dcca4b8aae5",
+          "matches": true
+        },
+        {
+          "path": "/assets/import-legacy-adapter.js",
+          "status": 200,
+          "sha256": "5ccc2566a300e1a36b9534ff6d7f415f26a0f2f266dc031d61f54a6d939bcc95",
+          "matches": true
+        },
+        {
+          "path": "/assets/importaview-bfqrwi8e.css",
+          "status": 200,
+          "sha256": "be0f08103c5d1f074622484cbde66ab5fbd58a53f73d3c6303c832ec85f64c49",
+          "matches": true
+        },
+        {
+          "path": "/assets/importaview-cmrktlk-.js",
+          "status": 200,
+          "sha256": "ebbd5822f9a9548158995ce4df8f87db507d31c3b37f0681d88d735ba2a14127",
+          "matches": true
+        },
+        {
+          "path": "/assets/importprocessview-c9e2h5hk.js",
+          "status": 200,
+          "sha256": "f2afbb509ace1133490bd1456245a98064a1f549a7adc08e3ec37653b950efc4",
+          "matches": true
+        },
+        {
+          "path": "/assets/importprocessview-dddyyn8o.css",
+          "status": 200,
+          "sha256": "42c01b604005a4f8c87777b82f61abdc6784830fab7635363ba0e7e044169989",
+          "matches": true
+        },
+        {
+          "path": "/assets/index-cuj97ymd.css",
+          "status": 200,
+          "sha256": "1c7bf3bff3c2f9d06283dc8d3c8049bb510f320546d61d5983071d8c3ba95414",
+          "matches": true
+        },
+        {
+          "path": "/assets/index-mtpkfhja.js",
+          "status": 200,
+          "sha256": "5d03745f1fb9f474622fea0490e75ed949596a625aca30f008db5c09c6c9c105",
+          "matches": true
+        },
+        {
+          "path": "/assets/intake-auditor.js",
+          "status": 200,
+          "sha256": "312d6c834a77cfe4d632771c75529afcf997a9841f5ca989d3f14304b31669b4",
+          "matches": true
+        },
+        {
+          "path": "/assets/intake-selftest.js",
+          "status": 200,
+          "sha256": "6ac4b84d7a05697d952a96b7a46ccbdb76850ca7774f9d35430c44ee8ce1915a",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudo-app.css",
+          "status": 200,
+          "sha256": "d83ae864169c2002a14ffd4c14d05333c576a8039b8ceee0b7dbb5aeb6bbcedb",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudo-app.js",
+          "status": 200,
+          "sha256": "f47424a1ca89afaccdc27c79792cb039aa566c461c1e6ece901d1277440a1e71",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudo-invariantes.js",
+          "status": 200,
+          "sha256": "71f7c9a95b2e107244b1671cac9a3d5e3275a71603e16fc4f64eaf6cbfc48d4f",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudo-parser-core.js",
+          "status": 200,
+          "sha256": "cc1f611e42474ff831a08ec72d63a4f7782554164523ebc5740a32474a668fed",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudo-perfis.js",
+          "status": 200,
+          "sha256": "b7f09779b9306695ff8ab67978b4ce7a2ddd56ba661ac9bf97f54bcd94a7abfc",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudosview-b11kfkuk.css",
+          "status": 200,
+          "sha256": "01f8fb4a7875569290f9010d8d294c7c5ce4ab501876187c0593f2a1cdcdf369",
+          "matches": true
+        },
+        {
+          "path": "/assets/laudosview-bu9rtkrd.js",
+          "status": 200,
+          "sha256": "d9ef05ff1b26b7ded2fedea87b36f76b84c58abd429c47cac4b83820d0bee7b3",
+          "matches": true
+        },
+        {
+          "path": "/assets/logo-mark-white-bljlfciz.png",
+          "status": 200,
+          "sha256": "912402c597a51c69438860b75c625b31baf0d41f5ab5f3c3cea59a6b4d447ad1",
+          "matches": true
+        },
+        {
+          "path": "/assets/logo-mark-white@2x-c0idsqk4.png",
+          "status": 200,
+          "sha256": "e632f4e27400812f5b7cf97f49759351b3fcd27f61d9c79455b36fdffed15ee7",
+          "matches": true
+        },
+        {
+          "path": "/assets/logo-mark-white@4x-bzrapkfu.png",
+          "status": 200,
+          "sha256": "d1dfcd13d76ecef1f7b5cf0e4a2c3441a90074f8f37ec0a1e2fde085f48d7596",
+          "matches": true
+        },
+        {
+          "path": "/assets/pre-analise.js",
+          "status": 200,
+          "sha256": "cf3bcc0cce850c206980837d713a20feb781930cd72d028d68ec1f5949613977",
+          "matches": true
+        },
+        {
+          "path": "/assets/similarity-engine.js",
+          "status": 200,
+          "sha256": "cf0c42212ada060691579fef7af918091b22eddd922e6337af0881939350dc87",
+          "matches": true
+        },
+        {
+          "path": "/assets/similarity-selftest.js",
+          "status": 200,
+          "sha256": "815e82019746c31b59ff6052c86cf1c8d95d87f9dbe6ccb65e4455f5e05c4994",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-bootstrap-btmjyoxz.css",
+          "status": 200,
+          "sha256": "6f1c335f1763f5c904cc149db56a5ddb75b466de10859a0f50c1e9cab1e8d805",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-misc-b4cftue7.js",
+          "status": 200,
+          "sha256": "7b7a606b43e248442672f535190bac871448bfe176fe6e3580770e090d6d7b83",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-supabase-cgun328_.js",
+          "status": 200,
+          "sha256": "52eb4747bf1527a1f8f8031b073e19bba2d0a6b5f1e55e23f89b26ebe713f970",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-vue-cmbajqf_.js",
+          "status": 200,
+          "sha256": "a79ddd00cb32d7b0d9385305b0b39eb5df521d3bd82098decec59b0c6df9d4d2",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-vue-router-ckp5c_ah.js",
+          "status": 200,
+          "sha256": "b3e992f4fffabf7079aa7fe16145ed581ada9b928100e4898fe2ee01105fca27",
+          "matches": true
+        },
+        {
+          "path": "/assets/vendor-vuex-cg5frmhm.js",
+          "status": 200,
+          "sha256": "e4c563eeef811f126347a030f7c32d9394dc9fac4b3408aa3e86468c88ec3d1c",
+          "matches": true
+        },
+        {
+          "path": "/assets/xlsx-style-lite.js",
+          "status": 200,
+          "sha256": "04ac394558946792a4f0ff1bc5cd5ab4a2af5756f4bda2ce1811b27ae1870e66",
+          "matches": true
+        },
+        {
+          "path": "/assets/xlsxstylelite-bak5etwm.js",
+          "status": 200,
+          "sha256": "50963d49e7848accdbe1fc25fda0d28dcc83a74ba924a74f8b15ed0a3367dad8",
+          "matches": true
+        },
+        {
+          "path": "/favicon-16.png",
+          "status": 200,
+          "sha256": "de803d895bd88bb85043ab2e74583166a5293d2204fd8e5707db7036b1cae673",
+          "matches": true
+        },
+        {
+          "path": "/favicon-32.png",
+          "status": 200,
+          "sha256": "1c94b9c3a5d8647801730aa84d05e6d0d86e912bc748f0d511e37fa4f8692a03",
+          "matches": true
+        },
+        {
+          "path": "/favicon-512.png",
+          "status": 200,
+          "sha256": "a5a08dbf59aa3fa8fe6aadc666e209ece8560f3bfcb88eea735884f506c1ed14",
+          "matches": true
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200,
+          "sha256": "10dc8d46511ea9c4f20e69718662b705c19b8009f4df991d12c56eff9ccd5bb8",
+          "matches": true
+        },
+        {
+          "path": "/importa.html",
+          "status": 200,
+          "sha256": "b7fdd9ffcbd88837c7631b6e53f73613df0b23ae6ba786f0f096c8ce4188cb38",
+          "matches": true
+        },
+        {
+          "path": "/index.html",
+          "status": 200,
+          "sha256": "e79851bfe9b8b9ab1f685dd91578a2912a13feed46acaa669247b762c6542846",
+          "matches": true
+        },
+        {
+          "path": "/laudos.html",
+          "status": 200,
+          "sha256": "c668226ebe581a207f226115e0a9a4133def52f91f6494d30315f59fcc981f43",
+          "matches": true
+        },
+        {
+          "path": "/modelos/modelo-implantacao-consulte-geo-r02-exemplo-preenchido.xlsx",
+          "status": 200,
+          "sha256": "e5caf0611a942c12086b86cd85a19d5468db429cb8488c5bbee406bc8876ba5d",
+          "matches": true
+        },
+        {
+          "path": "/modelos/modelo-implantacao-consulte-geo-r02.xlsx",
+          "status": 200,
+          "sha256": "1d60a1f0a19b2bc732126aabe79d3fffa5872342ff0ac66314b2a04194b9fa12",
+          "matches": true
+        },
+        {
+          "path": "/pre-analise.html",
+          "status": 200,
+          "sha256": "8f3adec23a16005fe3287ba6c90ed66eb954044f7fe5c87d0ed4f7e99f90917d",
+          "matches": true,
+          "transformation": "Exactly one existing Netlify pretty-link rewrite; all remaining HTML bytes match Git"
+        },
+        {
+          "path": "/vendor/pdf.mjs",
+          "status": 200,
+          "sha256": "71ab6d3ace0b285cc1feaf88f943b84238bf875f7a005674ac448a78940913bd",
+          "matches": true
+        },
+        {
+          "path": "/vendor/pdf.worker.mjs",
+          "status": 200,
+          "sha256": "9e3b3b7da0760e8468f4b20490cceab481a96b700803a96c46b0bb00d2e3741e",
+          "matches": true
+        },
+        {
+          "path": "/vendor/xlsx.full.min.js",
+          "status": 200,
+          "sha256": "c9506197caf809a075b6dee1da0d36fb19da7158ffe8a88e7b0c96c5d8623c99",
+          "matches": true
+        }
+      ],
+      "staticChecks": [
+        {
+          "path": "importa.html",
+          "gitBlobMatches": true
+        },
+        {
+          "path": "laudos.html",
+          "gitBlobMatches": true
+        },
+        {
+          "path": "assets/import-integrity.js",
+          "gitBlobMatches": true
+        },
+        {
+          "path": "assets/import-legacy-adapter.js",
+          "gitBlobMatches": true
+        },
+        {
+          "path": "assets/implantacao-import-core.js",
+          "gitBlobMatches": true
+        },
+        {
+          "path": "assets/similarity-engine.js",
+          "gitBlobMatches": true
+        }
+      ],
+      "protectedFiles": [
+        {
+          "path": "/netlify.toml",
+          "status": 404,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/v1/me",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/v1/tickets",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/v1/tickets/00000000-0000-4000-8000-000000000001/registration-review",
+      "status": 503,
+      "code": "release_gate_closed",
+      "passed": true
+    },
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/v1/internal/tickets/00000000-0000-4000-8000-000000000001/registration-review",
+      "status": 503,
+      "code": "release_gate_closed",
+      "passed": true
+    },
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/tests/fixtures/registration/sample.ts",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "origin": "https://helpdesk.consultegeo.org",
+      "route": "/supabase/candidates/hda06_authorized_review.sql",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "origin": "https://setup.consultegeo.org",
+      "route": "/v1/import-processes/session",
+      "status": 503,
+      "code": "PROCESS_GATE_CLOSED",
+      "passed": true
+    },
+    {
+      "origin": "https://setup.consultegeo.org",
+      "route": "/v1/import-processes",
+      "status": 503,
+      "code": "PROCESS_GATE_CLOSED",
+      "passed": true
+    },
+    {
+      "route": "helpdesk /v1/capabilities",
+      "status": 200,
+      "registrationReview": false,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

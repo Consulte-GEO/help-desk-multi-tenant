@@ -11,7 +11,7 @@
 - [x] Storage: bytes imutáveis, hash/MIME/tamanho, signed upload autorizado, inspeção inconclusiva recusa; transporte HTTP real contra fixtures locais.
 - [x] Frontend: registro Vuex a partir de sessão/capacidades reais, Bearer só para mesmo origin, abortar/limpar ao logout/troca de identidade; listar processos autorizados.
 - [x] Instalar/auditar dependências fixas, executar regressão/tipos/build/PG/browser, revisão independente e correções com RED→GREEN.
-- [ ] Commit/PR/merge e deploy autorizados; verificar rotas/assets sem credencial e documentar configurações que impedem ativação.
+- [x] Commit/PR/merge e deploy autorizados; verificar rotas/assets sem credencial e documentar configurações que impedem ativação.
 
 **Riscos cobertos:** sessão tardia após logout; seleção de conta alheia; recibo perdido sem reenvio; upload sobrescrito; scanner indisponível ou resultado de outro hash. Testes focais pertencem aos respectivos módulos.
 
