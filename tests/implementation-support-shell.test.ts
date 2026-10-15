@@ -2,9 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {testDom} from './helpers/dom-port.ts';
+import {createSessionFetch} from '../web/session-fetch.js';
 const staff={id:'person',kind:'human',workspace_role:'agent',grants:[{account_id:'account',role:'agent'}],scopes:['tickets:read']};
 const session={id:'person',workspaceId:'workspace'};
 async function module(){const path='../web/implementation-support.js';const api=await import(path).catch((e:any)=>{if(e.code==='ERR_MODULE_NOT_FOUND')return {};throw e;});assert.equal(typeof api.mountImplementationSupport,'function','Implementation support shell must exist');return api;}
+
+test('native application boot uses the actual session transport with exactly one API prefix',async()=>{
+ const m=await module(),root=testDom(),calls:string[]=[],proof={accessToken:'synthetic-staff',workspace:'workspace'};
+ const transport=createSessionFetch({authorization:async()=>proof,current:()=>true,canDispatch:()=>true,sameCredential:()=>true,reject(){throw Error('Unexpected authentication refusal');}} as any,async(path:RequestInfo|URL,init?:RequestInit)=>{
+  calls.push(String(path));assert.equal(new Headers(init?.headers).get('authorization'),'Bearer synthetic-staff');assert.equal(new Headers(init?.headers).get('x-workspace-id'),'workspace');
+  return path==='/v1/implementation-support/session'?Response.json({enabled:true}):Response.json({code:'not_found'},{status:404});
+ });
+ const controller=m.mountImplementationSupport(root,{principal:staff,session,request:transport,loadApplication:async()=>({mountImplementationSupportApplication:async({root,request}:any)=>{const response=await request('/v1/implementation-support/session');if(!response.ok)throw Error('Boot failed');root.textContent='Cadastro disponível';return {destroy(){}};}})});
+ assert.equal(await controller.ready,true);assert.deepEqual(calls,['/v1/implementation-support/session']);assert.match(root.textContent,/Cadastro disponível/);controller.destroy();
+});
 
 test('nonstaff and integration principals never load the implementation application',async()=>{
  const m=await module();for(const principal of [null,{}, {...staff,grants:[]},{...staff,kind:'integration'},{...staff,workspace_role:'admin',kind:'integration'},{...staff,grants:[{role:'account_manager'}]}]){
