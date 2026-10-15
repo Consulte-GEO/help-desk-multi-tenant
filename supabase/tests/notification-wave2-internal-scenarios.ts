@@ -5,7 +5,7 @@ export async function assertWave2InternalRelations(pool:SqlClient){
  return assertPrivateRelations(pool,['helpdesk_integration.hdn_notification_private_sources','helpdesk_integration.hdn_notification_queue_rosters']);
 }
 export async function assertWave2ReviewRelations(pool:SqlClient){
- return assertPrivateRelations(pool,['helpdesk_core.hdnr_policies','helpdesk_core.hdnr_profiles','helpdesk_auth.hdnr_grants','helpdesk_auth.hdnr_rosters']);
+ return assertPrivateRelations(pool,['helpdesk_core.hdnr_policies','helpdesk_core.hdnr_profiles','helpdesk_auth.hdnr_grants','helpdesk_auth.hdnr_rosters','helpdesk_audit.hdnr_openings']);
 }
 async function assertPrivateRelations(pool:SqlClient,names:readonly string[]){
   assert.equal((await pool.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
