@@ -134,7 +134,7 @@ DO $email_prior$ DECLARE email_catalogue_result record;BEGIN SELECT * INTO email
  (pg_catalog.current_setting('server_version_num')::integer between 170000 and 179999
   and pg_catalog.current_setting('row_security')='on'
   and pg_catalog.current_setting('session_replication_role')='origin') as execution_settings_ok) inventory;IF email_catalogue_result.table_count<>86 OR email_catalogue_result.unsafe_tables<>0 OR email_catalogue_result.public_schema_access IS DISTINCT FROM false OR email_catalogue_result.client_schema_access IS DISTINCT FROM false OR email_catalogue_result.public_helper_execute IS DISTINCT FROM false OR email_catalogue_result.schema_contract_ok IS DISTINCT FROM true OR email_catalogue_result.table_contract_ok IS DISTINCT FROM true OR email_catalogue_result.table_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.column_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.client_object_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.helper_contract_ok IS DISTINCT FROM true OR email_catalogue_result.helper_privileges_ok IS DISTINCT FROM true OR email_catalogue_result.helper_settings_ok IS DISTINCT FROM true OR email_catalogue_result.trigger_contract_ok IS DISTINCT FROM true OR email_catalogue_result.constraint_contract_ok IS DISTINCT FROM true OR email_catalogue_result.index_contract_ok IS DISTINCT FROM true OR email_catalogue_result.policy_contract_ok IS DISTINCT FROM true OR email_catalogue_result.execution_settings_ok IS DISTINCT FROM true OR email_catalogue_result.reserved_roles_ok IS DISTINCT FROM true OR email_catalogue_result.owner_defaults_ok IS DISTINCT FROM true THEN RAISE EXCEPTION 'Email monitor prior catalogue mismatch' USING ERRCODE='HDM02';END IF;END$email_prior$;
--- SOURCE hdn_email_monitor_telemetry.sql SHA256 4d74b26e4ec5afff4b4f629f448aa425ad955869f752d9857dc62adcf2badf8d
+-- SOURCE hdn_email_monitor_telemetry.sql SHA256 4e3b96f6117d6a8d3dc6eaed8c922c9f32cb0dc97c06dba368f71390d205c0eb
 -- Fragment for the reviewed 0.26 -> 0.27 migration, within its owned transaction.
 -- No BEGIN/COMMIT/schema marker, production execution or coverage start here.
 -- Columns start NULL. Existing receipts/snapshots are not backfilled.
@@ -152,7 +152,7 @@ CREATE INDEX hdn_email_monitor_native_intent_type
 ALTER FUNCTION helpdesk_auth.hdn_notification_apply_native(uuid,text,text)
  RENAME TO hdn_notification_apply_native_v025;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native_v025(uuid,text,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 CREATE FUNCTION helpdesk_auth.hdn_notification_apply_native(target uuid,event_key text,at_text text)
  RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
 DECLARE
@@ -196,7 +196,7 @@ BEGIN
  RETURN result;
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native(uuid,text,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 
 -- The existing worker RPC retains its exact signature. New runtimes include
 -- eventType; old runtimes may still submit the exact 0.25 envelope during rollout.
@@ -252,7 +252,7 @@ BEGIN
  RETURN jsonb_build_object('eventId',prior.event_id,'disposition',prior.disposition,'intentId',prior.intent_id);
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app;
+ FROM PUBLIC,helpdesk_app;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text) TO helpdesk_notification_worker;
 
 -- Preserve all original state/lease/CAS/audit/recipient/template checks and late
@@ -260,7 +260,7 @@ GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text) TO h
 ALTER FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text)
  RENAME TO hdn_notification_save_v025;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_save_v025(uuid,jsonb,bigint,jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 CREATE FUNCTION helpdesk_auth.hdn_notification_save(target uuid,delivery_next jsonb,expected bigint,audit jsonb,contact_hash text)
  RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
 DECLARE
@@ -297,7 +297,7 @@ BEGIN
  RETURN result;
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app;
+ FROM PUBLIC,helpdesk_app;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text) TO helpdesk_notification_worker;
 
 -- Root migration must register both *_v025 functions as private non-callable
@@ -305,6 +305,14 @@ GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,
 -- Native receipts require disposition='applied' for opened/clicked projections;
 -- invalid chronology is attention, unsupported events remain ignored. Correlation
 -- continues to use only the persisted provider message ID, including late ACK.
+
+-- Supabase client roles may be absent in an owned vanilla PostgreSQL cluster.
+-- Revoke them when present, without creating roles or weakening the catalogue.
+DO $email_native_clients$ DECLARE client_role text;BEGIN
+ FOR client_role IN SELECT rolname FROM pg_catalog.pg_roles WHERE rolname IN ('anon','authenticated','service_role') LOOP
+  EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native_v025(uuid,text,text),helpdesk_auth.hdn_notification_apply_native(uuid,text,text),helpdesk_auth.hdn_notification_native(jsonb,text),helpdesk_auth.hdn_notification_save_v025(uuid,jsonb,bigint,jsonb,text),helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text) FROM %I',client_role);
+ END LOOP;
+END$email_native_clients$;
 
 
 -- SOURCE hdn_email_monitor_queries.sql SHA256 ff529122f9eb2e0db7f4345dc44e87b5d4f4aafe14294b8537601bcfe9615143

@@ -4,7 +4,7 @@ export const EMAIL_MONITOR_CONTRACT_SHA256='3ef2776cb17ed40c6bb81ac30b659ccd7cdd
 export const EMAIL_MONITOR_COMPONENTS=[
   {
     "file": "hdn_email_monitor_telemetry.sql",
-    "sha256": "4d74b26e4ec5afff4b4f629f448aa425ad955869f752d9857dc62adcf2badf8d"
+    "sha256": "4e3b96f6117d6a8d3dc6eaed8c922c9f32cb0dc97c06dba368f71390d205c0eb"
   },
   {
     "file": "hdn_email_monitor_queries.sql",

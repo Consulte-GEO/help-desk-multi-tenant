@@ -15,7 +15,7 @@ CREATE INDEX hdn_email_monitor_native_intent_type
 ALTER FUNCTION helpdesk_auth.hdn_notification_apply_native(uuid,text,text)
  RENAME TO hdn_notification_apply_native_v025;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native_v025(uuid,text,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 CREATE FUNCTION helpdesk_auth.hdn_notification_apply_native(target uuid,event_key text,at_text text)
  RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
 DECLARE
@@ -59,7 +59,7 @@ BEGIN
  RETURN result;
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native(uuid,text,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 
 -- The existing worker RPC retains its exact signature. New runtimes include
 -- eventType; old runtimes may still submit the exact 0.25 envelope during rollout.
@@ -115,7 +115,7 @@ BEGIN
  RETURN jsonb_build_object('eventId',prior.event_id,'disposition',prior.disposition,'intentId',prior.intent_id);
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app;
+ FROM PUBLIC,helpdesk_app;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text) TO helpdesk_notification_worker;
 
 -- Preserve all original state/lease/CAS/audit/recipient/template checks and late
@@ -123,7 +123,7 @@ GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_native(jsonb,text) TO h
 ALTER FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text)
  RENAME TO hdn_notification_save_v025;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_save_v025(uuid,jsonb,bigint,jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app,helpdesk_notification_worker;
+ FROM PUBLIC,helpdesk_app,helpdesk_notification_worker;
 CREATE FUNCTION helpdesk_auth.hdn_notification_save(target uuid,delivery_next jsonb,expected bigint,audit jsonb,contact_hash text)
  RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
 DECLARE
@@ -160,7 +160,7 @@ BEGIN
  RETURN result;
 END$$;
 REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text)
- FROM PUBLIC,anon,authenticated,service_role,helpdesk_app;
+ FROM PUBLIC,helpdesk_app;
 GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text) TO helpdesk_notification_worker;
 
 -- Root migration must register both *_v025 functions as private non-callable
@@ -168,3 +168,11 @@ GRANT EXECUTE ON FUNCTION helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,
 -- Native receipts require disposition='applied' for opened/clicked projections;
 -- invalid chronology is attention, unsupported events remain ignored. Correlation
 -- continues to use only the persisted provider message ID, including late ACK.
+
+-- Supabase client roles may be absent in an owned vanilla PostgreSQL cluster.
+-- Revoke them when present, without creating roles or weakening the catalogue.
+DO $email_native_clients$ DECLARE client_role text;BEGIN
+ FOR client_role IN SELECT rolname FROM pg_catalog.pg_roles WHERE rolname IN ('anon','authenticated','service_role') LOOP
+  EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_apply_native_v025(uuid,text,text),helpdesk_auth.hdn_notification_apply_native(uuid,text,text),helpdesk_auth.hdn_notification_native(jsonb,text),helpdesk_auth.hdn_notification_save_v025(uuid,jsonb,bigint,jsonb,text),helpdesk_auth.hdn_notification_save(uuid,jsonb,bigint,jsonb,text) FROM %I',client_role);
+ END LOOP;
+END$email_native_clients$;
