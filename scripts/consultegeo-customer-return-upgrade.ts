@@ -30,7 +30,7 @@ END $return_source$;
 }
 export async function verifyCustomerReturnRepair(root:string){
  const bundle=await loadMigrationBundle(root),baseline=bundle.migrations.slice(0,18).map(({file,sha256})=>({file,sha256}));
- if(!((bundle.schemaVersion==='0.25.0'&&bundle.migrations.length===19)||(bundle.schemaVersion==='0.26.0'&&bundle.migrations.length===20))||digest(JSON.stringify(baseline))!==CUSTOMER_RETURN_BASELINE_SHA256)throw failure();
+ if(!((bundle.schemaVersion==='0.25.0'&&bundle.migrations.length===19)||(bundle.schemaVersion==='0.26.0'&&bundle.migrations.length===20)||(bundle.schemaVersion==='0.27.0'&&bundle.migrations.length===21))||digest(JSON.stringify(baseline))!==CUSTOMER_RETURN_BASELINE_SHA256)throw failure();
  const component=await readWave2Regular(join(root,'supabase/candidates/hdn_notification_customer_return_source.sql'),64*1024),migration=bundle.migrations[18]!;
  if(migration.file!==CUSTOMER_RETURN_FILE||migration.sql!==compileCustomerReturnRepair(component))throw failure();
  return {file:migration.file,sha256:migration.sha256,schemaVersion:'0.25.0'};

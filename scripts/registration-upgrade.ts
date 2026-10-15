@@ -64,8 +64,8 @@ COMMIT;
 }
 export async function verifyRegistrationUpgrade(root:string){
  const bundle=await loadMigrationBundle(root),baseline=bundle.migrations.slice(0,19).map(({file,sha256})=>({file,sha256}));
- if(bundle.schemaVersion!=='0.26.0'||bundle.migrations.length!==20||digest(JSON.stringify(baseline))!==REGISTRATION_BASELINE_SHA256)throw failure();
+ if(!((bundle.schemaVersion==='0.26.0'&&bundle.migrations.length===20)||(bundle.schemaVersion==='0.27.0'&&bundle.migrations.length===21))||digest(JSON.stringify(baseline))!==REGISTRATION_BASELINE_SHA256)throw failure();
  const components=await Promise.all(REGISTRATION_COMPONENTS.map(c=>readWave2Regular(join(root,'supabase/candidates',c.file),2*1024*1024)));
  const last=bundle.migrations[19]!;if(last.file!==REGISTRATION_MIGRATION||last.sql!==compileRegistrationUpgrade(components))throw failure();
- return {file:last.file,sha256:last.sha256,schemaVersion:bundle.schemaVersion};
+ return {file:last.file,sha256:last.sha256,schemaVersion:'0.26.0'};
 }

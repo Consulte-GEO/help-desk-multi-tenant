@@ -100,11 +100,12 @@ export const READINESS_FLAGS = Object.freeze([
  'trigger_contract_ok','constraint_contract_ok','index_contract_ok','policy_contract_ok','execution_settings_ok','reserved_roles_ok','owner_defaults_ok'
 ] as const);
 
-export async function assertDatabaseSecurity(pool:SqlPool,version:'0.24.0'|'0.25.0'|'0.26.0'=DATABASE_SECURITY_CONTRACT.schemaVersion):Promise<void>{
- if(version!=='0.24.0'&&version!=='0.25.0'&&version!=='0.26.0')throw new HelpdeskError(503,'unsafe_database_policies','Contrato do banco não qualificado.');
+export async function assertDatabaseSecurity(pool:SqlPool,version:'0.24.0'|'0.25.0'|'0.26.0'|'0.27.0'=DATABASE_SECURITY_CONTRACT.schemaVersion):Promise<void>{
+ if(version!=='0.24.0'&&version!=='0.25.0'&&version!=='0.26.0'&&version!=='0.27.0')throw new HelpdeskError(503,'unsafe_database_policies','Contrato do banco não qualificado.');
+ const monitor=version==='0.27.0'?await import('./email-monitor-security-contract.ts'):undefined;
  const hda=version==='0.26.0'?await import('./registration-security-contract.ts'):undefined;
- const contract=hda?hda.REGISTRATION_SECURITY_CONTRACT:version==='0.24.0'?V024:DATABASE_SECURITY_CONTRACT;
- const result=await pool.query(hda?hda.REGISTRATION_SECURITY_QUERY:DATABASE_SECURITY_QUERY,[JSON.stringify(contract),[...contract.schemas]]);
+ const contract=monitor?monitor.EMAIL_MONITOR_SECURITY_CONTRACT:hda?hda.REGISTRATION_SECURITY_CONTRACT:version==='0.24.0'?V024:DATABASE_SECURITY_CONTRACT;
+ const result=await pool.query(monitor?monitor.EMAIL_MONITOR_SECURITY_QUERY:hda?hda.REGISTRATION_SECURITY_QUERY:DATABASE_SECURITY_QUERY,[JSON.stringify(contract),[...contract.schemas]]);
  const row=result.rows[0];
  if(result.rows.length!==1||!row||row.table_count!==contract.tables.length||row.unsafe_tables!==0
   ||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false

@@ -129,7 +129,7 @@ export async function verifyConsulteGeoActivation(root:string):Promise<{schemaVe
  const path=await realpath(root),bundle=await loadMigrationBundle(path),raw:unknown=JSON.parse(await regular(join(path,'supabase/consultegeo-activation.manifest.json'),65536));
  if(!exact(raw,['format','product','baseSchema','targetSchema','file','sha256','generatedBy','qualification','securityContractSha256','components','baseline'])
   ||raw.format!==1||raw.product!=='CONSULTE_GEO'||raw.baseSchema!=='0.23.0'||raw.targetSchema!=='0.24.0'
-  ||!((bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&(bundle.migrations.length===18||bundle.migrations.length===19))||(bundle.schemaVersion==='0.26.0'&&bundle.migrations.length===20))
+  ||!((bundle.schemaVersion==='0.24.0'&&bundle.migrations.length===17)||(bundle.schemaVersion==='0.25.0'&&(bundle.migrations.length===18||bundle.migrations.length===19))||(bundle.schemaVersion==='0.26.0'&&bundle.migrations.length===20)||(bundle.schemaVersion==='0.27.0'&&bundle.migrations.length===21))
   ||JSON.stringify(raw.generatedBy)!==JSON.stringify(generatedBy)||JSON.stringify(raw.qualification)!==JSON.stringify(ACTIVATION_QUALIFICATION)
   ||raw.securityContractSha256!==ACTIVATION_CONTRACT_SHA256||JSON.stringify(raw.components)!==JSON.stringify(QUALIFIED_ACTIVATION_COMPONENTS)
   ||JSON.stringify(raw.baseline)!==JSON.stringify(ACTIVATION_BASELINE)

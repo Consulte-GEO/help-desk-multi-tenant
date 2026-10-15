@@ -12,7 +12,7 @@ const invalid=(work:()=>unknown)=>assert.throws(work,(e:any)=>e.code==='delivery
 
 for(const [type,outcome] of [['email.sent','accepted'],['email.delivered','delivered'],['email.bounced','failed'],['email.failed','failed'],['email.suppressed','failed']] as const)test('native Resend '+type+' verifies minimal event',()=>{
  const bytes=body(type),event=verifier().verify(headers(bytes),bytes);
- assert.deepEqual(event,{eventId:ID,eventHash:createHash('sha256').update(bytes).digest('hex'),providerMessageId:EMAIL,occurredAt:'2026-10-14T11:59:59.500Z',outcome});
+ assert.deepEqual(event,{eventId:ID,eventHash:createHash('sha256').update(bytes).digest('hex'),providerMessageId:EMAIL,occurredAt:'2026-10-14T11:59:59.500Z',eventType:type,outcome});
  assert.equal(requireVerifiedResendEvent(event),event);assert.ok(Object.isFrozen(event));
  const text=JSON.stringify(event);for(const sensitive of ['private@example.invalid','sender@example.invalid','Private body','intent_id','untrusted'])assert.equal(text.includes(sensitive),false);
 });

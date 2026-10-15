@@ -7,6 +7,7 @@ import {createRegistrationAnalysisWorker} from '../application/registration-anal
 import type {RegistrationAnalysisEngine,AnalysisEngineInput} from '../application/registration-analysis-ports.ts';
 import {parseRegistrationScopeRequest} from '../domain/registration-persistence.ts';
 import {REGISTRATION_SECURITY_CONTRACT,REGISTRATION_SECURITY_QUERY} from './registration-security-contract.ts';
+import {EMAIL_MONITOR_SECURITY_CONTRACT,EMAIL_MONITOR_SECURITY_QUERY} from './email-monitor-security-contract.ts';
 import {READINESS_FLAGS} from './database-security.ts';
 import {unsafeServiceMembershipSql} from '../../scripts/consultegeo-service-membership.ts';
 
@@ -43,8 +44,15 @@ export const REGISTRATION_WORKER_QUERY=`with schemas as(select * from pg_catalog
 /** Full reviewed app catalogue plus independent dedicated worker effective ACL/TLS. */
 export async function assertRegistrationWorkerDatabase(pool:Pick<SqlPool,'query'>){
  try{
-  const core=await pool.query(REGISTRATION_SECURITY_QUERY.replaceAll('current_user',"'helpdesk_app'"),[JSON.stringify(REGISTRATION_SECURITY_CONTRACT),[...REGISTRATION_SECURITY_CONTRACT.schemas]]),row=core.rows[0];
-  if(core.command!=='SELECT'||core.rowCount!==1||core.rows.length!==1||!row||row.table_count!==REGISTRATION_SECURITY_CONTRACT.tables.length||row.unsafe_tables!==0||row.public_schema_access!==false||row.client_schema_access!==false||row.public_helper_execute!==false||READINESS_FLAGS.some(key=>row[key]!==true))throw unavailable();
+  let qualified=false;
+  // Both catalogues are fixed source artifacts. A version marker alone never
+  // promotes the worker; the entire catalogue and existing ACL checks must pass.
+  for(const {contract,query} of [{contract:REGISTRATION_SECURITY_CONTRACT,query:REGISTRATION_SECURITY_QUERY},{contract:EMAIL_MONITOR_SECURITY_CONTRACT,query:EMAIL_MONITOR_SECURITY_QUERY}]){
+   const core=await pool.query(query.replaceAll('current_user',"'helpdesk_app'"),[JSON.stringify(contract),[...contract.schemas]]),row=core.rows[0];
+   if(core.command!=='SELECT'||core.rowCount!==1||core.rows.length!==1||!row)throw unavailable();
+   if(row.table_count===contract.tables.length&&row.unsafe_tables===0&&row.public_schema_access===false&&row.client_schema_access===false&&row.public_helper_execute===false&&READINESS_FLAGS.every(key=>row[key]===true)){qualified=true;break;}
+  }
+  if(!qualified)throw unavailable();
   const result=await pool.query(REGISTRATION_WORKER_QUERY,[[...workerRole.functions]]),worker=result.rows[0];
   if(result.command!=='SELECT'||result.rowCount!==1||result.rows.length!==1||worker?.actor!=='helpdesk_registration_worker'||worker.login!=='helpdesk_registration_worker'||['role','schemas','tables','helpers','auth','tls','storage'].some(key=>worker[key]!==true))throw unavailable();
  }catch{throw unavailable();}
