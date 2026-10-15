@@ -1,4 +1,4 @@
-name: Wave2 native development checks
+name: Wave2 PostgreSQL development checks
 on:
   push:
     branches: ['codex/helpdesk-email-wave2']
@@ -33,7 +33,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p evidence/wave2-native-development
-          npm run test:db:native 2>&1 | tee evidence/wave2-native-development/native.log
+          npm run test:db:local 2>&1 | tee evidence/wave2-native-development/native.log
       - name: Preserve development results including failures
         if: ${{ always() && steps.source.outcome == 'success' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
