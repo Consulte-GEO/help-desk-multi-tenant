@@ -21,6 +21,7 @@ DECLARE c jsonb:=${literal(json)}::jsonb;w uuid:=(c->>'workspaceId')::uuid;spons
  e jsonb;t jsonb;r helpdesk_integration.hdn_notification_routes%rowtype;receipt helpdesk_audit.audit_events%rowtype;person uuid;n int;replay boolean;stamp timestamptz;until_time timestamptz;members uuid[];audit_action text;next_audience text;
 BEGIN
  IF helpdesk_auth.schema_version()<>'0.25.0' OR session_user::text IS DISTINCT FROM c->>'operatorName' OR digest IS DISTINCT FROM helpdesk_auth.hdni_digest(c) THEN RAISE EXCEPTION 'Qualified wave2 operator required' USING ERRCODE='HNP01';END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended('helpdesk-notification-ledger-v1',0));
  PERFORM 1 FROM helpdesk_audit.cg_initial_receipts WHERE workspace_id=w AND document->>'assurance'='operator-delegation' AND document->>'sponsorId'=sponsor::text FOR SHARE;
  IF NOT FOUND THEN RAISE EXCEPTION 'Initial delegation required' USING ERRCODE='HNP01';END IF;
  PERFORM 1 FROM helpdesk_auth.principals p JOIN helpdesk_auth.workspace_memberships m ON m.principal_id=p.id JOIN auth.users u ON u.id=p.supabase_user_id WHERE p.id=sponsor AND p.active AND p.kind='human' AND m.workspace_id=w AND m.active AND m.role='admin' AND lower(u.email)=c->>'administratorEmail' AND u.email_confirmed_at IS NOT NULL AND u.deleted_at IS NULL AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp()) FOR SHARE OF p,m;

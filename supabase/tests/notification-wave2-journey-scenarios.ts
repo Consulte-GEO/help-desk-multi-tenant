@@ -11,6 +11,7 @@ import {createOwnedWave2AudienceFixture} from './notification-wave2-audience-fix
 import {assertOwnedWave2ApprovalOpening} from './notification-wave2-review-fixture.ts';
 import {WAVE2_PUBLIC_TEMPLATES} from '../../src/integrations/notifications/wave2-templates.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
+import {assertOwnedWave2Publication} from './notification-wave2-publication-fixture.ts';
 /** Final journey in an owned disposable cluster. Real ordinary app sessions see the
  * committed candidate. Schema/upgrade readiness remains a separate release gate. */
 export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPool:()=>SqlPool,appPool:()=>SqlPool){
@@ -117,5 +118,6 @@ export function registerWave2JourneySqlTests(operatorPool:()=>SqlPool,controlPoo
    await operator.query("insert into helpdesk_integration.hdn_notification_routes(workspace_id,kind,revision,audience,template_id,template_version,expires_at,effective_after,recipient_ids) select workspace_id,kind,revision+1,audience,template_id,template_version,clock_timestamp()+interval '10 minutes',effective_after,recipient_ids from helpdesk_integration.hdn_notification_routes where workspace_id=$1 and kind='support.reply' order by revision desc limit 1",[w]);
    assert.deepEqual(await audience.materialize(receipt.eventId),first);
   });
+  await suite.test('operator recipes qualify against genuine current participants and local publication',publicationSuite=>assertOwnedWave2Publication(publicationSuite,operator,{workspaceId:w,accountId:input.accountId,staffId:staff,requesterId:requester,workId:input.workId}));
  });
 }
