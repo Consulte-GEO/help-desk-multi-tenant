@@ -106,6 +106,22 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
     await assert.rejects(auth.withAdministrativeAssurance(request,(person,proof)=>review.decideApproval(person,approval,randomUUID(),randomUUID(),proof)),{code:'approval_revision_changed'});
     assert.equal((await operator.query('select count(*)::int as n from helpdesk_core.ticket_events where workspace_id=$1 and ticket_id=$2',[w,openedApproval.ticketId])).rows[0]!.n,2);
    });
+   await invitationSuite.test('the requester revises the pinned published form and returns to pending approval with immutable earlier answers',async()=>{
+    await operator.query(`insert into helpdesk_auth.hdnr_grants(workspace_id,account_id,principal_id,capability,revision,active,work_ids,expires_at,request_id,reason)
+     values($1,$2,$3,'forms.revise',1,true,$4::text[],clock_timestamp()+interval '10 minutes',$5,'Owned exact requester form revision capability')`,[w,a,customer.id,[workId],randomUUID()]);
+    const corrected=await createFormDraftService(options).saveFormDraft(customer,{id:randomUUID(),accountId:a,refs,formId,formVersion:2,answers:{details:'Owned corrected details for a new approval'}},0);
+    const command={ticketId:opened.ticketId,expectedVersion:2,expectedFormRevision:1,draftId:corrected.id,expectedDraftRevision:1,comment:'Owned requested correction'};
+    const preview=await review.previewSupportRevision(customer,command);assert.equal(preview.commitAuthorized,false);assert.equal(preview.publicDiff[0]!.path,'details');
+    const key=randomUUID(),requestId=randomUUID(),revise=()=>review.reviseSupportForm(customer,{...command,previewHash:preview.previewHash},key,requestId);
+    const revised=await revise();assert.equal(revised.version,3);assert.equal(revised.formRevision,2);assert.equal(revised.replayed,false);
+    const replay=await revise();assert.equal(replay.eventId,revised.eventId);assert.equal(replay.replayed,true);
+    const current=(await operator.query(`select t.status,t.priority,s.approval from helpdesk_core.tickets t join helpdesk_core.hdn_workflow_state s on(s.workspace_id,s.account_id,s.ticket_id)=(t.workspace_id,t.account_id,t.id) where t.workspace_id=$1 and t.id=$2`,[w,opened.ticketId])).rows[0];assert.deepEqual(current,{status:'triage',priority:'normal',approval:'pending'});
+    const original=(await operator.query("select document->'bundle'->'form'->'answers' as answers from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,opened.ticketId])).rows[0]!.answers;
+    assert.deepEqual(original,{details:'Owned pending approval details, never mailed'});
+    const form=(await operator.query('select document from helpdesk_core.hdnr_forms where workspace_id=$1 and ticket_id=$2 and revision=2',[w,opened.ticketId])).rows[0]!.document as any;
+    assert.deepEqual(form.answers,{details:'Owned corrected details for a new approval'});assert.equal(form.formVersion,2);
+    assert.equal((await operator.query("select document->>'status' as status from helpdesk_core.hdni_drafts where workspace_id=$1 and id=$2",[w,corrected.id])).rows[0]!.status,'committed');
+   });
   });
  });
 }
