@@ -2,6 +2,21 @@
 
 O titular autorizou expressamente o merge do PR52, a implantação produtiva, a migração e a validação de aberturas/cliques. Posteriormente autorizou o uso restrito da chave Resend e do segredo de webhook existentes, sem exibir/gravar valores, e um e-mail técnico para thiago@consultegeo.com.br. Isso não autoriza alterar configurações compartilhadas de outros produtos, ampliar permissões ou inventar fatos históricos.
 
+## Estado final da coleta — prevalece sobre o histórico abaixo
+
+O titular corrigiu sua resposta anterior: os eventos não estavam selecionados. Ele próprio configurou `email.opened` e `email.clicked` no webhook existente, sem solicitação de nova chave/segredo. Após essa alteração, a prova técnica das19:56:40Z (16:56:40 Brasília) gerou os dois callbacks nativos. O Netlify registrou dois POST200 e o banco persistiu ambos como applied, associados pelo ID exato da mensagem à intenção esperada. Causa operacional confirmada: ausência da assinatura desses eventos no provedor. Nenhuma correção de código foi necessária.
+
+- Abertura: `msg_3KkGYkFXo3GStUn15g1C9FWdawx`; ocorreu19:56:40.906Z, recebida19:56:43.140Z.
+- Clique: `msg_3KkGYlU1dfJpR0wLFqRzlHABHcV`; ocorreu19:56:41.061Z, recebido19:56:43.310Z.
+- ProviderMessageId: `01a13cbd-aa65-721b-9519-f9860eee49f8`; intenção: `fd88db0d-18f2-4b32-b695-3402410f79bc`.
+- Início de cobertura de ambos os sinais: **2026-10-15T19:57:29.552038Z**, equivalente a **16:57:29 Brasília**. O operador postgres atualizou exatamente uma linha, somente após exigir schema27, os dois recibos exatos applied, ausência de lacunas abertas e ambos os valores anteriores nulos. Foi usado statement_timestamp atual, sem retroação; não repetir essa atualização.
+- Leitura posterior19:58:11Z confirmou1 email.opened,1 email.clicked, zero lacunas, onze registros delivered, owner postgres e ENABLE/FORCE RLS preservados. A intenção antiga observada continua com openEligible=false/clickEligible=false: fato observado não cria cobertura retrospectiva.
+- Evidências sanitizadas: `native-collection-qualified.json` e `native-probe-unread-post-event-activation.json`, no diretório de evidências desta implantação. Não contêm chaves, assinatura, raw payload ou URLs de rastreamento.
+
+O GET técnico foi automatizado e não comprova leitura humana. Não houve novo e-mail, nova intenção ou alteração de chamado; somente a telemetria nativa e a configuração privada de início da cobertura foram gravadas. O histórico sem evidência continua indisponível; não fazer backfill ou transformar desconhecido em zero.
+
+**Pendência remanescente:** aceite visual autenticado da tela produtiva. A aba Resend foi localizada, mas DOM e screenshot falharam no controle do navegador. A coleta está comprovada independentemente desse limite; não afirmar que a inspeção visual autenticada ocorreu. Os trechos abaixo de cobertura nula/coleta pendente são o histórico anterior à ativação, preservado para auditoria. Não reaplicar migration, seeds ou bootstrap para essa pendência.
+
 ## Publicação e banco
 
 - PR52 integrado em `0181e53a5808864a5e4e607f50c26bebf2ad9a22`, às18:58:25Z. Gates do HEAD2db932c aprovados:5739 aplicação,697 PostgreSQL17 e632 interface; HDA e CodeQL aprovados.
@@ -40,4 +55,8 @@ Atualizar este checkpoint com os callbacks comprovados e eventual início da cob
 
 Após essa implantação, a base recebeu PR55 de Apoio Implantação, publicado emcc380bf/deploy6ad12af460716e72a66bf761 às19:36:24.795Z. Foi incorporado por fast-forward, preservando código e recibo de homologação dessa frente; não restaurar o recibo antigo377fa671 sobre a fonte ampliada. A qualificação completa91 assets/13 checks acima pertence ao commit178dfb5. Na versão concorrente foram reconferidos especificamente os dois assets do monitor por SHA256, a capability ativa e a recusa401 de consulta anônima, em `current-monitor.json`. Não afirmar que o fingerprint atual permanece igual ao da fonte anterior ao PR55.
 
-Correção da solicitação de acesso ao navegador: o navegador externo conectado é o **Edge**, não o Chrome. O pedido anterior sobre Chrome foi substituído pela pergunta de autorização/abertura da conta Resend no Edge. Essa dependência continua pendente; não selecionar outra conta, obter chaves novas ou ampliar acesso para contorná-la.
+Correção da solicitação de acesso ao navegador: o navegador externo conectado é o **Edge**, não o Chrome. O titular autorizou expressamente ambos, prevalecendo a autorização mais recente para Edge. Não solicitar novamente permissão para esse acesso restrito. O inventário inicial do Edge não tinha aba Resend aberta. A tentativa de criar/navegar uma aba expirou e reinicializou o controle; após reconexão, a consulta de abas e o inventário geral também expiraram. Não foi possível observar a página do Resend, verificar login ou modificar a assinatura de eventos. Foi solicitado ao titular abrir `https://resend.com/webhooks`, autenticar-se e manter a extensão Codex conectada. Trata-se de dependência de conexão/sessão, não de autorização pendente; não selecionar outra conta, obter chaves novas ou ampliar acesso para contorná-la.
+
+Nova leitura somente consulta, às19:45:58.045751Z: onze registros continuam delivered; zero recibos tipados, zero email.opened e zero email.clicked; ambos os inícios de cobertura permanecem nulos. Nenhuma configuração do Resend foi alterada nesta retomada. Evidência em `evidence/email-monitor-production-20261015/browser-resume-readback.json`. Retomar a conferência do webhook e a prova assinada após a conexão do navegador ficar disponível.
+
+O titular confirmou em seguida Resend aberto e extensão conectada. O inventário mostrou `Emails · Resend` em `https://resend.com/emails`; a aba existente pôde ser vinculada, mas DOM e screenshot falharam por timeout do comando de foco do navegador. Portanto a sessão autenticada e a assinatura dos eventos continuam sem inspeção pelo agente. A aba foi mantida para continuidade. Foi solicitado ao titular conferir manualmente o webhook exato e selecionar `email.opened`/`email.clicked` caso ausentes, preservando eventos existentes, URL e segredo; aguardar o resultado antes de repetir qualquer prova técnica. Leitura do banco às19:52:36.915962Z segue com zero recibos tipados/aberturas/cliques e cobertura nula. Nenhuma alteração do Resend ou novo e-mail foi efetuado pelo agente nesta tentativa.
