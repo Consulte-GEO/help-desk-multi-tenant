@@ -1,0 +1,330 @@
+{
+  "schema": 1,
+  "scope": "production-configuration-and-public-boundary; not end-to-end delivery acceptance",
+  "source": {
+    "merge": "4227b2e92f40f731e16a75601048791538d6acfa",
+    "qualifiedSource": "640ed4fcaf26d18a39097645fbcc96ffef20a650",
+    "sourceFingerprint": "d57f189054a0bdfd579e7ca039f3b861642368f84e009e7794701f6cf9832ce0",
+    "ciRun": 38706267351
+  },
+  "deploy": {
+    "id": "6ad092dfab56b1b100f37485",
+    "state": "ready",
+    "commit_ref": "4227b2e92f40f731e16a75601048791538d6acfa",
+    "published_at": "2026-10-15T08:47:19.254Z",
+    "error_message": null
+  },
+  "migration": {
+    "name": "consultegeo_email_wave2",
+    "remoteVersion": "20261015095013",
+    "localFile": "20261015014616_consultegeo_email_wave2.sql",
+    "sha256": "a6b0018a279d1e5f03b8745d0918329d518d5e277c55d8c4aa08ebe711613c9c",
+    "bytes": 465231,
+    "preexistingTablesVerifiedUnchanged": 67
+  },
+  "configuration": {
+    "queue": [
+      {
+        "revision": 1,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "member_ids": [
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "request_id": "d30bc880-e49a-4cb5-a119-eb52ba672578",
+        "recorded_by": "postgres",
+        "max_recipients": 1
+      }
+    ],
+    "routes": [
+      {
+        "kind": "internal.assignment_changed",
+        "audience": "assignee",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-assignment",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:21.565331+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "internal.queue_created",
+        "audience": "queue",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-queue-created",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:21.565331+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.approval_granted",
+        "audience": "none",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": null,
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:52:04.168979+00:00",
+        "template_version": null
+      },
+      {
+        "kind": "support.approval_rejected",
+        "audience": "none",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": null,
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:52:04.168979+00:00",
+        "template_version": null
+      },
+      {
+        "kind": "support.approval_requested",
+        "audience": "none",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": null,
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:52:04.168979+00:00",
+        "template_version": null
+      },
+      {
+        "kind": "support.cancelled",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-cancelled",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.closed",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-closed",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.created",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2027-04-14T03:00:00+00:00",
+        "template_id": "consultegeo-opened",
+        "recipient_ids": null,
+        "effective_after": null,
+        "template_version": 2
+      },
+      {
+        "kind": "support.customer_reply",
+        "audience": "customer_return",
+        "revision": 3,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-customer-return",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:21.565331+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.devolutiva",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2027-04-14T03:00:00+00:00",
+        "template_id": "consultegeo-updated",
+        "recipient_ids": null,
+        "effective_after": null,
+        "template_version": 2
+      },
+      {
+        "kind": "support.form_revised",
+        "audience": "none",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": null,
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:52:04.168979+00:00",
+        "template_version": null
+      },
+      {
+        "kind": "support.handoff",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-handoff",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.reopened",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-reopened",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.reply",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-reply",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      },
+      {
+        "kind": "support.resolved",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2027-04-14T03:00:00+00:00",
+        "template_id": "consultegeo-resolved",
+        "recipient_ids": null,
+        "effective_after": null,
+        "template_version": 2
+      },
+      {
+        "kind": "support.transition",
+        "audience": "requester",
+        "revision": 2,
+        "expires_at": "2026-11-15T03:00:00+00:00",
+        "template_id": "consultegeo-started",
+        "recipient_ids": [
+          "5403253e-f431-4152-b3ea-cd4a0ea98e8e",
+          "98349d0e-5c2f-4534-8018-80773d69e108"
+        ],
+        "effective_after": "2026-10-15T09:57:18.646988+00:00",
+        "template_version": 1
+      }
+    ],
+    "schema": "0.25.0",
+    "templates": 19,
+    "auditReceipts": [
+      {
+        "id": "5c86da8f-7548-44df-a6f3-704cacef9f4a",
+        "action": "notification.wave2.public.prepare",
+        "created_at": "2026-10-15T09:52:02.191687+00:00",
+        "request_id": "postgres:2e53d5e9cdf2aa81d4c914e000c018e8d5785753bfe07dbe1615ed0d302111ba"
+      },
+      {
+        "id": "5a4b1024-43ea-44ef-9018-3c41eb05c3da",
+        "action": "notification.wave2.team.prepare",
+        "created_at": "2026-10-15T09:52:03.180968+00:00",
+        "request_id": "postgres:63f6c351987fab04f91e1672038c1abb30c73d741216a0a619e92b5afca118db"
+      },
+      {
+        "id": "712fd288-113f-4bd6-9e9f-504681ab2258",
+        "action": "notification.wave2.review.prepare",
+        "created_at": "2026-10-15T09:52:04.168979+00:00",
+        "request_id": "postgres:fb71d3c5acc4238999bdc14daf6183fb1d8271ce2e63f82e44663df3631e9b29"
+      },
+      {
+        "id": "d30bc880-e49a-4cb5-a119-eb52ba672578",
+        "action": "notification.wave2.team.queue",
+        "created_at": "2026-10-15T09:56:40.01948+00:00",
+        "request_id": "postgres:9f70dd933f6878847f81baf28a0c4967abedce868f472bf1562723665083b16f"
+      },
+      {
+        "id": "b7b9529d-fa75-4fe0-a198-6cd7009b1922",
+        "action": "notification.wave2.public.activate",
+        "created_at": "2026-10-15T09:57:18.646988+00:00",
+        "request_id": "postgres:ad6b19c3c8c92b8ad4fd6a9c8091bcc24fc69f8ab93ef956f8b090afb3dc359a"
+      },
+      {
+        "id": "c44987a8-a458-485e-96b2-8e8b3327d4e4",
+        "action": "notification.wave2.team.activate",
+        "created_at": "2026-10-15T09:57:21.565331+00:00",
+        "request_id": "postgres:a3814cc59ee4e76fcc97907d2c2c44e1bb65232cc5061af1d44a8927b7a05a66"
+      }
+    ],
+    "approvalGrants": 0,
+    "reviewReceipts": 0,
+    "approvalPolicies": 0,
+    "approvalProfiles": 0,
+    "workerCanReadAuth": false
+  },
+  "queueQualification": {
+    "verifiedAt": "2026-10-15T10:03:25.201Z",
+    "stage": "queue_only_no_review_authority",
+    "sqlSha256": "26a9f96132b5fe1024f58deec7464a7754574fbf0b570097995a7ed1b1c33bcd",
+    "dryRun": {
+      "rolledBack": true,
+      "receipts": [
+        {
+          "request_id": "d30bc880-e49a-4cb5-a119-eb52ba672578",
+          "action": "notification.wave2.team.queue",
+          "operator_command_hash": "postgres:9f70dd933f6878847f81baf28a0c4967abedce868f472bf1562723665083b16f",
+          "created_at": "2026-10-15 09:56:26.678282+00"
+        }
+      ]
+    },
+    "commit": [
+      {
+        "request_id": "d30bc880-e49a-4cb5-a119-eb52ba672578",
+        "action": "notification.wave2.team.queue",
+        "operator_command_hash": "postgres:9f70dd933f6878847f81baf28a0c4967abedce868f472bf1562723665083b16f",
+        "created_at": "2026-10-15 09:56:40.01948+00"
+      }
+    ],
+    "replay": [
+      {
+        "request_id": "d30bc880-e49a-4cb5-a119-eb52ba672578",
+        "action": "notification.wave2.team.queue",
+        "operator_command_hash": "postgres:9f70dd933f6878847f81baf28a0c4967abedce868f472bf1562723665083b16f",
+        "created_at": "2026-10-15 09:56:40.01948+00"
+      }
+    ],
+    "queueRows": 1,
+    "memberCount": 1,
+    "approvalPolicies": 0,
+    "approvalProfiles": 0,
+    "approvalGrants": 0,
+    "fullOperationsPlanApplied": false,
+    "userDecision": "MFA adiado nesta etapa; prosseguir sem reduzir a proteção de aprovação."
+  },
+  "pending": [
+    "Legitimate requester and team browser sessions for production workflow acceptance",
+    "New provider delivery, signed callbacks, inbox appearance and portal verification",
+    "MFA-dependent review/approval authority and activation deferred by user",
+    "Two business days observation before audience expansion"
+  ]
+}
