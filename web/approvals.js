@@ -12,7 +12,7 @@ export function mountApprovals(root, options) {
  decision.input.setAttribute('data-ops-decision', '');
  for (const [value, label] of [['', 'Selecione uma decisão'], ['approve', 'Aprovar solicitação'], ['reject', 'Solicitar correção']]) decision.input.append(node('option', label, {value}));
  decision.input.value = '';
- const reason = ui.field('Justificativa da decisão', 'reason', 'textarea', 'Obrigatória para aprovar ou solicitar correção. Até 2.000 caracteres.');
+ const reason = ui.field('Justificativa da decisão', 'reason', 'textarea', 'Obrigatória. Será apresentada ao solicitante no portal; não será incluída no e-mail. Até 2.000 caracteres.');
  reason.input.maxLength = 2000; reason.input.required = true;
  fields.append(decision.box, reason.box);
  const review = node('section', undefined, {class: 'hd-ops-review', 'aria-label': 'Revisão da decisão'});
@@ -65,6 +65,7 @@ export function mountApprovals(root, options) {
    else if (['confirmed', 'error'].includes(s.phase)) ui.status.focus();
   }
   lastPhase = s.phase;
+  try { options.onChange?.(s); } catch { /* presentation observer only */ }
  }
  async function run(fn) {
   if (destroyed || state.snapshot().phase === 'cleared') return;

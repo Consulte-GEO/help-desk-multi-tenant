@@ -1,7 +1,8 @@
 import {ADVANCED_ACCESS} from './access-mode.js';
 import {mountOperationalJourney} from './consultegeo-operation.js';
 import {mountOperationalWorkflow} from './consultegeo-workflow.js';
-let cgOpening=null,cgWorkflow=null;
+import {mountOperationalReview} from './consultegeo-review.js';
+let cgOpening=null,cgWorkflow=null,cgReview=null;
 // UX08: optional presentation. Failed/late assets never authorize or block Auth.
 let accessUX=null,accessConfiguration=null;
 import('./access-experience.js').then(({mountAccessExperience})=>{
@@ -79,7 +80,7 @@ const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='wai
 const product=(id,consultegeo=false)=>consultegeo?'Consulte GEO':s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 // Presentation only: this is an abbreviated UUID, never a business protocol.
 const compactTicketId=id=>(id.length>18?id.slice(0,8)+'…'+id.slice(-6):id).toUpperCase();
-function clearSession(){cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
@@ -102,7 +103,12 @@ async function login(){
  $('identity-name').textContent=s.me.workspace_role==='admin'?'Administrador':s.me.grants.some(g=>g.role==='agent')?'Equipe de suporte':'Portal do cliente';
  $('workspace-label').textContent=s.demo?'Consulte · demonstração':ADVANCED_ACCESS?s.workspace:'Operação autorizada';
  $('login-status').textContent='';$('login-screen').hidden=true;$('app').hidden=false;
- render();if(serviceAvailable()){const linked=supportNavigation.takeTicket();await list(true,!linked);if(linked)await detail(linked,{navigate:true});}
+ render();if(serviceAvailable()){const linked=supportNavigation.takeTicket(),invitation=supportNavigation.takeApproval();await list(true,!linked&&!invitation);if(invitation){
+  if(s.config?.consultegeo_review!==true){notice('A consulta deste convite ainda não está disponível.',true);return;}
+  try{const landing=await api('/approval-invitations/'+invitation);if(landing?.workspaceId!==s.workspace||landing.invitationId!==invitation||typeof landing.ticketId!=='string'||!/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/.test(landing.ticketId))throw Error('Convite indisponível.');await detail(landing.ticketId,{navigate:true});}
+  catch{notice('O convite está indisponível para esta sessão ou revisão. Consulte os chamados autorizados.',true);}
+ }else if(linked)await detail(linked,{navigate:true});}
+
 }
 async function profile(key){$('profile').value=key;const p=s.demo.profiles.find(p=>p.key===key);clearSession();s.token=p.token;s.workspace=p.workspace_id;await login();}
 function syncInbox(){s.tickets=inbox.items();s.next=inbox.next();render();}
@@ -164,10 +170,10 @@ async function older(kind){
  }finally{button.disabled=false;}
 }
 async function detail(id,{navigate=false}={}){
- if(cgWorkflow?.blocked()){if(navigate&&id===s.ticket?.id){const retained=inboxUX?.beginDetail(id,true);if(retained)inboxUX.finishDetail(retained);notice('O atendimento anterior ainda aguarda confirmação. Concilie a mesma intenção.');return;}notice('Concilie o atendimento ou a marcação atual antes de atualizar ou trocar o chamado.',true);return;}
+ if((cgWorkflow?.blocked()||cgReview?.blocked())){if(navigate&&id===s.ticket?.id){const retained=inboxUX?.beginDetail(id,true);if(retained)inboxUX.finishDetail(retained);notice('O atendimento anterior ainda aguarda confirmação. Concilie a mesma intenção.');return;}notice('Concilie o atendimento ou a marcação atual antes de atualizar ou trocar o chamado.',true);return;}
  // Navigation never discards a request still in flight or an unresolved creation.
  if(navigate&&id!==s.ticket?.id&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
- cgWorkflow?.destroy();cgWorkflow=null;$('cg-workflow').hidden=true;
+ cgWorkflow?.destroy();cgWorkflow=null;$('cg-workflow').hidden=true;cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;
  const uxRead=inboxUX?.beginDetail(id,navigate);
  // Lock controls while the current GET and required conversation are being refreshed.
  s.actions=null;s.notesUnavailable=false;
@@ -199,6 +205,7 @@ async function detail(id,{navigate=false}={}){
   $('detail-action-status').textContent=hasWriteActions(actions)?'Ações verificadas pelo servidor para esta versão. Cada envio revalida suas permissões.':'Modo de consulta: seu acesso atual não permite alterações neste chamado.';
   mode(s.mode);renderTransitions();renderAssignment();renderPriority();
   if(!s.demo&&t.consultegeo?.workflow===true){$('cg-workflow').hidden=false;const epoch=s.epoch;cgWorkflow=mountOperationalWorkflow($('cg-workflow'),{identity:{workspaceId:s.workspace,principalId:s.me.id},ticket:t,request:operationalRequest(),canWriteWorkflow:actions.reply||actions.transitions.length>0,canWriteChecklist:t.internal_status!==undefined&&actions.add_note&&s.me.scopes.includes('tickets:write'),onChange:()=>renderComposer(),onRefresh:()=>run(()=>detail(t.id)),onConfirmed:()=>run(async()=>{if(epoch!==s.epoch)return;await detail(t.id);if(epoch===s.epoch)await list();})});}
+  if(!s.demo&&s.config?.consultegeo_review===true&&t.consultegeo?.workflow===true){$('cg-review').hidden=false;const epoch=s.epoch;cgReview=mountOperationalReview($('cg-review'),{identity:{workspaceId:s.workspace,principalId:s.me.id},ticket:t,origin:location.origin,request:operationalRequest(),canReadAttention:s.me.workspace_role==='admin',onChange:()=>renderComposer(),onRefresh:()=>run(()=>detail(t.id)),onConfirmed:()=>run(async()=>{if(epoch!==s.epoch)return;await detail(t.id);if(epoch===s.epoch)await list();})});void cgReview.load();}
   timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,t.id]),t.internal_status!==undefined);renderTimeline();
   if(current())inboxUX?.finishDetail(uxRead??inboxUX.beginDetail(id,navigate));
   if($('history-section').open)await loadTimeline();if(current())render();
@@ -223,7 +230,7 @@ async function detail(id,{navigate=false}={}){
  }
 }
 
-function renderTransitions(){
+function renderTransitions(){renderReviewLocks();
  const moves=s.actions?.transitions??[],selected=$('next-status').value;
  $('transition-area').hidden=!!s.ticket?.consultegeo||!moves.length;
  $('next-status').replaceChildren(...moves.map(v=>option(v.to,labels[v.to])));
@@ -254,7 +261,7 @@ async function loadTimeline(){
 $('history-section').ontoggle=()=>{if($('history-section').open&&timeline.status()==='idle')run(loadTimeline);};
 $('history-more').onclick=()=>run(loadTimeline);$('history-retry').onclick=()=>run(loadTimeline);
 $('history-refresh').onclick=()=>run(async()=>{if(!s.ticket||!s.actions)return;timeline.reset(JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]),s.ticket.internal_status!==undefined);await loadTimeline();});
-function renderAssignment(){
+function renderAssignment(){renderReviewLocks();
  const t=s.ticket,a=t?.assignment,visible=t&&!t.consultegeo&&s.actions&&a;
  $('assignment-form').hidden=!visible;if(!visible)return;
  $('assignment-label').textContent=a.state==='mine'?'Responsável: você.':a.state==='other'?'Responsável: outro atendente. Em chamados não encerrados, um administrador pode liberar para nova atribuição.':'Este chamado está sem responsável.';
@@ -274,7 +281,7 @@ function editAssignment(action,rebase=false){
 }
 $('assignment-reason').oninput=()=>editAssignment();
 $('assignment-form').onsubmit=e=>{e.preventDefault();const action=e.submitter?.value;if(!['claim','release'].includes(action))return;run(async()=>{
- const t=s.ticket;if(!t||!(action==='claim'?s.actions?.claim:s.actions?.release))return;editAssignment(action);const op=mutations.begin('assignment');if(!op)return;
+ const t=s.ticket;if(cgReview?.blocked()||!t||!(action==='claim'?s.actions?.claim:s.actions?.release))return;editAssignment(action);const op=mutations.begin('assignment');if(!op)return;
  const d=JSON.parse(op.body);$('assignment-status').textContent='Confirmando responsabilidade com a versão '+d.version+'…';$('assignment-reload').hidden=true;renderAssignment();
  try{
   await post('/tickets/'+t.id+'/assignments',{action:d.action,reason:d.reason.trim()},op.key,{'if-match':'"'+d.version+'"'});
@@ -294,7 +301,7 @@ $('assignment-reload').onclick=()=>run(async()=>{
  await detail(id);if(s.ticket?.id===id&&epoch===s.epoch){editAssignment(undefined,true);$('assignment-reload').hidden=true;$('assignment-status').textContent='Versão atualizada. Motivo preservado; revise a responsabilidade antes de confirmar.';renderAssignment();}
 });
 
-function renderPriority(){
+function renderPriority(){renderReviewLocks();
  const t=s.ticket,allowed=t&&!t.consultegeo&&s.actions?.change_priority;
  $('priority-form').hidden=!allowed;if(!allowed)return;
  const draft=mutations.draft('priority');
@@ -306,7 +313,7 @@ function renderPriority(){
 function editPriority(){if(!s.ticket)return;mutations.edit('priority',JSON.stringify({priority:$('ticket-priority').value,reason:$('priority-reason').value,version:s.ticket.version}));}
 $('ticket-priority').onchange=editPriority;$('priority-reason').oninput=editPriority;
 $('priority-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- const t=s.ticket;if(!t||!s.actions?.change_priority)return;editPriority();const op=mutations.begin('priority');if(!op)return;
+ const t=s.ticket;if(cgReview?.blocked()||!t||!s.actions?.change_priority)return;editPriority();const op=mutations.begin('priority');if(!op)return;
  const draft=JSON.parse(op.body);$('priority-status').textContent='Salvando com a versão '+draft.version+'…';$('priority-reload').hidden=true;renderPriority();
  try{
   await api('/tickets/'+t.id,{method:'PATCH',headers:{'idempotency-key':op.key,'if-match':'"'+draft.version+'"'},body:JSON.stringify({priority:draft.priority,reason:draft.reason})});
@@ -325,15 +332,15 @@ $('priority-reload').onclick=()=>run(async()=>{const id=s.ticket?.id,epoch=s.epo
 $('older-messages').onclick=()=>run(()=>older('messages'));
 $('older-notes').onclick=()=>run(()=>older('notes'));
 function option(value,label){const n=el('option','',label);n.value=value;return n;}
-function renderComposer(){
+function renderComposer(){renderReviewLocks();
  const a=s.actions,publicAllowed=!s.ticket?.consultegeo&&!!a?.reply,internalAllowed=!!a?.add_note;
  s.mode=s.ticket?.consultegeo&&internalAllowed?'internal':composerMode(s.mode,a);
  $('public-tab').hidden=!publicAllowed;$('note-tab').hidden=!internalAllowed;
  $('message-form').hidden=!publicAllowed&&!internalAllowed;
  $('message-body').value=mutations.draft(s.mode);
  const enabled=s.mode==='internal'?internalAllowed:publicAllowed;
- $('message-body').disabled=cgWorkflow?.blocked()===true||!enabled||mutations.unresolved(s.mode);
- $('send-message').disabled=cgWorkflow?.blocked()===true||!enabled||mutations.busy(s.mode)||!s.ticket;
+ $('message-body').disabled=(cgWorkflow?.blocked()||cgReview?.blocked())===true||!enabled||mutations.unresolved(s.mode);
+ $('send-message').disabled=(cgWorkflow?.blocked()||cgReview?.blocked())===true||!enabled||mutations.busy(s.mode)||!s.ticket;
  $('transition').disabled=mutations.busy('transition')||!s.ticket||!a?.transitions.length;
  $('next-status').disabled=$('transition-reason').disabled=mutations.unresolved('transition');
  $('message-form').classList.toggle('internal',s.mode==='internal');
@@ -430,7 +437,7 @@ $('create-form').onsubmit=e=>{e.preventDefault();run(async()=>{
 });};
 $('message-body').oninput=()=>mutations.edit(s.mode,$('message-body').value);
 $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
- if(cgWorkflow?.blocked()||!s.ticket||!(s.mode==='internal'?s.actions?.add_note:s.actions?.reply))return;
+ if((cgWorkflow?.blocked()||cgReview?.blocked())||!s.ticket||!(s.mode==='internal'?s.actions?.add_note:s.actions?.reply))return;
  const id=s.ticket.id,channel=s.mode;mutations.edit(channel,$('message-body').value);
  const op=mutations.begin(channel);if(!op)return;renderComposer();
  try{
@@ -442,7 +449,7 @@ $('message-form').onsubmit=e=>{e.preventDefault();run(async()=>{
  finally{renderComposer();}
 });};
 $('transition').onclick=()=>run(async()=>{
- const t=s.ticket,move=s.actions?.transitions.find(v=>v.to===$('next-status').value);if(!t||!move)return;
+ const t=s.ticket,move=s.actions?.transitions.find(v=>v.to===$('next-status').value);if(cgReview?.blocked()||!t||!move)return;
  if(move.requires_reason&&!$('transition-reason').value.trim()){notice('Informe o motivo da reabertura.',true);$('transition-reason').focus();return;}
  const body={to:move.to,reason:$('transition-reason').value};
  mutations.edit('transition',JSON.stringify({...body,version:t.version}));
@@ -495,7 +502,8 @@ const securityPanel=createSecurityStatusPanel({getSession:()=>humanSession,getEp
 // Consulta somente da própria conta, sob a sessão humana atual.
 $('security-status').onclick=()=>run(securityPanel.open);$('security-status-login').onclick=()=>run(securityPanel.open);$('refresh-security').onclick=()=>run(securityPanel.refresh);$('close-security').onclick=securityPanel.clear;
 function outcomeUnknown(error){return error.requestSent!==false&&(!Number.isInteger(error.status)||error.status>=500||error.status===408);}
-function ticketMutationBlocked(){return cgWorkflow?.blocked()===true||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
+function renderReviewLocks(){const reviewHeld=cgReview?.blocked()===true;for(const id of ['cg-workflow','message-form','assignment-form','priority-form','transition-area'])$(id).inert=reviewHeld;const elsewhere=cgWorkflow?.blocked()===true||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));$('cg-review').inert=elsewhere;}
+function ticketMutationBlocked(){return (cgWorkflow?.blocked()||cgReview?.blocked())===true||['public','internal','transition','assignment','priority'].some(channel=>mutations.busy(channel)||mutations.unresolved(channel));}
 function workspaceChangeBlocked(){return cgOpening?.blocked()===true||creation.busy()||unresolvedCreate()||ticketMutationBlocked();}
 const enrollmentPanel=createMfaEnrollmentPanel({getSession:()=>humanSession,getEpoch:()=>s.epoch,blocked:workspaceChangeBlocked,onResult:message=>$('login-status').textContent=message,elements:{title:$('mfa-enrollment-title'),description:$('mfa-enrollment-description'),label:$('mfa-enrollment-label'),dialog:$('mfa-enrollment-dialog'),start:$('start-mfa-enrollment'),confirm:$('confirm-mfa-enrollment'),factor:$('mfa-enrollment-factor'),code:$('mfa-enrollment-code'),secret:$('mfa-enrollment-secret'),qr:$('mfa-enrollment-qr'),provision:$('mfa-provision'),status:$('mfa-enrollment-status')}});
 if(ADVANCED_ACCESS){
