@@ -1,0 +1,62 @@
+{
+  "source": "cb61a5852ea0cbe443195dd96cd3296497d912bf",
+  "workflowRun": "38725040437",
+  "mergeQualificationRun": "38725045821",
+  "fingerprint": "594fa2785667d77a29713a07aad52c44bab35fe31ae9196ca1cff13e53c4c43d",
+  "artifactId": 11967438733,
+  "archiveSha256": "7c144ae2a16be70de3e48f987a9541fb00eda4749236f56b07513ed0e416762f",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 5625,
+        "pass": 5625,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 680,
+        "pass": 680,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 617,
+        "pass": 617,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "productionAcceptance": "pending_customer_return_recovery_and_remaining_real_actions"
+}
