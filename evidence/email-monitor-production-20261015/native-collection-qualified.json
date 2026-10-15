@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "status": "native_open_and_click_collection_qualified",
+  "coverage": {
+    "singleton": true,
+    "opened_started_at": "2026-10-15T19:57:29.552038+00:00",
+    "clicked_started_at": "2026-10-15T19:57:29.552038+00:00"
+  },
+  "checkedAt": "2026-10-15T19:57:29.556223+00:00",
+  "nativeReceipts": [
+    {
+      "id": "msg_3KkGYkFXo3GStUn15g1C9FWdawx",
+      "type": "email.opened",
+      "intentId": "fd88db0d-18f2-4b32-b695-3402410f79bc",
+      "occurredAt": "2026-10-15T19:56:40.906+00:00",
+      "receivedAt": "2026-10-15T19:56:43.14+00:00",
+      "disposition": "applied",
+      "providerMessageId": "01a13cbd-aa65-721b-9519-f9860eee49f8"
+    },
+    {
+      "id": "msg_3KkGYlU1dfJpR0wLFqRzlHABHcV",
+      "type": "email.clicked",
+      "intentId": "fd88db0d-18f2-4b32-b695-3402410f79bc",
+      "occurredAt": "2026-10-15T19:56:41.061+00:00",
+      "receivedAt": "2026-10-15T19:56:43.31+00:00",
+      "disposition": "applied",
+      "providerMessageId": "01a13cbd-aa65-721b-9519-f9860eee49f8"
+    }
+  ],
+  "observedLegacyIntent": {
+    "state": "delivered",
+    "intentId": "fd88db0d-18f2-4b32-b695-3402410f79bc",
+    "openEligible": false,
+    "clickEligible": false
+  },
+  "providerConfiguration": {
+    "source": "Direct user correction and confirmation",
+    "eventsInitiallySelected": false,
+    "userActivated": [
+      "email.opened",
+      "email.clicked"
+    ],
+    "preserved": "Existing endpoint, secret and other event subscriptions"
+  },
+  "coverageBefore": {
+    "opened_started_at": null,
+    "clicked_started_at": null
+  },
+  "coverageWrite": {
+    "operator": "postgres",
+    "guard": "Exact native receipts applied to expected provider/intent, schema 0.27, no open gaps and both previous starts null; exactly one settings row updated",
+    "policy": "Set to current statement timestamp after proof; never backdate"
+  },
+  "technicalProbe": "native-probe-unread-post-event-activation.json",
+  "httpRequests": [
+    {
+      "requestId": "01M50J6T8ANEC0EKSE4W2J8GAK",
+      "at": "2026-10-15T19:56:42.122270639Z",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": "01M50J6T48ERDABJSFM1TCCGZ2",
+      "at": "2026-10-15T19:56:41.992283034Z",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "limitations": [
+    "Technical automated probe, not proof of human reading",
+    "Existing older intent remains ineligible for forward coverage despite observed facts",
+    "Authenticated production UI validation still pending browser control availability"
+  ],
+  "newEmailsSent": 0,
+  "ticketMutations": 0
+}
