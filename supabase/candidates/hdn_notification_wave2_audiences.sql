@@ -109,3 +109,68 @@ DO $private$ DECLARE role_name text;BEGIN
   IF EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname=role_name) THEN EXECUTE format('REVOKE ALL ON FUNCTION helpdesk_auth.hdn_notification_internal_person(uuid,uuid) FROM %I',role_name);END IF;
  END LOOP;
 END $private$;
+
+-- Preserve the qualified v024 contact/coverage checks; extend only current audience and required operation.
+CREATE OR REPLACE FUNCTION helpdesk_auth.hdn_notification_recipient(i jsonb) RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $$
+DECLARE w uuid:=(i->>'workspaceId')::uuid;a uuid:=(i->>'accountId')::uuid;person uuid:=(i->>'recipientId')::uuid;target uuid:=(i->>'ticketId')::uuid;p helpdesk_auth.principals%rowtype;t helpdesk_core.tickets%rowtype;s helpdesk_core.cg_ticket_resource_sets%rowtype;b helpdesk_auth.cg_resource_bindings%rowtype;c helpdesk_auth.cg_resource_connections%rowtype;g helpdesk_auth.cg_resource_grant_sets%rowtype;o helpdesk_auth.cg_resource_observations%rowtype;facts jsonb;address text;verified_at timestamptz;until timestamptz;revision text;allowed boolean:=false;local_registry jsonb;local_account jsonb;local_permission jsonb;local_receipt jsonb;local_work jsonb;ref record;recipient_operation text:='tickets.read';internal_recipient boolean;current_route helpdesk_integration.hdn_notification_routes%rowtype;BEGIN
+ SELECT * INTO STRICT t FROM helpdesk_core.tickets WHERE (workspace_id,account_id,id)=(w,a,target) FOR SHARE;
+ facts:=helpdesk_auth.hdn_notification_facts((i->>'eventId')::uuid);internal_recipient:=i->>'kind' IN ('internal.queue_created','internal.assignment_changed','support.customer_reply');IF i->'resourceHash'<>facts->'resourceHash' OR i->'protocol'<>facts->'protocol' OR i->'kind'<>facts->'source'->'type' OR i->'sourceVersion'<>facts->'source'->'version' OR (NOT internal_recipient AND i->'recipientId'<>facts->'requesterId') OR (internal_recipient AND NOT helpdesk_auth.hdn_notification_internal_person((i->>'eventId')::uuid,person)) THEN RAISE EXCEPTION 'Recipient source mismatch' USING ERRCODE='HDN04';END IF;
+ IF internal_recipient THEN recipient_operation:='tickets.write';END IF;
+ IF i->>'kind' NOT IN ('support.created','support.devolutiva','support.resolved') THEN
+  SELECT * INTO STRICT current_route FROM helpdesk_integration.hdn_notification_routes WHERE workspace_id=w AND kind=i->>'kind' ORDER BY revision DESC LIMIT 1 FOR SHARE;
+  IF current_route.audience='none' OR current_route.expires_at<=clock_timestamp() OR current_route.recipient_ids IS NULL OR NOT person=ANY(current_route.recipient_ids) OR current_route.effective_after IS NULL OR helpdesk_auth.hdn_notification_stamp(facts->'source'->>'createdAt')<current_route.effective_after THEN RAISE EXCEPTION 'Wave2 recipient route revoked' USING ERRCODE='HDN04';END IF;
+ END IF;
+ -- Candidate installation precedes the local registry. These fixed queries
+ -- become available after promotion; no identifier or actor comes from a caller.
+ -- Lock registry before scopes/ACL, matching the local operator's lock order.
+ IF to_regclass('helpdesk_auth.cg_local_registries') IS NOT NULL THEN
+  EXECUTE 'select to_jsonb(r) from helpdesk_auth.cg_local_registries r where workspace_id=$1 for share' INTO local_registry USING w;
+  EXECUTE 'select to_jsonb(a) from helpdesk_auth.cg_local_accounts a where workspace_id=$1 and account_id=$2 for share' INTO local_account USING w,a;
+ END IF;
+ PERFORM pg_advisory_xact_lock_shared(hashtextextended('helpdesk-human-scopes:'||w::text||':'||person::text,0));
+ SELECT * INTO p FROM helpdesk_auth.principals WHERE id=person FOR SHARE;IF NOT FOUND OR NOT p.active OR p.kind<>'human' THEN RAISE EXCEPTION 'Recipient human revoked' USING ERRCODE='HDN04';END IF;
+ IF NOT 'tickets:read'=ANY(helpdesk_auth.human_scopes(w,person)) OR internal_recipient AND NOT 'tickets:write'=ANY(helpdesk_auth.human_scopes(w,person)) THEN RAISE EXCEPTION 'Recipient scopes revoked' USING ERRCODE='HDN04';END IF;
+ PERFORM 1 FROM helpdesk_auth.account_grants WHERE workspace_id=w AND account_id=a AND principal_id=person AND active AND (role IN ('account_manager','agent') OR role='requester' AND t.created_by=person) FOR SHARE;allowed:=FOUND;
+ IF NOT allowed THEN PERFORM 1 FROM helpdesk_auth.workspace_memberships WHERE workspace_id=w AND principal_id=person AND active AND role='admin' FOR SHARE;allowed:=FOUND;END IF;IF NOT allowed THEN RAISE EXCEPTION 'Recipient ticket access revoked' USING ERRCODE='HDN04';END IF;
+ SELECT * INTO STRICT s FROM helpdesk_core.cg_ticket_resource_sets WHERE (workspace_id,account_id,ticket_id)=(w,a,target) AND sealed FOR SHARE;
+ SELECT * INTO b FROM helpdesk_auth.cg_resource_bindings WHERE (workspace_id,account_id,id)=(w,a,s.binding_id) FOR SHARE;IF NOT FOUND OR NOT b.active THEN RAISE EXCEPTION 'Recipient binding revoked' USING ERRCODE='HDN04';END IF;
+ SELECT * INTO c FROM helpdesk_auth.cg_resource_connections WHERE (workspace_id,id)=(w,b.connection_id) FOR SHARE;IF NOT FOUND OR NOT c.active OR c.product_instance_id<>t.product_instance_id THEN RAISE EXCEPTION 'Recipient connection revoked' USING ERRCODE='HDN04';END IF;
+ IF (SELECT count(*) FROM helpdesk_core.cg_ticket_resource_refs x WHERE (x.workspace_id,x.account_id,x.ticket_id)=(w,a,target))<>s.expected_count THEN RAISE EXCEPTION 'Recipient sealed resources unavailable' USING ERRCODE='HDN06';END IF;
+ IF local_account IS NOT NULL THEN
+  IF local_account->'active'='false'::jsonb THEN RAISE EXCEPTION 'Recipient local account revoked' USING ERRCODE='HDN04';END IF;
+  IF local_registry IS NULL OR local_account->'active' IS DISTINCT FROM 'true'::jsonb OR local_account->'registry_revision' IS DISTINCT FROM local_registry->'revision'
+  OR local_account->>'binding_id' IS DISTINCT FROM b.id::text OR local_account->>'connection_id' IS DISTINCT FROM c.id::text OR local_account->>'product_instance_id' IS DISTINCT FROM t.product_instance_id::text OR local_account->>'tenant_id' IS DISTINCT FROM b.tenant_id THEN RAISE EXCEPTION 'Recipient local account unavailable' USING ERRCODE='HDN06';END IF;
+  EXECUTE 'select to_jsonb(r) from helpdesk_audit.cg_local_receipts r where workspace_id=$1 and registry_revision=$2 for share' INTO local_receipt USING w,(local_registry->>'revision')::integer;
+  IF local_receipt IS NULL OR local_receipt->'decision_hash' IS DISTINCT FROM local_registry->'decision_hash' OR local_receipt->'receipt'->'decisionHash' IS DISTINCT FROM local_registry->'decision_hash' OR local_receipt->'receipt'->'revision' IS DISTINCT FROM local_registry->'revision'
+  OR local_receipt->'receipt'->>'workspaceId' IS DISTINCT FROM w::text OR local_receipt->'receipt'->'requestId' IS DISTINCT FROM local_receipt->'request_id' OR local_receipt->'receipt'->'commandHash' IS DISTINCT FROM local_receipt->'command_hash'
+  OR local_receipt->'receipt'->'sourceManifest' IS DISTINCT FROM '{"authority":"persisted-local-registry","complete":true,"externalApiQualified":false,"resourceType":"work","source":"helpdesk-local","version":1}'::jsonb
+  OR NOT coalesce(isfinite((local_registry->>'as_of')::timestamptz),false) OR (local_registry->>'as_of')::timestamptz>clock_timestamp() OR (local_receipt->'receipt'->>'asOf')::timestamptz IS DISTINCT FROM (local_registry->>'as_of')::timestamptz
+  THEN RAISE EXCEPTION 'Recipient local receipt unavailable' USING ERRCODE='HDN06';END IF;
+  EXECUTE 'select to_jsonb(p) from helpdesk_auth.cg_local_permissions p where workspace_id=$1 and account_id=$2 and principal_id=$3 and operation=$4 for share' INTO local_permission USING w,a,person,recipient_operation;
+  IF local_permission IS NOT NULL AND local_permission->'active'='false'::jsonb THEN RAISE EXCEPTION 'Recipient local permission revoked' USING ERRCODE='HDN04';END IF;
+  IF local_permission IS NULL OR local_permission->'active' IS DISTINCT FROM 'true'::jsonb OR local_permission->'registry_revision' IS DISTINCT FROM local_registry->'revision' OR jsonb_typeof(local_permission->'work_ids') IS DISTINCT FROM 'array' THEN RAISE EXCEPTION 'Recipient local permission unavailable' USING ERRCODE='HDN06';END IF;
+  FOR ref IN SELECT resource_type,resource_id FROM helpdesk_core.cg_ticket_resource_refs x WHERE (x.workspace_id,x.account_id,x.ticket_id)=(w,a,target) ORDER BY resource_type,resource_id FOR SHARE LOOP
+   IF ref.resource_type<>'work' OR NOT local_permission->'work_ids' @> jsonb_build_array(ref.resource_id) THEN RAISE EXCEPTION 'Recipient local work permission revoked' USING ERRCODE='HDN04';END IF;
+   EXECUTE 'select to_jsonb(x) from helpdesk_auth.cg_local_works x where workspace_id=$1 and account_id=$2 and id=$3 for share' INTO local_work USING w,a,ref.resource_id;
+   IF local_work IS NOT NULL AND local_work->'active'='false'::jsonb THEN RAISE EXCEPTION 'Recipient local work revoked' USING ERRCODE='HDN04';END IF;
+   IF local_work IS NULL OR local_work->'active' IS DISTINCT FROM 'true'::jsonb OR local_work->'registry_revision' IS DISTINCT FROM local_registry->'revision' THEN RAISE EXCEPTION 'Recipient local work unavailable' USING ERRCODE='HDN06';END IF;
+  END LOOP;
+  -- This is a new observation of the current immutable local decision, not an
+  -- extension of an old CG envelope. Save(sending) repeats all checks and locks.
+  until:=least(helpdesk_auth.hdn_notification_stamp(i->>'expiresAt'),clock_timestamp()+interval '30 seconds');revision:='local-'||(local_registry->>'revision');
+ ELSE
+  SELECT * INTO STRICT g FROM helpdesk_auth.cg_resource_grant_sets WHERE (workspace_id,account_id,binding_id,principal_id,operation)=(w,a,b.id,person,recipient_operation) FOR SHARE;IF NOT g.active THEN RAISE EXCEPTION 'Recipient resource grant revoked' USING ERRCODE='HDN04';END IF;
+  IF g.source_revision LIKE 'local:%' THEN RAISE EXCEPTION 'Recipient local source unavailable' USING ERRCODE='HDN06';END IF;
+  SELECT * INTO STRICT o FROM helpdesk_auth.cg_resource_observations WHERE (workspace_id,account_id,binding_id,principal_id,operation,grant_revision)=(w,a,b.id,person,recipient_operation,g.revision) FOR SHARE;
+  IF g.as_of>clock_timestamp() OR g.expires_at<=clock_timestamp() OR o.access_revision<>g.source_revision OR o.as_of<>g.as_of OR o.expires_at<>g.expires_at OR o.expected_count<>g.expected_count
+  THEN RAISE EXCEPTION 'Recipient observation unavailable' USING ERRCODE='HDN06';END IF;
+  IF (SELECT count(*) FROM helpdesk_auth.cg_resource_grant_refs x WHERE (x.workspace_id,x.account_id,x.binding_id,x.principal_id,x.operation)=(w,a,b.id,person,recipient_operation))<>g.expected_count THEN RAISE EXCEPTION 'Recipient grant coverage unavailable' USING ERRCODE='HDN06';END IF;
+  IF EXISTS(SELECT 1 FROM helpdesk_core.cg_ticket_resource_refs x WHERE (x.workspace_id,x.account_id,x.ticket_id)=(w,a,target) AND NOT EXISTS(SELECT 1 FROM helpdesk_auth.cg_resource_grant_refs y WHERE (y.workspace_id,y.account_id,y.binding_id,y.principal_id,y.operation,y.resource_type,y.resource_id)=(w,a,b.id,person,recipient_operation,x.resource_type,x.resource_id))) THEN RAISE EXCEPTION 'Recipient resources revoked' USING ERRCODE='HDN04';END IF;
+  until:=least(g.expires_at,helpdesk_auth.hdn_notification_stamp(i->>'expiresAt'),clock_timestamp()+interval '30 seconds');revision:='grant-'||g.revision::text;
+ END IF;
+ -- Dynamic query is fixed here solely so fresh test DBs can provision synthetic
+ -- auth.users independently. Identifier and recipient parameter are fixed.
+ EXECUTE 'select email,email_confirmed_at from auth.users where id=$1 and email_confirmed_at is not null and deleted_at is null and (banned_until is null or banned_until<=clock_timestamp()) for share' INTO address,verified_at USING p.supabase_user_id;
+ IF address IS NULL OR verified_at>clock_timestamp() OR length(address)>254 OR address !~ '^[A-Za-z0-9.!#$%&''*+/=?^_`{|}~-]+@[A-Za-z0-9][A-Za-z0-9.-]*\.[A-Za-z]{2,63}$' THEN RAISE EXCEPTION 'Verified recipient contact required' USING ERRCODE='HDN06';END IF;
+ RETURN jsonb_build_object('intentId',i->'id','workspaceId',i->'workspaceId','accountId',i->'accountId','recipientId',i->'recipientId','channelId','resend','resourceHash',i->'resourceHash','revision',revision,'decision','allowed','address',address,'expiresAt',helpdesk_auth.hdn_workflow_iso(until));
+EXCEPTION WHEN no_data_found OR data_exception THEN RAISE EXCEPTION 'Recipient unavailable' USING ERRCODE='HDN06';END$$;
