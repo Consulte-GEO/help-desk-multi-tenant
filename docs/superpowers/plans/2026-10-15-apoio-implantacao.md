@@ -26,9 +26,9 @@
 - [x] Integrar sidebar/lifecycle em `web/app.js`/`index.html` e facade `implementation-support.js`; testes negativos de sessão/async.
 - [x] Compilar `modules/implantacao/frontend` como biblioteca `support-app.js`; adaptar UI/serviços e escopar controllers sem iframe/eval.
 - [x] Preservar os fluxos de preparação e ligar pré-análise à conversão real; testar modelos/exportações/localparse e cancelamento. Documentar limites de originais/e-mail/Novo GEO.
-- [ ] Implementar addon SQL privado, repositório/HTTP/runtime com gate humano e isOperator; testar CAS, replay, autorização e PG17 com core real.
+- [x] Implementar addon SQL privado, repositório/HTTP/runtime com gate humano e isOperator; testar CAS, replay, autorização e PG17 com core real.
 - [x] Adaptar IA para SDK oficial/Netlify, modelos verificados e contratos antigos validados; testes sem custo com SDK injetado.
 - [x] Incluir biblioteca/assets explicitamente em build/demo, locks/CI e fingerprint; ampliar CSP só onde recursos exigem.
-- [ ] Rodar tipos, contratos, motores/frontend, segurança, build e CI integral/PG/browser. Corrigir achados de revisão independente.
+- [x] Rodar tipos, contratos, motores/frontend, segurança, build e CI integral/PG/browser. Corrigir achados de revisão independente.
 - [ ] Commit/merge/publicar código compatível, aplicar somente addon qualificado e conferir produção sem dados fictícios ou inferência paga.
 - [ ] Registrar evidências, paridade, pendências reais e preservação do site/histórico Setup.
