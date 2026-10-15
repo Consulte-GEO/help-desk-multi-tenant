@@ -5,7 +5,13 @@ export async function assertWave2InternalRelations(pool:SqlClient){
  return assertPrivateRelations(pool,['helpdesk_integration.hdn_notification_private_sources','helpdesk_integration.hdn_notification_queue_rosters']);
 }
 export async function assertWave2ReviewRelations(pool:SqlClient){
- return assertPrivateRelations(pool,['helpdesk_core.hdnr_policies','helpdesk_core.hdnr_profiles','helpdesk_auth.hdnr_grants','helpdesk_auth.hdnr_rosters','helpdesk_audit.hdnr_openings']);
+ await assertPrivateRelations(pool,['helpdesk_core.hdnr_policies','helpdesk_core.hdnr_profiles','helpdesk_auth.hdnr_grants','helpdesk_auth.hdnr_rosters','helpdesk_audit.hdnr_openings','helpdesk_core.hdnr_forms','helpdesk_core.hdnr_invitations','helpdesk_audit.hdnr_receipts','helpdesk_integration.hdnr_sources','helpdesk_audit.hdnr_challenges']);
+ for(const signature of ['hdnr_scope_hash(jsonb)','hdnr_target_hash(jsonb)','hdnr_operator(uuid,uuid,uuid,uuid)','hdnr_context(uuid)','hdnr_invitation_guard()','hdnr_receipt_complete()'])for(const role of ['helpdesk_app','helpdesk_notification_worker'])
+  assert.equal((await pool.query("select has_function_privilege($1,$2,'EXECUTE') as allowed",[role,'helpdesk_auth.'+signature])).rows[0]?.allowed,false);
+ for(const signature of ['hdnr_aggregate(uuid)','hdnr_grant(uuid,text,jsonb)','hdnr_route(uuid,jsonb)','hdnr_invitation_receipt(text)','hdnr_pending_invitation(uuid)','hdnr_invitation(uuid)','hdnr_commit_invitation(jsonb,jsonb)']){
+  assert.equal((await pool.query("select has_function_privilege('helpdesk_app',$1,'EXECUTE') as allowed",['helpdesk_auth.'+signature])).rows[0]?.allowed,true);
+  assert.equal((await pool.query("select has_function_privilege('helpdesk_notification_worker',$1,'EXECUTE') as allowed",['helpdesk_auth.'+signature])).rows[0]?.allowed,false);
+ }
 }
 async function assertPrivateRelations(pool:SqlClient,names:readonly string[]){
   assert.equal((await pool.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');

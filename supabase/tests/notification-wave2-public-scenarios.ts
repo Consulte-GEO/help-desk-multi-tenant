@@ -24,6 +24,8 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
    await c.query(await readFile(new URL('../candidates/hdn_review_authority.sql',import.meta.url),'utf8'));
    await c.query(await readFile(new URL('../candidates/hdn_review_opening_guard.sql',import.meta.url),'utf8'));
    await c.query(await readFile(new URL('../candidates/hdn_review_intake.sql',import.meta.url),'utf8'));
+   await c.query(await readFile(new URL('../candidates/hdn_review_store.sql',import.meta.url),'utf8'));
+   await c.query(await readFile(new URL('../candidates/hdn_review_invitation.sql',import.meta.url),'utf8'));
    const now=new Date().toISOString(),until=new Date(Date.now()+86400000).toISOString();
    for(const kind of ['support.transition','support.reply','support.handoff','support.closed','support.reopened','support.cancelled','internal.queue_created','internal.assignment_changed']){
     await suite.test(kind,async()=>{
