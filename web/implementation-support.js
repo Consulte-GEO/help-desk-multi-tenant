@@ -21,7 +21,10 @@ export function mountImplementationSupport(root,options){
   const request=async(path,init={})=>{
    if(!current())throw Error('stale_session');
    const signal=init.signal?AbortSignal.any([init.signal,controller.signal]):controller.signal;
-   try{const response=await options.request(path,{...init,signal});if(!current())throw Error('stale_session');return response;}
+   // The native library supplies /v1/implementation-support/... URLs; the
+   // authenticated Help Desk session transport already owns the /v1 prefix.
+   const sessionPath=typeof path==='string'&&(path==='/v1/implementation-support'||path.startsWith('/v1/implementation-support/'))?path.slice(3):path;
+   try{const response=await options.request(sessionPath,{...init,signal});if(!current())throw Error('stale_session');return response;}
    catch(error){if(!current())throw Error('stale_session');throw error;}
   };
   const status=node('p','Carregando Apoio Implantação…','fine');status.setAttribute('role','status');status.setAttribute('aria-live','polite');root.append(status);
