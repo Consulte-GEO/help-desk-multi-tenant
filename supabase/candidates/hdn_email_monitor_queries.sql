@@ -62,8 +62,8 @@ BEGIN
  OR NOT coalesce(helpdesk_auth.is_human(),false)
  OR NOT coalesce(helpdesk_auth.has_scope(w,'tickets:read'),false)
  OR NOT EXISTS(SELECT 1 FROM helpdesk_auth.principals p WHERE p.id=who AND p.active AND p.kind='human')
- OR NOT (EXISTS(SELECT 1 FROM helpdesk_auth.workspace_memberships m WHERE m.workspace_id=w AND m.principal_id=who AND m.active)
- OR EXISTS(SELECT 1 FROM helpdesk_auth.account_grants g WHERE g.workspace_id=w AND g.principal_id=who AND g.active))
+ OR NOT (EXISTS(SELECT 1 FROM helpdesk_auth.workspace_memberships m WHERE m.workspace_id=w AND m.principal_id=who AND m.active AND m.role IN ('admin','agent'))
+ OR EXISTS(SELECT 1 FROM helpdesk_auth.account_grants g WHERE g.workspace_id=w AND g.principal_id=who AND g.active AND g.role='agent'))
  THEN RAISE EXCEPTION 'Email monitoring denied' USING ERRCODE='42501';END IF;
  SELECT EXISTS(SELECT 1 FROM helpdesk_auth.workspace_memberships m WHERE m.workspace_id=w AND m.principal_id=who AND m.active AND m.role='admin') INTO full_address;
  IF jsonb_typeof(request) IS DISTINCT FROM 'object' OR request-'mode'-'filter'-'eventId'-'intentId'-'after'-'asOf'<>'{}'::jsonb
@@ -103,6 +103,8 @@ BEGIN
  PERFORM 1 FROM helpdesk_auth.account_grants g WHERE g.workspace_id=w AND g.principal_id=who FOR SHARE;
  IF NOT coalesce(helpdesk_auth.is_human(),false) OR NOT coalesce(helpdesk_auth.has_scope(w,'tickets:read'),false)
  OR NOT EXISTS(SELECT 1 FROM helpdesk_auth.principals p WHERE p.id=who AND p.active AND p.kind='human')
+ OR NOT (EXISTS(SELECT 1 FROM helpdesk_auth.workspace_memberships m WHERE m.workspace_id=w AND m.principal_id=who AND m.active AND m.role IN ('admin','agent'))
+ OR EXISTS(SELECT 1 FROM helpdesk_auth.account_grants g WHERE g.workspace_id=w AND g.principal_id=who AND g.active AND g.role='agent'))
  THEN RAISE EXCEPTION 'Email monitoring denied' USING ERRCODE='42501';END IF;
  SELECT EXISTS(SELECT 1 FROM helpdesk_auth.workspace_memberships m WHERE m.workspace_id=w AND m.principal_id=who AND m.active AND m.role='admin') INTO full_address;
  IF recipient_filter IS NOT NULL AND NOT full_address THEN RAISE EXCEPTION 'Invalid email monitor filter' USING ERRCODE='22023';END IF;

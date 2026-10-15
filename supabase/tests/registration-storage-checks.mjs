@@ -2,7 +2,7 @@
  * never origin qualification, hosted identity publication or an AI analysis. */
 import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import {captureM05SecurityInventory} from './m05-security-inventory.ts';
-import {REGISTRATION_SECURITY_CONTRACT} from '../../src/infrastructure/registration-security-contract.ts';
+import {EMAIL_MONITOR_SECURITY_CONTRACT as CURRENT_SECURITY_CONTRACT} from '../../src/infrastructure/email-monitor-security-contract.ts';
 import {assertDatabaseSecurity} from '../../src/infrastructure/database-security.ts';
 import {createRegistrationAnalysisWorker} from '../../src/application/registration-analysis-worker.ts';
 import {createManualRegistrationEngine} from '../../src/infrastructure/registration-runtime.ts';
@@ -15,14 +15,14 @@ import {createRegistrationInputSnapshot} from '../../src/domain/registration-con
 import {input,id} from '../../tests/fixtures/registration/sample.ts';
 import {writeFile} from 'node:fs/promises';
 export async function runRegistrationStorageChecks({owner,app,worker,test}){
- await test('official0.26 exact full catalogue and dedicated worker effective ACLs qualify',async()=>{
-  await assertDatabaseSecurity(app,'0.26.0');
-  const inventory=await captureM05SecurityInventory(owner,{directory:'evidence/hda-ci/production-promotion',schemaVersion:'0.26.0',notificationWorker:true});
+ await test('current exact full catalogue and dedicated worker effective ACLs qualify',async()=>{
+  await assertDatabaseSecurity(app,CURRENT_SECURITY_CONTRACT.schemaVersion);
+  const inventory=await captureM05SecurityInventory(owner,{directory:'evidence/hda-ci/production-promotion',schemaVersion:CURRENT_SECURITY_CONTRACT.schemaVersion,notificationWorker:true});
   const actual=(await owner.query("select n.nspname||'.'||p.proname||'('||oidvectortypes(p.proargtypes)||')' as signature from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=any($1) and has_function_privilege('helpdesk_registration_worker',p.oid,'EXECUTE') order by signature",[inventory.schemas])).rows;
   inventory.roles.push({name:'helpdesk_registration_worker',schemas:['helpdesk_auth'],functions:actual.map(row=>row.signature)});
   await writeFile('evidence/hda-ci/production-promotion/security-inventory.json',JSON.stringify(inventory,null,2)+'\n');
   const normalized=rows=>[...rows].sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
-  for(const key of ['tables','functions','triggers','constraints','policies','roles'])assert.deepEqual(normalized(inventory[key]),normalized(REGISTRATION_SECURITY_CONTRACT[key]),key);
+  for(const key of ['tables','functions','triggers','constraints','policies','roles'])assert.deepEqual(normalized(inventory[key]),normalized(CURRENT_SECURITY_CONTRACT[key]),key);
   assert.equal((await worker.query('select helpdesk_auth.hda02_storage_version() version')).rows[0].version,'1.0.0');
  });
  await test('empty authorized queue is idle and app cannot enumerate worker targets',async()=>{

@@ -8,6 +8,6 @@ export const EMAIL_MONITOR_COMPONENTS=[
   },
   {
     "file": "hdn_email_monitor_queries.sql",
-    "sha256": "ff529122f9eb2e0db7f4345dc44e87b5d4f4aafe14294b8537601bcfe9615143"
+    "sha256": "e640ffc54a2c51ef7d99a5750a63e853fca086a4299ac8e34adfb52f78b1fc1f"
   }
 ] as const;
