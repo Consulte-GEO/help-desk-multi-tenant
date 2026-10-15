@@ -1,3 +1,4 @@
+import {readVersionReceiptHeader} from './version-receipt.js';
 import {observeResponseDiagnostic} from './response-diagnostic.js';
 import {readEvidencePage} from '../shared/checklist-evidence.js';
 import {copyFormData,freezeFormData} from '../shared/form-rules.js';
@@ -39,7 +40,7 @@ async function attempt(request,path,init,controller,timeoutMs,diagnostic){let ca
   }
   const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}
   category='response_json';const data=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));check();
-  return {data,status:response.status,etag:response.headers.get('etag')};
+  category='response_version';return {data,status:response.status,etag:readVersionReceiptHeader(response)};
  }catch(error){observeResponseDiagnostic(diagnostic,category);throw error;}finally{
   clearTimeout(timer);controller.signal.removeEventListener('abort',abortListener);
   if(!complete){if(reader)try{void reader.cancel().catch(()=>{});}catch{/* no response details */}else discard(response);}
