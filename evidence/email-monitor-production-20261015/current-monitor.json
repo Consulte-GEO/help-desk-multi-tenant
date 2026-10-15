@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-15T19:38:43.074Z",
+  "commit": "cc380bfdd985065630cdbe697742ee05e3cb5bd5",
+  "deployId": "6ad12af460716e72a66bf761",
+  "assets": [
+    {
+      "path": "email-monitor.js",
+      "sha256": "12b50d37c3ec674e074a9cf863510f87b2e4ba1b4d8dfd4ae706a0f531eb7540"
+    },
+    {
+      "path": "email-monitor.css",
+      "sha256": "595323008d7f1c0eaf00a63387b6d125894a83d5e312a4f4a7ecb2bd9d6ef1c1"
+    }
+  ],
+  "checks": [
+    {
+      "path": "/v1/email-communications",
+      "status": 401
+    },
+    {
+      "path": "/v1/email-communications/00000000-0000-4000-8000-000000000001",
+      "status": 401
+    }
+  ],
+  "emailMonitoring": true,
+  "operational": true,
+  "scope": "Focused email monitor verification after concurrent PR55 publication; full91-asset/13-check receipt belongs to178dfb5."
+}
