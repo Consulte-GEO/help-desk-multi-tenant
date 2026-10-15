@@ -9,9 +9,10 @@ import {createPostgresConsulteGeoIntakeStore,createPostgresConsulteGeoDraftDirec
 import {createConsulteGeoRequestCatalog} from '../../src/application/consultegeo-request-catalog.ts';
 import {createFormDraftService} from '../../src/application/form-draft.ts';import {createSupportIntake} from '../../src/application/support-intake.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
+import {assertOwnedPendingOpeningFaults} from './notification-wave2-opening-faults.ts';
 export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator:SqlPool,app:SqlPool,input:{agent:Principal;customer:Principal;staffAuth:string;workId:string;oldTicketId:string;formId:string}){
  const {agent,customer,staffAuth,workId,oldTicketId,formId}=input,w=agent.workspaceId,a=customer.grants[0]!.accountId;
- await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async()=>{
+ await suite.test('a new published form and immutable policy create a genuine pending-approval ticket without altering earlier tickets',async openingSuite=>{
   assert.equal((await operator.query('select current_database() as db')).rows[0]?.db,'helpdesk_test');
   const configurationSponsor=randomUUID();
   await operator.query("insert into helpdesk_auth.principals(id,kind,supabase_user_id) values($1,'human',$2)",[configurationSponsor,randomUUID()]);
@@ -50,5 +51,6 @@ export async function assertOwnedWave2ApprovalOpening(suite:TestContext,operator
   assert.doesNotMatch(JSON.stringify(facts),/Owned pending approval details|Approval must precede work|body|answers/);
   const old=(await operator.query("select document->'profile'->'approvalRequired' as required,document->'bundle'->'workflow'->>'approval' as approval from helpdesk_core.hdni_snapshots where workspace_id=$1 and ticket_id=$2",[w,oldTicketId])).rows[0]!;
   assert.deepEqual(old,{required:false,approval:'not_required'});
+  await assertOwnedPendingOpeningFaults(openingSuite,operator,{customer,accountId:a,refs,formId,drafts:createFormDraftService(options),intake});
  });
 }
