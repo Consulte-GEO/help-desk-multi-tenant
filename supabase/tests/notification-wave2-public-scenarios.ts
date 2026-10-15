@@ -3,7 +3,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {captureM05SecurityInventory} from './m05-security-inventory.ts';
-import {assertWave2InternalRelations} from './notification-wave2-internal-scenarios.ts';
+import {assertWave2InternalRelations,assertWave2ReviewRelations} from './notification-wave2-internal-scenarios.ts';
 import {createNotificationIntent} from '../../src/domain/notification-delivery.ts';
 import {requestHash} from '../../src/domain/canonical.ts';
 import type {SqlPool} from '../../src/infrastructure/sql.ts';
@@ -30,6 +30,7 @@ export function registerWave2PublicSqlTests(operatorPool:()=>SqlPool){
     });
    }
    await suite.test('private internal sources and queue authority are isolated',()=>assertWave2InternalRelations(c));
+   await suite.test('approval policies profiles capabilities and approver history are private',()=>assertWave2ReviewRelations(c));
    await captureM05SecurityInventory({query:c.query.bind(c)} as SqlPool,{directory:'evidence/email-wave2/public-candidate',schemaVersion:'0.25.0',notificationWorker:true});
    assert.equal((await c.query('select helpdesk_auth.schema_version() as version')).rows[0]?.version,'0.24.0','Candidate test does not promote the schema');
   }finally{await c.query('ROLLBACK');c.release();}
