@@ -1,3 +1,20 @@
+-- Exact intent shape from the immutable v024 validator; only the admitted kinds extend.
+CREATE OR REPLACE FUNCTION helpdesk_auth.hdn_notification_valid_intent(i jsonb) RETURNS boolean LANGUAGE plpgsql IMMUTABLE SET search_path='' AS $$
+DECLARE k text;BEGIN
+ IF NOT coalesce(helpdesk_auth.hdn_cfg_object(i,ARRAY['id','workspaceId','accountId','ticketId','eventId','recipientId','channelId','templateId','templateVersion','templateHash','kind','sourceVersion','resourceHash','protocol','invitationId','createdAt','expiresAt','idempotencyKey']),false) THEN RETURN false;END IF;
+ FOREACH k IN ARRAY ARRAY['id','workspaceId','accountId','ticketId','eventId','recipientId'] LOOP IF jsonb_typeof(i->k) IS DISTINCT FROM 'string' OR i->>k !~ '^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$' THEN RETURN false;END IF;END LOOP;
+ FOREACH k IN ARRAY ARRAY['channelId','templateId','templateHash','kind','resourceHash','protocol','createdAt','expiresAt','idempotencyKey'] LOOP IF jsonb_typeof(i->k) IS DISTINCT FROM 'string' THEN RETURN false;END IF;END LOOP;
+ IF jsonb_typeof(i->'templateVersion') IS DISTINCT FROM 'number' OR jsonb_typeof(i->'sourceVersion') IS DISTINCT FROM 'number' THEN RETURN false;END IF;
+ IF i->>'channelId'<>'resend' OR i->>'templateId' !~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$'
+ OR i->>'kind' NOT IN ('support.created','support.devolutiva','support.customer_reply','support.form_revised','support.resolved','support.approval_requested','support.approval_granted','support.approval_rejected','support.transition','support.reply','support.handoff','support.closed','support.reopened','support.cancelled','internal.queue_created','internal.assignment_changed')
+ OR i->>'protocol' !~ '^CG-[1-9][0-9]{4,17}$' OR i->>'templateHash' !~ '^[a-f0-9]{64}$' OR i->>'resourceHash' !~ '^[a-f0-9]{64}$'
+ OR i->>'templateVersion' !~ '^[1-9][0-9]{0,15}$' OR (i->>'templateVersion')::numeric>9007199254740991 OR i->>'sourceVersion' !~ '^[1-9][0-9]{0,15}$' OR (i->>'sourceVersion')::numeric>9007199254740991
+ OR (i->>'kind'='support.approval_requested')<>(i->'invitationId'<>'null'::jsonb)
+ OR i->'invitationId'<>'null'::jsonb AND i->>'invitationId' !~ '^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$'
+ OR helpdesk_auth.hdn_notification_stamp(i->>'expiresAt')<=helpdesk_auth.hdn_notification_stamp(i->>'createdAt') THEN RETURN false;END IF;
+ RETURN coalesce(i->>'idempotencyKey'=helpdesk_auth.hdni_digest(jsonb_build_array('helpdesk-notification-v1',i->'workspaceId',i->'eventId',i->'recipientId',i->'channelId',i->'templateId',i->'templateVersion')),false);
+EXCEPTION WHEN OTHERS THEN RETURN false;END$$;
+
 -- Wave2 public semantics. Compose only inside the reviewed additive upgrade.
 -- Existing source qualification remains intact; no historical plan is rewritten.
 ALTER FUNCTION helpdesk_auth.hdn_notification_facts(uuid) RENAME TO hdn_notification_facts_v024;

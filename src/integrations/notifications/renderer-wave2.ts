@@ -2,6 +2,9 @@ import {wave2Presentation} from './wave2-templates.ts';
 const esc=(v:string)=>v.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 type Tone={ev:string;mid:string;solid:string;light:string;bd:string};
 const palette:Record<string,Tone>={
+ magenta:{ev:'#C5117E',mid:'#3E2D71',solid:'#A81069',light:'#FBE7F2',bd:'#EBB3D3'},
+ green:{ev:'#127A4B',mid:'#1B5470',solid:'#0F6238',light:'#E3F3EA',bd:'#A9D8BE'},
+ red:{ev:'#C1121F',mid:'#7A1246',solid:'#A0101C',light:'#FDEBEE',bd:'#E9A3AC'},
  blue:{ev:'#1F5FA8',mid:'#2A3F86',solid:'#1B4F8C',light:'#E6EEF9',bd:'#B7CBEA'},
  purple:{ev:'#6B3FA0',mid:'#42307A',solid:'#533188',light:'#F1ECF8',bd:'#CDBDE6'},
  neutral:{ev:'#4A5068',mid:'#2E3A66',solid:'#3D4359',light:'#EEEFF3',bd:'#CFD2DC'},
@@ -13,7 +16,7 @@ const gradient=(t:Tone)=>`linear-gradient(100deg,${t.ev} 0%,${t.mid} 55%,#182863
  * immutable tuple, source hash, plain text and HTTPS portal origin. */
 export function renderWave2Email(v:{kind:string;subject:string;protocol:string;title:string;introduction:string;notice:string;actionLabel:string;href:string}){
  const presentation=wave2Presentation(v.kind); const id=presentation.id;
- const t={id,subject:'{{protocol}}',level:'A',internal:presentation.internal,name:'',notice:v.notice+' Responda pelo portal do Help Desk.',actionLabel:v.actionLabel};
+ const t={id,subject:'{{protocol}}',level:'A',internal:presentation.internal,name:'',notice:presentation.internal?'Mensagem destinada à equipe autorizada. Consulte os detalhes no portal e não encaminhe este aviso a clientes.':v.notice+' Responda pelo portal do Help Desk.',actionLabel:v.actionLabel};
  const d={subject:v.subject,intro:v.introduction,title:v.title,url:v.href,code:'',preference:'',sample:false};
  const color=toneFor(presentation.tone), hasProtocol=t.subject.includes('{{protocol}}'), protocol=v.protocol;
  const group=t.level==='D'?'Conta e segurança':t.internal?'Equipe de atendimento':['14','15','16','17'].includes(t.id)?'Comunicados da plataforma':'Help Desk · Atendimento';
