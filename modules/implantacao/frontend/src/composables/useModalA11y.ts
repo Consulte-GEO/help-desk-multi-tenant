@@ -125,8 +125,8 @@ export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
       return;
     }
 
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
+    const first = focusables[0]!;
+    const last = focusables[focusables.length - 1]!;
     const activeEl = document.activeElement as HTMLElement | null;
 
     if (e.shiftKey) {
@@ -167,7 +167,7 @@ export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
         if (container.contains(document.activeElement)) return;
         const focusables = focusableElements();
         if (focusables.length > 0) {
-          focusables[0].focus();
+          focusables[0]!.focus();
         }
       }, options.initialFocusDelay ?? 0);
     }, 0);
