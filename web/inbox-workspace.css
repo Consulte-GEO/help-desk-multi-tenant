@@ -41,3 +41,5 @@
 }
 
 @media(max-width:760px){.hd-ui .hd-inbox-enhanced[data-inbox-pane="detail"] #summary-feedback{display:none;}}
+
+.hd-ui .ticket-views{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.hd-ui .ticket-views button{white-space:normal;max-width:100%;min-height:44px}.hd-ui .ticket-views button[aria-pressed="true"]{background:var(--hd-selected);color:var(--hd-brand-fg);border-color:var(--hd-brand-fg)}.hd-ui .ticket-views button[aria-disabled="true"]{opacity:.6;cursor:wait}
