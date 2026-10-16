@@ -1,3 +1,11 @@
+# Publicação posterior — PR64
+
+PR64 mesclado por autorização do titular em16/10/2026 às17:11:57Z, commit `e553462beaa1359062ca07a868d6f904284d5d4d`. Deploy produtivo `6ad25adf39ead2eb59373ac1`, READY/publicado às17:13:06.063Z (14h13 Brasília), no site HelpDesk existente. Supabase HelpDesk ACTIVE_HEALTHY; nenhuma migration, alteração de credencial ou escrita de negócio.
+
+119 entradas do manifesto conferidas por HTTPS/hash, controles privados preservados. `/v1/capabilities` e `/v1/public-config`200 conformantes; `/v1/me`, `/v1/tickets` e `/v1/tickets/summary`401 conformantes, com `title`, `request_id` e correlação entre corpo/header. Cabeçalhos no-store/nosniff/no-referrer conferidos. Achados anônimos pré-publicação ficam preservados como históricos. Novos recibos: `evidence/http-contract-20261016/production/publication.json` e `response-contract.json`, fingerprint qualificado356f00f3. Esta prova é pública/sem autenticação; não amplia nem substitui o aceite humano autenticado.
+
+Os registros abaixo descrevem a preparação anterior à publicação. Continuidade do HD-019 em [Resumo do atendimento](ORIENTACAO-ATENDIMENTO-2026-10-16.md).
+
 # HD-002 — Conformidade das respostas de leitura
 
 Continuidade autorizada após o PR63, base `d3322af608e64bd7402aeb01b492f8a19f25c3b2`. O recorte verifica respostas reais dos handlers contra o OpenAPI existente. Não fecha todos os contratos do produto nem modifica regras de atendimento.
