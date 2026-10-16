@@ -45,6 +45,8 @@ import {createTimelineState,eventPresentation} from './timeline-state.js';
 const timeline=createTimelineState();
 import {createTicketListState} from './ticket-list-state.js';
 const inbox=createTicketListState();
+import {mountTicketViews,applyTicketView} from './ticket-views.js';
+const ticketViews=mountTicketViews(document,id=>run(()=>selectTicketView(id)));
 import {createTicketSummaryState} from './ticket-summary-state.js';
 const ticketSummary=createTicketSummaryState();
 let summaryAbort=null;
@@ -164,11 +166,22 @@ function render(){
  $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+(totalsEnabled?'. Cartões referem-se à consulta autorizada completa.':'. Contagens referem-se somente aos itens carregados.');
  $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
  renderServiceAvailability();
+ ticketViews.update(s.me,inbox.filters(),inbox.busy(),serviceAvailable());
  inboxUX?.setFilters(inbox.filters(),inbox.busy());inboxUX?.setAvailability(!!s.me,serviceAvailable());
 }
-function applyFilters(){
+function collectTicketFilters(){
  const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value,assignment=$('assignment-filter').value;
- if(q)filters.q=q;if(status)filters.status=status;if(priority)filters.priority=priority;if(assignment)filters.assignment=assignment;
+ if(q)filters.q=q;if(status)filters.status=status;if(priority)filters.priority=priority;if(assignment)filters.assignment=assignment;return filters;
+}
+function selectTicketView(id){
+ if(inbox.busy()||!s.me||!serviceAvailable())return;
+ const next=applyTicketView(collectTicketFilters(),id,s.me);
+ $('status-filter').value=next.status??'';$('assignment-filter').value=next.assignment??'';
+ $('ticket-filters').dispatchEvent(new Event('change',{bubbles:true}));
+ $('ticket-filters').requestSubmit();
+}
+function applyFilters(){
+ const filters=collectTicketFilters();
  inbox.reset(filters);return list(false);
 }
 $('ticket-filters').onsubmit=e=>{e.preventDefault();run(applyFilters);};
