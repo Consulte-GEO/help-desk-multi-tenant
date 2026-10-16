@@ -51,3 +51,7 @@ Typecheck, contratos45 operações,21 migrations, upgrade CG, segredos heurísti
 A agregação também intersecta a autoridade atual do PostgreSQL com o principal congelado da aplicação, reproduzindo os filtros adicionais de leitura/operador/produto da lista. O teste SQL real inclui principal deliberadamente reduzido, namespace/workspace alheio, protocolo, paginação e desativação de obra; execução pendente do CI.
 
 HD019/026 continuam parcialmente abertos: esta etapa entrega apenas totais da fila; cockpit, visões salvas, portal, relatórios, exportações e indicadores de SLA não são declarados concluídos.
+
+## Revisão independente
+
+Revisão da fonte3871d34 contra2c201d0, sem achados Critical/Important. Conferidos RLS/namespace, interseção do principal, filtros/estados, validação, gates, grafo de assets e respostas antigas. O único achado menor foi405 versus503 para método não permitido na rota montada. Corrigido com teste observado vermelho (503 recebido) e verde (405/Allow GET, sem SQL);32 testes focais aprovados após o ajuste. Nenhum achado conhecido adiado. A íntegra PostgreSQL/interface continua sendo qualificação do CI, não desta revisão.

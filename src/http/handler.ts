@@ -76,7 +76,7 @@ async function route(req:Request,requestId:string,d:HttpDependencies):Promise<Re
  }
  if(path==='/v1/tickets/summary'){
   if(!d.ticketTotals)throw new HelpdeskError(503,'feature_not_configured','Resumo de chamados indisponível.');
-  if(method!=='GET')throw new HelpdeskError(405,'method_not_allowed','Use GET para consultar os totais.');
+  if(method!=='GET'){const response=problemResponse(new HelpdeskError(405,'method_not_allowed','Use GET para consultar os totais.'),requestId);response.headers.set('allow','GET');return response;}
   if([...url.searchParams.keys()].some(k=>!['account_id','q','status','priority','assignment'].includes(k)||url.searchParams.getAll(k).length!==1))throw new HelpdeskError(400,'unknown_parameter','Parâmetro de consulta não permitido.');
   await requireEmptyBody(req);
   return jsonResponse(await d.service.summarize(p,{...(url.searchParams.has('account_id')?{accountId:identifier(url.searchParams.get('account_id'))}:{}),...Object.fromEntries(['q','status','priority','assignment'].filter(k=>url.searchParams.has(k)).map(k=>[k,url.searchParams.get(k)!]))}));

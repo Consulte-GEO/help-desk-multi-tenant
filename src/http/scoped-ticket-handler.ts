@@ -140,6 +140,9 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
    await d.rateLimiter.beforeAuthentication(req,context);admission();
    const url=new URL(req.url),path=url.pathname.replace(/\/$/,'');
    if(path==='/v1/tickets'||path==='/v1/tickets/summary'){
+    if(path==='/v1/tickets/summary'&&d.collection===true&&req.method!=='GET'){
+     const response=problem(fail(405,'method_not_allowed','Use GET para consultar os totais.'),requestId);response.headers.set('allow','GET');return response;
+    }
     if(req.method!=='GET'||d.collection!==true)throw fail(503,'scoped_collection_not_ready','Coleção ou abertura genérica indisponível.');
     const p=await authenticated(d,req);await d.rateLimiter.afterAuthentication(p);admission();
     if(p.kind!=='human'||!p.scopes.includes('tickets:read'))throw fail(403,'forbidden','Operação não autorizada.');

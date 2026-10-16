@@ -32,6 +32,10 @@ test('summary is an authenticated local collection route, never a caller-supplie
  for(const query of ['/summary?limit=1','/summary?cursor=anything','/summary?q=ab&q=cd','/summary?refs=forged']){const denied=fixture();assert.equal((await denied.handler(request(query))).status,400);assert.equal(denied.calls.length,0);}
  const off=fixture();off.state.ready=false;assert.equal((await off.handler(request('/summary'))).status,503);assert.equal(off.calls.length,0);
 });
+
+test('mounted summary rejects unsupported method with405 instead of suggesting a retryable outage',async()=>{
+ const f=fixture(),r=await f.handler(request('/summary','POST'));assert.equal(r.status,405);assert.equal(r.headers.get('allow'),'GET');assert.equal(f.calls.length,0);
+});
 test('qualified collection prepares native access on same borrowed transaction before the filtered SQL page',async()=>{
  const f=fixture(),r=await f.handler(request('?limit=1&q=encanto&status=received&priority=normal'));assert.equal(r.status,200);assert.deepEqual(await r.json(),{items:[],next_cursor:null});
  const prepare=f.calls.findIndex(x=>x.sql.includes('cg_local_prepare_ticket_collection')),list=f.calls.findIndex(x=>x.sql.includes('from helpdesk_core.tickets'));
