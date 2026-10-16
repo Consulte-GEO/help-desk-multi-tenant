@@ -22,7 +22,7 @@ Execução direta, conforme continuidade autorizada; revisão independente final
 - [x] Implementar `search_in?:string` nas opções/filtros em `ticket-search.ts`; `matchesTicketSearch` seleciona apenas assunto ou descrição. Adaptadores memória e PostgreSQL reutilizam o filtro; SQL troca somente coluna constante escolhida pelo servidor, mantendo parâmetros, RLS e namespaces atuais. HTTP aceita o seletor em lista e resumo. OpenAPI descreve os dois contratos, sem mudar DTO.
 - [x] UI: estado da lista/d.ts, resumo por reuso, consultas rápidas, comparação de rascunho, coleta/aplicados e HTML. Testar lista/resumo usando exatamente o mesmo modo, validação, respostas atrasadas, limpar/logout, consultas rápidas e390px em Chromium. Registrar no gate UI.
 - [x] PostgreSQL17 descartável sob login restrito: descrição exclusiva e literals, totais/lista, scopes/revogação e obras CG atuais. Não escrever em produção para essa prova.
-- [ ] Qualificar fonte no CI integral Linux Node22/PG17/interface; verificar tipos, contratos, build, lock e segredos. Revisão independente sem bloqueadores, PR/preview, recibos originais por fonte e atualização do estado canônico. Próximo PR fica para revisão, sem merge autorizado antecipadamente.
+- [x] Qualificar fonte no CI integral Linux Node22/PG17/interface; verificar tipos, contratos, build, lock e segredos. Revisão independente sem bloqueadores, PR/preview, recibos originais por fonte e atualização do estado canônico. Próximo PR fica para revisão, sem merge autorizado antecipadamente.
 
 ## Foco da revisão
 
@@ -49,3 +49,9 @@ CI integral da fonte: [38972924694](https://github.com/Consulte-GEO/help-desk-mu
 Artefato original `helpdesk-homologation-06ef6befc9ee0a09f031012f042745d79212fe21-38972924694-1`, digest `sha256:904da4c1b8613c7fc0f70a1460bacc4c695df56a81b93a2337043ffda49d353b`; relatório e seis logs originais preservados em evidence/homologation. `ci-qualified.json` registra origem, hashes e fingerprint inalterado. Verificador integral aprovado antes/depois da cópia.
 
 [PR69](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69) aberto em rascunho; merge de teste38973908895 e prévia ainda em conferência. A primeira prévia06ef/6ad2a054743dd20b557aa972 falhou antes da inclusão do relatório aprovado; registrada como não qualificada em preview-initial-unqualified.json. Não equivale a produção nem a aceite. Commits seguintes restritos a documentação/evidência preservam o fingerprint; sem merge/publicação antecipados.
+
+## Prévia e entrega para revisão
+
+[Prévia do PR69](https://deploy-preview-69--helpdesk-consultegeo.netlify.app) pronta na documentação qualificada `5300c9ff6cf3a5065b3359502d9815a4ffc9e2de`, deploy `6ad2a55239ead2eb5956af0c`. Nove arquivos conferidos: app, HTML, estado da lista, consultas rápidas, estado/apresentação da caixa, CSS e entry/facade do Apoio. Bytes da fonte conferidos; inserção nativa CDP no HTML estritamente identificada; módulo conferido pelo manifesto SHA1. Recibo em `preview.json`. Sem aceite humano autenticado ou escrita de negócio. A produção permanece no PR68/c6d398f.
+
+Merge de teste [38973908895](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38973908895), HDA38973908957 e Apoio38973908896 aprovados. Quatro análises CodeQL e agregado, headers/redirects e prévia aprovados na documentação5300c9f. A atualização documental final preserva a fonte/fingerprint e terá seu HEAD e publicação conferidos separadamente. Implementação pronta para revisão, sem autorização presumida para merge ou produção do PR69. HD-019 continua parcial; a busca global de mensagens, projeção de SLA e demais itens condicionados mantêm seus limites.
