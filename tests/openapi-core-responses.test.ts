@@ -44,9 +44,9 @@ test('OpenAPI validates safe401/403/404/400/405/503 problems and correlation in 
  const r=await fixture().handler(new Request('https://helpdesk.example.test/v1/tickets/summary',{method:'POST',headers:{'x-request-id':correlation}}));assert.equal(r.status,405);await (await gate)('/tickets/summary','GET',r);
 });
 const pool={async connect(){throw Error('Public/closed routes must not use SQL');},async query(){throw Error('Public/closed routes must not use SQL');},async end(){}};
-function composed(local:boolean,business=true,workflow=true,intake=true,email=true){
+function composed(local:boolean,business=true,workflow=true,intake=true,email=true,authenticationFailure?:number){
  let authentication=0,legacyCalls=0;const f=fixture({authenticationOnly:!business});
- const authenticate=async()=>{authentication++;throw Error('No auth on public/closed routes');};
+ const authenticate=async()=>{authentication++;if(authenticationFailure)throw new HelpdeskError(authenticationFailure,authenticationFailure===401?'unauthorized':'forbidden','Private auth details must not be returned.');throw Error('No auth on public/closed routes');};
  const runtime=createConsulteGeoRuntimeHandlers({pool,origin:'https://helpdesk.example.test',source:local?{...createPostgresLocalConsulteGeoSourcePorts(pool),mode:'local'}:undefined,
   authentication:{authenticate,withAdministrativeAssurance:async()=>{throw Error('No MFA');}},rateLimiter:{beforeAuthentication:async()=>{},afterAuthentication:async()=>{}},emailCursorKey:new Uint8Array(32),
   flags:{business:()=>business,workflow:()=>workflow,administration:()=>false,intake:()=>intake,review:()=>false,emailMonitoring:()=>email,registrationReview:()=>false},legacy:async(req,context)=>{legacyCalls++;return f.handler(req,context);}});
@@ -70,4 +70,12 @@ test('OpenAPI validates early rate-limit and unexpected-error problems without e
  let auth=0;const limited=createHttpHandler({service:null as never,authenticate:async()=>{auth++;throw Error('No authentication after rate limit');},rateLimiter:{beforeAuthentication:async()=>{throw Object.assign(new HelpdeskError(429,'rate_limit_exceeded','Limite temporário.'),{retryAfterSeconds:7});},afterAuthentication:async()=>{}}});
  const r=await limited(request('/capabilities'));await conform('/capabilities',r,429);assert.equal(r.headers.get('retry-after'),'7');assert.equal(auth,0);
  const broken=createHttpHandler({service:null as never,authenticate:async()=>{throw Error('PRIVATE_CONNECTION_SECRET');}}),body=await conform('/tickets',await broken(request('/tickets')),500);assert.doesNotMatch(JSON.stringify(body),/PRIVATE_CONNECTION_SECRET/);
+});
+test('OpenAPI validates refusals from the mounted scoped reader before any database/directory access',async()=>{
+ for(const status of [401,403]){const f=composed(true,true,true,true,true,status);
+  for(const [path,schema] of [['/tickets','/tickets'],['/tickets/summary','/tickets/summary'],['/tickets/10000000-0000-4000-8000-000000000001','/tickets/{ticket_id}']] as const){
+   const response=await f.runtime(request(path)),body=await conform(schema,response,status);assert.equal(body.request_id,response.headers.get('x-request-id'));assert.doesNotMatch(JSON.stringify(body),/Private auth details/);
+  }
+  assert.deepEqual(f.counts(),{authentication:3,legacyCalls:0});
+ }
 });

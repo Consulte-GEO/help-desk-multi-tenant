@@ -13,6 +13,7 @@ CI pós-merge `38929911773` aprovado; HDA `38929911835`, Apoio `38929911892` e C
 1. A composição retorna `consultegeo_review` em `/v1/public-config`, mas `PublicConfig` proibia propriedades adicionais e não declarava esse campo. O teste de resposta composta falhou antes da correção. O OpenAPI e a extensão do gerador agora o descrevem como booleano consultivo. Nenhuma flag foi ativada.
 2. O fallback de módulo indisponível retornava503 com documento incompleto, sem `title` e `request_id` exigidos pelo contrato. O teste do handler composto falhou antes da correção. O fallback usa o `problemResponse` existente e `requestIdFor`, preservando código, motivo e recusa antes de Auth/SQL/fallback legado; acrescenta correlação e `Retry-After:2` do padrão existente. Request ID não é identidade ou autorização.
 3. O validador formal entregue anteriormente qualifica o documento, mas não as respostas. `scripts/openapi-response.ts` compila os schemas de resposta do documento qualificado com Ajv2020 e formatos completos. É ferramenta offline de desenvolvimento/teste; não entra no runtime HTTP ou bundle do navegador. `ajv-formats@3.0.1` é dependência de desenvolvimento direta/fixada, com lock preservado.
+4. GETs anônimos produtivos confirmaram que lista e resumo recusam401, mas o leitor escopado omite `title` no erro. A regressão usa a factory real com fonte local e recusa de Auth401/403, sem SQL/diretório/fallback legado. Acrescentado somente o título ao tradutor de erros existente, sem mudar códigos, detalhes, request ID próprio, mapeamento de status ou a regra de resultado transacional desconhecido. Nenhuma recusa virou sucesso.
 
 ## Escopo da qualificação
 
@@ -34,9 +35,10 @@ Referências técnicas: [formatos Ajv](https://ajv.js.org/guide/formats.html) e 
 ## Progresso e critérios de entrega
 
 - [x] 5 testes do novo gate observados vermelhos antes da implementação; as duas divergências de runtime/contrato reproduzidas antes dos fixes.
-- [x] 13 testes novos de conformidade/validador;32 verificações focais aprovadas.
+- [x] 14 testes novos de conformidade/validador;33 verificações focais aprovadas antes de acrescentar a suíte escopada.
 - [x] Typecheck, contratos, lock, segredos heurísticos,21 migrations e build aprovados; instalação/auditoria da nova dependência sem vulnerabilidades observadas.
-- [ ] Revisão independente, CI Linux integral e preservação dos relatórios originais contra o fingerprint exato.
+- [x] Revisão independente da fonte e conferência focal da correção, sem achados Critical/Important/Minor pendentes.
+- [ ] CI Linux integral e preservação dos relatórios originais contra o fingerprint exato.
 - [ ] PR próprio pronto para revisão. A autorização de publicação específica desta rodada refere-se ao PR63.
 
 Não há migration ou alteração de tabelas, política, grant, segredo, MFA, Novo GEO, scanner, modelos técnicos ou preferências de e-mail. Não houve envio externo ou registro fictício produtivo.
@@ -44,6 +46,12 @@ Não há migration ou alteração de tabelas, política, grant, segredo, MFA, No
 Execução ampla Windows:5872 testes,5731 aprovados/141 falhas, sem skips/cancelamentos. Todos os12 novos testes passaram. Comparação com a baseline recente encontrou três falhas adicionais no subprocesso CLI de preflight (JSON vazio após prazo de10s); a reexecução isolada desse arquivo aprovou9/9 com saída0, sem alterar código, timeouts ou fixture. As demais falhas pertencem à baseline Windows já registrada. Isso não é aprovação integral local; a qualificação integral deve vir do CI Linux apto, preservando todos os testes.
 
 Revisão independente da fonte inicial `d8f20f7` encontrou um caso Minor no diagnóstico da ferramenta offline: `assert.equal` podia incluir o valor inválido de `status` no erro quando um schema sintético permissivo aceitava esse valor. Reproduzido vermelho com sentinela privada, corrigido comparando a igualdade como booleano em `assert.ok` e reexecutado verde. A nova regressão verifica a mensagem e a serialização da exceção. Nenhum dado real ou comportamento do runtime HTTP foi envolvido nesse fix. A execução Windows ampla acima precede esse13º teste; a qualificação integral da fonte final continua obrigatória.
+
+O revisor conferiu o fix `e016383`, reexecutou13/13 testes novos e encerrou sem achados pendentes. Foram considerados fora do recorte: escritas/requisições/sessões/M2M, demais endpoints/combinações, headers genéricos, RLS/PG e aceite hospedado autenticado; continuam pendências próprias. Wildcards de mídia e Path Item `$ref` não aparecem no contrato corrente e não motivaram expansão especulativa.
+
+Prova pública complementar em16/10 às16:34Z: `/v1/capabilities` e `/v1/public-config` produtivos200 passaram no gate da fonte `e016383` e na verificação de `no-store`, `nosniff` e `no-referrer`. Produção nessa prova é o PR63; o contrato candidato apenas declara o campo já retornado. Recibo sanitizado em `evidence/http-contract-20261016/public-read-contract.json`, com nomes das propriedades e sem valores da configuração. Somente GET público; não valida Auth, dados privados ou o novo fallback em produção.
+
+Prova anônima complementar às16:37Z: `/v1/me`401 já conforme; `/v1/tickets` e `/v1/tickets/summary`401 com ausência de `title`. Prova sanitizada em `evidence/http-contract-20261016/public-anonymous-findings.json`. Segurança de acesso preservada; a conformidade desses dois corpos produtivos só poderá passar após a publicação da correção do PR64. Não tratar o achado como liberação de dados ou declarar que o fix já está em produção.
 
 ## Handoff e pendências
 

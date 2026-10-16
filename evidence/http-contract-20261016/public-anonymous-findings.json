@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-10-16T16:37:51.774Z",
+  "productionSource": "d3322af608e64bd7402aeb01b492f8a19f25c3b2",
+  "deploy": "6ad24c9493f8e03c1e182b61",
+  "authenticated": false,
+  "businessWrites": 0,
+  "securityRefusalsPreserved": true,
+  "routes": [
+    {
+      "path": "/v1/me",
+      "status": 401,
+      "contractPassed": true,
+      "missingProblemFields": [],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/v1/tickets",
+      "status": 401,
+      "contractPassed": false,
+      "missingProblemFields": [
+        "title"
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "type"
+      ]
+    },
+    {
+      "path": "/v1/tickets/summary",
+      "status": 401,
+      "contractPassed": false,
+      "missingProblemFields": [
+        "title"
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "type"
+      ]
+    }
+  ],
+  "classification": "Contract-shape findings; fixes require PR64 publication, not an authorization bypass"
+}

@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-16T16:34:33.500Z",
+  "sourceFingerprint": "1cfa5874c2995ed7ba5a93b72e4bfa6f46458a6b0edd0e8ab7d7b06085aa4222",
+  "contractSource": "e016383f5e12bcb65991e32e97374d343f114a78",
+  "productionSource": "d3322af608e64bd7402aeb01b492f8a19f25c3b2",
+  "deploy": "6ad24c9493f8e03c1e182b61",
+  "publicReadOnly": true,
+  "authenticated": false,
+  "businessWrites": 0,
+  "scopedAcceptance": false,
+  "routes": [
+    {
+      "path": "/v1/capabilities",
+      "status": 200,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "api_version",
+        "capabilities",
+        "consultegeo",
+        "release"
+      ]
+    },
+    {
+      "path": "/v1/public-config",
+      "status": 200,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "consultegeo_intake",
+        "consultegeo_review",
+        "email_monitoring",
+        "publishable_key",
+        "supabase_url",
+        "ticket_totals"
+      ]
+    }
+  ],
+  "pass": true
+}

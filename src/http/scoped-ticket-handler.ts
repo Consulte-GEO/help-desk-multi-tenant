@@ -112,7 +112,7 @@ function problem(error:unknown,requestId:string):Response{
    if(code==='business_request_rejected'){const value=Object.getOwnPropertyDescriptor(error,'status')?.value;if([400,403,404,409,412,422,428,429].includes(value))status=value;}
   }
  }}catch{code='scoped_request_unavailable';status=503;}
- return Response.json({type:'about:blank',status,code,detail:code==='transaction_outcome_unknown'?'Confirmação desconhecida. Conserve a mesma chave e não repita automaticamente.':status>=500?'Operação indisponível. Nenhuma autorização adicional foi concedida.':'Requisição não concluída.',request_id:requestId},{status,headers:{'content-type':'application/problem+json','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId}});
+ return Response.json({type:'about:blank',title:status>=500?'Serviço indisponível':'Requisição não concluída',status,code,detail:code==='transaction_outcome_unknown'?'Confirmação desconhecida. Conserve a mesma chave e não repita automaticamente.':status>=500?'Operação indisponível. Nenhuma autorização adicional foi concedida.':'Requisição não concluída.',request_id:requestId},{status,headers:{'content-type':'application/problem+json','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-request-id':requestId}});
 }
 async function authenticated(d:ScopedTicketHttpOptions,req:Request):Promise<Principal>{
  const p=structuredClone(await d.authenticate(req));for(const grant of p.grants)Object.freeze(grant);Object.freeze(p.grants);Object.freeze(p.scopes);
