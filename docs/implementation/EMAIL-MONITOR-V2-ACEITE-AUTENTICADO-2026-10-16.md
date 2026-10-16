@@ -4,6 +4,8 @@
 
 A tela produtiva foi acessada na sessão humana existente, identificada pela própria interface como Administrador, em `https://helpdesk.consultegeo.org/`. A lista, o modal de entrega e o detalhe do destinatário carregaram dados reais. O smoke visual autenticado desktop está comprovado. Não foi necessária alteração de código, banco, segredo ou permissão nesta verificação.
 
+A publicação atual foi conferida pelo conector Netlify oficial: deploy `6ad170633eb3f6b5850ee880`, production/ready, commit `0042710c0374c706c88f51fd51f05edb7b88a2c8`, publicado em16/10/2026 00:32:37.604Z (15/10/2026 21:32:37 Brasília). Inclui as atualizações concorrentes dos PR56–59; elas foram preservadas, com sua própria qualificação, na integração documental desta frente. O fingerprint antigo do PR52 não qualifica essa fonte ampliada. Metadados sanitizados em `publication.json`.
+
 Os testes complementares de todos os filtros e da apresentação produtiva em360px **não foram concluídos**: o controle do Chrome alternou entre respostas válidas e timeouts de foco, avaliação e envio de comandos. Não confundir esses erros do controle com defeitos demonstrados da aplicação, nem considerar uma tentativa como aprovação. A validação mobile/DOM do CI continua uma evidência distinta, com a fonte e os limites registrados na matriz.
 
 ## Evidências observadas

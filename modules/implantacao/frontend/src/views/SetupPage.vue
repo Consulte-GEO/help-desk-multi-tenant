@@ -885,7 +885,7 @@ export default defineComponent({
     }) {
       let id = (this as any).draftId as string | null;
       const modal = this.$refs.shareModal as
-        | { resolveSend: (p: { sentTo: string }) => void;
+        | { resolveSend: (p: { sentTo: string; status?: string }) => void;
             failSend: (msg: string) => void }
         | undefined;
       if (!id) {
@@ -909,11 +909,11 @@ export default defineComponent({
         });
         if (res.ok) {
           this.$store.commit('setup/addAuditLocal', {
-            acao: 'link_compartilhado_email',
+            acao: 'email_solicitado',
             detalhe: payload.recipientEmail,
           });
           modal?.resolveSend({
-            sentTo: res.sent_to || payload.recipientEmail,
+            sentTo: res.sent_to || payload.recipientEmail, status: res.email_status,
           });
         } else {
           this.$store.commit('setup/addAuditLocal', {

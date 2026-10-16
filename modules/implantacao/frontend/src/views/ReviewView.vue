@@ -289,6 +289,7 @@
 </template>
 
 <script lang="ts">
+import {emailStatusLabel} from '../support/email-status';
 import { defineComponent } from 'vue';
 import {
   loadByToken,
@@ -793,7 +794,7 @@ export default defineComponent({
         await this.load();
         // v5.22.11: feedback explícito com info de email
         const recipients = (r.email_sent_to || []).filter(Boolean);
-        const emailNote = recipients.length > 0
+        const emailNote = r.email_status ? 'E-mail: '+emailStatusLabel(r.email_status)+'. Acompanhe na aba E-mails.' : recipients.length > 0
           ? `Email enviado para: ${recipients.join(', ')}.`
           : r.email_error
             ? `Email não foi enviado (${r.email_error}). Avise o responsável manualmente.`
