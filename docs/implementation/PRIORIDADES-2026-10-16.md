@@ -1,6 +1,6 @@
 # Implementação das prioridades — 16/10/2026
 
-**Continuidade posterior:** PR62/totais completos publicado em produção; PR63/consultas rápidas HD019 implementado, revisado e qualificado no CI (7207 verificações), ainda sem merge/publicação. [Estado e evidências atuais](CONSULTAS-RAPIDAS-2026-10-16.md). O levantamento original e os estados de qualificação anteriores abaixo são históricos, sem fechar todos os recortes de HD019.
+**Continuidade posterior:** PR61/busca e validador formal, PR62/totais e PR63/consultas rápidas publicados. PR64/conformidade de respostas HD002 implementado, revisado e qualificado (7221 verificações), ainda sem merge/publicação. [Estado e evidências atuais](CONFORMIDADE-RESPOSTAS-2026-10-16.md). Os estados anteriores abaixo são históricos; HD002/019 continuam parciais.
 
 **Atualização posterior:** PR61 mesclado/publicado em16/10, `2c201d0`/deploy `6ad23360e61e3b1608a0fd71`,116 arquivos do manifesto aprovados por hash/HTTPS. Sem migration/escrita de negócio. Os registros de ausência de publicação abaixo descrevem a qualificação anterior. Continuidade e provas em [Totais da fila](TOTAIS-FILA-2026-10-16.md).
 

@@ -35,11 +35,11 @@ Referências técnicas: [formatos Ajv](https://ajv.js.org/guide/formats.html) e 
 ## Progresso e critérios de entrega
 
 - [x] 5 testes do novo gate observados vermelhos antes da implementação; as duas divergências de runtime/contrato reproduzidas antes dos fixes.
-- [x] 14 testes novos de conformidade/validador;33 verificações focais aprovadas antes de acrescentar a suíte escopada.
+- [x] 14 testes novos de conformidade/validador;78 verificações focais aprovadas, incluindo a suíte escopada e runtime local existentes.
 - [x] Typecheck, contratos, lock, segredos heurísticos,21 migrations e build aprovados; instalação/auditoria da nova dependência sem vulnerabilidades observadas.
 - [x] Revisão independente da fonte e conferência focal da correção, sem achados Critical/Important/Minor pendentes.
-- [ ] CI Linux integral e preservação dos relatórios originais contra o fingerprint exato.
-- [ ] PR próprio pronto para revisão. A autorização de publicação específica desta rodada refere-se ao PR63.
+- [x] CI Linux integral e preservação dos relatórios originais contra o fingerprint exato.
+- [x] PR próprio qualificado para revisão. A autorização de publicação específica desta rodada refere-se ao PR63.
 
 Não há migration ou alteração de tabelas, política, grant, segredo, MFA, Novo GEO, scanner, modelos técnicos ou preferências de e-mail. Não houve envio externo ou registro fictício produtivo.
 
@@ -53,6 +53,8 @@ Prova pública complementar em16/10 às16:34Z: `/v1/capabilities` e `/v1/public-
 
 Prova anônima complementar às16:37Z: `/v1/me`401 já conforme; `/v1/tickets` e `/v1/tickets/summary`401 com ausência de `title`. Prova sanitizada em `evidence/http-contract-20261016/public-anonymous-findings.json`. Segurança de acesso preservada; a conformidade desses dois corpos produtivos só poderá passar após a publicação da correção do PR64. Não tratar o achado como liberação de dados ou declarar que o fix já está em produção.
 
+Revisão focal da extensão `e016383..f902f00` concluída sem achados: o revisor confirmou a alteração de um único campo no tradutor escopado e reexecutou14/14 novos testes. O tratamento de confirmação desconhecida permanece intacto. A fonte final para qualificar é `f902f00ae0010d9c1fe8cb253c767133d407a0ae`; resultados intermediários cancelados por supersessão não homologam esta fonte.
+
 ## Handoff e pendências
 
 HD-002 permanece parcial: outros endpoints, corpos de escrita, sessões/M2M, combinações de módulos, headers de contrato e respostas hospedadas autenticadas ainda precisam de matriz própria. Passar estes testes não comprova RLS, capacidade, restore, execução HDA ou jornadas humanas; as suítes PostgreSQL e de interface continuam obrigatórias no CI.
@@ -60,3 +62,20 @@ HD-002 permanece parcial: outros endpoints, corpos de escrita, sessões/M2M, com
 Para continuidade: manter o gate offline e a validação de privacidade separada; acrescentar cenários com factories/DTOs reais e dados sintéticos antes de ampliar alegações. Corrigir a implementação ou o contrato conforme o comportamento realmente autorizado, sem tornar schemas permissivos para aceitar um erro. Não remover `additionalProperties:false`, desativar formatos ou recorrer a coerção para obter aprovação.
 
 MFA/Novo GEO seguem adiados, scanner cancelado e modelos técnicos inexistentes. HD010/020 dependem de política efetiva e leitor de histórico completo independente de revisão/aprovação. HD011 pode avançar em sintaxe de dados explicitamente tipados, com nova versão de DSL/publicador/SQL/UI, preservando snapshots antigos; não converter contato livre ou identificador de beneficiário em e-mail obrigatório nem inventar regras técnicas. Esses recortes não estão concluídos por esta entrega.
+
+## Qualificação final e handoff do PR64
+
+[PR64](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/64), fonte `f902f00ae0010d9c1fe8cb253c767133d407a0ae`, sobre a base produtiva `d3322af608e64bd7402aeb01b492f8a19f25c3b2`. [CI da fonte38933598964](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38933598964) aprovado: **5874 aplicação + 700 PostgreSQL17 + 647 interface = 7221**, sem falha, skip, cancelamento ou todo. [Merge de teste38933605012](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38933605012) também aprovado. HDA, Apoio Implantação e CodeQL aprovados nos respectivos checks. A execução apta Linux é a qualificação integral; os limites Windows anteriores permanecem registrados, sem remover testes.
+
+Artefato original `helpdesk-homologation-f902f00ae0010d9c1fe8cb253c767133d407a0ae-38933598964-1`; digest `sha256:0ca2796a75379b58bd0ca11892fd08c531f48e2bbd375b5bf2fa505c4ed4e5f7`. Fingerprint `356f00f3a4ef45936f6e05d173be252644cc7187c0c26c329cafd6a5ca28dca0`. Relatório e seis logs originais em `evidence/homologation/runs/52f7b505-bce0-4447-8664-4cd3354cfeec/`, copiados sem reconstrução e conferidos por hash e contra as fontes locais antes/depois. Recibo em `evidence/http-contract-20261016/ci-qualified.json`. Instalação limpa, audit, verify (inclui typecheck/contratos/build) e validação de evidência aprovados; `npm run check:homologation` passou na árvore local. Alterações seguintes apenas de documentação/evidência preservam o fingerprint; não representam qualificação de código diferente.
+
+A revisão independente e as duas conferências focais encerraram sem achados pendentes. O escopo permanece parcial:14 testes novos, com cenários positivos/negativos e78 focais, além das suítes integrais. Não se homologou genericamente toda a API ou Auth hospedado. A prévia automática anterior falhou antes deste envio de evidências qualificadas; a nova prévia deve ser conferida no commit documental final, preservando os gates.
+
+Produção permanece no PR63. Este PR64 não foi mesclado nem publicado; não houve nova migration, concessão de acesso ou envio de e-mail. O achado de `title` ausente nos erros anônimos produtivos permanece documentado até a publicação própria desta correção.
+
+Após autorização de merge/publicação:
+
+1. Reinspecionar a base, o fingerprint, os checks e o deploy corrente; usar o commit e os logs qualificados, preservando alterações concorrentes.
+2. Publicar pelo pipeline existente, sem migration, flags novas, grants ou segredos. Conferir commit/deploy READY e manifesto estático.
+3. Por GET sem bearer, conferir `/v1/me`, `/v1/tickets` e `/v1/tickets/summary`:401, Problem completo, request ID igual ao cabeçalho e sem detalhes privados. A lista e o resumo devem passar no gate, sem tornar a rota pública. Guardar novo recibo com metadados atuais; não sobrescrever o achado histórico nem atribuir a ele sucesso posterior.
+4. Conferir capacidades/configuração pública contra o contrato e os cabeçalhos privados, sem mudar booleans para fabricar aprovação. Jornadas humanas e dados privados só com sessão legítima, sem alterar MFA ou inventar registros.
