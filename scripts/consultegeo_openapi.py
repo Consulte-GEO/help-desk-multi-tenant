@@ -1,5 +1,6 @@
 """M06 additive contracts. Called by the canonical OpenAPI generator."""
 def extend_consultegeo(s):
+    s['components']['schemas']['PublicConfig']['properties']['consultegeo_review']={'type':'boolean','description':'True somente quando catálogo local, intake e revisão estão montados e liberados; não concede alçada ou acesso.'}
     schemas=s['components']['schemas'];params=s['components']['parameters']
     ref=lambda name:{'$ref':'#/components/schemas/'+name}
     pr=lambda name:{'$ref':'#/components/parameters/'+name}

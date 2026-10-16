@@ -7580,6 +7580,10 @@
           "type": "boolean",
           "description": "Descoberta do formulário local Consulte GEO montado e liberado no servidor. Não concede acesso a clientes, obras ou chamados."
         },
+        "consultegeo_review": {
+          "type": "boolean",
+          "description": "True somente quando catálogo local, intake e revisão estão montados e liberados; não concede alçada ou acesso."
+        },
         "email_monitoring": {
           "type": "boolean",
           "description": "Recurso montado somente no schema0.27 com origem e fluxos qualificados; não concede permissão de acesso."
