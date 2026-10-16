@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "scope": "local-m1",
+  "platform_approved": false,
+  "source_sha256": "06afcd6c0244644a1a17b6fe0358d9c173080663c55babce60f8817861c63244",
+  "started_at": "2026-10-16T20:55:20.287Z",
+  "completed_at": "2026-10-16T20:59:00.825Z",
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/6199b933-6fd0-4a38-a0aa-ac2898233b14/lock.log",
+      "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/6199b933-6fd0-4a38-a0aa-ac2898233b14/install.log",
+      "sha256": "762a7eb26e4e8739fc72c8beef70c79a3b62a69913e6c1540ddc2d5387d14eb3",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/6199b933-6fd0-4a38-a0aa-ac2898233b14/audit.log",
+      "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "failed",
+      "reason": "command_or_assertions_failed",
+      "exit_code": 1,
+      "signal": null,
+      "artifact": "runs/6199b933-6fd0-4a38-a0aa-ac2898233b14/application.log",
+      "sha256": "a200249dfced87c523aced7ba260e910371028d6e4ba9662207fafd705a8768b",
+      "tests": {
+        "tests": 5906,
+        "pass": 5905,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "reason": null,
+      "exit_code": 0,
+      "signal": null,
+      "artifact": "runs/6199b933-6fd0-4a38-a0aa-ac2898233b14/postgres.log",
+      "sha256": "34f4540ea32b6972de07c58da3652edd72d4003a7a3f461a164b9977591893e4",
+      "tests": {
+        "tests": 700,
+        "pass": 700,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "blocked",
+      "reason": "prerequisite_not_passed",
+      "exit_code": null,
+      "signal": null,
+      "tests": null
+    }
+  ]
+}
