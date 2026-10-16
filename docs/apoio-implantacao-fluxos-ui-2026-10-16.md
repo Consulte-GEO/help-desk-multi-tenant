@@ -40,4 +40,12 @@ A sessão produtiva autenticada foi aberta no Chrome como Administrador e o cada
 
 O envio real para o endereço autorizado e a conclusão dos percursos produtivos dependem da reconexão do navegador; não foram substituídos por extração de sessão, escrita direta no banco ou chamada direta ao provedor. A fila sintética não comprova entrega real. O PDF de teste exercita leitura local textual; OCR/IA externos e persistência hospedada não são comprovados por essa fixture.
 
-Resultados finais de CI, integração e publicação serão registrados após as verificações correspondentes.
+## CI Linux
+
+Fonte `f420f76db2012650c1ec542cdbe0320d67bf5ee0`, [PR60](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/60).
+
+A [qualificação do Apoio 38889581672](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38889581672) aprovou 49 verificações PostgreSQL 17.11, 43 cenários da aplicação completa, 30 cenários adicionais Chromium e 13 testes frontend, além da auditoria de dependências e corpus originais. O artefato original tem digest SHA-256 `4b32cbb9b792714a51622f7d56debf5fea4963d9ab562efa18d3054176947167`. [Relatórios, logs e capturas](../evidence/apoio-implantacao-fluxos-ui/ci-f420f76/). A execução do PR, 38889628635, também foi aprovada.
+
+A [CI geral 38889581530](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38889581530) aprovou 5.829 testes de aplicação, 697 PostgreSQL e 632 de interface, sem falhas, skips ou cancelamentos. Fingerprint `9fc1de3f1ffc128229ac82fab96b6e27b611b8845bfa4b68780fbec70b489e6f`; artefato `helpdesk-homologation-f420f76db2012650c1ec542cdbe0320d67bf5ee0-38889581530-1`, digest SHA-256 `10801f0a9ca2cc9a00ae596517888dedc9e5b8094cec536b5f4cc1b8b3f39fde`. Relatório e logs originais preservados em `evidence/homologation/runs/73b1ef0f-76d3-4760-851d-5c03714a349b`, validados por fingerprint e hashes antes/depois da cópia. A CI geral do PR, 38889628604, também terminou aprovada; HDA e CodeQL aprovados.
+
+Resultados de integração e publicação serão registrados após as verificações correspondentes. Após o usuário reconectar, as abas do Help Desk apareceram no Edge, mas as tentativas de controle/leitura continuaram expirando. Isso não comprova defeito no Help Desk e não gerou nenhum envio real de teste.
