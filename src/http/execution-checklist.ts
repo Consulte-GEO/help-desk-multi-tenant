@@ -67,7 +67,7 @@ export function createExecutionChecklistHttpHandler(d:ExecutionChecklistHttpOpti
    // if closure was observed before their private response is emitted.
    return privateJson(data,200,{etag:`"${revision}"`,'x-request-id':requestId,...extra});
   }catch(e){let code='checklist_store_unavailable';try{const c=e&&typeof e==='object'?Object.getOwnPropertyDescriptor(e,'code')?.value:undefined;if(typeof c==='string'&&Object.hasOwn(statuses,c))code=c;}catch{}
-   const status=statuses[code]!;return privateJson({type:'about:blank',status,code,detail:code==='transaction_outcome_unknown'?'Confirmação desconhecida. Concilie a mesma chave e conteúdo.':'Não foi possível confirmar a operação interna. Confira acesso, revisão e evidência.',request_id:requestId},status,{'content-type':'application/problem+json','x-request-id':requestId});
+   const status=statuses[code]!;return privateJson({type:'about:blank',title:'Não foi possível concluir a solicitação.',status,code,detail:code==='transaction_outcome_unknown'?'Confirmação desconhecida. Concilie a mesma chave e conteúdo.':'Não foi possível confirmar a operação interna. Confira acesso, revisão e evidência.',request_id:requestId},status,{'content-type':'application/problem+json','x-request-id':requestId});
   }
  };
 }

@@ -1,5 +1,7 @@
 # Resumo e próximo passo no atendimento — HD-019
 
+**Publicação posterior — PR65:** merge autorizado em16/10/2026 às18:03:23Z, commit `6fe9ea8268e7786f3342445df4ad6cb6df217514`. Deploy `6ad266ee3df5f6796b61757e` READY/publicado às18:04:30.855Z (15h04 Brasília).120 entradas HTTPS/hash e controles privados conferidos; nenhuma migration, segredo ou escrita de negócio. Recibo em `evidence/ticket-guidance-20261016/production/publication.json`. Supabase HelpDesk ACTIVE_HEALTHY. Aceite humano autenticado permanece separado das capturas sintéticas. Continuidade HD-002 em [Contratos dos envios](CONTRATOS-ENVIOS-2026-10-16.md). Os estados de ausência de merge/publicação abaixo descrevem a preparação anterior.
+
 **Estado corrente:** [PR65](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/65) implementado, revisado e qualificado; fonte66385f8,7234 verificações Linux aprovadas. Ainda sem merge/publicação. PR64 já publicado/verificado; demais estados locais abaixo são históricos.
 
 ## Escopo e decisões
