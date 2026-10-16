@@ -49,3 +49,12 @@ test('busca aceita 120 pontos de código mas não controles, inválidos ou mais 
  assert.equal(Array.from(ticketSearch({limit:25,q:'🚧'.repeat(120)}).q!).length,120);
  assert.throws(()=>ticketSearch({limit:25,q:'🚧'.repeat(121)}),{code:'invalid_input'});
 });
+
+test('description list chooses fixed column, retains literal parameters and applies search before LIMIT',async()=>{
+ const f=capture(),q="Descrição %_ ' OR TRUE --";await new HelpdeskService(new PostgresUnitOfWork(f.pool)).list(principal(),{limit:1,q,search_in:'description'});
+ const statement=f.calls.find(c=>c.sql.includes('from helpdesk_core.tickets'))!;
+ assert.match(statement.sql,/strpos\(translate\(description,\$7::text,\$8::text\),\$6\)>0/);
+ assert.equal(statement.values[5],"descrição %_ ' or true --");assert.equal(statement.values[4],2);
+ assert.doesNotMatch(statement.sql,/OR TRUE --|id::text=\$6|ticket_messages|internal_notes/);
+ assert.ok(statement.sql.indexOf('translate(description')<statement.sql.indexOf('limit $5'));
+});

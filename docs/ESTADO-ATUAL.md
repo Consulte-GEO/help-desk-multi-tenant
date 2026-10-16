@@ -8,18 +8,20 @@ Atualizado em **16/10/2026**. Esta página resume os checkpoints e seus limites;
 |---|---|
 | Site | `https://helpdesk.consultegeo.org`, atendimento Consulte GEO ativo |
 | Branch de produção | `codex/m1-reproducibilidade` |
-| Último PR publicado | [#67 — cabeçalhos dos recibos HTTP](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/67) |
-| Merge publicado | `f7ff73ae1a3279a38b22419f9f5755e8b51b0f2c` |
-| Deploy Netlify | `6ad2892dd4bec684a4e7c792`, READY em16/10/2026 às17h30 Brasília |
-| Verificação desta publicação | 120/120 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
-| Qualificação da implementação do PR67 | Fonte `f4a166f300d43b7a6c4ac30a90baac8bedda904e`; CI7.255 verificações, revisão encerrada. Fonte e recibos em [cabeçalhos](implementation/CABECALHOS-RESPOSTAS-2026-10-16.md). |
+| Último PR publicado | [#68 — busca na conversa pública carregada](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68) |
+| Merge publicado | `c6d398fac03efd2439923c39dce47307b73e0bb7` |
+| Deploy Netlify | `6ad29a17a2836c92c65ed8a2`, READY em16/10/2026 às18h45 Brasília |
+| Verificação desta publicação | 121/121 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
+| Qualificação da implementação do PR68 | Fonte `9ab8b704f3788fe238e0b868039e0ad836bc12cc`; CI7.273 verificações, revisão encerrada. [Escopo e recibos](implementation/BUSCA-CONVERSA-2026-10-16.md). |
 | Contratos atuais | API/interface0.31.0; core/schema0.27,21 migrations. Addons privados Apoio/Wiki não são migrations extras do core. O catálogo de banco não foi reexecutado nesta publicação sem SQL. |
 
-Provas desta publicação: `evidence/response-headers-20261016/production/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
+Provas desta publicação: `evidence/message-search-20261016/production/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
 
-## Entrega preparada para revisão
+## Entregas e continuidade
 
-**HD-019 — busca local na conversa pública:** [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68), fonte `9ab8b70` revisada e aprovada no CI integral (7.273 verificações), ainda sem merge/publicação. [Preview da implementação conferido](https://deploy-preview-68--helpdesk-consultegeo.netlify.app). Pesquisa apenas o texto das mensagens públicas carregadas do chamado aberto, reaproveitando sua leitura autorizada. Navegação entre resultados, cobertura explícita e limpeza por contexto; não amplia a pesquisa da fila nem inclui notas internas. [Escopo, testes e evolução](implementation/BUSCA-CONVERSA-2026-10-16.md).
+**HD-019 — busca local na conversa pública:** [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68), fonte `9ab8b70` revisada e aprovada no CI integral (7.273 verificações), mesclada e publicada no deploy indicado acima. [Preview da implementação conferido](https://deploy-preview-68--helpdesk-consultegeo.netlify.app). Pesquisa apenas o texto das mensagens públicas carregadas do chamado aberto, reaproveitando sua leitura autorizada. Navegação entre resultados, cobertura explícita e limpeza por contexto; não amplia a pesquisa da fila nem inclui notas internas. [Escopo, testes e evolução](implementation/BUSCA-CONVERSA-2026-10-16.md).
+
+**HD-019 — busca na descrição:** implementação em qualificação na branch isolada `codex/busca-descricao-20261016`, ainda sem PR/publicação. [Desenho, plano e limites](implementation/BUSCA-DESCRICAO-2026-10-16.md). Pesquisa global de mensagens exige uma projeção autorizada que também cubra interações públicas do workflow; não usar só a tabela de mensagens.
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 

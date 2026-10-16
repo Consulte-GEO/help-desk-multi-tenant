@@ -43,7 +43,19 @@
               "minLength": 2,
               "maxLength": 120
             },
-            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite busca por prefixo e não concede acesso. Notas e mensagens não são pesquisadas."
+            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Sem search_in: assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite prefixo e não concede acesso. Com search_in=description: somente descrição, com dobra de caixa ASCII/Latin-1 e acentos significativos. Não pesquisa notas ou mensagens."
+          },
+          {
+            "name": "search_in",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "description"
+              ]
+            },
+            "description": "Modo explícito da busca. Exige q válido. Omitir para assunto/protocolo/UUID. Lista e resumo usam o mesmo predicado antes da paginação; o modo faz parte do vínculo do cursor. Não amplia acesso."
           },
           {
             "name": "status",
@@ -804,7 +816,19 @@
               "minLength": 2,
               "maxLength": 120
             },
-            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite busca por prefixo e não concede acesso. Notas e mensagens não são pesquisadas."
+            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Sem search_in: assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite prefixo e não concede acesso. Com search_in=description: somente descrição, com dobra de caixa ASCII/Latin-1 e acentos significativos. Não pesquisa notas ou mensagens."
+          },
+          {
+            "name": "search_in",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "description"
+              ]
+            },
+            "description": "Modo explícito da busca. Exige q válido. Omitir para assunto/protocolo/UUID. Lista e resumo usam o mesmo predicado antes da paginação; o modo faz parte do vínculo do cursor. Não amplia acesso."
           },
           {
             "name": "status",
@@ -895,7 +919,7 @@
             }
           }
         },
-        "description": "Cursor preserva a precisão temporal do banco. Datas podem conter seis dígitos decimais; reinicie a lista para não reutilizar cursores antigos já truncados. Busca literal em assunto ou UUID completo, com dobra de caixa ASCII/Latin-1 determinística e acentos significativos. Não pesquisa descrição, mensagens nem notas. Filtros combinam por AND e são aplicados antes do LIMIT no escopo autorizado. Não é busca full-text, ranking ou totalização. Cursor vinculado a ator, workspace, conta e filtros; alterações de filtros exigem reinício. Páginas são vivas, não snapshot. Cursor anterior sem novos filtros permanece compatível. Campos explicitamente vazios são inválidos; omita filtros não utilizados."
+        "description": "Cursor preserva a precisão temporal do banco. Datas podem conter seis dígitos decimais; reinicie a lista para não reutilizar cursores antigos já truncados. Busca literal em assunto ou UUID completo, com dobra de caixa ASCII/Latin-1 determinística e acentos significativos. search_in=description pesquisa exclusivamente a descrição e exige q. Sem search_in permanece assunto/protocolo/UUID. Não pesquisa mensagens nem notas. Filtros combinam por AND e são aplicados antes do LIMIT no escopo autorizado. Não é busca full-text, ranking ou totalização. Cursor vinculado a ator, workspace, conta e filtros; alterações de filtros exigem reinício. Páginas são vivas, não snapshot. Cursor anterior sem novos filtros permanece compatível. Campos explicitamente vazios são inválidos; omita filtros não utilizados."
       },
       "post": {
         "operationId": "createTicket",
