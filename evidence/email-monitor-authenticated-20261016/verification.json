@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "inspectionDate": "2026-10-16",
+  "timezone": "America/Sao_Paulo",
+  "url": "https://helpdesk.consultegeo.org/",
+  "profile": "Administrator shown by authenticated UI",
+  "status": "authenticated_desktop_smoke_verified_complementary_checks_blocked",
+  "checks": [
+    "history_11",
+    "real_open_and_click_observed",
+    "historical_coverage_warning",
+    "recipient_detail_and_one_attempt",
+    "back_to_delivery_restores_focus",
+    "escape_closes_and_restores_focus_to_origin",
+    "queue_empty_not_error",
+    "two_native_desktop_screenshots_inspected"
+  ],
+  "notCompleted": [
+    "remaining_filter_combinations",
+    "production_mobile_screenshot",
+    "full_Tab_path",
+    "alternate_team_role_and_new_email_snapshot"
+  ],
+  "blocker": "Intermittent browser control timeouts; mobile screenshot reset the control",
+  "temporaryViewport": {
+    "requested": {
+      "width": 360,
+      "height": 800
+    },
+    "resetCompleted": true
+  },
+  "ticketMutations": 0,
+  "newEmails": 0,
+  "databaseWrites": 0,
+  "sourceChanges": 0,
+  "files": [
+    {
+      "path": "delivery-desktop.jpg",
+      "bytes": 111015,
+      "sha256": "73b6e2281cc412949c54657a9d8c7448b4e19893b702e6612f0cd061e671f197"
+    },
+    {
+      "path": "publication.json",
+      "bytes": 217,
+      "sha256": "c96ca5013eaafb9cf69620bd9ab2b25ba2bb8169680cb608278d3bf2f7b3aca7"
+    },
+    {
+      "path": "queue.txt",
+      "bytes": 874,
+      "sha256": "029434a87b95c9439b55bb2aaf7cb119f80529f5d558cbb72f066991f3a7ce96"
+    },
+    {
+      "path": "recipient-desktop.jpg",
+      "bytes": 91390,
+      "sha256": "0d0d2492c93d24b77abe42cc120b3b0f3dab5b4f892fe5b92619a3bcb4acfd45"
+    },
+    {
+      "path": "recipient-detail.txt",
+      "bytes": 7752,
+      "sha256": "e7fefb061db846303a97aff8dbea2c1f87e183c9b8b3b58d2ff5bba75a9c0693"
+    }
+  ]
+}

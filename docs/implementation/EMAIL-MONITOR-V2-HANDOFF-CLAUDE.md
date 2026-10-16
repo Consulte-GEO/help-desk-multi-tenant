@@ -1,5 +1,9 @@
 # Continuidade da implementação de e-mails V2
 
+## Atualização de 16/10/2026
+
+Smoke autenticado desktop comprovado na sessão administrativa real: histórico11, entrega/abertura/clique CG-10001, detalhe/tentativa, Escape/retorno de foco e Fila vazia. Duas capturas nativas e snapshots registrados. Não houve alteração de código, banco, segredo ou chamado. Demais filtros e mobile produtivo continuam sem conclusão por falha intermitente do controle; viewport temporário removido. Ler [aceite autenticado e limites](EMAIL-MONITOR-V2-ACEITE-AUTENTICADO-2026-10-16.md). Essa prova supera a ausência de inspeção abaixo, sem equivaler a teste integral de todas as combinações/perfis. O pacote de15/10 e suas pendências são snapshots históricos; não reimplantar ou reaplicar migrations para retomar a verificação complementar.
+
 ## Estado produtivo posterior à entrega
 
 O titular autorizou e o PR52 foi integrado/publicado. O banco HelpDesk já está em0.27 pela migration remota20261015190027; não reaplicar append21 nem bootstrap. Monitor ativo e coleta nativa de abertura/clique comprovada: após o titular ativar ambos os eventos no webhook existente, o probe técnico19:56:40Z produziu dois callbacks POST200, ambos applied à intenção exata. Cobertura começou em19:57:29.552038Z (16:57:29 Brasília), somente após a prova. Não retroagir, converter histórico desconhecido em zero ou confundir o probe automatizado com leitura humana. Nenhum e-mail novo ou chamado foi criado/alterado. Aceite autenticado da tela ainda pendente por falha do controle do navegador. PR55 concorrente preservado;91 assets/13 checks pertencem ao commit178dfb5 e a fonte ampliada tem seu próprio recibo. Ler [checkpoint produtivo](EMAIL-MONITOR-V2-PRODUCTION-2026-10-15.md) e native-collection-qualified.json. As descrições anteriores de PR sem merge/produção pendente abaixo são históricas. Não reimplantar nem iniciar cobertura por inferência.
