@@ -51,6 +51,8 @@ jobs:
           echo "PLAYWRIGHT_DRIVER_PATH=$RUNNER_TEMP/implantacao-browser/node_modules/playwright/index.mjs" >> "$GITHUB_ENV"
       - name: Native browser journey
         run: node --experimental-strip-types modules/implantacao/tools/support-browser.mjs | tee evidence/implantacao-ci/browser.log
+      - name: Full Help Desk shell journeys
+        run: node --experimental-strip-types modules/implantacao/tools/support-host-browser.mjs | tee evidence/implantacao-ci/host-browser.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
