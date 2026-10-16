@@ -34,3 +34,11 @@ Revisão acumulada encerrada sem achados bloqueantes pendentes. Segunda regress�
 ## Primeiro CI e manutenção da fixture de build
 
 Fonte6707cd5/run38965639426 falhou: aplicação5905/5906, PostgreSQL700/700, interface bloqueada por pré-requisito. Causa: forms-build.test.ts copia o programa de build para pasta própria, mas sua lista explícita added não incluía message-search.js; o build corretamente recusou o arquivo ausente. Reproduzido localmente em forms-build-red.txt. Acrescentado o módulo à lista, preservando e ampliando a comparação byte a byte e todas as exclusões de arquivos privados. forms-build-green.txt:25/25 focais. Runtime não alterado nesse fix. Relatório e cinco logs originais com hashes/digest em initial-ci-failure/; não são homologação aprovada. Nova fonte/CI integral pendentes.
+
+## Qualificação integral da fonte corrigida
+
+[CI38966480993](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38966480993) aprovado sobre `9ab8b704f3788fe238e0b868039e0ad836bc12cc`: **5906 aplicação +700 PostgreSQL17 +667 interface =7273**, zero falha/skip/cancelamento/todo. O gate Linux incluiu a jornada de busca12/12. Lock, instalação limpa/audit, tipos, contratos, migrations/upgrade e build aprovados no mesmo gate. São seis novos cenários Node e12 verificações de navegador, não7273 funcionalidades novas.
+
+Artefato original `helpdesk-homologation-9ab8b704f3788fe238e0b868039e0ad836bc12cc-38966480993-1`, digest `sha256:d1dd238d1282e831994d4fb0d232edc554dcdaac3d7470a3199ef01e65a5d6a9`; fingerprint `f0ea1e24207eadec392008cd1f50f1856e563ba0421b7401a279e8db7c892fe2`. Relatório e seis logs originais em evidence/homologation; ci-qualified.json registra a fonte/run e hashes. Verificador integral aprovado antes/depois da cópia. Commits de documentação/evidência não alteram esse fingerprint. O primeiro CI falho continua preservado e identificado como falho.
+
+HDA38966480748 e Apoio38966480792 aprovados na mesma fonte. Revisão da inclusão na fixture encerrada:1/1 build repetido pelo reviewer e25/25 focais inspecionados. Sem achados bloqueantes. [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68) aberto; merge de teste e preview ainda em conferência.

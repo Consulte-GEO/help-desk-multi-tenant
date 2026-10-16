@@ -22,5 +22,12 @@
     "browserLogInspected": 12,
     "browserRepeatedByReviewer": false
   },
-  "qualificationBoundary": "local only; source CI/preview required, no approval to merge new feature"
+  "qualificationBoundary": "local only; source CI/preview required, no approval to merge new feature",
+  "fixtureFix": {
+    "file": "tests/forms-build.test.ts",
+    "reviewed": true,
+    "reviewerBuildTestPassed": 1,
+    "maintainerFocusedPassed": 25,
+    "assertionsPreserved": true
+  }
 }
