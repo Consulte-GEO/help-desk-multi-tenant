@@ -1,0 +1,43 @@
+✖ C07 build whitelist copies new form assets byte-for-byte and preserves old assets (380.9756ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 512.9255
+
+✖ failing tests:
+
+test at tests\forms-build.test.ts:4:1
+✖ C07 build whitelist copies new form assets byte-for-byte and preserves old assets (380.9756ms)
+  AssertionError [ERR_ASSERTION]: node:internal/fs/promises:1327
+    return await PromisePrototypeThen(
+           ^
+  
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\thiag\AppData\Local\Temp\helpdesk-forms-build-btcKMf\web\message-search.js' -> 'C:\Users\thiag\AppData\Local\Temp\helpdesk-forms-build-btcKMf\dist\message-search.js'
+      at async copyFile (node:internal/fs/promises:1327:10)
+      at async file:///C:/Users/thiag/AppData/Local/Temp/helpdesk-forms-build-btcKMf/scripts/build.mjs:7:453 {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'copyfile',
+    path: 'C:\\Users\\thiag\\AppData\\Local\\Temp\\helpdesk-forms-build-btcKMf\\web\\message-search.js',
+    dest: 'C:\\Users\\thiag\\AppData\\Local\\Temp\\helpdesk-forms-build-btcKMf\\dist\\message-search.js'
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/forms-build.test.ts:29:109)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

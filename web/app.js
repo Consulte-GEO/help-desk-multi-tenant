@@ -52,12 +52,14 @@ import {createTicketSummaryState} from './ticket-summary-state.js';
 const ticketSummary=createTicketSummaryState();
 let summaryAbort=null;
 import {createConversationState} from './conversation-state.js';
+import {mountMessageSearch} from './message-search.js';
 import {createMutationState} from './mutation-state.js';
 import {createSupportCatalogState} from './support-catalog-state.js';
 import {createTicketCreateState,retryCreateIntent,validateCreateInput} from './ticket-create-state.js';
 const creation=createTicketCreateState();
 const conversation=createConversationState(),mutations=createMutationState(),catalog=createSupportCatalogState();
 const $=id=>document.getElementById(id);
+const messageSearch=mountMessageSearch({root:$('message-search'),input:$('message-search-input'),status:$('message-search-status'),previous:$('message-search-previous'),next:$('message-search-next'),clear:$('message-search-clear'),container:$('messages')});
 const s={token:'',workspace:'',me:null,tickets:[],ticket:null,actions:null,notesUnavailable:false,next:null,mode:'public',epoch:0,detail:0,demo:null,config:null,createKey:crypto.randomUUID(),createPending:null};
 const labels={received:'Recebido',in_progress:'Em atendimento',waiting_for_you:'Aguardando você',resolved:'Resolvido',closed:'Encerrado',new:'Novo',triage:'Triagem',open:'Em atendimento',waiting_customer:'Aguardando cliente',waiting_internal:'Aguardando equipe',waiting_third_party:'Aguardando terceiro',cancelled:'Cancelado'};
 const priorities={normal:'Normal',low:'Baixa',high:'Alta',urgent:'Urgente'};
@@ -90,7 +92,7 @@ const badge=status=>el('span','badge '+(status==='resolved'?'good':status==='wai
 const product=(id,consultegeo=false)=>consultegeo?'Consulte GEO':s.demo?.contexts.find(c=>c.product_instance_id===id)?.label??'Produto integrado';
 // Presentation only: this is an abbreviated UUID, never a business protocol.
 const compactTicketId=id=>(id.length>18?id.slice(0,8)+'…'+id.slice(-6):id).toUpperCase();
-function clearSession(){renderTicketGuidance($('ticket-guidance'),null,null);emailMonitor?.destroy();emailMonitor=null;$('email-monitor-nav').hidden=true;$('email-view').hidden=true;implementationSupport?.destroy();implementationSupport=null;$('implementation-support-nav').hidden=true;$('implementation-support-view').hidden=true;activeView='tickets';$('tickets-view').hidden=false;$('guide-view').hidden=true;$('breadcrumb').textContent='Operação / Chamados';for(const button of document.querySelectorAll('[data-view]'))button.classList.toggle('active',button.dataset.view==='tickets');cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();summaryAbort?.abort();summaryAbort=null;ticketSummary.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
+function clearSession(){messageSearch.reset();renderTicketGuidance($('ticket-guidance'),null,null);emailMonitor?.destroy();emailMonitor=null;$('email-monitor-nav').hidden=true;$('email-view').hidden=true;implementationSupport?.destroy();implementationSupport=null;$('implementation-support-nav').hidden=true;$('implementation-support-view').hidden=true;activeView='tickets';$('tickets-view').hidden=false;$('guide-view').hidden=true;$('breadcrumb').textContent='Operação / Chamados';for(const button of document.querySelectorAll('[data-view]'))button.classList.toggle('active',button.dataset.view==='tickets');cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;cgOpening?.destroy();cgOpening=null;cgWorkflow?.destroy();cgWorkflow=null;$('cg-create-dialog').close();$('cg-workflow').hidden=true;if(s.me)supportNavigation.clear();accessUX?.reset();inboxUX?.reset();openingUX?.reset();recoveryPanel.clear();$('add-mfa').hidden=true;$('add-mfa-login').hidden=true;$('configure-mfa').hidden=true;$('configure-mfa-login').hidden=true;securityPanel.clear();$('security-status').hidden=true;$('security-status-login').hidden=true;enrollmentPanel.clear();$('password-change-dialog').close();resetPasswordDialog();$('change-password').hidden=true;$('change-password-login').hidden=true;clearTimeout(notice.timer);$('notification').textContent='';$('notification').hidden=true;$('transition-reason').value='';for(const id of ['ticket-number','assignment-label','detail-action-status','notes-status'])$(id).replaceChildren();$('logout-all-dialog').close();$('logout-all').hidden=true;$('logout-all-login').hidden=true;$('workspace-change-dialog').close();$('switch-workspace').hidden=true;$('switch-workspace-login').hidden=true;$('workspace-choice-label').hidden=true;$('choose-workspace').hidden=true;$('workspace-choice').replaceChildren();s.actions=null;s.notesUnavailable=false;timeline.reset();$('history-section').open=false;renderTimeline();$('assignment-form').reset();$('assignment-status').textContent='';$('assignment-reload').hidden=true;$('assignment-form').hidden=true;$('priority-form').reset();$('priority-status').textContent='';$('priority-reload').hidden=true;inbox.reset();summaryAbort?.abort();summaryAbort=null;ticketSummary.reset();$('ticket-filters').reset();resetOpening(true);conversation.reset('');mutations.reset('');s.createKey=crypto.randomUUID();$('create-dialog').close();$('older-messages').hidden=true;$('older-notes').hidden=true;s.epoch++;s.detail++;s.token='';s.workspace='';s.me=null;$('identity-name').textContent='';$('workspace-label').textContent='Workspace autorizado';for(const id of ['stat-total','stat-open','stat-wait','stat-done','nav-count'])$(id).textContent='0';$('assignment-filter-label').hidden=true;s.ticket=null;s.tickets=[];s.next=null;for(const id of ['ticket-list','messages','notes','ticket-title','ticket-description','contract-info','ticket-tags'])$(id).replaceChildren();$('message-body').value='';$('ticket-detail').hidden=true;$('empty-detail').hidden=false;mode('public');renderTransitions();render();}
 const serviceAvailable=()=>!!s.demo||s.config?.operational!==false;
 function renderServiceAvailability(){
  const available=serviceAvailable();
@@ -193,11 +195,31 @@ function renderConversation(){
  for(const kind of ['messages','notes']){
   $(kind).replaceChildren();const items=conversation.items(kind);
   for(const m of items){const n=el('article','message'+(kind==='notes'?' internal':''));
+   if(kind==='messages'){n.dataset.messageId=m.id;n.tabIndex=-1;}
    n.append(el('small','',(kind==='notes'?'NOTA INTERNA':m.actor_type==='human_agent'?'Equipe de suporte':'Solicitante')+' · '+date(m.created_at)),el('p','',m.body));$(kind).append(n);
   }
   if(kind==='messages'&&!items.length)$(kind).append(el('p','fine','Ainda não há respostas nesta conversa.'));
   $('older-'+kind).hidden=!conversation.next(kind);
  }
+ messageSearch.update(s.me&&s.ticket&&s.actions?JSON.stringify([s.epoch,s.workspace,s.me.id,s.ticket.id]):'',conversation.items('messages'),!!conversation.next('messages'));
+}
+function discardRefusedDetail(){
+ // Invalidate any detail read started before this authoritative refusal.
+ ++s.detail;
+ messageSearch.reset();renderTicketGuidance($('ticket-guidance'),null,null);
+ cgWorkflow?.destroy();cgWorkflow=null;$('cg-workflow').hidden=true;cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;
+ s.actions=null;s.notesUnavailable=false;conversation.reset('');timeline.reset();renderConversation();renderTimeline();
+ $('ticket-detail').hidden=true;$('empty-detail').hidden=false;
+   // Hiding a refused projection is not cleanup. Do not retain the prior detail
+   // or its operational drafts in hidden DOM. Transient failures retain drafts.
+   s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';
+   $('assignment-form').reset();$('priority-form').reset();
+   for(const field of ['ticket-number','ticket-title','ticket-description','ticket-tags','contract-info','assignment-label','assignment-status','priority-status','detail-action-status','notes-status'])$(field).replaceChildren();
+   $('assignment-reload').hidden=true;$('priority-reload').hidden=true;$('notes-retry').hidden=true;
+   $('notes-section').open=false;$('history-section').open=false;
+   // Discard the old list snapshot as well; explicit refresh revalidates its rows.
+   inbox.reset(inbox.filters());syncInbox();
+ renderComposer();renderAssignment();renderPriority();renderTransitions();
 }
 async function older(kind){
  const cursor=conversation.next(kind),id=s.ticket?.id,seq=s.detail,generation=conversation.generation();
@@ -205,6 +227,13 @@ async function older(kind){
  const button=$('older-'+kind);button.disabled=true;
  try{const page=await api('/tickets/'+id+'/'+kind+'?limit=50&cursor='+encodeURIComponent(cursor));
   if(seq===s.detail&&id===s.ticket?.id&&conversation.accept(generation,kind,page))renderConversation();
+ }catch(error){
+  // A refusal of an old page must never erase another ticket or a newer read.
+  if(seq!==s.detail||id!==s.ticket?.id||generation!==conversation.generation())return;
+  if(kind==='messages'&&[401,403,404].includes(error.status)){
+   discardRefusedDetail();inboxUX?.failDetail(inboxUX.beginDetail(id,false),error.status);
+  }
+  throw error;
  }finally{button.disabled=false;}
 }
 async function detail(id,{navigate=false}={}){
@@ -213,6 +242,7 @@ async function detail(id,{navigate=false}={}){
  if(navigate&&id!==s.ticket?.id&&workspaceChangeBlocked()){notice('Conclua ou recupere o envio atual antes de abrir um chamado. Voltar à lista não cancela o envio.',true);return;}
  cgWorkflow?.destroy();cgWorkflow=null;$('cg-workflow').hidden=true;cgReview?.destroy();cgReview=null;$('cg-review').hidden=true;
  const uxRead=inboxUX?.beginDetail(id,navigate);
+ messageSearch.reset();
  // Lock controls while the current GET and required conversation are being refreshed.
  s.actions=null;s.notesUnavailable=false;renderTicketGuidance($('ticket-guidance'),null,null);
  timeline.reset();renderTimeline();$('notes-section').hidden=true;$('note-tab').hidden=true;
@@ -252,15 +282,7 @@ async function detail(id,{navigate=false}={}){
   s.actions=null;conversation.reset('');timeline.reset();renderConversation();renderTimeline();
   $('ticket-detail').hidden=true;$('empty-detail').hidden=false;
   if([401,403,404].includes(error.status)){
-   // Hiding a refused projection is not cleanup. Do not retain the prior detail
-   // or its operational drafts in hidden DOM. Transient failures retain drafts.
-   s.ticket=null;mutations.reset('');$('message-body').value='';$('transition-reason').value='';
-   $('assignment-form').reset();$('priority-form').reset();
-   for(const field of ['ticket-number','ticket-title','ticket-description','ticket-tags','contract-info','assignment-label','assignment-status','priority-status','detail-action-status','notes-status'])$(field).replaceChildren();
-   $('assignment-reload').hidden=true;$('priority-reload').hidden=true;$('notes-retry').hidden=true;
-   $('notes-section').open=false;$('history-section').open=false;
-   // Discard the old list snapshot as well; explicit refresh revalidates its rows.
-   inbox.reset(inbox.filters());syncInbox();
+   discardRefusedDetail();
   }
   renderComposer();renderAssignment();renderPriority();renderTransitions();
   inboxUX?.failDetail(uxRead??inboxUX.beginDetail(id,navigate),error.status);

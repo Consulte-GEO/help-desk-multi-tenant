@@ -1,0 +1,48 @@
+Auth fixture check: busca informa conjunto público carregado e paginação ainda não consultada
+Auth fixture check: busca conta mensagens uma vez, preserva contexto e trata HTML como texto
+Auth fixture check: anterior/próxima e Enter/Shift+Enter movem foco sem requisitar mensagens
+Auth fixture check: página anterior amplia a busca e preserva a mensagem selecionada
+Auth fixture check: notas não participam da busca; regex é literal; limite e Escape são acessíveis
+Auth fixture check: 390px sem rolagem horizontal, alvos de toque e ordem Tab preservados
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\browser-message-search.py", line 74, in <module>
+    expect(root).to_be_hidden();expect(field).to_have_value('');expect(page.locator('#messages article')).to_have_count(0)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\sync_api\_generated.py", line 14731, in to_be_hidden
+    self._sync(self._impl_obj.to_be_hidden(timeout=to_milliseconds(timeout)))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_sync_base.py", line 111, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 828, in to_be_hidden
+    await self._expect_impl(
+    ...<5 lines>...
+    )
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 128, in _expect_impl
+    _record_soft_or_raise(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        AssertionError(
+        ^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        self._is_soft,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 60, in _record_soft_or_raise
+    raise error
+AssertionError: Locator expected to be hidden
+Actual value: visible 
+Call log:
+  - Expect "to_be_hidden" locator("#message-search") with timeout 5000ms
+  - waiting for locator("#message-search")
+    14 × locator resolved to <div role="search" id="message-search" class="message-search" aria-label="Busca na conversa pública">…</div>
+       - unexpected value "visible"
+
+Aria snapshot:
+- search "Busca na conversa pública":
+  - text: Buscar nas mensagens carregadas
+  - searchbox "Buscar nas mensagens carregadas": concreto
+  - button "Mensagem anterior"
+  - button "Próxima mensagem"
+  - button "Limpar busca"
+  - status: 1 de 2 mensagens encontradas. 3 mensagem(ns) pública(s) carregada(s). Carregue mensagens anteriores para ampliar a busca.

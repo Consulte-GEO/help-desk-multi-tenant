@@ -1,0 +1,54 @@
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\browser-message-search.py", line 28, in <module>
+    with page.expect_response(detail_pattern) as response:fill_login(page)
+                                                          ~~~~~~~~~~^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\helpers\browser_auth_fixture.py", line 114, in fill_login
+    page.locator('#workspace').fill(workspace)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\sync_api\_generated.py", line 11640, in fill
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.fill(
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_sync_base.py", line 111, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_locator.py", line 228, in fill
+    return await self._frame.fill(self._selector, strict=True, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_frame.py", line 641, in fill
+    await self._fill(**locals_to_params(locals()))
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_frame.py", line 653, in _fill
+    await self._channel.send("fill", self._timeout, locals_to_params(locals()))
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_connection.py", line 78, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_connection.py", line 636, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Locator.fill: Timeout 7000ms exceeded.
+Call log:
+  - waiting for locator("#workspace")
+    - locator resolved to <input id="workspace" autocomplete="off" placeholder="Opcional: buscar meus workspaces"/>
+    - fill("11111111-1111-4111-8111-111111111111")
+  - attempting fill action
+    2 × waiting for element to be visible, enabled and editable
+      - element is not visible
+    - retrying fill action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and editable
+      - element is not visible
+    - retrying fill action
+      - waiting 100ms
+    14 × waiting for element to be visible, enabled and editable
+       - element is not visible
+     - retrying fill action
+       - waiting 500ms
+

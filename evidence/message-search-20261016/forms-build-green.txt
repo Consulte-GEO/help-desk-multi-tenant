@@ -1,0 +1,33 @@
+✔ legacy service read is bounded instead of returning an unlimited conversation (8.3319ms)
+✔ messages collection uses bounded cursor pages without missing or duplicating equal timestamps (53.109ms)
+✔ notes collection uses bounded cursor pages without missing or duplicating equal timestamps (11.4927ms)
+✔ timeline collection uses bounded cursor pages without missing or duplicating equal timestamps (10.574ms)
+✔ public timeline filters internal events before computing next cursor (6.8078ms)
+✔ rejects invalid conversation parameters limit=0 (1.7342ms)
+✔ rejects invalid conversation parameters limit=101 (1.0088ms)
+✔ rejects invalid conversation parameters limit=1.5 (0.9515ms)
+✔ rejects invalid conversation parameters limit=no (1.0431ms)
+✔ rejects invalid conversation parameters limit=2&limit=3 (0.7854ms)
+✔ rejects invalid conversation parameters offset=5 (0.7172ms)
+✔ rejects invalid conversation parameters cursor=notjson (1.2971ms)
+✔ cursor is bound to collection, principal, workspace and ticket (2.8617ms)
+✔ requester cannot page notes even when given an agent cursor (1.7809ms)
+✔ collection defaults to latest 50 entries in descending order (1.3244ms)
+✔ late response from another ticket or profile is discarded and old notes are erased (1.4575ms)
+✔ descending API pages are displayed chronologically and duplicate IDs are merged (5.4594ms)
+✔ message and note cursors remain separate and refreshed ticket invalidates in-flight pages (0.355ms)
+✔ C07 build whitelist copies new form assets byte-for-byte and preserves old assets (1837.9438ms)
+✔ public-message search is literal, counts messages once and preserves text/order (2.2109ms)
+✔ case folding preserves meaningful accents and accepts unicode without treating it as a pattern (0.4395ms)
+✔ navigation wraps in chronological message order without changing the search (0.256ms)
+✔ new authorized pages preserve selected message and recalculate matches and loaded coverage (0.1972ms)
+✔ ticket, person, workspace changes and suspension clear terms and prior message references (0.2396ms)
+✔ invalid or overly long terms never leave old matches or references in the view (0.3039ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2027.4348
