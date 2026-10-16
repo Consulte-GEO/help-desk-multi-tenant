@@ -43,7 +43,8 @@ export function statusesForSearch(filters:TicketSearchFilters):TicketStatus[]|nu
  return filters.status?statuses.filter(s=>customerStatus(s)===filters.status):null;
 }
 export function matchesTicketSearch(ticket:Ticket,filters:TicketSearchFilters,p?:Principal):boolean{
- return (!filters.q||foldSearch(ticket.subject).includes(filters.q)||foldSearch(ticket.id)===filters.q)
+ return (!filters.q||foldSearch(ticket.subject).includes(filters.q)||foldSearch(ticket.id)===filters.q
+   ||!!ticket.consulteGeo&&foldSearch(ticket.consulteGeo.protocol)===filters.q)
   &&(!filters.status||customerStatus(ticket.status)===filters.status)
   &&(!filters.priority||ticket.priority===filters.priority)
   &&(!filters.assignment||!!p&&isOperator(p,ticket.workspaceId,ticket.accountId)

@@ -555,6 +555,29 @@ with sync_playwright() as p:
     assert not errors,errors
     record('Failed global logout before service release clears local identity and reports unconfirmed revocation')
     context.close()
+    context,page,errors,posts=prepare(browser,authentication_only=True)
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    page.locator('#logout-all-login').click()
+    expect(page.locator('#logout-all-dialog')).to_be_visible()
+    # Retain only a public DOM callback to reproduce a delayed confirmation.
+    # Local logout clears the choice; a subsequent different backend identity
+    # must not inherit the earlier decision to revoke every session.
+    page.evaluate('window.delayedLogoutConfirmation=document.getElementById("confirm-logout-all").onclick; document.getElementById("cancel-login").click()')
+    expect(page.locator('#logout-all-dialog')).not_to_be_visible()
+    expect(page.locator('#submit-login')).to_be_enabled()
+    other='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
+    page.route('**/v1/me',lambda route: route.fulfill(status=200,json={'id':other,'kind':'human','workspace_id':WS,'workspace_role':None,'grants':[],'scopes':['tickets:read']}))
+    fill_login(page)
+    expect(page.locator('#login-status')).to_contain_text('Identidade e acesso ao workspace confirmados')
+    calls_before=page.evaluate('__authFixture.calls.filter(x=>x.url.includes("/logout?")).length')
+    page.evaluate('window.delayedLogoutConfirmation()')
+    expect(page.locator('#logout-all-login')).to_be_visible()
+    assert page.evaluate('__authFixture.calls.filter(x=>x.url.includes("/logout?")).length')==calls_before
+    assert posts==[]
+    assert not errors,errors
+    record('A delayed global confirmation from a previous identity cannot revoke the newly authenticated identity')
+    context.close()
     next_workspace='88888888-8888-4888-8888-888888888888'
     context,page,errors,posts=prepare(browser,workspace_options=[{'id':next_workspace,'name':'Outra operação autorizada'}])
     fill_login(page)

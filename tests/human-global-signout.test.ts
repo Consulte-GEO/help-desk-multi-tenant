@@ -52,3 +52,12 @@ test('invalid session logout scope preserves active session without contacting p
  let sent=0;const auth=createHumanSession({signIn:async()=>issued,refresh:async()=>issued,signOut:async()=>{sent++;}});
  await auth.signIn(fields);await assert.rejects(auth.signOut({scope:'others'} as any));assert.equal(auth.state().phase,'active');assert.equal(sent,0);
 });
+
+test('real transport timeout crosses global session cleanup without reporting revocation or retrying',async()=>{
+ let dispatches=0;const transport=createHumanAuthTransport(config,{timeoutMs:10,fetcher:async()=>{dispatches++;return new Promise(()=>{});}});
+ const auth=createHumanSession({signIn:async()=>issued,refresh:async()=>issued,signOut:transport.signOut});
+ await auth.signIn(fields);const proof=await auth.authorization(),out=auth.signOut({scope:'global'});
+ assert.equal(auth.state().phase,'signing_out');assert.equal(auth.current(proof),false);await assert.rejects(auth.authorization());
+ assert.equal(await out,'unconfirmed');assert.equal(dispatches,1);assert.equal(auth.state().phase,'signed_out');
+ await auth.signIn(fields);assert.equal(auth.state().phase,'active');assert.equal(dispatches,1);
+});
