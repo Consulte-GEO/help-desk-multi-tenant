@@ -2,5 +2,5 @@
 <script setup lang="ts">
 import {useRoute} from 'vue-router';const props=defineProps<{accounts:Array<{id:string;name:string}>;accountId:string;onSelect:(id:string)=>void}>(),route=useRoute();
 const tabs=[{path:'/',label:'Cadastro'},{path:'/planilhas/intake',label:'Planilhas'},{path:'/laudos',label:'Laudos'},{path:'/meus-rascunhos',label:'Rascunhos'},{path:'/admin/processos',label:'Processos'},{path:'/admin',label:'Revisão'},{path:'/emails',label:'E-mails'},{path:'/admin/ajuda',label:'Ajuda contextual'}];
-function isActive(path:string){return path==='/planilhas/intake'?route.path.startsWith('/planilhas'):route.path===path;}function selectAccount(e:Event){props.onSelect((e.target as HTMLSelectElement).value);}
+function isActive(path:string){return path==='/planilhas/intake'?route.path.startsWith('/planilhas'):route.path===path;}function selectAccount(e:Event){const select=e.target as HTMLSelectElement,id=select.value;select.value=props.accountId;props.onSelect(id);}
 </script>

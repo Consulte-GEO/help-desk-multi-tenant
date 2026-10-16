@@ -1,7 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import type {Principal} from '../domain/model.ts';
 import {uuidIdentifier} from '../domain/input-values.ts';
-import {HelpdeskError} from '../domain/errors.ts';
+import {controlledJson} from './controlled-json.ts';
 import {createImplementationSupportOperations,implementationFailure as fail,implementationHash,implementationRecord as record,implementationRow,implementationStaff,readImplementationMethods,pagedImplementationMethods,pagedImplementationTables} from '../infrastructure/implementation-support.ts';
 import type {ImplementationStore,ImplementationAi,ImplementationKind,ImplementationTransaction} from '../infrastructure/implementation-support.ts';
 import {validateImplementationSupportAiRequest} from '../infrastructure/implementation-support-ai.ts';
@@ -10,7 +10,7 @@ const BASE='/v1/implementation-support';
 const kinds=new Set<ImplementationKind>(['draft','import','laudo']);
 export interface ImplementationSupportOptions{origin:string;authenticate:(request:Request)=>Promise<Principal>;store:ImplementationStore;ai?:ImplementationAi;enabled?:()=>boolean;afterAuthentication?:(principal:Principal)=>Promise<void>;}
 function json(body:unknown,status=200,headers:Record<string,string>={}){return Response.json(body,{status,headers:{'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','vary':'Authorization, X-Workspace-Id, Origin',...headers}});}
-async function bodyJson(req:Request,limit:number){if(!/^application\/json(?:\s*;|$)/i.test(req.headers.get('content-type')??'')||req.headers.has('content-encoding'))throw fail(415,'unsupported_media_type');const length=Number(req.headers.get('content-length'));if(length>limit)throw fail(413,'payload_too_large');if(!req.body)throw fail(400,'invalid_json');const reader=req.body.getReader(),chunks:Uint8Array[]=[];let total=0;try{for(;;){const r=await reader.read();if(r.done)break;total+=r.value.length;if(total>limit)throw fail(413,'payload_too_large');chunks.push(r.value);}const bytes=new Uint8Array(total);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}return record(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes)));}catch(e){if(e instanceof HelpdeskError)throw e;throw fail(400,'invalid_json');}finally{void reader.cancel().catch(()=>{});reader.releaseLock();}}
+async function bodyJson(req:Request,limit:number){const length=Number(req.headers.get('content-length'));if(length>limit)throw fail(413,'payload_too_large');return controlledJson(req,limit,5000);}
 function version(req:Request,body:Record<string,unknown>):number|undefined{const raw=body.expected_version??req.headers.get('if-match');if(raw===null||raw===undefined)return undefined;const n=typeof raw==='number'?raw:Number(String(raw).replace(/^"|"$/g,''));if(!Number.isSafeInteger(n)||n<0)throw fail(400,'invalid_implementation_version');return n;}
 function key(req:Request):string{const k=req.headers.get('idempotency-key');if(!k)throw fail(400,'invalid_idempotency_key');return uuidIdentifier(k);}
 function utf8Size(body:unknown){return Buffer.byteLength(JSON.stringify(body),'utf8');}
