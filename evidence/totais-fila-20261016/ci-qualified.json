@@ -1,0 +1,90 @@
+{
+  "sourceCommit": "626eed2de0c91fa1989adb6f77a6d380197b308d",
+  "runId": 38919687542,
+  "artifact": "helpdesk-homologation-626eed2de0c91fa1989adb6f77a6d380197b308d-38919687542-1",
+  "artifactDigest": "sha256:69b31419b43165f31a6f42585b55d0631255d19aa594fce4829a86b531a71854",
+  "sourceFingerprint": "a9e20703dde0277a862c83349f656decf17f4b9afdb895b9670e9ad217212dfc",
+  "sourceUnchanged": true,
+  "reportValidated": true,
+  "logsValidated": true,
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 5855,
+        "pass": 5855,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 700,
+        "pass": 700,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 639,
+        "pass": 639,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "hashes": [
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/lock.log",
+      "sha256": "2aedd9f70b22ecc31c51011eeadc9d40bae697b965ffc8c4771f3235e35edc2d"
+    },
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/install.log",
+      "sha256": "751547e86e25a3b7a9624050c609f2a7de880fa2bdff1bf7d0c3e5f00b48643c"
+    },
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/audit.log",
+      "sha256": "dc1a4bd9a3ce8b642ccf8bc1045f62643fb99dd06069afda88dde2ba906724fb"
+    },
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/application.log",
+      "sha256": "996521da8db05adf219dc8e304d0332a1d53a5dbbe98458bbdf4c5efdc43adf9"
+    },
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/postgres.log",
+      "sha256": "62b074dd28c0a6ed22ab6e841e0b1fb825e3358fc05eaa443006f3921771bb5f"
+    },
+    {
+      "file": "runs/919c159e-f149-4f78-9ed8-6e0c3e5064db/interface.log",
+      "sha256": "660d6d30796a7c5181ce1cb51f45911cb743f32b4f35c24a28e08b1796b9cb80"
+    }
+  ],
+  "productionApproved": false
+}

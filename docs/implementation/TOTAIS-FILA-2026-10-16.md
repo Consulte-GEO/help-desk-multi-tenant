@@ -35,8 +35,8 @@
 - [x] Implementar contrato estrito, serviço e contagem Memory/PostgreSQL, reutilizando preparação local e filtros; testes de isolamento/validação/contagem completa.
 - [x] Montar rota autenticada na transação local, capacidade e configuração pública, mantendo gates fechados nos demais modos.
 - [x] Integrar cartões, prazo/erro/repetição e limpeza de sessão; incluir módulos no grafo de assets.
-- [ ] Atualizar OpenAPI/JSON Schema e testes PostgreSQL/browser reais descartáveis.
-- [ ] Rodar verificações, revisão independente da branch e CI Linux; corrigir achados importantes; abrir PR para revisão, sem merge/publicação automática desta nova etapa.
+- [x] Atualizar OpenAPI/JSON Schema e testes PostgreSQL/browser reais descartáveis.
+- [x] Rodar verificações, revisão independente da branch e CI Linux; corrigir achados importantes; abrir PR para revisão, sem merge/publicação automática desta nova etapa.
 
 ## Publicação anterior — PR61
 
@@ -44,14 +44,35 @@ PR61 mesclado em `2c201d0849da330868ebd7bd2fbd964730a5074a`; deploy Netlify `6ad
 
 ## Progresso observado
 
-Primeiros7 testes executados vermelhos antes da implementação;31 testes focais atuais aprovados (domínio/HTTP, estado, adaptador, rota transacional, capacidade e grafo estático). Navegador local real com provedor/API sintéticos:6 verificações aprovadas, incluindo totais607 versus lista parcial, erro/repetição, carregar mais sem nova totalização, filtro antigo,390px e logout com resposta pendente. Não é aceite produtivo humano.
+Primeiros7 testes executados vermelhos antes da implementação;31 testes focais aprovados na primeira etapa (domínio/HTTP, estado, adaptador, rota transacional, capacidade e grafo estático). Navegador local real com provedor/API sintéticos:6 verificações aprovadas, incluindo totais607 versus lista parcial, erro/repetição, carregar mais sem nova totalização, filtro antigo,390px e logout com resposta pendente. Não é aceite produtivo humano.
 
-Typecheck, contratos45 operações,21 migrations, upgrade CG, segredos heurísticos, lock e build passaram. A execução ampla Windows intermediária teve5853 testes/5713 aprovados/140 falhas; comparação identificou uma falha nova de fixture de build sem os novos assets. A fixture foi ampliada e o caso passou; as demais falhas pertencem à baseline do ambiente Windows/Node24. A qualificação integral Linux/PostgreSQL17/interface ainda é gate separado, sem remover ou pular testes.
+Typecheck, contratos45 operações,21 migrations, upgrade CG, segredos heurísticos, lock e build passaram. A execução ampla Windows intermediária teve5853 testes/5713 aprovados/140 falhas; comparação identificou uma falha nova de fixture de build sem os novos assets. A fixture foi ampliada e o caso passou; as demais falhas pertencem à baseline do ambiente Windows/Node24. A qualificação posterior Linux/PostgreSQL17/interface passou integralmente, conforme recibo abaixo, sem remover ou pular testes.
 
-A agregação também intersecta a autoridade atual do PostgreSQL com o principal congelado da aplicação, reproduzindo os filtros adicionais de leitura/operador/produto da lista. O teste SQL real inclui principal deliberadamente reduzido, namespace/workspace alheio, protocolo, paginação e desativação de obra; execução pendente do CI.
+A agregação também intersecta a autoridade atual do PostgreSQL com o principal congelado da aplicação, reproduzindo os filtros adicionais de leitura/operador/produto da lista. O teste SQL real inclui principal deliberadamente reduzido, namespace/workspace alheio, protocolo, paginação e desativação de obra; execução aprovada no CI da fonte626eed2.
 
 HD019/026 continuam parcialmente abertos: esta etapa entrega apenas totais da fila; cockpit, visões salvas, portal, relatórios, exportações e indicadores de SLA não são declarados concluídos.
 
 ## Revisão independente
 
-Revisão da fonte3871d34 contra2c201d0, sem achados Critical/Important. Conferidos RLS/namespace, interseção do principal, filtros/estados, validação, gates, grafo de assets e respostas antigas. O único achado menor foi405 versus503 para método não permitido na rota montada. Corrigido com teste observado vermelho (503 recebido) e verde (405/Allow GET, sem SQL);32 testes focais aprovados após o ajuste. Nenhum achado conhecido adiado. A íntegra PostgreSQL/interface continua sendo qualificação do CI, não desta revisão.
+Revisão da fonte3871d34 contra2c201d0, sem achados Critical/Important. Conferidos RLS/namespace, interseção do principal, filtros/estados, validação, gates, grafo de assets e respostas antigas. O único achado menor foi405 versus503 para método não permitido na rota montada. Corrigido com teste observado vermelho (503 recebido) e verde (405/Allow GET, sem SQL);32 testes focais aprovados após o ajuste. Nenhum achado conhecido adiado. A qualificação PostgreSQL/interface vem do CI abaixo, não desta revisão.
+
+## Continuidade para merge e aceite hospedado desta etapa
+
+1. Usar a fonte e o fingerprint exatos da qualificação desta branch; preservar relatório e logs originais do CI. Conferir base concorrente, revisão e checks do PR antes de um merge posteriormente autorizado.
+2. Publicação pelo pipeline Netlify atual, sem migration, novo papel, flag de administração ou segredo. A configuração da composição já existente determina `ticket_totals`; não editar banco para produzir capacidade.
+3. Conferir deploy READY/commit publicado, manifesto estático e os dois módulos novos (`ticket-summary-state.js` e `shared/ticket-summary.js`). Negar consulta anônima aos totais; conferir `no-store` e capacidades efetivamente montadas.
+4. Com sessão humana legítima, abrir Chamados e comparar cartões versus lista carregada; aplicar busca/status/prioridade/responsabilidade permitidos, atualizar, carregar mais e usar390px. Usar somente chamados existentes autorizados. Não criar registros fictícios para obter volume.
+5. Distinguir total zero de resumo indisponível. A repetição do resumo não deve apagar a lista nem enviar comandos de negócio. Conta/obra revogada deve deixar de participar conforme a autoridade corrente, sem restaurar vínculos para o teste.
+6. Registrar esse aceite separadamente das fixtures locais/CI. Se o controle de navegador falhar, manter a pendência explícita; não alterar MFA, sessão, política de navegador, gates ou banco para contorná-la.
+
+O próximo recorte de desenvolvimento pode projetar o SLA corrente já persistido, com cobertura/definição dos indicadores e tratamento explícito de indisponibilidade. Não criar novas metas ou políticas contratuais, prometer cumprimento de prazo a partir destes totais ou ativar o backoffice sensível enquanto MFA permanece adiada.
+
+## Qualificação final e handoff do PR62
+
+[PR62](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/62), fonte `626eed2de0c91fa1989adb6f77a6d380197b308d`. [CI38919687542](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38919687542): **5855 aplicação +700 PostgreSQL17 +639 interface =7194**, sem falha, cancelamento, skip ou todo. [Merge de teste38919697076](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38919697076) também aprovado. HDA, Apoio e CodeQL aprovados.
+
+Os novos cenários de agregação restrita, paginação e revogação de obra foram confirmados nos logs PostgreSQL; as6 verificações novas da tela aparecem no log de interface. Instalação limpa, audit, verify (inclui typecheck/contratos/build) e validação de evidência passaram.
+
+Artefato original: `helpdesk-homologation-626eed2de0c91fa1989adb6f77a6d380197b308d-38919687542-1`, digest `sha256:69b31419b43165f31a6f42585b55d0631255d19aa594fce4829a86b531a71854`. Fingerprint `a9e20703dde0277a862c83349f656decf17f4b9afdb895b9670e9ad217212dfc`. Relatório e6 logs originais em `evidence/homologation/runs/919c159e-f149-4f78-9ed8-6e0c3e5064db`; recibo em `evidence/totais-fila-20261016/ci-qualified.json`. Cópia conferida por hash contra os arquivos originais, e `check:homologation` aprovado na árvore local. Alterações posteriores de documentação/evidência preservam o fingerprint qualificado.
+
+PR62 pronto para revisão. Nenhuma alteração de banco, configuração ou negócio em produção nesta etapa; publicação e aceite humano dos totais continuam pendentes de seu próprio merge/deploy autorizado. Produção permanece PR61. Os documentos de levantamento/handoff antigos não rastreados foram preservados.
