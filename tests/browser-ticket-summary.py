@@ -48,7 +48,7 @@ with sync_playwright() as pw:
     record('carregar mais não reconta nem substitui os totais completos')
     state['mode']='hold';page.locator('#search').fill('antigo');page.locator('#ticket-filters').evaluate('(f)=>f.requestSubmit()')
     expect(page.locator('#summary-status')).to_contain_text('Consultando')
-    page.wait_for_function("document.querySelector('#ticket-list .ticket-card')!==null")
+    page.locator('#ticket-list .ticket-card').first.wait_for(state='attached')
     state['mode']='ok';page.locator('#search').fill('novo');page.locator('#ticket-filters').evaluate('(f)=>f.requestSubmit()')
     expect(page.locator('#stat-total')).to_have_text('607')
     for route in state['held']:route.fulfill(status=200,content_type='application/json',body=json.dumps(summary(999)))

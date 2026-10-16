@@ -31,3 +31,11 @@ Fonte1835f8d/run38953442104 e merge38953497420 falharam em browser-smoke.py:71, 
 O smoke alterava o transporte com unroute antes do retry explícito. networkidle/classe selected não vinculavam os dois refreshes anteriores às respectivas respostas de notas. Uma lista anterior obsoleta pode retornar de list() e seu chamador ainda iniciar detail(); após unroute a leitura200 oculta retry. O revisor reproduziu deterministicamente essa ordem com list extraída e createTicketListState real. A execução local instrumentada observou200,200,503,503 antes do unroute, mostrando que uma leitura anterior atravessava a mudança da fixture; passou nessa execução e não comprova por si só a reprodução visual da falha do CI.
 
 Corrigida somente a fixture: cada um dos dois refreshes anteriores aguarda sua resposta200 de notas; interceptor de indisponibilidade fica instalado com estado explícito até a ação de recuperar, sendo removido após200 e restauração do rascunho. Asserções de erro/visibilidade/privacidade/rascunho mantidas; acrescentada exigência de seção open. Sem sleep/retry, aumento de timeout, alteração de produto ou remoção de testes. Smoke local completo40/40 aprovado com Python3.14/playwright1.64, loopback/dados sintéticos próprios; relatório original em local-smoke/. CI final ainda necessário na bancada Linux fixada em1.63.
+
+### Segundo diagnóstico, independente da recuperação de notas
+
+Run38955073919 da fontec8958b7 aprovou5900 aplicação/700PG, mas parou antes do smoke de notas: browser-ticket-summary.py:51, Page.wait_for_function/EvalError de CSPscript-srcself. Log original/report/hash/digest em second-failure/, sem qualificar esse run. Localmente a versão anterior passou6/6, portanto não foi reproduzida a exceção CSP nessa máquina. O diagnóstico da chamada e equivalência foram conferidos pelo revisor.
+
+Substituída somente a espera de expressão querySelector!==null por locator(...).first.wait_for(state='attached'), mesma exigência de um elemento no DOM, inclusive oculto. Mantidas CSP/configuração, asserções e timeout. Não foi habilitado unsafe-eval nem desativada política do navegador. A execução corrigida e novo CI ainda precisam confirmar a fonte final.
+
+Suíte de totais corrigida6/6 aprovada em loopback próprio; saída original em local-smoke/ticket-summary.txt. Contrato45 operações reconferido. Nova qualificação integral pendente.
