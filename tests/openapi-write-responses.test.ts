@@ -57,3 +57,23 @@ test('OpenAPI workflow problems preserve version conflicts and uncertain outcome
   assert.equal(b.code,code==='unexpected_private_code'?'workflow_store_unavailable':code);if(code==='transaction_outcome_unknown'){assert.match(b.detail,/mesma chave e conteúdo/);assert.equal(r.headers.get('retry-after'),null);}
  }
 });
+
+
+test('OpenAPI core receipts reject removed or malformed version, location and replay headers',async()=>{
+ const check=await gate;
+ async function qualify(path:string,method:string,r:Response,names:string[]){
+  assert.ok([200,201].includes(r.status));await check(path,method,r);const bytes=await r.clone().text();
+  for(const name of names){
+   const missing=new Headers(r.headers);missing.delete(name);await assert.rejects(()=>check(path,method,new Response(bytes,{status:r.status,headers:missing})),/Required response header absent/);
+   const malformed=new Headers(r.headers);malformed.set(name,name==='etag'?'W/"1"':name==='location'?'https://example.invalid/private':'TRUE');await assert.rejects(()=>check(path,method,new Response(bytes,{status:r.status,headers:malformed})),/Response header violates contract/);
+  }
+ }
+ const f=core();f.agent();const creation=await f.handler(request('/tickets','POST',input)),t=await creation.clone().json();
+ await qualify('/tickets','POST',creation,['etag','location','idempotency-replayed']);await qualify('/tickets','POST',await f.handler(request('/tickets','POST',input)),['etag','location','idempotency-replayed']);
+ await qualify('/tickets/{ticket_id}','GET',await f.handler(new Request(origin+'/v1/tickets/'+t.id)),['etag']);
+ for(const [suffix,method,body] of [['','PATCH',{priority:'high',reason:'Conferência'}],['/assignments','POST',{action:'claim',reason:'Conferência'}],['/transitions','POST',{to:'open',reason:''}]] as const){
+  const a=core(),ticket=await create(a);a.agent();const call=()=>a.handler(request('/tickets/'+ticket.id+suffix,method,body,{'idempotency-key':'header-operation-key-0001'}));
+  await qualify('/tickets/{ticket_id}'+suffix,method,await call(),['etag','idempotency-replayed']);await qualify('/tickets/{ticket_id}'+suffix,method,await call(),['etag','idempotency-replayed']);
+ }
+ for(const suffix of ['messages','notes']){const call=()=>f.handler(request('/tickets/'+t.id+'/'+suffix,'POST',{body:'Fixture autorizada'},{'idempotency-key':'header-'+suffix+'-key-0001'}));for(let n=0;n<2;n++)await qualify('/tickets/{ticket_id}/'+suffix,'POST',await call(),['idempotency-replayed']);}
+});

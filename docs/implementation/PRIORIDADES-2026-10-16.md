@@ -1,3 +1,5 @@
+> **16/10/2026 — PR66 em produção; continuidade de HD-002:** merge4899c7d/deploy6ad2751586c3cdf1e22acd80 READY;120 entradas HTTPS/hash e quatro erros nativos401 conformes, sem migração ou gravação de negócio. Agora em implementação a declaração/qualificação offline dos cabeçalhos dos recibos core; ainda sem homologação integral ou nova publicação. MFA/Novo GEO adiados, scanner cancelado e modelos técnicos ausentes preservados. [Estado e limites](CABECALHOS-RESPOSTAS-2026-10-16.md). Os registros abaixo são históricos.
+
 # Implementação das prioridades — 16/10/2026
 
 **Continuidade mais recente:** PR65 publicado/verificado; PR66 revisado e qualificado (7249 verificações) para correção de erros de envio e foco do Apoio, ainda sem merge/publicação; [estado, provas e próximos recortes](CONTRATOS-ENVIOS-2026-10-16.md). HD-002/019 continuam parciais; registros de preparação abaixo são históricos.

@@ -932,7 +932,24 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
+              },
+              "ETag": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                },
+                "description": "Versão do recibo original; pode ser histórica em replay."
+              },
+              "Location": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/v1/tickets/[A-Za-z0-9][A-Za-z0-9_-]{0,99}$"
+                },
+                "description": "Caminho relativo do chamado criado, preservado em replay."
               }
             }
           },
@@ -964,7 +981,24 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
+              },
+              "ETag": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                },
+                "description": "Versão do recibo original; pode ser histórica em replay."
+              },
+              "Location": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/v1/tickets/[A-Za-z0-9][A-Za-z0-9_-]{0,99}$"
+                },
+                "description": "Caminho relativo do chamado criado, preservado em replay."
               }
             }
           },
@@ -1081,10 +1115,12 @@
             },
             "headers": {
               "ETag": {
-                "description": "Versão atual entre aspas.",
+                "required": true,
                 "schema": {
-                  "type": "string"
-                }
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                },
+                "description": "Versão atual entre aspas."
               }
             }
           },
@@ -1161,13 +1197,16 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               },
               "ETag": {
+                "required": true,
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
                 },
-                "description": "Versão da resposta; em replay pode não ser a mais recente."
+                "description": "Versão do recibo original; pode ser histórica em replay."
               }
             }
           },
@@ -1357,13 +1396,16 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               },
               "ETag": {
+                "required": true,
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
                 },
-                "description": "Versão desta resposta, não necessariamente a atual em replay."
+                "description": "Versão do recibo original; pode ser histórica em replay."
               }
             }
           },
@@ -1636,7 +1678,8 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               }
             }
           },
@@ -1668,7 +1711,8 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               }
             }
           },
@@ -1880,7 +1924,8 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               }
             }
           },
@@ -1912,7 +1957,8 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
               }
             }
           },
@@ -2031,7 +2077,16 @@
                     "false"
                   ]
                 },
-                "description": "Indica reprodução de resultado anterior."
+                "description": "Indica reprodução de resultado anterior.",
+                "required": true
+              },
+              "ETag": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "pattern": "^\"[1-9][0-9]*\"$"
+                },
+                "description": "Versão do recibo original; pode ser histórica em replay."
               }
             }
           },
