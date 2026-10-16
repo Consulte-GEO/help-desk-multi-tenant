@@ -1,6 +1,6 @@
 # Cabeçalhos de resposta — continuidade de HD-002
 
-Estado: implementação delimitada após publicação do PR66; revisão e qualificação integral pendentes.
+Estado: PR67 implementado, revisado e qualificado na fontef4a166f; ainda sem merge/publicação. PR66 permanece em produção, merge4899c7d.
 
 ## Objetivo e reaproveitamento
 
@@ -39,3 +39,15 @@ Run38955073919 da fontec8958b7 aprovou5900 aplicação/700PG, mas parou antes do
 Substituída somente a espera de expressão querySelector!==null por locator(...).first.wait_for(state='attached'), mesma exigência de um elemento no DOM, inclusive oculto. Mantidas CSP/configuração, asserções e timeout. Não foi habilitado unsafe-eval nem desativada política do navegador. A execução corrigida e novo CI ainda precisam confirmar a fonte final.
 
 Suíte de totais corrigida6/6 aprovada em loopback próprio; saída original em local-smoke/ticket-summary.txt. Contrato45 operações reconferido. Nova qualificação integral pendente.
+
+## Qualificação integral da fonte final
+
+[CI38956201019](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38956201019) aprovado sobre f4a166f300d43b7a6c4ac30a90baac8bedda904e: **5900 aplicação +700 PostgreSQL17 +655 interface =7255**, zero falha/skip/cancelamento/todo. Instalação limpa/audit, build, types, contrato, migrations/upgrade e navegador concluídos no CI Linux. São seis novos cenários Node; não são 7255 funcionalidades novas.
+
+Artefato original helpdesk-homologation-f4a166f300d43b7a6c4ac30a90baac8bedda904e-38956201019-1, digest sha256:e7f3588d895fb48e156dea1112d75c02a2c7a9b09eb4c92e62769dcacf030d66. Fingerprint a87cd49c3cd9ae7245ef092b8fa2597d172e483d38c89a4f4c97f64e0bc641bc. Relatório e seis logs originais preservados em evidence/homologation/, validados antes/depois da cópia com hash/contagem/fonte; recibo evidence/response-headers-20261016/ci-qualified.json. Commits posteriores de documentação/evidência preservam esse fingerprint; não homologam código distinto.
+
+Revisão independente acumulada encerrada sem achados pendentes:23/23 testes dos dois arquivos Node modificados, contrato45 operações; delta da fixture revisado com P2 encerrado,7/7 hashes diagnósticos conferidos e relatório local40/40 inspecionado. Não houve repetição do navegador pelo revisor. Os runs iniciais falhos permanecem identificados como falhos. Nenhum teste, timeout ou política foi relaxado para obter aprovação.
+
+[Merge de teste38956207130](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38956207130) aprovado. HDA38956201021/38956207033 e Apoio38956201066/38956207023 aprovados na fonte final/merge; quatro análises CodeQL aprovadas. Relatório original da fonte final: evidence/homologation/runs/c1f13d59-43db-44f5-a1db-76b5c6085204/report.json. check:homologation aprovado. Delta f4a166f da espera DOM admitido pelo revisor;6/6 totais locais e hash diagnóstico conferidos, sem novos achados no acumulado. Prévia do commit documental final será conferida separadamente, sem remover gates.
+
+Após concluir esta entrega, o usuário solicitou preparar o MCP v2 anexado. Destinos GitHub/Supabase ainda não existem e o usuário determinou preparação local. O MCP será um projeto separado; nenhum merge/deploy desse PR67 nem provisionamento remoto do conector está presumido.
