@@ -1,0 +1,162 @@
+[
+  {
+    "check": "Agent sees two authorized accounts and internal note control",
+    "result": "passed"
+  },
+  {
+    "check": "Six-digit timestamps load authorized list, detail and public conversation without Date validation errors",
+    "result": "passed"
+  },
+  {
+    "check": "Refreshing server actions preserves the private composer channel and draft",
+    "result": "passed"
+  },
+  {
+    "check": "Optional notes outage leaves the public conversation usable and private draft stays private",
+    "result": "passed"
+  },
+  {
+    "check": "Fresh server action snapshot controls read-only UI despite unchanged agent profile",
+    "result": "passed"
+  },
+  {
+    "check": "Operator changes priority with private reason and keeps the public message draft",
+    "result": "passed"
+  },
+  {
+    "check": "Real 412 conflict requires explicit refresh and preserves the internal reason",
+    "result": "passed"
+  },
+  {
+    "check": "Late priority acknowledgement does not erase edits made during the save",
+    "result": "passed"
+  },
+  {
+    "check": "Client history displays priority but neither internal justification nor notes",
+    "result": "passed"
+  },
+  {
+    "check": "Late history cannot replace events belonging to another selected ticket",
+    "result": "passed"
+  },
+  {
+    "check": "Server-side query, public status and priority combine without erasing selected detail draft",
+    "result": "passed"
+  },
+  {
+    "check": "Clearing filters restores the authorized list and preserves the draft",
+    "result": "passed"
+  },
+  {
+    "check": "Late search response cannot replace a newer query or its selected conversation",
+    "result": "passed"
+  },
+  {
+    "check": "Guided opening displays authorized names and requires a choice for multiple accounts",
+    "result": "passed"
+  },
+  {
+    "check": "Laboratory requester sees only own account; internal content cleared on role switch",
+    "result": "passed"
+  },
+  {
+    "check": "Sole authorized context is automatically selected without UUID entry",
+    "result": "passed"
+  },
+  {
+    "check": "Requester resolves contract and opens a ticket through the interface",
+    "result": "passed"
+  },
+  {
+    "check": "Public conversation supports sending and reading a real API message",
+    "result": "passed"
+  },
+  {
+    "check": "Agent saves internal note separately from public conversation",
+    "result": "passed"
+  },
+  {
+    "check": "Late completion preserves a newer draft in the same conversation",
+    "result": "passed"
+  },
+  {
+    "check": "Pending send refuses ticket navigation without discarding the original intent",
+    "result": "passed"
+  },
+  {
+    "check": "Late completion cannot navigate back or erase another ticket draft",
+    "result": "passed"
+  },
+  {
+    "check": "Agent claims responsibility without erasing the public reply draft",
+    "result": "passed"
+  },
+  {
+    "check": "Operator filters own assignments and clearing preserves the current draft",
+    "result": "passed"
+  },
+  {
+    "check": "Delayed release preserves a newer responsibility draft",
+    "result": "passed"
+  },
+  {
+    "check": "Second product remains isolated after switching from agent",
+    "result": "passed"
+  },
+  {
+    "check": "Customer has no assignment controls or internal responsibility history",
+    "result": "passed"
+  },
+  {
+    "check": "Customer profile hides responsibility filters and resets the previous selection",
+    "result": "passed"
+  },
+  {
+    "check": "Late catalog response from another profile cannot replace the current selection",
+    "result": "passed"
+  },
+  {
+    "check": "Trim-invalid draft remains editable and can be corrected before creation dispatch",
+    "result": "passed"
+  },
+  {
+    "check": "Read failure after confirmed creation is reported without reopening unknown or duplicating the ticket",
+    "result": "passed"
+  },
+  {
+    "check": "Lost creation receipt recovers original key/payload without new resolution: expired",
+    "result": "passed"
+  },
+  {
+    "check": "Closing/reopening preserves unresolved creation and prevents editing: expired",
+    "result": "passed"
+  },
+  {
+    "check": "Lost creation receipt recovers original key/payload without new resolution: ambiguous",
+    "result": "passed"
+  },
+  {
+    "check": "Closing/reopening preserves unresolved creation and prevents editing: ambiguous",
+    "result": "passed"
+  },
+  {
+    "check": "Malformed creation receipt never confirms or unlocks a new creation",
+    "result": "passed"
+  },
+  {
+    "check": "Changing session clears unresolved creation without exposing the previous account draft",
+    "result": "passed"
+  },
+  {
+    "check": "390px mobile layout has no horizontal overflow",
+    "result": "passed"
+  },
+  {
+    "check": "Roadmap screen identifies implementation versus pending production features",
+    "result": "passed"
+  },
+  {
+    "check": "No browser JavaScript exceptions",
+    "result": "passed"
+  }
+]

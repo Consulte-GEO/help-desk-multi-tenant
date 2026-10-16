@@ -44,19 +44,28 @@ with sync_playwright() as p:
     # read before changing route behavior; otherwise a late read can hide retry.
     page.wait_for_load_state('networkidle')
     page.unroute(precision_pattern,precise_response)
-    page.locator('#refresh').click()
+    with page.expect_response(lambda response: '/notes?' in response.url and response.status == 200):
+        page.locator('#refresh').click()
     page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_be_visible()
 
     # These DOM tests are written but must not be counted as passed if navigation is blocked.
     page.locator('#note-tab').click()
     page.locator('#message-body').fill('Rascunho interno preservado no refresh.')
-    page.locator('#refresh').click()
+    with page.expect_response(lambda response: '/notes?' in response.url and response.status == 200):
+        page.locator('#refresh').click()
     page.wait_for_load_state('networkidle')
     expect(page.locator('#note-tab')).to_have_class(re.compile('selected'))
     expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
     record('Refreshing server actions preserves the private composer channel and draft')
-    def notes_outage(route): route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
+    # Keep the fault stable until the explicit retry. networkidle alone does
+    # not associate the application state with a specific refresh generation.
+    notes_unavailable = True
+    def notes_outage(route):
+        if notes_unavailable:
+            route.fulfill(status=503,content_type='application/problem+json',body='{"code":"unavailable","detail":"synthetic notes outage"}')
+        else:
+            route.continue_()
     page.route('**/v1/tickets/*/notes?*',notes_outage)
     with page.expect_response(lambda response: '/notes?' in response.url and response.status == 503):
         page.locator('#refresh').click()
@@ -67,13 +76,15 @@ with sync_playwright() as p:
     expect(page.locator('#note-tab')).to_be_hidden()
     expect(page.locator('#public-tab')).to_be_visible()
     expect(page.locator('#message-body')).not_to_have_value('Rascunho interno preservado no refresh.')
-    page.unroute('**/v1/tickets/*/notes?*',notes_outage)
     expect(page.locator('#notes-retry')).to_be_visible()
+    expect(page.locator('#notes-section')).to_have_attribute('open', '')
+    notes_unavailable = False
     with page.expect_response(lambda response: '/notes?' in response.url and response.status == 200):
         page.locator('#notes-retry').click()
     expect(page.locator('#note-tab')).to_be_visible()
     page.locator('#note-tab').click()
     expect(page.locator('#message-body')).to_have_value('Rascunho interno preservado no refresh.')
+    page.unroute('**/v1/tickets/*/notes?*',notes_outage)
     record('Optional notes outage leaves the public conversation usable and private draft stays private')
     detail_pattern=re.compile(r'.*/v1/tickets/[A-Za-z0-9_-]+$')
     def readonly_actions(route):

@@ -1,0 +1,155 @@
+Operação Consulte GEO: 22 verificações aprovadas.
+Cadastros Consulte GEO: 20 verificações aprovadas.
+Orientação do atendimento (shell e API sintéticos): 8 verificações aprovadas.
+Consultas rápidas da fila (shell e API sintéticos): 8 verificações aprovadas.
+Totais autorizados (shell e API sintéticos): 6 verificações aprovadas.
+Monitoramento de e-mails V2 (shell e transportes sintéticos): 15 verificações aprovadas.
+HTTP em memória: 41 verificações aprovadas.
+
+
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/helpdesk-ci-jxD4pb/source/tests/browser-smoke.py", line 71, in <module>
+    expect(page.locator('#notes-retry')).to_be_visible()
+  File "/home/runner/work/_temp/helpdesk-browser/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 23501, in to_be_visible
+    self._sync(
+  File "/home/runner/work/_temp/helpdesk-browser/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/home/runner/work/_temp/helpdesk-browser/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 852, in to_be_visible
+    await self._expect_impl(
+  File "/home/runner/work/_temp/helpdesk-browser/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 128, in _expect_impl
+    _record_soft_or_raise(
+  File "/home/runner/work/_temp/helpdesk-browser/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 60, in _record_soft_or_raise
+    raise error
+AssertionError: Locator expected to be visible
+Actual value: hidden 
+Call log:
+  - Expect "to_be_visible" locator("#notes-retry") with timeout 5000ms
+  - waiting for locator("#notes-retry")
+    - locator resolved to <button type="button" id="notes-retry" class="secondary">Atualizar acesso e notas</button>
+    13 × unexpected value "hidden"
+       - locator resolved to <button hidden="" type="button" id="notes-retry" class="secondary">Atualizar acesso e notas</button>
+    - unexpected value "hidden"
+
+Aria snapshot:
+- text: DEMONSTRAÇÃO LOCAL · Dados fictícios e temporários. Nenhum e-mail ou webhook é enviado.
+- link "Ir para o conteúdo":
+  - /url: "#hd-main-content"
+- complementary:
+  - link "Consulte GEO · Help Desk":
+    - /url: /
+    - img "Consulte GEO"
+    - text: Help Desk Consulte GEO
+  - text: Central de atendimento Consulte · demonstração
+  - paragraph: OPERAÇÃO
+  - navigation "Navegação principal":
+    - button "Chamados 2"
+    - button "Arquitetura e estágio"
+    - link "Wiki":
+      - /url: /wiki/
+  - text: CENTRAL DE ATENDIMENTO
+  - paragraph: Consulte GEO. Suporte perto da sua operação.
+  - button "Sair da sessão"
+- main:
+  - paragraph: CENTRAL DE SUPORTE
+  - text: Operação / Chamados Tema
+  - combobox "Tema da interface":
+    - option "Automático" [selected]
+    - option "Claro"
+    - option "Escuro"
+  - text: Perfil de demonstração
+  - combobox "Perfil de demonstração":
+    - option "Equipe Consulte · duas contas" [selected]
+    - option "Cliente · Laboratório Horizonte"
+    - option "Cliente · Escola Caminhos"
+  - text: Equipe de suporte
+  - paragraph: ATENDIMENTO, COM CONTEXTO
+  - heading "Chamados" [level=1]
+  - paragraph: Conversas, contratos e histórico em um só lugar.
+  - button "Novo chamado"
+  - article:
+    - text: Chamados carregados
+    - strong: "2"
+    - text: Da consulta aplicada
+  - article:
+    - text: Em atendimento
+    - strong: "2"
+    - text: Entre os itens carregados
+  - article:
+    - text: Aguardando cliente
+    - strong: "0"
+    - text: Entre os itens carregados
+  - article:
+    - text: Resolvidos
+    - strong: "0"
+    - text: Entre os itens carregados
+  - heading "Caixa de atendimento" [level=2]
+  - button "Atualizar chamados"
+  - search "Filtrar chamados":
+    - group "Consultas rápidas":
+      - button "Todos" [pressed]
+      - button "Aguardando resposta"
+      - button "Resolvidos"
+      - button "Meus atendimentos"
+      - button "Sem responsável"
+    - paragraph: As consultas rápidas definem situação e responsabilidade; preservam a busca e a prioridade dos campos abaixo. “Todos” remove apenas situação e responsabilidade. “Meus atendimentos” mostra os chamados atribuídos a você.
+    - status: "Consulta rápida: Todos."
+    - text: Assunto, protocolo CG ou UUID completo
+    - searchbox "Assunto, protocolo CG ou UUID completo"
+    - paragraph: Busca literal pelo assunto, protocolo CG completo (ex. CG-10001) ou UUID completo. Acentos são significativos no assunto. Notas e mensagens não são pesquisadas.
+    - group: Filtros adicionais
+    - button "Aplicar filtros"
+    - button "Limpar"
+  - paragraph: "Filtros aplicados: nenhum. Contagens referem-se somente aos itens carregados."
+  - status
+  - text: 2 carregado(s) Mais recentes primeiro
+  - 'button "Abrir chamado: Relatório de ensaio não foi concluído · identificador 933b5296-4d43-4dcb-8f53-88f5c5b60928"':
+    - text: 933B5296…B60928 15 de set., 13:02
+    - heading "Relatório de ensaio não foi concluído" [level=3]
+    - paragraph: Ao solicitar o relatório de resultados, o processamento não concluiu. O restante do sistema está funcionando normalmente. Precisamos de orientação para concluir a emissão.
+    - text: Sem responsável Em atendimento Alta GeoLab · Laboratório Horizonte
+  - 'button "Abrir chamado: Dúvida na emissão de boletins · identificador d812ddb4-711b-4216-a8d2-928b5cd1ddae"':
+    - text: D812DDB4…D1DDAE 15 de set., 13:00
+    - heading "Dúvida na emissão de boletins" [level=3]
+    - paragraph: Precisamos conferir os resultados antes de disponibilizar os boletins para os responsáveis.
+    - text: Sem responsável Recebido Normal Gestão escolar · Escola Caminhos
+  - region "Detalhes do chamado":
+    - paragraph: CHAMADO 933B5296…B60928 · VERSÃO 3
+    - heading "Relatório de ensaio não foi concluído" [level=2]
+    - text: Em atendimento Alta GeoLab · Laboratório Horizonte
+    - status: Ações verificadas pelo servidor para esta versão. Cada envio revalida suas permissões.
+    - paragraph: Cobertura contratual preservada Versão version-lab · cobertura coverage-lab
+    - region "Resumo do atendimento":
+      - heading "Resumo do atendimento" [level=3]
+      - term: Situação
+      - definition: Em atendimento
+      - term: Responsabilidade
+      - definition: Sem responsável
+      - term: Próximo passo
+      - definition: Dê continuidade ao atendimento e registre a evolução na conversa ou no checklist disponível.
+      - paragraph: Versão 3 consultada. As ações disponíveis revalidam suas permissões a cada envio.
+    - paragraph: Ao solicitar o relatório de resultados, o processamento não concluiu. O restante do sistema está funcionando normalmente. Precisamos de orientação para concluir a emissão.
+    - heading "Conversa" [level=3]
+    - text: Somente respostas públicas para o cliente
+    - article:
+      - text: Equipe de suporte · 15 de set., 13:06
+      - paragraph: Olá! Recebemos a solicitação e estamos analisando o comportamento do relatório. Você pode informar em qual etapa a emissão foi interrompida?
+    - button "Resposta pública" [pressed]
+    - button "Nota interna"
+    - text: Escreva uma resposta pública
+    - textbox "Escreva uma resposta pública":
+      - /placeholder: Escreva uma resposta para esta conversa…
+    - text: Visível para o cliente e para a equipe.
+    - button "Enviar resposta"
+    - group: Ações do chamado
+    - group:
+      - text: Notas internas da equipe
+      - status
+      - article:
+        - text: NOTA INTERNA · 15 de set., 13:09
+        - paragraph: "Análise interna demonstrativa: conferir o identificador de diagnóstico antes de encaminhar à equipe técnica. Esta nota nunca aparece para o cliente."
+    - group: Histórico de alterações
+    - paragraph: Anexos, relógios de SLA e envio de notificações não estão habilitados nesta versão.
+  - text: Consulte GEO · Central de atendimento Solicitações, respostas e histórico em um só lugar
+
+Navegador em memória: não aprovado.
