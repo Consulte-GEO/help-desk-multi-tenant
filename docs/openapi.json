@@ -629,7 +629,7 @@
               "minLength": 2,
               "maxLength": 120
             },
-            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Apenas assunto ou UUID completo."
+            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite busca por prefixo e não concede acesso. Notas e mensagens não são pesquisadas."
           },
           {
             "name": "status",
