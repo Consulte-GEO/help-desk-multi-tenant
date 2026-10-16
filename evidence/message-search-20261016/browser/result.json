@@ -1,0 +1,57 @@
+{
+  "scope": "Chromium shell with synthetic Auth/API; no production identity",
+  "chromium": "151.0.7922.34",
+  "playwright": "1.64.0",
+  "checks": [
+    {
+      "check": "busca informa conjunto público carregado e paginação ainda não consultada",
+      "result": "passed"
+    },
+    {
+      "check": "busca conta mensagens uma vez, preserva contexto e trata HTML como texto",
+      "result": "passed"
+    },
+    {
+      "check": "anterior/próxima e Enter/Shift+Enter movem foco sem requisitar mensagens",
+      "result": "passed"
+    },
+    {
+      "check": "página anterior amplia a busca e preserva a mensagem selecionada",
+      "result": "passed"
+    },
+    {
+      "check": "notas não participam da busca; regex é literal; limite e Escape são acessíveis",
+      "result": "passed"
+    },
+    {
+      "check": "390px sem rolagem horizontal, alvos de toque e ordem Tab preservados",
+      "result": "passed"
+    },
+    {
+      "check": "revogação durante paginação limpa termo, resultados e conteúdo anterior",
+      "result": "passed"
+    },
+    {
+      "check": "troca de chamado remove termo e resultados do contexto anterior",
+      "result": "passed"
+    },
+    {
+      "check": "recusa tardia de página de outro chamado não apaga a busca atual",
+      "result": "passed"
+    },
+    {
+      "check": "recusa vigente também invalida detalhe200 iniciado antes e concluído depois da recusa",
+      "result": "passed"
+    },
+    {
+      "check": "recusa de acesso remove busca e conteúdo anterior mesmo no DOM oculto",
+      "result": "passed"
+    },
+    {
+      "check": "atualização/logout e resposta tardia não restauram termos ou resultados; nenhuma escrita",
+      "result": "passed"
+    }
+  ],
+  "authenticatedProduction": false,
+  "businessWrites": 0
+}

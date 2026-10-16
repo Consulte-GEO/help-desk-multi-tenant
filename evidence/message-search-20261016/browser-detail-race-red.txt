@@ -1,0 +1,47 @@
+Auth fixture check: busca informa conjunto público carregado e paginação ainda não consultada
+Auth fixture check: busca conta mensagens uma vez, preserva contexto e trata HTML como texto
+Auth fixture check: anterior/próxima e Enter/Shift+Enter movem foco sem requisitar mensagens
+Auth fixture check: página anterior amplia a busca e preserva a mensagem selecionada
+Auth fixture check: notas não participam da busca; regex é literal; limite e Escape são acessíveis
+Auth fixture check: 390px sem rolagem horizontal, alvos de toque e ordem Tab preservados
+Auth fixture check: revogação durante paginação limpa termo, resultados e conteúdo anterior
+Auth fixture check: troca de chamado remove termo e resultados do contexto anterior
+Auth fixture check: recusa tardia de página de outro chamado não apaga a busca atual
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\browser-message-search.py", line 113, in <module>
+    page.wait_for_load_state('networkidle');expect(root).to_be_hidden();expect(field).to_have_value('');expect(page.locator('#messages article')).to_have_count(0)
+                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\sync_api\_generated.py", line 15216, in to_have_count
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.to_have_count(count=count, timeout=to_milliseconds(timeout))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_sync_base.py", line 111, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 465, in to_have_count
+    await self._expect_impl(
+    ...<5 lines>...
+    )
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 128, in _expect_impl
+    _record_soft_or_raise(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        AssertionError(
+        ^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        self._is_soft,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\.analysis\totals-python\playwright\_impl\_assertions.py", line 60, in _record_soft_or_raise
+    raise error
+AssertionError: Locator expected to have count '0'
+Actual value: 3 
+Call log:
+  - Expect "to_have_count" locator("#messages article") with timeout 5000ms
+  - waiting for locator("#messages article")
+    14 × locator resolved to 3 elements
+       - unexpected value "3"
+

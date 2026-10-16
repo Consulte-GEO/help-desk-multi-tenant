@@ -1,0 +1,13 @@
+Auth fixture check: busca informa conjunto público carregado e paginação ainda não consultada
+Auth fixture check: busca conta mensagens uma vez, preserva contexto e trata HTML como texto
+Auth fixture check: anterior/próxima e Enter/Shift+Enter movem foco sem requisitar mensagens
+Auth fixture check: página anterior amplia a busca e preserva a mensagem selecionada
+Auth fixture check: notas não participam da busca; regex é literal; limite e Escape são acessíveis
+Auth fixture check: 390px sem rolagem horizontal, alvos de toque e ordem Tab preservados
+Auth fixture check: revogação durante paginação limpa termo, resultados e conteúdo anterior
+Auth fixture check: troca de chamado remove termo e resultados do contexto anterior
+Auth fixture check: recusa tardia de página de outro chamado não apaga a busca atual
+Auth fixture check: recusa vigente também invalida detalhe200 iniciado antes e concluído depois da recusa
+Auth fixture check: recusa de acesso remove busca e conteúdo anterior mesmo no DOM oculto
+Auth fixture check: atualização/logout e resposta tardia não restauram termos ou resultados; nenhuma escrita
+{"checks": [{"check": "busca informa conjunto p\u00fablico carregado e pagina\u00e7\u00e3o ainda n\u00e3o consultada", "result": "passed"}, {"check": "busca conta mensagens uma vez, preserva contexto e trata HTML como texto", "result": "passed"}, {"check": "anterior/pr\u00f3xima e Enter/Shift+Enter movem foco sem requisitar mensagens", "result": "passed"}, {"check": "p\u00e1gina anterior amplia a busca e preserva a mensagem selecionada", "result": "passed"}, {"check": "notas n\u00e3o participam da busca; regex \u00e9 literal; limite e Escape s\u00e3o acess\u00edveis", "result": "passed"}, {"check": "390px sem rolagem horizontal, alvos de toque e ordem Tab preservados", "result": "passed"}, {"check": "revoga\u00e7\u00e3o durante pagina\u00e7\u00e3o limpa termo, resultados e conte\u00fado anterior", "result": "passed"}, {"check": "troca de chamado remove termo e resultados do contexto anterior", "result": "passed"}, {"check": "recusa tardia de p\u00e1gina de outro chamado n\u00e3o apaga a busca atual", "result": "passed"}, {"check": "recusa vigente tamb\u00e9m invalida detalhe200 iniciado antes e conclu\u00eddo depois da recusa", "result": "passed"}, {"check": "recusa de acesso remove busca e conte\u00fado anterior mesmo no DOM oculto", "result": "passed"}, {"check": "atualiza\u00e7\u00e3o/logout e resposta tardia n\u00e3o restauram termos ou resultados; nenhuma escrita", "result": "passed"}]}

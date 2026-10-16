@@ -1,0 +1,26 @@
+{
+  "scope": "independent read-only subagent review",
+  "findings": [
+    {
+      "severity": "P2",
+      "case": "403 during older public page retained local projection",
+      "status": "fixed",
+      "red": "browser-revoked-page-red.txt"
+    },
+    {
+      "severity": "P2",
+      "case": "older detail200 could restore hidden content after page403",
+      "status": "fixed",
+      "red": "browser-detail-race-red.txt"
+    }
+  ],
+  "pendingBlocking": [],
+  "reviewerChecks": {
+    "affectedNodeTests": 21,
+    "nodeCheck": true,
+    "diffCheck": true,
+    "browserLogInspected": 12,
+    "browserRepeatedByReviewer": false
+  },
+  "qualificationBoundary": "local only; source CI/preview required, no approval to merge new feature"
+}

@@ -1,0 +1,32 @@
+✔ legacy service read is bounded instead of returning an unlimited conversation (7.0341ms)
+✔ messages collection uses bounded cursor pages without missing or duplicating equal timestamps (41.7852ms)
+✔ notes collection uses bounded cursor pages without missing or duplicating equal timestamps (13.5255ms)
+✔ timeline collection uses bounded cursor pages without missing or duplicating equal timestamps (13.6691ms)
+✔ public timeline filters internal events before computing next cursor (8.3658ms)
+✔ rejects invalid conversation parameters limit=0 (2.1511ms)
+✔ rejects invalid conversation parameters limit=101 (1.3425ms)
+✔ rejects invalid conversation parameters limit=1.5 (1.0627ms)
+✔ rejects invalid conversation parameters limit=no (1.1428ms)
+✔ rejects invalid conversation parameters limit=2&limit=3 (1.2103ms)
+✔ rejects invalid conversation parameters offset=5 (1.5158ms)
+✔ rejects invalid conversation parameters cursor=notjson (1.4874ms)
+✔ cursor is bound to collection, principal, workspace and ticket (3.9756ms)
+✔ requester cannot page notes even when given an agent cursor (2.0826ms)
+✔ collection defaults to latest 50 entries in descending order (1.6096ms)
+✔ late response from another ticket or profile is discarded and old notes are erased (2.063ms)
+✔ descending API pages are displayed chronologically and duplicate IDs are merged (3.7941ms)
+✔ message and note cursors remain separate and refreshed ticket invalidates in-flight pages (0.2012ms)
+✔ public-message search is literal, counts messages once and preserves text/order (4.4231ms)
+✔ case folding preserves meaningful accents and accepts unicode without treating it as a pattern (0.4174ms)
+✔ navigation wraps in chronological message order without changing the search (0.235ms)
+✔ new authorized pages preserve selected message and recalculate matches and loaded coverage (0.1754ms)
+✔ ticket, person, workspace changes and suspension clear terms and prior message references (0.188ms)
+✔ invalid or overly long terms never leave old matches or references in the view (0.2119ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 423.7457
