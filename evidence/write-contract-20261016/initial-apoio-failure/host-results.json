@@ -1,0 +1,134 @@
+{
+  "checks": [
+    {
+      "name": "real Help Desk password login and authorized shell with synthetic provider",
+      "result": "passed"
+    },
+    {
+      "name": "sidebar opens Apoio Implantacao inside full Help Desk shell",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 2. Blocos e torres",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 3. Concretos",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 4. Pavimentos e peças",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 5. Usuários da obra",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 6. Fornecedores",
+      "result": "passed"
+    },
+    {
+      "name": "wizard navigation: 7. Revisão e envio",
+      "result": "passed"
+    },
+    {
+      "name": "wizard saves through full Help Desk session transport",
+      "result": "passed"
+    },
+    {
+      "name": "wizard download: Exportar Excel",
+      "result": "passed"
+    },
+    {
+      "name": "wizard download: Baixar JSON p/ GEO Controle",
+      "result": "passed"
+    },
+    {
+      "name": "draft sharing queues a synthetic notification without claiming delivery",
+      "result": "passed"
+    },
+    {
+      "name": "email status visible in the full Help Desk shell",
+      "result": "passed"
+    },
+    {
+      "name": "saved draft visible from the draft list",
+      "result": "passed"
+    },
+    {
+      "name": "pre-analysis opens inside the full Help Desk shell",
+      "result": "passed"
+    },
+    {
+      "name": "pre-analysis report XLSX download",
+      "result": "passed"
+    },
+    {
+      "name": "XLSX pre-analysis hands the file to conversion inside full shell",
+      "result": "passed"
+    },
+    {
+      "name": "conversion mapping, proposals, validation and process save",
+      "result": "passed"
+    },
+    {
+      "name": "post-import audit processes XLSX and downloads its report",
+      "result": "passed"
+    },
+    {
+      "name": "synthetic PDF laudo processing in full shell",
+      "result": "passed"
+    },
+    {
+      "name": "laudo correction, acceptance and XLSX export",
+      "result": "passed"
+    },
+    {
+      "name": "laudo structured process save",
+      "result": "passed"
+    },
+    {
+      "name": "laudo version history in the saved process list",
+      "result": "passed"
+    },
+    {
+      "name": "saved laudo resumes with reviewed value",
+      "result": "passed"
+    },
+    {
+      "name": "complete wizard submission through UI confirms a review record",
+      "result": "passed"
+    },
+    {
+      "name": "submitted record appears in the review dashboard",
+      "result": "passed"
+    },
+    {
+      "name": "dashboard opens the full review journey without an external email link",
+      "result": "passed"
+    },
+    {
+      "name": "review summary renders a valid received date",
+      "result": "passed"
+    },
+    {
+      "name": "review approval persists and closes the decision actions",
+      "result": "passed"
+    },
+    {
+      "name": "bundled R02 completed model imports through the wizard upload",
+      "result": "passed"
+    },
+    {
+      "name": "R02 imported proposal submits from the wizard UI",
+      "result": "passed"
+    },
+    {
+      "name": "review comment persists from the full review UI",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "failure": "locator.click: Timeout 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Devolver e enviar email', exact: true })\n    - locator resolved to <button disabled type=\"button\" data-v-d6082641=\"\" class=\"btn danger\">Devolver e enviar email</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    19 × waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n"
+}
