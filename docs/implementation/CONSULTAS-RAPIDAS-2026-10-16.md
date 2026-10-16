@@ -25,10 +25,27 @@ MFA/Novo GEO continuam adiados; scanner cancelado; nenhum modelo técnico homolo
 
 ## Progresso observado
 
-5 testes dos presets executados vermelhos antes do código;33 verificações focais atuais aprovadas. Navegador local real com API/Auth sintéticos alcançou8 asserções aprovadas: lista/totais, preservação de busca/prioridade, teclado/foco, consulta personalizada, validação, bloqueio durante leitura,390px e sessões. O caso de botão destacado após login de novo operador foi observado vermelho (alterava assignment para mine) e corrigido exigindo pertencimento ao grupo DOM atual; verde após a correção. O helper Windows não confirmou encerramento com código0 no último ciclo; por isso a execução local inteira não está declarada aprovada e a prova completa permanece no gate Linux. Capturas sintéticas desktop/mobile em `evidence/ticket-views-20261016/`.
+5 testes dos presets executados vermelhos antes do código;33 verificações focais atuais aprovadas. Navegador local real com API/Auth sintéticos alcançou8 asserções aprovadas: lista/totais, preservação de busca/prioridade, teclado/foco, consulta personalizada, validação, bloqueio durante leitura,390px e sessões. O caso de botão destacado após login de novo operador foi observado vermelho (alterava assignment para mine) e corrigido exigindo pertencimento ao grupo DOM atual; verde após a correção. O helper Windows não confirmou encerramento com código0 no último ciclo. Instrumentação externa isolou o bloqueio em `Browser.close`: as8 asserções e `BrowserContext.close` terminaram em cerca de18s; o encerramento do processo foi interrompido no prazo do helper. Por isso a execução local inteira não está declarada aprovada e a prova completa permanece no gate Linux, sem alterar o produto ou retirar testes. Capturas sintéticas desktop/mobile em `evidence/ticket-views-20261016/`.
 
 Typecheck, contratos45 operações, lock, segredos heurísticos,21 migrations e build passaram. Execução ampla Windows:5860 testes,5722 aprovados/138 falhas do ambiente; a comparação com a baseline não encontrou novos nomes de falha e a qualificação integral virá do CI Linux, sem remover testes. Não é aceite hospedado humano.
 
 ## PR62 publicado nesta rodada
 
 Merge `40f8f0db4fad736bbaf280f27b797fd93a3ffac2`; deploy production `6ad23faaa12159f25057e22a` READY em2026-10-16T15:16:58.173Z (12h16 Brasília).118 entradas do manifesto conferidas por HTTPS/SHA1; nova capacidade/configuração ticket_totals ativa e consultas anônimas401. Fontes/migrations404, worker nativo403. Sem migration/escrita de negócio. Prova em `evidence/totais-fila-20261016/production/publication.json`; aceite humano permanece distinto.
+
+## Revisão e continuidade
+
+Revisão independente da fonte `34a20fa` contra a base `40f8f0d` encerrada sem achados Critical, Important ou Minor. O revisor reexecutou os5 testes dos presets e inspecionou a integração, os filtros validados, o grafo de assets e as regressões de navegador. Esse resultado não substitui o CI ou o aceite hospedado.
+
+O primeiro CI Linux (`38924421002`, fonte `34a20fa`) aprovou5860 testes de aplicação,700 de PostgreSQL e as8 verificações novas. A suíte ampla de interface encontrou regressão em `browser-simple-access.py:35`: operação indisponível exige nenhum controle do filtro nativamente habilitado. A criação dos atalhos após o bloqueio geral deixava os botões ocultos e com handler bloqueado, mas sem `disabled`. Corrigido no componente para aplicar `disabled` quando indisponível e `aria-disabled` também nesse estado; durante leitura com operação disponível mantém foco e bloqueio por handler. O teste existente não foi alterado. Revisão independente focal do fix aprovou indisponibilidade, retomada, leitura ocupada e preservação dos nós. Nova qualificação completa obrigatória antes de declarar o PR pronto.
+
+O [PR63](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/63) contém somente este recorte e a documentação/prova da publicação anterior. Produção permanece no PR62. Não reaplicar migrations nem alterar configuração, grants ou políticas para disponibilizar os atalhos.
+
+Após autorização própria de merge/publicação:
+
+1. Reinspecionar a base, os checks, o fingerprint qualificado e o deploy corrente para detectar alterações concorrentes.
+2. Publicar pelo pipeline existente e conferir o commit/deploy READY, o manifesto e o novo asset `ticket-views.js`.
+3. Na sessão humana legítima, usar chamados existentes: Todos, Aguardando resposta e Resolvidos; para operador, também Meus atendimentos e Sem responsável. Conferir lista e totais na mesma busca/prioridade, combinação manual personalizada, carregamento e recuperação de erro.
+4. Conferir teclado/foco e390px. Sair e entrar como outra identidade apenas por autenticação legítima, sem restaurar vínculos revogados, forjar sessão ou alterar MFA. Registrar o aceite humano separado das fixtures de CI.
+
+HD019 permanece parcial: busca por protocolo, totais completos e estes atalhos são recortes distintos. Visões salvas/compartilhadas e indicadores SLA não estão implementados por esta entrega. A próxima frente SLA deve primeiro definir uma leitura autorizada do agregado completo, independente de revisão/aprovação, e reconciliar todos os eventos com a versão corrente. Política ausente ou histórico incompleto deve produzir indisponibilidade explícita; nunca um prazo inventado ou um relógio antigo apresentado como atual.

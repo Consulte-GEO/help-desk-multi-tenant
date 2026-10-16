@@ -35,7 +35,7 @@ export function mountTicketViews(doc,onSelect){
     button.addEventListener('click',()=>{if(!busy&&available&&allowed.has(v.id)&&group.contains(button))onSelect(v.id);});return button;}));
   }
   group.hidden=help.hidden=status.hidden=!options.length||!available;
-  for(const button of group.children){button.setAttribute('aria-pressed',String(button.dataset.ticketView===active));button.setAttribute('aria-disabled',String(busy));}
+  for(const button of group.children){button.disabled=!available;button.setAttribute('aria-pressed',String(button.dataset.ticketView===active));button.setAttribute('aria-disabled',String(busy||!available));}
   const text=options.length?(active?'Consulta rápida: '+options.find(v=>v.id===active).label+'.':'Consulta personalizada: situação e responsabilidade combinadas manualmente.'):'';
   if(status.textContent!==text)status.textContent=text;
  }});
