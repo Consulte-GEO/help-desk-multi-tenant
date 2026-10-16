@@ -1,0 +1,850 @@
+TAP version 13
+# Subtest: medição com evidência de unidade: 120 MM / 
+ok 1 - medição com evidência de unidade: 120 MM / 
+  ---
+  duration_ms: 1.173482
+  type: 'test'
+  ...
+# Subtest: medição com evidência de unidade: 12 CM / 
+ok 2 - medição com evidência de unidade: 12 CM / 
+  ---
+  duration_ms: 0.167613
+  type: 'test'
+  ...
+# Subtest: medição com evidência de unidade: 12,5 / cm
+ok 3 - medição com evidência de unidade: 12,5 / cm
+  ---
+  duration_ms: 0.088834
+  type: 'test'
+  ...
+# Subtest: medição com evidência de unidade: 120 / mm
+ok 4 - medição com evidência de unidade: 120 / mm
+  ---
+  duration_ms: 0.076395
+  type: 'test'
+  ...
+# Subtest: medição com evidência de unidade: 0 / cm
+ok 5 - medição com evidência de unidade: 0 / cm
+  ---
+  duration_ms: 0.163767
+  type: 'test'
+  ...
+# Subtest: medição com evidência de unidade: 12 / mm
+ok 6 - medição com evidência de unidade: 12 / mm
+  ---
+  duration_ms: 0.066561
+  type: 'test'
+  ...
+# Subtest: medição sem unidade fica pendente: 120
+ok 7 - medição sem unidade fica pendente: 120
+  ---
+  duration_ms: 0.150257
+  type: 'test'
+  ...
+# Subtest: medição sem unidade fica pendente: 12
+ok 8 - medição sem unidade fica pendente: 12
+  ---
+  duration_ms: 0.06623
+  type: 'test'
+  ...
+# Subtest: medição sem unidade fica pendente: 120
+ok 9 - medição sem unidade fica pendente: 120
+  ---
+  duration_ms: 0.234544
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: 12±2 CM
+ok 10 - entrada ambígua não vira medição: 12±2 CM
+  ---
+  duration_ms: 0.385132
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: 120 +/- 20 MM
+ok 11 - entrada ambígua não vira medição: 120 +/- 20 MM
+  ---
+  duration_ms: 0.118919
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: 08/17
+ok 12 - entrada ambígua não vira medição: 08/17
+  ---
+  duration_ms: 0.058428
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: abc12
+ok 13 - entrada ambígua não vira medição: abc12
+  ---
+  duration_ms: 0.044567
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: 1.234.56
+ok 14 - entrada ambígua não vira medição: 1.234.56
+  ---
+  duration_ms: 0.042224
+  type: 'test'
+  ...
+# Subtest: entrada ambígua não vira medição: Infinity
+ok 15 - entrada ambígua não vira medição: Infinity
+  ---
+  duration_ms: 0.040692
+  type: 'test'
+  ...
+# Subtest: especificação declarada não vira medição mesmo sendo um único número
+ok 16 - especificação declarada não vira medição mesmo sendo um único número
+  ---
+  duration_ms: 0.101223
+  type: 'test'
+  ...
+# Subtest: unidade explícita conflitante não é silenciosamente sobrescrita
+ok 17 - unidade explícita conflitante não é silenciosamente sobrescrita
+  ---
+  duration_ms: 0.070376
+  type: 'test'
+  ...
+# Subtest: dois eventos no mesmo local/dia não são fundidos sem decisão
+ok 18 - dois eventos no mesmo local/dia não são fundidos sem decisão
+  ---
+  duration_ms: 0.383268
+  type: 'test'
+  ...
+# Subtest: o mesmo número explicitamente revisado agrupa os caminhões
+ok 19 - o mesmo número explicitamente revisado agrupa os caminhões
+  ---
+  duration_ms: 0.187844
+  type: 'test'
+  ...
+# Subtest: números de eventos distintos são preservados após revalidar
+ok 20 - números de eventos distintos são preservados após revalidar
+  ---
+  duration_ms: 0.120291
+  type: 'test'
+  ...
+# Subtest: mudar o local invalida a decisão de evento anterior
+ok 21 - mudar o local invalida a decisão de evento anterior
+  ---
+  duration_ms: 0.095103
+  type: 'test'
+  ...
+# Subtest: mesmo número em contextos incompatíveis bloqueia, sem reagrupar automaticamente
+ok 22 - mesmo número em contextos incompatíveis bloqueia, sem reagrupar automaticamente
+  ---
+  duration_ms: 0.13239
+  type: 'test'
+  ...
+# Subtest: resultado é estável ao permutar as linhas de origem
+ok 23 - resultado é estável ao permutar as linhas de origem
+  ---
+  duration_ms: 0.837304
+  type: 'test'
+  ...
+# Subtest: IDs de linha duplicados são recusados antes de produzir atribuições
+ok 24 - IDs de linha duplicados são recusados antes de produzir atribuições
+  ---
+  duration_ms: 0.29165
+  type: 'test'
+  ...
+# Subtest: fonte inclui hash, aba, linha e ordinal e não deduplica CPs pelo valor
+ok 25 - fonte inclui hash, aba, linha e ordinal e não deduplica CPs pelo valor
+  ---
+  duration_ms: 0.176867
+  type: 'test'
+  ...
+# Subtest: hash de fonte inválido é recusado
+ok 26 - hash de fonte inválido é recusado
+  ---
+  duration_ms: 0.125881
+  type: 'test'
+  ...
+# Subtest: dois CPs da mesma entrega não multiplicam volume
+ok 27 - dois CPs da mesma entrega não multiplicam volume
+  ---
+  duration_ms: 0.359372
+  type: 'test'
+  ...
+# Subtest: volumes conflitantes na mesma entrega não são escolhidos por conveniência
+ok 28 - volumes conflitantes na mesma entrega não são escolhidos por conveniência
+  ---
+  duration_ms: 0.120762
+  type: 'test'
+  ...
+# Subtest: CP sem vínculo confiável não contribui para total que parece completo
+ok 29 - CP sem vínculo confiável não contribui para total que parece completo
+  ---
+  duration_ms: 0.083256
+  type: 'test'
+  ...
+# Subtest: somatório decimal é exato, sem arredondar o original
+ok 30 - somatório decimal é exato, sem arredondar o original
+  ---
+  duration_ms: 0.139151
+  type: 'test'
+  ...
+# Subtest: não soma dados de obras/contas diferentes
+ok 31 - não soma dados de obras/contas diferentes
+  ---
+  duration_ms: 0.112489
+  type: 'test'
+  ...
+# Subtest: precisão de volume maior que duas casas vira pendência, não arredondamento
+ok 32 - precisão de volume maior que duas casas vira pendência, não arredondamento
+  ---
+  duration_ms: 0.137497
+  type: 'test'
+  ...
+# Subtest: proveniência inferida em medição já preenchida impede exportação final
+ok 33 - proveniência inferida em medição já preenchida impede exportação final
+  ---
+  duration_ms: 0.215375
+  type: 'test'
+  ...
+# Subtest: adaptador recusa combinação de motores incompatível
+ok 34 - adaptador recusa combinação de motores incompatível
+  ---
+  duration_ms: 1.387655
+  type: 'test'
+  ...
+# Subtest: instalação duplicada é recusada sem duplicar listeners
+ok 35 - instalação duplicada é recusada sem duplicar listeners
+  ---
+  duration_ms: 0.214815
+  type: 'test'
+  ...
+# Subtest: reavalia origem com mm explícito sem usar conversão pela magnitude
+ok 36 - reavalia origem com mm explícito sem usar conversão pela magnitude
+  ---
+  duration_ms: 1.07332
+  type: 'test'
+  ...
+# Subtest: unidade ausente não mantém o 12 produzido pelo caminho antigo
+ok 37 - unidade ausente não mantém o 12 produzido pelo caminho antigo
+  ---
+  duration_ms: 0.766377
+  type: 'test'
+  ...
+# Subtest: cabeçalho de especificação não produz medição
+ok 38 - cabeçalho de especificação não produz medição
+  ---
+  duration_ms: 0.266452
+  type: 'test'
+  ...
+# Subtest: declaração explícita de unidade pertence à coluna/aba
+ok 39 - declaração explícita de unidade pertence à coluna/aba
+  ---
+  duration_ms: 1.163647
+  type: 'test'
+  ...
+# Subtest: nova planilha descarta unidade escolhida no arquivo anterior
+ok 40 - nova planilha descarta unidade escolhida no arquivo anterior
+  ---
+  duration_ms: 0.662621
+  type: 'test'
+  ...
+# Subtest: troca de aba descarta decisões de unidade
+ok 41 - troca de aba descarta decisões de unidade
+  ---
+  duration_ms: 0.156997
+  type: 'test'
+  ...
+# Subtest: aplicação antiga de nominal por grupo é bloqueada antes do writer
+ok 42 - aplicação antiga de nominal por grupo é bloqueada antes do writer
+  ---
+  duration_ms: 0.539795
+  type: 'test'
+  ...
+# Subtest: preparo não carimba padrão de volume como aceito
+ok 43 - preparo não carimba padrão de volume como aceito
+  ---
+  duration_ms: 0.520115
+  type: 'test'
+  ...
+# Subtest: datas e locais iguais não colapsam eventos sem revisão
+ok 44 - datas e locais iguais não colapsam eventos sem revisão
+  ---
+  duration_ms: 0.388075
+  type: 'test'
+  ...
+# Subtest: editar número confirma agrupamento e a revalidação preserva decisão
+ok 45 - editar número confirma agrupamento e a revalidação preserva decisão
+  ---
+  duration_ms: 6.237827
+  type: 'test'
+  ...
+# Subtest: número inválido é recusado antes de alterar linha
+ok 46 - número inválido é recusado antes de alterar linha
+  ---
+  duration_ms: 0.133492
+  type: 'test'
+  ...
+# Subtest: editar local invalida a revisão de evento
+ok 47 - editar local invalida a revisão de evento
+  ---
+  duration_ms: 0.254935
+  type: 'test'
+  ...
+# Subtest: edição manual de faixa não converte especificação em medição
+ok 48 - edição manual de faixa não converte especificação em medição
+  ---
+  duration_ms: 0.15209
+  type: 'test'
+  ...
+# Subtest: edição manual medida corrige pendência, preserva entrada e não duplica achados
+ok 49 - edição manual medida corrige pendência, preserva entrada e não duplica achados
+  ---
+  duration_ms: 0.300384
+  type: 'test'
+  ...
+# Subtest: medição manual mm explícito é convertida preservando original
+ok 50 - medição manual mm explícito é convertida preservando original
+  ---
+  duration_ms: 0.17906
+  type: 'test'
+  ...
+# Subtest: exportação revalida antes de consumir resumo antigo
+ok 51 - exportação revalida antes de consumir resumo antigo
+  ---
+  duration_ms: 0.169717
+  type: 'test'
+  ...
+# Subtest: guardas existentes não são descartadas
+ok 52 - guardas existentes não são descartadas
+  ---
+  duration_ms: 0.161503
+  type: 'test'
+  ...
+# Subtest: interface identifica referência e impede clique de aceite
+ok 53 - interface identifica referência e impede clique de aceite
+  ---
+  duration_ms: 0.190878
+  type: 'test'
+  ...
+# Subtest: interface mostra escolha de unidade separada e numeração revisável
+ok 54 - interface mostra escolha de unidade separada e numeração revisável
+  ---
+  duration_ms: 0.210487
+  type: 'test'
+  ...
+# Subtest: R02 preparo conserva mapeamento confirmado sem chamar refreshMapping
+ok 55 - R02 preparo conserva mapeamento confirmado sem chamar refreshMapping
+  ---
+  duration_ms: 0.193602
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar coluna
+ok 56 - R02 recusa exportação obsoleta após alterar coluna
+  ---
+  duration_ms: 0.284119
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar aba
+ok 57 - R02 recusa exportação obsoleta após alterar aba
+  ---
+  duration_ms: 0.188694
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar arquivo
+ok 58 - R02 recusa exportação obsoleta após alterar arquivo
+  ---
+  duration_ms: 0.158389
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar cabecalho
+ok 59 - R02 recusa exportação obsoleta após alterar cabecalho
+  ---
+  duration_ms: 0.864115
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar unidade
+ok 60 - R02 recusa exportação obsoleta após alterar unidade
+  ---
+  duration_ms: 0.155154
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar politica
+ok 61 - R02 recusa exportação obsoleta após alterar politica
+  ---
+  duration_ms: 0.128053
+  type: 'test'
+  ...
+# Subtest: R02 recusa exportação obsoleta após alterar catalogo
+ok 62 - R02 recusa exportação obsoleta após alterar catalogo
+  ---
+  duration_ms: 0.118499
+  type: 'test'
+  ...
+# Subtest: R02 exportação exige preparo anterior mesmo sem crítico de negócio
+ok 63 - R02 exportação exige preparo anterior mesmo sem crítico de negócio
+  ---
+  duration_ms: 0.146921
+  type: 'test'
+  ...
+# Subtest: R02 edição de valor preserva contexto e permite exportar após conferência
+ok 64 - R02 edição de valor preserva contexto e permite exportar após conferência
+  ---
+  duration_ms: 0.211028
+  type: 'test'
+  ...
+# Subtest: R02 modo rascunho não invalida por si só o preparo
+ok 65 - R02 modo rascunho não invalida por si só o preparo
+  ---
+  duration_ms: 0.122815
+  type: 'test'
+  ...
+# Subtest: R02 novo preparo da origem atual permite exportação novamente
+ok 66 - R02 novo preparo da origem atual permite exportação novamente
+  ---
+  duration_ms: 0.183167
+  type: 'test'
+  ...
+# Subtest: R02 porta de loading ausente é negada antes de instalar parcialmente
+ok 67 - R02 porta de loading ausente é negada antes de instalar parcialmente
+  ---
+  duration_ms: 0.112069
+  type: 'test'
+  ...
+# Subtest: Slump: aceitar nominal não produz uma medição
+ok 68 - Slump: aceitar nominal não produz uma medição
+  ---
+  duration_ms: 2.493274
+  type: 'test'
+  ...
+# Subtest: Slump: valor escolhido também não contorna a separação semântica
+ok 69 - Slump: valor escolhido também não contorna a separação semântica
+  ---
+  duration_ms: 0.3509
+  type: 'test'
+  ...
+# Subtest: Flow: aceitar nominal não produz uma medição
+ok 70 - Flow: aceitar nominal não produz uma medição
+  ---
+  duration_ms: 0.117287
+  type: 'test'
+  ...
+# Subtest: Flow: valor escolhido também não contorna a separação semântica
+ok 71 - Flow: valor escolhido também não contorna a separação semântica
+  ---
+  duration_ms: 0.090707
+  type: 'test'
+  ...
+# Subtest: volume padrão autorizado não vira volume observado
+ok 72 - volume padrão autorizado não vira volume observado
+  ---
+  duration_ms: 0.249056
+  type: 'test'
+  ...
+# Subtest: placa IMPORT continua funcionando como marcador operacional
+ok 73 - placa IMPORT continua funcionando como marcador operacional
+  ---
+  duration_ms: 0.113431
+  type: 'test'
+  ...
+# Subtest: medição da origem e proveniência não são substituídas
+ok 74 - medição da origem e proveniência não são substituídas
+  ---
+  duration_ms: 0.228525
+  type: 'test'
+  ...
+# Subtest: unidade explícita: ABATIMENTO 100 ± 20 MM
+ok 75 - unidade explícita: ABATIMENTO 100 ± 20 MM
+  ---
+  duration_ms: 0.121423
+  type: 'test'
+  ...
+# Subtest: unidade explícita: SLUMP 100 MM ± 20 MM
+ok 76 - unidade explícita: SLUMP 100 MM ± 20 MM
+  ---
+  duration_ms: 0.25782
+  type: 'test'
+  ...
+# Subtest: unidade explícita: SLUMP 12±2 CM
+ok 77 - unidade explícita: SLUMP 12±2 CM
+  ---
+  duration_ms: 0.294695
+  type: 'test'
+  ...
+# Subtest: unidade explícita: FLOW 600±50 MM
+ok 78 - unidade explícita: FLOW 600±50 MM
+  ---
+  duration_ms: 0.15865
+  type: 'test'
+  ...
+# Subtest: unidade explícita: SLUMP 12,5 CM
+ok 79 - unidade explícita: SLUMP 12,5 CM
+  ---
+  duration_ms: 0.090477
+  type: 'test'
+  ...
+# Subtest: não inventa unidade: SLUMP 120±20
+ok 80 - não inventa unidade: SLUMP 120±20
+  ---
+  duration_ms: 0.108223
+  type: 'test'
+  ...
+# Subtest: não inventa unidade: FLOW 600±50
+ok 81 - não inventa unidade: FLOW 600±50
+  ---
+  duration_ms: 0.051057
+  type: 'test'
+  ...
+# Subtest: não inventa unidade: SLUMP12
+ok 82 - não inventa unidade: SLUMP12
+  ---
+  duration_ms: 0.048813
+  type: 'test'
+  ...
+# Subtest: objeto/propriedade não autorizada não passa por apply
+ok 83 - objeto/propriedade não autorizada não passa por apply
+  ---
+  duration_ms: 0.077788
+  type: 'test'
+  ...
+# Subtest: associação de usina inequívoca mantém comportamento existente
+ok 84 - associação de usina inequívoca mantém comportamento existente
+  ---
+  duration_ms: 0.167844
+  type: 'test'
+  ...
+# Subtest: R02 transforma HTML de base em uma montagem única e versionada
+ok 85 - R02 transforma HTML de base em uma montagem única e versionada
+  ---
+  duration_ms: 1.824374
+  type: 'test'
+  ...
+# Subtest: R02 bridge ausente/antiga 1.0.0 impede BOOT
+ok 86 - R02 bridge ausente/antiga 1.0.0 impede BOOT
+  ---
+  duration_ms: 1.14593
+  type: 'test'
+  ...
+# Subtest: R02 bridge ausente/antiga  impede BOOT
+ok 87 - R02 bridge ausente/antiga  impede BOOT
+  ---
+  duration_ms: 0.662921
+  type: 'test'
+  ...
+# Subtest: R02 não reaplica transformações sobre R01/R02
+ok 88 - R02 não reaplica transformações sobre R01/R02
+  ---
+  duration_ms: 0.310028
+  type: 'test'
+  ...
+# Subtest: R02 mantém versão de package/lock e disponibiliza gates novos
+ok 89 - R02 mantém versão de package/lock e disponibiliza gates novos
+  ---
+  duration_ms: 0.261375
+  type: 'test'
+  ...
+# Subtest: R03 versão nova conserva dependências e inclui gates client/HTTP/PG
+ok 90 - R03 versão nova conserva dependências e inclui gates client/HTTP/PG
+  ---
+  duration_ms: 1.934541
+  type: 'test'
+  ...
+# Subtest: R03 lock mantém resoluções e sincroniza versão
+ok 91 - R03 lock mantém resoluções e sincroniza versão
+  ---
+  duration_ms: 0.147623
+  type: 'test'
+  ...
+# Subtest: R03 preserva montagem cumulativa da ponte sem publicar APIs novas
+ok 92 - R03 preserva montagem cumulativa da ponte sem publicar APIs novas
+  ---
+  duration_ms: 0.540827
+  type: 'test'
+  ...
+# Subtest: R03 aplicador recusa identidade/versão de manifesto incompatível antes de ler payload
+ok 93 - R03 aplicador recusa identidade/versão de manifesto incompatível antes de ler payload
+  ---
+  duration_ms: 0.202897
+  type: 'test'
+  ...
+# Subtest: R04 versão incrementa sem novas dependências nem publicação automática
+ok 94 - R04 versão incrementa sem novas dependências nem publicação automática
+  ---
+  duration_ms: 2.037276
+  type: 'test'
+  ...
+# Subtest: R04 lock mantém resoluções e integridades
+ok 95 - R04 lock mantém resoluções e integridades
+  ---
+  duration_ms: 0.150517
+  type: 'test'
+  ...
+# Subtest: R04 ponte do importador é preservada sem montagem indevida do servidor
+ok 96 - R04 ponte do importador é preservada sem montagem indevida do servidor
+  ---
+  duration_ms: 0.582049
+  type: 'test'
+  ...
+# Subtest: R04 recusa versão e identidade de pacote conflitantes
+ok 97 - R04 recusa versão e identidade de pacote conflitantes
+  ---
+  duration_ms: 0.21807
+  type: 'test'
+  ...
+# Subtest: R05 preserva dependências e versiona pacote sem abrir gate
+ok 98 - R05 preserva dependências e versiona pacote sem abrir gate
+  ---
+  duration_ms: 1.286482
+  type: 'test'
+  ...
+# Subtest: R05 preserva resoluções do lock
+ok 99 - R05 preserva resoluções do lock
+  ---
+  duration_ms: 0.140522
+  type: 'test'
+  ...
+# Subtest: R05 rota dedicada exige adminOnly e lazy load sem registrar sessão
+ok 100 - R05 rota dedicada exige adminOnly e lazy load sem registrar sessão
+  ---
+  duration_ms: 0.437951
+  type: 'test'
+  ...
+# Subtest: R05 prebuild preserva novos componente e view sem liberar outros arquivos
+ok 101 - R05 prebuild preserva novos componente e view sem liberar outros arquivos
+  ---
+  duration_ms: 0.246543
+  type: 'test'
+  ...
+# Subtest: R05 rejeita aplicador/pacote fora de versão
+ok 102 - R05 rejeita aplicador/pacote fora de versão
+  ---
+  duration_ms: 0.201124
+  type: 'test'
+  ...
+# Subtest: check apenas prepara mudança sem gravar
+ok 103 - check apenas prepara mudança sem gravar
+  ---
+  duration_ms: 3.417319
+  type: 'test'
+  ...
+# Subtest: arquivo base divergente impede todo o pacote
+ok 104 - arquivo base divergente impede todo o pacote
+  ---
+  duration_ms: 1.39751
+  type: 'test'
+  ...
+# Subtest: payload adulterado é recusado
+ok 105 - payload adulterado é recusado
+  ---
+  duration_ms: 1.224268
+  type: 'test'
+  ...
+# Subtest: novo arquivo já existente é preservado
+ok 106 - novo arquivo já existente é preservado
+  ---
+  duration_ms: 1.700928
+  type: 'test'
+  ...
+# Subtest: caminho fora do checkout é recusado
+ok 107 - caminho fora do checkout é recusado
+  ---
+  duration_ms: 2.260914
+  type: 'test'
+  ...
+# Subtest: payload não pode apontar para fora do pacote
+ok 108 - payload não pode apontar para fora do pacote
+  ---
+  duration_ms: 1.022724
+  type: 'test'
+  ...
+# Subtest: symlink no caminho de escrita é recusado
+ok 109 - symlink no caminho de escrita é recusado
+  ---
+  duration_ms: 0.737994
+  type: 'test'
+  ...
+# Subtest: normalização CRLF mantém verificação e estilo de checkout
+ok 110 - normalização CRLF mantém verificação e estilo de checkout
+  ---
+  duration_ms: 1.088714
+  type: 'test'
+  ...
+# Subtest: apply grava somente mudanças pré-validadas
+ok 111 - apply grava somente mudanças pré-validadas
+  ---
+  duration_ms: 21.203861
+  type: 'test'
+  ...
+# Subtest: alteração após check é recusada antes da primeira gravação
+ok 112 - alteração após check é recusada antes da primeira gravação
+  ---
+  duration_ms: 1.515087
+  type: 'test'
+  ...
+# Subtest: montagem adiciona motores e instala antes de STORAGE.load
+ok 113 - montagem adiciona motores e instala antes de STORAGE.load
+  ---
+  duration_ms: 0.475928
+  type: 'test'
+  ...
+# Subtest: montagem não aceita âncora duplicada
+ok 114 - montagem não aceita âncora duplicada
+  ---
+  duration_ms: 0.104398
+  type: 'test'
+  ...
+# Subtest: metadados package avançam sem alterar dependências
+ok 115 - metadados package avançam sem alterar dependências
+  ---
+  duration_ms: 0.588929
+  type: 'test'
+  ...
+# Subtest: lock preserva resoluções e corrige versões antigas do pacote raiz
+ok 116 - lock preserva resoluções e corrige versões antigas do pacote raiz
+  ---
+  duration_ms: 0.112349
+  type: 'test'
+  ...
+# Subtest: symlink criado após check também é recusado
+ok 117 - symlink criado após check também é recusado
+  ---
+  duration_ms: 0.96731
+  type: 'test'
+  ...
+# Subtest: tipos com local diferente não colapsam
+ok 118 - tipos com local diferente não colapsam
+  ---
+  duration_ms: 2.193291
+  type: 'test'
+  ...
+# Subtest: tipos com volume diferente não colapsam
+ok 119 - tipos com volume diferente não colapsam
+  ---
+  duration_ms: 0.415418
+  type: 'test'
+  ...
+# Subtest: tipos com observações diferente não colapsam
+ok 120 - tipos com observações diferente não colapsam
+  ---
+  duration_ms: 0.192371
+  type: 'test'
+  ...
+# Subtest: tipos com FCK diferente não colapsam
+ok 121 - tipos com FCK diferente não colapsam
+  ---
+  duration_ms: 0.335026
+  type: 'test'
+  ...
+# Subtest: tipos com concreto diferente não colapsam
+ok 122 - tipos com concreto diferente não colapsam
+  ---
+  duration_ms: 3.838925
+  type: 'test'
+  ...
+# Subtest: projetistas de grupos diferentes permanecem vinculados aos próprios tipos
+ok 123 - projetistas de grupos diferentes permanecem vinculados aos próprios tipos
+  ---
+  duration_ms: 0.3115
+  type: 'test'
+  ...
+# Subtest: equivalência só ocorre dentro do mesmo grupo e com todos os atributos coincidentes
+ok 124 - equivalência só ocorre dentro do mesmo grupo e com todos os atributos coincidentes
+  ---
+  duration_ms: 0.197248
+  type: 'test'
+  ...
+# Subtest: volume por tipo vem da peça equivalente, sem somar repetições
+ok 125 - volume por tipo vem da peça equivalente, sem somar repetições
+  ---
+  duration_ms: 1.010295
+  type: 'test'
+  ...
+# Subtest: assinatura com delimitadores não causa colisão
+ok 126 - assinatura com delimitadores não causa colisão
+  ---
+  duration_ms: 0.521598
+  type: 'test'
+  ...
+# Subtest: exportação não altera os dados brutos nem o alvo geomat
+ok 127 - exportação não altera os dados brutos nem o alvo geomat
+  ---
+  duration_ms: 0.527456
+  type: 'test'
+  ...
+# Subtest: exportador não confunde família/unidade: FCK 30 SLUMP 120±20 MM
+ok 128 - exportador não confunde família/unidade: FCK 30 SLUMP 120±20 MM
+  ---
+  duration_ms: 0.265501
+  type: 'test'
+  ...
+# Subtest: exportador não confunde família/unidade: FCK 30 SLUMP 120 MM ± 2 CM
+ok 129 - exportador não confunde família/unidade: FCK 30 SLUMP 120 MM ± 2 CM
+  ---
+  duration_ms: 0.128804
+  type: 'test'
+  ...
+# Subtest: exportador não confunde família/unidade: FCK 30 SLUMP 12±2
+ok 130 - exportador não confunde família/unidade: FCK 30 SLUMP 12±2
+  ---
+  duration_ms: 0.074863
+  type: 'test'
+  ...
+# Subtest: exportador não confunde família/unidade: FCK 40 FLOW 60±5 CM
+ok 131 - exportador não confunde família/unidade: FCK 40 FLOW 60±5 CM
+  ---
+  duration_ms: 0.051568
+  type: 'test'
+  ...
+# Subtest: exportador não confunde família/unidade: FCK 40 SLUMP 12±2 CM FLOW 60±5 CM
+ok 132 - exportador não confunde família/unidade: FCK 40 SLUMP 12±2 CM FLOW 60±5 CM
+  ---
+  duration_ms: 0.039139
+  type: 'test'
+  ...
+# Subtest: rota não consulta outro processo quando guarda é recusada
+ok 133 - rota não consulta outro processo quando guarda é recusada
+  ---
+  duration_ms: 1.900499
+  type: 'test'
+  ...
+# Subtest: rota aguarda consulta da seleção nova depois da confirmação
+ok 134 - rota aguarda consulta da seleção nova depois da confirmação
+  ---
+  duration_ms: 5.525632
+  type: 'test'
+  ...
+# Subtest: rota indisponível não faz requests mesmo autenticada
+ok 135 - rota indisponível não faz requests mesmo autenticada
+  ---
+  duration_ms: 1.083376
+  type: 'test'
+  ...
+# Subtest: falha da guarda impede navegação, não silencia descarte
+ok 136 - falha da guarda impede navegação, não silencia descarte
+  ---
+  duration_ms: 1.15917
+  type: 'test'
+  ...
+# Subtest: mesmo processo não refaz consulta nem abre confirmação
+ok 137 - mesmo processo não refaz consulta nem abre confirmação
+  ---
+  duration_ms: 0.948622
+  type: 'test'
+  ...
+# Subtest: desmontagem durante bootstrap descarta host tardio sem listar nem abrir
+ok 138 - desmontagem durante bootstrap descarta host tardio sem listar nem abrir
+  ---
+  duration_ms: 0.965107
+  type: 'test'
+  ...
+# Subtest: desmontagem encerra host ativo uma única vez pelo ciclo da view
+ok 139 - desmontagem encerra host ativo uma única vez pelo ciclo da view
+  ---
+  duration_ms: 1.465041
+  type: 'test'
+  ...
+# Subtest: componente não usa v-html, não cria identidade e não baixa URLs de arquivos
+ok 140 - componente não usa v-html, não cria identidade e não baixa URLs de arquivos
+  ---
+  duration_ms: 0.3249
+  type: 'test'
+  ...
+1..140
+# tests 140
+# suites 0
+# pass 140
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 892.523927
