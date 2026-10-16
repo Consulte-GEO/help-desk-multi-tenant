@@ -15,9 +15,9 @@ function core(){const db=new MemoryUnitOfWork({coverages:[coverage()]});let acto
 async function create(f:ReturnType<typeof core>){const r=await f.handler(request('/tickets','POST',input)),b=await conform('/tickets','POST',r,201);assert.equal(r.headers.get('etag'),'"'+b.version+'"');assert.equal(r.headers.get('location'),'/v1/tickets/'+b.id);assert.equal(r.headers.get('idempotency-replayed'),'false');return b;}
 
 test('OpenAPI creation and replay preserve the original body, Location and ETag after later changes',async()=>{
- const f=core(),first=await create(f);f.agent();const change=await f.handler(request('/tickets/'+first.id,'PATCH',{priority:'high',reason:'Conferência interna'},{'idempotency-key':'write-change-key-0001'}));await conform('/tickets/{ticket_id}','PATCH',change,200);
+ const f=core();f.agent();const first=await create(f);const change=await f.handler(request('/tickets/'+first.id,'PATCH',{priority:'high',reason:'Conferência interna'},{'idempotency-key':'write-change-key-0001'}));await conform('/tickets/{ticket_id}','PATCH',change,200);
  const r=await f.handler(request('/tickets','POST',input)),again=await conform('/tickets','POST',r,200);
- assert.equal(again.id,first.id);assert.equal(again.version,1);assert.equal(r.headers.get('etag'),'"1"');assert.equal(r.headers.get('location'),'/v1/tickets/'+first.id);assert.equal(r.headers.get('idempotency-replayed'),'true');assert.equal(f.db.snapshot().tickets.length,1);
+ assert.deepEqual(again,first);assert.equal(again.version,1);assert.equal(r.headers.get('etag'),'"1"');assert.equal(r.headers.get('location'),'/v1/tickets/'+first.id);assert.equal(r.headers.get('idempotency-replayed'),'true');assert.equal(f.db.snapshot().tickets.length,1);
 });
 test('OpenAPI public messages and private notes preserve201/200 replay and do not leak notes into the public channel',async()=>{
  const f=core(),t=await create(f);f.agent();
@@ -26,7 +26,7 @@ test('OpenAPI public messages and private notes preserve201/200 replay and do no
   const first=await f.handler(request(path,'POST',{body},{'idempotency-key':key})),a=await conform(contract,'POST',first,201);assert.equal(first.headers.get('idempotency-replayed'),'false');
   const second=await f.handler(request(path,'POST',{body},{'idempotency-key':key})),b=await conform(contract,'POST',second,200);assert.equal(second.headers.get('idempotency-replayed'),'true');assert.deepEqual(a,b);
  }
- const publicRead=await f.handler(new Request(origin+'/v1/tickets/'+t.id+'/messages'));assert.doesNotMatch(await publicRead.text(),/PRIVATE_NOTE_SENTINEL/);assert.doesNotMatch(JSON.stringify(f.db.snapshot().outbox),/PRIVATE_NOTE_SENTINEL/);
+ const publicRead=await f.handler(new Request(origin+'/v1/tickets/'+t.id+'/messages')),page=await conform('/tickets/{ticket_id}/messages','GET',publicRead,200);assert.equal(page.items.length,1);assert.equal(page.items[0].body,'Mensagem pública');assert.doesNotMatch(JSON.stringify(page),/PRIVATE_NOTE_SENTINEL/);assert.doesNotMatch(JSON.stringify(f.db.snapshot().outbox),/PRIVATE_NOTE_SENTINEL/);
 });
 test('OpenAPI priority, assignment and transition receipts keep their original version on replay',async()=>{
  for(const [suffix,method,body] of [['','PATCH',{priority:'high',reason:'Conferência interna'}],['/assignments','POST',{action:'claim',reason:'Conferência interna'}],['/transitions','POST',{to:'open',reason:''}]] as const){
