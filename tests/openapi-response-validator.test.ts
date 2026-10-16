@@ -29,3 +29,7 @@ test('response gate follows referenced response objects and declared status rang
  const d:any=contract();d.components.responses={OwnedResponse:d.paths['/owned'].get.responses['200']};d.paths['/owned'].get.responses={'2XX':{$ref:'#/components/responses/OwnedResponse'}};
  const check=await validator(d);await check('/owned','GET',Response.json(valid,{status:201}));await assert.rejects(()=>check('/owned','GET',Response.json({...valid,count:'7'})));
 });
+test('problem status mismatch never includes payload values even under a permissive schema',async()=>{
+ const d:any=contract();d.paths['/owned'].get.responses.default={description:'Problem',content:{'application/problem+json':{schema:{type:'object',properties:{status:{}}}}}};
+ const check=await validator(d);await assert.rejects(()=>check('/owned','GET',Response.json({status:'PRIVATE_STATUS_SENTINEL'},{status:503,headers:{'content-type':'application/problem+json'}})),e=>{assert.doesNotMatch(String(e),/PRIVATE_STATUS_SENTINEL/);assert.doesNotMatch(JSON.stringify(e),/PRIVATE_STATUS_SENTINEL/);return true;});
+});

@@ -33,8 +33,8 @@ Referências técnicas: [formatos Ajv](https://ajv.js.org/guide/formats.html) e 
 
 ## Progresso e critérios de entrega
 
-- [x]5 testes do novo gate observados vermelhos antes da implementação; as duas divergências de runtime/contrato reproduzidas antes dos fixes.
-- [x]12 testes novos de conformidade/validador;31 verificações focais aprovadas.
+- [x] 5 testes do novo gate observados vermelhos antes da implementação; as duas divergências de runtime/contrato reproduzidas antes dos fixes.
+- [x] 13 testes novos de conformidade/validador;32 verificações focais aprovadas.
 - [x] Typecheck, contratos, lock, segredos heurísticos,21 migrations e build aprovados; instalação/auditoria da nova dependência sem vulnerabilidades observadas.
 - [ ] Revisão independente, CI Linux integral e preservação dos relatórios originais contra o fingerprint exato.
 - [ ] PR próprio pronto para revisão. A autorização de publicação específica desta rodada refere-se ao PR63.
@@ -42,6 +42,8 @@ Referências técnicas: [formatos Ajv](https://ajv.js.org/guide/formats.html) e 
 Não há migration ou alteração de tabelas, política, grant, segredo, MFA, Novo GEO, scanner, modelos técnicos ou preferências de e-mail. Não houve envio externo ou registro fictício produtivo.
 
 Execução ampla Windows:5872 testes,5731 aprovados/141 falhas, sem skips/cancelamentos. Todos os12 novos testes passaram. Comparação com a baseline recente encontrou três falhas adicionais no subprocesso CLI de preflight (JSON vazio após prazo de10s); a reexecução isolada desse arquivo aprovou9/9 com saída0, sem alterar código, timeouts ou fixture. As demais falhas pertencem à baseline Windows já registrada. Isso não é aprovação integral local; a qualificação integral deve vir do CI Linux apto, preservando todos os testes.
+
+Revisão independente da fonte inicial `d8f20f7` encontrou um caso Minor no diagnóstico da ferramenta offline: `assert.equal` podia incluir o valor inválido de `status` no erro quando um schema sintético permissivo aceitava esse valor. Reproduzido vermelho com sentinela privada, corrigido comparando a igualdade como booleano em `assert.ok` e reexecutado verde. A nova regressão verifica a mensagem e a serialização da exceção. Nenhum dado real ou comportamento do runtime HTTP foi envolvido nesse fix. A execução Windows ampla acima precede esse13º teste; a qualificação integral da fonte final continua obrigatória.
 
 ## Handoff e pendências
 

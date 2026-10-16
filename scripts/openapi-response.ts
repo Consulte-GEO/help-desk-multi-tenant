@@ -37,6 +37,6 @@ export async function createOpenApiResponseValidator(document:unknown){
   let body:unknown;try{body=await response.clone().json();}catch{throw Error('Invalid response JSON: '+label);}
   // Never include payload values, Ajv parameters, or parser messages in errors.
   assert.ok(validate(body),'Response body violates contract: '+label);
-  if(media==='application/problem+json')assert.equal((body as {status?:unknown})?.status,response.status,'Problem status differs from HTTP: '+label);
+  if(media==='application/problem+json')assert.ok((body as {status?:unknown})?.status===response.status,'Problem status differs from HTTP: '+label);
  };
 }
