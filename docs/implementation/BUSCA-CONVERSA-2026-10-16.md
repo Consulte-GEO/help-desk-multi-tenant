@@ -1,5 +1,7 @@
 # Busca local na conversa pública — HD-019
 
+> **Estado corrente:** PR68 revisado e qualificado na fonte9ab8b70, CI7273 verificações; preview da implementação conferido. Ainda sem merge/publicação em produção. Os registros intermediários abaixo preservam o histórico da qualificação.
+
 Estado inicial: implementação autorizada em continuidade ao levantamento. Base publicada PR67, `f7ff73ae1a3279a38b22419f9f5755e8b51b0f2c`, deploy `6ad2892dd4bec684a4e7c792` READY em16/10/2026 às17h30 Brasília. Manifesto120/120 e controles públicos/recusas anônimas conferidos; provas em `evidence/response-headers-20261016/production/`. Sem migração nessa publicação.
 
 ## Desenho e limites
@@ -13,7 +15,7 @@ O estado de busca pertence a workspace/pessoa/chamado e é limpo ao trocar de co
 - [x] Regressões de busca literal, limites, paginação, navegação e limpeza antes da implementação.
 - [x] Módulo pequeno `web/message-search.js` e contrato TypeScript; composição no shell, estilos responsivos e inclusão no build.
 - [x] Navegador real com Auth/API sintéticos: notas não pesquisadas, conteúdo hostil literal, teclado/foco, paginação, troca de chamado, recusa, logout, resposta tardia,390px e nenhuma requisição por busca.
-- [ ] Gate completo, revisão independente, fonte/CI/preview e evidências identificados antes de declarar entrega qualificada. Merge/publicação da próxima entrega não presumidos da autorização específica para PR67.
+- [x] Gate completo, revisão independente, fonte/CI/preview e evidências identificados antes de declarar entrega qualificada. Merge/publicação da próxima entrega não presumidos da autorização específica para PR67.
 
 Busca global no servidor, audiência específica para pesquisa de notas, visões persistentes e projeção de SLA seguem pendentes nos respectivos recortes. HD-019 não será encerrado integralmente por esta entrega.
 
@@ -42,3 +44,11 @@ Fonte6707cd5/run38965639426 falhou: aplicação5905/5906, PostgreSQL700/700, int
 Artefato original `helpdesk-homologation-9ab8b704f3788fe238e0b868039e0ad836bc12cc-38966480993-1`, digest `sha256:d1dd238d1282e831994d4fb0d232edc554dcdaac3d7470a3199ef01e65a5d6a9`; fingerprint `f0ea1e24207eadec392008cd1f50f1856e563ba0421b7401a279e8db7c892fe2`. Relatório e seis logs originais em evidence/homologation; ci-qualified.json registra a fonte/run e hashes. Verificador integral aprovado antes/depois da cópia. Commits de documentação/evidência não alteram esse fingerprint. O primeiro CI falho continua preservado e identificado como falho.
 
 HDA38966480748 e Apoio38966480792 aprovados na mesma fonte. Revisão da inclusão na fixture encerrada:1/1 build repetido pelo reviewer e25/25 focais inspecionados. Sem achados bloqueantes. [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68) aberto; merge de teste e preview ainda em conferência.
+
+## Preview e entrega para revisão
+
+[Prévia do PR68](https://deploy-preview-68--helpdesk-consultegeo.netlify.app) pronta na documentação qualificada `df5f52e432d0f9128307076e3cacd9790ce0a389`, deploy `6ad293dd506c3c102f05d617`. Seis arquivos conferidos: message-search.js/app.js/CSS byte a byte, HTML com inserção nativa do provedor estritamente identificada e entry/facade do Apoio conforme manifesto SHA1. Recibo em preview.json. Nenhuma API autenticada produtiva ou comando foi inferido dessa inspeção. A primeira prévia anterior ao recibo aprovado falhou e não é prova qualificada.
+
+Quatro análises CodeQL e agregado, regras de headers/redirects e preview aprovados. [Gate do merge de teste38967593676](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38967593676); consultar seu estado no provedor. A publicação da atualização documental final será conferida separadamente, sem mudar o fingerprint da implementação. A autorização desta rodada permitiu publicar o PR67, não presume merge/publicação do PR68.
+
+Próximos recortes: busca global com audiência própria no servidor; validação semântica de campos existentes com nova versão e paridade; projeção de SLA após reconciliação de política. Administrativos sensíveis/modelos técnicos continuam condicionados, sem liberar os adiamentos ou reativar scanner. HD-019 permanece parcial.
