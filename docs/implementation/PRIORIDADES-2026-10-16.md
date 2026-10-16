@@ -18,7 +18,7 @@ Autorização: executar itens prioritários do levantamento, reutilizando módul
 
 ## Frentes seguintes que não podem ser inventadas
 
-HD-011 precisa manter equivalência entre DSL/publicador, PostgreSQL e UI, com nova versão de formulário, sem alterar snapshots antigos. Foi solicitada a referência homologada dos modelos técnicos para HD-013–015; não há autorização para inventar norma/limite de engenharia. HD-009/010 dependem de política/autoridade; admin sensível depende da retomada MFA. SLA atual precisa projeção própria e não mudará política como efeito da busca. HD-024 continua exigindo revisão explícita do contrato de arquivos, sem scanner. Novo GEO, HDA executor e legado permanecem condicionados às decisões vigentes.
+HD-011 precisa manter equivalência entre DSL/publicador, PostgreSQL e UI, com nova versão de formulário, sem alterar snapshots antigos. O usuário confirmou nesta rodada que **não existem modelos técnicos homologados** para HD-013–015; preservar coleta atual e registrar definição técnica como pendência de negócio. Não inventar norma/limite de engenharia. HD-009/010 dependem de política/autoridade; admin sensível depende da retomada MFA. SLA atual precisa projeção própria e não mudará política como efeito da busca. HD-024 continua exigindo revisão explícita do contrato de arquivos, sem scanner. Novo GEO, HDA executor e legado permanecem condicionados às decisões vigentes.
 
 ## Progresso e evidências
 

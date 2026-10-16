@@ -45,3 +45,9 @@ test('component names are opaque map keys, never schema or example keywords',asy
   valid.components.parameters[name].schema={type:123};await assert.rejects(()=>validate(valid),/schema|type/i);
  }
 });
+test('schema references also validate targets outside canonical component locations, with bounded cycles',async()=>{
+ const validate=await validator(),d:any=contract();d['x-owned-schema']={type:123};
+ d.paths['/owned'].get.responses['200']={description:'Found',content:{'application/json':{schema:{type:'object',properties:{nested:{$ref:'#/x-owned-schema'}}}}}};
+ await assert.rejects(()=>validate(d),/schema|type/i);
+ d['x-owned-schema']={type:'object',properties:{next:{$ref:'#/x-owned-schema'}}};await validate(d);
+});

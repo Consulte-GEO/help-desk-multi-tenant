@@ -15,25 +15,37 @@ export async function validateOpenApiDocument(document:unknown):Promise<void>{
  // JSON Schema2020-12; validate them locally without fetching a dialect URI.
  ajv.addMetaSchema({$id:oasDialect,$schema:jsonDialect,$ref:jsonDialect});
  const seen=new Set<object>();
+ function resolveReference(child:unknown):unknown{
+  assert.ok(typeof child==='string'&&child.startsWith('#/'),'Only internal OpenAPI references are allowed.');
+  let target:unknown=spec;
+  for(const token of child.slice(2).split('/')){
+   assert.ok(!/~(?![01])/.test(token),'Invalid JSON pointer.');
+   const name=token.replaceAll('~1','/').replaceAll('~0','~');
+   assert.ok(target!==null&&typeof target==='object'&&Object.hasOwn(target,name),'Unresolved internal reference '+child);
+   target=(target as Record<string,unknown>)[name];
+  }
+  return target;
+ }
  function references(value:unknown):void{
   if(!value||typeof value!=='object'||seen.has(value))return;seen.add(value);
   for(const [key,child] of Object.entries(value)){
-   if(key==='$ref'||key==='$dynamicRef'){
-    assert.ok(typeof child==='string'&&child.startsWith('#/'),'Only internal OpenAPI references are allowed.');
-    let target:unknown=spec;
-    for(const token of child.slice(2).split('/')){
-     assert.ok(!/~(?![01])/.test(token),'Invalid JSON pointer.');
-     const name=token.replaceAll('~1','/').replaceAll('~0','~');
-     assert.ok(target!==null&&typeof target==='object'&&Object.hasOwn(target,name),'Unresolved internal reference '+child);
-     target=(target as Record<string,unknown>)[name];
-    }
-   }
+   if(key==='$ref'||key==='$dynamicRef')resolveReference(child);
    references(child);
   }
  }
  references(spec);
+ const schemasSeen=new Set<unknown>();
  function schema(value:unknown):void{
+  if(schemasSeen.has(value))return;schemasSeen.add(value);
   assert.ok(ajv.validateSchema(value as object),'Invalid JSON Schema: '+ajv.errorsText());
+  if(!value||typeof value!=='object')return;
+  const s=value as Record<string,unknown>;
+  for(const key of ['$ref','$dynamicRef'])if(Object.hasOwn(s,key))schema(resolveReference(s[key]));
+  // Follow only schema-bearing keywords. Business examples/defaults and opaque
+  // property names are not executable schemas, but referenced targets are.
+  for(const key of ['items','contains','additionalProperties','unevaluatedProperties','unevaluatedItems','propertyNames','not','if','then','else','contentSchema'])if(Object.hasOwn(s,key))schema(s[key]);
+  for(const key of ['$defs','properties','patternProperties','dependentSchemas'])if(Object.hasOwn(s,key))Object.values(s[key] as object).forEach(schema);
+  for(const key of ['allOf','anyOf','oneOf','prefixItems'])if(Object.hasOwn(s,key))(s[key] as unknown[]).forEach(schema);
  }
  // Follow OpenAPI locations, not arbitrary names: component names, media types
  // and callback expressions can themselves be "schema", "examples" or "x-...".
