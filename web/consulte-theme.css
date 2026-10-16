@@ -321,3 +321,12 @@ html[data-theme="dark"] .hd-ui .hd-brand-dark { display:block; }
   .hd-ui .shell,.hd-ui .workspace-grid { display:block; }
   .hd-ui .messages,.hd-ui .ticket-list { max-height:none; overflow:visible; }
 }
+
+.ticket-guidance { margin:20px 28px; padding:16px; border:1px solid var(--hd-line,#DBE1EB); border-radius:12px; background:var(--hd-surface-2,#F3F5FA); }
+.ticket-guidance h3 { margin:0 0 12px; font-size:15px; }
+.ticket-guidance dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 20px; margin:0; }
+.ticket-guidance dl > div:last-child { grid-column:1/-1; }
+.ticket-guidance dt { color:var(--hd-muted,#506079); font-size:12px; font-weight:600; }
+.ticket-guidance dd { margin:4px 0 0; overflow-wrap:anywhere; }
+.ticket-guidance p { margin:12px 0 0; color:var(--hd-muted,#506079); font-size:12px; }
+@media(max-width:640px) { .ticket-guidance { margin-inline:18px; } .ticket-guidance dl { grid-template-columns:minmax(0,1fr); } }

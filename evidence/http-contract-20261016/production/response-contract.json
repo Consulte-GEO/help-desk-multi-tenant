@@ -1,0 +1,152 @@
+{
+  "checkedAt": "2026-10-16T17:14:13.004Z",
+  "sourceFingerprint": "356f00f3a4ef45936f6e05d173be252644cc7187c0c26c329cafd6a5ca28dca0",
+  "contractSource": "f902f00ae0010d9c1fe8cb253c767133d407a0ae",
+  "productionSource": "e553462beaa1359062ca07a868d6f904284d5d4d",
+  "deploy": "6ad25adf39ead2eb59373ac1",
+  "publicReadOnly": true,
+  "authenticated": false,
+  "businessWrites": 0,
+  "scopedAcceptance": false,
+  "routes": [
+    {
+      "path": "/v1/capabilities",
+      "status": 200,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "correlationMatched": null,
+      "propertyNames": [
+        "api_version",
+        "capabilities",
+        "consultegeo",
+        "release"
+      ]
+    },
+    {
+      "path": "/v1/public-config",
+      "status": 200,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "correlationMatched": null,
+      "propertyNames": [
+        "consultegeo_intake",
+        "consultegeo_review",
+        "email_monitoring",
+        "publishable_key",
+        "supabase_url",
+        "ticket_totals"
+      ]
+    },
+    {
+      "path": "/v1/me",
+      "status": 401,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/v1/tickets",
+      "status": 401,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/v1/tickets/summary",
+      "status": 401,
+      "contractPassed": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    }
+  ],
+  "pass": true
+}
