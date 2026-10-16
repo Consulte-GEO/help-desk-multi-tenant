@@ -48,4 +48,15 @@ A [qualificação do Apoio 38889581672](https://github.com/Consulte-GEO/help-des
 
 A [CI geral 38889581530](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38889581530) aprovou 5.829 testes de aplicação, 697 PostgreSQL e 632 de interface, sem falhas, skips ou cancelamentos. Fingerprint `9fc1de3f1ffc128229ac82fab96b6e27b611b8845bfa4b68780fbec70b489e6f`; artefato `helpdesk-homologation-f420f76db2012650c1ec542cdbe0320d67bf5ee0-38889581530-1`, digest SHA-256 `10801f0a9ca2cc9a00ae596517888dedc9e5b8094cec536b5f4cc1b8b3f39fde`. Relatório e logs originais preservados em `evidence/homologation/runs/73b1ef0f-76d3-4760-851d-5c03714a349b`, validados por fingerprint e hashes antes/depois da cópia. A CI geral do PR, 38889628604, também terminou aprovada; HDA e CodeQL aprovados.
 
-Resultados de integração e publicação serão registrados após as verificações correspondentes. Após o usuário reconectar, as abas do Help Desk apareceram no Edge, mas as tentativas de controle/leitura continuaram expirando. Isso não comprova defeito no Help Desk e não gerou nenhum envio real de teste.
+## Publicação verificada
+
+PR60 mesclado em `e89386f675c265d65916ae926d51bb309cf4e168`. A prévia final `6ad20445e6dd683b7ec16055` ficou READY. O [deploy de produção](https://app.netlify.com/projects/helpdesk-consultegeo/deploys/6ad204e049d00ae445aaa208) ficou READY e foi publicado em `2026-10-16T11:06:06.831Z` (08:06:06 em Brasília). A prova canônica foi novamente validada na árvore mesclada.
+
+- 115 arquivos estáticos, incluindo 22 do módulo, conferidos por HTTPS/hash contra o manifesto do deploy. CSP preservada.
+- Duas rotas privadas recusaram acesso anônimo com 401/no-store; quatro caminhos de fontes/SQL privados responderam 404.
+- O módulo e a aba E-mails abriram com os arquivos efetivamente publicados e API sintética interceptada. Não houve sessão Auth, chamada à API de negócio ou gravação produtiva nesse smoke.
+- O cron nativo do `notification-worker` retornou 204 após a publicação, em `2026-10-16T11:07:05.20932701Z`, request `01M5269S3SKJ3YT4FQTVKZJTV7`, sem logs de falha. Não houve invocação manual ou envio de teste.
+
+[Provas sanitizadas da publicação](../evidence/apoio-implantacao-fluxos-ui/production/).
+
+Após o usuário reconectar duas vezes, as abas do Help Desk apareceram no Edge e a seleção da aba funcionou, mas a leitura do DOM continuou expirando, inclusive com prazo ampliado. Isso não comprova defeito no Help Desk. O percurso produtivo autenticado completo e o e-mail real para o endereço autorizado permanecem pendentes; nenhuma tentativa de clique no envio ocorreu nesta rodada. Não repetir migrations ou alterar credenciais para resolver uma falha de controle do navegador.

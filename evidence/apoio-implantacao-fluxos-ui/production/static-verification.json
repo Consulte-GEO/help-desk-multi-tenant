@@ -1,0 +1,623 @@
+{
+  "observed_at": "2026-10-16T11:07:11.290Z",
+  "origin": "https://helpdesk.consultegeo.org",
+  "deploy_id": "6ad204e049d00ae445aaa208",
+  "commit": "e89386f675c265d65916ae926d51bb309cf4e168",
+  "static_file_count": 115,
+  "deployment_manifest_files": 116,
+  "module_file_count": 22,
+  "static_files": [
+    {
+      "path": "/access-experience.css",
+      "status": 200,
+      "sha1": "01ac36ac477d9b287d250e7f6d5377cd6bbece62"
+    },
+    {
+      "path": "/access-experience.js",
+      "status": 200,
+      "sha1": "0b526e3661365d6efcce7d609ae3674224708f01"
+    },
+    {
+      "path": "/access-feedback.js",
+      "status": 200,
+      "sha1": "a89ffaf4247c4030153d941e85744bdac95ed957"
+    },
+    {
+      "path": "/access-mode.js",
+      "status": 200,
+      "sha1": "ffc24c371793423826d2361614f1c031df9edaf2"
+    },
+    {
+      "path": "/account-security.js",
+      "status": 200,
+      "sha1": "8a27bde849c424f7ab0fe2d71bcb8de669696206"
+    },
+    {
+      "path": "/admin-configuration.js",
+      "status": 200,
+      "sha1": "6429ac2454147067fb21fddb730d15420c434437"
+    },
+    {
+      "path": "/admin-experience.css",
+      "status": 200,
+      "sha1": "6e06f845d95b2edd38ce0ef80a4aa8acb4a17681"
+    },
+    {
+      "path": "/admin-forms.js",
+      "status": 200,
+      "sha1": "82747d59415587c38cb5f8c52d3ca1a4b5e69b09"
+    },
+    {
+      "path": "/admin-members-state.js",
+      "status": 200,
+      "sha1": "b08e365d7505df7a3b4d845067ca01901a377e1e"
+    },
+    {
+      "path": "/admin-members.css",
+      "status": 200,
+      "sha1": "a845fc53e0d63391bce6ca6d8e93a6b8e6dbdcbc"
+    },
+    {
+      "path": "/admin-members.js",
+      "status": 200,
+      "sha1": "40d8619a64d5e932c5063f1ee796ff5d9a510ec7"
+    },
+    {
+      "path": "/admin-ui.js",
+      "status": 200,
+      "sha1": "957730f91073f69d5b7587ef652887da496e0dfb"
+    },
+    {
+      "path": "/app.js",
+      "status": 200,
+      "sha1": "39cbe2c6cd1d358e0a82608551bf82f9d4fd6fb8"
+    },
+    {
+      "path": "/approvals.js",
+      "status": 200,
+      "sha1": "473032cedb3ed99e85e83f3333658396ca66662e"
+    },
+    {
+      "path": "/assets/consulte-geo-color.png",
+      "status": 200,
+      "sha1": "41c40d1f10336ac08781dbfa07ca0fdc0096d1f0"
+    },
+    {
+      "path": "/assets/consulte-geo-white.png",
+      "status": 200,
+      "sha1": "643625d5007f59c528237bf704e90e39db7eade5"
+    },
+    {
+      "path": "/attachments.js",
+      "status": 200,
+      "sha1": "ad579cfee98cfdf32d93cc64f8cf76b79acb13cf"
+    },
+    {
+      "path": "/brand-profile.js",
+      "status": 200,
+      "sha1": "df8a5cebad6a2d39a32ac8767660314a0428e76f"
+    },
+    {
+      "path": "/brand-shell.js",
+      "status": 200,
+      "sha1": "5344d7c97a50448db0143fb84f6931bf78c05b47"
+    },
+    {
+      "path": "/consulte-theme.css",
+      "status": 200,
+      "sha1": "3b316da3f815bcd7286a15c5e8e61a3a9109e42f"
+    },
+    {
+      "path": "/consultegeo-configuration.css",
+      "status": 200,
+      "sha1": "0769b6d6e625584a19d44359daef545a00930c61"
+    },
+    {
+      "path": "/consultegeo-configuration.js",
+      "status": 200,
+      "sha1": "cf8903a2d82282e55d3d11229f858b43a268babe"
+    },
+    {
+      "path": "/consultegeo-intake-api.js",
+      "status": 200,
+      "sha1": "d6d0ba4d92af262068e9bf9aa5607bb4c285797c"
+    },
+    {
+      "path": "/consultegeo-operation.css",
+      "status": 200,
+      "sha1": "fdef27c6b1b125f5919c7fedd509a6b130876344"
+    },
+    {
+      "path": "/consultegeo-operation.js",
+      "status": 200,
+      "sha1": "ddefe6eb20108c15bffd8cc0e097dd9ff177693d"
+    },
+    {
+      "path": "/consultegeo-request.css",
+      "status": 200,
+      "sha1": "05fc1b96d9547ba4b50bf3749094f146f051761d"
+    },
+    {
+      "path": "/consultegeo-request.js",
+      "status": 200,
+      "sha1": "e405de297ce97c257efacfa5383a4a0d6d9d964b"
+    },
+    {
+      "path": "/consultegeo-review.js",
+      "status": 200,
+      "sha1": "01b0fbbd91bddc1211f171ff568d6825c3ed57b6"
+    },
+    {
+      "path": "/consultegeo-workflow.js",
+      "status": 200,
+      "sha1": "91de32cd4f2bb3429f9b1dedd60f3ef9432e45c0"
+    },
+    {
+      "path": "/conversation-state.js",
+      "status": 200,
+      "sha1": "28e306b59419f842c3f37973050e558a228a6ec5"
+    },
+    {
+      "path": "/customer-portal.js",
+      "status": 200,
+      "sha1": "ea0ffe1028d4cb56ea0752478583d2ed60b69ab0"
+    },
+    {
+      "path": "/delivery-operations.js",
+      "status": 200,
+      "sha1": "cb68dc8f5b398e218dbe0a1c8773bcc88c5f257e"
+    },
+    {
+      "path": "/design-tokens.css",
+      "status": 200,
+      "sha1": "8279e667b476d15ed53560484d1e1552c46a2226"
+    },
+    {
+      "path": "/dynamic-form.css",
+      "status": 200,
+      "sha1": "854850595a25634171a2c04955b839e29e386b77"
+    },
+    {
+      "path": "/dynamic-form.js",
+      "status": 200,
+      "sha1": "3f0c8811f54913746fc8530b917a7a7290184c2b"
+    },
+    {
+      "path": "/email-monitor.css",
+      "status": 200,
+      "sha1": "683aacda843c22cd8967edda29a9b60e2ae4d0ce"
+    },
+    {
+      "path": "/email-monitor.js",
+      "status": 200,
+      "sha1": "2dde17099142b404e3584c5c900e20cee284d7fe"
+    },
+    {
+      "path": "/execution-checklist-contract.js",
+      "status": 200,
+      "sha1": "8839ffc0769b5bc216b801e41c67c7c59be3c3d7"
+    },
+    {
+      "path": "/execution-checklist-state.js",
+      "status": 200,
+      "sha1": "610793a82fbeee265dbb14055fce4cbed1a7fe46"
+    },
+    {
+      "path": "/execution-checklist.css",
+      "status": 200,
+      "sha1": "4fcfc3059d5d8ac360bf06a0c9d1c4aef5d5def6"
+    },
+    {
+      "path": "/execution-checklist.js",
+      "status": 200,
+      "sha1": "e2efb5c9f38d54a9d2bd0de9fc95d3a237fff0b9"
+    },
+    {
+      "path": "/form-experience.css",
+      "status": 200,
+      "sha1": "b9bd3a9bb3273326536ffbbeacc2c3a496c4898a"
+    },
+    {
+      "path": "/form-feedback.js",
+      "status": 200,
+      "sha1": "fa11425504bbbd18a3e0ea7533f3d8d81407807d"
+    },
+    {
+      "path": "/form-review.js",
+      "status": 200,
+      "sha1": "106c02d6ebfee3579317865dabb8c701367106b4"
+    },
+    {
+      "path": "/geo-auth-callback.js",
+      "status": 200,
+      "sha1": "e45a6d3fc9f393bf641a98dca8cd42788c793973"
+    },
+    {
+      "path": "/geo-auth-state.js",
+      "status": 200,
+      "sha1": "65c71b4cac637f9196cb3218cf08194156d82856"
+    },
+    {
+      "path": "/human-auth.js",
+      "status": 200,
+      "sha1": "46d9b004237bca29423925c59bfe65892a43da8d"
+    },
+    {
+      "path": "/human-session.js",
+      "status": 200,
+      "sha1": "a57f9bfa61684079e82933a6b57e842563843d59"
+    },
+    {
+      "path": "/implantacao/assets/geo-symbol.png",
+      "status": 200,
+      "sha1": "35ff3f8b77ed41087552774ad2e0b16f0134cefc"
+    },
+    {
+      "path": "/implantacao/assets/implantacao-import-core.js",
+      "status": 200,
+      "sha1": "20d19c831015e00d8b02a7faa31208dea10ce4e9"
+    },
+    {
+      "path": "/implantacao/assets/import-integrity.js",
+      "status": 200,
+      "sha1": "a68e446b7b921ef0f56e677a553447c82c044d7e"
+    },
+    {
+      "path": "/implantacao/assets/import-legacy-adapter.js",
+      "status": 200,
+      "sha1": "5f229a9982fca800622eb54088199e8f7185eb3b"
+    },
+    {
+      "path": "/implantacao/assets/intake-auditor.js",
+      "status": 200,
+      "sha1": "a52a6853ce5da3df22a3d7fb8cf8740f2b3ca97d"
+    },
+    {
+      "path": "/implantacao/assets/intake-selftest.js",
+      "status": 200,
+      "sha1": "ac1f546f00a89cc6e576f05a5c0b83f4b21b2305"
+    },
+    {
+      "path": "/implantacao/assets/laudo-invariantes.js",
+      "status": 200,
+      "sha1": "84f947ce856dad3d3d3fe9b24eddbdaef3181536"
+    },
+    {
+      "path": "/implantacao/assets/laudo-parser-core.js",
+      "status": 200,
+      "sha1": "b5ca799bace755eeb4fe75fd63cab70b4fee102f"
+    },
+    {
+      "path": "/implantacao/assets/laudo-perfis.js",
+      "status": 200,
+      "sha1": "6e76b524628d7648ebef21fce10698ddea35e034"
+    },
+    {
+      "path": "/implantacao/assets/similarity-engine.js",
+      "status": 200,
+      "sha1": "51a1506ea92f1a93af46d97d921a3dce0b7669c9"
+    },
+    {
+      "path": "/implantacao/assets/xlsx-style-lite.js",
+      "status": 200,
+      "sha1": "0013b382ae66daf23674a9f037df70ca36e5ae94"
+    },
+    {
+      "path": "/implantacao/chunks/entry-berurbkx.js",
+      "status": 200,
+      "sha1": "d3c03db14769b0a6e2e309f016ca6ecb75e65ddb"
+    },
+    {
+      "path": "/implantacao/chunks/excelexportservice-btc2caut.js",
+      "status": 200,
+      "sha1": "f0d509b58d3ba3287f5fca77c440c52322e950aa"
+    },
+    {
+      "path": "/implantacao/chunks/xlsxstylelite-biwpegpc.js",
+      "status": 200,
+      "sha1": "4d26a0775d93ccd35d6d1e79c9ec38a6869e9882"
+    },
+    {
+      "path": "/implantacao/inline-layout.css",
+      "status": 200,
+      "sha1": "27d71a2d7fbd30efb63009434760f5b6d0909d2d"
+    },
+    {
+      "path": "/implantacao/modelos/modelo-implantacao-consulte-geo-r02-exemplo-preenchido.xlsx",
+      "status": 200,
+      "sha1": "f9c030045b329808d5209b7931c223d096c52be8"
+    },
+    {
+      "path": "/implantacao/modelos/modelo-implantacao-consulte-geo-r02.xlsx",
+      "status": 200,
+      "sha1": "d60d93bb00d7f2f899a9cda015302b3bc9df64ec"
+    },
+    {
+      "path": "/implantacao/support-app.js",
+      "status": 200,
+      "sha1": "79ba12eeeb6f128c49e0c62e2d38ad9b323a9ca7"
+    },
+    {
+      "path": "/implantacao/support.css",
+      "status": 200,
+      "sha1": "794ab981bdd301be9ff1f1e78b14f142da6e700e"
+    },
+    {
+      "path": "/implantacao/vendor/pdf.mjs",
+      "status": 200,
+      "sha1": "27e368f4e11281956e4e91e43b1115aff9079373"
+    },
+    {
+      "path": "/implantacao/vendor/pdf.worker.mjs",
+      "status": 200,
+      "sha1": "2cd625689ca5f9e47931d6deb75a2b78f8ec2dfd"
+    },
+    {
+      "path": "/implantacao/vendor/xlsx.full.min.js",
+      "status": 200,
+      "sha1": "56e27b479a19a210cb0f434355c8835f4d3866bf"
+    },
+    {
+      "path": "/implementation-support.css",
+      "status": 200,
+      "sha1": "2a70232a34adcb3b37f7cb4859f2574cfb6b0dbc"
+    },
+    {
+      "path": "/implementation-support.js",
+      "status": 200,
+      "sha1": "5038eb7fa428ba400b0f3057df74ee1bc7033c2e"
+    },
+    {
+      "path": "/inbox-view-state.js",
+      "status": 200,
+      "sha1": "847afd7c7cd7ed35e704baa23d5e8e10c66b6474"
+    },
+    {
+      "path": "/inbox-workspace.css",
+      "status": 200,
+      "sha1": "86324ab498b7222c01ffc165206dfff859c1b1b8"
+    },
+    {
+      "path": "/inbox-workspace.js",
+      "status": 200,
+      "sha1": "c493dad2ddac75326d4d504ac0f1c0a473964d86"
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "sha1": "b11f982a210c6dd6c50bbe1aee97a61904304806"
+    },
+    {
+      "path": "/mutation-state.js",
+      "status": 200,
+      "sha1": "0aef828271ec96bd2dfebc0edf410fe749ddece8"
+    },
+    {
+      "path": "/opening-flow.js",
+      "status": 200,
+      "sha1": "4309c0927a0a19a23ff98e335b99d86d146a48d8"
+    },
+    {
+      "path": "/opening-wizard.js",
+      "status": 200,
+      "sha1": "0f67115efbe28054fd4e8ceedb11c183ae37fe28"
+    },
+    {
+      "path": "/operations-experience.css",
+      "status": 200,
+      "sha1": "189cab4d8536439fdc7bd78fa3a2d58a08b23cd3"
+    },
+    {
+      "path": "/operations-ui.js",
+      "status": 200,
+      "sha1": "159bd3f8a6a501869336f94f2d7f0ec75fc8490c"
+    },
+    {
+      "path": "/optional-support.js",
+      "status": 200,
+      "sha1": "ad8658b957cfc8ace4434fdc6b9a7be6c67ca88e"
+    },
+    {
+      "path": "/portal-format.js",
+      "status": 200,
+      "sha1": "ee39b0d814b780d313706c153d556ab7757e6779"
+    },
+    {
+      "path": "/portal-state.js",
+      "status": 200,
+      "sha1": "b77b46d7359ee6840874260a32c03808d1d6e848"
+    },
+    {
+      "path": "/portal-ui.js",
+      "status": 200,
+      "sha1": "bbbb5bcc7d22349b1591f9a12e1851e7e7b35424"
+    },
+    {
+      "path": "/portal.css",
+      "status": 200,
+      "sha1": "3c1d6a8623a3a66f4d75d541d38f06978fa101c4"
+    },
+    {
+      "path": "/recovery-password.js",
+      "status": 200,
+      "sha1": "77351d396bd5d71ba73a71e8c89cdc1a6bbc5289"
+    },
+    {
+      "path": "/reports.js",
+      "status": 200,
+      "sha1": "4fa67a5f6eee35ab4f56a404460dcbcc8f1a347b"
+    },
+    {
+      "path": "/response-diagnostic.js",
+      "status": 200,
+      "sha1": "6d99c48f42a5f39dd688cd7bd5871dccd5f29dc4"
+    },
+    {
+      "path": "/review-state.js",
+      "status": 200,
+      "sha1": "6863e1968e9cc25c806e8c78fe292a6b4386c0d3"
+    },
+    {
+      "path": "/session-fetch.js",
+      "status": 200,
+      "sha1": "e0803212be2772bac33cde6a947bc633454065f5"
+    },
+    {
+      "path": "/shared/checklist-evidence.js",
+      "status": 200,
+      "sha1": "a2793274ead30621696d6b805a945e6dcc4874a7"
+    },
+    {
+      "path": "/shared/cnpj.js",
+      "status": 200,
+      "sha1": "ebfe4733ed4c8da9bd27f856850d2327a37e3b59"
+    },
+    {
+      "path": "/shared/consultegeo-request.js",
+      "status": 200,
+      "sha1": "6b311a22f4acc3182c609d2748bf1a48d001ba88"
+    },
+    {
+      "path": "/shared/consultegeo-ticket.js",
+      "status": 200,
+      "sha1": "e42129180f0b596abfa7436d90669d6b13edea32"
+    },
+    {
+      "path": "/shared/form-rules.js",
+      "status": 200,
+      "sha1": "392ec75336d8d07c3f33ea83afb9ce926ede82c9"
+    },
+    {
+      "path": "/shared/instant.js",
+      "status": 200,
+      "sha1": "0932262b8fa61253e2966480f73783175da5f5da"
+    },
+    {
+      "path": "/shared/mfa.js",
+      "status": 200,
+      "sha1": "b8a845060be9fb5d795f8101056832dc036ca4b3"
+    },
+    {
+      "path": "/styles.css",
+      "status": 200,
+      "sha1": "21b46e4820c1c0700f4be14a017b250c537a6c6b"
+    },
+    {
+      "path": "/support-catalog-state.js",
+      "status": 200,
+      "sha1": "f8b898c3156117993d675ec01e86edd62a93e4e2"
+    },
+    {
+      "path": "/support-experience.css",
+      "status": 200,
+      "sha1": "1a7182d5c89b114677d6c1e6113d5720d22b0199"
+    },
+    {
+      "path": "/support-intake.css",
+      "status": 200,
+      "sha1": "8192dff1374b8ab2e65a077fb8b26fa070516be9"
+    },
+    {
+      "path": "/support-intake.js",
+      "status": 200,
+      "sha1": "2d00689273dd71698255abb5125df3adfc5e2f97"
+    },
+    {
+      "path": "/support-navigation.js",
+      "status": 200,
+      "sha1": "6ad64dafb7d9adf425692ad1a42f80590ace40e6"
+    },
+    {
+      "path": "/support-presentation.js",
+      "status": 200,
+      "sha1": "c5eea49d8ade8773b40e53a282ccf22747f22aff"
+    },
+    {
+      "path": "/support-queue.js",
+      "status": 200,
+      "sha1": "879be3919a9d8570718297eaa20ad27910d80aa0"
+    },
+    {
+      "path": "/theme-init.js",
+      "status": 200,
+      "sha1": "5d1e25a01a74260e0b640169dfa23d02b13002ea"
+    },
+    {
+      "path": "/ticket-actions.js",
+      "status": 200,
+      "sha1": "2e8c599372a102b8599f29cc7be2015e451744eb"
+    },
+    {
+      "path": "/ticket-create-state.js",
+      "status": 200,
+      "sha1": "69564601ec26266c1843b04178992786c0b5daaf"
+    },
+    {
+      "path": "/ticket-detail.js",
+      "status": 200,
+      "sha1": "9e5aff597ac44a1806fd238e1e87189840bce6ff"
+    },
+    {
+      "path": "/ticket-list-state.js",
+      "status": 200,
+      "sha1": "b1df790c00199537ed177647ac7d3b3e6a759cd5"
+    },
+    {
+      "path": "/timeline-state.js",
+      "status": 200,
+      "sha1": "893247422d057dfc81cd36f3479932b83c5f4f98"
+    },
+    {
+      "path": "/totp-qr.js",
+      "status": 200,
+      "sha1": "9232614e791f38ea6d22f6b747cff988bce07c30"
+    },
+    {
+      "path": "/vendor/qrcodegen.js",
+      "status": 200,
+      "sha1": "21587eb6e749a62c23a28da2d8993db21f8d26d5"
+    },
+    {
+      "path": "/version-receipt.js",
+      "status": 200,
+      "sha1": "3bdc0c34429e66a9aa008f59dd63a37c8ad900ba"
+    }
+  ],
+  "refusals": [
+    {
+      "path": "/v1/implementation-support/session",
+      "status": 401
+    },
+    {
+      "path": "/v1/implementation-support/documents?account_id=00000000-0000-4000-8000-000000000000",
+      "status": 401
+    }
+  ],
+  "privatePaths": [
+    {
+      "path": "/implantacao/admin.html",
+      "status": 404
+    },
+    {
+      "path": "/implantacao/src/main.ts",
+      "status": 404
+    },
+    {
+      "path": "/modules/implantacao/SOURCE_IMPORT.json",
+      "status": 404
+    },
+    {
+      "path": "/implantacao/supabase/migrations/20261015180006_implementation_support_addon.sql",
+      "status": 404
+    }
+  ],
+  "public_config": {
+    "operational": true,
+    "email_monitoring": true,
+    "consultegeo_review": true
+  },
+  "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://xaelbntjnvztznnpcvtm.supabase.co; img-src 'self' data: blob:; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+  "production_auth_journey_executed": false,
+  "production_business_records_created": false,
+  "paid_inference_executed": false
+}
