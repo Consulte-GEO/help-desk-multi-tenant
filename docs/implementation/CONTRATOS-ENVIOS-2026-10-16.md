@@ -1,8 +1,8 @@
-# Conformidade dos envios existentes — HD-002
+# Conformidade dos envios e foco dos modais — HD-002 e Apoio Implantação
 
 ## Escopo autorizado
 
-Continuidade dos itens prioritários após o merge/publicação do PR65. Recorte delimitado sobre fluxos existentes: corrigir o documento de erro de quatro handlers montados e qualificar os recibos de escrita do core contra o OpenAPI existente. Não cria rota, campo de cadastro, operação ou concessão de acesso. MFA e Novo GEO seguem adiados, scanner cancelado e modelos técnicos homologados ausentes.
+Continuidade dos itens prioritários após o merge/publicação do PR65. Recorte delimitado sobre fluxos existentes: corrigir o documento de erro de quatro handlers montados e qualificar os recibos de escrita do core contra o OpenAPI existente. A falha recorrente do gate complementar revelou também disputa de foco nos modais do Apoio Implantação, corrigida neste mesmo PR. Não cria rota, campo de cadastro, operação ou concessão de acesso. MFA e Novo GEO seguem adiados, scanner cancelado e modelos técnicos homologados ausentes.
 
 ## Divergência reproduzida e correção
 
@@ -24,7 +24,15 @@ Cada handler recebe somente o título genérico estático “Não foi possível 
 
 As respostas passam pelo schema do método/status/mídia reais; cabeçalhos privados e a correlação são conferidos separadamente. Os recibos de sucesso usam HTTP + serviço/unidade de trabalho reais em memória. O cenário de erro do serviço de workflow usa uma porta sintética para provocar recusas; não é prova de commit PostgreSQL ou callback produtivo. O mapa de recursos da composição não pode ser consultado nos cenários de recusa inicial: o pool da fixture falha se utilizado.
 
-Resultado red/green: quatro cenários de core passaram antes da correção; seis cenários operacionais falharam por contrato (incluindo cada um dos quatro handlers). Depois da adição do título,10/10 passaram. A primeira versão do teste de criação trocava a identidade, e foi corrigida para manter o mesmo principal antes de avaliar replay; nenhuma alteração do produto foi feita para satisfazer essa fixture equivocada. Conjunto focal final com handlers/leituras/checklist/rascunhos:92/92 aprovado. OpenAPI45 operações,21 migrations e lock conferidos. Compilador, build, revisão independente e CI completos serão registrados após conclusão.
+Resultado red/green: quatro cenários de core passaram antes da correção; seis cenários operacionais falharam por contrato (incluindo cada um dos quatro handlers). Depois da adição do título,10/10 passaram. A primeira versão do teste de criação trocava a identidade, e foi corrigida para manter o mesmo principal antes de avaliar replay; nenhuma alteração do produto foi feita para satisfazer essa fixture equivocada. A revisão apontou duas fragilidades P3: mantida a mesma audiência desde a criação com igualdade integral do recibo, e leitura pública agora exige200/schema e a mensagem esperada antes de comprovar ausência da nota. Delta52f53c9 reconferido pelo revisor com10/10 aprovados e sem achados restantes. Conjunto focal com handlers/leituras/checklist/rascunhos:92/92 aprovado. OpenAPI45 operações,21 migrations e lock conferidos.
+
+## Falha complementar: foco diferido do modal
+
+Os runs iniciais de Apoio Implantação38945287624 e38945589335 falharam por botão de devolução desabilitado, enquanto as execuções do merge passaram. A captura original de38945589335 mostra o texto do motivo no campo de nome, motivo vazio e contador0/2000. O helper `useModalA11y` agendava incondicionalmente um segundo callback para focar o primeiro campo, mesmo quando outro campo já havia sido selecionado; também não distinguia callbacks de uma abertura anterior após fechar/reabrir. O guard de20 caracteres corretamente impedia o envio sem motivo; não foi relaxado.
+
+Correção: o foco inicial continua acontecendo quando nenhum campo interno foi escolhido. Se o foco já está no modal, respeita essa escolha. Cada abertura tem geração própria e o fechamento invalida os callbacks anteriores; listeners/Tab/Shift+Tab/Escape e restauração ao gatilho permanecem. Não muda os campos, o conteúdo, a validação ou o comando da devolução. O teste full shell do Apoio não foi relaxado nem teve sleeps/retries acrescentados.
+
+Cinco regressões determinísticas em `tests/implementation-modal-focus.test.ts` controlam as filas dos callbacks sem dependência nova. Antes da correção:2 aprovações/3 falhas (foco escolhido e callbacks antigos). Depois:5/5 aprovadas. Com os dez cenários de escrita:15/15. A execução local anterior do full shell chegou à segunda devolução aprovada, mas terminou com erro de recurso bloqueado; não é aprovação da jornada completa. O fechamento requer build, revisão do delta e novos gates Linux sobre a fonte que contém a correção.
 
 ## Limites e continuidade
 

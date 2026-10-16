@@ -93,6 +93,7 @@ export interface ModalA11yController {
  */
 export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
   let active = false;
+  let activation = 0;
   let container: HTMLElement | null = null;
   let previouslyFocused: HTMLElement | null = null;
 
@@ -146,11 +147,12 @@ export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
   function activate() {
     if (active) return;
     active = true;
+    const currentActivation = ++activation;
     previouslyFocused = (document.activeElement as HTMLElement) || null;
 
     // Aguarda o Vue renderizar o modal antes de procurar o container
     setTimeout(() => {
-      if (!active) return;
+      if (!active || currentActivation !== activation) return;
       container = document.querySelector<HTMLElement>(options.containerSelector);
       if (!container) {
         // Pode acontecer em testes ou se containerSelector estiver errado.
@@ -159,7 +161,10 @@ export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
       }
       // Foco inicial
       setTimeout(() => {
-        if (!active || !container) return;
+        if (!active || !container || currentActivation !== activation) return;
+        // Preserve a field already chosen by pointer, keyboard or assistive
+        // technology while the deferred initial-focus callbacks were pending.
+        if (container.contains(document.activeElement)) return;
         const focusables = focusableElements();
         if (focusables.length > 0) {
           focusables[0].focus();
@@ -173,6 +178,7 @@ export function setupModalA11y(options: ModalA11yOptions): ModalA11yController {
   function deactivate() {
     if (!active) return;
     active = false;
+    activation++;
     document.removeEventListener('keydown', onKeydown, true);
     container = null;
 
