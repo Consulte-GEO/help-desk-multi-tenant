@@ -1,0 +1,170 @@
+- link "Ir para o conteúdo":
+  - /url: "#hd-main-content"
+- complementary:
+  - link "Consulte GEO · Help Desk":
+    - /url: /
+    - img "Consulte GEO"
+    - text: Help Desk
+    - generic: Consulte GEO
+  - text: Central de atendimento
+  - generic: Operação autorizada
+  - paragraph: OPERAÇÃO
+  - navigation "Navegação principal":
+    - button "Chamados 2":
+      - text: Chamados
+      - generic: "2"
+    - button "Arquitetura e estágio":
+      - text: Arquitetura e estágio
+    - button "E-mails":
+      - generic: ✉
+      - text: E-mails
+    - button "Apoio Implantação":
+      - generic: ◈
+      - text: Apoio Implantação
+    - link "Wiki":
+      - /url: /wiki/
+      - generic: ▣
+      - text: Wiki
+  - generic: CENTRAL DE ATENDIMENTO
+  - paragraph:
+    - text: Consulte GEO.
+    - text: Suporte perto da sua operação.
+  - button "Segurança da minha conta"
+  - button "Configurar meu autenticador"
+  - button "Sair da sessão"
+- main:
+  - paragraph: CENTRAL DE SUPORTE
+  - text: Operação / E-mails
+  - generic: Tema
+  - combobox "Tema da interface":
+    - option "Automático" [selected]
+    - option "Claro"
+    - option "Escuro"
+  - generic: Administrador
+  - heading "Comunicações por e-mail" [level=1]
+  - paragraph: Situação atual das comunicações originadas no período selecionado. Horários em America/Sao_Paulo.
+  - button "Histórico"
+  - button "Fila"
+  - button "Falhas e atenção"
+  - form "Filtrar comunicações por e-mail":
+    - text: Protocolo ou chamado
+    - searchbox "Protocolo ou chamado"
+    - text: A partir de (America/Sao_Paulo)
+    - textbox "A partir de (America/Sao_Paulo)"
+    - text: Antes de (America/Sao_Paulo)
+    - textbox "Antes de (America/Sao_Paulo)"
+    - text: Conta autorizada (identificador)
+    - textbox "Conta autorizada (identificador)"
+    - text: Obra autorizada (identificador)
+    - textbox "Obra autorizada (identificador)"
+    - text: Tipo de notificação
+    - textbox "Tipo de notificação"
+    - text: Situação
+    - combobox "Situação":
+      - option "Todas" [selected]
+      - option "Fila"
+      - option "Requer atenção"
+      - option "Na fila"
+      - option "Aguardando nova tentativa"
+      - option "Em envio"
+      - option "Em envio"
+      - option "Resultado desconhecido"
+      - option "Saiu"
+      - option "Entregue"
+      - option "Falhou"
+      - option "Suprimido"
+    - text: Destinatário completo (admin)
+    - textbox "Destinatário completo (admin)"
+    - button "Aplicar filtros"
+    - button "Limpar"
+  - status
+  - paragraph: 11 comunicações · situação em 16/10/2026 06:42 (America/Sao_Paulo)
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Notificação de chamado · 15/10/2026 07:39 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Resposta do solicitante · 15/10/2026 07:39 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Informações solicitadas · 15/10/2026 07:38 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Resposta pública · 15/10/2026 07:38 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Atribuição · 15/10/2026 07:37 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Notificação de chamado · 15/10/2026 07:37 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Fila de atendimento · 15/10/2026 07:33 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10002 · Validação técnica da segunda onda de e-mails" [level=2]
+    - paragraph: Abertura · 15/10/2026 07:33 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10001 · Validação da implantação dos e-mails do Help Desk" [level=2]
+    - paragraph: Solução · 14/10/2026 22:15 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10001 · Validação da implantação dos e-mails do Help Desk" [level=2]
+    - paragraph: Informações solicitadas · 14/10/2026 22:09 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - article:
+    - heading "CG-10001 · Validação da implantação dos e-mails do Help Desk" [level=2]
+    - paragraph: Abertura · 14/10/2026 20:26 · 1 destinatário(s)
+    - paragraph: "Saiu: 1 observado · Entregue: 1 observado"
+    - button "Ver entrega"
+  - dialog "Entrega do e-mail":
+    - heading "Entrega do e-mail" [level=2]
+    - button "Fechar entrega do e-mail": ×
+    - paragraph: CG-10001 · Validação da implantação dos e-mails do Help Desk · Abertura
+    - status
+    - paragraph: "Comunicação: 14/10/2026 20:26 · Última leitura: 16/10/2026 06:44 · America/Sao_Paulo"
+    - button "Voltar à entrega" [active]
+    - heading "Detalhes do destinatário" [level=3]
+    - heading "Destinatário indisponível" [level=4]
+    - paragraph: "Estado operacional: Entregue"
+    - paragraph: "Referência da intenção: fd88db0d-18f2-4b32-b695-3402410f79bc"
+    - paragraph: "Referência do evento: 8fb268d9-288c-41f3-b905-91028dc2f464"
+    - paragraph: "Próxima tentativa: Sem previsão registrada"
+    - heading "Linha do tempo" [level=4]
+    - list:
+      - listitem: Comunicação criada · Ocorreu em 14/10/2026 20:26 · Recebido em —
+      - listitem: Entrada na fila · Ocorreu em 14/10/2026 20:27 · Recebido em —
+      - listitem: Aceite do provedor · Ocorreu em 14/10/2026 20:27 · Recebido em —
+      - listitem: Aceite do provedor · Ocorreu em 14/10/2026 20:27 · Recebido em 14/10/2026 20:27
+      - listitem: Entrega confirmada · Ocorreu em 14/10/2026 20:27 · Recebido em —
+      - listitem: Entrega confirmada · Ocorreu em 14/10/2026 20:27 · Recebido em 14/10/2026 20:27
+      - listitem: Abertura aproximada · Ocorreu em 15/10/2026 16:56 · Recebido em 15/10/2026 16:56
+      - listitem: Abertura aproximada · Ocorreu em 15/10/2026 16:56 · Recebido em —
+      - listitem: Acesso a link · Ocorreu em 15/10/2026 16:56 · Recebido em —
+      - listitem: Acesso a link · Ocorreu em 15/10/2026 16:56 · Recebido em 15/10/2026 16:56
+    - heading "Tentativas" [level=4]
+    - list:
+      - listitem: Tentativa 1 · 14/10/2026 20:27
+    - paragraph: "Referência do provedor: 01a13cbd-aa65-721b-9519-f9860eee49f8"
+    - paragraph: "Versão de template: 2"
+    - paragraph: "Hash de template: 2a96306c3031229166b213a80fc661590897a0fdc00399f5fa835fd671fe0290"
+    - button "Fechar"
+  - text: Consulte GEO · Central de atendimento
+  - generic: Solicitações, respostas e histórico em um só lugar

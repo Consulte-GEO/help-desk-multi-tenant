@@ -2,6 +2,8 @@
 
 Referência: checklist AC-01…AC-28 e requisitos EMV2-01…EMV2-19 do pacote aprovado. Esta matriz liga comportamento implementado às evidências; não transforma testes sintéticos em aceite produtivo nem afirma que toda combinação foi exercitada isoladamente.
 
+Atualização16/10: smoke autenticado desktop de lista/modal/detalhe, telemetria real, Escape/retorno de foco e Fila vazia comprovado na conta administrativa. Duas capturas nativas salvas. As demais combinações de filtro/perfil e mobile produtivo não foram concluídas por falha do controle. Ver [aceite autenticado e limites](EMAIL-MONITOR-V2-ACEITE-AUTENTICADO-2026-10-16.md); isso supera a ausência de inspeção produtiva nos registros históricos abaixo.
+
 Estado produtivo posterior: PR52 integrado/publicado e append21 aplicado. Após ativação de email.opened/email.clicked pelo titular, ambos os callbacks nativos foram recebidos em19:56:43Z, POST200/applied com correlação exata. Cobertura registrada em19:57:29.552038Z, sem retroação; intenção antiga observada segue inelegível. Evidência: `evidence/email-monitor-production-20261015/native-collection-qualified.json`. Aceite autenticado da tela ainda pendente por falha do controle do navegador. Os parágrafos de ausência de merge/produção abaixo registram a etapa histórica de CI; não representam o estado atual. PR55 concorrente tem fonte/recibo próprios preservados.
 
 Conjunto integrado 7f311bd qualificado no [CI38784669764](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38784669764): 5739 aplicação + 697 PostgreSQL17 + 632 interface = 7068 testes, todos aprovados, sem falhas/skips/cancel/todo. Fonte SHA256 377fa67122d2c79bdbd609f541f57202e1eb2f45c8492c2f5a575a71e483f253. O recibo original e os logs estão em evidence/homologation/runs/41ceee85-9c25-41ab-80ac-d5d9bdf77334; latest.json aponta para esse mesmo conjunto. A documentação posterior não altera a fonte executável. HDA, PG suplementar e CodeQL devem ser conferidos nos checks do PR52. Os resultados anteriores abaixo são históricos; não substituem esta qualificação integrada. Não houve merge do PR52 ou implantação produtiva.
@@ -33,12 +35,12 @@ Legenda: PG = `supabase/tests/email-monitor-scenarios.ts`, com logins reais rest
 | AC-19 | Abort/generation e limpeza de contexto; estado/UI e cursor cifrado | Resposta tardia não repõe dados de outra sessão |
 | AC-20 | Revogação/expiração limpa dados; PG revogação e UI403/logout | Não prometer revogação instantânea de JWT já emitido |
 | AC-21 | Polling serial/visibilidade/dispose; testes de controller e browser | Atualização tem cadência de15s, sem segunda fila |
-| AC-22 | Modal, foco, teclado, rolagem, desktop/360px; browser e screenshots | Aceite visual produtivo depende da implantação |
+| AC-22 | Modal, foco, teclado, rolagem, desktop/360px no CI; smoke autenticado desktop produtivo com duas capturas e Escape/retorno de foco | Mobile produtivo e percurso completo por Tab não concluídos; não confundir CI com essa sessão |
 | AC-23 | DTO fechado, erros sanitizados, indisponível distinto de vazio; domínio/store/HTTP/UI | Não usar dados fictícios como fallback |
 | AC-24 | Montagem condicionada e versões25/26/27; testes runtime/worker/HDA e cadeia real | Schema correto sozinho não substitui catálogo/ACL |
 | AC-25 | Cursor AES-GCM contextual; testes reais do codec e PG ordenação/página | Mudança de dados/contexto pode exigir reiniciar com409 |
 | AC-26 | Estados preservados, idade no servidor e previsão do ledger; PG/UI/BASE | Horário de retry é previsão, não promessa de entrega |
 | AC-27 | Recibo de engajamento separado do ledger/ticket; PG/AUX/BASE | Não cria ciência ou encerra chamado |
-| AC-28 | Append21 aplicado em produção, prefixo20 preservado; catálogo27 e workers qualificados;91 assets/13 checks da publicação178dfb5; callbacks reais e início da cobertura comprovados | **Aceite parcial:** falta validação autenticada da tela; fonte concorrente PR55 tem recibo próprio. Ver checkpoint produtivo |
+| AC-28 | Append21 aplicado, prefixo20 preservado; catálogo27/workers, publicação, callbacks reais, início da cobertura e smoke autenticado desktop comprovados | Verificações complementares de filtros/mobile produtivos não concluídas por falha do controle; fonte concorrente PR55 tem recibo próprio |
 
 O PR e seu CI são a referência para revisões posteriores. A prévia Netlify é um estágio de publicação separado: manter o gate de release e a configuração produtiva intactos. Nenhum critério desta matriz autoriza alteração dos chamados reais do piloto ou das decisões adiadas pelo titular.

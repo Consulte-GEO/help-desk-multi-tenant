@@ -1,5 +1,7 @@
 # Implantação do monitor V2 — 15/10/2026
 
+Atualização posterior de16/10: smoke visual autenticado desktop realizado com dados reais, duas capturas, detalhe, retorno de foco/Escape e Fila vazia. Nenhuma mudança de código ou banco. Ver [aceite autenticado](EMAIL-MONITOR-V2-ACEITE-AUTENTICADO-2026-10-16.md) para resultados e limitações: filtros complementares e mobile produtivo não concluídos por falha do controle. A afirmação de ausência de inspeção autenticada abaixo é histórica.
+
 O titular autorizou expressamente o merge do PR52, a implantação produtiva, a migração e a validação de aberturas/cliques. Posteriormente autorizou o uso restrito da chave Resend e do segredo de webhook existentes, sem exibir/gravar valores, e um e-mail técnico para thiago@consultegeo.com.br. Isso não autoriza alterar configurações compartilhadas de outros produtos, ampliar permissões ou inventar fatos históricos.
 
 ## Estado final da coleta — prevalece sobre o histórico abaixo
