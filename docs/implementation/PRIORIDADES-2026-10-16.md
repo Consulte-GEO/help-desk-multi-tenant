@@ -1,6 +1,6 @@
 # Implementação das prioridades — 16/10/2026
 
-**Continuidade corrente:** PR64 publicado e verificado, sem migration; [prova](CONFORMIDADE-RESPOSTAS-2026-10-16.md). HD-019 continua com resumo no detalhe, fonte ainda em revisão/qualificação; [escopo, testes e pendências](ORIENTACAO-ATENDIMENTO-2026-10-16.md). Nenhum fechamento integral de HD-002/019.
+**Continuidade corrente:** PR64 publicado e verificado, sem migration; [prova](CONFORMIDADE-RESPOSTAS-2026-10-16.md). HD-019 continua com resumo no detalhe, fonte66385f8 revisada e qualificada no PR65 (7234 verificações Linux), ainda sem merge/publicação; [escopo, testes e pendências](ORIENTACAO-ATENDIMENTO-2026-10-16.md). Nenhum fechamento integral de HD-002/019.
 
 **Continuidade posterior:** PR61/busca e validador formal, PR62/totais e PR63/consultas rápidas publicados. PR64/conformidade de respostas HD002 implementado, revisado e qualificado (7221 verificações), ainda sem merge/publicação. [Estado e evidências atuais](CONFORMIDADE-RESPOSTAS-2026-10-16.md). Os estados anteriores abaixo são históricos; HD002/019 continuam parciais.
 
