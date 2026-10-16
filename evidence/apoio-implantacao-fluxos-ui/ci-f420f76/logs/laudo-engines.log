@@ -1,0 +1,107 @@
+OK  corpus/polimix-colunas-por-idade: quantidade
+OK  corpus/polimix-colunas-por-idade: idades preservadas
+OK  corpus/polimix-colunas-por-idade: MPa
+OK  corpus/polimix-colunas-por-idade: CPs
+OK  corpus/polimix-colunas-por-idade: perfil
+OK  corpus/polimix-colunas-por-idade: gráfico removido
+OK  corpus/polimix-colunas-por-idade: contexto
+OK  corpus/polimix-colunas-por-idade: nota fiscal
+OK  corpus/concrelab-corta-grafico: quantidade
+OK  corpus/concrelab-corta-grafico: idades preservadas
+OK  corpus/concrelab-corta-grafico: MPa
+OK  corpus/concrelab-corta-grafico: CPs
+OK  corpus/concrelab-corta-grafico: perfil
+OK  corpus/concrelab-corta-grafico: gráfico removido
+OK  corpus/concrelab-corta-grafico: nota fiscal
+OK  corpus/texto-duplicados-legitimos: quantidade
+OK  corpus/texto-duplicados-legitimos: idades preservadas
+OK  corpus/texto-duplicados-legitimos: MPa
+OK  corpus/texto-duplicados-legitimos: CPs
+OK  corpus/texto-duplicados-legitimos: nota fiscal
+OK  corpus/texto-idades-1e2-dias: quantidade
+OK  corpus/texto-idades-1e2-dias: idades preservadas
+OK  corpus/texto-idades-1e2-dias: MPa
+OK  corpus/texto-idades-1e2-dias: CPs
+OK  corpus/texto-idades-1e2-dias: nota fiscal
+OK  corpus/prisma-bloco-nbr16868: quantidade
+OK  corpus/prisma-bloco-nbr16868: MPa
+OK  corpus/prisma-bloco-nbr16868: CPs
+OK  corpus/prisma-bloco-nbr16868: perfil
+OK  corpus/prisma-bloco-nbr16868: gráfico removido
+OK  corpus/prisma-idade-sem-unidade: quantidade
+OK  corpus/prisma-idade-sem-unidade: MPa
+OK  corpus/prisma-idade-sem-unidade: idade não inventada
+OK  corpus/nf-cabecalho-multiplos-blocos: quantidade
+OK  corpus/nf-cabecalho-multiplos-blocos: idades preservadas
+OK  corpus/nf-cabecalho-multiplos-blocos: MPa
+OK  corpus/nf-cabecalho-multiplos-blocos: nota fiscal
+OK  corpus/nf-cabecalho-multiplos-blocos: proveniência da nota fiscal
+OK  corpus/nf-formato-com-ponto: quantidade
+OK  corpus/nf-formato-com-ponto: nota fiscal
+OK  corpus/nf-formato-nfe-com-zero: quantidade
+OK  corpus/nf-formato-nfe-com-zero: nota fiscal
+OK  corpus/nf-ambigua-nao-herda: quantidade
+OK  corpus/nf-ambigua-nao-herda: nota fiscal
+OK  corpus/paginas-mistas: quantidade
+OK  corpus/paginas-mistas: detecção página a página
+OK  D5: resultados iguais de CPs distintos não são deduplicados
+OK  D6: 1 dia continua 1 dia; 2 dias continuam 2 dias
+OK  D13: raw, página e linha são preservados
+OK  C2: perfis são declarativos e aceitam override
+OK  C4: ausente e ilegível são estados diferentes
+OK  estado valor inválido vira ilegível, não valor:null
+OK  C1: consenso igual mantém valor e marca concordância
+OK  C1/C5: divergência de MPa vira ilegível e expõe candidatos
+OK  D5: validação avisa duplicidade sem remover linhas
+OK  C3: resistência decrescente gera alerta, não correção silenciosa
+OK  D10/C8: confiança calculada cai com campo crítico ilegível
+OK  revalidação preserva snapshot, arquivo e campos editados
+OK  schema versionado é JSON válido e estrito
+OK  HTML não contém chave OpenAI nem sessionStorage de chave
+OK  HTML não mantém motor compilado nem SheetJS inline
+OK  Edge Function: Luna, Terra, Structured Outputs, store:false e anti-ancoragem
+OK  Edge Function: segurança e limites explícitos
+OK  Migration: RLS fechada, RPC restrita e view security_invoker
+OK  V15: versão e scripts registrados
+OK  D12: idade explícita fora da whitelist é preservada sem SNAP
+OK  D12: zero dia não é convertido silenciosamente para 12 horas
+OK  D7/D23: app trata falha de visão por página sem abortar o documento
+OK  telemetria: índice original da linha de visão é preservado no consenso
+OK  telemetria: app envia os 12 campos e usa _visionResultIndex
+OK  Edge Function: uma passada sobrevivente não é promovida a consenso
+OK  Edge Function: conteúdo da imagem e detalhe são validados no servidor
+OK  Edge Function: retry técnico é limitado e consome quota adicional
+OK  Edge Function: requisição sem Origin é bloqueada por padrão
+OK  Migration: quota aceita prefixos, auditoria append-only e métricas separadas
+OK  Privacidade: UI não promete ausência absoluta de retenção técnica
+OK  Design System: tela V13 não introduz cores hex hardcoded
+OK  V14/NF: laudo com NF só no cabeçalho preenche TODAS as linhas
+OK  V14/NF: herança traz proveniência e motivo visíveis
+OK  V14/NF: NF ambígua não é herdada (não adivinha)
+OK  V14/NF: 100.417, 0100417 e "Nota Fiscal n" normalizam para o mesmo número
+OK  V14/NF: herança de documento só ocorre com NF única
+OK  V14: identificação do CP não é preenchida com a idade da linha (false fill)
+OK  V14: uma linha com duas colunas de idade mantém a origem nas duas
+OK  V15/consenso: sobra sem par vira linha própria, não funde CPs distintos
+OK  V15/consenso: campos vazios que "concordam" não inflam o score
+OK  V15/validação: dispersão entre gêmeos na MESMA idade não vira resistência decrescente
+OK  V15/validação: queda real do MESMO CP com idade crescente continua alertando
+OK  V15/validação: CAMPO_ILEGIVEL não é contado em dobro
+OK  V15/NF: saneamento que zera a nota vira ilegível, não valor nulo
+OK  V15/número: separador ambíguo é sinalizado, não escolhido em silêncio
+OK  V15/códigos: catálogo cobre o que a Edge Function emite, com severidade própria
+OK  V15/app: achados externos não são duplicados a cada recomputação
+OK  V15/app: fila é drenada quando chegam arquivos durante o lote
+OK  V15/app: cancelamento não deixa documento ressuscitar nem promessa solta
+OK  V15/app: detalhes são por arquivo + resultado (ids colidem entre laudos)
+OK  V15/app: linha rejeitada não vaza para Proveniência nem para o JSON técnico
+OK  V15/app: JSON técnico não carrega o texto integral das páginas
+OK  V15/app: canvas de visão é liberado e a página do pdf.js é limpa
+OK  V15/app: concordância entre passadas vem da linha, não da ausência de divergências
+OK  V15/EF: telemetria usa status do CHECK e nunca envia paginas_total nulo
+OK  V15/EF: consenso casa por linha visual e devolve o flag por resultado
+OK  V15/EF: releitura é cirúrgica e respeita orçamento de tempo
+OK  V15/EF: blur e contraste são lidos com o nome que o cliente envia
+OK  V15/EF: tokens das três chamadas são somados na telemetria
+
+Laudos V15: 105 OK / 0 FAIL
