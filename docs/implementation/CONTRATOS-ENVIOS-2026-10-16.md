@@ -1,3 +1,5 @@
+> **Publicação confirmada em16/10/2026:** PR66 integrado em4899c7d às16h03 Brasília; deploy6ad2751586c3cdf1e22acd80 READY às16h04.120 entradas do manifesto conferidas por HTTPS/SHA1, controles privados/capacidades preservados e quatro recusas anônimas401 conformes a Problem/correlação/privacidade. Prova usa o transportador X-Helpdesk-If-Match já existente; requisição inicial com If-Match nativo foi recusada428 pelo caminho hospedado, sem gravação. Nenhuma migração/segredo/registro de negócio alterado. Recibos em evidence/write-contract-20261016/production/. Aceite humano autenticado continua separado. O estado de pré-publicação abaixo é histórico.
+
 # Conformidade dos envios e foco dos modais — HD-002 e Apoio Implantação
 
 **Estado corrente:** [PR66](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/66) implementado, revisado e qualificado na fonte741c58b;7249 verificações integrais aprovadas, com provas complementares do Apoio preservadas. Ainda sem merge/publicação. PR65 já publicado/verificado; preparação e limites abaixo preservados.

@@ -1,3 +1,5 @@
+> **16/10/2026 — PR66 em produção; PR67 qualificado para revisão:** merge4899c7d/deploy6ad2751586c3cdf1e22acd80 READY,120 entradas HTTPS/hash e quatro recusas nativas401 conformes, sem migração. PR67 completa cabeçalhos dos recibos core e qualifica sua serialização offline; sincroniza fixture de recuperação de notas sem alterar runtime. Fontef4a166f, CI5900/700/655 (7255), zero falha/skip/cancelamento/todo; revisão sem achados pendentes e relatórios originais preservados. PR67 ainda sem merge/publicação. MFA/Novo GEO adiados, scanner cancelado e modelos técnicos ausentes preservados. [Estado e limites](CABECALHOS-RESPOSTAS-2026-10-16.md). Os registros abaixo são históricos.
+
 # Implementação das prioridades — 16/10/2026
 
 **Continuidade mais recente:** PR65 publicado/verificado; PR66 revisado e qualificado (7249 verificações) para correção de erros de envio e foco do Apoio, ainda sem merge/publicação; [estado, provas e próximos recortes](CONTRATOS-ENVIOS-2026-10-16.md). HD-002/019 continuam parciais; registros de preparação abaixo são históricos.

@@ -33,3 +33,38 @@ test('problem status mismatch never includes payload values even under a permiss
  const d:any=contract();d.paths['/owned'].get.responses.default={description:'Problem',content:{'application/problem+json':{schema:{type:'object',properties:{status:{}}}}}};
  const check=await validator(d);await assert.rejects(()=>check('/owned','GET',Response.json({status:'PRIVATE_STATUS_SENTINEL'},{status:503,headers:{'content-type':'application/problem+json'}})),e=>{assert.doesNotMatch(String(e),/PRIVATE_STATUS_SENTINEL/);assert.doesNotMatch(JSON.stringify(e),/PRIVATE_STATUS_SENTINEL/);return true;});
 });
+
+
+test('response gate checks required headers case-insensitively, including referenced empty responses',async()=>{
+ const d:any=contract();d.components.headers={Version:{required:true,schema:{type:'string',pattern:'^"[1-9][0-9]*"$'}}};d.components.responses={Empty:{description:'Empty',headers:{ETag:{$ref:'#/components/headers/Version'}}}};
+ d.paths['/empty']={get:{operationId:'getEmpty',responses:{'204':{$ref:'#/components/responses/Empty'}}}};
+ const check=await validator(d);await check('/empty','GET',new Response(null,{status:204,headers:{etag:'"2"'}}));
+ await assert.rejects(()=>check('/empty','GET',new Response(null,{status:204})),/Required response header absent/);
+ await assert.rejects(()=>check('/empty','GET',new Response(null,{status:204,headers:{ETag:'W/"2"'}})),/Response header violates contract/);
+});
+
+test('response gate validates optional string headers when present and never exposes their values',async()=>{
+ const d:any=contract();d.paths['/owned'].get.responses['200'].headers={'Idempotency-Replayed':{schema:{type:'string',enum:['true','false']}}};const check=await validator(d);
+ await check('/owned','GET',Response.json(valid));await check('/owned','GET',Response.json(valid,{headers:{'idempotency-replayed':'false'}}));
+ for(const value of ['PRIVATE_HEADER_SENTINEL','true, false',''])await assert.rejects(()=>check('/owned','GET',Response.json(valid,{headers:{'idempotency-replayed':value}})),e=>{assert.match(String(e),/Response header violates contract/);assert.doesNotMatch(String(e),/PRIVATE_HEADER_SENTINEL/);assert.doesNotMatch(JSON.stringify(e),/PRIVATE_HEADER_SENTINEL/);return true;});
+});
+
+test('response gate decodes integer headers only from canonical safe decimal values, without coercing JSON bodies',async()=>{
+ const d:any=contract();d.paths['/owned'].get.responses['200'].headers={'Retry-After':{required:true,schema:{type:'integer',minimum:1,maximum:60}}};const check=await validator(d);
+ for(const v of ['1','60'])await check('/owned','GET',Response.json(valid,{headers:{'retry-after':v}}));
+ for(const v of ['0','61','01','+1','1.0','1e1','1, 2','Infinity','9007199254740993','PRIVATE_INTEGER_SENTINEL'])await assert.rejects(()=>check('/owned','GET',Response.json(valid,{headers:{'retry-after':v}})),e=>{assert.doesNotMatch(String(e),/PRIVATE_INTEGER_SENTINEL/);return true;});
+ await assert.rejects(()=>check('/owned','GET',Response.json({...valid,count:'7'},{headers:{'retry-after':'1'}})),/Response body violates contract/);
+});
+
+test('response gate handles header schema references and string constants without changing document or response',async()=>{
+ const d:any=contract();d.components.schemas.Delay={type:'integer',minimum:1,maximum:60};d.paths['/owned'].get.responses['200'].headers={'Cache-Control':{required:true,schema:{const:'no-store'}},'Retry-After':{schema:{$ref:'#/components/schemas/Delay'}}};
+ const before=JSON.stringify(d),check=await validator(d),r=Response.json(valid,{headers:{'cache-control':'no-store','retry-after':'2'}});await check('/owned','GET',r);assert.equal(r.bodyUsed,false);assert.equal(r.headers.get('retry-after'),'2');assert.equal(JSON.stringify(d),before);
+ await assert.rejects(()=>check('/owned','GET',Response.json(valid,{headers:{'cache-control':'public','retry-after':'2'}})),/Response header violates contract/);
+ await assert.rejects(()=>check('/owned','GET',Response.json(valid,{headers:{'cache-control':'no-store','retry-after':'1.5'}})));
+});
+
+test('response gate refuses unsupported serialized headers instead of certifying them, and ignores Content-Type header definitions per OpenAPI',async()=>{
+ const d:any=contract();d.paths['/owned'].get.responses['200'].headers={'X-List':{schema:{type:'array',items:{type:'string'}}}};const check=await validator(d);
+ await assert.rejects(()=>check('/owned','GET',Response.json(valid,{headers:{'x-list':'a,b'}})),/Unsupported response header serialization/);
+ d.paths['/owned'].get.responses['200'].headers={'Content-Type':{required:true,schema:{const:'ignored'}}};await (await validator(d))('/owned','GET',Response.json(valid));
+});
