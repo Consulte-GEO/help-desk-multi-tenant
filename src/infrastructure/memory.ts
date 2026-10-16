@@ -1,6 +1,9 @@
 import {compareInstants} from '../../shared/instant.js';
 import {TransactionEffects} from '../domain/transaction-effects.ts';
 import {matchesTicketSearch} from '../application/ticket-search.ts';
+import {customerStatus} from '../domain/workflow.ts';
+import {SUMMARY_STATUSES} from '../../shared/ticket-summary.js';
+import type {TicketCounts} from '../../shared/ticket-summary.js';
 import {compareContext} from '../application/support-catalog.ts';
 import type {SupportCatalogEntry} from '../application/support-catalog.ts';
 import {resolveCoverage} from '../domain/contracts.ts';
@@ -44,6 +47,11 @@ export class MemoryUnitOfWork implements UnitOfWork{
    },
    coverages:async(c:SupportContext)=>next.coverages.filter(x=>x.workspaceId===p.workspaceId&&x.accountId===c.accountId&&x.productInstanceId===c.productInstanceId&&x.serviceCode===c.serviceCode),
    getTicket:async id=>next.tickets.find(t=>t.id===id&&visible(t))??null,
+   summarizeTickets:async(accountId,filters={})=>{
+    const counts:TicketCounts={total:0,statuses:Object.fromEntries(SUMMARY_STATUSES.map(k=>[k,0])) as TicketCounts['statuses']};
+    for(const t of next.tickets)if(visible(t)&&matchesTicketSearch(t,filters,p)&&(accountId===undefined||t.accountId===accountId)){counts.total++;counts.statuses[customerStatus(t.status)]++;}
+    return counts;
+   },
    listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||compareInstants(t.createdAt,cursor.at)<0||(compareInstants(t.createdAt,cursor.at)===0&&t.id<cursor.id))).sort((a,b)=>compareInstants(b.createdAt,a.createdAt)||(a.id===b.id?0:a.id<b.id?1:-1)).slice(0,limit),
    insertTicket:async t=>{effects.ticket(null,t,p);next.tickets.push(structuredClone(t));},
    updateTicket:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');effects.ticket(next.tickets[i]!,t,p);next.tickets[i]=structuredClone(t);},

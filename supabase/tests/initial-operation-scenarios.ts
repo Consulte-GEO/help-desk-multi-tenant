@@ -41,6 +41,14 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   const denied=await runTransaction(app,stranger,client=>new HelpdeskService(createBorrowedPostgresUnitOfWork(client,stranger,{consulteGeoLocal:true,localCollection:true})).list(stranger,{limit:1,q:'CG-10001'}));
   assert.deepEqual(denied,{items:[],nextCursor:null});
  });
+ await suite.test('real restricted summary counts only current authorized namespace with list filter parity',async()=>{
+  const read=(actor=live.p,filters={})=>runTransaction(app,actor,c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,actor,{consulteGeoLocal:true,localCollection:true})).summarize(actor,filters));
+  const narrowed={...live.p,workspaceRole:null,grants:[]};assert.equal((await read(narrowed)).total,0);
+  const all=await read();assert.equal(all.total,1);assert.deepEqual(all.statuses,{received:1,in_progress:0,waiting_for_you:0,resolved:0,closed:0});
+  assert.equal((await read(live.p,{q:'cg-10001',status:'received'})).total,1);assert.equal((await read(live.p,{priority:'urgent'})).total,0);
+  assert.equal((await read(live.p,{assignment:'mine'})).total,0);assert.equal((await read(live.p,{assignment:'unassigned'})).total,1);
+  const stranger={...live.p,id:randomUUID(),workspaceRole:null,grants:[]};assert.equal((await read(stranger,{q:'CG-10001'})).total,0);
+ });
  await suite.test('suppressed required checklist binding rolls back opening and preserves draft and protocol for the same intent',async()=>{
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(live.p,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref],options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(live.p,{service:'questions',refs}),entry=catalog.configurations[0]!.entries[0]!,drafts=createFormDraftService(options),draft=await drafts.saveFormDraft(live.p,{id:randomUUID(),accountId:live.input.accountId,refs,formId:entry.form.id,formVersion:1,answers:{details:'Owned binding suppression qualification'}},0),intake=createSupportIntake(options),q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned required binding rollback',description:'Owned fixture only',coverageId:null},preview=await intake.previewSupportRequest(live.p,q),input={...q,previewHash:preview.previewHash},key=randomUUID();
@@ -50,6 +58,14 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   try{await assert.rejects(intake.createSupportRequest(live.p,input,key,randomUUID()));assert.deepEqual(await effects(),before);assert.equal((await drafts.readFormDraft(live.p,draft.id)).status,'editing');}
   finally{await admin.query('drop trigger cg_initial_suppress_probe on helpdesk_core.hdn_execution_bindings');await admin.query('drop function helpdesk_auth.cg_initial_suppress_probe()');}
   const result=await intake.createSupportRequest(live.p,input,key,randomUUID());assert.equal(result.protocol,'CG-10002');assert.equal((await drafts.readFormDraft(live.p,draft.id)).status,'committed');assert.equal((await admin.query('select count(*)::int as n from helpdesk_core.hdn_execution_bindings where workspace_id=$1 and ticket_id=$2',[live.p.workspaceId,result.ticketId])).rows[0]?.n,1);
+ });
+ await suite.test('real summary remains complete when the authorized list is paginated',async()=>{
+  await runTransaction(app,live.p,async c=>{
+   const service=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,live.p,{consulteGeoLocal:true,localCollection:true}));
+   assert.equal((await service.list(live.p,{limit:1})).items.length,1);assert.equal((await service.summarize(live.p,{})).total,2);
+   assert.equal((await service.summarize(live.p,{q:'CG-10002'})).total,1);assert.equal((await service.summarize(live.p,{q:'CG-1000'})).total,0);
+  });
+  const foreign={...live.p,workspaceId:randomUUID()};const result=await runTransaction(app,foreign,c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,foreign,{consulteGeoLocal:true,localCollection:true})).summarize(foreign,{}));assert.equal(result.total,0);
  });
  await suite.test('published initial profile supports real local claim, private evidence, checklist, resolution and reopening',async()=>{
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(live.p,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref],checklist=createExecutionChecklistService({pool:app,resolver:source.resolver});
@@ -63,5 +79,5 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   assert.equal(record.snapshot?.entries.filter(x=>x.status==='done').length,3);assert.equal((await command({action:'resolve',body:'Owned public solution after mandatory checklist'})).status,'resolved');assert.equal((await command({action:'close'})).status,'closed');assert.equal((await command({action:'reopen',reason:'Owned reopening within published seven-day window'})).status,'open');
   assert.equal((await admin.query('select version from helpdesk_core.tickets where workspace_id=$1 and id=$2',[live.p.workspaceId,ticketId])).rows[0]?.version,version);
  });
- await suite.test('current work deactivation blocks earlier summary without exposing pinned receipt',async()=>{const c=JSON.parse(live.plan.values[0]).local;c.expectedRegistryRevision=1;c.requestId=randomUUID();c.works[0].active=false;await admin.query('select helpdesk_auth.cg_local_provision($1,$2)',[canonicalJson(c),requestHash(c)]);const result=await runTransaction(app,live.p,async client=>{try{return (await client.query('select helpdesk_auth.cg_local_ticket_summary($1) as result',[ticketId])).rows[0]?.result;}catch{return null;}}).catch(()=>null);assert.equal(result,null);});
+ await suite.test('current work deactivation blocks earlier summary without exposing pinned receipt',async()=>{const c=JSON.parse(live.plan.values[0]).local;c.expectedRegistryRevision=1;c.requestId=randomUUID();c.works[0].active=false;await admin.query('select helpdesk_auth.cg_local_provision($1,$2)',[canonicalJson(c),requestHash(c)]);const result=await runTransaction(app,live.p,async client=>{try{return (await client.query('select helpdesk_auth.cg_local_ticket_summary($1) as result',[ticketId])).rows[0]?.result;}catch{return null;}}).catch(()=>null);assert.equal(result,null);const totals=await runTransaction(app,live.p,c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,live.p,{consulteGeoLocal:true,localCollection:true})).summarize(live.p,{}));assert.equal(totals.total,0);assert.deepEqual(totals.statuses,{received:0,in_progress:0,waiting_for_you:0,resolved:0,closed:0});});
 });}

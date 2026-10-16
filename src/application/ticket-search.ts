@@ -16,7 +16,7 @@ export const SEARCH_LOWER='abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëì�
 export function foldSearch(value:string):string{
  return value.replace(/[A-ZÀ-ÖØ-Þ]/g,c=>String.fromCharCode(c.charCodeAt(0)+32));
 }
-export function ticketSearch(options:TicketListOptions):TicketSearchFilters{
+export function ticketSearch(options:TicketListOptions|Omit<TicketListOptions,'limit'|'cursor'>):TicketSearchFilters{
  const result:TicketSearchFilters={};
  if(options.q!==undefined){
   const raw=options.q;

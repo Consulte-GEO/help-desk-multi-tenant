@@ -1,3 +1,5 @@
+import {parseTicketCounts,SUMMARY_STATUSES} from '../../shared/ticket-summary.js';
+import type {TicketCounts} from '../../shared/ticket-summary.js';
 import {createPostgresPublicWorkflowReader} from './public-workflow-read.ts';
 import {parseConsulteGeoTicketSummary} from '../../shared/consultegeo-ticket.js';
 import {assertBorrowedTransactionIdentity} from './transaction.ts';
@@ -73,9 +75,7 @@ class PostgresStore implements Store{
  }
  async coverages(context:SupportContext):Promise<Coverage[]>{uuidIdentifier(context.accountId);uuidIdentifier(context.productInstanceId);const rows=(await this.c.query('select item from helpdesk_auth.locked_coverages($1,$2,$3,$4) as result(item)',[this.p.workspaceId,context.accountId,context.productInstanceId,context.serviceCode])).rows;return rows.map(r=>r.item as Coverage);}
  async getTicket(id:string,lock=false):Promise<Ticket|null>{if(!UUID_PATTERN.test(id))return null;const r=(await this.c.query(`select ${ticketReadColumns}${this.consulteGeoLocal?',helpdesk_auth.cg_local_ticket_summary(tickets.id) as consultegeo_summary':''} from helpdesk_core.tickets where workspace_id=$1 and id=$2${lock?' for update':''}`,[this.p.workspaceId,id])).rows[0];return r?ticket(r,this.consulteGeoLocal):null;}
- async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
-  if(accountId!==undefined)uuidIdentifier(accountId);
-  if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
+ private async prepareLocalCollection():Promise<string|undefined>{
   let localContexts:string|undefined;
   if(this.localCollection){
    // Real current-actor refresh, on THIS borrowed transaction, before any page.
@@ -91,6 +91,12 @@ class PostgresStore implements Store{
    }
    localContexts=JSON.stringify(data);
   }
+  return localContexts;
+ }
+ async listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={}):Promise<Ticket[]>{
+  if(accountId!==undefined)uuidIdentifier(accountId);
+  if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
+  const localContexts=await this.prepareLocalCollection();
   // This server-controlled predicate precedes cursor/search/LIMIT. Metadata only
   // narrows namespaces; directory and ordinary RLS recheck the full current works.
   const localPredicate=this.localCollection?`and exists(select 1 from jsonb_array_elements($13::jsonb) local_context
@@ -114,6 +120,45 @@ class PostgresStore implements Store{
    order by tickets.created_at desc,id desc limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
     filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,...(this.localCollection?[localContexts]:[])])).rows.map(row=>ticket(row,this.consulteGeoLocal));
+ }
+ async summarizeTickets(accountId?:string,filters:TicketSearchFilters={}):Promise<TicketCounts>{
+  if(accountId!==undefined)uuidIdentifier(accountId);
+  const contexts=await this.prepareLocalCollection();
+  const local=this.localCollection?`and exists(select 1 from jsonb_array_elements($11::jsonb) local_context
+   where local_context->>'accountId'=tickets.account_id::text and local_context->>'productInstanceId'=tickets.product_instance_id::text
+    and local_context->>'connectionId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'connectionId'
+    and local_context->>'tenantId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'tenantId')`:'';
+  const protocol=this.consulteGeoLocal?`or (case when $3::text ~ '^cg-[1-9][0-9]{4,17}$'
+   then lower(helpdesk_auth.cg_local_ticket_summary(tickets.id)->>'protocol') end)=$3`:'';
+  // Intersection with the frozen application principal, just like list()'s
+  // canReadTicket/matchesTicketSearch post-filter. This can only narrow RLS.
+  const human=this.p.kind==='human',visibility=JSON.stringify({admin:human&&this.p.workspaceRole==='admin',
+   accounts:this.p.grants.map(g=>g.accountId),wide:human?this.p.grants.filter(g=>['agent','account_manager'].includes(g.role)).map(g=>g.accountId):[],
+   operators:human?this.p.grants.filter(g=>g.role==='agent').map(g=>g.accountId):[],products:human?null:this.p.productInstanceIds??[]});
+  const result=await this.c.query(`select count(*)::text as total,
+   count(*) filter(where status in ('new','triage'))::text as received,
+   count(*) filter(where status in ('open','waiting_internal','waiting_third_party'))::text as in_progress,
+   count(*) filter(where status='waiting_customer')::text as waiting_for_you,
+   count(*) filter(where status='resolved')::text as resolved,
+   count(*) filter(where status in ('closed','cancelled'))::text as closed
+   from helpdesk_core.tickets where workspace_id=$1 and ($2::uuid is null or account_id=$2)
+   and (($10::jsonb->>'admin')::boolean or (($10::jsonb->'accounts') ? account_id::text
+    and (created_by=$9::uuid or ($10::jsonb->'wide') ? account_id::text)))
+   and ($10::jsonb->'products'='null'::jsonb or ($10::jsonb->'products') ? product_instance_id::text)
+   ${local}
+   and ($3::text is null or strpos(translate(subject,$4::text,$5::text),$3)>0 or id::text=$3 ${protocol})
+   and ($6::text[] is null or status=any($6::text[])) and ($7::text is null or priority=$7)
+   and ($8::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
+    and (($10::jsonb->>'admin')::boolean or ($10::jsonb->'operators') ? account_id::text)
+    and (($8='mine' and assigned_to=$9::uuid) or ($8='unassigned' and assigned_to is null))))`,
+   [this.p.workspaceId,accountId??null,filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,visibility,...(this.localCollection?[contexts]:[])]);
+  try{
+   if(result.command!=='SELECT'||result.rowCount!==1||result.rows.length!==1)throw Error();
+   const row=result.rows[0]!;
+   if(Object.keys(row).sort().join(',')!==['total',...SUMMARY_STATUSES].sort().join(','))throw Error();
+   const number=(key:string)=>{const value=row[key];if(typeof value!=='string'||! /^(0|[1-9][0-9]{0,15})$/.test(value))throw Error();return Number(value);};
+   return parseTicketCounts({total:number('total'),statuses:Object.fromEntries(SUMMARY_STATUSES.map(k=>[k,number(k)]))});
+  }catch{throw new HelpdeskError(503,'invalid_database_result','Resumo de chamados indisponível.');}
  }
  async insertTicket(t:Ticket):Promise<void>{await this.insert('helpdesk_core.tickets',ticketColumns.split(','),[t.id,t.workspaceId,t.accountId,t.productInstanceId,t.serviceCode,t.createdBy,t.subject,t.description,t.status,t.priority,t.version,t.coverageId,t.contractVersionId,JSON.stringify(t.contractSnapshot),t.createdAt,t.updatedAt,t.assignedTo]);}
  async updateAssignment(t:Ticket,expectedVersion:number):Promise<void>{

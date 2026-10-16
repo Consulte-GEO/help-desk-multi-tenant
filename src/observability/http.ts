@@ -5,7 +5,7 @@ export const METHODS=new Set(['GET','POST','PUT','PATCH','DELETE','HEAD','OPTION
 export const ROUTES=new Set([
  '/v1/capabilities','/v1/public-config','/v1/integration-tokens','/v1/integration-tokens/current',
  '/v1/me','/v1/workspaces','/v1/support-contexts','/v1/contexts/resolve','/v1/tickets',
- '/v1/tickets/{ticket_id}','/v1/tickets/{ticket_id}/messages','/v1/tickets/{ticket_id}/notes',
+ '/v1/tickets/summary','/v1/tickets/{ticket_id}','/v1/tickets/{ticket_id}/messages','/v1/tickets/{ticket_id}/notes',
  '/v1/tickets/{ticket_id}/timeline','/v1/tickets/{ticket_id}/transitions','/v1/tickets/{ticket_id}/assignments','unmatched'
 ]);
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

@@ -1,4 +1,5 @@
 import type {TicketSearchFilters} from './ticket-search.ts';
+import type {TicketCounts} from '../../shared/ticket-summary.js';
 import type {CatalogWindow,SupportCatalogEntry} from './support-catalog.ts';
 import type {PageWindow} from './pagination.ts';
 import type {Principal,Coverage,Ticket,PublicMessage,InternalNote,TicketEvent,OutboxEvent} from '../domain/model.ts';
@@ -11,6 +12,7 @@ export interface Store{
   coverages(context:SupportContext):Promise<Coverage[]>;
   getTicket(id:string,lock?:boolean):Promise<Ticket|null>;
   listTickets(limit:number,cursor:Cursor|null,accountId?:string,filters?:TicketSearchFilters):Promise<Ticket[]>;
+  summarizeTickets?(accountId?:string,filters?:TicketSearchFilters):Promise<TicketCounts>;
   insertTicket(ticket:Ticket):Promise<void>;
   updateTicket(ticket:Ticket,expectedVersion:number):Promise<void>;
   updatePriority(ticket:Ticket,expectedVersion:number):Promise<void>;

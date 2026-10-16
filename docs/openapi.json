@@ -12,6 +12,181 @@
     }
   ],
   "paths": {
+    "/tickets/summary": {
+      "get": {
+        "operationId": "summarizeTickets",
+        "summary": "Totais completos da consulta autorizada, antes da paginação.",
+        "description": "Requer tickets:read e capacidade ticket_totals na composição local Consulte GEO. Mesmos filtros, identidade, RLS, obras atuais e namespace da lista; responsabilidade exige operador. Não aceita limit/cursor, parâmetros desconhecidos/duplicados ou corpo. Sem cache ou conteúdo de mensagens/notas. Indisponibilidade ou resultado inválido é503, nunca zero presumido. A lista e o resumo são consultas independentes.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Workspace"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$",
+              "description": "Identificador opaco; entidades persistidas no PostgreSQL usam UUID."
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120
+            },
+            "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite busca por prefixo e não concede acesso. Notas e mensagens não são pesquisadas."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "received",
+                "in_progress",
+                "waiting_for_you",
+                "resolved",
+                "closed"
+              ]
+            },
+            "description": "Situação pública. Não aceita seletores de estados internos."
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "low",
+                "normal",
+                "high",
+                "urgent"
+              ]
+            }
+          },
+          {
+            "name": "assignment",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "mine",
+                "unassigned"
+              ]
+            },
+            "description": "Somente operadores humanos. Restringe cada linha às contas onde o ator é operador; responsabilidade nunca concede leitura. Conta explicitamente sem papel operador retorna 403. Não aceita IDs de outros responsáveis."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resumo autorizado; no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Consulta recusada ou indisponível.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/capabilities": {
       "get": {
         "operationId": "getCapabilities",
@@ -6698,6 +6873,66 @@
       }
     },
     "schemas": {
+      "TicketSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "as_of",
+          "total",
+          "statuses"
+        ],
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante UTC do servidor após a consulta. Não representa snapshot conjunto com a lista."
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "statuses": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "received",
+              "in_progress",
+              "waiting_for_you",
+              "resolved",
+              "closed"
+            ],
+            "properties": {
+              "received": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "in_progress": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "waiting_for_you": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "resolved": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "closed": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            }
+          }
+        },
+        "description": "Inteiros seguros não negativos; soma dos estados deve ser igual ao total. Estados internos agrupados conforme a situação pública existente."
+      },
       "Problem": {
         "type": "object",
         "additionalProperties": false,
@@ -7324,6 +7559,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+          "ticket_totals": {"type":"boolean","description":"True somente quando a consulta local de totais está montada; não concede acesso."},
         "supabase_url": {
           "type": [
             "string",

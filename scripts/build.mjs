@@ -4,7 +4,7 @@ import {copyImplementationAssets} from './implantacao-assets.mjs';
 await rm(new URL('../dist/',import.meta.url),{recursive:true,force:true});await mkdir(new URL('../dist/',import.meta.url),{recursive:true});
 for(const name of ['email-monitor.js','email-monitor.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-review.js','consultegeo-operation.css','response-diagnostic.js','version-receipt.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
-for(const name of ['support-navigation.js','access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['support-navigation.js','access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','ticket-summary-state.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 
 await mkdir(new URL('../dist/shared/',import.meta.url),{recursive:true});
 await copyFile(new URL('../shared/instant.js',import.meta.url),new URL('../dist/shared/instant.js',import.meta.url));
@@ -17,7 +17,7 @@ await copyFile(new URL('../web/vendor/qrcodegen.js',import.meta.url),new URL('..
 
 // Optional form components: copying assets does not mount or authorize the feature.
 for(const name of ['dynamic-form.js','admin-forms.js','dynamic-form.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
-for(const name of ['form-rules.js','cnpj.js'])await copyFile(new URL('../shared/'+name,import.meta.url),new URL('../dist/shared/'+name,import.meta.url));
+for(const name of ['form-rules.js','cnpj.js','ticket-summary.js'])await copyFile(new URL('../shared/'+name,import.meta.url),new URL('../dist/shared/'+name,import.meta.url));
 // Optional C09/C10 components. Copying does not mount Storage, scanner or intake.
 for(const name of ['attachments.js','support-intake.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 // Optional C11/C12 panels. Copying never mounts endpoints or enables delivery.
