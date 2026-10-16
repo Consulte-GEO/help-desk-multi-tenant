@@ -5,6 +5,8 @@ import {validateConversationResult} from './conversation-result.ts';
 import {assignmentChangeInput} from './ticket-assignment.ts';
 import {priorityChangeInput} from './ticket-priority.ts';
 import {matchesTicketSearch,ticketSearch} from './ticket-search.ts';
+import {parseTicketCounts} from '../../shared/ticket-summary.js';
+import type {TicketSummary} from '../../shared/ticket-summary.js';
 import type {TicketListOptions} from './ticket-search.ts';
 import {discoverSupportContexts} from './support-catalog.ts';
 import type {CatalogOptions,CatalogPage} from './support-catalog.ts';
@@ -65,17 +67,29 @@ export class HelpdeskService{
  }
  async get(p:Principal,id:string):Promise<Ticket>{return this.db.run(p,s=>this.accessible(s,p,id));}
  async list(p:Principal,options:TicketListOptions):Promise<{items:Ticket[];nextCursor:string|null}>{
+  const filters=this.collectionFilters(p,options);
+  // Retain pre-0.7 cursors when no new filters are supplied. Filters never grant access.
+  const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null,...(Object.keys(filters).length?{search:filters}:{})});
+  return this.db.run(p,async s=>{
+   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId,filters)).filter(t=>canReadTicket(p,t)&&matchesTicketSearch(t,filters,p));
+   return page(rows,options.limit,filter);
+  });
+ }
+ private collectionFilters(p:Principal,options:Omit<TicketListOptions,'limit'|'cursor'>){
   if(!hasScope(p,'tickets:read'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(options.accountId!==undefined&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
   const filters=ticketSearch(options);
   if(filters.assignment&&(p.kind!=='human'||!(p.workspaceRole==='admin'||p.grants.some(g=>g.role==='agent'))
    ||options.accountId!==undefined&&!isOperator(p,p.workspaceId,options.accountId)))
    throw new HelpdeskError(403,'forbidden','Filtros de responsabilidade são restritos à equipe autorizada.');
-  // Retain pre-0.7 cursors when no new filters are supplied. Filters never grant access.
-  const {window,filter}=pagination(options,{workspace:p.workspaceId,principal:p.id,account:options.accountId??null,...(Object.keys(filters).length?{search:filters}:{})});
+  return filters;
+ }
+ async summarize(p:Principal,options:Omit<TicketListOptions,'limit'|'cursor'>):Promise<TicketSummary>{
+  const filters=this.collectionFilters(p,options);
   return this.db.run(p,async s=>{
-   const rows=(await s.listTickets(window.limit,window.cursor,options.accountId,filters)).filter(t=>canReadTicket(p,t)&&matchesTicketSearch(t,filters,p));
-   return page(rows,options.limit,filter);
+   if(!s.summarizeTickets)throw new HelpdeskError(503,'feature_not_configured','Resumo de chamados indisponível.');
+   const raw=await s.summarizeTickets(options.accountId,filters);
+   try{return {as_of:this.now(),...parseTicketCounts(raw)};}catch{throw new HelpdeskError(503,'invalid_database_result','Resumo de chamados indisponível.');}
   });
  }
  private async event(s:Store,p:Principal,t:Ticket,type:string,data:Record<string,unknown>,customerVisible:boolean,requestId:string):Promise<void>{

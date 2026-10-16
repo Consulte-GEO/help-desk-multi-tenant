@@ -15,15 +15,27 @@ function fixture(){
  const contexts=[{accountId:id(3),productInstanceId:id(4),connectionId:id(5),tenantId:'mrv'}];
  const pool:SqlPool={query:async()=>{throw Error('Second pool query forbidden');},end:async()=>{},connect:async()=>({release(){},async query(sql,args){calls.push({sql,args});
   if(sql.includes('cg_local_prepare_ticket_collection')){state.abort?.();return {command:'SELECT',rowCount:1,rows:[{source:state.invalid===undefined?contexts:state.invalid}]};}
+  if(sql.includes('count(*)'))return {command:'SELECT',rowCount:1,rows:[{total:'0',received:'0',in_progress:'0',waiting_for_you:'0',resolved:'0',closed:'0'}]};
   return {command:['BEGIN','COMMIT','ROLLBACK'].includes(sql)?sql:'SELECT',rowCount:0,rows:[]};
  }})};
  const options:any={enabled:()=>state.ready,pool,resolver:createResourceAccessResolver({authority:{readAccess:async()=>{throw Error('Collection cannot choose caller refs');}},manifestFingerprint:'a'.repeat(64),timeoutMs:100,maxAgeMicros:1n}),
   directory:{readTicketResources:async()=>{throw Error('No collection directory chosen from caller');}},directoryTimeoutMs:100,collection:true,
   authenticate:async()=>p,rateLimiter:{beforeAuthentication:async()=>{},afterAuthentication:async()=>{}},
-  execute:async(c:any,actor:Principal,r:Request)=>createHttpHandler({authenticate:async()=>actor,service:new HelpdeskService((createBorrowedPostgresUnitOfWork as any)(c,actor,{localCollection:true}))})(r)};
+  execute:async(c:any,actor:Principal,r:Request)=>createHttpHandler({ticketTotals:true,authenticate:async()=>actor,service:new HelpdeskService((createBorrowedPostgresUnitOfWork as any)(c,actor,{localCollection:true}))})(r)};
  return {p,calls,state,contexts,handler:createScopedTicketHttpHandler(options)};
 }
 const request=(query='',method='GET',signal?:AbortSignal)=>new Request('https://helpdesk.example/v1/tickets'+query,{method,signal});
+
+test('summary is an authenticated local collection route, never a caller-supplied ticket identifier',async()=>{
+ const f=fixture(),r=await f.handler(request('/summary?q=needle'));assert.equal(r.status,200);assert.equal((await r.json()).total,0);
+ assert.ok(f.calls.some(x=>x.sql.includes('cg_local_prepare_ticket_collection')));assert.equal(f.calls.at(-1)?.sql,'COMMIT');
+ for(const query of ['/summary?limit=1','/summary?cursor=anything','/summary?q=ab&q=cd','/summary?refs=forged']){const denied=fixture();assert.equal((await denied.handler(request(query))).status,400);assert.equal(denied.calls.length,0);}
+ const off=fixture();off.state.ready=false;assert.equal((await off.handler(request('/summary'))).status,503);assert.equal(off.calls.length,0);
+});
+
+test('mounted summary rejects unsupported method with405 instead of suggesting a retryable outage',async()=>{
+ const f=fixture(),r=await f.handler(request('/summary','POST'));assert.equal(r.status,405);assert.equal(r.headers.get('allow'),'GET');assert.equal(f.calls.length,0);
+});
 test('qualified collection prepares native access on same borrowed transaction before the filtered SQL page',async()=>{
  const f=fixture(),r=await f.handler(request('?limit=1&q=encanto&status=received&priority=normal'));assert.equal(r.status,200);assert.deepEqual(await r.json(),{items:[],next_cursor:null});
  const prepare=f.calls.findIndex(x=>x.sql.includes('cg_local_prepare_ticket_collection')),list=f.calls.findIndex(x=>x.sql.includes('from helpdesk_core.tickets'));

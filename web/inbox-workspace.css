@@ -39,3 +39,5 @@
 @media(max-width:380px) {
  .hd-ui .hd-inbox-enhanced .hd-filter-disclosure .filter-grid { grid-template-columns:minmax(0,1fr); }
 }
+
+@media(max-width:760px){.hd-ui .hd-inbox-enhanced[data-inbox-pane="detail"] #summary-feedback{display:none;}}

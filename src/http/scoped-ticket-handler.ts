@@ -139,11 +139,14 @@ export function createScopedTicketHttpHandler(d:ScopedTicketHttpOptions):(req:Re
    if(d.enabled()!==true)throw fail(503,'release_gate_closed','Atendimento ainda não liberado.');
    await d.rateLimiter.beforeAuthentication(req,context);admission();
    const url=new URL(req.url),path=url.pathname.replace(/\/$/,'');
-   if(path==='/v1/tickets'){
+   if(path==='/v1/tickets'||path==='/v1/tickets/summary'){
+    if(path==='/v1/tickets/summary'&&d.collection===true&&req.method!=='GET'){
+     const response=problem(fail(405,'method_not_allowed','Use GET para consultar os totais.'),requestId);response.headers.set('allow','GET');return response;
+    }
     if(req.method!=='GET'||d.collection!==true)throw fail(503,'scoped_collection_not_ready','Coleção ou abertura genérica indisponível.');
     const p=await authenticated(d,req);await d.rateLimiter.afterAuthentication(p);admission();
     if(p.kind!=='human'||!p.scopes.includes('tickets:read'))throw fail(403,'forbidden','Operação não autorizada.');
-    for(const key of url.searchParams.keys())if(!['limit','cursor','account_id','q','status','priority','assignment'].includes(key)||url.searchParams.getAll(key).length!==1)throw fail(400,'unknown_parameter','Parâmetro de consulta não permitido.');
+    for(const key of url.searchParams.keys())if(!(path.endsWith('/summary')?['account_id','q','status','priority','assignment']:['limit','cursor','account_id','q','status','priority','assignment']).includes(key)||url.searchParams.getAll(key).length!==1)throw fail(400,'unknown_parameter','Parâmetro de consulta não permitido.');
     if(url.searchParams.has('limit')&&(!/^\d{1,3}$/.test(url.searchParams.get('limit')!)||Number(url.searchParams.get('limit'))<1||Number(url.searchParams.get('limit'))>100))throw fail(400,'invalid_input','Limite de página inválido.');
     if(url.searchParams.has('account_id'))uuidIdentifier(url.searchParams.get('account_id'));
     return await runTransaction(d.pool,p,async client=>materializedResponse(await d.execute(client,p,req),req,requestId,streamTimeoutMs),admission);

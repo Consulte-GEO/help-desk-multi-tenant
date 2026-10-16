@@ -1,5 +1,7 @@
 # Implementação das prioridades — 16/10/2026
 
+**Atualização posterior:** PR61 mesclado/publicado em16/10, `2c201d0`/deploy `6ad23360e61e3b1608a0fd71`,116 arquivos do manifesto aprovados por hash/HTTPS. Sem migration/escrita de negócio. Os registros de ausência de publicação abaixo descrevem a qualificação anterior. Continuidade e provas em [Totais da fila](TOTAIS-FILA-2026-10-16.md).
+
 Autorização: executar itens prioritários do levantamento, reutilizando módulos existentes e preservando MFA/Novo GEO adiados e scanner cancelado. Base inicial `f13754e`, branch `codex/prioridades-levantamento-20261016`.
 
 ## Recortes executáveis nesta entrega
