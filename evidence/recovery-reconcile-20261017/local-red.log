@@ -1,0 +1,913 @@
+✖ HD045 reconcile help explains canonical inputs, limits and no authority (84.7055ms)
+✖ HD045 reconcile actual files yield only safe summary and stay unchanged (183.3319ms)
+✖ HD045 reconcile rejects grammar [] (84.0707ms)
+✖ HD045 reconcile rejects grammar ["--help","extra"] (69.3921ms)
+✖ HD045 reconcile rejects grammar ["--restore"] (87.7624ms)
+✖ HD045 reconcile rejects grammar ["--send","x"] (81.3162ms)
+✖ HD045 reconcile rejects grammar ["--at"] (75.7941ms)
+✖ HD045 reconcile rejects grammar ["--at","2026-10-10T18:00:00.000000Z","--at","2026-10-10T18:00:00.000000Z"] (101.8843ms)
+✖ HD045 reconcile rejects grammar ["--delivery-backup",""] (75.203ms)
+✖ HD045 reconcile rejects grammar ["--unknown","private-marker"] (76.4524ms)
+✖ HD045 reconcile fails atomically missing (86.663ms)
+✖ HD045 reconcile fails atomically malformed (87.7021ms)
+✖ HD045 reconcile fails atomically native (93.9648ms)
+✖ HD045 reconcile fails atomically oversized (179.9793ms)
+✖ HD045 reconcile fails atomically invalid-utf8 (238.8854ms)
+✖ HD045 reconcile fails atomically duplicate-path (174.412ms)
+✖ HD045 reconcile fails atomically hardlink (156.1026ms)
+✖ HD045 reconcile fails atomically parent-alias (100.906ms)
+✖ HD045 reconcile fails atomically access-conflict (93.9363ms)
+✖ HD045 reconcile fails atomically clock (105.3517ms)
+✖ HD045 reconcile import has no side effects (87.2652ms)
+✖ HD045 report preserves confirmation, revocation and privacy without mutating inputs (2.6682ms)
+✖ HD045 report never dispatches restored pending (0.2837ms)
+✖ HD045 report never dispatches restored sending (0.1606ms)
+✖ HD045 report empty inputs remain nonauthoritative and time is explicit (0.2092ms)
+✖ HD045 report includes current-only records and revalidation counts (1.4391ms)
+✔ HD045 report refuses entire invalid delivery shape (0.8426ms)
+✔ HD045 report refuses entire invalid native export (0.3848ms)
+✔ HD045 report refuses entire invalid conflict (0.3398ms)
+✔ HD045 report refuses entire invalid duplicate (0.271ms)
+✔ HD045 report refuses entire invalid access shape (0.2784ms)
+✔ HD045 report refuses entire invalid tombstone shape (0.2128ms)
+✔ HD045 report refuses entire invalid limit (0.1843ms)
+✔ HD045 report refuses entire invalid clock (0.4646ms)
+✔ HD045 report refuses entire invalid old clock (0.4917ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 9
+ℹ fail 26
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2515.9915
+
+✖ failing tests:
+
+test at tests\recovery-reconcile-cli.test.ts:15:1
+✖ HD045 reconcile help explains canonical inputs, limits and no authority (84.7055ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-reconcile.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:15:116)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:16:1
+✖ HD045 reconcile actual files yield only safe summary and stay unchanged (183.3319ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-reconcile.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:16:219)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar [] (84.0707ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--help","extra"] (69.3921ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--restore"] (87.7624ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--send","x"] (81.3162ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--at"] (75.7941ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--at","2026-10-10T18:00:00.000000Z","--at","2026-10-10T18:00:00.000000Z"] (101.8843ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--delivery-backup",""] (75.203ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:17:159
+✖ HD045 reconcile rejects grammar ["--unknown","private-marker"] (76.4524ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:17:224)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically missing (86.663ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically malformed (87.7021ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically native (93.9648ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically oversized (179.9793ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically invalid-utf8 (238.8854ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically duplicate-path (174.412ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically hardlink (156.1026ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically parent-alias (100.906ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically access-conflict (93.9363ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:18:151
+✖ HD045 reconcile fails atomically clock (105.3517ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Reconciliação não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at refused (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:14:126)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:18:1186)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-reconcile.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Reconciliação não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconcile-cli.test.ts:19:1
+✖ HD045 reconcile import has no side effects (87.2652ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/esm/resolve:272
+      throw new ERR_MODULE_NOT_FOUND(
+            ^
+  
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-reconcile.ts' imported from C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\[eval1]
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)
+      at #resolve (node:internal/modules/esm/loader:687:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)
+      at node:internal/modules/esm/loader:636:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:361:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/scripts/recovery-reconcile.ts'
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:19:363)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconciliation-report.test.ts:9:1
+✖ HD045 report preserves confirmation, revocation and privacy without mutating inputs (2.6682ms)
+  AssertionError [ERR_ASSERTION]: recovery report module must exist
+      at summarize (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:8:52)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:11:85)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconciliation-report.test.ts:19:112
+✖ HD045 report never dispatches restored pending (0.2837ms)
+  AssertionError [ERR_ASSERTION]: recovery report module must exist
+      at summarize (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:8:52)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:19:189)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconciliation-report.test.ts:19:112
+✖ HD045 report never dispatches restored sending (0.1606ms)
+  AssertionError [ERR_ASSERTION]: recovery report module must exist
+      at summarize (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:8:52)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:19:189)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconciliation-report.test.ts:20:1
+✖ HD045 report empty inputs remain nonauthoritative and time is explicit (0.2092ms)
+  AssertionError [ERR_ASSERTION]: recovery report module must exist
+      at summarize (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:8:52)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:20:103)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\recovery-reconciliation-report.test.ts:21:1
+✖ HD045 report includes current-only records and revalidation counts (1.4391ms)
+  AssertionError [ERR_ASSERTION]: recovery report module must exist
+      at summarize (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:8:52)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconciliation-report.test.ts:21:99)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -33,3 +33,8 @@ Preview [PR73](https://deploy-preview-73--helpdesk-consultegeo.netlify.app), dep
 ## Limites e continuidade
 
 A paginação continua leitura viva, com páginas e totais consultados separadamente; não é exportação de snapshot congelado. Ordem por criação não é prazo de SLA, urgência ou tempo sem resposta. HD019 continua parcial para busca global de mensagens/notas, projeção atual de SLA e métricas operacionais. Nenhuma política, alçada, modelo técnico, permissão ou destino MCP novo foi criado.
+
+
+## Publicação autorizada — 17/10/2026
+
+PR73 mesclado em `d8f1fe28f735eebe28875af46b533b50328f6653`, head revisado `54f25d6a7d77a858f66e4d0db256ac6fb29f8840`. Deploy `6ad37227af6d1784b1404bad` READY às13:04:43Z (10h04 Brasília). Verificação nova:122/122 entradas do manifesto por HTTPS/hash, capacidades/rotas privadas, quatro recusas nativas401 conformes contra OpenAPI do merge. Sem migração, escrita de negócio, envio de e-mail ou novo aceite humano autenticado. Provas em `evidence/publication-pr73-20261017/`; preview/checks finais preservados em `evidence/created-sort-20261017/final-*.json`. Esses recibos de produção prevalecem sobre o estado de revisão descrito acima.

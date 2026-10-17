@@ -1,0 +1,8 @@
+# SDD ledger — plan: docs/superpowers/plans/2026-10-17-recovery-reconcile.md
+Pre-flight: Task1 aggregates C15 output and CLI consumes that same closed summary; reader bounded at2MiB, no raw native export adapter; interfaces aligned.
+Task1 RED observed: report interface absent and CLI absent;81 focused checks GREEN including legacy recovery regressions. Direct TypeScript compiler passed; npm wrapper remained pending, not counted. Contracts45, lock, secrets heuristic and build passed.
+BASE d8f1fe28f735eebe28875af46b533b50328f6653; review and full Linux source/merge CI remain.
+
+Final review: P2 contract omitted inherited262144byte/15000node/depth12 limits. Reproduced help regression RED; help/spec/runbook corrected without changing planner policy. Regression uses1000 individually valid unique C12 rows under2MiB and requires atomic refusal. No other actionable finding. Reviewer33/35 local checks,2fixture EPERM sandbox; parent elevated fixtures passed.
+Task 1: complete (commits d8f1fe2..8aa66ba, tests: node --experimental-strip-types --test tests/recovery-reconciliation-report.test.ts tests/recovery-reconcile-cli.test.ts tests/recovery-plan.test.ts tests/recovery-inventory-cli.test.ts tests/recovery-files.test.ts → ℹ duration_ms 9732.8179)
+Final: source39035894346 and merge39035896941 qualified7421 samefp bf48331dd8c6db8bb920cec3dabe9d2dc24b24bf1c1b93e1e77cf8b89d07944a. Original source report/six logs preserved. First qualified preview8aa66ba/6ad3784af5ff26b220660d90 passed10criticalassets; production73unchanged. Final-head preview/checks remain final delivery verification; no merge/publication74.

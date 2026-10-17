@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-17T13:13:33.189Z",
+  "merge": "d8f1fe28f735eebe28875af46b533b50328f6653",
+  "deploy": "6ad37227af6d1784b1404bad",
+  "checks": [
+    {
+      "path": "/v1/tickets",
+      "sort": "oldest",
+      "status": 401,
+      "noStore": true,
+      "unauthenticated": true
+    },
+    {
+      "path": "/v1/tickets",
+      "sort": "newest",
+      "status": 401,
+      "noStore": true,
+      "unauthenticated": true
+    },
+    {
+      "path": "/v1/tickets/summary",
+      "sort": "oldest",
+      "status": 401,
+      "noStore": true,
+      "unauthenticated": true
+    },
+    {
+      "path": "/v1/tickets/summary",
+      "sort": "newest",
+      "status": 401,
+      "noStore": true,
+      "unauthenticated": true
+    }
+  ],
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "authenticated": false,
+  "pass": true
+}

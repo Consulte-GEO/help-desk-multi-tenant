@@ -1,0 +1,20 @@
+{
+  "reviewedHead": "6f3904cdb4cab91317d393a6ef2ac3bcd5d7311d",
+  "base": "d8f1fe28f735eebe28875af46b533b50328f6653",
+  "readOnly": true,
+  "findings": [
+    {
+      "priority": "P2",
+      "problem": "Undisclosed inherited planner budgets may reject valid arrays below reader and row limits.",
+      "resolution": "Help/spec/runbook disclose262144 accounted bytes,15000nodes,depth12; regression individually validates1000uniqueC12records below2MiB and checks atomic refusal. Existing planner budgets unchanged.",
+      "redLog": "budget-red.log"
+    }
+  ],
+  "otherActionableFindings": 0,
+  "reviewerTests": {
+    "passed": 33,
+    "fixturePermissionErrors": 2
+  },
+  "reviewerTestLimitation": "Sandbox EPERM while creating hardlink/junction fixtures; parent elevated filesystem suite passed.",
+  "productionApproved": false
+}
