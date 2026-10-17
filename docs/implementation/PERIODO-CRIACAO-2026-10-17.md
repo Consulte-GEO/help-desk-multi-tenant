@@ -1,3 +1,5 @@
+> **Publicação17/10/2026:** PR72 mesclado em `75992c37656c7f6996b87552e7f3f23abdec3b92` e publicado no deploy `6ad369f6bb509383d7feaec7`, READY09h29 Brasília.122 entradas do manifesto conferidas por HTTPS/hash; proteções/capabilities e quatro recusas anônimas401 conformes; duas consultas com período também recusadas401/no-store. Sem migração ou escrita de negócio. [Manifesto](../../evidence/publication-pr72-20261017/publication.json), [contratos](../../evidence/publication-pr72-20261017/response-contract.json), [período anônimo](../../evidence/publication-pr72-20261017/date-filter-refusal.json). Qualificação abaixo descreve o estado anterior ao merge; não é aceite humano autenticado.
+
 # HD-019 — período de criação na fila e nos totais — 17/10/2026
 
 ## Desenho e critérios

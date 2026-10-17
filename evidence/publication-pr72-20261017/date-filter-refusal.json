@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-17T12:34:37.417Z",
+  "source": "75992c37656c7f6996b87552e7f3f23abdec3b92",
+  "deploy": "6ad369f6bb509383d7feaec7",
+  "checks": [
+    {
+      "route": "/v1/tickets?created_from=2026-10-17T03%3A00%3A00.000Z&created_before=2026-10-18T03%3A00%3A00.000Z",
+      "status": 401,
+      "cacheControl": "no-store",
+      "pass": true
+    },
+    {
+      "route": "/v1/tickets/summary?created_from=2026-10-17T03%3A00%3A00.000Z&created_before=2026-10-18T03%3A00%3A00.000Z",
+      "status": 401,
+      "cacheControl": "no-store",
+      "pass": true
+    }
+  ],
+  "authenticated": false,
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "pass": true
+}

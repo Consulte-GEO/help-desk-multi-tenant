@@ -342,4 +342,4 @@ html[data-theme="dark"] .hd-ui .hd-brand-dark { display:block; }
 .hd-ui .message.message-search-current{outline:2px solid var(--hd-brand-fg);outline-offset:2px;border-style:solid}
 @media(max-width:760px){.hd-ui .message-search{margin-inline:18px}}
 
-.filter-grid .filter-period-help{grid-column:1/-1;margin:0}
+.filter-grid .filter-period-help,.filter-grid .filter-order{grid-column:1/-1;margin:0}

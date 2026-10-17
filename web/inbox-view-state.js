@@ -19,9 +19,9 @@ export function createInboxViewState() {
 }
 export function normalizeInboxFilters(value={}) {
  const result={};
- for(const key of ['q','search_in','internal_status','status','priority','assignment','created_from','created_before']) {
+ for(const key of ['q','search_in','internal_status','status','priority','assignment','created_from','created_before','sort']) {
   const text=typeof value?.[key]==='string'?value[key].trim():'';
-  if(text)result[key]=text;
+  if(text&&!(key==='sort'&&text==='newest'))result[key]=text;
  }
  return result;
 }

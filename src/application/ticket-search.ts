@@ -8,8 +8,8 @@ import type {PageOptions} from './pagination.ts';
 import {isCanonicalInstant,canonicalInstant,compareInstants} from '../../shared/instant.js';
 
 export type CustomerStatus=ReturnType<typeof customerStatus>;
-export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;internal_status?:string;status?:string;priority?:string;assignment?:string;created_from?:string;created_before?:string};
-export type TicketSearchFilters={q?:string;search_in?:'description';internal_status?:TicketStatus;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned';created_from?:string;created_before?:string};
+export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;internal_status?:string;status?:string;priority?:string;assignment?:string;created_from?:string;created_before?:string;sort?:string};
+export type TicketSearchFilters={q?:string;search_in?:'description';internal_status?:TicketStatus;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned';created_from?:string;created_before?:string;sort?:'oldest'};
 // Deliberately deterministic Latin-1 case folding in JS AND SQL, independent of DB locale.
 // Accents stay significant; this is literal substring search, not linguistic full-text search.
 export const SEARCH_UPPER='ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ';
@@ -19,6 +19,10 @@ export function foldSearch(value:string):string{
 }
 export function ticketSearch(options:TicketListOptions|Omit<TicketListOptions,'limit'|'cursor'>):TicketSearchFilters{
  const result:TicketSearchFilters={};
+ if(options.sort!==undefined){
+  if(!['newest','oldest'].includes(options.sort))throw new HelpdeskError(400,'invalid_input','Ordem de criação inválida.');
+  if(options.sort==='oldest')result.sort='oldest';
+ }
  for(const key of ['created_from','created_before'] as const)if(options[key]!==undefined){
   if(!isCanonicalInstant(options[key]))throw new HelpdeskError(400,'invalid_input','Período de criação inválido. Use instantes UTC no formato canônico.');
   result[key]=canonicalInstant(options[key]!);

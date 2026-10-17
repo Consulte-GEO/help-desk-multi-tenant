@@ -1,6 +1,7 @@
 import {compareInstants} from '../../shared/instant.js';
 import {TransactionEffects} from '../domain/transaction-effects.ts';
 import {matchesTicketSearch} from '../application/ticket-search.ts';
+import type {TicketSearchFilters} from '../application/ticket-search.ts';
 import {customerStatus} from '../domain/workflow.ts';
 import {SUMMARY_STATUSES} from '../../shared/ticket-summary.js';
 import type {TicketCounts} from '../../shared/ticket-summary.js';
@@ -52,7 +53,12 @@ export class MemoryUnitOfWork implements UnitOfWork{
     for(const t of next.tickets)if(visible(t)&&matchesTicketSearch(t,filters,p)&&(accountId===undefined||t.accountId===accountId)){counts.total++;counts.statuses[customerStatus(t.status)]++;}
     return counts;
    },
-   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters={})=>next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||compareInstants(t.createdAt,cursor.at)<0||(compareInstants(t.createdAt,cursor.at)===0&&t.id<cursor.id))).sort((a,b)=>compareInstants(b.createdAt,a.createdAt)||(a.id===b.id?0:a.id<b.id?1:-1)).slice(0,limit),
+   listTickets:async(limit:number,cursor:Cursor|null,accountId?:string,filters:TicketSearchFilters={})=>{
+    const direction=filters.sort==='oldest'?1:-1;
+    const position=(at:string,id:string,otherAt:string,otherId:string)=>direction*(compareInstants(at,otherAt)||(id===otherId?0:id<otherId?-1:1));
+    return next.tickets.filter(t=>visible(t)&&matchesTicketSearch(t,filters,p)&&(!accountId||t.accountId===accountId)&&(!cursor||position(t.createdAt,t.id,cursor.at,cursor.id)>0))
+     .sort((a,b)=>position(a.createdAt,a.id,b.createdAt,b.id)).slice(0,limit);
+   },
    insertTicket:async t=>{effects.ticket(null,t,p);next.tickets.push(structuredClone(t));},
    updateTicket:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');effects.ticket(next.tickets[i]!,t,p);next.tickets[i]=structuredClone(t);},
    updatePriority:async(t,expected)=>{const i=next.tickets.findIndex(x=>x.id===t.id&&x.workspaceId===t.workspaceId&&x.accountId===t.accountId&&x.version===expected);if(i<0)throw new HelpdeskError(412,'version_conflict','Versão alterada.');effects.ticket(next.tickets[i]!,t,p);next.tickets[i]={...next.tickets[i]!,priority:t.priority,version:t.version,updatedAt:t.updatedAt};},

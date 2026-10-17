@@ -112,6 +112,8 @@ class PostgresStore implements Store{
   if(accountId!==undefined)uuidIdentifier(accountId);
   if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
   const localContexts=await this.prepareLocalCollection();
+  // Both fragments come from developer-owned constants, never request SQL.
+  const direction=filters.sort==='oldest'?'asc':'desc',cursorOperator=filters.sort==='oldest'?'>':'<';
   const internal=internalStatusPredicate(this.p,filters,this.localCollection?14:13);
   const creation=creationWindowPredicate(filters,(this.localCollection?14:13)+internal.values.length);
   // This server-controlled predicate precedes cursor/search/LIMIT. Metadata only
@@ -133,13 +135,13 @@ class PostgresStore implements Store{
     ${localPredicate}
     ${internal.sql}
     ${creation.sql}
-    and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
+    and ($3::timestamptz is null or (created_at,id)${cursorOperator}($3::timestamptz,$4::uuid))
     and ($6::text is null or strpos(translate(${searchColumn},$7::text,$8::text),$6)>0 ${identifierPredicate})
     and ($9::text[] is null or status=any($9::text[]))
     and ($10::text is null or priority=$10)
     and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
      and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
-   order by tickets.created_at desc,id desc limit $5`,
+   order by tickets.created_at ${direction},id ${direction} limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
     filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,...(this.localCollection?[localContexts]:[]),...internal.values,...creation.values])).rows.map(row=>ticket(row,this.consulteGeoLocal));
  }
