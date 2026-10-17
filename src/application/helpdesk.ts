@@ -79,9 +79,9 @@ export class HelpdeskService{
   if(!hasScope(p,'tickets:read'))throw new HelpdeskError(403,'forbidden','Operação não autorizada.');
   if(options.accountId!==undefined&&!canAccessAccount(p,p.workspaceId,options.accountId))deny();
   const filters=ticketSearch(options);
-  if(filters.assignment&&(p.kind!=='human'||!(p.workspaceRole==='admin'||p.grants.some(g=>g.role==='agent'))
+  if((filters.assignment||filters.internal_status)&&(p.kind!=='human'||!(p.workspaceRole==='admin'||p.grants.some(g=>g.role==='agent'))
    ||options.accountId!==undefined&&!isOperator(p,p.workspaceId,options.accountId)))
-   throw new HelpdeskError(403,'forbidden','Filtros de responsabilidade são restritos à equipe autorizada.');
+   throw new HelpdeskError(403,'forbidden','Filtros da equipe são restritos aos operadores autorizados.');
   return filters;
  }
  async summarize(p:Principal,options:Omit<TicketListOptions,'limit'|'cursor'>):Promise<TicketSummary>{

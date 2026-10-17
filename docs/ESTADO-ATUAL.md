@@ -8,20 +8,22 @@ Atualizado em **16/10/2026**. Esta página resume os checkpoints e seus limites;
 |---|---|
 | Site | `https://helpdesk.consultegeo.org`, atendimento Consulte GEO ativo |
 | Branch de produção | `codex/m1-reproducibilidade` |
-| Último PR publicado | [#68 — busca na conversa pública carregada](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68) |
-| Merge publicado | `c6d398fac03efd2439923c39dce47307b73e0bb7` |
-| Deploy Netlify | `6ad29a17a2836c92c65ed8a2`, READY em16/10/2026 às18h45 Brasília |
+| Último PR publicado | [#69 — busca na descrição dos chamados](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69) |
+| Merge publicado | `72a72b51ea651fa5d377f2632646a352d39e90f1` |
+| Deploy Netlify | `6ad2c3fd7dd44b857679b79f`, READY em16/10/2026 às21h44 Brasília |
 | Verificação desta publicação | 121/121 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
-| Qualificação da implementação do PR68 | Fonte `9ab8b704f3788fe238e0b868039e0ad836bc12cc`; CI7.273 verificações, revisão encerrada. [Escopo e recibos](implementation/BUSCA-CONVERSA-2026-10-16.md). |
+| Qualificação da implementação do PR69 | Fonte `06ef6befc9ee0a09f031012f042745d79212fe21`; CI7.289 verificações, revisão encerrada. [Escopo e recibos](implementation/BUSCA-DESCRICAO-2026-10-16.md). |
 | Contratos atuais | API/interface0.31.0; core/schema0.27,21 migrations. Addons privados Apoio/Wiki não são migrations extras do core. O catálogo de banco não foi reexecutado nesta publicação sem SQL. |
 
-Provas desta publicação: `evidence/message-search-20261016/production/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
+Provas desta publicação: `evidence/description-search-20261016/production/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
 
 ## Entregas e continuidade
 
 **HD-019 — busca local na conversa pública:** [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68), fonte `9ab8b70` revisada e aprovada no CI integral (7.273 verificações), mesclada e publicada no deploy indicado acima. [Preview da implementação conferido](https://deploy-preview-68--helpdesk-consultegeo.netlify.app). Pesquisa apenas o texto das mensagens públicas carregadas do chamado aberto, reaproveitando sua leitura autorizada. Navegação entre resultados, cobertura explícita e limpeza por contexto; não amplia a pesquisa da fila nem inclui notas internas. [Escopo, testes e evolução](implementation/BUSCA-CONVERSA-2026-10-16.md).
 
-**HD-019 — busca na descrição:** [PR69](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69), fonte `06ef6be` qualificada no CI integral (7.289 verificações) e revisão independente sem bloqueadores. Merge de teste e [prévia](https://deploy-preview-69--helpdesk-consultegeo.netlify.app) conferidos; pronto para revisão, sem merge/publicação. [Desenho, plano e limites](implementation/BUSCA-DESCRICAO-2026-10-16.md). Pesquisa global de mensagens exige uma projeção autorizada que também cubra interações públicas do workflow; não usar só a tabela de mensagens.
+**HD-019 — busca na descrição:** [PR69](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69), fonte `06ef6be` qualificada no CI integral (7.289 verificações) e revisão independente sem bloqueadores. Mesclado e publicado no deploy indicado acima; os recibos produtivos estão no checkpoint. [Desenho, plano e limites](implementation/BUSCA-DESCRICAO-2026-10-16.md). Pesquisa global de mensagens exige uma projeção autorizada que também cubra interações públicas do workflow; não usar só a tabela de mensagens.
+
+**HD-019 — situação interna da equipe:** [PR70](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/70), fonte `d638cd0` revisada sem achados e qualificada no CI integral (7.303 verificações), sem merge/publicação. Merge de teste e [prévia](https://deploy-preview-70--helpdesk-consultegeo.netlify.app) conferidos; pronto para revisão. [Desenho e verificações](implementation/FILTRO-SITUACAO-INTERNA-2026-10-16.md).
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 

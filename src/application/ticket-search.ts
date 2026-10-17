@@ -7,8 +7,8 @@ import {customerStatus} from '../domain/workflow.ts';
 import type {PageOptions} from './pagination.ts';
 
 export type CustomerStatus=ReturnType<typeof customerStatus>;
-export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;status?:string;priority?:string;assignment?:string};
-export type TicketSearchFilters={q?:string;search_in?:'description';status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned'};
+export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;internal_status?:string;status?:string;priority?:string;assignment?:string};
+export type TicketSearchFilters={q?:string;search_in?:'description';internal_status?:TicketStatus;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned'};
 // Deliberately deterministic Latin-1 case folding in JS AND SQL, independent of DB locale.
 // Accents stay significant; this is literal substring search, not linguistic full-text search.
 export const SEARCH_UPPER='ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ';
@@ -28,6 +28,10 @@ export function ticketSearch(options:TicketListOptions|Omit<TicketListOptions,'l
  if(options.search_in!==undefined){
   if(options.search_in!=='description'||!result.q)throw new HelpdeskError(400,'invalid_input','Selecione descrição e informe uma busca de 2 a 120 caracteres.');
   result.search_in='description';
+ }
+ if(options.internal_status!==undefined){
+  if(!statuses.includes(options.internal_status as TicketStatus))throw new HelpdeskError(400,'invalid_input','Situação interna inválida.');
+  result.internal_status=options.internal_status as TicketStatus;
  }
  if(options.status!==undefined){
   if(!['received','in_progress','waiting_for_you','resolved','closed'].includes(options.status))throw new HelpdeskError(400,'invalid_input','Situação pública inválida.');
@@ -50,6 +54,7 @@ export function matchesTicketSearch(ticket:Ticket,filters:TicketSearchFilters,p?
  return (!filters.q||(filters.search_in==='description'?foldSearch(ticket.description).includes(filters.q):
   foldSearch(ticket.subject).includes(filters.q)||foldSearch(ticket.id)===filters.q
    ||!!ticket.consulteGeo&&foldSearch(ticket.consulteGeo.protocol)===filters.q))
+  &&(!filters.internal_status||!!p&&isOperator(p,ticket.workspaceId,ticket.accountId)&&ticket.status===filters.internal_status)
   &&(!filters.status||customerStatus(ticket.status)===filters.status)
   &&(!filters.priority||ticket.priority===filters.priority)
   &&(!filters.assignment||!!p&&isOperator(p,ticket.workspaceId,ticket.accountId)
