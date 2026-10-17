@@ -23,3 +23,6 @@ Ainda dependem de projeto próprio: adaptador auditado do ledger operacional nat
 ## Qualificação
 
 Registrar RED/GREEN, testes focais, tipos, contratos, lock, segredos/build, revisão independente e CI Linux/PG17 antes de apresentar o novo PR para integração. Não declarar restore, aceite humano ou validação de dados produtivos por testes sintéticos.
+
+
+Limites adicionais do contrato C15: Também se aplicam os limites cumulativos dos planejadores existentes por array: 262144 bytes contabilizados (chaves/textos/valores; não tamanho JSON), 15.000 nós e profundidade12; podem recusar entradas antes de1.000 linhas/2 MiB. Não há fragmentação automática: revisar o escopo coerente das cópias ou projetar um adaptador próprio, sem perder conflitos ou revogações entre lotes.
