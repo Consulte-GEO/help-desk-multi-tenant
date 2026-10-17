@@ -1,5 +1,8 @@
 # Reconciliação local de recuperação — HD-045 — 17/10/2026
 
+**17/10/2026 — checkpoint corrente:** PR74 mesclado em `4df5a99496c74b23712f2dfe709663b1b92bdbe1` e publicado no deploy `6ad39e6ddee36c05b88fbcc5`, READY às13h13 Brasília.122/122 entradas do manifesto HTTPS/hash e quatro recusas anônimas401 conformes; sem migração ou escrita de negócio. PR75 integra essa base, com CI integral da combinação em andamento; ainda sem merge75. Os trechos seguintes descrevem as fontes originais quando não indicam esta integração. Recibos produtivos: `evidence/publication-pr74-20261017/`.
+
+
 ## Escopo
 
 Continuidade autorizada após a publicação do PR73. Expor os planejadores C15 já existentes como relatório local somente leitura, sem criar uma segunda política de recuperação. Este recorte prepara a revisão operacional; não conclui o restore operacional HD-045.
