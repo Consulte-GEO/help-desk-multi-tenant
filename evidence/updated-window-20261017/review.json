@@ -14,5 +14,13 @@
     "additionalProcessExited": false
   },
   "deferredMinors": [],
-  "productionApproved": false
+  "productionApproved": false,
+  "selfReview": {
+    "problem": "Synthetic screenshot row creation timestamp outside combined creation bounds.",
+    "red": "browser-fixture-red.log",
+    "resolution": "Creation timestamp set inside window and distinct from update timestamp, explicit coherence assertion retained.",
+    "green": "browser-final.log",
+    "groupsPassed": 8,
+    "runtimeChanged": false
+  }
 }

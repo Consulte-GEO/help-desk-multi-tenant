@@ -19,7 +19,8 @@ with sync_playwright() as pw:
         route.fulfill(status=200,content_type='application/json',body=json.dumps({'as_of':'2026-10-17T12:00:00.000Z','total':153,'statuses':counts}))
     page.route('**/v1/tickets/summary*',totals)
     with page.expect_response(re.compile(r'/v1/tickets\?')) as first:fill_login(page)
-    base=first.value.json()['items'][0];base['updated_at']=base['updated_at']='2026-10-17T12:00:00.000Z'
+    base=first.value.json()['items'][0];base['created_at']='2026-10-02T12:00:00.000Z';base['updated_at']='2026-10-17T12:00:00.000Z'
+    assert '2026-10-01T03:00:00.000Z'<=base['created_at']<'2026-10-18T03:00:00.000Z','Synthetic row must satisfy the later creation window'
     def listing(route):
         lists.append(parse_qs(urlparse(route.request.url).query));route.fulfill(status=200,content_type='application/json',body=json.dumps({'items':[base],'next_cursor':None}))
     page.route('**/v1/tickets?*',listing)

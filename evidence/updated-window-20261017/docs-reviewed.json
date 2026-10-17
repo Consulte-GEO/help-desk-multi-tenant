@@ -2,7 +2,8 @@
   "checkedAt": "2026-10-17T15:09:39.865Z",
   "sources": [
     "https://supabase.com/changelog.md",
-    "https://supabase.com/docs/guides/database/postgres/row-level-security"
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes"
   ],
   "breakingTagLines": [
     "2026-10-12 · Breaking Change · Auth, Data APIs, Storage, Realtime, Edge Functions · [supabase.com/changelog/cbc-tls-ciphers-deprecated](https://supabase.com/changelog/cbc-tls-ciphers-deprecated)",
@@ -19,5 +20,6 @@
     "2026-05-18 · Breaking Change · Observability · [supabase.com/changelog/46084-self-hosted-supabase-making-analytics-and-vector-opt-in](https://supabase.com/changelog/46084-self-hosted-supabase-making-analytics-and-vector-opt-in)"
   ],
   "relevance": "Existing PostgreSQL parameterized SELECT predicates only. No new Supabase API/SDK, auth, grants, RLS, schema, CLI or pool changes.",
-  "databaseVerification": "Restricted PostgreSQL17 CI required; no remote database access."
+  "databaseVerification": "Restricted PostgreSQL17 CI required; no remote database access.",
+  "breakingNoticeScope": "Reviewed minor-release notice; this delta adds no ltree/pgcrypto/btree_gist/custom operator or upgrades. Built-in timestamptz comparison only; no assertion about remote catalog or platform upgrade readiness."
 }

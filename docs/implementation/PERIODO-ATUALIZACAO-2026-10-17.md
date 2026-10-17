@@ -27,3 +27,6 @@ Referências conferidas: [RLS](https://supabase.com/docs/guides/database/postgre
 
 
 Revisão independente somente leitura da fonte68b09bf: nenhum defeito concreto de runtime; corrigida a fixture PG para que a linha de outra conta satisfaça a janela, exigindo exclusão por ACL. A página seguinte também usa o cursor anterior após uma mutação que remove a primeira linha do intervalo.37 focais e tipos reexecutados/aprovados; a execução PostgreSQL real permanece responsabilidade do CI. O revisor concluiu29 focais e relatou22 aprovações adicionais, com processo ainda aberto após o resumo; não contamos esses22 como execução concluída. Sem minor adiado.
+
+
+Autorrevisão das capturas: a fixture visual inicial devolvia criação fora da janela combinada. A asserção de coerência reproduziu o problema (falha sintética, sem defeito de runtime); corrigida a data do registro fictício, mantendo criação e atualização distintas.8 grupos Chromium finais aprovados e capturas atualizadas; logs anteriores preservados como tentativas, não aceite de dados reais.
