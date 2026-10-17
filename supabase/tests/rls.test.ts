@@ -370,7 +370,7 @@ test('SQL update window uses updated metadata after an authorized mutation, befo
  const created=new Date(Date.now()-10000),changed=new Date(created.getTime()+5000);changed.setUTCMilliseconds(123);const subject='HD019 updated window '+randomUUID(),seed=new HelpdeskService(new PostgresUnitOfWork(app),()=>created),mutate=new HelpdeskService(new PostgresUnitOfWork(app),()=>changed),owned=[];
  for(let n=0;n<17;n++)owned.push((await seed.create(alice,{...input,subject},randomUUID(),'db-test')).ticket);
  for(const t of owned.slice(0,11))await mutate.changePriority(agent,t.id,'high',1,'Synthetic update window',randomUUID(),'db-test');
- const outside=(await seed.create(bob,{...input,accountId:id(102),subject},randomUUID(),'db-test')).ticket;assert.ok(outside.id);
+ const outside=(await mutate.create(bob,{...input,accountId:id(102),subject},randomUUID(),'db-test')).ticket;assert.equal(outside.updatedAt,changed.toISOString());
  const exact=changed.toISOString(),micro=exact.slice(0,23)+'001Z',f={q:subject,updated_from:exact,updated_before:micro};assert.equal((await service.summarize(alice,f)).total,11);
  assert.equal((await service.summarize(alice,{...f,created_before:exact})).total,11);assert.equal((await service.summarize(alice,{...f,created_from:exact})).total,0);assert.equal((await service.summarize(alice,{q:subject,updated_before:exact})).total,6);assert.equal((await service.summarize(alice,{q:subject,updated_from:micro})).total,0);
  assert.equal((await service.summarize(alice,{...f,updated_from:exact.slice(0,23)+'000Z'})).total,11);
@@ -379,6 +379,7 @@ test('SQL update window uses updated metadata after an authorized mutation, befo
  // Reads are live: moving the first returned ticket outside the window changes
  // current totals, without pretending a frozen snapshot or reordering by update.
  const later=new HelpdeskService(new PostgresUnitOfWork(app),()=>new Date(changed.getTime()+1));await later.changePriority(agent,first.items[0]!.id,'urgent',2,'Synthetic later change',randomUUID(),'db-test');assert.equal((await service.summarize(alice,f)).total,10);assert.equal((await service.summarize(alice,{q:subject,updated_from:micro})).total,1);
+ const following=await service.list(alice,{limit:100,...f,cursor:first.nextCursor!});assert.equal(following.items.length,10);assert.ok(following.items.every(t=>t.id!==first.items[0]!.id&&t.id!==outside.id));
  await admin.query('update helpdesk_auth.account_grants set active=false where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),alice.id]);try{assert.equal((await service.list(alice,{limit:1,...f})).items.length,0);assert.equal((await service.summarize(alice,f)).total,0);}finally{await admin.query('update helpdesk_auth.account_grants set active=true where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),alice.id]);}
 });
 

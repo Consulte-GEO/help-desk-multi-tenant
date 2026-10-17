@@ -1,0 +1,18 @@
+{
+  "readOnly": true,
+  "base": "d8f1fe28f735eebe28875af46b533b50328f6653",
+  "reviewedHead": "68b09bf6c4e396299b6c88b339a124b57aa47350",
+  "runtimeFindings": [],
+  "coverageFinding": {
+    "severity": "minor",
+    "problem": "Other-account row was outside the update window, so it did not demonstrate ACL exclusion among temporal matches. No old-cursor consumption after mutation.",
+    "resolution": "Bob row now created at changed timestamp inside the window; subsequent page uses prior cursor after the first row moves out of the window. Runtime unchanged; full PG17 CI required."
+  },
+  "reviewerTests": {
+    "focusedPassed": 29,
+    "additionalReportedPassed": 22,
+    "additionalProcessExited": false
+  },
+  "deferredMinors": [],
+  "productionApproved": false
+}

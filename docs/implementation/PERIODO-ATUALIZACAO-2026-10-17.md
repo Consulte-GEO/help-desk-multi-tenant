@@ -24,3 +24,6 @@ Não publicar ou mesclar este novo recorte sem autorização própria. MFA/Novo 
 RED observado nos12 cenários novos de domínio/HTTP/estado/SQL pela ausência do filtro; GREEN inicial32 e combinado37 focais aprovados. Compilador TypeScript direto,45 operações OpenAPI, lock e build aprovados. Browser Chromium local com Auth/API sintéticas qualificado separadamente; PG17 real e CI integral da fonte/merge ainda pendentes. Não é teste autenticado humano produtivo.
 
 Referências conferidas: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) e [changelog](https://supabase.com/changelog.md), sem alteração de grants/policies/schema/API Supabase. Leitura continua pelo papel restrito existente; comprovação PG real depende do CI.
+
+
+Revisão independente somente leitura da fonte68b09bf: nenhum defeito concreto de runtime; corrigida a fixture PG para que a linha de outra conta satisfaça a janela, exigindo exclusão por ACL. A página seguinte também usa o cursor anterior após uma mutação que remove a primeira linha do intervalo.37 focais e tipos reexecutados/aprovados; a execução PostgreSQL real permanece responsabilidade do CI. O revisor concluiu29 focais e relatou22 aprovações adicionais, com processo ainda aberto após o resumo; não contamos esses22 como execução concluída. Sem minor adiado.

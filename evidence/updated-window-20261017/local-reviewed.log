@@ -1,0 +1,45 @@
+✔ creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false (12.2969ms)
+✔ creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true (1.7582ms)
+✔ creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false (1.6337ms)
+✔ creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true (1.0195ms)
+✔ creation sort normalizes newest to absence and only accepts the two declared orders (2.856ms)
+✔ oldest sorts the complete authorized query by exact time/id before page boundaries (113.7875ms)
+✔ sort binds the cursor, keeps default cursors compatible, and invalidates client generations (6.9773ms)
+✔ HTTP list and totals accept order, reject duplicates/invalid values and retain private authority (77.1679ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=false private=false (4.5161ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=false private=true (0.6641ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=true private=false (1.9469ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=true private=true (0.5211ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=false private=false (0.752ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=false private=true (0.4762ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=true private=false (0.6816ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=true private=true (0.47ms)
+✔ creation window normalizes only redundant fractional zeros and rejects invalid bounds (2.8622ms)
+✔ creation window is inclusive/exclusive with exact microseconds, before pages and totals (55.6153ms)
+✔ creation window binds cursor, accepts equivalent bounds and invalidates client generations (5.1667ms)
+✔ HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority (32.3228ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=false private=false (4.514ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=false private=true (0.686ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=true private=false (1.9037ms)
+✔ window SQL binds after optional namespace/private parameters local=false summary=true private=true (0.4913ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=false private=false (0.7288ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=false private=true (0.4748ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=true private=false (0.6061ms)
+✔ window SQL binds after optional namespace/private parameters local=true summary=true private=true (0.3965ms)
+✔ all four temporal bounds bind after namespace and private status local=false summary=false (0.8513ms)
+✔ all four temporal bounds bind after namespace and private status local=false summary=true (0.3157ms)
+✔ all four temporal bounds bind after namespace and private status local=true summary=false (0.209ms)
+✔ all four temporal bounds bind after namespace and private status local=true summary=true (0.8601ms)
+✔ update and creation windows intersect while ordering and cursor stay on creation (5.8233ms)
+✔ update window normalizes only redundant fractional zeros and rejects invalid bounds (1.1171ms)
+✔ update window is inclusive/exclusive with exact microseconds, before pages and totals (42.6999ms)
+✔ update window binds cursor, accepts equivalent bounds and invalidates client generations (1.1178ms)
+✔ HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority (27.6917ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 642.4462
