@@ -26,9 +26,9 @@
 
 Interfaces: TicketListOptions/TicketSearchFilters opcionais; predicado compartilhado lista/resumo; mesmas chaves em HTTP/scoped, estados cliente, consultas rápidas e OpenAPI. Controles updated-from/updated-before usam saoPauloFilterInstant existente.
 
-- [ ] Escrever e executar RED nos testes de domínio/SQL adapter/HTTP/estado e browser.
-- [ ] Implementar normalização, predicado parametrizado, query/contrato e controles/feedback.
-- [ ] Qualificar janelas combinadas, cursor, ACL e alteração real em PG17 restrito; browser desktop/mobile390.
-- [ ] Verificar focais/tipos/contratos/build/lock/segredos e revisão independente readonly; corrigir achados com RED/GREEN.
-- [ ] Commit/push/PR separado e CI fonte/merge; preservar relatório/logs originais.
-- [ ] Qualificar prévia e head final, atualizar estado/handoff; sem merge/publicação.
+- [x] Escrever/executar RED de domínio/SQL adapter/HTTP/estado e preparar browser, qualificado GREEN; RED próprio da coerência da fixture visual registrado.
+- [x] Implementar normalização, predicado parametrizado, query/contrato e controles/feedback.
+- [x] Qualificar janelas combinadas, cursor, ACL e alteração real em PG17 restrito; browser desktop/mobile390.
+- [x] Verificar focais/tipos/contratos/build/lock/segredos e revisão independente readonly; corrigir achados com RED/GREEN.
+- [x] Commit/push/PR separado e CI fonte/merge; preservar relatório/logs originais.
+- [x] Qualificar prévia e head final, atualizar estado/handoff; sem merge/publicação.

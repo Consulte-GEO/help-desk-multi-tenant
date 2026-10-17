@@ -42,3 +42,7 @@ O teste PG real cria17 registros próprios antes da janela, atualiza11 por coman
 Local37 focais/tipos/build/contratos/lock, revisão independente e8 grupos Chromium finais desktop/mobile390 aprovados. Corrigidas fixtures de ACL e coerência cronológica; todos os diagnósticos/RED e tentativas ultrapassadas permanecem identificados. Capturas finais conferidas: [desktop](../../evidence/updated-window-20261017/browser/desktop-synthetic.png), [mobile](../../evidence/updated-window-20261017/browser/mobile-synthetic.png). Auth/API são sintéticas; não é aceite humano produtivo.
 
 Relatório incorporado para qualificar o preview; esta etapa ainda não é merge/publicação. PR74 permanece candidato independente e não foi incorporado à base73 deste PR75. A contagem pode diferir entre essas branches por cobrirem recortes diferentes. Produção permanece PR73/d8f1fe2/deploy6ad37227af6d1784b1404bad.
+
+## Prévia qualificada e entrega para revisão
+
+[Preview PR75](https://deploy-preview-75--helpdesk-consultegeo.netlify.app), deploy **6ad39522fb4d6fa08ddec844**, head **76e8935e9639349cad94ced4699e6aa117fe59c7** READY:10 ativos críticos por bytes/hash, permitindo somente inserção CDP restrita do provedor no HTML. [Recibo](../../evidence/updated-window-20261017/preview.json). A conferência do head documental final fica no corpo do PR para evitar uma cadeia de commits só para registrar sua própria prévia. Pronto para revisão; **não mesclado nem publicado**. Produção PR73 preservada; PR74 continua independente.
