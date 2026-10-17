@@ -49,3 +49,8 @@ Merge de teste [38988551964](https://github.com/Consulte-GEO/help-desk-multi-ten
 [Prévia PR70](https://deploy-preview-70--helpdesk-consultegeo.netlify.app) pronta em `bbfc1979d2115c4a0c52b3a84dbe134c7741b867`, deploy `6ad2ca181ee9a04487894e76`. Nove arquivos conferidos: app, HTML, estado da lista, consultas rápidas, estado/apresentação da caixa, CSS e entry/facade do Apoio. Bytes da fonte aprovados; inserção CDP nativa no HTML estritamente identificada; módulo conferido por manifesto SHA1. Recibo em `preview.json`. Não é aceite humano autenticado, nem escrita produtiva. Produção segue no PR69/72a72b5.
 
 Quatro análises CodeQL e agregado, regras de headers/redirects e preview aprovados em bbfc197; Pages neutral. Implementação/revisão/CI/merge de teste concluídos, PR70 preparado para revisão, sem merge ou publicação antecipados. A atualização documental final mantém o fingerprint e terá HEAD/prévia conferidos separadamente. Os checkpoints anteriores e a prévia não qualificada continuam históricos. HD-019/026 seguem parciais.
+
+
+## Publicação confirmada — 17/10/2026
+
+PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2 e publicado no deploy6ad35567303a7de877d7700c, READY às08h02 Brasília. Conferidas121/121 entradas do manifesto por HTTPS/hash, capacidades/controles privados, consultas anônimas com internal_status e quatro recusas nativas401 conformes ao OpenAPI congelado do merge. Recibos em `evidence/publication-pr70-20261017/`. Sem migration ou escrita de negócio; a prova anônima não equivale a aceite humano autenticado.

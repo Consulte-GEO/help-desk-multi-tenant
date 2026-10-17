@@ -1,0 +1,7 @@
+
+> @consulte-geo/helpdesk@0.31.0 typecheck
+> tsc --noEmit
+
+scripts/recovery-inventory.ts(17,180): error TS2339: Property 'schemaVersion' does not exist on type 'object'.
+scripts/recovery-inventory.ts(17,203): error TS2339: Property 'algorithm' does not exist on type 'object'.
+scripts/recovery-inventory.ts(17,275): error TS2339: Property 'inventory' does not exist on type 'object'.

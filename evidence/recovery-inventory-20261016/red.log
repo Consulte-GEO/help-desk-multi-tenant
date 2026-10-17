@@ -1,0 +1,1131 @@
+✖ HD045 hashes real bytes from all six components, is immutable and leaves files intact (7.1275ms)
+✖ HD045 a real copy in another root matches despite timestamps and creation order (10.9039ms)
+✖ HD045 same-size byte corruption is detected in objects without changing database totals (3.9366ms)
+✖ HD045 structure participates in digest: rename (1.9529ms)
+✖ HD045 structure participates in digest: remove (7.8152ms)
+✖ HD045 structure participates in digest: empty-directory (12.3171ms)
+✖ HD045 all six empty directories form a valid inventory, missing is not empty (2.8942ms)
+✖ HD045 extra root entries are refused rather than silently omitted (29.707ms)
+✖ HD045 hardlinked files cannot escape the private stable-copy requirement (2.7057ms)
+✖ HD045 directory links and linked roots are refused (4.3841ms)
+✖ HD045 path through a directory alias is refused even when final root is not a link (2.8969ms)
+✖ HD045 entry budget is global across components (2.5293ms)
+✖ HD045 byte budget counts file bytes globally, not the metadata digest length (3.3771ms)
+✖ HD045 excessive nesting fails without silently dropping deeper entries (9.1156ms)
+✖ HD045 already aborted and in-flight cancellation fail completely (7.0289ms)
+✖ HD045 invalid or expanded limits refused {"maxBytes":0} (1.6041ms)
+✖ HD045 invalid or expanded limits refused {"maxBytes":268435457} (1.3375ms)
+✖ HD045 invalid or expanded limits refused {"maxEntries":10001} (1.7093ms)
+✖ HD045 invalid or expanded limits refused {"maxEntries":0} (1.6545ms)
+✖ HD045 invalid or expanded limits refused {"timeoutMs":30001} (1.9478ms)
+✖ HD045 invalid or expanded limits refused {"timeoutMs":0} (1.8211ms)
+✖ HD045 invalid or expanded limits refused {"timeoutMs":null} (2.7786ms)
+✖ HD045 invalid or expanded limits refused {"maxBytes":1.2} (3.4764ms)
+✖ HD045 CLI help is explicit and has no input requirement (870.1603ms)
+✖ HD045 CLI captures and compares a closed safe manifest using actual files (660.5262ms)
+✖ HD045 CLI divergence has exit2 and names only affected components (990.5132ms)
+✖ HD045 CLI invalid args fail safely [] (258.8377ms)
+✖ HD045 CLI invalid args fail safely ["--root"] (299.3219ms)
+✖ HD045 CLI invalid args fail safely ["--restore"] (1075.2361ms)
+✖ HD045 CLI invalid args fail safely ["--root","x","--root","y"] (99.565ms)
+✖ HD045 CLI invalid args fail safely ["--help","--root","x"] (66.5662ms)
+✖ HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"] (193.4873ms)
+✖ HD045 CLI refuses expected manifest malformed (1782.3767ms)
+✖ HD045 CLI refuses expected manifest extra-property (1197.4046ms)
+✖ HD045 CLI refuses expected manifest missing-component (158.1391ms)
+✖ HD045 CLI refuses expected manifest wrong-algorithm (479.1646ms)
+✖ HD045 CLI refuses expected manifest oversized (565.2875ms)
+✖ HD045 CLI refuses expected manifest linked (380.1915ms)
+✖ HD045 CLI refuses expected manifest inside-root (605.0888ms)
+✖ HD045 CLI import does not read, print or execute (281.3197ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 0
+ℹ fail 40
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10863.7583
+
+✖ failing tests:
+
+test at tests\recovery-files.test.ts:11:1
+✖ HD045 hashes real bytes from all six components, is immutable and leaves files intact (7.1275ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:11:115)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:12:1
+✖ HD045 a real copy in another root matches despite timestamps and creation order (10.9039ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:12:109)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:13:1
+✖ HD045 same-size byte corruption is detected in objects without changing database totals (3.9366ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:13:117)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:14:68
+✖ HD045 structure participates in digest: rename (1.9529ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:14:144)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:14:68
+✖ HD045 structure participates in digest: remove (7.8152ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:14:144)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:14:68
+✖ HD045 structure participates in digest: empty-directory (12.3171ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:14:144)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:15:1
+✖ HD045 all six empty directories form a valid inventory, missing is not empty (2.8942ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:15:106)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:16:1
+✖ HD045 extra root entries are refused rather than silently omitted (29.707ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:16:95)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:17:1
+✖ HD045 hardlinked files cannot escape the private stable-copy requirement (2.7057ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:17:102)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:18:1
+✖ HD045 directory links and linked roots are refused (4.3841ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:18:80)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:19:1
+✖ HD045 path through a directory alias is refused even when final root is not a link (2.8969ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:19:112)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:20:1
+✖ HD045 entry budget is global across components (2.5293ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:20:76)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:21:1
+✖ HD045 byte budget counts file bytes globally, not the metadata digest length (3.3771ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:21:106)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:22:1
+✖ HD045 excessive nesting fails without silently dropping deeper entries (9.1156ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:22:100)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:23:1
+✖ HD045 already aborted and in-flight cancellation fail completely (7.0289ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:23:94)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"maxBytes":0} (1.6041ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"maxBytes":268435457} (1.3375ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"maxEntries":10001} (1.7093ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"maxEntries":0} (1.6545ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"timeoutMs":30001} (1.9478ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"timeoutMs":0} (1.8211ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"timeoutMs":null} (2.7786ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-files.test.ts:24:155
+✖ HD045 invalid or expanded limits refused {"maxBytes":1.2} (3.4764ms)
+  AssertionError [ERR_ASSERTION]: HD045 file inventory adapter missing
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:8:175)
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:24:249)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:12:1
+✖ HD045 CLI help is explicit and has no input requirement (870.1603ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:12:100)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:13:1
+✖ HD045 CLI captures and compares a closed safe manifest using actual files (660.5262ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:13:228)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:14:1
+✖ HD045 CLI divergence has exit2 and names only affected components (990.5132ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:14:147)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely [] (258.8377ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely ["--root"] (299.3219ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely ["--restore"] (1075.2361ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely ["--root","x","--root","y"] (99.565ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely ["--help","--root","x"] (66.5662ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:15:150
+✖ HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"] (193.4873ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Inspeção não concluída/. Input:
+  
+  'node:internal/modules/cjs/loader:1568\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.20.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:15:295)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1568\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\scripts\\recovery-inventory.ts'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.20.0\r\n",
+    expected: /Inspeção não concluída/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest malformed (1782.3767ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest extra-property (1197.4046ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest missing-component (158.1391ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest wrong-algorithm (479.1646ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest oversized (565.2875ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest linked (380.1915ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:16:126
+✖ HD045 CLI refuses expected manifest inside-root (605.0888ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:252)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\recovery-inventory-cli.test.ts:17:1
+✖ HD045 CLI import does not read, print or execute (281.3197ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/esm/resolve:272
+      throw new ERR_MODULE_NOT_FOUND(
+            ^
+  
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\scripts\recovery-inventory.ts' imported from C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\[eval1]
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)
+      at #resolve (node:internal/modules/esm/loader:687:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)
+      at node:internal/modules/esm/loader:636:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:361:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/scripts/recovery-inventory.ts'
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:17:375)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

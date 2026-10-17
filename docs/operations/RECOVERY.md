@@ -4,6 +4,25 @@
 
 ## Manifesto de recuperação
 
+### Conferir os arquivos de uma bancada privada
+
+`npm run recovery:inventory -- --help` descreve o utilitário local. Prepare uma pasta estável, fora da árvore do projeto e sem escritores concorrentes, contendo exatamente os diretórios `database`, `objects`, `configuration`, `key_inventory`, `outbox` e `revocations`. Coloque os exports autorizados e os bytes dos objetos em seus componentes. Em `key_inventory`, mantenha referências/gerações, sem valores de chaves. Outbox e revogações precisam refletir os controles autoritativos preservados fora do rollback; sua procedência é responsabilidade do procedimento de captura. Diretórios vazios são aceitos, mas não comprovam que a origem não tinha dados.
+
+```powershell
+# Exemplos com caminhos locais da bancada; não apontar para produção.
+# stdout de npm contém seu banner: use node diretamente para salvar JSON puro.
+$manifesto = node --experimental-strip-types scripts/recovery-inventory.ts --root C:/bancada/original
+if ($LASTEXITCODE -ne 0) { throw 'Inventário não concluído; não salve um manifesto parcial.' }
+[System.IO.File]::WriteAllText('C:/bancada/manifesto.json', ($manifesto -join "`n"), [System.Text.UTF8Encoding]::new($false))
+node --experimental-strip-types scripts/recovery-inventory.ts --root C:/bancada/copia --expected C:/bancada/manifesto.json
+```
+
+Guarde o manifesto **fora** das duas raízes e compare somente manifestos capturados por esse mesmo formato. Não redirecione a saída para dentro dos componentes: o shell abre o arquivo antes de iniciar o programa. A ferramenta não grava arquivos. Exit0 significa inventário concluído ou comparação igual;2 significa divergência;1 significa inspeção não concluída. Trate erro ou execução interrompida como ausência de evidência e não use saída parcial como manifesto. No PowerShell, salve e confira `$LASTEXITCODE`; no bash, `$?`. PowerShell5.1 pode gravar redirecionamentos em UTF-16: salve stdout explicitamente como UTF-8 quando necessário; o leitor aceita somente JSON UTF-8.
+
+Os hashes incluem os bytes e a identidade relativa de cada arquivo e diretório vazio; independem do caminho absoluto e das datas. A saída não contém nomes privados ou conteúdo. `count` conta arquivos/subdiretórios; `bytes` conta metadados canônicos usados no digest, não tamanho de backup. Links, junctions/aliases, hardlinks de arquivos, arquivos especiais, componentes extras/ausentes e alterações detectadas bloqueiam a inspeção. Limites globais:10.000 entradas,256MiB de arquivos,12 níveis e30s. Não é um scanner e não estabelece segurança dos objetos. Use cópias locais estáveis; o filesystem não fornece snapshot transacional contra escritor hostil.
+
+Esse recorte comprova comparação de arquivos reais locais. Não executa `pg_restore`, não exporta dados automaticamente, não valida a completude/procedência dos exports, não aplica reconciliação nem liga workers. Mesmos hashes não significam que permissões, ledger, revogações ou RPO/RTO foram aceitos. [Desenho e evidências](../implementation/INVENTARIO-RECUPERACAO-2026-10-16.md).
+
 Registrar separadamente inventários e referências de versão para seis componentes: banco; objetos; configuração; inventário de referências/gerações de chaves; outbox/ledger; revogações e exclusões. O módulo `digestRecoveryRows` lê streams completos, ordenados por chave opaca em UTF-8 binário, com limite de linhas/bytes/prazo. Produz somente contagem, bytes e hash; não inclui registros nos logs. O adapter deve usar snapshot consistente e chaves estáveis. O inventário de chaves contém **referências**, não segredos em texto.
 
 `compareRecoveryInventory` exige os seis componentes. Um match é evidência de integridade do inventário recebido, não prova de que a origem foi corretamente capturada, restaurada ou aceita. Banco com totais iguais não aprova objetos ausentes ou configuração diferente.
