@@ -16,7 +16,7 @@ export function availableTicketViews(person){
 export function applyTicketView(raw,id,person){
  if(!availableTicketViews(person).some(v=>v.id===id))throw Error('Consulta rápida indisponível para esta sessão.');
  const current=validated(raw),preset=views.find(v=>v.id===id);
- return {...(current.sort?{sort:current.sort}:{}),...(current.created_from?{created_from:current.created_from}:{}),...(current.created_before?{created_before:current.created_before}:{}),...(current.q?{q:current.q}:{}),...(current.search_in?{search_in:current.search_in}:{}),...(current.priority?{priority:current.priority}:{}),...preset.filters};
+ return {...(current.updated_from?{updated_from:current.updated_from}:{}),...(current.updated_before?{updated_before:current.updated_before}:{}),...(current.sort?{sort:current.sort}:{}),...(current.created_from?{created_from:current.created_from}:{}),...(current.created_before?{created_before:current.created_before}:{}),...(current.q?{q:current.q}:{}),...(current.search_in?{search_in:current.search_in}:{}),...(current.priority?{priority:current.priority}:{}),...preset.filters};
 }
 export function activeTicketView(raw,person){
  const current=validated(raw);if(current.internal_status)return null;

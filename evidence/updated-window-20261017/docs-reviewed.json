@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-17T15:09:39.865Z",
+  "sources": [
+    "https://supabase.com/changelog.md",
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes"
+  ],
+  "relevance": "Existing PostgreSQL parameterized SELECT predicates only. No new Supabase API/SDK, auth, grants, RLS, schema, CLI or pool changes.",
+  "databaseVerification": "Restricted PostgreSQL17 CI required; no remote database access.",
+  "breakingNoticeScope": "Reviewed minor-release notice; this delta adds no ltree/pgcrypto/btree_gist/custom operator or upgrades. Built-in timestamptz comparison only; no assertion about remote catalog or platform upgrade readiness.",
+  "breakingTagLinesInspected": 12,
+  "changelogSnapshotSha256": "15b3d0d1a7dc3b3f2c0af4788e49acfdf2d2edbd2613f22de0705fa43b1cf58b"
+}

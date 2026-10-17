@@ -8,8 +8,8 @@ import type {PageOptions} from './pagination.ts';
 import {isCanonicalInstant,canonicalInstant,compareInstants} from '../../shared/instant.js';
 
 export type CustomerStatus=ReturnType<typeof customerStatus>;
-export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;internal_status?:string;status?:string;priority?:string;assignment?:string;created_from?:string;created_before?:string;sort?:string};
-export type TicketSearchFilters={q?:string;search_in?:'description';internal_status?:TicketStatus;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned';created_from?:string;created_before?:string;sort?:'oldest'};
+export type TicketListOptions=PageOptions&{accountId?:string;q?:string;search_in?:string;internal_status?:string;status?:string;priority?:string;assignment?:string;created_from?:string;created_before?:string;updated_from?:string;updated_before?:string;sort?:string};
+export type TicketSearchFilters={q?:string;search_in?:'description';internal_status?:TicketStatus;status?:CustomerStatus;priority?:Ticket['priority'];assignment?:'mine'|'unassigned';created_from?:string;created_before?:string;updated_from?:string;updated_before?:string;sort?:'oldest'};
 // Deliberately deterministic Latin-1 case folding in JS AND SQL, independent of DB locale.
 // Accents stay significant; this is literal substring search, not linguistic full-text search.
 export const SEARCH_UPPER='ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ';
@@ -23,11 +23,12 @@ export function ticketSearch(options:TicketListOptions|Omit<TicketListOptions,'l
   if(!['newest','oldest'].includes(options.sort))throw new HelpdeskError(400,'invalid_input','Ordem de criação inválida.');
   if(options.sort==='oldest')result.sort='oldest';
  }
- for(const key of ['created_from','created_before'] as const)if(options[key]!==undefined){
-  if(!isCanonicalInstant(options[key]))throw new HelpdeskError(400,'invalid_input','Período de criação inválido. Use instantes UTC no formato canônico.');
+ for(const key of ['created_from','created_before','updated_from','updated_before'] as const)if(options[key]!==undefined){
+  if(!isCanonicalInstant(options[key]))throw new HelpdeskError(400,'invalid_input','Período inválido. Use instantes UTC no formato canônico.');
   result[key]=canonicalInstant(options[key]!);
  }
  if(result.created_from&&result.created_before&&compareInstants(result.created_from,result.created_before)>=0)throw new HelpdeskError(400,'invalid_input','O início do período deve ser anterior ao fim.');
+ if(result.updated_from&&result.updated_before&&compareInstants(result.updated_from,result.updated_before)>=0)throw new HelpdeskError(400,'invalid_input','O início do período de atualização deve ser anterior ao fim.');
  if(options.q!==undefined){
   const raw=options.q;
   if(typeof raw!=='string'||raw.length>480||/[\p{Cc}\p{Cs}]/u.test(raw))throw new HelpdeskError(400,'invalid_input','Busca inválida. Use de 2 a 120 caracteres.');
@@ -61,7 +62,9 @@ export function statusesForSearch(filters:TicketSearchFilters):TicketStatus[]|nu
  return filters.status?statuses.filter(s=>customerStatus(s)===filters.status):null;
 }
 export function matchesTicketSearch(ticket:Ticket,filters:TicketSearchFilters,p?:Principal):boolean{
- return (!filters.created_from||compareInstants(ticket.createdAt,filters.created_from)>=0)
+ return (!filters.updated_from||compareInstants(ticket.updatedAt,filters.updated_from)>=0)
+  &&(!filters.updated_before||compareInstants(ticket.updatedAt,filters.updated_before)<0)
+  &&(!filters.created_from||compareInstants(ticket.createdAt,filters.created_from)>=0)
   &&(!filters.created_before||compareInstants(ticket.createdAt,filters.created_before)<0)
   &&(!filters.q||(filters.search_in==='description'?foldSearch(ticket.description).includes(filters.q):
   foldSearch(ticket.subject).includes(filters.q)||foldSearch(ticket.id)===filters.q

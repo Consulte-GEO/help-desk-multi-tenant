@@ -70,10 +70,10 @@ function internalStatusPredicate(p:Principal,f:TicketSearchFilters,start:number)
  return {sql:`and (status=$${start}::text and helpdesk_auth.is_operator(workspace_id,account_id)
   and (($${start+1}::jsonb->>'admin')::boolean or ($${start+1}::jsonb->'accounts') ? account_id::text))`,values:[f.internal_status,audience]};
 }
-function creationWindowPredicate(f:TicketSearchFilters,start:number){
+function ticketWindowPredicate(f:TicketSearchFilters,start:number){
  const terms:string[]=[],values:unknown[]=[];
- for(const [key,operator] of [['created_from','>='],['created_before','<']] as const)if(f[key]){
-  terms.push(`and created_at ${operator} $${start+values.length}::timestamptz`);values.push(f[key]);
+ for(const [key,column,operator] of [['created_from','created_at','>='],['created_before','created_at','<'],['updated_from','updated_at','>='],['updated_before','updated_at','<']] as const)if(f[key]){
+  terms.push(`and ${column} ${operator} $${start+values.length}::timestamptz`);values.push(f[key]);
  }
  return {sql:terms.join('\n'),values};
 }
@@ -115,7 +115,7 @@ class PostgresStore implements Store{
   // Both fragments come from developer-owned constants, never request SQL.
   const direction=filters.sort==='oldest'?'asc':'desc',cursorOperator=filters.sort==='oldest'?'>':'<';
   const internal=internalStatusPredicate(this.p,filters,this.localCollection?14:13);
-  const creation=creationWindowPredicate(filters,(this.localCollection?14:13)+internal.values.length);
+  const creation=ticketWindowPredicate(filters,(this.localCollection?14:13)+internal.values.length);
   // This server-controlled predicate precedes cursor/search/LIMIT. Metadata only
   // narrows namespaces; directory and ordinary RLS recheck the full current works.
   const localPredicate=this.localCollection?`and exists(select 1 from jsonb_array_elements($13::jsonb) local_context
@@ -149,7 +149,7 @@ class PostgresStore implements Store{
   if(accountId!==undefined)uuidIdentifier(accountId);
   const contexts=await this.prepareLocalCollection();
   const internal=internalStatusPredicate(this.p,filters,this.localCollection?12:11);
-  const creation=creationWindowPredicate(filters,(this.localCollection?12:11)+internal.values.length);
+  const creation=ticketWindowPredicate(filters,(this.localCollection?12:11)+internal.values.length);
   const local=this.localCollection?`and exists(select 1 from jsonb_array_elements($11::jsonb) local_context
    where local_context->>'accountId'=tickets.account_id::text and local_context->>'productInstanceId'=tickets.product_instance_id::text
     and local_context->>'connectionId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'connectionId'

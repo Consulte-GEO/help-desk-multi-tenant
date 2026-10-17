@@ -11,11 +11,12 @@ const identifier=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test
 const text=(v,min,max)=>typeof v==='string'&&v.length<=max*2&&Array.from(v).length>=min&&Array.from(v).length<=max&&!/\p{Cs}/u.test(v);
 const instant=isCanonicalInstant;
 function filters(raw={}){
- if(!object(raw)||Object.keys(raw).some(k=>!['q','search_in','internal_status','status','priority','assignment','created_from','created_before','sort'].includes(k)))throw Error('Filtros inválidos.');
+ if(!object(raw)||Object.keys(raw).some(k=>!['q','search_in','internal_status','status','priority','assignment','created_from','created_before','updated_from','updated_before','sort'].includes(k)))throw Error('Filtros inválidos.');
  const out={};
  if(raw.sort!==undefined){if(!['newest','oldest'].includes(raw.sort))throw Error('Ordem de criação inválida.');if(raw.sort==='oldest')out.sort='oldest';}
- for(const key of ['created_from','created_before'])if(raw[key]!==undefined){if(!isCanonicalInstant(raw[key]))throw Error('Período de criação inválido.');out[key]=canonicalInstant(raw[key]);}
+ for(const key of ['created_from','created_before','updated_from','updated_before'])if(raw[key]!==undefined){if(!isCanonicalInstant(raw[key]))throw Error('Período de criação inválido.');out[key]=canonicalInstant(raw[key]);}
  if(out.created_from&&out.created_before&&compareInstants(out.created_from,out.created_before)>=0)throw Error('O início do período deve ser anterior ao fim.');
+ if(out.updated_from&&out.updated_before&&compareInstants(out.updated_from,out.updated_before)>=0)throw Error('O início do período de atualização deve ser anterior ao fim.');
  if(raw.q!==undefined){if(typeof raw.q!=='string'||raw.q.length>480||/[\p{Cc}\p{Cs}]/u.test(raw.q))throw Error('Busca inválida. Use de 2 a 120 caracteres.');
   const q=raw.q.trim();if(Array.from(q).length<2||Array.from(q).length>120)throw Error('Busca inválida. Use de 2 a 120 caracteres.');out.q=q;}
  if(raw.search_in!==undefined){if(raw.search_in!=='description'||!out.q)throw Error('Selecione descrição e informe uma busca de 2 a 120 caracteres.');out.search_in='description';}
