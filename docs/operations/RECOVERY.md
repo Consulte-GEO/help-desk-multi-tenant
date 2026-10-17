@@ -54,3 +54,12 @@ Tombstone erase produz `do_not_restore`; revoke produz `keep_revoked`, mesmo se 
 ## Limites ainda não aceitos
 
 RPO, RTO, retenção, periodicidade, destino, responsáveis e custo não foram aprovados. Não há restauração real executada nesta rodada, backup completo de produção inspecionado ou cron ativado. O ensaio deve deixar registros verificáveis, não checkboxes declarados como verdadeiros.
+
+
+## Relatório local de reconciliação C15
+
+`npm run recovery:reconcile -- --help` explica a interface. Uso: `npm run recovery:reconcile -- --delivery-backup <backup.json> --delivery-current <ledger-retido.json> --access-restored <referencias.json> --access-tombstones <tombstones-retidos.json> --at 2026-10-17T13:00:00.000Z`. Para stdout exclusivamente JSON, execute `node --experimental-strip-types scripts/recovery-reconcile.ts` com os mesmos argumentos (o npm pode imprimir seu banner). Não há escrita pelo CLI; redirecione para arquivo novo fora das entradas, pois o shell abre o destino antes do programa.
+
+Entradas: quatro arrays privados congelados, no máximo2 MiB/1.000 linhas cada, caminhos distintos sem links/aliases. Entregas devem seguir `DeliveryRecord` C12; referências `{kind,id,revision}` e tombstones `{kind,id,revision,action}` seguem `planRestoredAccess`. Exports brutos HDN V2/Resend/SQL não são compatíveis. Ledger atual e tombstones precisam ficar fora do rollback e ter cobertura/procedência comprovadas pelo operador. A leitura estável de cada arquivo não equivale a snapshot transacional dos quatro. Não é proteção contra escritor hostil concorrente.
+
+A saída fechada inclui apenas contagens/hashes canônicos por fonte e plano, estados/ações agregados e flags de não autorização. Canonicalização ordena chaves de objetos; ordem dos arrays integra o hash; não equivale a digest de bytes, assinatura ou atestado de origem. Exit0 significa cálculo concluído, mesmo com arrays vazios; autoridade permanece não verificada e workers permanecem sem liberação. Exit1 recusa toda a reconciliação, stdout vazio, erro genérico. Uma confirmação retida prevalece sobre backup; nenhuma linha fica despachável. Nenhuma opção aplica, restaura ou envia. [Especificação e etapas restantes](../implementation/RECONCILIACAO-RECUPERACAO-2026-10-17.md).

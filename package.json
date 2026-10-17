@@ -37,7 +37,8 @@
     "knowledge:audit": "node scripts/knowledge-source-audit.mjs",
     "knowledge:review": "node scripts/knowledge-editorial-review.mjs",
     "check:consultegeo-upgrade": "node --experimental-strip-types scripts/check-consultegeo-upgrade.ts",
-    "recovery:inventory": "node --experimental-strip-types scripts/recovery-inventory.ts"
+    "recovery:inventory": "node --experimental-strip-types scripts/recovery-inventory.ts",
+    "recovery:reconcile": "node --experimental-strip-types scripts/recovery-reconcile.ts"
   },
   "dependencies": {
     "openai": "7.34.0",
