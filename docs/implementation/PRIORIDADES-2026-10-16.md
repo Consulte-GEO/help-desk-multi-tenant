@@ -1,4 +1,4 @@
-> **17/10/2026 — estado corrente:** PR72 mesclado e publicado em75992c3/deploy6ad369f6bb509383d7feaec7;122 entradas HTTPS/hash e recusas anônimas conferidas, sem migração. Ordem de criação em desenvolvimento separado:49 focais, tipos e6 verificações Chromium sintéticas aprovados; PostgreSQL17/CI integral pendentes. [Síntese canônica](../ESTADO-ATUAL.md). Os registros abaixo são históricos.
+> **17/10/2026 — estado corrente:** PR72 publicado em75992c3/deploy6ad369f6bb509383d7feaec7,122 entradas HTTPS/hash conferidas, sem migração. PR73 acrescenta ordem por criação, fonte df665c0, CI 7.385, revisão independente e preview aprovados; pronto para revisão, sem merge/publicação. [Síntese canônica](../ESTADO-ATUAL.md). Os registros abaixo são históricos.
 
 > **17/10/2026 — estado corrente:** PR70 publicado/verificado em941dc57/deploy6ad35567303a7de877d7700c; PR71 integrado a essa base na fontea26ccb2, CI combinado7.346 e80 focais aprovados. Relatório original preservado e tipos verificados pelo compilador local direto; prévia e merge de teste em conferência antes do merge autorizado do PR71. Os registros abaixo são históricos.
 
