@@ -1,0 +1,6 @@
+
+Traceback (most recent call last):
+  File "C:\Users\thiag\OneDrive\Documentos\ChatGPT\Help Desk\helpdesk\tests\browser-created-sort.py", line 11, in <module>
+    order=page.locator('#sort-filter');assert order.count()==1,'Missing creation-order selector'
+                                              ^^^^^^^^^^^^^^^^
+AssertionError: Missing creation-order selector

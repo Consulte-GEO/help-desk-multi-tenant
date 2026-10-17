@@ -1,0 +1,13 @@
+{
+  "reviewer": "independent readonly review_created_sort",
+  "base": "75992c37656c7f6996b87552e7f3f23abdec3b92",
+  "source": "df665c089423ee905c2c85feda58ab7cb1526e9e",
+  "actionableFindings": 0,
+  "testsPassed": 79,
+  "skipped": 0,
+  "scope": "Exact time/UUID ordering and cursors, newest/default compatibility, unchanged binds and SQL constant fragments, scope/namespace before LIMIT, totals, scoped allowlists and UI pending/applied/clear/logout state",
+  "limits": "Real PostgreSQL17 and browser not executed by reviewer; independent CI and synthetic Chromium evidence required",
+  "fileEdits": 0,
+  "remoteMutations": 0,
+  "humanAcceptance": false
+}

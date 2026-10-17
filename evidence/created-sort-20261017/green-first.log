@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+ok 1 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+  ---
+  duration_ms: 7.1052
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+ok 2 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+  ---
+  duration_ms: 2.9546
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+ok 3 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+  ---
+  duration_ms: 1.7147
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+ok 4 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+  ---
+  duration_ms: 1.0739
+  type: 'test'
+  ...
+# Subtest: creation sort normalizes newest to absence and only accepts the two declared orders
+ok 5 - creation sort normalizes newest to absence and only accepts the two declared orders
+  ---
+  duration_ms: 1.4313
+  type: 'test'
+  ...
+# Subtest: oldest sorts the complete authorized query by exact time/id before page boundaries
+ok 6 - oldest sorts the complete authorized query by exact time/id before page boundaries
+  ---
+  duration_ms: 73.2405
+  type: 'test'
+  ...
+# Subtest: sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+ok 7 - sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+  ---
+  duration_ms: 1.4887
+  type: 'test'
+  ...
+# Subtest: HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+ok 8 - HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+  ---
+  duration_ms: 21.8814
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 493.6385

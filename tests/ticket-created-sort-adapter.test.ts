@@ -1,0 +1,16 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {HelpdeskService} from '../src/application/helpdesk.ts';import {ticketSearch} from '../src/application/ticket-search.ts';import {pagination} from '../src/application/pagination.ts';import {createBorrowedPostgresUnitOfWork} from '../src/infrastructure/postgres.ts';import {runTransaction} from '../src/infrastructure/transaction.ts';import {principal} from './fixtures.ts';import type {SqlPool} from '../src/infrastructure/sql.ts';
+const id=(n:number)=>'00000000-0000-4000-8000-'+String(n).padStart(12,'0');
+for(const local of [false,true])for(const privateStatus of [false,true])test(`creation order uses matching cursor direction and keeps parameter/ACL layout local=${local} private=${privateStatus}`,async()=>{
+ const calls:{sql:string;args?:unknown[]}[]=[],p=principal({id:id(2),workspaceId:id(1),workspaceRole:'admin',grants:[]}),contexts=[{accountId:id(3),productInstanceId:id(4),connectionId:id(5),tenantId:'mrv'}];
+ const pool:SqlPool={end:async()=>{},query:async()=>{throw Error('Separate connection');},connect:async()=>({release(){},async query(sql,args){calls.push({sql,args});if(sql.includes('cg_local_prepare_ticket_collection'))return {command:'SELECT',rowCount:1,rows:[{source:contexts}]};if(sql.includes('count(*)'))return {command:'SELECT',rowCount:1,rows:[{total:'0',received:'0',in_progress:'0',waiting_for_you:'0',resolved:'0',closed:'0'}]};return {command:['BEGIN','COMMIT','ROLLBACK'].includes(sql)?sql:'SELECT',rowCount:0,rows:[]};}})};
+ const privateFilter=privateStatus?{internal_status:'new'}:{},dates={created_from:'2026-10-17T03:00:00.000100Z',created_before:'2026-10-18T03:00:00.000Z'};
+ let previous:unknown[]|undefined;
+ for(const sort of [undefined,'newest','oldest']){
+  const options={...privateFilter,...dates,...(sort?{sort}:{})},search=ticketSearch({limit:1,...options} as any),filter=pagination({limit:1},{workspace:p.workspaceId,principal:p.id,account:null,search}).filter;
+  const cursor=Buffer.from(JSON.stringify({at:dates.created_from,id:id(50),filter})).toString('base64url');calls.length=0;
+  await runTransaction(pool,p,async c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,p,{consulteGeoLocal:local,localCollection:local})).list(p,{limit:1,cursor,...options} as any));
+  const q=calls.find(c=>c.sql.includes('from helpdesk_core.tickets'))!;assert(q);assert(q.sql.includes('order by tickets.created_at '+(sort==='oldest'?'asc,id asc':'desc,id desc')+' limit $5'));assert(q.sql.includes('(created_at,id)'+(sort==='oldest'?'>':'<')+'($3::timestamptz,$4::uuid)'));assert.equal(q.args?.[2],dates.created_from);assert.equal(q.args?.[3],id(50));assert.equal(q.args?.[4],2);assert.doesNotMatch(q.sql,/oldest|newest|ticket_messages|internal_notes/);
+  if(local)assert(q.sql.includes('cg_local_ticket_directory'));if(privateStatus)assert(q.sql.includes('helpdesk_auth.is_operator'));if(previous)assert.deepEqual(q.args,previous);previous=q.args;
+  calls.length=0;await runTransaction(pool,p,async c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,p,{consulteGeoLocal:local,localCollection:local})).summarize(p,options as any));const summary=calls.find(c=>c.sql.includes('count(*)'))!;assert(summary);assert.doesNotMatch(summary.sql,/order by|limit|oldest|newest/i);
+ }
+});

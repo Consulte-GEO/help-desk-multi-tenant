@@ -1,0 +1,304 @@
+TAP version 13
+# Subtest: C07 build whitelist copies new form assets byte-for-byte and preserves old assets
+ok 1 - C07 build whitelist copies new form assets byte-for-byte and preserves old assets
+  ---
+  duration_ms: 4286.1187
+  type: 'test'
+  ...
+# Subtest: automatic first selection stays on the mobile list
+ok 2 - automatic first selection stays on the mobile list
+  ---
+  duration_ms: 1.962
+  type: 'test'
+  ...
+# Subtest: explicit open chooses detail and finishes without a second command
+ok 3 - explicit open chooses detail and finishes without a second command
+  ---
+  duration_ms: 0.1894
+  type: 'test'
+  ...
+# Subtest: back during a request prevents late focus/navigation
+ok 4 - back during a request prevents late focus/navigation
+  ---
+  duration_ms: 0.1637
+  type: 'test'
+  ...
+# Subtest: only the latest read may finish or fail
+ok 5 - only the latest read may finish or fail
+  ---
+  duration_ms: 0.197
+  type: 'test'
+  ...
+# Subtest: same-ticket refresh does not request focus
+ok 6 - same-ticket refresh does not request focus
+  ---
+  duration_ms: 0.1816
+  type: 'test'
+  ...
+# Subtest: reset rejects all callbacks from the previous identity
+ok 7 - reset rejects all callbacks from the previous identity
+  ---
+  duration_ms: 1.3628
+  type: 'test'
+  ...
+# Subtest: error category is bounded and does not retain an API message
+ok 8 - error category is bounded and does not retain an API message
+  ---
+  duration_ms: 1.4077
+  type: 'test'
+  ...
+# Subtest: back after an error retains list-first state
+ok 9 - back after an error retains list-first state
+  ---
+  duration_ms: 0.5136
+  type: 'test'
+  ...
+# Subtest: snapshot is immutable and contains no drafts
+ok 10 - snapshot is immutable and contains no drafts
+  ---
+  duration_ms: 1.8264
+  type: 'test'
+  ...
+# Subtest: invalid selection cannot become a navigation intent
+ok 11 - invalid selection cannot become a navigation intent
+  ---
+  duration_ms: 1.1913
+  type: 'test'
+  ...
+# Subtest: effective filter normalization preserves accents and accepts only known keys
+ok 12 - effective filter normalization preserves accents and accepts only known keys
+  ---
+  duration_ms: 0.632
+  type: 'test'
+  ...
+# Subtest: draft differences are separate from effective query
+ok 13 - draft differences are separate from effective query
+  ---
+  duration_ms: 0.2153
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+ok 14 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+  ---
+  duration_ms: 14.1955
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+ok 15 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+  ---
+  duration_ms: 3.8467
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+ok 16 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+  ---
+  duration_ms: 3.2361
+  type: 'test'
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+ok 17 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+  ---
+  duration_ms: 1.7017
+  type: 'test'
+  ...
+# Subtest: creation sort normalizes newest to absence and only accepts the two declared orders
+ok 18 - creation sort normalizes newest to absence and only accepts the two declared orders
+  ---
+  duration_ms: 1.6406
+  type: 'test'
+  ...
+# Subtest: oldest sorts the complete authorized query by exact time/id before page boundaries
+ok 19 - oldest sorts the complete authorized query by exact time/id before page boundaries
+  ---
+  duration_ms: 84.1454
+  type: 'test'
+  ...
+# Subtest: sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+ok 20 - sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+  ---
+  duration_ms: 1.8969
+  type: 'test'
+  ...
+# Subtest: HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+ok 21 - HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+  ---
+  duration_ms: 136.3163
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=false
+ok 22 - window SQL binds after optional namespace/private parameters local=false summary=false private=false
+  ---
+  duration_ms: 4.9982
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=true
+ok 23 - window SQL binds after optional namespace/private parameters local=false summary=false private=true
+  ---
+  duration_ms: 0.6734
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=false
+ok 24 - window SQL binds after optional namespace/private parameters local=false summary=true private=false
+  ---
+  duration_ms: 1.8249
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=true
+ok 25 - window SQL binds after optional namespace/private parameters local=false summary=true private=true
+  ---
+  duration_ms: 0.6092
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=false
+ok 26 - window SQL binds after optional namespace/private parameters local=true summary=false private=false
+  ---
+  duration_ms: 1.4407
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=true
+ok 27 - window SQL binds after optional namespace/private parameters local=true summary=false private=true
+  ---
+  duration_ms: 1.4503
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=false
+ok 28 - window SQL binds after optional namespace/private parameters local=true summary=true private=false
+  ---
+  duration_ms: 1.0044
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=true
+ok 29 - window SQL binds after optional namespace/private parameters local=true summary=true private=true
+  ---
+  duration_ms: 0.6464
+  type: 'test'
+  ...
+# Subtest: creation window normalizes only redundant fractional zeros and rejects invalid bounds
+ok 30 - creation window normalizes only redundant fractional zeros and rejects invalid bounds
+  ---
+  duration_ms: 3.7804
+  type: 'test'
+  ...
+# Subtest: creation window is inclusive/exclusive with exact microseconds, before pages and totals
+ok 31 - creation window is inclusive/exclusive with exact microseconds, before pages and totals
+  ---
+  duration_ms: 49.1923
+  type: 'test'
+  ...
+# Subtest: creation window binds cursor, accepts equivalent bounds and invalidates client generations
+ok 32 - creation window binds cursor, accepts equivalent bounds and invalidates client generations
+  ---
+  duration_ms: 1.9604
+  type: 'test'
+  ...
+# Subtest: HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+ok 33 - HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+  ---
+  duration_ms: 43.6669
+  type: 'test'
+  ...
+# Subtest: totais preservam valores completos e vinculam o caminho à consulta aplicada
+ok 34 - totais preservam valores completos e vinculam o caminho à consulta aplicada
+  ---
+  duration_ms: 8.2826
+  type: 'test'
+  ...
+# Subtest: nova consulta e logout eliminam totais e recusam respostas e erros antigos
+ok 35 - nova consulta e logout eliminam totais e recusam respostas e erros antigos
+  ---
+  duration_ms: 1.0618
+  type: 'test'
+  ...
+# Subtest: resumo inválido não vira zero nem preserva totais da consulta anterior; repetição recupera
+ok 36 - resumo inválido não vira zero nem preserva totais da consulta anterior; repetição recupera
+  ---
+  duration_ms: 1.6503
+  type: 'test'
+  ...
+# Subtest: resumo conta todo o conjunto autorizado antes da paginação e do teto visual500
+ok 37 - resumo conta todo o conjunto autorizado antes da paginação e do teto visual500
+  ---
+  duration_ms: 17.7845
+  type: 'test'
+  ...
+# Subtest: resumo usa filtros literais, estados públicos e protocolo exato sem pesquisar descrição
+ok 38 - resumo usa filtros literais, estados públicos e protocolo exato sem pesquisar descrição
+  ---
+  duration_ms: 0.9322
+  type: 'test'
+  ...
+# Subtest: resumo mantém exigência de scope, conta e filtros de responsabilidade
+ok 39 - resumo mantém exigência de scope, conta e filtros de responsabilidade
+  ---
+  duration_ms: 0.7634
+  type: 'test'
+  ...
+# Subtest: resumo limita integração ao produto e operador às próprias contas de atendimento
+ok 40 - resumo limita integração ao produto e operador às próprias contas de atendimento
+  ---
+  duration_ms: 0.7982
+  type: 'test'
+  ...
+# Subtest: HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas
+ok 41 - HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas
+  ---
+  duration_ms: 46.4639
+  type: 'test'
+  ...
+# Subtest: consultas comuns reutilizam situações públicas e não oferecem responsabilidade a solicitante
+ok 42 - consultas comuns reutilizam situações públicas e não oferecem responsabilidade a solicitante
+  ---
+  duration_ms: 8.1663
+  type: 'test'
+  ...
+# Subtest: consultas da equipe usam os filtros nativos e mantêm busca e prioridade
+ok 43 - consultas da equipe usam os filtros nativos e mantêm busca e prioridade
+  ---
+  duration_ms: 0.5339
+  type: 'test'
+  ...
+# Subtest: estado ativo descreve a consulta aplicada; combinação manual fica personalizada
+ok 44 - estado ativo descreve a consulta aplicada; combinação manual fica personalizada
+  ---
+  duration_ms: 1.6342
+  type: 'test'
+  ...
+# Subtest: ausência de leitura, identidade desconhecida ou integração não libera consultas da equipe
+ok 45 - ausência de leitura, identidade desconhecida ou integração não libera consultas da equipe
+  ---
+  duration_ms: 1.4681
+  type: 'test'
+  ...
+# Subtest: filtros inválidos e IDs arbitrários são recusados; objetos retornados não alteram presets
+ok 46 - filtros inválidos e IDs arbitrários são recusados; objetos retornados não alteram presets
+  ---
+  duration_ms: 0.3846
+  type: 'test'
+  ...
+# Subtest: every literal DOM target used by app.js exists once in the shipped HTML
+ok 47 - every literal DOM target used by app.js exists once in the shipped HTML
+  ---
+  duration_ms: 2.5508
+  type: 'test'
+  ...
+# Subtest: relative JS imports of app.js are included in both demo and static build
+ok 48 - relative JS imports of app.js are included in both demo and static build
+  ---
+  duration_ms: 4.8279
+  type: 'test'
+  ...
+# Subtest: OpenAPI separates current detail actions from mutation and list snapshots
+ok 49 - OpenAPI separates current detail actions from mutation and list snapshots
+  ---
+  duration_ms: 2.9675
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4539.4366

@@ -4,7 +4,7 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 
 **Checkpoint histórico da integração17/10:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
-**Continuidade17/10:** PR70 e PR71 mesclados/publicados/verificados; os checkpoints de integração abaixo são históricos. Nova janela de criação ainda sem merge/publicação.
+**Continuidade17/10:** PR72 mesclado/publicado/verificado. Os checkpoints de integração anteriores são históricos. Nova ordenação da fila permanece separada, sem merge/publicação.
 
 ## Produção confirmada
 
@@ -12,18 +12,21 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 |---|---|
 | Site | `https://helpdesk.consultegeo.org`, atendimento Consulte GEO ativo |
 | Branch de produção | `codex/m1-reproducibilidade` |
-| Último PR publicado | [#71 — inventário local de recuperação](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/71), incluindo PR70 |
-| Merge publicado | `c24b759706c9631fdf4c104229f1a36b6ff01693` |
-| Deploy Netlify | `6ad3596d0e2686c05d296773`, READY em17/10/2026 às08h19 Brasília |
-| Verificação desta publicação | 121/121 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
-| Qualificação combinada PR70/71 | Fonte `a26ccb2fac5405b3f1fa1111223bc9cc6353a501`, CI7.346, revisão original dos recortes e merge de teste aprovados. [Recibos e limites](implementation/INVENTARIO-RECUPERACAO-2026-10-16.md). |
+| Último PR publicado | [#72 — período de criação](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/72), incluindo os recortes anteriores |
+| Merge publicado | `75992c37656c7f6996b87552e7f3f23abdec3b92` |
+| Deploy Netlify | `6ad369f6bb509383d7feaec7`, READY em17/10/2026 às09h29 Brasília |
+| Verificação desta publicação | 122/122 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
+| Qualificação PR72 | Fonte `95f7f2f16417e75cc6dc17ee635027340c2dd17d`, CI7.370, revisão independente, fonte/merge de teste e preview aprovados. [Recibos e limites](implementation/PERIODO-CRIACAO-2026-10-17.md). |
+| Qualificação anterior PR70/71 | Fonte `a26ccb2fac5405b3f1fa1111223bc9cc6353a501`, CI7.346, revisão original dos recortes e merge de teste aprovados. [Recibos e limites](implementation/INVENTARIO-RECUPERACAO-2026-10-16.md). |
 | Contratos atuais | API/interface0.31.0; core/schema0.27,21 migrations. Addons privados Apoio/Wiki não são migrations extras do core. O catálogo de banco não foi reexecutado nesta publicação sem SQL. |
 
-Provas desta publicação: `evidence/publication-pr71-20261017/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
+Provas desta publicação: `evidence/publication-pr72-20261017/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
 
 ## Entregas e continuidade
 
-**HD-019 — período de criação:** [PR72](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/72), fonte95f7f2f, CI integral da fonte e merge de teste aprovados (5.977 aplicação +708 PostgreSQL17 com login restrito +685 interface =7.370), zero falha/skip/cancelamento/todo. Revisão independente sem achados pendentes; preview conferido em10 ativos críticos. Sem merge/publicação. Janela UTC inclusiva/exclusiva aplicada antes da paginação/totais, mesmas permissões, controles em Brasília e consultas rápidas preservando período. [Desenho, evidências e limites](implementation/PERIODO-CRIACAO-2026-10-17.md).
+**HD-019 — período de criação:** [PR72](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/72) mesclado e publicado no deploy acima. Fonte95f7f2f, CI integral7370 e revisão independente aprovados; janela inclusiva/exclusiva antes da paginação/totais, mesmas permissões e controles em Brasília.122 entradas do manifesto HTTPS/hash, quatro recusas nativas401 conformes e duas consultas anônimas com período recusadas401. Sem migração nem escrita de negócio de teste. [Escopo e recibos](implementation/PERIODO-CRIACAO-2026-10-17.md).
+
+**HD-019 — ordem de criação:** [PR73](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/73), fonte df665c0. CI integral da fonte e do merge de teste aprovados: 5.985 aplicação + 709 PostgreSQL17 restrito + 691 interface = **7.385**, sem falha/skip/cancelamento/todo. Revisão independente sem achados e preview em10 ativos críticos conferido. Mais antigos primeiro usa criação/id ascendentes; padrão/newest mantém ordem e cursores anteriores, mesmos filtros/permissões/totais. Sem merge/publicação. [Desenho e evidências](implementation/ORDEM-CRIACAO-2026-10-17.md).
 
 **HD-019 — busca local na conversa pública:** [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68), fonte `9ab8b70` revisada e aprovada no CI integral (7.273 verificações), mesclada e publicada no deploy indicado acima. [Preview da implementação conferido](https://deploy-preview-68--helpdesk-consultegeo.netlify.app). Pesquisa apenas o texto das mensagens públicas carregadas do chamado aberto, reaproveitando sua leitura autorizada. Navegação entre resultados, cobertura explícita e limpeza por contexto; não amplia a pesquisa da fila nem inclui notas internas. [Escopo, testes e evolução](implementation/BUSCA-CONVERSA-2026-10-16.md).
 

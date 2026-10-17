@@ -823,6 +823,19 @@ async function precisionFixture(){
   (await precise.create(actor,{...input,subject},randomUUID(),'precision-db')).ticket};
 }
 const precisionAt=(n:number)=>'2026-09-17T12:00:00.123'+String(n).padStart(3,'0')+'Z';
+
+test('SQL oldest creation order precedes LIMIT, preserves microsecond/UUID ties and rechecks live revocation',async()=>{
+ const f=await precisionFixture(),marker='HD019 oldest '+randomUUID(),groups:string[][]=[[],[],[]];
+ for(let i=0;i<54;i++){const group=i%3;f.set(precisionAt(group+1));groups[group]!.push((await f.create(marker)).id);}
+ f.set(precisionAt(0));for(let i=0;i<4;i++)await f.create(marker);
+ await new HelpdeskService(new PostgresUnitOfWork(app),()=>new PrecisionClockDate(precisionAt(1))).create(bob,{...input,accountId:id(102),subject:marker},randomUUID(),'owned-sort-test');
+ const filters={q:marker,created_from:precisionAt(1),created_before:precisionAt(4)},expected=groups.flatMap(ids=>ids.sort());
+ for(const sort of ['oldest','newest']){let cursor:string|undefined;const actual:string[]=[],seen=new Set<string>();do{const page=await service.list(f.actor,{limit:7,...filters,sort,...(cursor?{cursor}:{})});for(const t of page.items){assert(!seen.has(t.id));seen.add(t.id);actual.push(t.id);}cursor=page.nextCursor??undefined;}while(cursor);assert.deepEqual(actual,sort==='oldest'?expected:[...expected].reverse());assert.equal((await service.summarize(f.actor,{...filters,sort})).total,54);}
+ const first=await service.list(f.actor,{limit:1,...filters,sort:'oldest'});assert.ok(first.nextCursor);await assert.rejects(()=>service.list(f.actor,{limit:1,...filters,cursor:first.nextCursor!}),{code:'invalid_cursor'});
+ const original=await service.list(f.actor,{limit:1,...filters});assert.ok(original.nextCursor);assert.equal((await service.list(f.actor,{limit:1,...filters,sort:'newest',cursor:original.nextCursor!})).items.length,1);
+ await admin.query('update helpdesk_auth.account_grants set active=false where workspace_id=$1 and account_id=$2 and principal_id=$3',[f.actor.workspaceId,input.accountId,f.actor.id]);
+ try{assert.equal((await service.list(f.actor,{limit:7,...filters,sort:'oldest',cursor:first.nextCursor!})).items.length,0);assert.equal((await service.summarize(f.actor,{...filters,sort:'oldest'})).total,0);}finally{await admin.query('update helpdesk_auth.account_grants set active=true where workspace_id=$1 and account_id=$2 and principal_id=$3',[f.actor.workspaceId,input.accountId,f.actor.id]);}
+});
 test('SQL017 get preserves created/updated microseconds from real timestamptz without Date truncation',async()=>{
  const f=await precisionFixture();f.set(precisionAt(456));const t=await f.create();
  const r=await f.precise.get(f.actor,t.id);assert.equal(r.createdAt,precisionAt(456));assert.equal(r.updatedAt,precisionAt(456));

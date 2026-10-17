@@ -168,7 +168,7 @@ function render(){
  $('nav-count').textContent=items.length;$('list-count').textContent=items.length+' carregado(s)'+(s.next?' · há mais resultados':'');
  $('more').hidden=!s.next||inbox.capped()||phase==='error';$('more').disabled=inbox.busy();$('list-retry').hidden=phase!=='error';
  $('ticket-list').setAttribute('aria-busy',String(inbox.busy()));
- const applied=inbox.filters(),names=[];if(applied.q)names.push(applied.search_in==='description'?'Busca na descrição':'Busca por assunto/protocolo/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.internal_status)names.push('Situação interna: '+labels[applied.internal_status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);if(applied.assignment)names.push(applied.assignment==='mine'?'Meus atendimentos':'Sem responsável');
+ const applied=inbox.filters(),names=[];$('list-order').textContent=applied.sort==='oldest'?'Mais antigos primeiro':'Mais recentes primeiro';if(applied.sort)names.push('Criação: mais antigos primeiro');if(applied.q)names.push(applied.search_in==='description'?'Busca na descrição':'Busca por assunto/protocolo/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.internal_status)names.push('Situação interna: '+labels[applied.internal_status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);if(applied.assignment)names.push(applied.assignment==='mine'?'Meus atendimentos':'Sem responsável');
  if(applied.created_from)names.push('Criados a partir de '+creationDate.format(new Date(applied.created_from))+' (Brasília)');if(applied.created_before)names.push('Criados antes de '+creationDate.format(new Date(applied.created_before))+' (Brasília)');
  $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+(totalsEnabled?'. Cartões referem-se à consulta autorizada completa.':'. Contagens referem-se somente aos itens carregados.');
  $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
@@ -179,6 +179,7 @@ function render(){
 function collectTicketFilters(){
  const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value,assignment=$('assignment-filter').value;
  clearCreationValidity();
+ if($('sort-filter').value)filters.sort=$('sort-filter').value;
  for(const [key,id]of [['created_from','created-from'],['created_before','created-before']]){
   const input=$(id);try{if(input.value)filters[key]=saoPauloFilterInstant(input.value);}catch{input.setCustomValidity('Confira o horário de Brasília. Horários inexistentes ou ambíguos não são aceitos.');input.reportValidity();throw Error('Confira o período de criação.');}
  }
