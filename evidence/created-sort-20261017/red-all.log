@@ -1,0 +1,802 @@
+TAP version 13
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+not ok 1 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=false
+  ---
+  duration_ms: 13.4427
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort-adapter.test.ts:3:73'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(q.sql.includes('order by tickets.created_at '+(sort==='oldest'?'asc,id asc':'desc,id desc')+' limit $5'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort-adapter.test.ts:12:82)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+not ok 2 - creation order uses matching cursor direction and keeps parameter/ACL layout local=false private=true
+  ---
+  duration_ms: 4.9263
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort-adapter.test.ts:3:73'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(q.sql.includes('order by tickets.created_at '+(sort==='oldest'?'asc,id asc':'desc,id desc')+' limit $5'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort-adapter.test.ts:12:82)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+not ok 3 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=false
+  ---
+  duration_ms: 2.7772
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort-adapter.test.ts:3:73'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(q.sql.includes('order by tickets.created_at '+(sort==='oldest'?'asc,id asc':'desc,id desc')+' limit $5'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort-adapter.test.ts:12:82)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+not ok 4 - creation order uses matching cursor direction and keeps parameter/ACL layout local=true private=true
+  ---
+  duration_ms: 1.4998
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort-adapter.test.ts:3:73'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(q.sql.includes('order by tickets.created_at '+(sort==='oldest'?'asc,id asc':'desc,id desc')+' limit $5'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort-adapter.test.ts:12:82)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: creation sort normalizes newest to absence and only accepts the two declared orders
+not ok 5 - creation sort normalizes newest to absence and only accepts the two declared orders
+  ---
+  duration_ms: 1.9953
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort.test.ts:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + {}
+    - {
+    -   sort: 'oldest'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    sort: 'oldest'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort.test.ts:6:9)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.start (node:internal/test_runner/test:1257:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: oldest sorts the complete authorized query by exact time/id before page boundaries
+not ok 6 - oldest sorts the complete authorized query by exact time/id before page boundaries
+  ---
+  duration_ms: 47.1858
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort.test.ts:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+    +   'owned-152',
+    +   'owned-149',
+    +   'owned-146',
+    +   'owned-143',
+    +   'owned-140',
+    +   'owned-137',
+    +   'owned-134',
+    +   'owned-131',
+    +   'owned-128',
+    +   'owned-125',
+    +   'owned-122',
+    +   'owned-119',
+    +   'owned-116',
+    +   'owned-113',
+    +   'owned-110',
+    +   'owned-107',
+    +   'owned-104',
+    +   'owned-101',
+    +   'owned-098',
+    +   'owned-095',
+    +   'owned-092',
+    +   'owned-089',
+    +   'owned-086',
+    +   'owned-083',
+    +   'owned-080',
+    +   'owned-077',
+    +   'owned-074',
+    +   'owned-071',
+    +   'owned-068',
+    +   'owned-065',
+    +   'owned-062',
+    +   'owned-059',
+    +   'owned-056',
+    +   'owned-053',
+    +   'owned-050',
+    +   'owned-047',
+    +   'owned-044',
+    +   'owned-041',
+    +   'owned-038',
+    +   'owned-035',
+    +   'owned-032',
+    +   'owned-029',
+    +   'owned-026',
+    +   'owned-023',
+    +   'owned-020',
+    +   'owned-017',
+    +   'owned-014',
+    +   'owned-011',
+    +   'owned-008',
+    +   'owned-005',
+    +   'owned-002',
+    +   'owned-151',
+    +   'owned-148',
+    +   'owned-145',
+    +   'owned-142',
+    +   'owned-139',
+    +   'owned-136',
+    +   'owned-133',
+    +   'owned-130',
+    +   'owned-127',
+    +   'owned-124',
+    +   'owned-121',
+    +   'owned-118',
+    +   'owned-115',
+    +   'owned-112',
+    +   'owned-109',
+    +   'owned-106',
+    +   'owned-103',
+    +   'owned-100',
+    +   'owned-097',
+    +   'owned-094',
+    +   'owned-091',
+    +   'owned-088',
+    +   'owned-085',
+    +   'owned-082',
+    +   'owned-079',
+    +   'owned-076',
+    +   'owned-073',
+    +   'owned-070',
+    +   'owned-067',
+    +   'owned-064',
+    +   'owned-061',
+    +   'owned-058',
+    +   'owned-055',
+    +   'owned-052',
+    +   'owned-049',
+    +   'owned-046',
+    +   'owned-043',
+    +   'owned-040',
+    +   'owned-037',
+    +   'owned-034',
+    +   'owned-031',
+    +   'owned-028',
+    +   'owned-025',
+    +   'owned-022',
+    +   'owned-019',
+    +   'owned-016',
+    +   'owned-013',
+    +   'owned-010',
+    +   'owned-007',
+    +   'owned-004',
+    +   'owned-001',
+    +   'owned-150',
+    +   'owned-147',
+    +   'owned-144',
+    +   'owned-141',
+    +   'owned-138',
+    +   'owned-135',
+    +   'owned-132',
+    +   'owned-129',
+    +   'owned-126',
+    +   'owned-123',
+    +   'owned-120',
+    +   'owned-117',
+    +   'owned-114',
+    +   'owned-111',
+    +   'owned-108',
+    +   'owned-105',
+    +   'owned-102',
+    +   'owned-099',
+    +   'owned-096',
+    +   'owned-093',
+    +   'owned-090',
+    +   'owned-087',
+    +   'owned-084',
+    +   'owned-081',
+    +   'owned-078',
+    +   'owned-075',
+    +   'owned-072',
+    +   'owned-069',
+    +   'owned-066',
+    +   'owned-063',
+    +   'owned-060',
+    +   'owned-057',
+    +   'owned-054',
+    +   'owned-051',
+    +   'owned-048',
+    +   'owned-045',
+    +   'owned-042',
+    +   'owned-039',
+    +   'owned-036',
+    +   'owned-033',
+    +   'owned-030',
+    +   'owned-027',
+    +   'owned-024',
+    +   'owned-021',
+    +   'owned-018',
+    +   'owned-015',
+    +   'owned-012',
+    +   'owned-009',
+    +   'owned-006',
+    +   'owned-003',
+        'owned-000',
+    -   'owned-003',
+    -   'owned-006',
+    -   'owned-009',
+    -   'owned-012',
+    -   'owned-015',
+    -   'owned-018',
+    -   'owned-021',
+    -   'owned-024',
+    -   'owned-027',
+    -   'owned-030',
+    -   'owned-033',
+    -   'owned-036',
+    -   'owned-039',
+    -   'owned-042',
+    -   'owned-045',
+    -   'owned-048',
+    -   'owned-051',
+    -   'owned-054',
+    -   'owned-057',
+    -   'owned-060',
+    -   'owned-063',
+    -   'owned-066',
+    -   'owned-069',
+    -   'owned-072',
+    -   'owned-075',
+    -   'owned-078',
+    -   'owned-081',
+    -   'owned-084',
+    -   'owned-087',
+    -   'owned-090',
+    -   'owned-093',
+    -   'owned-096',
+    -   'owned-099',
+    -   'owned-102',
+    -   'owned-105',
+    -   'owned-108',
+    -   'owned-111',
+    -   'owned-114',
+    -   'owned-117',
+    -   'owned-120',
+    -   'owned-123',
+    -   'owned-126',
+    -   'owned-129',
+    -   'owned-132',
+    -   'owned-135',
+    -   'owned-138',
+    -   'owned-141',
+    -   'owned-144',
+    -   'owned-147',
+    -   'owned-150',
+    -   'owned-001',
+    -   'owned-004',
+    -   'owned-007',
+    -   'owned-010',
+    -   'owned-013',
+    -   'owned-016',
+    -   'owned-019',
+    -   'owned-022',
+    -   'owned-025',
+    -   'owned-028',
+    -   'owned-031',
+    -   'owned-034',
+    -   'owned-037',
+    -   'owned-040',
+    -   'owned-043',
+    -   'owned-046',
+    -   'owned-049',
+    -   'owned-052',
+    -   'owned-055',
+    -   'owned-058',
+    -   'owned-061',
+    -   'owned-064',
+    -   'owned-067',
+    -   'owned-070',
+    -   'owned-073',
+    -   'owned-076',
+    -   'owned-079',
+    -   'owned-082',
+    -   'owned-085',
+    -   'owned-088',
+    -   'owned-091',
+    -   'owned-094',
+    -   'owned-097',
+    -   'owned-100',
+    -   'owned-103',
+    -   'owned-106',
+    -   'owned-109',
+    -   'owned-112',
+    -   'owned-115',
+    -   'owned-118',
+    -   'owned-121',
+    -   'owned-124',
+    -   'owned-127',
+    -   'owned-130',
+    -   'owned-133',
+    -   'owned-136',
+    -   'owned-139',
+    -   'owned-142',
+    -   'owned-145',
+    -   'owned-148',
+    -   'owned-151',
+    -   'owned-002',
+    -   'owned-005',
+    -   'owned-008',
+    -   'owned-011',
+    -   'owned-014',
+    -   'owned-017',
+    -   'owned-020',
+    -   'owned-023',
+    -   'owned-026',
+    -   'owned-029',
+    -   'owned-032',
+    -   'owned-035',
+    -   'owned-038',
+    -   'owned-041',
+    -   'owned-044',
+    -   'owned-047',
+    -   'owned-050',
+    -   'owned-053',
+    -   'owned-056',
+    -   'owned-059',
+    -   'owned-062',
+    -   'owned-065',
+    -   'owned-068',
+    -   'owned-071',
+    -   'owned-074',
+    -   'owned-077',
+    -   'owned-080',
+    -   'owned-083',
+    -   'owned-086',
+    -   'owned-089',
+    -   'owned-092',
+    -   'owned-095',
+    -   'owned-098',
+    -   'owned-101',
+    -   'owned-104',
+    -   'owned-107',
+    -   'owned-110',
+    -   'owned-113',
+    -   'owned-116',
+    -   'owned-119',
+    -   'owned-122',
+    -   'owned-125',
+    -   'owned-128',
+    -   'owned-131',
+    -   'owned-134',
+    -   'owned-137',
+    -   'owned-140',
+    -   'owned-143',
+    -   'owned-146',
+    -   'owned-149',
+    -   'owned-152'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'owned-000'
+    1: 'owned-003'
+    2: 'owned-006'
+    3: 'owned-009'
+    4: 'owned-012'
+    5: 'owned-015'
+    6: 'owned-018'
+    7: 'owned-021'
+    8: 'owned-024'
+    9: 'owned-027'
+    10: 'owned-030'
+    11: 'owned-033'
+    12: 'owned-036'
+    13: 'owned-039'
+    14: 'owned-042'
+    15: 'owned-045'
+    16: 'owned-048'
+    17: 'owned-051'
+    18: 'owned-054'
+    19: 'owned-057'
+    20: 'owned-060'
+    21: 'owned-063'
+    22: 'owned-066'
+    23: 'owned-069'
+    24: 'owned-072'
+    25: 'owned-075'
+    26: 'owned-078'
+    27: 'owned-081'
+    28: 'owned-084'
+    29: 'owned-087'
+    30: 'owned-090'
+    31: 'owned-093'
+    32: 'owned-096'
+    33: 'owned-099'
+    34: 'owned-102'
+    35: 'owned-105'
+    36: 'owned-108'
+    37: 'owned-111'
+    38: 'owned-114'
+    39: 'owned-117'
+    40: 'owned-120'
+    41: 'owned-123'
+    42: 'owned-126'
+    43: 'owned-129'
+    44: 'owned-132'
+    45: 'owned-135'
+    46: 'owned-138'
+    47: 'owned-141'
+    48: 'owned-144'
+    49: 'owned-147'
+    50: 'owned-150'
+    51: 'owned-001'
+    52: 'owned-004'
+    53: 'owned-007'
+    54: 'owned-010'
+    55: 'owned-013'
+    56: 'owned-016'
+    57: 'owned-019'
+    58: 'owned-022'
+    59: 'owned-025'
+    60: 'owned-028'
+    61: 'owned-031'
+    62: 'owned-034'
+    63: 'owned-037'
+    64: 'owned-040'
+    65: 'owned-043'
+    66: 'owned-046'
+    67: 'owned-049'
+    68: 'owned-052'
+    69: 'owned-055'
+    70: 'owned-058'
+    71: 'owned-061'
+    72: 'owned-064'
+    73: 'owned-067'
+    74: 'owned-070'
+    75: 'owned-073'
+    76: 'owned-076'
+    77: 'owned-079'
+    78: 'owned-082'
+    79: 'owned-085'
+    80: 'owned-088'
+    81: 'owned-091'
+    82: 'owned-094'
+    83: 'owned-097'
+    84: 'owned-100'
+    85: 'owned-103'
+    86: 'owned-106'
+    87: 'owned-109'
+    88: 'owned-112'
+    89: 'owned-115'
+    90: 'owned-118'
+    91: 'owned-121'
+    92: 'owned-124'
+    93: 'owned-127'
+    94: 'owned-130'
+    95: 'owned-133'
+    96: 'owned-136'
+    97: 'owned-139'
+    98: 'owned-142'
+    99: 'owned-145'
+    100: 'owned-148'
+    101: 'owned-151'
+    102: 'owned-002'
+    103: 'owned-005'
+    104: 'owned-008'
+    105: 'owned-011'
+    106: 'owned-014'
+    107: 'owned-017'
+    108: 'owned-020'
+    109: 'owned-023'
+    110: 'owned-026'
+    111: 'owned-029'
+    112: 'owned-032'
+    113: 'owned-035'
+    114: 'owned-038'
+    115: 'owned-041'
+    116: 'owned-044'
+    117: 'owned-047'
+    118: 'owned-050'
+    119: 'owned-053'
+    120: 'owned-056'
+    121: 'owned-059'
+    122: 'owned-062'
+    123: 'owned-065'
+    124: 'owned-068'
+    125: 'owned-071'
+    126: 'owned-074'
+    127: 'owned-077'
+    128: 'owned-080'
+    129: 'owned-083'
+    130: 'owned-086'
+    131: 'owned-089'
+    132: 'owned-092'
+    133: 'owned-095'
+    134: 'owned-098'
+    135: 'owned-101'
+    136: 'owned-104'
+    137: 'owned-107'
+    138: 'owned-110'
+    139: 'owned-113'
+    140: 'owned-116'
+    141: 'owned-119'
+    142: 'owned-122'
+    143: 'owned-125'
+    144: 'owned-128'
+    145: 'owned-131'
+    146: 'owned-134'
+    147: 'owned-137'
+    148: 'owned-140'
+    149: 'owned-143'
+    150: 'owned-146'
+    151: 'owned-149'
+    152: 'owned-152'
+  actual:
+    0: 'owned-152'
+    1: 'owned-149'
+    2: 'owned-146'
+    3: 'owned-143'
+    4: 'owned-140'
+    5: 'owned-137'
+    6: 'owned-134'
+    7: 'owned-131'
+    8: 'owned-128'
+    9: 'owned-125'
+    10: 'owned-122'
+    11: 'owned-119'
+    12: 'owned-116'
+    13: 'owned-113'
+    14: 'owned-110'
+    15: 'owned-107'
+    16: 'owned-104'
+    17: 'owned-101'
+    18: 'owned-098'
+    19: 'owned-095'
+    20: 'owned-092'
+    21: 'owned-089'
+    22: 'owned-086'
+    23: 'owned-083'
+    24: 'owned-080'
+    25: 'owned-077'
+    26: 'owned-074'
+    27: 'owned-071'
+    28: 'owned-068'
+    29: 'owned-065'
+    30: 'owned-062'
+    31: 'owned-059'
+    32: 'owned-056'
+    33: 'owned-053'
+    34: 'owned-050'
+    35: 'owned-047'
+    36: 'owned-044'
+    37: 'owned-041'
+    38: 'owned-038'
+    39: 'owned-035'
+    40: 'owned-032'
+    41: 'owned-029'
+    42: 'owned-026'
+    43: 'owned-023'
+    44: 'owned-020'
+    45: 'owned-017'
+    46: 'owned-014'
+    47: 'owned-011'
+    48: 'owned-008'
+    49: 'owned-005'
+    50: 'owned-002'
+    51: 'owned-151'
+    52: 'owned-148'
+    53: 'owned-145'
+    54: 'owned-142'
+    55: 'owned-139'
+    56: 'owned-136'
+    57: 'owned-133'
+    58: 'owned-130'
+    59: 'owned-127'
+    60: 'owned-124'
+    61: 'owned-121'
+    62: 'owned-118'
+    63: 'owned-115'
+    64: 'owned-112'
+    65: 'owned-109'
+    66: 'owned-106'
+    67: 'owned-103'
+    68: 'owned-100'
+    69: 'owned-097'
+    70: 'owned-094'
+    71: 'owned-091'
+    72: 'owned-088'
+    73: 'owned-085'
+    74: 'owned-082'
+    75: 'owned-079'
+    76: 'owned-076'
+    77: 'owned-073'
+    78: 'owned-070'
+    79: 'owned-067'
+    80: 'owned-064'
+    81: 'owned-061'
+    82: 'owned-058'
+    83: 'owned-055'
+    84: 'owned-052'
+    85: 'owned-049'
+    86: 'owned-046'
+    87: 'owned-043'
+    88: 'owned-040'
+    89: 'owned-037'
+    90: 'owned-034'
+    91: 'owned-031'
+    92: 'owned-028'
+    93: 'owned-025'
+    94: 'owned-022'
+    95: 'owned-019'
+    96: 'owned-016'
+    97: 'owned-013'
+    98: 'owned-010'
+    99: 'owned-007'
+    100: 'owned-004'
+    101: 'owned-001'
+    102: 'owned-150'
+    103: 'owned-147'
+    104: 'owned-144'
+    105: 'owned-141'
+    106: 'owned-138'
+    107: 'owned-135'
+    108: 'owned-132'
+    109: 'owned-129'
+    110: 'owned-126'
+    111: 'owned-123'
+    112: 'owned-120'
+    113: 'owned-117'
+    114: 'owned-114'
+    115: 'owned-111'
+    116: 'owned-108'
+    117: 'owned-105'
+    118: 'owned-102'
+    119: 'owned-099'
+    120: 'owned-096'
+    121: 'owned-093'
+    122: 'owned-090'
+    123: 'owned-087'
+    124: 'owned-084'
+    125: 'owned-081'
+    126: 'owned-078'
+    127: 'owned-075'
+    128: 'owned-072'
+    129: 'owned-069'
+    130: 'owned-066'
+    131: 'owned-063'
+    132: 'owned-060'
+    133: 'owned-057'
+    134: 'owned-054'
+    135: 'owned-051'
+    136: 'owned-048'
+    137: 'owned-045'
+    138: 'owned-042'
+    139: 'owned-039'
+    140: 'owned-036'
+    141: 'owned-033'
+    142: 'owned-030'
+    143: 'owned-027'
+    144: 'owned-024'
+    145: 'owned-021'
+    146: 'owned-018'
+    147: 'owned-015'
+    148: 'owned-012'
+    149: 'owned-009'
+    150: 'owned-006'
+    151: 'owned-003'
+    152: 'owned-000'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort.test.ts:14:260)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+not ok 7 - sort binds the cursor, keeps default cursors compatible, and invalidates client generations
+  ---
+  duration_ms: 1.6585
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_cursor'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort.test.ts:21:2)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+not ok 8 - HTTP list and totals accept order, reject duplicates/invalid values and retain private authority
+  ---
+  duration_ms: 20.3232
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-sort.test.ts:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    400 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 400
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-sort.test.ts:28:169)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 0
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 466.6346
