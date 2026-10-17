@@ -19,7 +19,7 @@ export function createInboxViewState() {
 }
 export function normalizeInboxFilters(value={}) {
  const result={};
- for(const key of ['q','search_in','internal_status','status','priority','assignment']) {
+ for(const key of ['q','search_in','internal_status','status','priority','assignment','created_from','created_before']) {
   const text=typeof value?.[key]==='string'?value[key].trim():'';
   if(text)result[key]=text;
  }

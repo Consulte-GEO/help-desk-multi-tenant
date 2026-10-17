@@ -65,3 +65,6 @@ await copyFile(new URL('../shared/consultegeo-ticket.js',import.meta.url),new UR
 // asset graph later. Historical source, SQL and fixtures never become static.
 for(const name of ['implementation-support.js','implementation-support.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 await copyImplementationAssets(fileURLToPath(new URL('../modules/implantacao/frontend/dist-support/',import.meta.url)),fileURLToPath(new URL('../dist/implantacao/',import.meta.url)));
+
+// Creation filters use an explicit, local wall-clock converter.
+await copyFile(new URL('../web/filter-instant.js',import.meta.url),new URL('../dist/filter-instant.js',import.meta.url));
