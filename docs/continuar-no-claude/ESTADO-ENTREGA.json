@@ -1,0 +1,43 @@
+{
+  "data": "2026-10-17",
+  "tipo": "Preparação em PR draft, sem merge ou publicação de produção",
+  "repositorio": "Consulte-GEO/help-desk-multi-tenant",
+  "branch_padrao": "codex/m1-reproducibilidade",
+  "base_publicada": "0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5",
+  "branch_preparacao": "codex/preparacao-claude-20261017",
+  "pr_pendente_no_corte": {
+    "numero": 76,
+    "head": "7c2a9a7e29c31e711cd3c5bb4d1f710fb2ad3820",
+    "integrado_a_esta_preparacao": false
+  },
+  "api_interface": "0.31.0",
+  "schema_core": "0.27",
+  "migrations_core": 21,
+  "mcp": {
+    "base_local": "e04be92284dd60d21116cdd702318743d68c21ce",
+    "nova_revisao": "Quatro consultas de leitura, 24 ferramentas; conferir versão instalada.",
+    "publicado": false,
+    "claude_real_homologado": false
+  },
+  "git_gates_observados": {
+    "rulesets": [],
+    "branch_protection": "Ativa em 17/10/2026; PR com revisão humana, último push por outra pessoa, checks vinculados ao GitHub Actions, administradores incluídos, sem force/deleção.",
+    "escrita_mcp_liberada": false
+  },
+  "pendencias_individuais": [
+    "Identidade destinatária",
+    "Cliente Claude escolhido no onboarding",
+    "Grants/OAuth reais do projeto dedicado"
+  ],
+  "limites": [
+    "Estado remoto deve ser reinspecionado; referências são snapshot.",
+    "CI Linux da fonte7800084 e merge de teste aprovados em7447 verificações; sem efeitos de negócio ou alteração de produção.",
+    "Recibos anteriores não comprovam teste do novo commit."
+  ],
+  "netlify_gates_observados": {
+    "resend": "Produção/functions preservados; quatro contextos não produtivos explicitamente vazios nas duas credenciais.",
+    "variaveis_compartilhadas": 0,
+    "deploys_historicos_saneados": false,
+    "referencia": "PROTECOES-2026-10-17.md"
+  }
+}

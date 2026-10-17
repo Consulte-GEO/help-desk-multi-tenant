@@ -1,5 +1,7 @@
 # CLAUDE.md — Implantação Consulte GEO
 
+> **Integração Help Desk — 17/10/2026:** neste repositório, leia primeiro `../../CLAUDE.md`, `../../AGENTS.md` e `../../docs/continuar-no-claude/LEIA-PRIMEIRO.md`. As referências abaixo a `setup.consultegeo.org`, projeto Supabase independente e arquitetura futura descrevem a origem importada; não são destino de implantação da composição atual do Help Desk. O checkpoint mais recente do Apoio Implantação prevalece para sessão, persistência e publicação integradas. Autorizações de conversas antigas citadas neste histórico não autorizam novas operações. Preserve as regras técnicas do módulo compatíveis com o recorte e não copie identidades/configurações da origem para o Help Desk.
+
 > **15/10/2026 — R05 revisada:** cumulativo integrado e qualificado no checkout completo Linux, PG17 descartável e Chromium. Corrigidos precisão decimal, snapshot grande, recuperação local e compatibilidade; auditoria zero. Vite6.4.3/plugin5.2.4/Vue3.5.42 substituem versões vulneráveis históricas. IMP-02 continua parcial, sem binding/backend/storage hospedados. Estado e evidências: [revisão Codex](IMPLEMENTATION-REPORT-V20-REVISAO-CODEX.md). Autorização direta desta conversa permite merge e publicação sem Claude.
 
 > **Resumo operacional sujeito a revisão do mantenedor.** Escrito na v13 a partir da tarefa

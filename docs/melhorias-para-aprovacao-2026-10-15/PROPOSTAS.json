@@ -1,0 +1,596 @@
+{
+  "versao": "1.0",
+  "data": "2026-10-15",
+  "finalidade": "Decisão humana sobre inclusão de melhorias adicionais no planejamento; nenhuma proposta está aprovada.",
+  "base_local": "91ccdf95db44b11a3906a4c39cf070ff5e91f2a5",
+  "base_documental": "Handoff de 15/10/2026: 49 HD, 32 AUX e 107 RF; roadmap e código local.",
+  "decisoes_permitidas": [
+    "Pendente",
+    "Incluir",
+    "Adiar",
+    "Não incluir",
+    "Ajustar escopo"
+  ],
+  "esforco": "Estimativa relativa preliminar: M = mais de uma camada/jornada; L = frente transversal ou qualificação extensa. Não equivale a prazo ou orçamento.",
+  "itens": [
+    {
+      "id": "MEL-01",
+      "titulo": "Usar um pedido anterior como base",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Avaliar primeiro",
+      "beneficio": "Reduzir digitação em solicitações repetidas de cadastro e acesso.",
+      "exemplo": "Usar um cadastro de usuário da mesma obra como ponto de partida para pedir outro usuário.",
+      "incremento": "Criar uma nova solicitação a partir de outra autorizada e concluída, copiando apenas campos permitidos e exigindo revisão.",
+      "previsto": "Formulários versionados, rascunhos e reclassificação já existem ou estão previstos em HD-011/012 e AUX-10/11; não localizamos o comando de reaproveitar outra solicitação.",
+      "escopo": [
+        "Selecionar pedido anterior dentro do acesso atual.",
+        "Mostrar campos reaproveitados, incompatíveis e que precisam de nova confirmação.",
+        "Criar nova intenção e novo protocolo somente após revisão."
+      ],
+      "dependencias": [
+        "Formulário vigente e autorização por obra/conta; reaproveitar abertura e snapshot existentes.",
+        "HD-011/012 são bases relacionadas; não depende da API Novo GEO."
+      ],
+      "aceite": [
+        "Beneficiário, permissões, aprovações e execução anterior não são herdados.",
+        "Mudança de versão ou revogação de acesso impede cópia indevida.",
+        "Repetir o envio não cria dois chamados; uma nova solicitação não é confundida com retry do original."
+      ],
+      "medida": "Tempo para preparar pedidos repetidos e quantidade de campos corrigidos, comparados com uma linha de base.",
+      "cuidado": "Não copiar anexos ou valores privados indiscriminadamente. Não contornar consultas ou aprovações necessárias.",
+      "evidencia": [
+        "AUX-10/11",
+        "HD-011/012",
+        "RF-FOR-01/06"
+      ],
+      "refs": [
+        "R07"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-02",
+      "titulo": "Avisar quando dois analistas atuam no mesmo chamado",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Conforme demanda",
+      "beneficio": "Evitar respostas duplicadas ou contraditórias e trabalho simultâneo desnecessário.",
+      "exemplo": "O analista vê que outra pessoa está redigindo; se uma resposta nova chegar, revisa seu rascunho antes de enviar.",
+      "incremento": "Presença temporária de analistas autorizados e aviso de atualização antes do envio, sem bloquear o atendimento.",
+      "previsto": "CAS, versões e idempotência já protegem a gravação; HD-019 prevê tratar conflitos. O adicional é prevenir o conflito enquanto a resposta está sendo preparada.",
+      "escopo": [
+        "Indicar visualização/redação sem transmitir o texto digitado.",
+        "Expirar presença ao sair, trocar identidade ou perder conexão.",
+        "Avisar sobre nova resposta preservando o rascunho."
+      ],
+      "dependencias": [
+        "Mais de um analista simultâneo para justificar o investimento.",
+        "Sessão, autorização e feedback de conflito de HD-019."
+      ],
+      "aceite": [
+        "Presença de pessoa sem acesso não é exibida nem concede acesso.",
+        "Indicador expirado desaparece e não impede atendimento.",
+        "CAS continua obrigatório mesmo quando não há presença visível."
+      ],
+      "medida": "Ocorrências de respostas simultâneas e retrabalho percebido pela equipe; validar primeiro se esse problema ocorre.",
+      "cuidado": "Não transmitir conteúdo de digitação, nem criar uma trava exclusiva que abandone o ticket bloqueado.",
+      "evidencia": [
+        "HD-019",
+        "src/application/helpdesk.ts:123/141",
+        "Busca dirigida por presence, typing, collision e digitando"
+      ],
+      "refs": [
+        "R01"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-03",
+      "titulo": "Transferir responsabilidade com aceite de quem assume",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Avaliar primeiro",
+      "beneficio": "Evitar chamados sem responsável efetivo durante passagem de turno, férias ou troca de equipe.",
+      "exemplo": "Quem transfere registra a próxima ação e o compromisso com o cliente; o sucessor confirma que assumiu.",
+      "incremento": "Transferência em duas etapas, com aceite, recusa e prazo para resposta; até a conclusão, o responsável continua explícito.",
+      "previsto": "Atribuição, transferência com nota e resumo já estão em HD-019, RF-CEN-02/12 e AUX-25. O aceite da responsabilidade não está especificado.",
+      "escopo": [
+        "Solicitar transferência com contexto mínimo e ação pendente.",
+        "Aceitar ou recusar com histórico.",
+        "Expor transferência vencida e responsável atual para tratamento manual."
+      ],
+      "dependencias": [
+        "Roster e cobertura autorizada de HD-022; reaproveitar atribuição e notas existentes.",
+        "Definir com a operação o prazo e o tratamento de ausência, sem alterar SLA automaticamente."
+      ],
+      "aceite": [
+        "Recusa ou silêncio não deixa o chamado sem responsável identificado.",
+        "Assumir não cria acesso a novas contas ou obras.",
+        "Transferência não descarta operações com resultado ainda desconhecido nem seus recibos."
+      ],
+      "medida": "Chamados parados após transferências e tempo entre solicitação e aceite da passagem.",
+      "cuidado": "Oferecer exceção operacional auditada para indisponibilidade, evitando tornar a passagem uma barreira ao atendimento.",
+      "evidencia": [
+        "HD-019/022",
+        "RF-CEN-02/12",
+        "AUX-01/25"
+      ],
+      "refs": [],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-04",
+      "titulo": "Revisar a qualidade do atendimento por amostra",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Avaliar primeiro",
+      "beneficio": "Identificar problemas de orientação e oportunidades de treinamento que volume, SLA e satisfação não revelam sozinhos.",
+      "exemplo": "Revisar alguns atendimentos comuns e difíceis por clareza, correção técnica, diagnóstico e próximo passo.",
+      "incremento": "Ficha interna de revisão com critérios versionados, justificativa, possibilidade de contestação e alinhamento entre revisores.",
+      "previsto": "Checklist de execução, indicadores HD-028 e satisfação HD-029 já estão previstos. Nenhum deles é uma revisão interna independente da conversa.",
+      "escopo": [
+        "Escolher amostra pequena e variada com critérios explícitos.",
+        "Revisar manualmente mensagens e evidências autorizadas.",
+        "Registrar feedback e ações de treinamento; discutir divergências dos avaliadores."
+      ],
+      "dependencias": [
+        "Responsável pela revisão, critérios de qualidade e tempo reservado.",
+        "Pode começar como procedimento/documento antes de ganhar uma tela própria."
+      ],
+      "aceite": [
+        "Cada avaliação aponta evidência e versão do critério utilizado.",
+        "Casos difíceis não são excluídos para melhorar artificialmente o resultado.",
+        "Divergências podem ser revistas; feedback não vira ranking automático de pessoas."
+      ],
+      "medida": "Frequência dos tipos de falha na amostra e evolução após ações de treinamento, mantendo claro o tamanho e o viés da amostra.",
+      "cuidado": "Começar sem pontuação automática por IA e sem monitoramento invasivo de funcionários.",
+      "evidencia": [
+        "HD-028/029",
+        "RF-CEN-07"
+      ],
+      "refs": [
+        "R02",
+        "R03"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-05",
+      "titulo": "Investigar causa raiz e verificar ações preventivas",
+      "tipo": "Ampliação de escopo",
+      "esforco": "M",
+      "momento": "Conforme demanda",
+      "beneficio": "Reduzir recorrência e transformar incidentes relevantes em melhorias verificáveis.",
+      "exemplo": "Depois de restaurar uma integração, acompanhar a correção estrutural e verificar se o mesmo problema voltou.",
+      "incremento": "Registro leve de investigação após restauração: linha do tempo, hipóteses, causa confirmada, ações e avaliação da eficácia.",
+      "previsto": "HD-017 e AUX-19/20/21/26 já cobrem incidentes, agrupamento, contornos e encaminhamento a desenvolvimento. O ciclo posterior de investigação e eficácia é o adicional.",
+      "escopo": [
+        "Selecionar incidentes ou recorrências que justificam revisão.",
+        "Separar fatos, hipóteses e fatores contribuintes.",
+        "Reutilizar subtarefas AUX-15 para ações com responsável e evidência de conclusão."
+      ],
+      "dependencias": [
+        "Vínculos de chamados/incidentes e evidência suficiente.",
+        "Responsável pela investigação; não exige CMDB nem adoção de ITIL integral."
+      ],
+      "aceite": [
+        "Restaurar serviço não fecha automaticamente a investigação.",
+        "Uma hipótese nunca aparece como causa comprovada.",
+        "Ação concluída é distinta de ação eficaz; resultados negativos também são registrados."
+      ],
+      "medida": "Recorrência em uma população e período comparáveis; não inferir causalidade apenas da queda do número de tickets.",
+      "cuidado": "Manter análise interna separada de comunicação pública e preservar dados privados dos clientes.",
+      "evidencia": [
+        "HD-017/028",
+        "AUX-15/19/20/21/26",
+        "RF-BUG-05/07"
+      ],
+      "refs": [
+        "R04",
+        "R05"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-06",
+      "titulo": "Alertar antes de enviar possíveis senhas ou tokens",
+      "tipo": "Ampliação de escopo",
+      "esforco": "M",
+      "momento": "Avaliar primeiro",
+      "beneficio": "Reduzir o envio acidental de credenciais em mensagens livres e respostas públicas.",
+      "exemplo": "Ao colar uma chave privada ou um link de recuperação, o autor recebe um alerta e revisa o conteúdo antes do envio.",
+      "incremento": "Detecção delimitada de padrões de alto risco no texto livre, com indicação do trecho e decisão explícita do autor.",
+      "previsto": "A separação de públicos e a sanitização de diagnósticos em AUX-04 já existem no plano. O detector preventivo do conteúdo livre não foi localizado.",
+      "escopo": [
+        "Começar por padrões precisos, como chave privada, token e link de recuperação.",
+        "Revisar o trecho sem alterá-lo silenciosamente.",
+        "Validar o controle também no servidor, evitando registro do valor sensível em logs e telemetria."
+      ],
+      "dependencias": [
+        "Política por tipo de campo e testes de falso positivo/negativo.",
+        "Compositor de mensagens e contratos existentes; sem serviço externo de IA obrigatório."
+      ],
+      "aceite": [
+        "CNPJ, e-mail e dados técnicos legitimamente solicitados não são bloqueados em massa.",
+        "O trecho sensível não aparece em logs ou indicadores do detector.",
+        "O texto só muda pela ação consciente do autor; histórico e snapshots permanecem íntegros."
+      ],
+      "medida": "Alertas úteis e falsos positivos em amostra autorizada, sem armazenar o próprio segredo para medir.",
+      "cuidado": "É uma camada preventiva, não prova de que todo segredo será detectado nem constatação de vulnerabilidade atual. Não promete recuperar e-mails já enviados.",
+      "evidencia": [
+        "AUX-04",
+        "web/app.js:438–444",
+        "src/application/helpdesk.ts:99–104"
+      ],
+      "refs": [
+        "R13"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-07",
+      "titulo": "Dar tratamento às avaliações negativas",
+      "tipo": "Ampliação de escopo",
+      "esforco": "M",
+      "momento": "Após base prevista",
+      "beneficio": "Transformar insatisfação em revisão e ação de melhoria, além de uma nota no painel.",
+      "exemplo": "Uma avaliação baixa gera uma pendência interna para verificar o ocorrido e decidir se cabe contato humano com o cliente.",
+      "incremento": "Pendência interna deduplicada pelo recibo da avaliação, com responsável, motivo, ação e encerramento.",
+      "previsto": "HD-029 prevê convite, nota, comentário, recibo e métricas. O acompanhamento posterior da avaliação negativa não está explícito.",
+      "escopo": [
+        "Definir quais avaliações exigem revisão humana.",
+        "Criar uma única pendência interna por recibo elegível.",
+        "Registrar ação e resultado, reutilizando o mecanismo de tarefas quando disponível."
+      ],
+      "dependencias": [
+        "CSAT operacional de HD-029 e responsável pela revisão.",
+        "AUX-15 é base possível para a pendência interna."
+      ],
+      "aceite": [
+        "Repetição do mesmo recibo não duplica a pendência.",
+        "Nota baixa não reabre chamado nem envia mensagem automaticamente.",
+        "Posse do convite não é tratada como prova da identidade de quem respondeu."
+      ],
+      "medida": "Avaliações negativas revisadas, tempo até análise e ações registradas; não alterar a nota original para melhorar indicadores.",
+      "cuidado": "O recibo atual usa invitation_possession. Contato externo exige decisão e público legítimos, sem pressionar o cliente a mudar sua avaliação.",
+      "evidencia": [
+        "HD-029",
+        "src/application/csat.ts:3–8/14–19",
+        "AUX-15"
+      ],
+      "refs": [],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-08",
+      "titulo": "Qualificar a acessibilidade das jornadas completas",
+      "tipo": "Ampliação de escopo",
+      "esforco": "L",
+      "momento": "Avaliar primeiro",
+      "beneficio": "Permitir que mais pessoas concluam login, abertura e acompanhamento com autonomia.",
+      "exemplo": "Abrir e corrigir um pedido usando apenas teclado e leitor de tela, inclusive após erro de validação ou upload.",
+      "incremento": "Meta WCAG 2.2 AA, inventário de critérios aplicáveis e avaliação de processos completos com tecnologia assistiva.",
+      "previsto": "HD-019, RF-CEN-15 e HD-C058 já contemplam teclado, foco, contraste, mobile e testes sob erro/volume. O adicional é a meta formal WCAG 2.2 AA e a avaliação documentada por critério e processo completo.",
+      "escopo": [
+        "Priorizar login, abertura, anexos, acompanhamento e resposta.",
+        "Combinar testes automáticos com avaliação manual de teclado, leitor de tela, zoom e contraste.",
+        "Registrar evidências por critério, corrigir barreiras e reavaliar os fluxos afetados."
+      ],
+      "dependencias": [
+        "Jornadas suficientemente estáveis e disponibilidade de avaliação manual.",
+        "Reaproveitar os testes de interface; correções podem ser divididas em entregas menores."
+      ],
+      "aceite": [
+        "Erros e mudanças de estado são identificáveis sem depender só de cor.",
+        "Diálogos e foco permitem completar o fluxo sem mouse.",
+        "Uma varredura automática isolada não é apresentada como conformidade integral."
+      ],
+      "medida": "Jornadas concluídas com tecnologias assistivas e barreiras confirmadas/removidas, por critério.",
+      "cuidado": "Não remover MFA, CAPTCHA ou autorização para facilitar o teste. A proposta não presume uma conclusão jurídica sobre obrigação aplicável.",
+      "evidencia": [
+        "HD-019",
+        "RF-CEN-15",
+        "HD-C058 no plano de 06/10"
+      ],
+      "refs": [
+        "R06"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-09",
+      "titulo": "Localizar quem recebeu uma orientação depois corrigida",
+      "tipo": "Capacidade adicional",
+      "esforco": "L",
+      "momento": "Após base prevista",
+      "beneficio": "Tratar o impacto de instruções antigas incorretas, além de atualizar o artigo para atendimentos futuros.",
+      "exemplo": "Uma macro sobre acesso de laboratório é retirada; a equipe identifica os atendimentos que usaram aquela versão e avalia uma correção.",
+      "incremento": "Rastrear versão de artigo/macro usada em cada orientação e abrir revisão dos usos afetados após retirada ou substituição.",
+      "previsto": "HD-030/031/032, RF-BC-05/08 e AUX-20 já preveem revisão factual, validade e atualizações. O rastreamento retrospectivo da orientação entregue não está especificado.",
+      "escopo": [
+        "Registrar referência e versão quando o analista aplica conteúdo revisado.",
+        "Ao retirar orientação, listar somente usos identificáveis e autorizados.",
+        "Registrar análise e eventual comunicação corretiva decidida por uma pessoa."
+      ],
+      "dependencias": [
+        "Conhecimento/macros versionados e publicados por audiência.",
+        "A revisão factual Novo GEO continua adiada; preparar rastreabilidade não a reativa."
+      ],
+      "aceite": [
+        "Mensagem e artigo históricos não são reescritos silenciosamente.",
+        "Destinatários são reautorizados antes de eventual correção.",
+        "Não há envio em massa automático nem promessa de detectar todos os textos colados manualmente."
+      ],
+      "medida": "Cobertura dos usos registrados e tempo para revisar os casos potencialmente afetados.",
+      "cuidado": "Uma mudança editorial comum não implica que todos os atendimentos antigos estavam errados; exigir motivo e impacto para iniciar a revisão.",
+      "evidencia": [
+        "HD-030/031/032",
+        "RF-BC-05/08",
+        "RF-IA-09",
+        "AUX-20"
+      ],
+      "refs": [],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-10",
+      "titulo": "Agendar atendimento dentro do chamado",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Conforme demanda",
+      "beneficio": "Reduzir desencontros em sessões de diagnóstico, orientação ou acompanhamento de implantação.",
+      "exemplo": "Combinar uma sessão com a obra, registrar confirmação e manter o histórico de remarcações no próprio ticket.",
+      "incremento": "Compromisso futuro entre solicitante e analista, com horário, fuso, duração, objetivo e estados próprios.",
+      "previsto": "AUX-15 trata de subtarefas, AUX-17 de tempo e RF-CEN-08 de reunião como canal de origem. Nenhum especifica esse compromisso confirmado.",
+      "escopo": [
+        "Registro manual inicial de proposta e confirmação de horário.",
+        "Remarcar/cancelar com histórico e participantes autorizados.",
+        "Expor conflitos conhecidos da agenda interna; integração externa fica fora da primeira versão."
+      ],
+      "dependencias": [
+        "Demanda real por sessões combinadas e disponibilidade declarada.",
+        "Notificações somente nos canais já qualificados e quando autorizadas."
+      ],
+      "aceite": [
+        "Remarcação preserva o histórico e invalida o horário anterior.",
+        "Agendamento não pausa nem reinicia SLA por si só.",
+        "Sem integração com agenda externa, a interface não promete conhecer todos os compromissos do participante."
+      ],
+      "medida": "Desencontros, remarcações e sessões realizadas, se a operação confirmar volume relevante.",
+      "cuidado": "Não criar videoconferência, acesso remoto ou gravação automática como parte implícita do pedido.",
+      "evidencia": [
+        "AUX-15/17",
+        "RF-CEN-08"
+      ],
+      "refs": [
+        "R08"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-11",
+      "titulo": "Coordenar janelas de mudanças e períodos de bloqueio",
+      "tipo": "Ampliação de escopo",
+      "esforco": "M",
+      "momento": "Após base prevista",
+      "beneficio": "Evitar intervenções conflitantes ou executadas em momento inadequado para a operação da obra.",
+      "exemplo": "Uma mudança de configuração e uma atualização do Setup afetam o mesmo processo; o calendário mostra a sobreposição antes da execução.",
+      "incremento": "Janela acordada, serviços afetados, condições de início/interrupção e períodos de congelamento, em visão conjunta.",
+      "previsto": "HD-016/018 já cobrem impacto e prévia; gates de deploy e AUX-20 cobrem release. A coordenação temporal e as condições operacionais são o adicional.",
+      "escopo": [
+        "Começar com registro e calendário manual, sem automação de deploy.",
+        "Identificar sobreposição e condições que impedem a execução.",
+        "Registrar exceção e resultado com os responsáveis apropriados."
+      ],
+      "dependencias": [
+        "Responsáveis pelos serviços e política operacional de mudanças.",
+        "HD-018 e contratos reais para qualquer execução na origem; Novo GEO permanece adiado."
+      ],
+      "aceite": [
+        "Janela vencida ou condição alterada exige reavaliação.",
+        "Conflito temporal fica visível sem conceder autorização de execução.",
+        "Aprovação da janela não substitui MFA, aprovação da revisão exata ou gates existentes."
+      ],
+      "medida": "Intervenções remarcadas preventivamente e incidentes ligados a sobreposições, sem inventar causalidade.",
+      "cuidado": "Não inferir regras de segurança de engenharia a partir da wiki ainda não validada. Não reativar comandos perigosos por existir uma janela.",
+      "evidencia": [
+        "HD-016/018",
+        "RF-CEN-11",
+        "AUX-20",
+        "HD-042/043"
+      ],
+      "refs": [
+        "R10",
+        "R11"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-12",
+      "titulo": "Sugerir responsável por habilidade, disponibilidade e carga",
+      "tipo": "Ampliação de escopo",
+      "esforco": "L",
+      "momento": "Conforme demanda",
+      "beneficio": "Distribuir demandas de modo mais adequado quando houver equipe e volume que justifiquem regras adicionais.",
+      "exemplo": "Sugerir um analista disponível com experiência em laboratório e cobertura da obra, mostrando o motivo da sugestão.",
+      "incremento": "Combinar habilidades e disponibilidade declaradas com limite de trabalho em andamento; iniciar com recomendação e confirmação humana.",
+      "previsto": "RF-CEN-02 já prevê assumir/atribuir e há regras de roteamento no roadmap. O adicional é a capacidade humana e a disponibilidade atuais, não outro motor genérico de roteamento.",
+      "escopo": [
+        "Cadastrar poucas habilidades úteis e disponibilidade declarada.",
+        "Filtrar primeiro por autorização/cobertura.",
+        "Exibir sugestão explicável e permitir escolha manual com motivo."
+      ],
+      "dependencias": [
+        "Roster de HD-022 e informação de disponibilidade mantida pela equipe.",
+        "Volume suficiente para justificar o custo; prever ausência de candidato elegível."
+      ],
+      "aceite": [
+        "Sem cobertura, indisponível ou com limite de trabalho atingido não é sugerido.",
+        "Na ausência de candidato elegível, o chamado permanece visível na fila para triagem manual.",
+        "A sugestão não cria grant nem atribui automaticamente sem o escopo aprovado."
+      ],
+      "medida": "Transferências evitáveis, tempo até atribuição adequada e balanceamento de trabalho, sem ranking individual simplista.",
+      "cuidado": "Dados desatualizados podem piorar o resultado. Não inferir habilidade a partir de dados pessoais ou usar cliques como capacidade.",
+      "evidencia": [
+        "RF-CEN-02",
+        "HD-019/022/046",
+        "HD-P22; docs/superpowers/plans/2026-10-06-helpdesk.md:380–390"
+      ],
+      "refs": [
+        "R09"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-13",
+      "titulo": "Medir onde a abertura de chamados encontra obstáculos",
+      "tipo": "Capacidade adicional",
+      "esforco": "M",
+      "momento": "Após base prevista",
+      "beneficio": "Priorizar simplificações com evidência do que acontece antes de o chamado ser criado.",
+      "exemplo": "Identificar que muitos usuários iniciam um tipo de cadastro, encontram erro no mesmo campo e não chegam ao protocolo.",
+      "incremento": "Funil agregado de seleção de serviço, preenchimento, erro de validação, rascunho, tentativa e abertura confirmada.",
+      "previsto": "HD-028 mede chamados e completude; AUX-11 cuida de rascunho. Observabilidade HTTP mede rota/status/duração, não a sequência anterior à criação.",
+      "escopo": [
+        "Definir poucos eventos sem conteúdo digitado e com retenção limitada.",
+        "Agregar por serviço e versão do formulário.",
+        "Comparar antes/depois de uma simplificação, preservando denominadores e limitações."
+      ],
+      "dependencias": [
+        "Formulários e identificadores de versão estáveis; HD-011/028 são bases relacionadas.",
+        "Política de coleta, retenção e acesso; volume mínimo para não expor jornadas individuais."
+      ],
+      "aceite": [
+        "Não registrar resposta, tecla, captura de tela, token nem reprodução de sessão.",
+        "Eventos repetidos não inflacionam a contagem de aberturas.",
+        "Interrupção ou abandono não é rotulado automaticamente como insatisfação."
+      ],
+      "medida": "Conclusão por etapa, erros por versão e tempo de preparação agregado; nenhuma meta inventada antes da linha de base.",
+      "cuidado": "Não acrescentar rastreamento externo como dependência. Evitar instrumentação extensa para um piloto sem volume.",
+      "evidencia": [
+        "HD-028",
+        "AUX-11",
+        "src/observability/http.ts:22–25"
+      ],
+      "refs": [],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    },
+    {
+      "id": "MEL-14",
+      "titulo": "Simular demanda e capacidade futura da equipe",
+      "tipo": "Capacidade adicional",
+      "esforco": "L",
+      "momento": "Conforme demanda",
+      "beneficio": "Antecipar acúmulo de pedidos em férias, aumento de obras ou mudança de jornada.",
+      "exemplo": "Comparar cenários de demanda e disponibilidade para visualizar possível crescimento da fila, sem mudar escalas automaticamente.",
+      "incremento": "Planejamento futuro da capacidade humana, com premissas visíveis e incerteza, separado da capacidade técnica do sistema.",
+      "previsto": "HD-046 mede latência, concorrência e infraestrutura; HD-028 tem métricas retrospectivas; AUX-17 prevê esforço. A simulação da equipe é o adicional.",
+      "escopo": [
+        "Começar com cenários simples e capacidade declarada.",
+        "Usar volume, tipo de demanda e tempo efetivo de trabalho quando confiáveis.",
+        "Comparar cenários, sem prometer previsão precisa em amostra pequena."
+      ],
+      "dependencias": [
+        "Histórico confiável e esforço distinguido de tempo em espera.",
+        "HD-028 e, quando adotado, AUX-17; não exige contratar uma plataforma de WFM."
+      ],
+      "aceite": [
+        "Premissas e intervalos ficam separados dos dados observados.",
+        "Ausência de histórico produz limitação explícita, não números fictícios.",
+        "Nenhuma escala, SLA ou atribuição é alterada pela simulação."
+      ],
+      "medida": "Erro dos cenários contra o resultado observado e utilidade da análise para decisões de capacidade.",
+      "cuidado": "Prioridade posterior enquanto o piloto não oferecer dados. Não usar o modelo para pontuar produtividade individual.",
+      "evidencia": [
+        "HD-028/046",
+        "AUX-17"
+      ],
+      "refs": [
+        "R12"
+      ],
+      "decisao": "Pendente",
+      "observacao_decisao": ""
+    }
+  ],
+  "fontes": {
+    "R01": {
+      "titulo": "Zendesk — Avoiding agent collision",
+      "url": "https://support.zendesk.com/hc/en-us/articles/9186264597146-Avoiding-agent-collision",
+      "apoio": "Distingue visualização, edição e atualização simultânea de chamados."
+    },
+    "R02": {
+      "titulo": "Zendesk — Viewing and managing scorecards",
+      "url": "https://support.zendesk.com/hc/en-us/articles/8875998154906-Viewing-and-managing-scorecards",
+      "apoio": "Avaliação de qualidade com categorias e critérios próprios."
+    },
+    "R03": {
+      "titulo": "Zendesk — Using Zendesk QA as a reviewer",
+      "url": "https://support.zendesk.com/hc/en-us/articles/7043669307418-Using-Zendesk-QA-as-a-reviewer",
+      "apoio": "Revisão humana de conversas, comentários e discussão da avaliação."
+    },
+    "R04": {
+      "titulo": "Atlassian — Problem management process",
+      "url": "https://www.atlassian.com/itsm/problem-management/process",
+      "apoio": "Separa restauração de serviço da investigação e prevenção de recorrência."
+    },
+    "R05": {
+      "titulo": "Atlassian — Incident postmortems",
+      "url": "https://www.atlassian.com/incident-management/postmortem",
+      "apoio": "Revisão após incidentes com aprendizado e ações de melhoria."
+    },
+    "R06": {
+      "titulo": "W3C — WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "apoio": "Critérios de acessibilidade e avaliação de páginas e processos completos."
+    },
+    "R07": {
+      "titulo": "W3C — Redundant entry",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry",
+      "apoio": "Evitar redigitação desnecessária no mesmo processo. Reuso entre chamados é adaptação proposta, não exigência desse critério."
+    },
+    "R08": {
+      "titulo": "Freshservice — Work and On-call Calendar",
+      "url": "https://support.freshservice.com/support/solutions/articles/211608-manage-your-work-and-on-call-calendar",
+      "apoio": "Organização temporal de trabalho e tarefas ligadas a tickets. Confirmação pelo cliente é adaptação proposta."
+    },
+    "R09": {
+      "titulo": "Zendesk — About omnichannel routing",
+      "url": "https://support.zendesk.com/hc/en-us/articles/4409149119514-About-omnichannel-routing",
+      "apoio": "Considera disponibilidade, capacidade e habilidades na distribuição de atendimento."
+    },
+    "R10": {
+      "titulo": "Atlassian — What is the change calendar?",
+      "url": "https://support.atlassian.com/jira-service-management-cloud/docs/what-is-the-change-calendar/",
+      "apoio": "Visão conjunta de mudanças planejadas."
+    },
+    "R11": {
+      "titulo": "Atlassian — Filter and customize your change calendar",
+      "url": "https://support.atlassian.com/jira-service-management-cloud/docs/filter-and-customize-your-change-calendar/",
+      "apoio": "Calendário com períodos de manutenção e congelamento."
+    },
+    "R12": {
+      "titulo": "Zendesk — Understanding WFM forecasting",
+      "url": "https://support.zendesk.com/hc/en-us/articles/9858048119194-Understanding-WFM-forecasting",
+      "apoio": "Previsão de volume e dimensionamento de equipe com dados históricos e cenários."
+    },
+    "R13": {
+      "titulo": "Zendesk — Redacting ticket content",
+      "url": "https://support.zendesk.com/hc/en-us/articles/4408846470170-Redacting-ticket-content",
+      "apoio": "Demonstra o problema de conteúdo sensível em mensagens; remoção posterior tem limites e não recupera mensagens já entregues. O alerta preventivo é proposta desta análise."
+    }
+  }
+}
