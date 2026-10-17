@@ -1,0 +1,466 @@
+TAP version 13
+# Subtest: C15 filesystem restore fixture matches all six inventories, not merely database counts
+ok 1 - C15 filesystem restore fixture matches all six inventories, not merely database counts
+  ---
+  duration_ms: 1573.2643
+  type: 'test'
+  ...
+# Subtest: C15 older filesystem snapshot cannot resend a later confirmed notification through C12 dispatcher
+ok 2 - C15 older filesystem snapshot cannot resend a later confirmed notification through C12 dispatcher
+  ---
+  duration_ms: 115.7114
+  type: 'test'
+  ...
+# Subtest: C15 an otherwise eligible old pending row becomes explicitly ineligible after recovery planning
+ok 3 - C15 an otherwise eligible old pending row becomes explicitly ineligible after recovery planning
+  ---
+  duration_ms: 2.9719
+  type: 'test'
+  ...
+# Subtest: C15 uncertainty is retained across serializing/restoring a sending record
+ok 4 - C15 uncertainty is retained across serializing/restoring a sending record
+  ---
+  duration_ms: 2.8783
+  type: 'test'
+  ...
+# Subtest: C15 retained revocations override a real older filesystem snapshot without reconstructing erased data
+ok 5 - C15 retained revocations override a real older filesystem snapshot without reconstructing erased data
+  ---
+  duration_ms: 81.6095
+  type: 'test'
+  ...
+# Subtest: HD045 hashes real bytes from all six components, is immutable and leaves files intact
+ok 6 - HD045 hashes real bytes from all six components, is immutable and leaves files intact
+  ---
+  duration_ms: 1235.7905
+  type: 'test'
+  ...
+# Subtest: HD045 a real copy in another root matches despite timestamps and creation order
+ok 7 - HD045 a real copy in another root matches despite timestamps and creation order
+  ---
+  duration_ms: 312.1727
+  type: 'test'
+  ...
+# Subtest: HD045 same-size byte corruption is detected in objects without changing database totals
+ok 8 - HD045 same-size byte corruption is detected in objects without changing database totals
+  ---
+  duration_ms: 128.4412
+  type: 'test'
+  ...
+# Subtest: HD045 structure participates in digest: rename
+ok 9 - HD045 structure participates in digest: rename
+  ---
+  duration_ms: 127.2919
+  type: 'test'
+  ...
+# Subtest: HD045 structure participates in digest: remove
+ok 10 - HD045 structure participates in digest: remove
+  ---
+  duration_ms: 77.1648
+  type: 'test'
+  ...
+# Subtest: HD045 structure participates in digest: empty-directory
+ok 11 - HD045 structure participates in digest: empty-directory
+  ---
+  duration_ms: 63.3062
+  type: 'test'
+  ...
+# Subtest: HD045 all six empty directories form a valid inventory, missing is not empty
+ok 12 - HD045 all six empty directories form a valid inventory, missing is not empty
+  ---
+  duration_ms: 25.9683
+  type: 'test'
+  ...
+# Subtest: HD045 extra root entries are refused rather than silently omitted
+ok 13 - HD045 extra root entries are refused rather than silently omitted
+  ---
+  duration_ms: 15.0394
+  type: 'test'
+  ...
+# Subtest: HD045 hardlinked files cannot escape the private stable-copy requirement
+ok 14 - HD045 hardlinked files cannot escape the private stable-copy requirement
+  ---
+  duration_ms: 797.7124
+  type: 'test'
+  ...
+# Subtest: HD045 directory links and linked roots are refused
+ok 15 - HD045 directory links and linked roots are refused
+  ---
+  duration_ms: 21.9996
+  type: 'test'
+  ...
+# Subtest: HD045 path through a directory alias is refused even when final root is not a link
+ok 16 - HD045 path through a directory alias is refused even when final root is not a link
+  ---
+  duration_ms: 13.3188
+  type: 'test'
+  ...
+# Subtest: HD045 entry budget is global across components
+ok 17 - HD045 entry budget is global across components
+  ---
+  duration_ms: 48.5974
+  type: 'test'
+  ...
+# Subtest: HD045 byte budget counts file bytes globally, not the metadata digest length
+ok 18 - HD045 byte budget counts file bytes globally, not the metadata digest length
+  ---
+  duration_ms: 51.2323
+  type: 'test'
+  ...
+# Subtest: HD045 excessive nesting fails without silently dropping deeper entries
+ok 19 - HD045 excessive nesting fails without silently dropping deeper entries
+  ---
+  duration_ms: 37.7508
+  type: 'test'
+  ...
+# Subtest: HD045 already aborted and in-flight cancellation fail completely
+ok 20 - HD045 already aborted and in-flight cancellation fail completely
+  ---
+  duration_ms: 12.0677
+  type: 'test'
+  ...
+# Subtest: HD045 expired global deadline cannot return partial component hashes
+ok 21 - HD045 expired global deadline cannot return partial component hashes
+  ---
+  duration_ms: 24.0044
+  type: 'test'
+  ...
+# Subtest: HD045 a component replaced by a regular file is not a directory
+ok 22 - HD045 a component replaced by a regular file is not a directory
+  ---
+  duration_ms: 12.0843
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":0}
+ok 23 - HD045 invalid or expanded limits refused {"maxBytes":0}
+  ---
+  duration_ms: 12.9796
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":268435457}
+ok 24 - HD045 invalid or expanded limits refused {"maxBytes":268435457}
+  ---
+  duration_ms: 11.2415
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxEntries":10001}
+ok 25 - HD045 invalid or expanded limits refused {"maxEntries":10001}
+  ---
+  duration_ms: 15.099
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxEntries":0}
+ok 26 - HD045 invalid or expanded limits refused {"maxEntries":0}
+  ---
+  duration_ms: 11.2022
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":30001}
+ok 27 - HD045 invalid or expanded limits refused {"timeoutMs":30001}
+  ---
+  duration_ms: 16.2773
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":0}
+ok 28 - HD045 invalid or expanded limits refused {"timeoutMs":0}
+  ---
+  duration_ms: 11.8422
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":null}
+ok 29 - HD045 invalid or expanded limits refused {"timeoutMs":null}
+  ---
+  duration_ms: 8.3825
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":1.2}
+ok 30 - HD045 invalid or expanded limits refused {"maxBytes":1.2}
+  ---
+  duration_ms: 11.2412
+  type: 'test'
+  ...
+# Subtest: HD045 CLI help is explicit and has no input requirement
+ok 31 - HD045 CLI help is explicit and has no input requirement
+  ---
+  duration_ms: 4581.7384
+  type: 'test'
+  ...
+# Subtest: HD045 CLI captures and compares a closed safe manifest using actual files
+ok 32 - HD045 CLI captures and compares a closed safe manifest using actual files
+  ---
+  duration_ms: 2945.9234
+  type: 'test'
+  ...
+# Subtest: HD045 CLI divergence has exit2 and names only affected components
+ok 33 - HD045 CLI divergence has exit2 and names only affected components
+  ---
+  duration_ms: 3358.1601
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely []
+ok 34 - HD045 CLI invalid args fail safely []
+  ---
+  duration_ms: 1479.2194
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root"]
+ok 35 - HD045 CLI invalid args fail safely ["--root"]
+  ---
+  duration_ms: 1461.1323
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--restore"]
+ok 36 - HD045 CLI invalid args fail safely ["--restore"]
+  ---
+  duration_ms: 1035.5545
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root","x","--root","y"]
+ok 37 - HD045 CLI invalid args fail safely ["--root","x","--root","y"]
+  ---
+  duration_ms: 667.878
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--help","--root","x"]
+ok 38 - HD045 CLI invalid args fail safely ["--help","--root","x"]
+  ---
+  duration_ms: 1280.6089
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"]
+ok 39 - HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"]
+  ---
+  duration_ms: 912.6002
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest malformed
+ok 40 - HD045 CLI refuses expected manifest malformed
+  ---
+  duration_ms: 3515.9589
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest extra-property
+ok 41 - HD045 CLI refuses expected manifest extra-property
+  ---
+  duration_ms: 2541.7109
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest missing-component
+ok 42 - HD045 CLI refuses expected manifest missing-component
+  ---
+  duration_ms: 3164.9346
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest wrong-algorithm
+ok 43 - HD045 CLI refuses expected manifest wrong-algorithm
+  ---
+  duration_ms: 3524.7217
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest oversized
+ok 44 - HD045 CLI refuses expected manifest oversized
+  ---
+  duration_ms: 2782.5542
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest linked
+ok 45 - HD045 CLI refuses expected manifest linked
+  ---
+  duration_ms: 5443.0291
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest inside-root
+ok 46 - HD045 CLI refuses expected manifest inside-root
+  ---
+  duration_ms: 1999.2208
+  type: 'test'
+  ...
+# Subtest: HD045 CLI import does not read, print or execute
+ok 47 - HD045 CLI import does not read, print or execute
+  ---
+  duration_ms: 1481.637
+  type: 'test'
+  ...
+# Subtest: C15 a restored pending row never authorizes an automatic send
+ok 48 - C15 a restored pending row never authorizes an automatic send
+  ---
+  duration_ms: 15.257
+  type: 'test'
+  ...
+# Subtest: C15 restored sending becomes unknown, not pending
+ok 49 - C15 restored sending becomes unknown, not pending
+  ---
+  duration_ms: 1.8988
+  type: 'test'
+  ...
+# Subtest: C15 current delivered ledger wins over an older pending backup
+ok 50 - C15 current delivered ledger wins over an older pending backup
+  ---
+  duration_ms: 2.1138
+  type: 'test'
+  ...
+# Subtest: C15 accepted stays accepted and is not invented as delivered
+ok 51 - C15 accepted stays accepted and is not invented as delivered
+  ---
+  duration_ms: 1.5602
+  type: 'test'
+  ...
+# Subtest: C15 recipient or intent mismatch in the external ledger blocks recovery
+ok 52 - C15 recipient or intent mismatch in the external ledger blocks recovery
+  ---
+  duration_ms: 2.9912
+  type: 'test'
+  ...
+# Subtest: C15 a newer checkpoint cannot downgrade a confirmed receipt
+ok 53 - C15 a newer checkpoint cannot downgrade a confirmed receipt
+  ---
+  duration_ms: 1.4744
+  type: 'test'
+  ...
+# Subtest: C15 stale current ledger is not treated as authoritative
+ok 54 - C15 stale current ledger is not treated as authoritative
+  ---
+  duration_ms: 1.545
+  type: 'test'
+  ...
+# Subtest: C15 original records are not mutated and plans are immutable
+ok 55 - C15 original records are not mutated and plans are immutable
+  ---
+  duration_ms: 0.5942
+  type: 'test'
+  ...
+# Subtest: C15 revision overflow blocks rather than wrapping
+ok 56 - C15 revision overflow blocks rather than wrapping
+  ---
+  duration_ms: 0.5307
+  type: 'test'
+  ...
+# Subtest: C15 recovery before an observed event is refused
+ok 57 - C15 recovery before an observed event is refused
+  ---
+  duration_ms: 0.9952
+  type: 'test'
+  ...
+# Subtest: C15 duplicate intent IDs do not disappear through map overwrite
+ok 58 - C15 duplicate intent IDs do not disappear through map overwrite
+  ---
+  duration_ms: 1.2749
+  type: 'test'
+  ...
+# Subtest: C15 newer ledger entries absent in the backup are preserved, never deleted
+ok 59 - C15 newer ledger entries absent in the backup are preserved, never deleted
+  ---
+  duration_ms: 1.0335
+  type: 'test'
+  ...
+# Subtest: C15 malformed ledger cannot cause partial adoption
+ok 60 - C15 malformed ledger cannot cause partial adoption
+  ---
+  duration_ms: 1.0626
+  type: 'test'
+  ...
+# Subtest: C15 restored sessions are invalidated even without a tombstone
+ok 61 - C15 restored sessions are invalidated even without a tombstone
+  ---
+  duration_ms: 0.597
+  type: 'test'
+  ...
+# Subtest: C15 later erasure/revocation markers override an old active backup
+ok 62 - C15 later erasure/revocation markers override an old active backup
+  ---
+  duration_ms: 0.7949
+  type: 'test'
+  ...
+# Subtest: C15 no restored principal, binding or download receipt becomes an active grant
+ok 63 - C15 no restored principal, binding or download receipt becomes an active grant
+  ---
+  duration_ms: 0.2903
+  type: 'test'
+  ...
+# Subtest: C15 erasure marker existing before the backup is still binding
+ok 64 - C15 erasure marker existing before the backup is still binding
+  ---
+  duration_ms: 0.2586
+  type: 'test'
+  ...
+# Subtest: C15 duplicate/conflicting tombstones are rejected
+ok 65 - C15 duplicate/conflicting tombstones are rejected
+  ---
+  duration_ms: 0.2806
+  type: 'test'
+  ...
+# Subtest: C15 inventory reads real bytes through a bounded stream
+ok 66 - C15 inventory reads real bytes through a bounded stream
+  ---
+  duration_ms: 1.7436
+  type: 'test'
+  ...
+# Subtest: C15 canonical object-key order preserves the inventory digest
+ok 67 - C15 canonical object-key order preserves the inventory digest
+  ---
+  duration_ms: 0.5694
+  type: 'test'
+  ...
+# Subtest: C15 a changed byte, dropped row or opaque zero changes the inventory
+ok 68 - C15 a changed byte, dropped row or opaque zero changes the inventory
+  ---
+  duration_ms: 1.0777
+  type: 'test'
+  ...
+# Subtest: C15 inventory refuses duplicate keys, unsorted rows and exceeded budgets
+ok 69 - C15 inventory refuses duplicate keys, unsorted rows and exceeded budgets
+  ---
+  duration_ms: 0.55
+  type: 'test'
+  ...
+# Subtest: C15 getter/stream exception remains sanitized
+ok 70 - C15 getter/stream exception remains sanitized
+  ---
+  duration_ms: 0.2579
+  type: 'test'
+  ...
+# Subtest: C15 all six independent recovery components must match
+ok 71 - C15 all six independent recovery components must match
+  ---
+  duration_ms: 3.3058
+  type: 'test'
+  ...
+# Subtest: C15 a database-only backup cannot certify a complete restore
+ok 72 - C15 a database-only backup cannot certify a complete restore
+  ---
+  duration_ms: 0.4739
+  type: 'test'
+  ...
+# Subtest: C15 same-revision divergent receipt is a conflict, not a last-writer win
+ok 73 - C15 same-revision divergent receipt is a conflict, not a last-writer win
+  ---
+  duration_ms: 1.2742
+  type: 'test'
+  ...
+# Subtest: C15 the union of backup and live ledger cannot duplicate a provider intent key
+ok 74 - C15 the union of backup and live ledger cannot duplicate a provider intent key
+  ---
+  duration_ms: 1.632
+  type: 'test'
+  ...
+# Subtest: C15 stalled stream never yields a successful zero-row inventory
+ok 75 - C15 stalled stream never yields a successful zero-row inventory
+  ---
+  duration_ms: 17.4109
+  type: 'test'
+  ...
+# Subtest: C15 cancellation during streaming rejects all partial inventory
+ok 76 - C15 cancellation during streaming rejects all partial inventory
+  ---
+  duration_ms: 0.5429
+  type: 'test'
+  ...
+1..76
+# tests 76
+# suites 0
+# pass 76
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 47026.2964

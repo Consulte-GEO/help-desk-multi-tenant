@@ -1,0 +1,295 @@
+TAP version 13
+# Subtest: HD045 hashes real bytes from all six components, is immutable and leaves files intact
+ok 1 - HD045 hashes real bytes from all six components, is immutable and leaves files intact
+  ---
+  duration_ms: 242.6896
+  type: 'test'
+  ...
+# Subtest: HD045 a real copy in another root matches despite timestamps and creation order
+ok 2 - HD045 a real copy in another root matches despite timestamps and creation order
+  ---
+  duration_ms: 442.8433
+  type: 'test'
+  ...
+# Subtest: HD045 same-size byte corruption is detected in objects without changing database totals
+ok 3 - HD045 same-size byte corruption is detected in objects without changing database totals
+  ---
+  duration_ms: 70.3045
+  type: 'test'
+  ...
+# Subtest: HD045 structure participates in digest: rename
+not ok 4 - HD045 structure participates in digest: rename
+  ---
+  duration_ms: 60.0764
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\recovery-files.test.ts:14:68'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, rename 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-8qwbCo\\source\\revocations\\private-name.bin' -> 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-8qwbCo\\source\\revocations\\other.bin'"
+  code: 'EPERM'
+  stack: |-
+    async rename (node:internal/fs/promises:1490:10)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:14:279)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HD045 structure participates in digest: remove
+ok 5 - HD045 structure participates in digest: remove
+  ---
+  duration_ms: 152.8802
+  type: 'test'
+  ...
+# Subtest: HD045 structure participates in digest: empty-directory
+ok 6 - HD045 structure participates in digest: empty-directory
+  ---
+  duration_ms: 153.7787
+  type: 'test'
+  ...
+# Subtest: HD045 all six empty directories form a valid inventory, missing is not empty
+ok 7 - HD045 all six empty directories form a valid inventory, missing is not empty
+  ---
+  duration_ms: 59.7979
+  type: 'test'
+  ...
+# Subtest: HD045 extra root entries are refused rather than silently omitted
+ok 8 - HD045 extra root entries are refused rather than silently omitted
+  ---
+  duration_ms: 18.7407
+  type: 'test'
+  ...
+# Subtest: HD045 hardlinked files cannot escape the private stable-copy requirement
+not ok 9 - HD045 hardlinked files cannot escape the private stable-copy requirement
+  ---
+  duration_ms: 208.5306
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\recovery-files.test.ts:17:1'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, link 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-vmnqfE\\source\\database\\private-name.bin' -> 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-vmnqfE\\alias.bin'"
+  code: 'EPERM'
+  stack: |-
+    async link (node:internal/fs/promises:1767:10)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:17:134)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HD045 directory links and linked roots are refused
+not ok 10 - HD045 directory links and linked roots are refused
+  ---
+  duration_ms: 34.6339
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\recovery-files.test.ts:18:1'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, symlink 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-Y47pOH\\source' -> 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-Y47pOH\\alias'"
+  code: 'EPERM'
+  stack: |-
+    async symlink (node:internal/fs/promises:1707:10)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:18:138)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HD045 path through a directory alias is refused even when final root is not a link
+not ok 11 - HD045 path through a directory alias is refused even when final root is not a link
+  ---
+  duration_ms: 25.6953
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\recovery-files.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, symlink 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-2LVOJ1' -> 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-2LVOJ1\\alias'"
+  code: 'EPERM'
+  stack: |-
+    async symlink (node:internal/fs/promises:1707:10)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-files.test.ts:19:170)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HD045 entry budget is global across components
+ok 12 - HD045 entry budget is global across components
+  ---
+  duration_ms: 66.3232
+  type: 'test'
+  ...
+# Subtest: HD045 byte budget counts file bytes globally, not the metadata digest length
+ok 13 - HD045 byte budget counts file bytes globally, not the metadata digest length
+  ---
+  duration_ms: 121.9873
+  type: 'test'
+  ...
+# Subtest: HD045 excessive nesting fails without silently dropping deeper entries
+ok 14 - HD045 excessive nesting fails without silently dropping deeper entries
+  ---
+  duration_ms: 66.8014
+  type: 'test'
+  ...
+# Subtest: HD045 already aborted and in-flight cancellation fail completely
+ok 15 - HD045 already aborted and in-flight cancellation fail completely
+  ---
+  duration_ms: 17.0863
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":0}
+ok 16 - HD045 invalid or expanded limits refused {"maxBytes":0}
+  ---
+  duration_ms: 15.4542
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":268435457}
+ok 17 - HD045 invalid or expanded limits refused {"maxBytes":268435457}
+  ---
+  duration_ms: 15.7272
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxEntries":10001}
+ok 18 - HD045 invalid or expanded limits refused {"maxEntries":10001}
+  ---
+  duration_ms: 13.1754
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxEntries":0}
+ok 19 - HD045 invalid or expanded limits refused {"maxEntries":0}
+  ---
+  duration_ms: 15.507
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":30001}
+ok 20 - HD045 invalid or expanded limits refused {"timeoutMs":30001}
+  ---
+  duration_ms: 18.2879
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":0}
+ok 21 - HD045 invalid or expanded limits refused {"timeoutMs":0}
+  ---
+  duration_ms: 17.5015
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"timeoutMs":null}
+ok 22 - HD045 invalid or expanded limits refused {"timeoutMs":null}
+  ---
+  duration_ms: 16.9852
+  type: 'test'
+  ...
+# Subtest: HD045 invalid or expanded limits refused {"maxBytes":1.2}
+ok 23 - HD045 invalid or expanded limits refused {"maxBytes":1.2}
+  ---
+  duration_ms: 14.6765
+  type: 'test'
+  ...
+# Subtest: HD045 CLI help is explicit and has no input requirement
+ok 24 - HD045 CLI help is explicit and has no input requirement
+  ---
+  duration_ms: 983.9769
+  type: 'test'
+  ...
+# Subtest: HD045 CLI captures and compares a closed safe manifest using actual files
+ok 25 - HD045 CLI captures and compares a closed safe manifest using actual files
+  ---
+  duration_ms: 3243.9593
+  type: 'test'
+  ...
+# Subtest: HD045 CLI divergence has exit2 and names only affected components
+ok 26 - HD045 CLI divergence has exit2 and names only affected components
+  ---
+  duration_ms: 1470.2166
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely []
+ok 27 - HD045 CLI invalid args fail safely []
+  ---
+  duration_ms: 374.64
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root"]
+ok 28 - HD045 CLI invalid args fail safely ["--root"]
+  ---
+  duration_ms: 720.5684
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--restore"]
+ok 29 - HD045 CLI invalid args fail safely ["--restore"]
+  ---
+  duration_ms: 582.2317
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root","x","--root","y"]
+ok 30 - HD045 CLI invalid args fail safely ["--root","x","--root","y"]
+  ---
+  duration_ms: 474.3293
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--help","--root","x"]
+ok 31 - HD045 CLI invalid args fail safely ["--help","--root","x"]
+  ---
+  duration_ms: 573.9946
+  type: 'test'
+  ...
+# Subtest: HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"]
+ok 32 - HD045 CLI invalid args fail safely ["--root","x","--expected","x","--expected","y"]
+  ---
+  duration_ms: 466.0881
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest malformed
+ok 33 - HD045 CLI refuses expected manifest malformed
+  ---
+  duration_ms: 1135.9981
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest extra-property
+ok 34 - HD045 CLI refuses expected manifest extra-property
+  ---
+  duration_ms: 1039.1553
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest missing-component
+ok 35 - HD045 CLI refuses expected manifest missing-component
+  ---
+  duration_ms: 968.7283
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest wrong-algorithm
+ok 36 - HD045 CLI refuses expected manifest wrong-algorithm
+  ---
+  duration_ms: 950.9787
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest oversized
+ok 37 - HD045 CLI refuses expected manifest oversized
+  ---
+  duration_ms: 965.7673
+  type: 'test'
+  ...
+# Subtest: HD045 CLI refuses expected manifest linked
+not ok 38 - HD045 CLI refuses expected manifest linked
+  ---
+  duration_ms: 569.7358
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\recovery-inventory-cli.test.ts:16:126'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, symlink 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-cli-VlSaMX' -> 'C:\\Users\\thiag\\AppData\\Local\\Packages\\sandbox.{d6f86541-5b44-4265-8cce-7c2f4c3b5927}\\AC\\Temp\\hd-recovery-cli-VlSaMX\\linked'"
+  code: 'EPERM'
+  stack: |-
+    async symlink (node:internal/fs/promises:1707:10)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-inventory-cli.test.ts:16:737)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HD045 CLI refuses expected manifest inside-root
+ok 39 - HD045 CLI refuses expected manifest inside-root
+  ---
+  duration_ms: 636.3572
+  type: 'test'
+  ...
+# Subtest: HD045 CLI import does not read, print or execute
+ok 40 - HD045 CLI import does not read, print or execute
+  ---
+  duration_ms: 203.2027
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 35
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15917.678

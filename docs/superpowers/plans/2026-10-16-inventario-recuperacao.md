@@ -31,9 +31,11 @@ Somente leitura local; seis diretórios obrigatórios;10.000 entradas/256MiB/12 
 - [x] Testes negativos/positivos com arquivos reais temporários; executar RED antes da implementação.
 - [x] Implementar leitura em blocos, identidade estável, limites, digest opaco e CLI fechada; executar GREEN.
 - [x] Documentar preparação/uso/saída/limites e teste de import sem efeito; repetir focais do planejador/composição, tipos/contratos/build/lock/secrets.
-- [ ] Commit da fonte, draft PR independente de PR70, CI integral e revisão independente somente leitura.
-- [ ] Preservar relatório/logs originais e qualificar preview; atualizar estado/documentação e deixar PR pronto, sem merge/publicação.
+- [x] Commit da fonte, draft PR independente de PR70, CI integral e revisão independente somente leitura.
+- [x] Preservar relatório/logs originais e qualificar preview; atualizar estado/documentação e deixar PR pronto, sem merge/publicação.
 
 ## Registro de execução
 
 Ruling: execução direta neste chat, conforme pedido para continuar; aprovação final não é repetida para planejamento. A integração do novo PR continua separada da implementação autorizada.
+
+Fonte7402371 qualificada:76 focais Windows, CI5956/703/673 (7332), revisão sem achados, merge de teste38994234147 aprovado. Relatório original e hashes preservados; preview6ad2dcebfb4c99b9e1836209 conferido. CLI não restaura dados nem autoriza workers; HD045 permanece parcial.

@@ -28,13 +28,20 @@ Fonte `740237188ecb46ea1af8243156bd135096e96f64`, [PR71](https://github.com/Cons
 
 Local Windows/Node24:76 focais aprovados, zero falha/skip/cancelamento/todo; tipos,45 operações de contrato, build completo, lock e scanner heurístico de segredos aprovados. O scanner heurístico não equivale a auditoria de segurança. A primeira tentativa no sandbox teve35/40 e cinco falhas EPERM na preparação de rename/links; sua repetição válida teve74/74, seguida de76/76 após acrescentar casos de prazo e componente que deixou de ser diretório. O primeiro typecheck apontou narrowing de `object`; foi corrigido para `Record<string,unknown>` após conferir o envelope. Logs iniciais e finais são preservados, sem transformar diagnóstico falho em gate aprovado.
 
-Revisor independente somente leitura, contexto novo: nenhum achado confirmado pendente; repetiu76/76 fora do sandbox e conferiu diff. O cenário FIFO foi aprovado no CI Linux; não foi simulado como aprovado no Windows. Recibo: `evidence/recovery-inventory-20261016/review.json`. CI integral da fonte aprovado; merge de teste e prévia ainda em andamento.
+Revisor independente somente leitura, contexto novo: nenhum achado confirmado pendente; repetiu76/76 fora do sandbox e conferiu diff. O cenário FIFO foi aprovado no CI Linux; não foi simulado como aprovado no Windows. Recibo: `evidence/recovery-inventory-20261016/review.json`. CI integral da fonte, merge de teste e prévia aprovados; entrega pronta para revisão, sem merge/publicação.
 
 
 ## Qualificação integral da fonte
 
 [CI de origem38994228615](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38994228615): Node22/Linux,5.956 testes de aplicação,703 em PostgreSQL17 com login restrito e673 de interface, total7.332, zero falha/skip/cancelamento/todo. Gates independentes lock/install/audit também aprovados. HDA e Apoio Implantação aprovados nas execuções de origem e PR.
 
-Artefato original `helpdesk-homologation-740237188ecb46ea1af8243156bd135096e96f64-38994228615-1`, digest informado pelo GitHub `sha256:201e61fc3e18b08b39509b86c0ff57185edb06a6064a638648e351de5d55b884`. Relatório e seis logs copiados sem normalizar os bytes para `evidence/homologation/runs/0559aaa2-5c01-4cdb-880f-97c478af2369/`; latest.json corresponde à fonte exata e todos os hashes/fingerprint foram conferidos. Recibo: `evidence/recovery-inventory-20261016/ci-qualified.json`.
+Artefato original `helpdesk-homologation-740237188ecb46ea1af8243156bd135096e96f64-38994228615-1`, digest informado pelo GitHub `sha256:201e61fc3e18b08b39509b86c0ff57185edb06a6064a638648e351de5d55b884`. Relatório e seis logs copiados sem normalizar os bytes para `evidence/homologation/runs/0559aaa2-5c01-4cdb-880f-97c478af2369/`; latest.json corresponde à fonte exata e todos os hashes/fingerprint foram conferidos. Recibo: `evidence/recovery-inventory-20261016/ci-qualified.json`. [Merge de teste38994234147](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38994234147) também aprovado.
 
 Prévia inicial `6ad2da5857bf69a6c0a8de41`, fonte7402371, teve erro de build e não foi aceita; o relatório desta fonte ainda não estava registrado na árvore. O estado do provedor foi preservado, sem inferir prova de publicação. A próxima prévia deve passar pelo gate com o relatório qualificado. Nenhuma dessas execuções é restore produtivo ou aceite humano operacional.
+
+
+## Prévia e entrega para revisão
+
+[Prévia71](https://deploy-preview-71--helpdesk-consultegeo.netlify.app), deploy `6ad2dcebfb4c99b9e1836209`, READY, head `b8d957ac6a1bb202ede709ad61d2e6d39103181b`. Nove assets críticos conferidos por bytes ou SHA-1 do manifesto, incluindo shell/HTML (somente inserção CDP identificada do provedor), estado da fila e entrada/facade do Apoio. Recibo `evidence/recovery-inventory-20261016/preview.json`. A CLI é uma ferramenta local do repositório, sem nova tela ou API; a prévia qualifica o pacote web existente.
+
+A produção continua no PR69/merge72a72b5, deploy6ad2c3fd7dd44b857679b79f. PR70 permanece separado e aberto; PR71 não inclui seu código. PR71 pronto para revisão, sem merge, migração, envio de negócio ou implantação produtiva nesta rodada. O último commit de documentação/evidências preserva o fingerprint da fonte qualificada; seus checks e sua prévia devem ser reconferidos antes de qualquer integração.

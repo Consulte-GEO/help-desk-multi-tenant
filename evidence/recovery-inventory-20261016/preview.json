@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-17T02:30:27.254Z",
+  "pr": 71,
+  "source": "740237188ecb46ea1af8243156bd135096e96f64",
+  "head": "b8d957ac6a1bb202ede709ad61d2e6d39103181b",
+  "preview": {
+    "id": "6ad2dcebfb4c99b9e1836209",
+    "state": "ready",
+    "context": "deploy-preview",
+    "url": "https://deploy-preview-71--helpdesk-consultegeo.netlify.app"
+  },
+  "production": {
+    "deploy": "6ad2c3fd7dd44b857679b79f",
+    "source": "72a72b51ea651fa5d377f2632646a352d39e90f1"
+  },
+  "assets": [
+    {
+      "file": "app.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "c22cea509b15b14ac86b1491131ebbf1cfcb835291a9085ddcebf3860c8ba769"
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "matchedBytes": false,
+      "providerInsertionOnly": true,
+      "sha256": "ba0693a4128389152f0860deb51fa3c036adb3e00da479c1410f9d990578f540"
+    },
+    {
+      "file": "ticket-list-state.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "c28846df931c8612bd8c45253ff09c2d5fc192b2a7708bbdb8a62328684769c2"
+    },
+    {
+      "file": "ticket-views.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "077a17e9f414e80dafe8dd96e2f64f81f7030cde58b3f2ef759302f3d3c3d02c"
+    },
+    {
+      "file": "inbox-view-state.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "03a841f56c850fee5c4d944b91ea4134b0231245f529d842fa14c6bf457c4bd8"
+    },
+    {
+      "file": "inbox-workspace.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "a3c458dd76c983c19f4c9ed9d22044f85c74ca808853c10c3779cacbb1ed6e78"
+    },
+    {
+      "file": "consulte-theme.css",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "a914fad0109f1b71a4c8c866c9b5aa73204f6d6a55b8bb41518f047292356b0e"
+    },
+    {
+      "file": "/implantacao/chunks/entry-cvey8n1k.js",
+      "status": 200,
+      "matchedManifest": true,
+      "manifestSha1": "ed38c395dd57fe23ba644251144b18e37144fa6a"
+    },
+    {
+      "file": "/implantacao/support-app.js",
+      "status": 200,
+      "matchedManifest": true,
+      "manifestSha1": "14395156abb897cf329c66c12520fb43dc77b9a7"
+    }
+  ],
+  "authenticated": false,
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "pass": true
+}
