@@ -18,7 +18,7 @@ Execução direta com testes antes do código, conforme continuidade autorizada.
 - [x] Implementar opções/normalização/predicado compartilhado e admissão; allowlists core e composição CG; SQL com parâmetros, interseção de operador antes do LIMIT e paridade com resumo.
 - [x] UI/estado/consultas rápidas/rascunhos, contrato OpenAPI e jornada Chromium com APIs sintéticas: equipe e solicitante, filtros/paginação/totais, limpeza/logout e390px.
 - [x] PostgreSQL17 real: login restrito, contas mistas antes do LIMIT, estados combinados, cursor e revogação; namespace CG atual. Sem mudança de fixtures para ocultar falhas.
-- [ ] Tipos, contratos, build/lock/scan; CI Linux integral, revisão independente e recibos por fonte; PR/preview prontos para revisão. Sem merge antecipado da próxima entrega.
+- [x] Tipos, contratos, build/lock/scan; CI Linux integral, revisão independente e recibos por fonte; PR/preview prontos para revisão. Sem merge antecipado da próxima entrega.
 
 ## Foco da revisão
 
@@ -43,3 +43,9 @@ Fonte `d638cd0d5563f17aff0d340ccdc18bff7f05e378`, fingerprint `f75c7a653779e9051
 Artefato original `helpdesk-homologation-d638cd0d5563f17aff0d340ccdc18bff7f05e378-38988545433-1`, digest `sha256:f095f0400d0658a809c0b17ef23fce92254ca185a00dc2de23e12ebe8eab098d`. Relatório e seis logs originais preservados em evidence/homologation; `ci-qualified.json` registra hashes/origem e fingerprint inalterado, reconferido antes/depois da cópia. Casos de conta mista antes do LIMIT, autorização/revogação e namespace CG passaram no PG17 real.
 
 Merge de teste [38988551964](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38988551964) aprovado. HDA fonte38988545421/PR38988551985 e Apoio fonte38988545466/PR38988551959 aprovados. Primeira prévia d638/6ad2c76561bc8e3c0d7f8194 falhou antes da inclusão do relatório aprovado; recibo identificado como não qualificado. A publicação produtiva continua no PR69. Prévia qualificada ainda será conferida; PR70 continua rascunho até a entrega final.
+
+## Prévia e entrega para revisão
+
+[Prévia PR70](https://deploy-preview-70--helpdesk-consultegeo.netlify.app) pronta em `bbfc1979d2115c4a0c52b3a84dbe134c7741b867`, deploy `6ad2ca181ee9a04487894e76`. Nove arquivos conferidos: app, HTML, estado da lista, consultas rápidas, estado/apresentação da caixa, CSS e entry/facade do Apoio. Bytes da fonte aprovados; inserção CDP nativa no HTML estritamente identificada; módulo conferido por manifesto SHA1. Recibo em `preview.json`. Não é aceite humano autenticado, nem escrita produtiva. Produção segue no PR69/72a72b5.
+
+Quatro análises CodeQL e agregado, regras de headers/redirects e preview aprovados em bbfc197; Pages neutral. Implementação/revisão/CI/merge de teste concluídos, PR70 preparado para revisão, sem merge ou publicação antecipados. A atualização documental final mantém o fingerprint e terá HEAD/prévia conferidos separadamente. Os checkpoints anteriores e a prévia não qualificada continuam históricos. HD-019/026 seguem parciais.

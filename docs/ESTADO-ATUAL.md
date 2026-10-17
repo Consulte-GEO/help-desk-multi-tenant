@@ -23,7 +23,7 @@ Provas desta publicação: `evidence/description-search-20261016/production/publ
 
 **HD-019 — busca na descrição:** [PR69](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69), fonte `06ef6be` qualificada no CI integral (7.289 verificações) e revisão independente sem bloqueadores. Mesclado e publicado no deploy indicado acima; os recibos produtivos estão no checkpoint. [Desenho, plano e limites](implementation/BUSCA-DESCRICAO-2026-10-16.md). Pesquisa global de mensagens exige uma projeção autorizada que também cubra interações públicas do workflow; não usar só a tabela de mensagens.
 
-**HD-019 — situação interna da equipe:** [PR70](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/70), fonte `d638cd0` revisada sem achados e qualificada no CI integral (7.303 verificações), sem merge/publicação. Rascunho enquanto a prévia final é conferida. [Desenho e verificações](implementation/FILTRO-SITUACAO-INTERNA-2026-10-16.md).
+**HD-019 — situação interna da equipe:** [PR70](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/70), fonte `d638cd0` revisada sem achados e qualificada no CI integral (7.303 verificações), sem merge/publicação. Merge de teste e [prévia](https://deploy-preview-70--helpdesk-consultegeo.netlify.app) conferidos; pronto para revisão. [Desenho e verificações](implementation/FILTRO-SITUACAO-INTERNA-2026-10-16.md).
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 
