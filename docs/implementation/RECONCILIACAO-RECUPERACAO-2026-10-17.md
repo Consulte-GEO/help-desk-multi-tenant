@@ -26,3 +26,16 @@ Registrar RED/GREEN, testes focais, tipos, contratos, lock, segredos/build, revi
 
 
 Limites adicionais do contrato C15: Também se aplicam os limites cumulativos dos planejadores existentes por array: 262144 bytes contabilizados (chaves/textos/valores; não tamanho JSON), 15.000 nós e profundidade12; podem recusar entradas antes de1.000 linhas/2 MiB. Não há fragmentação automática: revisar o escopo coerente das cópias ou projetar um adaptador próprio, sem perder conflitos ou revogações entre lotes.
+
+
+Exemplo executável de saída: [relatório sintético](../../evidence/recovery-reconcile-20261017/synthetic-example.json), gerado pelo CLI real com confirmação atual de entrega, revogação retida e objeto em quarentena. São fixtures locais; não são dados, e-mails, prova de ledger nativo ou restauração produtiva.
+
+## Qualificação da fonte do PR74
+
+Fonte **6a1d3de4558041a4b29cc1ef7949c96e0311d253**; CI [fonte 39035894346](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39035894346) e [merge de teste 39035896941](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39035896941) aprovados, mesmo fingerprint **bf48331dd8c6db8bb920cec3dabe9d2dc24b24bf1c1b93e1e77cf8b89d07944a**. Aplicação **6021**, PostgreSQL17 restrito **709**, interface **691**: total **7421**, zero falhas/skips/cancelamentos/todo. Tipos,45 operações OpenAPI, build, lock, instalação e auditoria integram os gates. Varredura de segredos é heurística. Nenhuma migration/SQL/grant/dependência nova.
+
+Artefato original **helpdesk-homologation-6a1d3de4558041a4b29cc1ef7949c96e0311d253-39035894346-1**, digest **sha256:37b9aaad8a07322480b6b945410b237adb5a84609b62ee6a3c14d3d08e4de1b4**. Relatório e seis logs originais preservados sem normalizar bytes; hashes verificados. Artefato independente do merge também baixado/conferido contra o mesmo fingerprint. [Fonte](../../evidence/recovery-reconcile-20261017/ci-qualified.json) e [merge](../../evidence/recovery-reconcile-20261017/merge-ci.json).
+
+Local:107 testes focais, compilador direto e regressões de filesystem aprovados. A revisão independente encontrou omissão dos limites herdados; ajuda/spec/runbook corrigidos com regressão RED/GREEN de1.000 registros individualmente válidos e únicos sob2MiB, recusados atomicamente pelo orçamento do planejador. Nenhum outro achado acionável. O revisor passou33 testes;2 fixtures recusaram criação de links com EPERM do sandbox, enquanto o executor principal elevado passou ambas. [Revisão](../../evidence/recovery-reconcile-20261017/review.json). O primeiro npm typecheck ficou pendente e não foi contado; compilador direto e CI integral concluídos.
+
+Sem mudança de UI/HTTP; testes de interface qualificam regressão do produto, não aceite humano autenticado nem restore. As primeiras prévias falhas estão preservadas e não foram aceitas. Preview após incorporar este relatório ainda em conferência; PR74 segue separado e sem merge/publicação. Produção permanece PR73/d8f1fe2/deploy6ad37227af6d1784b1404bad.

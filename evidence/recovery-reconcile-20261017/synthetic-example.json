@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "inputContract": "c15-recovery-v1",
+  "at": "2026-10-10T18:00:00.000Z",
+  "sources": {
+    "deliveryBackup": {
+      "count": 1,
+      "canonicalJsonSha256": "c95d25e594521a4cdd0b87990aa58ce9c0ffbc7a4534a5bcd7ec7fb9dd0a0777"
+    },
+    "deliveryCurrent": {
+      "count": 1,
+      "canonicalJsonSha256": "adea31603e1e87288d517237eeda9da0ba9fab84a4d4473f96e49e92da24d23c"
+    },
+    "accessRestored": {
+      "count": 2,
+      "canonicalJsonSha256": "ca3d983ab1dedc848f9c6b4aa410d40ffafec640aebf8dde46480db338c80df1"
+    },
+    "accessTombstones": {
+      "count": 1,
+      "canonicalJsonSha256": "65283039ab541318f0aea7939161384e568e805ff6a272da8d51762db73a09bf"
+    }
+  },
+  "delivery": {
+    "total": 1,
+    "states": {
+      "pending": 0,
+      "retry_wait": 0,
+      "leased": 0,
+      "sending": 0,
+      "unknown": 0,
+      "accepted": 0,
+      "delivered": 1,
+      "failed": 0,
+      "suppressed": 0
+    },
+    "attention": 0,
+    "dispatchable": 0,
+    "planHash": "adea31603e1e87288d517237eeda9da0ba9fab84a4d4473f96e49e92da24d23c"
+  },
+  "access": {
+    "total": 2,
+    "actions": {
+      "do_not_restore": 0,
+      "keep_revoked": 1,
+      "invalidate": 0,
+      "quarantine": 1,
+      "require_revalidation": 0
+    },
+    "planHash": "33b34fb80f0d20f7e62160ee35fda504f470dc8ccd6f32f8e5ff31477190157a"
+  },
+  "sourceAuthorityVerified": false,
+  "productionApproved": false,
+  "restorePerformed": false,
+  "resumeWorkers": false,
+  "mutations": 0
+}
