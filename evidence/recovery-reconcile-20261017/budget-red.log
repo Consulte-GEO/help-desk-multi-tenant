@@ -1,0 +1,31 @@
+✖ HD045 reconcile help declares inherited planner budgets and refuses excess atomically (202.4269ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 467.1346
+
+✖ failing tests:
+
+test at tests\recovery-reconcile-cli.test.ts:20:1
+✖ HD045 reconcile help declares inherited planner budgets and refuses excess atomically (202.4269ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /262144/. Input:
+  
+  'Uso: node --experimental-strip-types scripts/recovery-reconcile.ts --delivery-backup <json> --delivery-current <json> --access-restored <json> --access-tombstones <json> --at <UTC-Z>\n' +
+    'Relatório local somente leitura. Quatro arrays C12/C15, não exports nativos HDN/Resend/SQL. Máximo 2 MiB e 1.000 elementos por arquivo; caminhos distintos, sem links. UTC com 3 ou 6 casas decimais. Fontes congeladas: ledger atual e tombstones conservados fora do rollback; autoridade e cobertura exigem comprovação própria. Saída contém somente contagens/hashes, sem restore, rede, envio ou ativação. Redirecione para arquivo novo fora das entradas: o shell abre o destino antes do programa. Exit0 = cálculo concluído, sem autorização de produção; exit1 = argumentos/fontes inválidos ou conflito, sem relatório parcial.\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/recovery-reconcile-cli.test.ts:20:138)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Uso: node --experimental-strip-types scripts/recovery-reconcile.ts --delivery-backup <json> --delivery-current <json> --access-restored <json> --access-tombstones <json> --at <UTC-Z>\nRelatório local somente leitura. Quatro arrays C12/C15, não exports nativos HDN/Resend/SQL. Máximo 2 MiB e 1.000 elementos por arquivo; caminhos distintos, sem links. UTC com 3 ou 6 casas decimais. Fontes congeladas: ledger atual e tombstones conservados fora do rollback; autoridade e cobertura exigem comprovação própria. Saída contém somente contagens/hashes, sem restore, rede, envio ou ativação. Redirecione para arquivo novo fora das entradas: o shell abre o destino antes do programa. Exit0 = cálculo concluído, sem autorização de produção; exit1 = argumentos/fontes inválidos ou conflito, sem relatório parcial.\n',
+    expected: /262144/,
+    operator: 'match',
+    diff: 'simple'
+  }

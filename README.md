@@ -1,4 +1,4 @@
-> **17/10/2026 — estado corrente:** produção PR73/d8f1fe2/deploy6ad37227af6d1784b1404bad,122 entradas HTTPS/hash, sem migração. PR74/relatório local de reconciliação segue separado, sem merge. PR75 acrescenta período de atualização da fila sobre PR73, fonte737831e, CI 7.411, revisão e preview aprovados; pronto para revisão, sem merge/publicação. [Síntese canônica](docs/ESTADO-ATUAL.md). Os registros abaixo são históricos.
+> **17/10/2026 — integração autorizada:** PR74 mesclado em4df5a99496c74b23712f2dfe709663b1b92bdbe1, publicação em conferência. PR75 integra essa base e aguarda nova qualificação integral da combinação; os recibos das fontes originais foram preservados. [Síntese canônica](docs/ESTADO-ATUAL.md). Os registros abaixo são históricos.
 
 > **17/10/2026 — estado corrente:** PR72 publicado em75992c3/deploy6ad369f6bb509383d7feaec7,122 entradas HTTPS/hash conferidas, sem migração. PR73 acrescenta ordem por criação, fonte df665c0, CI 7.385, revisão independente e preview aprovados; pronto para revisão, sem merge/publicação. [Síntese canônica](docs/ESTADO-ATUAL.md). Os registros abaixo são históricos.
 

@@ -1,0 +1,48 @@
+{
+  "source": "6a1d3de4558041a4b29cc1ef7949c96e0311d253",
+  "checks": [
+    {
+      "kind": "focused",
+      "localOnly": true,
+      "sourceStage": "After budget correction",
+      "artifact": "local-reviewed.log",
+      "sha256": "3ca1b856c8cbba234585cbf7f34fa73b334ac4656857b00fae1447d181ee678e",
+      "exitCode": 0
+    },
+    {
+      "kind": "typecheck-direct",
+      "localOnly": true,
+      "sourceStage": "After budget correction",
+      "artifact": "local-types.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "kind": "contracts",
+      "localOnly": true,
+      "sourceStage": "Initial implementation before help/test-only budget correction",
+      "artifact": "local-contracts.log",
+      "sha256": "ab7f306a16df7147e3b43f5c7de87fc6a5b362d711fae8031d3e3211b3f6c790",
+      "exitCode": 0
+    },
+    {
+      "kind": "build",
+      "localOnly": true,
+      "sourceStage": "Initial implementation before help/test-only budget correction",
+      "artifact": "local-build.log",
+      "sha256": "cb4d262ac63f040b5b9ab95b828900a3e56b1aa97ffdac856b1945d0f2a1090a",
+      "exitCode": 0
+    }
+  ],
+  "tests": {
+    "focused": 107,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "compiler": "Local TypeScript direct invocation; npm wrapper not counted.",
+  "lock": "Passed; no dependency change.",
+  "secretScan": "Passed heuristic only, not a security audit.",
+  "productionApproved": false
+}
