@@ -4,7 +4,7 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 
 **Checkpoint histórico da integração17/10:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
-**Continuidade17/10:** PR73 mesclado/publicado/verificado. Os checkpoints de integração anteriores são históricos. Relatório local de reconciliação HD-045 permanece separado, em implementação/revisão.
+**Continuidade17/10:** PR73 mesclado/publicado/verificado. Os checkpoints de integração anteriores são históricos. Relatório local de reconciliação HD-045 no PR74 qualificado para revisão, separado e sem merge/publicação.
 
 ## Produção confirmada
 
@@ -36,7 +36,7 @@ Provas desta publicação: `evidence/publication-pr73-20261017/publication.json`
 
 **HD-045 — inventário local de arquivos:** [PR71](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/71) mesclado/publicado no deploy acima após qualificação combinada7.346. CLI local somente leitura, comparação de bytes/estrutura de seis componentes. Não executa restore, SQL, envio nem retomada de workers; HD045 continua parcial. [Desenho e recibos](implementation/INVENTARIO-RECUPERACAO-2026-10-16.md).
 
-**HD-045 — relatório local de reconciliação:** novo recorte somente leitura C12/C15 em implementação/revisão; agrega hashes/contagens dos planejadores existentes sem emitir registros privados. Não adapta exports nativos, comprova autoridade, executa restore ou retoma workers. [Escopo e pendências](implementation/RECONCILIACAO-RECUPERACAO-2026-10-17.md).
+**HD-045 — relatório local de reconciliação:** [PR74](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/74), fonte6a1d3de, CI fonte/merge 7.421,107 focais e revisão independente com limite herdado corrigido. Preview qualificado em10 ativos críticos. Agrega somente hashes/contagens dos planejadores C12/C15 existentes; não adapta exports nativos, atesta autoridade, executa restore ou libera workers. Sem merge/publicação deste recorte. [Escopo, evidências e etapas restantes](implementation/RECONCILIACAO-RECUPERACAO-2026-10-17.md).
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 

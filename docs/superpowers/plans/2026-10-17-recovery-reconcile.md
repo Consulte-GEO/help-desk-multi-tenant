@@ -30,11 +30,11 @@
 
 Interfaces: `summarizeRecoveryReconciliation(backup,current,restored,tombstones,at)` recebe unknown e string; `main(args)` retorna Promise<number>. Saída fechada e congelada; leitor `readPrivateKnowledgeJson` sem alterações.
 
-- [ ] Escrever testes de agregado/privacidade/imutabilidade e CLI real (gramática, arquivos, links, falha atômica, limites, help/import).
-- [ ] Executar RED: falha por módulo/CLI ainda ausente, com asserção explícita da interface esperada.
-- [ ] Implementar `src/domain/recovery-reconciliation-report.ts`, `scripts/recovery-reconcile.ts` e script npm `recovery:reconcile`.
-- [ ] Executar GREEN e regressões dos planejadores/inventário/leitor; esperado zero falhas.
-- [ ] Documentar uso/limites no runbook; registrar publicação73 e provas finais preservadas.
-- [ ] Verificar tipos, contratos, lock, segredos e build; commit do código.
-- [ ] Revisão independente somente leitura; corrigir achados relevantes com RED/GREEN.
-- [ ] Publicar branch/PR de revisão, preservar CI integral fonte e merge e conferir prévia. Sem merge/publicação do novo recorte.
+- [x] Escrever testes de agregado/privacidade/imutabilidade e CLI real (gramática, arquivos, links, falha atômica, limites, help/import).
+- [x] Executar RED: falha por módulo/CLI ainda ausente, com asserção explícita da interface esperada.
+- [x] Implementar `src/domain/recovery-reconciliation-report.ts`, `scripts/recovery-reconcile.ts` e script npm `recovery:reconcile`.
+- [x] Executar GREEN e regressões dos planejadores/inventário/leitor; esperado zero falhas.
+- [x] Documentar uso/limites no runbook; registrar publicação73 e provas finais preservadas.
+- [x] Verificar tipos, contratos, lock, segredos e build; commit do código.
+- [x] Revisão independente somente leitura; corrigir achados relevantes com RED/GREEN.
+- [x] Publicar branch/PR de revisão, preservar CI integral fonte e merge e conferir prévia. Sem merge/publicação do novo recorte.
