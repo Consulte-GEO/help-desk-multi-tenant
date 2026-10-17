@@ -11,7 +11,7 @@ test('C07 build whitelist copies new form assets byte-for-byte and preserves old
   for(const path of [...legacy,'support-navigation.js'])await writeFile(join(root,'web',path),'owned-legacy-fixture:'+path);
   for(const path of ['instant.js','mfa.js'])await writeFile(join(root,'shared',path),'owned-shared-fixture:'+path);
   const added=['web/dynamic-form.js','web/admin-forms.js','web/dynamic-form.css','shared/form-rules.js','shared/cnpj.js','web/attachments.js','web/support-intake.js','web/review-state.js','web/approvals.js','web/form-review.js','web/delivery-operations.js','web/portal-state.js','web/customer-portal.js','web/support-queue.js','web/ticket-detail.js','web/reports.js','web/portal.css','web/optional-support.js','web/portal-format.js'];
-  added.push('web/email-monitor.js','web/email-monitor.css');
+  added.push('web/email-monitor.js','web/email-monitor.css','web/filter-instant.js');
   added.push('web/ticket-views.js','web/ticket-guidance.js','web/message-search.js');
   added.push('web/ticket-summary-state.js','shared/ticket-summary.js');
   added.push('web/consultegeo-request.js','web/consultegeo-request.css','web/consultegeo-intake-api.js','shared/consultegeo-request.js');
