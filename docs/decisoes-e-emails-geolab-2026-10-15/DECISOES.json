@@ -1,0 +1,47 @@
+{
+  "data_registro": "2026-10-15",
+  "fonte": "Respostas humanas nesta conversa",
+  "melhorias": {
+    "aprovadas_para_inclusao": [
+      "MEL-09"
+    ],
+    "demais": "As outras 13 propostas permanecem pendentes; não foram rejeitadas nem aprovadas por omissão."
+  },
+  "emails": {
+    "P1": {
+      "resposta": "Somente monitoramento: histórico, filtros, detalhes, fila, falhas e indicadores",
+      "gestao_ativa_nesta_fase": false
+    },
+    "P2": {
+      "resposta": "Somente administradores Consulte GEO; equipe consulta e cada usuário altera suas preferências permitidas",
+      "interpretacao": "Administração central; a resposta específica P3 exclui preferências individuais na primeira versão."
+    },
+    "P3": {
+      "resposta": "Inicialmente só a Consulte GEO configura o recebimento, sem preferências individuais",
+      "preferencias_individuais": false
+    },
+    "P4": {
+      "resposta": "Também aberturas e cliques, mesmo exigindo ampliar o registro de eventos",
+      "telemetria_abertura_clique": true
+    },
+    "P5": {
+      "resposta": "Administradores veem o endereço completo; equipe vê endereço mascarado",
+      "mascara_no_backend": true
+    },
+    "P6": {
+      "resposta": "Notificações dos chamados, enviadas aos solicitantes e à equipe",
+      "incluir_emails_auth": false
+    },
+    "P7": {
+      "resposta": "Registrar daqui para frente; histórico anterior aparece como informação indisponível quando não houver evidência",
+      "backfill_nao_selecionado": true
+    }
+  },
+  "regras_preservadas": [
+    "Autorização por conta, obra e chamado em lista, detalhe e contagens.",
+    "Click tracking do provedor permanece habilitado.",
+    "MFA sensível e origem Novo GEO permanecem com seus adiamentos e proteções.",
+    "Produção é o único ambiente hospedado; testes locais/CI descartáveis permanecem válidos.",
+    "Código, banco, fila e segredos do GEOLAB não serão copiados como infraestrutura do Help Desk."
+  ]
+}

@@ -1,0 +1,1156 @@
+{
+  "metadata": {
+    "titulo": "Levantamento atualizado de pendências — Help Desk Consulte GEO",
+    "corte": "2026-10-16",
+    "helpdesk_sha": "f13754e",
+    "wiki_sha": "72f4e60",
+    "schema_core": "0.27",
+    "migrations_core": 21,
+    "nota_schema": "Addons privados Apoio e Wiki não se contam como21 migrations do core.",
+    "finalidade": "Inventário para planejamento e continuidade; não autorização automática para implementar tudo.",
+    "categorias": {
+      "D": "Desenvolvimento ou composição",
+      "A": "Aceite / qualificação residual",
+      "P": "Decisão / política / documentação",
+      "F": "Adiado / fase futura",
+      "C": "Entregue no recorte original"
+    },
+    "total_itens_reconciliados": 50,
+    "origem": "49 HD históricos +1 melhoria MEL-09 aprovada. AUX/RF e aceites são vistas complementares, não somar como tarefas distintas.",
+    "limites": "Auditoria de código/checkpoints/chats locais; sem nova homologação produtiva ou repetição da suíte. Estado publicado sustenta-se em recibos históricos identificados por fonte.",
+    "prioridades": "Propostas: P1 continuidade/fechamento prioritário; P2 evolução seguinte; P3 futuro. Condicional/Adiado não entram na fila executável sem decisão/dependência. Não são datas/severidades.",
+    "esforco": "Estimativa relativa histórica, não reestimada por pontos/horas; o recorte foi alterado e a equipe deve redimensioná-lo."
+  },
+  "tarefas": [
+    {
+      "id": "HD-001",
+      "titulo": "Reconciliar fonte canônica e documentação corrente",
+      "categoria": "Decisão / política / documentação",
+      "codigo_categoria": "P",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Este levantamento reconcilia o backlog, mas os documentos introdutórios ainda misturam fotografias antigas (schema0.24/17 migrations, atendimento fechado) e atuais. Falta uma síntese canônica curta e manutenção das referências correntes, preservando históricos.",
+      "reutilizar": "Checkpoints datados e este pacote.",
+      "trabalho_restante": "Este levantamento reconcilia o backlog, mas os documentos introdutórios ainda misturam fotografias antigas (schema0.24/17 migrations, atendimento fechado) e atuais. Falta uma síntese canônica curta e manutenção das referências correntes, preservando históricos.",
+      "aceite_observavel": [
+        "README/estado/plano corrente apontam para o mesmo SHA, schema e recibos; outros históricos identificados por data, sem apagar evidências."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "AGENTS.md",
+        "README.md",
+        "docs/02-PLANO-DE-DESENVOLVIMENTO.md",
+        "docs/apoio-implantacao-fluxos-ui-2026-10-16.md"
+      ],
+      "esforco_relativo": "S",
+      "origem": "Reconciliação de HD-001 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-002",
+      "titulo": "Alinhar contrato público de capacidades e rotas",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Reconciliar OpenAPI/rotas/capacidades efetivamente montadas. O checker de contratos atual é estrutural; falta validação oficial do contrato e conformidade das respostas relevantes no runtime composto.",
+      "reutilizar": "Handlers, DTOs, checker estrutural e contratos existentes.",
+      "trabalho_restante": "Reconciliar OpenAPI/rotas/capacidades efetivamente montadas. O checker de contratos atual é estrutural; falta validação oficial do contrato e conformidade das respostas relevantes no runtime composto.",
+      "aceite_observavel": [
+        "Contrato validado formalmente, respostas de capacidade coerentes com configuração e testes de conformidade das rotas montadas; não anunciar módulos candidatos."
+      ],
+      "dependencias_ids": [
+        "HD-001"
+      ],
+      "fontes_atuais": [
+        "scripts/check-contracts.ts:1",
+        "src/http/handler.ts:12",
+        "src/infrastructure/runtime.ts:33",
+        "src/infrastructure/consultegeo-runtime.ts:54"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-002 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-003",
+      "titulo": "Concluir aceite da segunda onda de notificações",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Onda2 já tem oito e-mails reais do CG-10002. Falta aceitar solução, encerramento, reabertura e cancelamento, incluindo destinatários e recebimento. Não é ausência do workflow nem repetição do bug PR49.",
+      "reutilizar": "Workflow, notificações e retorno do cliente corrigidos.",
+      "trabalho_restante": "Onda2 já tem oito e-mails reais do CG-10002. Falta aceitar solução, encerramento, reabertura e cancelamento, incluindo destinatários e recebimento. Não é ausência do workflow nem repetição do bug PR49.",
+      "aceite_observavel": [
+        "Jornadas legítimas autorizadas registram estado, checklist, evento, intenção, entrega e caixa; replay não duplica e dados privados permanecem privados."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/157-ONDA2-RETORNO-DO-CLIENTE-2026-10-15.md:26"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-003 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-004",
+      "titulo": "Operar exceções e decidir expansão do piloto de e-mail",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Monitor V2 e coleta de abertura/clique já publicados e comprovados. Restam filtros complementares, mobile360px, Tab completo, endereço novo/admin e máscara/equipe, operação de exceções e decisão de expansão/pausa do piloto.",
+      "reutilizar": "Histórico/fila/atenção, filtros, modal, timeline, callbacks nativos e cobertura.",
+      "trabalho_restante": "Monitor V2 e coleta de abertura/clique já publicados e comprovados. Restam filtros complementares, mobile360px, Tab completo, endereço novo/admin e máscara/equipe, operação de exceções e decisão de expansão/pausa do piloto.",
+      "aceite_observavel": [
+        "Cumprir AC-EMAIL e política de piloto; nenhum N/D vira zero, nenhuma intenção antiga vira coorte nova; somente uma tentativa quando houver uma."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "docs/implementation/EMAIL-MONITOR-V2-ACEITE-AUTENTICADO-2026-10-16.md",
+        "docs/155-EMAIL-KIT-ONDA2-2026-10-15.md"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-004 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-005",
+      "titulo": "Concluir recuperação Auth e melhorar entregabilidade",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Recuperação/senha existem no código, ocultas no modo simples. Falta decisão de exposição da jornada, diagnóstico da entrega Auth (e-mail anterior em spam) e aceite integral pelo titular. Não é tarefa para desligar tracking do domínio compartilhado.",
+      "reutilizar": "Fluxos Auth e transportes existentes.",
+      "trabalho_restante": "Recuperação/senha existem no código, ocultas no modo simples. Falta decisão de exposição da jornada, diagnóstico da entrega Auth (e-mail anterior em spam) e aceite integral pelo titular. Não é tarefa para desligar tracking do domínio compartilhado.",
+      "aceite_observavel": [
+        "Link e destinatário corretos, troca completa válida, link vencido/reutilizado recusado e retorno à sessão coerente, sem alterar autoridade do usuário."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "web/access-mode.js:3",
+        "web/app.js:514",
+        "docs/handoff-2026-10-15/CONVERSAS-E-DECISOES.md"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-005 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-006",
+      "titulo": "Reconciliar os dois cenários antigos de logout global",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Logout global existe e está oculto no modo simples; faltam dois cenários combinados de regressão e aceite Auth entre dispositivos, sem evidência de bug atual.",
+      "reutilizar": "Logout local/global, confirmação, limpeza e testes separados.",
+      "trabalho_restante": "Logout global existe e está oculto no modo simples; faltam dois cenários combinados de regressão e aceite Auth entre dispositivos, sem evidência de bug atual.",
+      "aceite_observavel": [
+        "Confirmação antiga após nova identidade não atua na nova sessão; timeout real atravessando o estado preserva incerteza/limpeza corretas; verificar revogação sem prometer invalidar bearer antes de expirar."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/122-HD-P06-ENCERRAMENTO-GLOBAL-DE-SESSOES.md:19",
+        "tests/human-global-signout.test.ts",
+        "tests/browser-human-session.py:527"
+      ],
+      "esforco_relativo": "S",
+      "origem": "Reconciliação de HD-006 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-007",
+      "titulo": "Retomar a decisão de MFA quando o titular autorizar",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "Adiado",
+      "estado_20261016": "Titular adiou ativação/aceite do MFA sensível. Enrolamento inicial e desafio já existem; não há autorização para contornar o adiamento.",
+      "reutilizar": "Auth, TOTP, desafio e guardas existentes.",
+      "trabalho_restante": "Titular adiou ativação/aceite do MFA sensível. Enrolamento inicial e desafio já existem; não há autorização para contornar o adiamento.",
+      "aceite_observavel": [
+        "Retomada explícita, fator real do titular e recuperação/sucessão qualificados, antes de liberar operações que o exigem."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/154-ACESSO-MFA-ONDA2-2026-10-15.md",
+        "docs/157-ONDA2-RETORNO-DO-CLIENTE-2026-10-15.md:34"
+      ],
+      "esforco_relativo": "S",
+      "origem": "Reconciliação de HD-007 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-008",
+      "titulo": "Qualificar revisão/aprovação e avisos 21–24",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "Condicional",
+      "estado_20261016": "Revisão/aprovação de solicitações possui serviços montados, mas faltam política, roster, audiência e capacidades legítimas; avisos21–24 ainda não ativados. A liberação depende da decisão MFA.",
+      "reutilizar": "Revisão, aprovação, withAdministrativeAssurance e templates já existentes.",
+      "trabalho_restante": "Revisão/aprovação de solicitações possui serviços montados, mas faltam política, roster, audiência e capacidades legítimas; avisos21–24 ainda não ativados. A liberação depende da decisão MFA.",
+      "aceite_observavel": [
+        "Ator autorizado decide revisão exata com CAS, sem autoaprovação/escopo implícito; avisos só chegam ao público autorizado e MFA é comprovado."
+      ],
+      "dependencias_ids": [
+        "HD-007",
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/infrastructure/consultegeo-runtime.ts:43",
+        "docs/157-ONDA2-RETORNO-DO-CLIENTE-2026-10-15.md:34"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-008 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-009",
+      "titulo": "Fixar dicionário de entidades, autoridade e públicos",
+      "categoria": "Decisão / política / documentação",
+      "codigo_categoria": "P",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Consolidar construtora/conta/obra/contrato/grupo/master/beneficiário e quem pode solicitar, aprovar, executar e consultar cada ação. Há políticas e coberturas; falta decisão operacional inequívoca para ampliar cadastros e audiência.",
+      "reutilizar": "ACL e resolução de contexto existentes.",
+      "trabalho_restante": "Consolidar construtora/conta/obra/contrato/grupo/master/beneficiário e quem pode solicitar, aprovar, executar e consultar cada ação. Há políticas e coberturas; falta decisão operacional inequívoca para ampliar cadastros e audiência.",
+      "aceite_observavel": [
+        "Tabela versionada com responsáveis e escopos; mesmo domínio/grupo não concede todas as obras; contrato comercial e grant técnico permanecem distintos."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/handoff-2026-10-15/AUDITORIA-WIKI-E-NEGOCIO.md",
+        "src/domain/policy.ts",
+        "src/integrations/consultegeo/configuration.ts"
+      ],
+      "esforco_relativo": "S",
+      "origem": "Reconciliação de HD-009 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-010",
+      "titulo": "Reconciliar SLA, calendário, pausas e reabertura",
+      "categoria": "Decisão / política / documentação",
+      "codigo_categoria": "P",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Calendário08–18h e janela de reabertura sete dias já foram publicados. Reconciliar recibo/política efetiva com JSON draft e regras divergentes das fontes; explicitar pausa, horário útil, feriados, reabertura e prioridade.",
+      "reutilizar": "Calendário, motor e publicação de configuração.",
+      "trabalho_restante": "Calendário08–18h e janela de reabertura sete dias já foram publicados. Reconciliar recibo/política efetiva com JSON draft e regras divergentes das fontes; explicitar pausa, horário útil, feriados, reabertura e prioridade.",
+      "aceite_observavel": [
+        "Negócio aprova política e versão instalada; exemplos reproduzíveis e sem recálculo silencioso de históricos. Não escolher regra de engenharia a partir de trecho de Wiki."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "docs/149-CONSULTEGEO-ATIVACAO-2026-10-14.md:11",
+        "profiles/consultegeo/operational-policy.v1.json",
+        "src/domain/sla-clock.ts"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-010 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-011",
+      "titulo": "Adicionar validação semântica aos formulários existentes",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Campos operacionais são majoritariamente texto. Evoluir compilador/publicador para e-mail, números/unidades e documentos tipados; validação semântica servidor+UI e normalização preservando original.",
+      "reutilizar": "Motor decimal/integer/cnpj e formulários dinâmicos existentes.",
+      "trabalho_restante": "Campos operacionais são majoritariamente texto. Evoluir compilador/publicador para e-mail, números/unidades e documentos tipados; validação semântica servidor+UI e normalização preservando original.",
+      "aceite_observavel": [
+        "Erro por campo, limites/unidades corretos, versões antigas legíveis e validação de dado sem conceder identidade/acesso. CPF/CNPJ separados conforme modelo aprovado."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:15",
+        "src/integrations/consultegeo/configuration.ts:11",
+        "shared/form-rules.js:52"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-011 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-012",
+      "titulo": "Completar pedidos de usuário e acesso com alçada explícita",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Cinco ações de usuário já existem, mas beneficiário e grupo são declarações livres. Completar alçada, evidência de antes/depois, campos e revisão de acesso por obra. Diretório vivo continua dependência GEO adiada.",
+      "reutilizar": "Inclusão/alteração/desativação/reenvio/liberação e operação manual.",
+      "trabalho_restante": "Cinco ações de usuário já existem, mas beneficiário e grupo são declarações livres. Completar alçada, evidência de antes/depois, campos e revisão de acesso por obra. Diretório vivo continua dependência GEO adiada.",
+      "aceite_observavel": [
+        "Pedido não concede perfil por texto; beneficiário/obra/alçada revalidados, acessos anteriores preservados e conclusão manual conferida na origem. Telefone obrigatório somente se decidido."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:19",
+        "src/domain/registration-action-catalog.ts:12"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-012 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-013",
+      "titulo": "Completar traço e padrões técnicos por material",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Traço já cobre concreto/graute e propriedades básicas. Completar modelo por material/aplicação, flow/argamassa/padrões quando confirmados e unidades/tolerâncias/relações necessárias.",
+      "reutilizar": "Formulário de traço e snapshots atuais.",
+      "trabalho_restante": "Traço já cobre concreto/graute e propriedades básicas. Completar modelo por material/aplicação, flow/argamassa/padrões quando confirmados e unidades/tolerâncias/relações necessárias.",
+      "aceite_observavel": [
+        "Modelos homologados por especialista, exemplos completos/incompletos, nenhuma norma/default inventado e alterações com alcance explícito."
+      ],
+      "dependencias_ids": [
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:20",
+        "docs/handoff-2026-10-15/AUDITORIA-WIKI-E-NEGOCIO.md"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-013 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-014",
+      "titulo": "Completar usina, fornecedor e laboratório",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Usina/fornecedor/laboratório têm inclusão mínima. Completar vínculos central/obra, contatos por finalidade e modo manual/automático por obra quando aplicável.",
+      "reutilizar": "Oito inclusões cadastrais atuais.",
+      "trabalho_restante": "Usina/fornecedor/laboratório têm inclusão mínima. Completar vínculos central/obra, contatos por finalidade e modo manual/automático por obra quando aplicável.",
+      "aceite_observavel": [
+        "Entidade e relação identificadas, escopo por obra e efeitos revisados; conferência humana antes de comunicar execução. Integração automática só com contrato real."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:21",
+        "src/application/consultegeo-registration-operation.ts:26"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-014 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-015",
+      "titulo": "Completar bloco, cerâmica e cabos com modelos reais",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Bloco, cerâmica e cabos têm formulários mínimos; faltam modelos reais homologados e regras específicas de material, oferta de template e campos confirmados.",
+      "reutilizar": "Inclusões existentes e mecanismo de formulários.",
+      "trabalho_restante": "Bloco, cerâmica e cabos têm formulários mínimos; faltam modelos reais homologados e regras específicas de material, oferta de template e campos confirmados.",
+      "aceite_observavel": [
+        "Modelos versionados e saneados, audiência e exemplos qualificados, campos técnicos revisados por responsável sem norma presumida."
+      ],
+      "dependencias_ids": [
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:23",
+        "docs/handoff-2026-10-15/AUDITORIA-WIKI-E-NEGOCIO.md:149"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-015 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-016",
+      "titulo": "Modelar alteração e vínculo de cadastros não humanos",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Alterar/inativar/vincular cadastros não humanos não tem jornada equivalente às ações de usuário. Modelar comandos e relações de usina/traço/fornecedor/laboratório/material.",
+      "reutilizar": "Motor versionado, revisão e ACL existentes.",
+      "trabalho_restante": "Alterar/inativar/vincular cadastros não humanos não tem jornada equivalente às ações de usuário. Modelar comandos e relações de usina/traço/fornecedor/laboratório/material.",
+      "aceite_observavel": [
+        "Registro atual, antes/depois, alcance, alçada e evidência manual preservados; relação por obra distinta de alteração central."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/application/consultegeo-registration-operation.ts:18",
+        "src/application/consultegeo-registration-operation.ts:27"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-016 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-017",
+      "titulo": "Melhorar triagem de dúvida, defeito e incidente",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Dúvidas/problemas já abrem chamados; falta questionário progressivo de contexto, impacto/urgência, reprodução, esperado/observado, contorno e classificação.",
+      "reutilizar": "Famílias questions/problem e prioridade atuais.",
+      "trabalho_restante": "Dúvidas/problemas já abrem chamados; falta questionário progressivo de contexto, impacto/urgência, reprodução, esperado/observado, contorno e classificação.",
+      "aceite_observavel": [
+        "Coleta suficiente para reproduzir, sugestão de prioridade por política aprovada, histórico/motivo e sem promessa de SLA por texto livre. Incidente global é AUX-19."
+      ],
+      "dependencias_ids": [
+        "HD-010",
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/integrations/consultegeo/configuration.ts:59",
+        "src/application/support-intake.ts:87"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-017 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-018",
+      "titulo": "Criar pedidos de configuração com impacto explícito",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Criar pedidos específicos de configuração GEO com antes/depois, cliente/material/obra, impacto histórico e pré-condições. Administração do formulário HelpDesk não substitui esse serviço.",
+      "reutilizar": "Intake/revisão/configuração versionada existentes.",
+      "trabalho_restante": "Criar pedidos específicos de configuração GEO com antes/depois, cliente/material/obra, impacto histórico e pré-condições. Administração do formulário HelpDesk não substitui esse serviço.",
+      "aceite_observavel": [
+        "Catálogo de parâmetros solicitáveis aprovado, alçada e alcance revisados, conclusão somente após evidência na origem."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-011"
+      ],
+      "fontes_atuais": [
+        "src/integrations/consultegeo/configuration.ts:19",
+        "src/integrations/consultegeo/configuration.ts:60"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-018 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-019",
+      "titulo": "Tornar fila e detalhe mais operáveis",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Fila básica existe. Evoluir cockpit/detalhe: próximo passo/dono/pendências, totais completos, visões e filtros; busca corrente só assunto/UUID, ainda sem protocolo CG e conteúdo de conversa.",
+      "reutilizar": "Fila, cards explicitamente limitados aos carregados, workflow/timeline/atribuição.",
+      "trabalho_restante": "Fila básica existe. Evoluir cockpit/detalhe: próximo passo/dono/pendências, totais completos, visões e filtros; busca corrente só assunto/UUID, ainda sem protocolo CG e conteúdo de conversa.",
+      "aceite_observavel": [
+        "Contagens antes da paginação no universo autorizado, múltiplas páginas e revogação verificadas; busca privada tem audiência própria; UI preserva dados após CAS/resultado incerto."
+      ],
+      "dependencias_ids": [
+        "HD-026"
+      ],
+      "fontes_atuais": [
+        "web/app.js:143",
+        "src/infrastructure/postgres.ts:105",
+        "src/http/handler.ts:80"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-019 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-020",
+      "titulo": "Completar projeção corrente e apresentação do SLA",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "SLA já calculado e selado na abertura/revisão. Falta projeção corrente após todas as transições, leitura autorizada e UI com vencimento/consumo/pausa/violação/asOf/indisponibilidade.",
+      "reutilizar": "Motor SLA, calendários e snapshots persistidos (migration M09c).",
+      "trabalho_restante": "SLA já calculado e selado na abertura/revisão. Falta projeção corrente após todas as transições, leitura autorizada e UI com vencimento/consumo/pausa/violação/asOf/indisponibilidade.",
+      "aceite_observavel": [
+        "Mesmo histórico/política gera mesmo relógio; reabertura não apaga consumo; horizonte e feriados explicados. capability só ativa após composição qualificada."
+      ],
+      "dependencias_ids": [
+        "HD-010"
+      ],
+      "fontes_atuais": [
+        "src/application/support-intake.ts:90",
+        "src/application/support-workflow.ts:64",
+        "src/application/portal-read.ts:34",
+        "src/http/handler.ts:12"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-020 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-021",
+      "titulo": "Conectar lembretes e escalonamento SLA sem duplicação",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Não há scheduler SLA composto. Conectar propostas do motor a lembretes/escalonamento/espera/encerramento somente conforme política aprovada, reutilizando ledger de entrega.",
+      "reutilizar": "Motor e outbox/worker/Resend atuais.",
+      "trabalho_restante": "Não há scheduler SLA composto. Conectar propostas do motor a lembretes/escalonamento/espera/encerramento somente conforme política aprovada, reutilizando ledger de entrega.",
+      "aceite_observavel": [
+        "Revalidar estado e audiência antes de enviar; job idempotente; nenhum aviso obsoleto/duplicado ou fechamento por falta de callback; pausas e reabertura qualificadas."
+      ],
+      "dependencias_ids": [
+        "HD-010",
+        "HD-020",
+        "HD-004"
+      ],
+      "fontes_atuais": [
+        "src/domain/sla-clock.ts:90",
+        "src/infrastructure/runtime.ts:33"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-021 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-022",
+      "titulo": "Montar administração durável de membros e convites",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Serviços/handler/UI de membros e convites existem, mas sem store PostgreSQL operacional e montagem no runtime. Completar backoffice de equipe, capacidades, convites e sucessão.",
+      "reutilizar": "Serviços, políticas e componentes existentes.",
+      "trabalho_restante": "Serviços/handler/UI de membros e convites existem, mas sem store PostgreSQL operacional e montagem no runtime. Completar backoffice de equipe, capacidades, convites e sucessão.",
+      "aceite_observavel": [
+        "Transação/CAS/audit/recibo duráveis, expiração/revogação e último admin protegidos. Convite não cria identidade automaticamente. Liberação sensível depende de MFA legítimo."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-007"
+      ],
+      "fontes_atuais": [
+        "src/application/member-admin.ts:14",
+        "src/http/member-admin.ts:63",
+        "web/admin-members.js",
+        "src/infrastructure/runtime.ts:33"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-022 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-023",
+      "titulo": "Completar administração de contratos, cobertura e contexto",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Completar backoffice de contas/obras/contratos/vínculos/cobertura; candidato geral não está montado. Publicação específica de formulários Consulte GEO já é durável e está montada.",
+      "reutilizar": "Publicador específico e planos privados atuais.",
+      "trabalho_restante": "Completar backoffice de contas/obras/contratos/vínculos/cobertura; candidato geral não está montado. Publicação específica de formulários Consulte GEO já é durável e está montada.",
+      "aceite_observavel": [
+        "Store e fluxos autorizados com histórico de vigência, contexto e grants separados; inativação e cobertura por obra testadas sem generalizar produto além da Consulte GEO."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-007"
+      ],
+      "fontes_atuais": [
+        "src/application/configuration-admin.ts:13",
+        "src/http/configuration-admin.ts:18",
+        "src/infrastructure/consultegeo-runtime.ts:32"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-023 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-024",
+      "titulo": "Qualificar anexos privados e sua autoridade",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Anexos gerais de chamados continuam sem composição. Cancelamento do scanner exige nova política explícita para contratos que hoje exigem scan/clean; não reativar serviço pago nem marcar clean artificialmente.",
+      "reutilizar": "Contratos de armazenamento/attachments; originais do Apoio em memória não são esse recurso.",
+      "trabalho_restante": "Anexos gerais de chamados continuam sem composição. Cancelamento do scanner exige nova política explícita para contratos que hoje exigem scan/clean; não reativar serviço pago nem marcar clean artificialmente.",
+      "aceite_observavel": [
+        "Ownership, tipos/limites/hash/MIME/quota, ACL viva e upload/download privados qualificados; contrato sem inspeção, se aprovado, informa a condição real e adapta guardas explicitamente."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/application/attachments.ts:16",
+        "src/application/attachments.ts:44",
+        "src/http/handler.ts:12",
+        "src/integrations/files/storage.ts"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-024 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-025",
+      "titulo": "Implementar retenção, órfãos e remoção verificável de arquivos",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Definir retenção e implementar órfãos/purge com prova de remoção e liberação segura de quota. Inventariar banco, imagens privadas, logs, IA, exportações e demais objetos efetivamente persistidos.",
+      "reutilizar": "Metadados/contratos lifecycle e inventário atual.",
+      "trabalho_restante": "Definir retenção e implementar órfãos/purge com prova de remoção e liberação segura de quota. Inventariar banco, imagens privadas, logs, IA, exportações e demais objetos efetivamente persistidos.",
+      "aceite_observavel": [
+        "Política e exceções aprovadas, remoção idempotente comprovada e audit preservado. retainUntil não significa bytes removidos. Originais locais em memória não viram bucket inexistente."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "docs/handoff-2026-10-15/DESENVOLVIMENTO-E-OPERACAO.md:76",
+        "src/http/implementation-support.ts:49",
+        "docs/apoio-implantacao.md:24"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-025 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-026",
+      "titulo": "Montar portal de consulta e totais autorizados",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Portal/cockpit/report/export tem serviços/handler/store candidatos sem montagem produtiva. Completar contrato durável contra schema corrente e integrar à fila existente.",
+      "reutilizar": "Portal e agregadores existentes.",
+      "trabalho_restante": "Portal/cockpit/report/export tem serviços/handler/store candidatos sem montagem produtiva. Completar contrato durável contra schema corrente e integrar à fila existente.",
+      "aceite_observavel": [
+        "ACL antes de filtros/LIMIT/agregação, totais completos e asOf, revogação e obras vizinhas verificadas; sem fixture como fallback."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/application/portal-read.ts:59",
+        "src/domain/portal-query.ts:42",
+        "src/infrastructure/portal-read-store.ts:5",
+        "src/http/portal.ts:6"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-026 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-027",
+      "titulo": "Completar exportação durável e download seguro",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "CSV seguro/orquestração já existem; faltam store/reserva/objeto/auditoria duráveis e montagem do download autorizado. XLSX global é escopo a decidir; exportações Apoio já entregues são outra função.",
+      "reutilizar": "Encoder CSV e contratos de exportação existentes.",
+      "trabalho_restante": "CSV seguro/orquestração já existem; faltam store/reserva/objeto/auditoria duráveis e montagem do download autorizado. XLSX global é escopo a decidir; exportações Apoio já entregues são outra função.",
+      "aceite_observavel": [
+        "Conjunto completo declarado, limite/expiração, reautorização no link e nenhuma publicação parcial; fórmulas/privados protegidos e cancelamento/revogação testados."
+      ],
+      "dependencias_ids": [
+        "HD-026",
+        "HD-025"
+      ],
+      "fontes_atuais": [
+        "src/application/report-export.ts:7",
+        "src/application/report-export.ts:16",
+        "src/http/portal.ts"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-027 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-028",
+      "titulo": "Entregar indicadores com definição e cobertura",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Indicadores de atendimento ainda devolvem indisponibilidade em candidatos. Definir métricas e montar queries/projeções: primeira resposta humana, solução, episódios/SLA, CSAT e bases relacionadas.",
+      "reutilizar": "Componentes de relatório e fontes de eventos.",
+      "trabalho_restante": "Indicadores de atendimento ainda devolvem indisponibilidade em candidatos. Definir métricas e montar queries/projeções: primeira resposta humana, solução, episódios/SLA, CSAT e bases relacionadas.",
+      "aceite_observavel": [
+        "Dicionário/denominadores aprovados, amostra reconciliada com eventos, cobertura exibida; dado ausente não vira zero e engajamento de e-mail não mede produtividade."
+      ],
+      "dependencias_ids": [
+        "HD-026",
+        "HD-020"
+      ],
+      "fontes_atuais": [
+        "src/application/portal-read.ts:61",
+        "web/reports.js:4"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-028 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-029",
+      "titulo": "Montar CSAT com convite restrito e consumo controlado",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Serviço de consumo CSAT existe, sem emissão de convites/store operacional/montagem. Completar política de convite por resolução/reabertura e agregação.",
+      "reutilizar": "Serviço de submissão e contratos atuais.",
+      "trabalho_restante": "Serviço de consumo CSAT existe, sem emissão de convites/store operacional/montagem. Completar política de convite por resolução/reabertura e agregação.",
+      "aceite_observavel": [
+        "Uso único limitado, prazo/revogação/concorrência e recibo; posse de convite não concede acesso ao chamado; nota/comentário não vazam."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-028"
+      ],
+      "fontes_atuais": [
+        "src/application/csat.ts:6",
+        "src/application/csat.ts:12",
+        "src/infrastructure/runtime.ts:33"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-029 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-030",
+      "titulo": "Retomar revisão factual da Wiki por prioridade",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "Adiado",
+      "estado_20261016": "Revisão factual Wiki contra código/versão Novo GEO foi adiada expressamente. Fontes internas com ressalvas e corpus HDW em quarentena não são conteúdo cliente aprovado.",
+      "reutilizar": "Wiki v1.7 já publicada e ferramentas editoriais.",
+      "trabalho_restante": "Revisão factual Wiki contra código/versão Novo GEO foi adiada expressamente. Fontes internas com ressalvas e corpus HDW em quarentena não são conteúdo cliente aprovado.",
+      "aceite_observavel": [
+        "Retomada explícita com versão de origem/especialista, revisão prioritária de permissões/SLA/cadastros e resolução por afirmação; preservar VERIFICAR e custódia."
+      ],
+      "dependencias_ids": [
+        "HD-037"
+      ],
+      "fontes_atuais": [
+        "docs/knowledge/consultegeo/editorial-review-result-v3.json",
+        "docs/knowledge/consultegeo/REMEDIACAO-CUSTODIA-WIKI-V3.md",
+        "AUDITORIA-WIKI.md"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-030 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-031",
+      "titulo": "Publicar pequeno pacote de conhecimento por audiência",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Base de conhecimento para clientes ainda sem pacote aprovado; manifesto externo vazio. Selecionar lote factual mínimo, público e hashes, montar distribuição/retirada segura.",
+      "reutilizar": "Projeção editorial/quarentena/hash da Wiki.",
+      "trabalho_restante": "Base de conhecimento para clientes ainda sem pacote aprovado; manifesto externo vazio. Selecionar lote factual mínimo, público e hashes, montar distribuição/retirada segura.",
+      "aceite_observavel": [
+        "Aprovação editorial exata por audiência, revogação e retirada verificadas; Wiki interna não é exposta inteira. Pode revisar só o lote sem esperar todo corpus."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "AUDITORIA-WIKI.md",
+        "wiki-consultegeo/docs/editorial/aprovacoes.json (relativo à pasta do projeto, ver FONTES-E-DECISOES.md)"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-031 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-032",
+      "titulo": "Conectar ajuda contextual e macros revisáveis",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Knowledge/macros têm serviços/HTTP/painéis, mas sem store/montagem no shell e compositor. Conectar ajuda contextual por serviço e prévia editável de resposta aprovada.",
+      "reutilizar": "Primitives knowledge/macros e ajuda informativa atual.",
+      "trabalho_restante": "Knowledge/macros têm serviços/HTTP/painéis, mas sem store/montagem no shell e compositor. Conectar ajuda contextual por serviço e prévia editável de resposta aprovada.",
+      "aceite_observavel": [
+        "ACL antes de busca/snippet, fonte/versão registrada, macro editável e envio humano normal; conteúdo interno nunca sugerido ao cliente."
+      ],
+      "dependencias_ids": [
+        "HD-031"
+      ],
+      "fontes_atuais": [
+        "src/application/knowledge.ts:7",
+        "src/http/additional-support.ts:16",
+        "web/optional-support.js:40"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-032 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-033",
+      "titulo": "Concluir aceite do Apoio Implantação integrado",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Reformular IMP-02 para aceite do Apoio integrado atual. Cadastro/planilhas/laudos/revisão/processos/ajuda/e-mails e persistência já publicados. Setup independente/pooler antigo não bloqueiam esse módulo.",
+      "reutilizar": "PR55/57/58/59/60 e backend privado já entregue.",
+      "trabalho_restante": "Reformular IMP-02 para aceite do Apoio integrado atual. Cadastro/planilhas/laudos/revisão/processos/ajuda/e-mails e persistência já publicados. Setup independente/pooler antigo não bloqueiam esse módulo.",
+      "aceite_observavel": [
+        "Cumprir AC-APOIO: jornada autenticada hospedada, retomada em outro dispositivo, revisão/devolução/reenvio, e-mail próprio real e qualificação IA/OCR real conforme uso."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/apoio-implantacao-fluxos-ui-2026-10-16.md:39",
+        "docs/apoio-implantacao-emails-publicacao-2026-10-15.md"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-033 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-034",
+      "titulo": "Implementar IMP-03: associação processo e chamado",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "IMP-03 ainda precisa associação autoritativa processo/submissão→chamado CG. Campo ticket_number atual usa IMP-UUID; compartilhar sessão/UI/fila não cria vínculo com protocolo CG.",
+      "reutilizar": "Processos/submissões, fila e abertura CG existentes.",
+      "trabalho_restante": "IMP-03 ainda precisa associação autoritativa processo/submissão→chamado CG. Campo ticket_number atual usa IMP-UUID; compartilhar sessão/UI/fila não cria vínculo com protocolo CG.",
+      "aceite_observavel": [
+        "Abertura/vínculo idempotente e transacional/reconciliável, mesmo protocolo após ACK perdido, nenhuma duplicação de chamado/aviso e projeção mínima por audiência."
+      ],
+      "dependencias_ids": [
+        "HD-009",
+        "HD-033"
+      ],
+      "fontes_atuais": [
+        "src/infrastructure/implementation-support.ts:122",
+        "src/infrastructure/implementation-support.ts:124",
+        "modules/implantacao/modules/import-process/contracts.ts:8"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-034 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-035",
+      "titulo": "Completar jornada de nova obra e ajuste incremental",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Completar jornada cliente/nova obra/ajuste incremental integrada ao chamado e checklist de implantação. Wizard/parser/PDF/revisão internos já entregues; confirmação no GEO é recorte adiado.",
+      "reutilizar": "Apoio interno completo e modelos R02/importação/laudos.",
+      "trabalho_restante": "Completar jornada cliente/nova obra/ajuste incremental integrada ao chamado e checklist de implantação. Wizard/parser/PDF/revisão internos já entregues; confirmação no GEO é recorte adiado.",
+      "aceite_observavel": [
+        "Solicitação CG e processo mostram pendência/dono/próximo passo, versões/diferenças, revisão interna distinta de confirmação externa, checklist de acesso/configuração/treinamento e conferência final."
+      ],
+      "dependencias_ids": [
+        "HD-034",
+        "HD-024"
+      ],
+      "fontes_atuais": [
+        "docs/apoio-implantacao-fluxos-ui-2026-10-16.md:24",
+        "modules/implantacao/docs/implantacao/PLANO_ORIGINAL_2026-10-14.md:580"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-035 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-036",
+      "titulo": "Definir e completar pacote de backup/encerramento",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Pedido Backup existe; pacote real de encerramento/backup da obra ainda precisa conteúdo, produtor, manifesto, audiência e download. Gerador GEO aguarda origem adiada.",
+      "reutilizar": "Intake backup e contratos/exportação existentes.",
+      "trabalho_restante": "Pedido Backup existe; pacote real de encerramento/backup da obra ainda precisa conteúdo, produtor, manifesto, audiência e download. Gerador GEO aguarda origem adiada.",
+      "aceite_observavel": [
+        "Autorizar geração/conteúdo/destinatário, expiração e hash; comprovar integridade e regra de desativação separada. ZIP não é restore; fechar chamado não desativa obra."
+      ],
+      "dependencias_ids": [
+        "HD-037",
+        "HD-027"
+      ],
+      "fontes_atuais": [
+        "modules/implantacao/docs/implantacao/PLANO_ORIGINAL_2026-10-14.md:640",
+        "docs/operations/RECOVERY.md"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-036 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-037",
+      "titulo": "Qualificar origem Novo GEO sem inventar integração",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "Adiado",
+      "estado_20261016": "API/IdP/versão/contrato Novo GEO reais foram explicitamente adiados. Preparação local/manual segue; não inventar endpoint, identidade, dado vivo ou escrita de origem.",
+      "reutilizar": "Conectores e contratos preparados.",
+      "trabalho_restante": "API/IdP/versão/contrato Novo GEO reais foram explicitamente adiados. Preparação local/manual segue; não inventar endpoint, identidade, dado vivo ou escrita de origem.",
+      "aceite_observavel": [
+        "Retomada e origem fornecida; identidade/escopo/read-only primeiro, TLS/recibos/limites e negativas qualificados antes de qualquer execução."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/apoio-implantacao-fluxos-ui-2026-10-16.md:3",
+        "docs/156-E06-IMP02-BACKEND-2026-10-15.md"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-037 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-038",
+      "titulo": "Promover persistência HDA com contrato de segurança",
+      "categoria": "Entregue no recorte original",
+      "codigo_categoria": "C",
+      "prioridade_proposta": "Concluído",
+      "estado_20261016": "Persistência HDA oficial e worker manual_review já ativados: migration20/schema0.26 e compatibilidade0.27. Não resta a promoção descrita no título antigo. Isso não conclui HDA03–13.",
+      "reutilizar": "Sete tabelas privadas, role, worker manual e GETs ativos.",
+      "trabalho_restante": "Persistência HDA oficial e worker manual_review já ativados: migration20/schema0.26 e compatibilidade0.27. Não resta a promoção descrita no título antigo. Isso não conclui HDA03–13.",
+      "aceite_observavel": [
+        "Evidência existente de promoção, consulta e três ciclos204 idle; manter runbook. Novas funções são HD-039–044. Não reaplicar migration."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/integrations/hda/ATIVACAO_STORAGE_WORKER_20261015.md:3",
+        "src/infrastructure/registration-runtime.ts:15"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-038 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-039",
+      "titulo": "Conectar abertura atômica à tarefa HDA",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Biblioteca transacional HDA existe, mas não está ligada ao intake. Conectar operação/snapshot/job à abertura CG na mesma transação/conexão, preservando atendimento humano.",
+      "reutilizar": "Persistência HDA promovida e abertura CG atômica.",
+      "trabalho_restante": "Biblioteca transacional HDA existe, mas não está ligada ao intake. Conectar operação/snapshot/job à abertura CG na mesma transação/conexão, preservando atendimento humano.",
+      "aceite_observavel": [
+        "Replay/rollback/COMMIT desconhecido recuperam mesma intenção/protocolo/outbox; binding/alvo/ator reais qualificados; análise indisponível não bloqueia fallback humano."
+      ],
+      "dependencias_ids": [
+        "HD-038",
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/application/registration-persistence.ts:43",
+        "src/application/support-intake.ts",
+        "src/infrastructure/consultegeo-intake-store.ts"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-039 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-040",
+      "titulo": "Completar consulta, histórico, diff e edição da proposta HDA",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "GET/projeção HDA somente leitura já ativos; painel opcional não montado. Faltam histórico paginado, diff e edição por comandos/CAS na jornada.",
+      "reutilizar": "GETs, projeções e painel existentes.",
+      "trabalho_restante": "GET/projeção HDA somente leitura já ativos; painel opcional não montado. Faltam histórico paginado, diff e edição por comandos/CAS na jornada.",
+      "aceite_observavel": [
+        "Contexto/fetch autenticado corretos, revisão atual não se passa por história completa; edição invalida provas anteriores e proposta nunca é exibida como executada."
+      ],
+      "dependencias_ids": [
+        "HD-039"
+      ],
+      "fontes_atuais": [
+        "src/http/registration-review.ts:9",
+        "src/application/registration-drafts.ts:16",
+        "web/registration-automation.js:6"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-040 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-041",
+      "titulo": "Qualificar worker de análise e CLI dedicada",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Worker manual hospedado já funciona; análise Dev Agent real/CLI dedicada segue não composta e sem qualificação de isolamento/orçamento. Biblioteca Claude não é sandbox.",
+      "reutilizar": "Worker manual, contrato de análise e bridge preparados.",
+      "trabalho_restante": "Worker manual hospedado já funciona; análise Dev Agent real/CLI dedicada segue não composta e sem qualificação de isolamento/orçamento. Biblioteca Claude não é sandbox.",
+      "aceite_observavel": [
+        "Host Linux/WSL não-root, isolamento SO/rede, binário/hash/modelo/credencial restrita, orçamento/cancelamento/quarentena e análise real qualificados antes de ativar; sem escrever GEO."
+      ],
+      "dependencias_ids": [
+        "HD-039",
+        "HD-037"
+      ],
+      "fontes_atuais": [
+        "src/infrastructure/registration-runtime.ts:15",
+        "workers/dev-agent-bridge/README.md:1"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-041 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-042",
+      "titulo": "Implementar aprovação HDA da revisão exata",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "Condicional",
+      "estado_20261016": "Aprovação HDA da revisão/hash/contexto exatos ainda não entregue. Aprovação de cadastro atual não autoriza execução HDA; MFA continua adiado.",
+      "reutilizar": "Contratos/revisão existentes, sem liberar efeitos.",
+      "trabalho_restante": "Aprovação HDA da revisão/hash/contexto exatos ainda não entregue. Aprovação de cadastro atual não autoriza execução HDA; MFA continua adiado.",
+      "aceite_observavel": [
+        "Exibir efeitos/alvo, ator e MFA legítimos, proibir autoaprovação; mudança de origem/proposta/acesso/prazo invalida aprovação. Aprovar não executa."
+      ],
+      "dependencias_ids": [
+        "HD-040",
+        "HD-007",
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "src/application/registration-drafts.ts:27",
+        "src/domain/registration-action-catalog.ts",
+        "AUDITORIA-WIKI.md"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-042 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-043",
+      "titulo": "Implementar executor determinístico e reconciliação GEO",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "Condicional",
+      "estado_20261016": "Executor/reconciliação GEO ainda futuros; catálogo só tem candidato grant_work e liveExecutionAllowed:false.",
+      "reutilizar": "Catálogo fechado e contratos preparados.",
+      "trabalho_restante": "Executor/reconciliação GEO ainda futuros; catálogo só tem candidato grant_work e liveExecutionAllowed:false.",
+      "aceite_observavel": [
+        "API homologada/plano exato aprovado, execução determinística com credencial restrita, idempotência e recibos de ambas pontas; resultado incerto exige consulta, sem retry cego."
+      ],
+      "dependencias_ids": [
+        "HD-042",
+        "HD-037"
+      ],
+      "fontes_atuais": [
+        "src/domain/registration-action-catalog.ts:6",
+        "src/domain/registration-action-catalog.ts:12"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-043 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-044",
+      "titulo": "Qualificar resultado público e piloto HDA",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "Condicional",
+      "estado_20261016": "Resultado público e piloto de execução HDA não qualificáveis até existir execução real. Projeção cliente mínima já existe, mas notificação/efeito e operação piloto ainda não.",
+      "reutilizar": "Projeção mínima e pipeline manual HDA.",
+      "trabalho_restante": "Resultado público e piloto de execução HDA não qualificáveis até existir execução real. Projeção cliente mínima já existe, mas notificação/efeito e operação piloto ainda não.",
+      "aceite_observavel": [
+        "Verificar projeção/notificação mínima, falhas e retorno humano, revogação, limites/custos/donos/parada e autorização específica do piloto."
+      ],
+      "dependencias_ids": [
+        "HD-043"
+      ],
+      "fontes_atuais": [
+        "src/application/registration-drafts.ts",
+        "AUDITORIA-WIKI.md"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-044 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-045",
+      "titulo": "Ensaiar restauração e reconciliação completa",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Restore completo ainda precisa ensaio reproduzível de banco+objetos+configuração+referências de chaves+ledger+revogações, incluindo schema0.27 e addons Apoio; completar aplicador durável onde necessário.",
+      "reutilizar": "Planos e testes de recuperação existentes; não implica backup ausente.",
+      "trabalho_restante": "Restore completo ainda precisa ensaio reproduzível de banco+objetos+configuração+referências de chaves+ledger+revogações, incluindo schema0.27 e addons Apoio; completar aplicador durável onde necessário.",
+      "aceite_observavel": [
+        "RPO/RTO aprovados e medidos, nova geração e reautorização, workers reconciliados; nenhum envio/efeito já confirmado repetido; outra pessoa reproduz o runbook em bancada descartável."
+      ],
+      "dependencias_ids": [
+        "HD-025"
+      ],
+      "fontes_atuais": [
+        "docs/operations/RECOVERY.md:7",
+        "src/domain/recovery-plan.ts"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-045 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-046",
+      "titulo": "Medir capacidade e preparar operação com limites",
+      "categoria": "Aceite / qualificação residual",
+      "codigo_categoria": "A",
+      "prioridade_proposta": "P1",
+      "estado_20261016": "Runner local existe. Falta capacidade multi-instância hospedada, metas/SLO/custos aprovados e responsáveis/runbooks/alertas qualificados; pool1 por Function não limita concorrência global.",
+      "reutilizar": "Runner, logs HTTP seguros e auditoria de mutação.",
+      "trabalho_restante": "Runner local existe. Falta capacidade multi-instância hospedada, metas/SLO/custos aprovados e responsáveis/runbooks/alertas qualificados; pool1 por Function não limita concorrência global.",
+      "aceite_observavel": [
+        "Medir latência/erro/429/503/vizinho ruidoso/conexões/jobs/custo, fronteira/amostra explícitas e contenção/retomada com responsáveis. Metas locais não viram compromisso produtivo."
+      ],
+      "dependencias_ids": [
+        "HD-009"
+      ],
+      "fontes_atuais": [
+        "docs/133-HD-P04-ENSAIO-DE-CAPACIDADE.md:30",
+        "docs/operations/SLO-CAPACIDADE-C15-DRAFT.md:3",
+        "docs/operations/INCIDENTS.md:19"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-046 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-047",
+      "titulo": "Qualificar legado V2 e decidir escopo de histórico",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "P3",
+      "estado_20261016": "Migração histórica legado V2 é fase futura: fonte/versão/período/identidades/escopo de anexos ainda precisam decisão e export real autorizado.",
+      "reutilizar": "Conector/mapeamento preparados.",
+      "trabalho_restante": "Migração histórica legado V2 é fase futura: fonte/versão/período/identidades/escopo de anexos ainda precisam decisão e export real autorizado.",
+      "aceite_observavel": [
+        "Qualificação e dry-run saneado com correspondências/erros explícitos, preservando protocolo e sem recriar login compartilhado ou avisos retroativos."
+      ],
+      "dependencias_ids": [],
+      "fontes_atuais": [
+        "docs/integrations/GEO-LEGACY-QUALIFICACAO-PENDENTE.md:5",
+        "src/connectors/geo-legacy/mapping.ts:12"
+      ],
+      "esforco_relativo": "M",
+      "origem": "Reconciliação de HD-047 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-048",
+      "titulo": "Implementar migração de histórico legado somente leitura",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "P3",
+      "estado_20261016": "Importação de histórico legado somente leitura depende de HD-047; falta aplicador idempotente e reconciliação no escopo futuro aprovado.",
+      "reutilizar": "Mapeamento e contratos de legado.",
+      "trabalho_restante": "Importação de histórico legado somente leitura depende de HD-047; falta aplicador idempotente e reconciliação no escopo futuro aprovado.",
+      "aceite_observavel": [
+        "Contagens/hashes/identidades/anexos conferidos, replay sem duplicação, leitura autorizada, sem novo SLA/envios/efeitos de chamados antigos."
+      ],
+      "dependencias_ids": [
+        "HD-047"
+      ],
+      "fontes_atuais": [
+        "docs/integrations/GEO-LEGACY-QUALIFICACAO-PENDENTE.md",
+        "src/connectors/geo-legacy/mapping.ts"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-048 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "HD-049",
+      "titulo": "Montar SSO e sessão de suporte somente com IdP real",
+      "categoria": "Adiado / fase futura",
+      "codigo_categoria": "F",
+      "prioridade_proposta": "Adiado",
+      "estado_20261016": "SSO/sessão de suporte aguardam IdP/API Novo GEO reais. Login próprio HelpDesk foi autorizado e está operacional; requisito antigo que proibia esse login foi substituído.",
+      "reutilizar": "Auth direto, sessão por pessoa e contratos externos.",
+      "trabalho_restante": "SSO/sessão de suporte aguardam IdP/API Novo GEO reais. Login próprio HelpDesk foi autorizado e está operacional; requisito antigo que proibia esse login foi substituído.",
+      "aceite_observavel": [
+        "Issuer/subject e audiência qualificados, consentimento/expiração/revogação e trilha de sessão de suporte, sem senha compartilhada/impersonação invisível."
+      ],
+      "dependencias_ids": [
+        "HD-037"
+      ],
+      "fontes_atuais": [
+        "docs/handoff-2026-10-15/RASTREABILIDADE-107-RF.csv",
+        "src/infrastructure/runtime.ts"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Reconciliação de HD-049 do handoff15/10; prioridade e recorte atualizados; não é nova aprovação."
+    },
+    {
+      "id": "MEL-09",
+      "titulo": "Localizar quem recebeu uma orientação depois corrigida",
+      "categoria": "Desenvolvimento ou composição",
+      "codigo_categoria": "D",
+      "prioridade_proposta": "P2",
+      "estado_20261016": "Aprovada para inclusão pelo usuário, ainda sem implementação encontrada.",
+      "reutilizar": "Conhecimento versionado, snapshots e conversa; completar composição de HD-032.",
+      "trabalho_restante": "Registrar artigo/macro e versão exata quando aplicado ao chamado; retirada/substituição com motivo/autor; lista autorizada de usos e análise de impacto afetado/não afetado/inconclusivo/tratado, com evidência e comunicação corretiva humana explícita.",
+      "aceite_observavel": [
+        "Mensagem/snapshot anteriores imutáveis; ACL viva em lista/detalhe/contagem; revisão da correção e reautorização antes de enviar; idempotência; nenhuma inferência retroativa de toda cópia manual ou disparo em massa automático."
+      ],
+      "dependencias_ids": [
+        "HD-032"
+      ],
+      "fontes_atuais": [
+        "docs/decisoes-e-emails-geolab-2026-10-15/DECISOES-E-BACKLOG-ADICIONAL.md:7",
+        "src/application/knowledge.ts:7",
+        "AUDITORIA-WIKI.md"
+      ],
+      "esforco_relativo": "L",
+      "origem": "Aprovação expressa neste chat em15/10; as outras13 MEL continuam pendentes."
+    }
+  ]
+}
