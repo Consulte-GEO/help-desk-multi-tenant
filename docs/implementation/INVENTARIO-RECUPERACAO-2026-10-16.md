@@ -45,3 +45,12 @@ Prévia inicial `6ad2da5857bf69a6c0a8de41`, fonte7402371, teve erro de build e n
 [Prévia71](https://deploy-preview-71--helpdesk-consultegeo.netlify.app), deploy `6ad2dcebfb4c99b9e1836209`, READY, head `b8d957ac6a1bb202ede709ad61d2e6d39103181b`. Nove assets críticos conferidos por bytes ou SHA-1 do manifesto, incluindo shell/HTML (somente inserção CDP identificada do provedor), estado da fila e entrada/facade do Apoio. Recibo `evidence/recovery-inventory-20261016/preview.json`. A CLI é uma ferramenta local do repositório, sem nova tela ou API; a prévia qualifica o pacote web existente.
 
 A produção continua no PR69/merge72a72b5, deploy6ad2c3fd7dd44b857679b79f. PR70 permanece separado e aberto; PR71 não inclui seu código. PR71 pronto para revisão, sem merge, migração, envio de negócio ou implantação produtiva nesta rodada. O último commit de documentação/evidências preserva o fingerprint da fonte qualificada; seus checks e sua prévia devem ser reconferidos antes de qualquer integração.
+
+
+## Integração com PR70 — 17/10/2026
+
+**17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
+
+Conflitos limitados a documentação e ponteiro latest.json, resolvidos preservando os checkpoints do PR71 e importando os arquivos/evidências do PR70. Nenhum conflito de código. O latest anterior permanece histórico e não qualifica a combinação: será substituído somente pelo artefato original do novo CI.
+
+PR70 publicado e conferido conforme recibos acima; os80 focais da combinação com PR71 passaram. Relatório integral combinado ainda requerido antes do merge do PR71.

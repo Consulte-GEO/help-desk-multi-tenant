@@ -365,6 +365,24 @@ test('SQL description mode applies before pagination and invalidates subject cur
  assert.equal((await service.summarize(alice,filters)).total,2);
  await assert.rejects(()=>service.list(alice,{limit:1,q:filters.q,cursor:first.nextCursor!}),{code:'invalid_cursor'});
 });
+
+test('SQL private status intersects frozen operator accounts BEFORE LIMIT and rechecks live revocation',async()=>{
+ const subject='HD019 private status owned fixture',a=await service.create(alice,{...input,subject},'private-status-sql-own-a','db-test'),b=await service.create(bob,{...input,accountId:id(102),subject},'private-status-sql-own-b','db-test');
+ await admin.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[id(1),id(102),agent.id]);
+ const wide={...agent,grants:[...agent.grants,{accountId:id(102),role:'agent' as const}]},mixed={...agent,grants:[...agent.grants,{accountId:id(102),role:'account_manager' as const}]};
+ try{
+  for(const t of [a.ticket,b.ticket]){await service.transition(wide,t.id,'open',1,'Owned start',randomUUID(),'db-test');await service.transition(wide,t.id,'waiting_internal',2,'Owned wait',randomUUID(),'db-test');}
+  const f={q:subject,internal_status:'waiting_internal'};
+  assert.deepEqual((await service.list(mixed,{limit:1,...f})).items.map(t=>t.id),[a.ticket.id]);assert.equal((await service.summarize(mixed,f)).total,1);
+  assert.equal((await service.summarize(wide,f)).total,2);
+  assert.equal((await service.summarize(mixed,{...f,status:'in_progress'})).total,1);assert.equal((await service.summarize(mixed,{...f,status:'received'})).total,0);
+  const first=await service.list(wide,{limit:1,...f});assert.ok(first.nextCursor);await assert.rejects(()=>service.list(wide,{limit:1,q:subject,cursor:first.nextCursor!}),{code:'invalid_cursor'});
+  await assert.rejects(()=>service.list(mixed,{limit:1,...f,accountId:id(102)}),{status:403});await assert.rejects(()=>service.summarize(alice,f),{status:403});
+  await admin.query('update helpdesk_auth.account_grants set active=false where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),agent.id]);
+  try{assert.equal((await service.list(mixed,{limit:1,...f})).items.length,0);assert.equal((await service.summarize(mixed,f)).total,0);}
+  finally{await admin.query('update helpdesk_auth.account_grants set active=true where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),agent.id]);}
+ }finally{await admin.query('delete from helpdesk_auth.account_grants where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(102),agent.id]);}
+});
 test('SQL busca perde acesso imediatamente na próxima consulta após revogação',async()=>{
  const t=await service.create(alice,{...input,subject:'M1F revogação real'},'m1f-sql-live-revocation','db-test');
  await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);

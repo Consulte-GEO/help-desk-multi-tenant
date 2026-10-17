@@ -1,0 +1,12 @@
+✔ private status selects exact states only where caller is an operator and combines public filters (10.0378ms)
+✔ private filter precedes pagination, counts whole authorized corpus and binds cursors (10.3324ms)
+✔ HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals (32.6304ms)
+✔ client query/cursor generations include private status; quick views clear it and mark custom selection (1.4236ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 437.4532

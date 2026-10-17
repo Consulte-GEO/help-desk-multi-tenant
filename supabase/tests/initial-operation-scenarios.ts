@@ -59,6 +59,12 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   const narrowed={...live.p,workspaceRole:null,grants:[]};
   await runTransaction(app,narrowed,async c=>{const s=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,narrowed,{consulteGeoLocal:true,localCollection:true}));const f={q:'Owned',search_in:'description'};assert.equal((await s.list(narrowed,{limit:1,...f})).items.length,0);assert.equal((await s.summarize(narrowed,f)).total,0);});
  });
+ await suite.test('private status filter uses current CG namespace and public filter intersection',async()=>{
+  await runTransaction(app,live.p,async c=>{const s=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,live.p,{consulteGeoLocal:true,localCollection:true}));
+   const f={internal_status:'new',status:'received'};assert.deepEqual((await s.list(live.p,{limit:1,...f})).items.map(t=>t.id),[ticketId]);assert.equal((await s.summarize(live.p,f)).total,1);
+   assert.equal((await s.summarize(live.p,{...f,status:'in_progress'})).total,0);
+  });
+ });
  await suite.test('suppressed required checklist binding rolls back opening and preserves draft and protocol for the same intent',async()=>{
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(live.p,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref],options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(live.p,{service:'questions',refs}),entry=catalog.configurations[0]!.entries[0]!,drafts=createFormDraftService(options),draft=await drafts.saveFormDraft(live.p,{id:randomUUID(),accountId:live.input.accountId,refs,formId:entry.form.id,formVersion:1,answers:{details:'Owned binding suppression qualification'}},0),intake=createSupportIntake(options),q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned required binding rollback',description:'Owned fixture only',coverageId:null},preview=await intake.previewSupportRequest(live.p,q),input={...q,previewHash:preview.previewHash},key=randomUUID();
@@ -90,4 +96,9 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   assert.equal((await admin.query('select version from helpdesk_core.tickets where workspace_id=$1 and id=$2',[live.p.workspaceId,ticketId])).rows[0]?.version,version);
  });
  await suite.test('current work deactivation blocks earlier summary without exposing pinned receipt',async()=>{const c=JSON.parse(live.plan.values[0]).local;c.expectedRegistryRevision=1;c.requestId=randomUUID();c.works[0].active=false;await admin.query('select helpdesk_auth.cg_local_provision($1,$2)',[canonicalJson(c),requestHash(c)]);const result=await runTransaction(app,live.p,async client=>{try{return (await client.query('select helpdesk_auth.cg_local_ticket_summary($1) as result',[ticketId])).rows[0]?.result;}catch{return null;}}).catch(()=>null);assert.equal(result,null);const totals=await runTransaction(app,live.p,c=>new HelpdeskService(createBorrowedPostgresUnitOfWork(c,live.p,{consulteGeoLocal:true,localCollection:true})).summarize(live.p,{}));assert.equal(totals.total,0);assert.deepEqual(totals.statuses,{received:0,in_progress:0,waiting_for_you:0,resolved:0,closed:0});});
+ await suite.test('work deactivation removes private filtered list and totals without granting note access',async()=>{
+  await runTransaction(app,live.p,async c=>{const s=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,live.p,{consulteGeoLocal:true,localCollection:true})),f={q:'CG-10001',internal_status:'open'};
+   assert.deepEqual(await s.list(live.p,{limit:1,...f}),{items:[],nextCursor:null});assert.equal((await s.summarize(live.p,f)).total,0);
+  });
+ });
 });}

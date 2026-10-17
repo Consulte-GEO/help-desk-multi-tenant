@@ -1,3 +1,5 @@
+> **17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
+
 > **Estado corrente — 16/10/2026:** produção PR69 (`72a72b5`/deploy `6ad2c3fd7dd44b857679b79f`) verificada; PR70 permanece separado, sem merge. PR71 acrescenta inventário local somente leitura de arquivos de recuperação, com CI7.332, revisão e prévia aprovados; pronto para revisão, sem merge. [Síntese canônica](../ESTADO-ATUAL.md). Os registros abaixo são históricos.
 
 > **Estado corrente — 16/10/2026:** PR68 mesclado/publicado em `c6d398f`, deploy `6ad29a17a2836c92c65ed8a2`,121 entradas conferidas, sem migração. Busca por descrição PR69 qualificada no CI (7289), revisão e prévia conferidas, sem merge; [síntese canônica](../ESTADO-ATUAL.md). Os checkpoints abaixo são históricos.

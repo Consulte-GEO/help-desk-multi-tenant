@@ -1,0 +1,78 @@
+✖ private status selects exact states only where caller is an operator and combines public filters (4.7599ms)
+✖ private filter precedes pagination, counts whole authorized corpus and binds cursors (0.7626ms)
+✖ HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals (20.6516ms)
+✖ client query/cursor generations include private status; quick views clear it and mark custom selection (0.4826ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 306.5282
+
+✖ failing tests:
+
+test at tests\ticket-internal-status-filter.test.ts:10:1
+✖ private status selects exact states only where caller is an operator and combines public filters (4.7599ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-internal-status-filter.test.ts:11:114)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-internal-status-filter.test.ts:20:1
+✖ private filter precedes pagination, counts whole authorized corpus and binds cursors (0.7626ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  72 !== 32
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-internal-status-filter.test.ts:22:9)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 72,
+    expected: 32,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-internal-status-filter.test.ts:27:1
+✖ HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals (20.6516ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  400 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-internal-status-filter.test.ts:30:102)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 400,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-internal-status-filter.test.ts:36:1
+✖ client query/cursor generations include private status; quick views clear it and mark custom selection (0.4826ms)
+  Error: Filtros inválidos.
+      at filters (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/web/ticket-list-state.js:14:115)
+      at Object.reset (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/web/ticket-list-state.js:44:36)
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-internal-status-filter.test.ts:37:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

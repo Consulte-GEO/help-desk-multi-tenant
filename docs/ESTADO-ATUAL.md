@@ -2,20 +2,22 @@
 
 Atualizado em **16/10/2026**. Esta página resume os checkpoints e seus limites; os documentos datados continuam preservados como histórico. Código, teste local, CI, publicação e aceite humano são estados distintos.
 
+**17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
+
 ## Produção confirmada
 
 | Referência | Estado |
 |---|---|
 | Site | `https://helpdesk.consultegeo.org`, atendimento Consulte GEO ativo |
 | Branch de produção | `codex/m1-reproducibilidade` |
-| Último PR publicado | [#69 — busca na descrição dos chamados](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/69) |
-| Merge publicado | `72a72b51ea651fa5d377f2632646a352d39e90f1` |
-| Deploy Netlify | `6ad2c3fd7dd44b857679b79f`, READY em16/10/2026 às21h44 Brasília |
+| Último PR publicado | [#70 — filtro de situação interna da equipe](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/70) |
+| Merge publicado | `941dc579912e84cb80a70d0c3a37f7a68c3852b2` |
+| Deploy Netlify | `6ad35567303a7de877d7700c`, READY em17/10/2026 às08h02 Brasília |
 | Verificação desta publicação | 121/121 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
-| Qualificação da implementação do PR69 | Fonte `06ef6befc9ee0a09f031012f042745d79212fe21`; CI7.289 verificações, revisão encerrada. [Escopo e recibos](implementation/BUSCA-DESCRICAO-2026-10-16.md). |
+| Qualificação da implementação do PR70 | Fonte `d638cd0d5563f17aff0d340ccdc18bff7f05e378`; CI7.303 verificações, revisão encerrada. [Escopo e recibos](implementation/FILTRO-SITUACAO-INTERNA-2026-10-16.md). |
 | Contratos atuais | API/interface0.31.0; core/schema0.27,21 migrations. Addons privados Apoio/Wiki não são migrations extras do core. O catálogo de banco não foi reexecutado nesta publicação sem SQL. |
 
-Provas desta publicação: `evidence/description-search-20261016/production/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
+Provas desta publicação: `evidence/publication-pr70-20261017/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
 
 ## Entregas e continuidade
 

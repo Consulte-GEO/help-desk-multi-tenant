@@ -28,7 +28,8 @@ test('resumo limita integração ao produto e operador às próprias contas de a
 });
 test('HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas',async()=>{
  const h=createHttpHandler({service:setup(),authenticate:async()=>p,ticketTotals:true});
- for(const query of ['limit=1','cursor=abc','q=ab&q=cd','internal_status=open'])assert.equal((await h(new Request('https://hd.test/v1/tickets/summary?'+query))).status,400);
+ for(const query of ['limit=1','cursor=abc','q=ab&q=cd','private_filter=open'])assert.equal((await h(new Request('https://hd.test/v1/tickets/summary?'+query))).status,400);
+ assert.equal((await h(new Request('https://hd.test/v1/tickets/summary?internal_status=open'))).status,403);
  const r=await h(new Request('https://hd.test/v1/tickets/summary'));
  assert.equal(r.status,200);assert.equal((await r.json()).total,1);assert.equal(r.headers.get('cache-control'),'no-store');
  assert.equal((await h(new Request('https://hd.test/v1/tickets/summary',{method:'POST'}))).status,405);

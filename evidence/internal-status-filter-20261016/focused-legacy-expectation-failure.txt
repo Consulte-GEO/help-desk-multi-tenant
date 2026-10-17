@@ -1,0 +1,120 @@
+✔ busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT (2.8474ms)
+✔ normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino (0.1127ms)
+✔ consulta sem novos filtros mantém parâmetros opcionais nulos (0.2799ms)
+✔ não há cache de busca que preserve autorização de uma página anterior (3.8649ms)
+✔ filtro de conta continua autorizado antes da consulta de texto (0.6955ms)
+✔ telemetria da busca não inclui termo, prioridade, conta nem querystring (207.3539ms)
+✔ busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120 (0.5043ms)
+✔ description list chooses fixed column, retains literal parameters and applies search before LIMIT (2.5434ms)
+✔ private status parameters narrow mixed frozen roles before LIMIT even when live SQL role is wider (11.5432ms)
+✔ requisição da lista inclui filtros e cursor no servidor (5.3134ms)
+✔ resposta antiga não substitui resultado de filtro mais novo (0.7597ms)
+✔ resposta antiga da página seguinte não entra após atualizar lista (0.3681ms)
+✔ mudança de sessão elimina itens e invalida conclusões antigas (0.2798ms)
+✔ uma página pendente não pode disparar carregamento duplicado (0.205ms)
+✔ erro preserva página já carregada e permite repetir o mesmo cursor (0.318ms)
+✔ estado não retém mutações externas nos itens ou filtros (0.4211ms)
+✔ página duplicada ou cursor repetido não corrompe resultados aceitos (0.557ms)
+✔ payload com metadados privados ou formato inesperado é rejeitado (0.7275ms)
+✔ filtros inválidos não apagam a lista atual (0.3568ms)
+✔ paginação em memória é limitada e informa necessidade de refinar filtros (7.7263ms)
+✔ resultado vazio não é confundido com carregamento ou erro (0.2079ms)
+✔ busca no servidor alcança chamado anterior à primeira página de 25 (4.0321ms)
+✔ HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers (244.1532ms)
+✔ busca literal ignora caixa latina, preserva acentos e não interpreta curingas (0.7303ms)
+✔ não pesquisa descrição, mensagem nem nota interna (1.865ms)
+✔ UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador (0.353ms)
+✔ status público reúne estados internos equivalentes sem expor classificação privada (1.1048ms)
+✔ filtros de prioridade/status/assunto são combinados por AND (0.3572ms)
+✔ busca não permite inferir títulos de outra conta, workspace ou solicitante (1.1754ms)
+✔ integração não pesquisa produto fora do binding autorizado (0.3135ms)
+✔ ausência de tickets:read não é compensada pela busca (1.7283ms)
+✔ cursor vincula consulta, status e prioridade; não transfere autorização (2.4486ms)
+✔ cursor anterior sem novos filtros continua utilizável (1.464ms)
+✔ requisição com filtro inválido é recusada antes da consulta (0.7017ms)
+✖ HTTP recusa filtro duplicado, desconhecido e seletor interno (3.2017ms)
+✔ string parecida com injeção não expande os resultados (0.7584ms)
+✔ paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente (8.725ms)
+✔ mounted private status uses shared namespace, exact parameters and frozen operator audience before LIMIT (172.8863ms)
+✔ mounted collection accepts explicit description mode on list and summary with same private namespace (8.0436ms)
+✔ summary is an authenticated local collection route, never a caller-supplied ticket identifier (5.8197ms)
+✔ mounted summary rejects unsupported method with405 instead of suggesting a retryable outage (0.326ms)
+✔ qualified collection prepares native access on same borrowed transaction before the filtered SQL page (1.1951ms)
+✔ generic ticket POST remains closed with no SQL even when collection GET is configured (0.7463ms)
+✔ unknown, repeated and forged collection selectors never dispatch SQL (1.5654ms)
+✔ malformed native namespace result rolls back before paging instead of giving unrestricted access (3.9732ms)
+✔ empty native coverage still executes a restrictive local namespace predicate (1.2984ms)
+✔ cancel during native preparation rolls back and never executes page SQL (3.0035ms)
+✔ local borrowed get projects actual bounded protocol/profile/requester metadata and rejects corrupt native summary (7.4232ms)
+✔ description mode is explicit, literal, case folded, accent sensitive and authorized (11.148ms)
+✔ description search precedes LIMIT, keeps complete totals and binds the cursor to mode (100.2975ms)
+✔ HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private (111.3144ms)
+✔ mode requires valid q in application and UI, and quick views preserve it (1.5418ms)
+✔ private status selects exact states only where caller is an operator and combines public filters (16.5416ms)
+✔ private filter precedes pagination, counts whole authorized corpus and binds cursors (10.3454ms)
+✔ HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals (93.6579ms)
+✔ client query/cursor generations include private status; quick views clear it and mark custom selection (2.4174ms)
+✔ HTTP finds a full CG protocol case-insensitively before pagination, not its prefix or digits (126.8933ms)
+✔ protocol search combines filters and preserves ownership, account, workspace and revocation (1.1197ms)
+✔ a cursor from a subject result cannot be reused for a protocol search (1.2535ms)
+✔ agregação prepara namespace na mesma transação, parametriza filtros e não usa LIMIT (6.1627ms)
+✔ agregação inválida, overflow, campos extras ou soma divergente recusam integralmente e fazem rollback (4.3868ms)
+✔ namespace inválido recusa antes de contar; vazio mantém predicado restritivo (0.8124ms)
+✔ description summary chooses only developer-owned column and keeps malicious text parameterized (0.592ms)
+✔ totais preservam valores completos e vinculam o caminho à consulta aplicada (16.1253ms)
+✔ nova consulta e logout eliminam totais e recusam respostas e erros antigos (0.6684ms)
+✔ resumo inválido não vira zero nem preserva totais da consulta anterior; repetição recupera (1.6591ms)
+✔ resumo conta todo o conjunto autorizado antes da paginação e do teto visual500 (25.4455ms)
+✔ resumo usa filtros literais, estados públicos e protocolo exato sem pesquisar descrição (1.7058ms)
+✔ resumo mantém exigência de scope, conta e filtros de responsabilidade (1.6982ms)
+✔ resumo limita integração ao produto e operador às próprias contas de atendimento (0.7488ms)
+✖ HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas (35.7856ms)
+✔ consultas comuns reutilizam situações públicas e não oferecem responsabilidade a solicitante (9.867ms)
+✔ consultas da equipe usam os filtros nativos e mantêm busca e prioridade (0.4516ms)
+✔ estado ativo descreve a consulta aplicada; combinação manual fica personalizada (1.224ms)
+✔ ausência de leitura, identidade desconhecida ou integração não libera consultas da equipe (0.3865ms)
+✔ filtros inválidos e IDs arbitrários são recusados; objetos retornados não alteram presets (0.3594ms)
+ℹ tests 76
+ℹ suites 0
+ℹ pass 74
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3166.9588
+
+✖ failing tests:
+
+test at tests\m1f-ticket-search.test.ts:86:1
+✖ HTTP recusa filtro duplicado, desconhecido e seletor interno (3.2017ms)
+  AssertionError [ERR_ASSERTION]: internal_status=waiting_internal
+  
+  403 !== 400
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/m1f-ticket-search.test.ts:88:181)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 403,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-summary.test.ts:29:1
+✖ HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas (35.7856ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  403 !== 400
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-summary.test.ts:31:88)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 403,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
