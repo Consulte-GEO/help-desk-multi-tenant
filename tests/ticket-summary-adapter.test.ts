@@ -30,3 +30,12 @@ test('namespace inválido recusa antes de contar; vazio mantém predicado restri
  const f=fixture();f.state.contexts=null;await assert.rejects(f.read(),{status:503});assert.ok(!f.calls.some(c=>c.sql.includes('count(*)')));
  const empty=fixture();empty.state.contexts=[];await empty.read();assert.equal(empty.calls.find(c=>c.sql.includes('count(*)'))?.args?.[10],'[]');
 });
+
+test('description summary chooses only developer-owned column and keeps malicious text parameterized',async()=>{
+ const f=fixture(),q="Descrição %_ ' OR TRUE --";await f.read({q,search_in:'description'});
+ const statement=f.calls.find(c=>c.sql.includes('count(*)'))!;
+ assert.match(statement.sql,/strpos\(translate\(description,\$4::text,\$5::text\),\$3\)>0/);
+ assert.equal(statement.args?.[2],"descrição %_ ' or true --");
+ assert.doesNotMatch(statement.sql,/OR TRUE --|id::text=\$3|cg_local_ticket_summary|ticket_messages|internal_notes|limit/i);
+ assert.match(statement.sql,/cg_local_ticket_directory/);assert.match(statement.sql,/\$10::jsonb->'accounts'/);
+});

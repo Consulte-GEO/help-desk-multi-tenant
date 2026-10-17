@@ -337,6 +337,34 @@ test('SQL busca não encontra nota interna, mensagem ou descrição',async()=>{
  await service.addMessage(alice,t.ticket.id,'M1FONLYMESSAGE-7391','m1f-sql-message-exclusion','db-test');
  for(const q of ['M1FONLYBODY-7391','M1FONLYNOTE-7391','M1FONLYMESSAGE-7391'])assert.equal((await service.list(alice,{limit:25,q})).items.length,0);
 });
+
+test('SQL explicit description search uses restricted login, literal text and matching complete totals',async()=>{
+ const needle="HD019 descrição %_ ' OR TRUE --",t=await service.create(alice,{...input,subject:'Description-search owned fixture',description:needle},'description-sql-create-key','db-test');
+ await service.addMessage(alice,t.ticket.id,'HD019MESSAGE-ONLY','description-sql-message-key','db-test');
+ await service.addNote(agent,t.ticket.id,'HD019NOTE-ONLY','description-sql-note-key','db-test');
+ const filters={q:needle.toUpperCase(),search_in:'description'};
+ assert.deepEqual((await service.list(alice,{limit:1,...filters})).items.map(t=>t.id),[t.ticket.id]);
+ assert.equal((await service.summarize(alice,filters)).total,1);
+ assert.equal((await service.summarize(alice,{...filters,priority:'urgent'})).total,0);
+ for(const q of ['HD019MESSAGE-ONLY','HD019NOTE-ONLY','HD019 descricao',t.ticket.id,'Description-search owned fixture']){
+  assert.equal((await service.summarize(alice,{...filters,q})).total,0);
+  assert.equal((await service.list(alice,{limit:1,...filters,q})).items.length,0);
+ }
+ for(const actor of [bob,outsider]){assert.equal((await service.summarize(actor,filters)).total,0);assert.equal((await service.list(actor,{limit:1,...filters})).items.length,0);}
+ await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);
+ try{assert.equal((await service.list(alice,{limit:1,...filters})).items.length,0);assert.equal((await service.summarize(alice,filters)).total,0);}
+ finally{await admin.query('update helpdesk_auth.account_grants set active=true where principal_id=$1',[alice.id]);}
+});
+
+test('SQL description mode applies before pagination and invalidates subject cursor for same text',async()=>{
+ const older=await service.create(alice,{...input,subject:'HD019 cursorneedle',description:'HD019 cursorneedle'},'description-sql-page-older','db-test');
+ const newer=await service.create(alice,{...input,subject:'HD019 cursorneedle',description:'HD019 cursorneedle'},'description-sql-page-newer','db-test');
+ const filters={q:'HD019 cursorneedle',search_in:'description'},first=await service.list(alice,{limit:1,...filters});assert.ok(first.nextCursor);
+ const second=await service.list(alice,{limit:1,...filters,cursor:first.nextCursor!});
+ assert.deepEqual(new Set([...first.items,...second.items].map(t=>t.id)),new Set([older.ticket.id,newer.ticket.id]));assert.equal(second.nextCursor,null);
+ assert.equal((await service.summarize(alice,filters)).total,2);
+ await assert.rejects(()=>service.list(alice,{limit:1,q:filters.q,cursor:first.nextCursor!}),{code:'invalid_cursor'});
+});
 test('SQL busca perde acesso imediatamente na próxima consulta após revogação',async()=>{
  const t=await service.create(alice,{...input,subject:'M1F revogação real'},'m1f-sql-live-revocation','db-test');
  await admin.query('update helpdesk_auth.account_grants set active=false where principal_id=$1',[alice.id]);

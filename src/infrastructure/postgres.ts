@@ -105,14 +105,17 @@ class PostgresStore implements Store{
      and local_context->>'tenantId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'tenantId')`:'';
   // Only the mounted CG reader may use its existing, independently authorized
   // projection. CASE avoids calling it for ordinary subject/UUID searches.
-  const protocolPredicate=this.consulteGeoLocal?`or (case when $6::text ~ '^cg-[1-9][0-9]{4,17}$'
+  const protocolPredicate=this.consulteGeoLocal&&filters.search_in!=='description'?`or (case when $6::text ~ '^cg-[1-9][0-9]{4,17}$'
     then lower(helpdesk_auth.cg_local_ticket_summary(tickets.id)->>'protocol') end)=$6`:'';
+  // The column is selected from two developer-owned constants, never request text.
+  const searchColumn=filters.search_in==='description'?'description':'subject';
+  const identifierPredicate=filters.search_in==='description'?'':`or id::text=$6 ${protocolPredicate}`;
   // No interpolation of caller search text or private-note/message joins. RLS stays in effect.
   return (await this.c.query(`select ${ticketReadColumns}${this.consulteGeoLocal?',helpdesk_auth.cg_local_ticket_summary(tickets.id) as consultegeo_summary':''} from helpdesk_core.tickets
    where workspace_id=$1 and ($2::uuid is null or account_id=$2)
     ${localPredicate}
     and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
-    and ($6::text is null or strpos(translate(subject,$7::text,$8::text),$6)>0 or id::text=$6 ${protocolPredicate})
+    and ($6::text is null or strpos(translate(${searchColumn},$7::text,$8::text),$6)>0 ${identifierPredicate})
     and ($9::text[] is null or status=any($9::text[]))
     and ($10::text is null or priority=$10)
     and ($11::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
@@ -128,8 +131,10 @@ class PostgresStore implements Store{
    where local_context->>'accountId'=tickets.account_id::text and local_context->>'productInstanceId'=tickets.product_instance_id::text
     and local_context->>'connectionId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'connectionId'
     and local_context->>'tenantId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'tenantId')`:'';
-  const protocol=this.consulteGeoLocal?`or (case when $3::text ~ '^cg-[1-9][0-9]{4,17}$'
+  const protocol=this.consulteGeoLocal&&filters.search_in!=='description'?`or (case when $3::text ~ '^cg-[1-9][0-9]{4,17}$'
    then lower(helpdesk_auth.cg_local_ticket_summary(tickets.id)->>'protocol') end)=$3`:'';
+  const searchColumn=filters.search_in==='description'?'description':'subject';
+  const identifierPredicate=filters.search_in==='description'?'':`or id::text=$3 ${protocol}`;
   // Intersection with the frozen application principal, just like list()'s
   // canReadTicket/matchesTicketSearch post-filter. This can only narrow RLS.
   const human=this.p.kind==='human',visibility=JSON.stringify({admin:human&&this.p.workspaceRole==='admin',
@@ -146,7 +151,7 @@ class PostgresStore implements Store{
     and (created_by=$9::uuid or ($10::jsonb->'wide') ? account_id::text)))
    and ($10::jsonb->'products'='null'::jsonb or ($10::jsonb->'products') ? product_instance_id::text)
    ${local}
-   and ($3::text is null or strpos(translate(subject,$4::text,$5::text),$3)>0 or id::text=$3 ${protocol})
+   and ($3::text is null or strpos(translate(${searchColumn},$4::text,$5::text),$3)>0 ${identifierPredicate})
    and ($6::text[] is null or status=any($6::text[])) and ($7::text is null or priority=$7)
    and ($8::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
     and (($10::jsonb->>'admin')::boolean or ($10::jsonb->'operators') ? account_id::text)

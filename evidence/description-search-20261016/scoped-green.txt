@@ -1,0 +1,32 @@
+✔ busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT (4.0256ms)
+✔ normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino (0.1789ms)
+✔ consulta sem novos filtros mantém parâmetros opcionais nulos (0.429ms)
+✔ não há cache de busca que preserve autorização de uma página anterior (3.3478ms)
+✔ filtro de conta continua autorizado antes da consulta de texto (0.7539ms)
+✔ telemetria da busca não inclui termo, prioridade, conta nem querystring (40.1464ms)
+✔ busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120 (0.6304ms)
+✔ mounted collection accepts explicit description mode on list and summary with same private namespace (56.1342ms)
+✔ summary is an authenticated local collection route, never a caller-supplied ticket identifier (3.3962ms)
+✔ mounted summary rejects unsupported method with405 instead of suggesting a retryable outage (0.3291ms)
+✔ qualified collection prepares native access on same borrowed transaction before the filtered SQL page (1.9774ms)
+✔ generic ticket POST remains closed with no SQL even when collection GET is configured (0.4562ms)
+✔ unknown, repeated and forged collection selectors never dispatch SQL (0.7637ms)
+✔ malformed native namespace result rolls back before paging instead of giving unrestricted access (4.0258ms)
+✔ empty native coverage still executes a restrictive local namespace predicate (0.9056ms)
+✔ cancel during native preparation rolls back and never executes page SQL (1.7043ms)
+✔ local borrowed get projects actual bounded protocol/profile/requester metadata and rejects corrupt native summary (3.5768ms)
+✔ description mode is explicit, literal, case folded, accent sensitive and authorized (6.9853ms)
+✔ description search precedes LIMIT, keeps complete totals and binds the cursor to mode (81.7696ms)
+✔ HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private (39.0948ms)
+✔ mode requires valid q in application and UI, and quick views preserve it (2.3676ms)
+✔ agregação prepara namespace na mesma transação, parametriza filtros e não usa LIMIT (14.6652ms)
+✔ agregação inválida, overflow, campos extras ou soma divergente recusam integralmente e fazem rollback (5.5655ms)
+✔ namespace inválido recusa antes de contar; vazio mantém predicado restritivo (0.6824ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 490.2455

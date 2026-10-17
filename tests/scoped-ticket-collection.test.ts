@@ -26,6 +26,18 @@ function fixture(){
 }
 const request=(query='',method='GET',signal?:AbortSignal)=>new Request('https://helpdesk.example/v1/tickets'+query,{method,signal});
 
+test('mounted collection accepts explicit description mode on list and summary with same private namespace',async()=>{
+ for(const endpoint of ['?q=needle&search_in=description','/summary?q=needle&search_in=description']){
+  const f=fixture(),r=await f.handler(request(endpoint));assert.equal(r.status,200);
+  const statement=f.calls.find(x=>x.sql.includes('from helpdesk_core.tickets'))!;assert.ok(statement);
+  assert.match(statement.sql,/strpos\(translate\(description,/);assert.match(statement.sql,/cg_local_ticket_directory/);
+  assert.doesNotMatch(statement.sql,/internal_notes|ticket_messages/);assert.equal(f.calls.at(-1)?.sql,'COMMIT');
+ }
+ for(const query of ['?q=needle&search_in=description&search_in=description','/summary?q=needle&search_in=notes']){
+  const f=fixture(),r=await f.handler(request(query));assert.equal(r.status,400);assert.ok(!f.calls.some(x=>x.sql.includes('from helpdesk_core.tickets')));
+ }
+});
+
 test('summary is an authenticated local collection route, never a caller-supplied ticket identifier',async()=>{
  const f=fixture(),r=await f.handler(request('/summary?q=needle'));assert.equal(r.status,200);assert.equal((await r.json()).total,0);
  assert.ok(f.calls.some(x=>x.sql.includes('cg_local_prepare_ticket_collection')));assert.equal(f.calls.at(-1)?.sql,'COMMIT');

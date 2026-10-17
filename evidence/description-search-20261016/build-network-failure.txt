@@ -1,0 +1,13 @@
+
+> @consulte-geo/helpdesk@0.31.0 build
+> node scripts/build-implantacao.mjs && node scripts/build.mjs
+
+npm error code ENOTFOUND
+npm error syscall getaddrinfo
+npm error errno ENOTFOUND
+npm error network request to https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+npm error network This is a problem related to network connectivity.
+npm error network In most cases you are behind a proxy or have bad network settings.
+npm error network
+npm error network If you are behind a proxy, please make sure that the 'proxy' config is set properly.  See: 'npm help config'
+npm error A complete log of this run can be found in: C:\Users\thiag\AppData\Local\Packages\sandbox.{***}\AC\npm-cache\_logs\2026-10-16T21_54_50_640Z-debug-0.log

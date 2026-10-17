@@ -1,0 +1,91 @@
+✖ description mode is explicit, literal, case folded, accent sensitive and authorized (2.8988ms)
+✖ description search precedes LIMIT, keeps complete totals and binds the cursor to mode (17.0278ms)
+✖ HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private (20.3083ms)
+✖ mode requires valid q in application and UI, and quick views preserve it (0.6116ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 359.2715
+
+✖ failing tests:
+
+test at tests\ticket-description-search.test.ts:19:1
+✖ description mode is explicit, literal, case folded, accent sensitive and authorized (2.8988ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'subject-only'
+  -   'description-match'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-description-search.test.ts:20:25)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'subject-only' ],
+    expected: [ 'description-match' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-description-search.test.ts:30:1
+✖ description search precedes LIMIT, keeps complete totals and binds the cursor to mode (17.0278ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-description-search.test.ts:35:2)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'invalid_cursor' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\ticket-description-search.test.ts:41:1
+✖ HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private (20.3083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  400 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-description-search.test.ts:44:119)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 400,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\ticket-description-search.test.ts:53:1
+✖ mode requires valid q in application and UI, and quick views preserve it (0.6116ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      q: 'relatório %_',
+  -   search_in: 'description'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-description-search.test.ts:54:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { q: 'relatório %_' },
+    expected: { q: 'relatório %_', search_in: 'description' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

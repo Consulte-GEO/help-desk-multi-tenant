@@ -165,7 +165,7 @@ function render(){
  $('nav-count').textContent=items.length;$('list-count').textContent=items.length+' carregado(s)'+(s.next?' · há mais resultados':'');
  $('more').hidden=!s.next||inbox.capped()||phase==='error';$('more').disabled=inbox.busy();$('list-retry').hidden=phase!=='error';
  $('ticket-list').setAttribute('aria-busy',String(inbox.busy()));
- const applied=inbox.filters(),names=[];if(applied.q)names.push('Busca por assunto/protocolo/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);if(applied.assignment)names.push(applied.assignment==='mine'?'Meus atendimentos':'Sem responsável');
+ const applied=inbox.filters(),names=[];if(applied.q)names.push(applied.search_in==='description'?'Busca na descrição':'Busca por assunto/protocolo/UUID');if(applied.status)names.push(labels[applied.status]);if(applied.priority)names.push('Prioridade '+priorities[applied.priority]);if(applied.assignment)names.push(applied.assignment==='mine'?'Meus atendimentos':'Sem responsável');
  $('applied-filters').textContent='Filtros aplicados: '+(names.join(' · ')||'nenhum')+(totalsEnabled?'. Cartões referem-se à consulta autorizada completa.':'. Contagens referem-se somente aos itens carregados.');
  $('list-status').textContent=inbox.capped()?'Limite de 500 itens na tela. Refine a busca ou os filtros para continuar.':phase==='error'?'A consulta falhou; os itens abaixo já haviam sido carregados. Tente novamente.':phase==='loading'?'Consultando…':'';
  renderServiceAvailability();
@@ -174,7 +174,7 @@ function render(){
 }
 function collectTicketFilters(){
  const filters={},q=$('search').value.trim(),status=$('status-filter').value,priority=$('priority-filter').value,assignment=$('assignment-filter').value;
- if(q)filters.q=q;if(status)filters.status=status;if(priority)filters.priority=priority;if(assignment)filters.assignment=assignment;return filters;
+ if(q)filters.q=q;if($('search-in').value)filters.search_in=$('search-in').value;if(status)filters.status=status;if(priority)filters.priority=priority;if(assignment)filters.assignment=assignment;return filters;
 }
 function selectTicketView(id){
  if(inbox.busy()||!s.me||!serviceAvailable())return;
@@ -187,6 +187,12 @@ function applyFilters(){
  const filters=collectTicketFilters();
  inbox.reset(filters);return list(false);
 }
+function renderSearchMode(){
+ const description=$('search-in').value==='description';$('search').required=description;
+ $('search-help').textContent=description?'Busca literal na descrição de todos os chamados autorizados, antes da paginação. Acentos são significativos. Notas e mensagens não são pesquisadas.':'Busca literal pelo assunto, protocolo CG completo (ex. CG-10001) ou UUID completo. Acentos são significativos no assunto. Para pesquisar a descrição, selecione essa opção acima. Notas e mensagens não são pesquisadas.';
+}
+$('search-in').addEventListener('change',renderSearchMode);
+$('ticket-filters').addEventListener('reset',()=>queueMicrotask(renderSearchMode));
 $('ticket-filters').onsubmit=e=>{e.preventDefault();run(applyFilters);};
 $('clear-filters').onclick=()=>{ $('ticket-filters').reset();run(applyFilters); };
 $('list-retry').onclick=()=>run(()=>list(false));

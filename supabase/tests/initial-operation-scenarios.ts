@@ -49,6 +49,16 @@ export function registerInitialOperationSqlTests(adminPool:()=>SqlPool,appPool:(
   assert.equal((await read(live.p,{assignment:'mine'})).total,0);assert.equal((await read(live.p,{assignment:'unassigned'})).total,1);
   const stranger={...live.p,id:randomUUID(),workspaceRole:null,grants:[]};assert.equal((await read(stranger,{q:'CG-10001'})).total,0);
  });
+ await suite.test('description search shares current CG namespace and excludes protocol and private evidence',async()=>{
+  const read=(actor=live.p)=>runTransaction(app,actor,async c=>{
+   const s=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,actor,{consulteGeoLocal:true,localCollection:true}));
+   const t=await s.get(actor,ticketId),filters={q:t.description.slice(0,Math.min(100,t.description.length)),search_in:'description'};
+   assert.deepEqual((await s.list(actor,{limit:1,...filters})).items.map(t=>t.id),[ticketId]);assert.equal((await s.summarize(actor,filters)).total,1);
+   for(const q of ['CG-10001',ticketId]){assert.equal((await s.list(actor,{limit:1,...filters,q})).items.length,0);assert.equal((await s.summarize(actor,{...filters,q})).total,0);}
+  });await read();
+  const narrowed={...live.p,workspaceRole:null,grants:[]};
+  await runTransaction(app,narrowed,async c=>{const s=new HelpdeskService(createBorrowedPostgresUnitOfWork(c,narrowed,{consulteGeoLocal:true,localCollection:true}));const f={q:'Owned',search_in:'description'};assert.equal((await s.list(narrowed,{limit:1,...f})).items.length,0);assert.equal((await s.summarize(narrowed,f)).total,0);});
+ });
  await suite.test('suppressed required checklist binding rolls back opening and preserves draft and protocol for the same intent',async()=>{
   const source=createPostgresLocalConsulteGeoSourcePorts(app),contexts=await source.readRequestContexts(live.p,new AbortController().signal),refs=[contexts[0]!.works[0]!.ref],options={pool:app,resolver:source.resolver,createStore:createPostgresConsulteGeoIntakeStore,directory:createPostgresConsulteGeoDraftDirectory(app),draftTtlSeconds:600};
   const catalog=await createConsulteGeoRequestCatalog(options).read(live.p,{service:'questions',refs}),entry=catalog.configurations[0]!.entries[0]!,drafts=createFormDraftService(options),draft=await drafts.saveFormDraft(live.p,{id:randomUUID(),accountId:live.input.accountId,refs,formId:entry.form.id,formVersion:1,answers:{details:'Owned binding suppression qualification'}},0),intake=createSupportIntake(options),q={draftId:draft.id,expectedDraftRevision:1,subject:'Owned required binding rollback',description:'Owned fixture only',coverageId:null},preview=await intake.previewSupportRequest(live.p,q),input={...q,previewHash:preview.previewHash},key=randomUUID();

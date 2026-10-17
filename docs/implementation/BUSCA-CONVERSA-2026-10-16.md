@@ -52,3 +52,7 @@ HDA38966480748 e Apoio38966480792 aprovados na mesma fonte. Revisão da inclusã
 Quatro análises CodeQL e agregado, regras de headers/redirects e preview aprovados. [Gate do merge de teste38967593676](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38967593676); consultar seu estado no provedor. A publicação da atualização documental final será conferida separadamente, sem mudar o fingerprint da implementação. A autorização desta rodada permitiu publicar o PR67, não presume merge/publicação do PR68.
 
 Próximos recortes: busca global com audiência própria no servidor; validação semântica de campos existentes com nova versão e paridade; projeção de SLA após reconciliação de política. Administrativos sensíveis/modelos técnicos continuam condicionados, sem liberar os adiamentos ou reativar scanner. HD-019 permanece parcial.
+
+## Publicação autorizada do PR68
+
+Em16/10/2026 o titular autorizou merge e produção. Merge `c6d398fac03efd2439923c39dce47307b73e0bb7` às21:41:41Z; Netlify `6ad29a17a2836c92c65ed8a2` READY/publicado às21:45:32.835Z (18h45 Brasília). Conferidas121/121 entradas do manifesto por HTTPS/SHA1, capacidades e controles privados. Quatro recusas anônimas401 conformes ao OpenAPI, correlação e headers privados preservados; sem escrita de negócio ou migration. Recibos em `evidence/message-search-20261016/production/`. Não é aceite humano autenticado. A continuidade é a busca por descrição documentada separadamente; HD-019 permanece parcial.

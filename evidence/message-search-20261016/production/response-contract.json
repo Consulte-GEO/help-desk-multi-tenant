@@ -1,0 +1,131 @@
+{
+  "checkedAt": "2026-10-16T21:46:29.316Z",
+  "sourceFingerprint": "f0ea1e24207eadec392008cd1f50f1856e563ba0421b7401a279e8db7c892fe2",
+  "contractSource": "9ab8b704f3788fe238e0b868039e0ad836bc12cc",
+  "productionSource": "c6d398fac03efd2439923c39dce47307b73e0bb7",
+  "deploy": "6ad29a17a2836c92c65ed8a2",
+  "anonymousRefusal": true,
+  "transportPreconditionCarrier": true,
+  "authenticated": false,
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "routes": [
+    {
+      "path": "/tickets/{ticket_id}/workflow-commands",
+      "method": "POST",
+      "status": 401,
+      "contractPassed": true,
+      "correlationMatched": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/internal/tickets/{ticket_id}/execution-checklist/marks",
+      "method": "POST",
+      "status": 401,
+      "contractPassed": true,
+      "correlationMatched": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/support-requests",
+      "method": "POST",
+      "status": 401,
+      "contractPassed": true,
+      "correlationMatched": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/form-drafts/{draft_id}",
+      "method": "PUT",
+      "status": 401,
+      "contractPassed": true,
+      "correlationMatched": true,
+      "privateHeaders": [
+        {
+          "name": "cache-control",
+          "value": "no-store"
+        },
+        {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        },
+        {
+          "name": "referrer-policy",
+          "value": "no-referrer"
+        }
+      ],
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    }
+  ],
+  "pass": true
+}
