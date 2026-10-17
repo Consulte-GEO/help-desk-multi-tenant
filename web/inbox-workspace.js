@@ -1,4 +1,5 @@
 import {createInboxViewState,normalizeInboxFilters,inboxFiltersDiffer} from './inbox-view-state.js';
+import {saoPauloFilterInstant} from './filter-instant.js';
 
 const mounted=new WeakMap();
 /** Presentation only. Callbacks delegate existing reads; this module NEVER commands
@@ -28,9 +29,9 @@ export function mountInboxWorkspace(doc=document,options={}) {
  const extraSummary=make('summary','','Filtros adicionais');extra.append(extraSummary);filterGrid.before(extra);
  relocate(filterGrid,extra);relocate($('assignment-filter-label'),extra);if($('internal-status-filter-label'))relocate($('internal-status-filter-label'),extra);
  const dirty=add(make('p','fine hd-filter-draft','Há alterações nos filtros ainda não aplicadas.'),'hd-filter-draft');dirty.setAttribute('role','status');dirty.hidden=true;filterActions.before(dirty);
- function draft(){return normalizeInboxFilters({q:$('search')?.value,search_in:$('search-in')?.value,internal_status:$('internal-status-filter-label')?.hidden===false?$('internal-status-filter')?.value:'',status:$('status-filter')?.value,priority:$('priority-filter')?.value,assignment:$('assignment-filter-label').hidden?'':$('assignment-filter')?.value});}
+ function draft(){const dates={};for(const [key,id]of [['created_from','created-from'],['created_before','created-before']]){const value=$(id)?.value??'';try{dates[key]=saoPauloFilterInstant(value);}catch{dates[key]='invalid:'+value;}}return normalizeInboxFilters({...dates,q:$('search')?.value,search_in:$('search-in')?.value,internal_status:$('internal-status-filter-label')?.hidden===false?$('internal-status-filter')?.value:'',status:$('status-filter')?.value,priority:$('priority-filter')?.value,assignment:$('assignment-filter-label').hidden?'':$('assignment-filter')?.value});}
  function syncFilters(){
-  const count=['status','priority','assignment','internal_status'].filter(k=>applied[k]).length;
+  const count=['status','priority','assignment','internal_status','created_from','created_before'].filter(k=>applied[k]).length;
   text(extraSummary,'Filtros adicionais'+(count?` · ${count} ativo${count===1?'':'s'}`:''));
   dirty.hidden=!inboxFiltersDiffer(draft(),applied);
   text(dirty,filterBusy?'Consulta em andamento. Alterações nos campos ainda não aplicadas.':'Há alterações nos filtros ainda não aplicadas. Use “Aplicar filtros”.');

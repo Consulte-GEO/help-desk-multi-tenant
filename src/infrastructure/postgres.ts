@@ -70,6 +70,13 @@ function internalStatusPredicate(p:Principal,f:TicketSearchFilters,start:number)
  return {sql:`and (status=$${start}::text and helpdesk_auth.is_operator(workspace_id,account_id)
   and (($${start+1}::jsonb->>'admin')::boolean or ($${start+1}::jsonb->'accounts') ? account_id::text))`,values:[f.internal_status,audience]};
 }
+function creationWindowPredicate(f:TicketSearchFilters,start:number){
+ const terms:string[]=[],values:unknown[]=[];
+ for(const [key,operator] of [['created_from','>='],['created_before','<']] as const)if(f[key]){
+  terms.push(`and created_at ${operator} $${start+values.length}::timestamptz`);values.push(f[key]);
+ }
+ return {sql:terms.join('\n'),values};
+}
 class PostgresStore implements Store{
  readonly c:SqlClient;readonly p:Principal;readonly localCollection:boolean;readonly consulteGeoLocal:boolean;constructor(c:SqlClient,p:Principal,localCollection=false,consulteGeoLocal=false){this.c=c;this.p=p;this.localCollection=localCollection;this.consulteGeoLocal=consulteGeoLocal;}
  // Table and column names in this helper are developer-owned constants, never request values.
@@ -106,6 +113,7 @@ class PostgresStore implements Store{
   if(cursor){try{uuidIdentifier(cursor.id);}catch{throw new HelpdeskError(400,'invalid_cursor','Cursor inválido para este contexto.');}}
   const localContexts=await this.prepareLocalCollection();
   const internal=internalStatusPredicate(this.p,filters,this.localCollection?14:13);
+  const creation=creationWindowPredicate(filters,(this.localCollection?14:13)+internal.values.length);
   // This server-controlled predicate precedes cursor/search/LIMIT. Metadata only
   // narrows namespaces; directory and ordinary RLS recheck the full current works.
   const localPredicate=this.localCollection?`and exists(select 1 from jsonb_array_elements($13::jsonb) local_context
@@ -124,6 +132,7 @@ class PostgresStore implements Store{
    where workspace_id=$1 and ($2::uuid is null or account_id=$2)
     ${localPredicate}
     ${internal.sql}
+    ${creation.sql}
     and ($3::timestamptz is null or (created_at,id)<($3::timestamptz,$4::uuid))
     and ($6::text is null or strpos(translate(${searchColumn},$7::text,$8::text),$6)>0 ${identifierPredicate})
     and ($9::text[] is null or status=any($9::text[]))
@@ -132,12 +141,13 @@ class PostgresStore implements Store{
      and (($11='mine' and assigned_to=$12::uuid) or ($11='unassigned' and assigned_to is null))))
    order by tickets.created_at desc,id desc limit $5`,
    [this.p.workspaceId,accountId??null,cursor?.at??null,cursor?.id??null,limit,
-    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,...(this.localCollection?[localContexts]:[]),...internal.values])).rows.map(row=>ticket(row,this.consulteGeoLocal));
+    filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,...(this.localCollection?[localContexts]:[]),...internal.values,...creation.values])).rows.map(row=>ticket(row,this.consulteGeoLocal));
  }
  async summarizeTickets(accountId?:string,filters:TicketSearchFilters={}):Promise<TicketCounts>{
   if(accountId!==undefined)uuidIdentifier(accountId);
   const contexts=await this.prepareLocalCollection();
   const internal=internalStatusPredicate(this.p,filters,this.localCollection?12:11);
+  const creation=creationWindowPredicate(filters,(this.localCollection?12:11)+internal.values.length);
   const local=this.localCollection?`and exists(select 1 from jsonb_array_elements($11::jsonb) local_context
    where local_context->>'accountId'=tickets.account_id::text and local_context->>'productInstanceId'=tickets.product_instance_id::text
     and local_context->>'connectionId'=helpdesk_auth.cg_local_ticket_directory(tickets.id)->'refs'->0->>'connectionId'
@@ -163,12 +173,13 @@ class PostgresStore implements Store{
    and ($10::jsonb->'products'='null'::jsonb or ($10::jsonb->'products') ? product_instance_id::text)
    ${local}
    ${internal.sql}
+   ${creation.sql}
    and ($3::text is null or strpos(translate(${searchColumn},$4::text,$5::text),$3)>0 ${identifierPredicate})
    and ($6::text[] is null or status=any($6::text[])) and ($7::text is null or priority=$7)
    and ($8::text is null or (helpdesk_auth.is_operator(workspace_id,account_id)
     and (($10::jsonb->>'admin')::boolean or ($10::jsonb->'operators') ? account_id::text)
     and (($8='mine' and assigned_to=$9::uuid) or ($8='unassigned' and assigned_to is null))))`,
-   [this.p.workspaceId,accountId??null,filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,visibility,...(this.localCollection?[contexts]:[]),...internal.values]);
+   [this.p.workspaceId,accountId??null,filters.q??null,SEARCH_UPPER,SEARCH_LOWER,statusesForSearch(filters),filters.priority??null,filters.assignment??null,this.p.id,visibility,...(this.localCollection?[contexts]:[]),...internal.values,...creation.values]);
   try{
    if(result.command!=='SELECT'||result.rowCount!==1||result.rows.length!==1)throw Error();
    const row=result.rows[0]!;

@@ -1,0 +1,20 @@
+{
+  "reviewer": "independent readonly review_created_window",
+  "base": "c24b759706c9631fdf4c104229f1a36b6ff01693",
+  "source": "95f7f2f16417e75cc6dc17ee635027340c2dd17d",
+  "initialReview": {
+    "source": "5aaf30d83f014652afa0d24757ed07cf4eab68b0",
+    "actionableFindings": 0,
+    "focusedTestsPassed": 37,
+    "additionalProbes": "SaoPaulo historical offsets, DST and years0001/0099/0100/9999",
+    "limits": "Real PostgreSQL and browser not executed by reviewer; independent CI and browser evidence required"
+  },
+  "deltaReview": {
+    "actionableFindings": 0,
+    "focusedTestsPassed": 4,
+    "scope": "Explicit build asset array, byte-for-byte owned fixture and semantic equality of OpenAPI formatting restoration"
+  },
+  "editsByReviewer": 0,
+  "remoteOperationsByReviewer": 0,
+  "humanAcceptance": false
+}

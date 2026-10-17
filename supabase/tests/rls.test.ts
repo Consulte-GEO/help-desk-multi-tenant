@@ -366,6 +366,25 @@ test('SQL description mode applies before pagination and invalidates subject cur
  await assert.rejects(()=>service.list(alice,{limit:1,q:filters.q,cursor:first.nextCursor!}),{code:'invalid_cursor'});
 });
 
+test('SQL creation window preserves microsecond bounds with the restricted application login',async()=>{
+ const at=new Date(Date.now()-2000);at.setUTCMilliseconds(123);const fixed=new HelpdeskService(new PostgresUnitOfWork(app),()=>at),subject='HD019 exact creation '+randomUUID();
+ const t=await fixed.create(alice,{...input,subject},randomUUID(),'db-test'),exact=t.ticket.createdAt,micro=exact.slice(0,23)+'001Z';
+ const filters={q:subject,created_from:exact,created_before:micro};assert.equal((await service.list(alice,{limit:1,...filters})).items[0]?.id,t.ticket.id);assert.equal((await service.summarize(alice,filters)).total,1);
+ assert.equal((await service.summarize(alice,{q:subject,created_before:exact})).total,0);assert.equal((await service.summarize(alice,{q:subject,created_from:micro})).total,0);
+ assert.equal((await service.summarize(alice,{q:subject,created_from:exact.slice(0,23)+'000Z',created_before:micro})).total,1);
+});
+test('SQL creation window precedes LIMIT, keeps complete totals/cursors and rechecks live revocation',async()=>{
+ const at=new Date(Date.now()-2000),subject='HD019 paged creation '+randomUUID(),fixed=new HelpdeskService(new PostgresUnitOfWork(app),()=>at);
+ for(let i=0;i<51;i++)await fixed.create(alice,{...input,subject},randomUUID(),'db-test');
+ const newer=new HelpdeskService(new PostgresUnitOfWork(app),()=>new Date(at.getTime()+1000));for(let i=0;i<8;i++)await newer.create(alice,{...input,subject},randomUUID(),'db-test');
+ await fixed.create(bob,{...input,accountId:id(102),subject},randomUUID(),'db-test');
+ const filters={q:subject,created_from:at.toISOString(),created_before:new Date(at.getTime()+1).toISOString()};assert.equal((await service.summarize(alice,filters)).total,51);
+ let cursor:string|undefined;const seen=new Set<string>();do{const page=await service.list(alice,{limit:7,...filters,...(cursor?{cursor}:{})});for(const t of page.items){assert.ok(!seen.has(t.id));seen.add(t.id);}cursor=page.nextCursor??undefined;}while(cursor);assert.equal(seen.size,51);
+ const first=await service.list(alice,{limit:1,...filters});assert.ok(first.nextCursor);await assert.rejects(()=>service.list(alice,{limit:1,q:subject,cursor:first.nextCursor!}),{code:'invalid_cursor'});
+ await admin.query('update helpdesk_auth.account_grants set active=false where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),alice.id]);
+ try{assert.equal((await service.list(alice,{limit:1,...filters})).items.length,0);assert.equal((await service.summarize(alice,filters)).total,0);}finally{await admin.query('update helpdesk_auth.account_grants set active=true where workspace_id=$1 and account_id=$2 and principal_id=$3',[id(1),id(101),alice.id]);}
+});
+
 test('SQL private status intersects frozen operator accounts BEFORE LIMIT and rechecks live revocation',async()=>{
  const subject='HD019 private status owned fixture',a=await service.create(alice,{...input,subject},'private-status-sql-own-a','db-test'),b=await service.create(bob,{...input,accountId:id(102),subject},'private-status-sql-own-b','db-test');
  await admin.query("insert into helpdesk_auth.account_grants(workspace_id,account_id,principal_id,role) values($1,$2,$3,'agent')",[id(1),id(102),agent.id]);

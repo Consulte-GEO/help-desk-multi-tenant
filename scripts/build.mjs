@@ -2,7 +2,7 @@ import {mkdir,copyFile,rm} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {copyImplementationAssets} from './implantacao-assets.mjs';
 await rm(new URL('../dist/',import.meta.url),{recursive:true,force:true});await mkdir(new URL('../dist/',import.meta.url),{recursive:true});
-for(const name of ['email-monitor.js','email-monitor.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
+for(const name of ['email-monitor.js','email-monitor.css','filter-instant.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 for(const name of ['consultegeo-operation.js','consultegeo-workflow.js','consultegeo-review.js','consultegeo-operation.css','response-diagnostic.js','version-receipt.js'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 for(const name of ['support-navigation.js','access-mode.js','totp-qr.js','recovery-password.js','account-security.js','index.html','ticket-actions.js','human-auth.js','human-session.js','session-fetch.js','app.js','conversation-state.js','message-search.js','mutation-state.js','ticket-create-state.js','support-catalog-state.js','ticket-list-state.js','ticket-summary-state.js','ticket-views.js','ticket-guidance.js','timeline-state.js','styles.css'])await copyFile(new URL('../web/'+name,import.meta.url),new URL('../dist/'+name,import.meta.url));
 

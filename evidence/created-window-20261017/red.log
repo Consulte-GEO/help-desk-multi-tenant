@@ -1,0 +1,178 @@
+TAP version 13
+# Subtest: wall filter uses SaoPaulo independently of machine timezone and returns canonical UTC
+not ok 1 - wall filter uses SaoPaulo independently of machine timezone and returns canonical UTC
+  ---
+  duration_ms: 2.0357
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\filter-instant.test.ts:3:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Missing wall-clock filter conversion
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:2:160)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:3:118)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: wall filter rejects both gap and overlap rather than choosing an implicit instant
+not ok 2 - wall filter rejects both gap and overlap rather than choosing an implicit instant
+  ---
+  duration_ms: 0.8478
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\filter-instant.test.ts:4:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Missing wall-clock filter conversion
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:2:160)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:4:114)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: wall filter rejects invalid grammar and calendar rollovers without echoing input
+not ok 3 - wall filter rejects invalid grammar and calendar rollovers without echoing input
+  ---
+  duration_ms: 0.7657
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\filter-instant.test.ts:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Missing wall-clock filter conversion
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    load (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:2:160)
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/filter-instant.test.ts:5:113)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: creation window normalizes only redundant fractional zeros and rejects invalid bounds
+not ok 4 - creation window normalizes only redundant fractional zeros and rejects invalid bounds
+  ---
+  duration_ms: 2.3821
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window.test.ts:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + {}
+    - {
+    -   created_before: '2026-10-17T04:00:00.000200Z',
+    -   created_from: '2026-10-17T03:00:00.123Z'
+    - }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    created_from: '2026-10-17T03:00:00.123Z'
+    created_before: '2026-10-17T04:00:00.000200Z'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window.test.ts:10:9)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.start (node:internal/test_runner/test:1257:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: creation window is inclusive/exclusive with exact microseconds, before pages and totals
+not ok 5 - creation window is inclusive/exclusive with exact microseconds, before pages and totals
+  ---
+  duration_ms: 3.7272
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window.test.ts:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    155 !== 153
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 153
+  actual: 155
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window.test.ts:17:55)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: creation window binds cursor, accepts equivalent bounds and invalidates client generations
+not ok 6 - creation window binds cursor, accepts equivalent bounds and invalidates client generations
+  ---
+  duration_ms: 1.8978
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'invalid_cursor'
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window.test.ts:25:2)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+not ok 7 - HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+  ---
+  duration_ms: 60.2947
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window.test.ts:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    400 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 400
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window.test.ts:36:83)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 0
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1018.9886

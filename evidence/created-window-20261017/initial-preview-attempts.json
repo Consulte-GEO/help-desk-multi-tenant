@@ -1,0 +1,32 @@
+{
+  "production": {
+    "id": "6ad3596d0e2686c05d296773",
+    "commit_ref": "c24b759706c9631fdf4c104229f1a36b6ff01693"
+  },
+  "preview": [
+    {
+      "id": "6ad35f38af6d1784b13c5c33",
+      "state": "error",
+      "context": "deploy-preview",
+      "commit_ref": "95f7f2f16417e75cc6dc17ee635027340c2dd17d",
+      "url": "https://deploy-preview-72--helpdesk-consultegeo.netlify.app",
+      "error_message": "Failed during stage 'building site': Build script returned non-zero exit code: 2"
+    },
+    {
+      "id": "6ad35f18228ef8cdbaa9f2f1",
+      "state": "error",
+      "context": "deploy-preview",
+      "commit_ref": "c768ceb453806889a4312c52adb7968c85bccd14",
+      "url": "https://deploy-preview-72--helpdesk-consultegeo.netlify.app",
+      "error_message": "Failed during stage 'building site': Build script returned non-zero exit code: 2"
+    },
+    {
+      "id": "6ad35dd1ac9bffc1256c93c5",
+      "state": "error",
+      "context": "deploy-preview",
+      "commit_ref": "5aaf30d83f014652afa0d24757ed07cf4eab68b0",
+      "url": "https://deploy-preview-72--helpdesk-consultegeo.netlify.app",
+      "error_message": "Failed during stage 'building site': Build script returned non-zero exit code: 2"
+    }
+  ]
+}
