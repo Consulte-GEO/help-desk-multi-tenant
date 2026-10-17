@@ -40,3 +40,5 @@ O MCP usa Supabase dedicado e não pode ser instalado no projeto operacional `xa
 O levantamento antes não rastreado está preservado em `docs/levantamento-2026-10-16/`. O [manifesto documental](FONTES-CONTEXTO.json) registra as cópias e seus hashes. Alguns documentos históricos citam relatórios externos ao Git; para executar um requisito, o mantenedor deve fornecer a fonte pertinente ou registrar sua indisponibilidade. Não presumir acesso a outro repositório ou a arquivos deste computador.
 
 No fim de cada recorte, atualize o checkpoint e a síntese aplicável, registre SHA/execuções/limites e deixe a próxima tarefa explícita. A continuidade deve sobreviver ao encerramento da conversa.
+
+As [proteções aplicadas no GitHub e Netlify](PROTECOES-2026-10-17.md) atualizam o diagnóstico do primeiro lote. A ativação e os ensaios com o App/contas reais continuam pendentes.

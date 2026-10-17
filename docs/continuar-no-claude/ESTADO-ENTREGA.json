@@ -21,7 +21,7 @@
   },
   "git_gates_observados": {
     "rulesets": [],
-    "branch_protection": "GitHub respondeu Branch not protected (404)",
+    "branch_protection": "Ativa em 17/10/2026; PR com revisão humana, último push por outra pessoa, checks vinculados ao GitHub Actions, administradores incluídos, sem force/deleção.",
     "escrita_mcp_liberada": false
   },
   "pendencias_individuais": [
@@ -33,5 +33,11 @@
     "Estado remoto deve ser reinspecionado; referências são snapshot.",
     "CI Linux da fonte7800084 e merge de teste aprovados em7447 verificações; sem efeitos de negócio ou alteração de produção.",
     "Recibos anteriores não comprovam teste do novo commit."
-  ]
+  ],
+  "netlify_gates_observados": {
+    "resend": "Produção/functions preservados; quatro contextos não produtivos explicitamente vazios nas duas credenciais.",
+    "variaveis_compartilhadas": 0,
+    "deploys_historicos_saneados": false,
+    "referencia": "PROTECOES-2026-10-17.md"
+  }
 }
