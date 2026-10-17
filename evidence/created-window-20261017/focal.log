@@ -1,0 +1,472 @@
+TAP version 13
+# Subtest: wall filter uses SaoPaulo independently of machine timezone and returns canonical UTC
+ok 1 - wall filter uses SaoPaulo independently of machine timezone and returns canonical UTC
+  ---
+  duration_ms: 23.1156
+  type: 'test'
+  ...
+# Subtest: wall filter rejects both gap and overlap rather than choosing an implicit instant
+ok 2 - wall filter rejects both gap and overlap rather than choosing an implicit instant
+  ---
+  duration_ms: 0.5254
+  type: 'test'
+  ...
+# Subtest: wall filter rejects invalid grammar and calendar rollovers without echoing input
+ok 3 - wall filter rejects invalid grammar and calendar rollovers without echoing input
+  ---
+  duration_ms: 0.4712
+  type: 'test'
+  ...
+# Subtest: automatic first selection stays on the mobile list
+ok 4 - automatic first selection stays on the mobile list
+  ---
+  duration_ms: 5.3502
+  type: 'test'
+  ...
+# Subtest: explicit open chooses detail and finishes without a second command
+ok 5 - explicit open chooses detail and finishes without a second command
+  ---
+  duration_ms: 1.0315
+  type: 'test'
+  ...
+# Subtest: back during a request prevents late focus/navigation
+ok 6 - back during a request prevents late focus/navigation
+  ---
+  duration_ms: 0.2419
+  type: 'test'
+  ...
+# Subtest: only the latest read may finish or fail
+ok 7 - only the latest read may finish or fail
+  ---
+  duration_ms: 0.4513
+  type: 'test'
+  ...
+# Subtest: same-ticket refresh does not request focus
+ok 8 - same-ticket refresh does not request focus
+  ---
+  duration_ms: 0.2352
+  type: 'test'
+  ...
+# Subtest: reset rejects all callbacks from the previous identity
+ok 9 - reset rejects all callbacks from the previous identity
+  ---
+  duration_ms: 2.0052
+  type: 'test'
+  ...
+# Subtest: error category is bounded and does not retain an API message
+ok 10 - error category is bounded and does not retain an API message
+  ---
+  duration_ms: 0.5791
+  type: 'test'
+  ...
+# Subtest: back after an error retains list-first state
+ok 11 - back after an error retains list-first state
+  ---
+  duration_ms: 0.4086
+  type: 'test'
+  ...
+# Subtest: snapshot is immutable and contains no drafts
+ok 12 - snapshot is immutable and contains no drafts
+  ---
+  duration_ms: 2.1678
+  type: 'test'
+  ...
+# Subtest: invalid selection cannot become a navigation intent
+ok 13 - invalid selection cannot become a navigation intent
+  ---
+  duration_ms: 1.1894
+  type: 'test'
+  ...
+# Subtest: effective filter normalization preserves accents and accepts only known keys
+ok 14 - effective filter normalization preserves accents and accepts only known keys
+  ---
+  duration_ms: 0.4579
+  type: 'test'
+  ...
+# Subtest: draft differences are separate from effective query
+ok 15 - draft differences are separate from effective query
+  ---
+  duration_ms: 0.2202
+  type: 'test'
+  ...
+# Subtest: busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT
+ok 16 - busca SQL mantém texto malicioso somente em parâmetros e filtros antes do LIMIT
+  ---
+  duration_ms: 6.7783
+  type: 'test'
+  ...
+# Subtest: normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino
+ok 17 - normalização JS e parâmetros de tradução SQL usam o mesmo alfabeto latino
+  ---
+  duration_ms: 0.3195
+  type: 'test'
+  ...
+# Subtest: consulta sem novos filtros mantém parâmetros opcionais nulos
+ok 18 - consulta sem novos filtros mantém parâmetros opcionais nulos
+  ---
+  duration_ms: 2.7601
+  type: 'test'
+  ...
+# Subtest: não há cache de busca que preserve autorização de uma página anterior
+ok 19 - não há cache de busca que preserve autorização de uma página anterior
+  ---
+  duration_ms: 8.6689
+  type: 'test'
+  ...
+# Subtest: filtro de conta continua autorizado antes da consulta de texto
+ok 20 - filtro de conta continua autorizado antes da consulta de texto
+  ---
+  duration_ms: 1.2122
+  type: 'test'
+  ...
+# Subtest: telemetria da busca não inclui termo, prioridade, conta nem querystring
+ok 21 - telemetria da busca não inclui termo, prioridade, conta nem querystring
+  ---
+  duration_ms: 67.7306
+  type: 'test'
+  ...
+# Subtest: busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120
+ok 22 - busca aceita 120 pontos de código mas não controles, inválidos ou mais de 120
+  ---
+  duration_ms: 0.3333
+  type: 'test'
+  ...
+# Subtest: description list chooses fixed column, retains literal parameters and applies search before LIMIT
+ok 23 - description list chooses fixed column, retains literal parameters and applies search before LIMIT
+  ---
+  duration_ms: 0.4642
+  type: 'test'
+  ...
+# Subtest: private status parameters narrow mixed frozen roles before LIMIT even when live SQL role is wider
+ok 24 - private status parameters narrow mixed frozen roles before LIMIT even when live SQL role is wider
+  ---
+  duration_ms: 0.6608
+  type: 'test'
+  ...
+# Subtest: busca no servidor alcança chamado anterior à primeira página de 25
+ok 25 - busca no servidor alcança chamado anterior à primeira página de 25
+  ---
+  duration_ms: 3.4415
+  type: 'test'
+  ...
+# Subtest: HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+ok 26 - HTTP aceita busca e filtra antes de paginar, sem vazar termos nos headers
+  ---
+  duration_ms: 49.0041
+  type: 'test'
+  ...
+# Subtest: busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+ok 27 - busca literal ignora caixa latina, preserva acentos e não interpreta curingas
+  ---
+  duration_ms: 0.7824
+  type: 'test'
+  ...
+# Subtest: não pesquisa descrição, mensagem nem nota interna
+ok 28 - não pesquisa descrição, mensagem nem nota interna
+  ---
+  duration_ms: 2.0848
+  type: 'test'
+  ...
+# Subtest: UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+ok 29 - UUID completo localiza o recurso; prefixo do UUID não é pesquisa por identificador
+  ---
+  duration_ms: 0.4052
+  type: 'test'
+  ...
+# Subtest: status público reúne estados internos equivalentes sem expor classificação privada
+ok 30 - status público reúne estados internos equivalentes sem expor classificação privada
+  ---
+  duration_ms: 1.2033
+  type: 'test'
+  ...
+# Subtest: filtros de prioridade/status/assunto são combinados por AND
+ok 31 - filtros de prioridade/status/assunto são combinados por AND
+  ---
+  duration_ms: 0.3727
+  type: 'test'
+  ...
+# Subtest: busca não permite inferir títulos de outra conta, workspace ou solicitante
+ok 32 - busca não permite inferir títulos de outra conta, workspace ou solicitante
+  ---
+  duration_ms: 1.1842
+  type: 'test'
+  ...
+# Subtest: integração não pesquisa produto fora do binding autorizado
+ok 33 - integração não pesquisa produto fora do binding autorizado
+  ---
+  duration_ms: 0.3383
+  type: 'test'
+  ...
+# Subtest: ausência de tickets:read não é compensada pela busca
+ok 34 - ausência de tickets:read não é compensada pela busca
+  ---
+  duration_ms: 1.7599
+  type: 'test'
+  ...
+# Subtest: cursor vincula consulta, status e prioridade; não transfere autorização
+ok 35 - cursor vincula consulta, status e prioridade; não transfere autorização
+  ---
+  duration_ms: 4.2238
+  type: 'test'
+  ...
+# Subtest: cursor anterior sem novos filtros continua utilizável
+ok 36 - cursor anterior sem novos filtros continua utilizável
+  ---
+  duration_ms: 2.5755
+  type: 'test'
+  ...
+# Subtest: requisição com filtro inválido é recusada antes da consulta
+ok 37 - requisição com filtro inválido é recusada antes da consulta
+  ---
+  duration_ms: 1.3292
+  type: 'test'
+  ...
+# Subtest: HTTP recusa filtro duplicado, desconhecido e seletor interno
+ok 38 - HTTP recusa filtro duplicado, desconhecido e seletor interno
+  ---
+  duration_ms: 7.6832
+  type: 'test'
+  ...
+# Subtest: string parecida com injeção não expande os resultados
+ok 39 - string parecida com injeção não expande os resultados
+  ---
+  duration_ms: 1.3297
+  type: 'test'
+  ...
+# Subtest: paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+ok 40 - paginação filtrada percorre todos os resultados sem duplicação ou chamada ausente
+  ---
+  duration_ms: 7.3286
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=false
+ok 41 - window SQL binds after optional namespace/private parameters local=false summary=false private=false
+  ---
+  duration_ms: 6.6241
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=true
+ok 42 - window SQL binds after optional namespace/private parameters local=false summary=false private=true
+  ---
+  duration_ms: 1.0831
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=false
+ok 43 - window SQL binds after optional namespace/private parameters local=false summary=true private=false
+  ---
+  duration_ms: 3.7788
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=true
+ok 44 - window SQL binds after optional namespace/private parameters local=false summary=true private=true
+  ---
+  duration_ms: 0.6561
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=false
+ok 45 - window SQL binds after optional namespace/private parameters local=true summary=false private=false
+  ---
+  duration_ms: 1.467
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=true
+ok 46 - window SQL binds after optional namespace/private parameters local=true summary=false private=true
+  ---
+  duration_ms: 1.1539
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=false
+ok 47 - window SQL binds after optional namespace/private parameters local=true summary=true private=false
+  ---
+  duration_ms: 0.6193
+  type: 'test'
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=true
+ok 48 - window SQL binds after optional namespace/private parameters local=true summary=true private=true
+  ---
+  duration_ms: 0.5019
+  type: 'test'
+  ...
+# Subtest: creation window normalizes only redundant fractional zeros and rejects invalid bounds
+ok 49 - creation window normalizes only redundant fractional zeros and rejects invalid bounds
+  ---
+  duration_ms: 4.3993
+  type: 'test'
+  ...
+# Subtest: creation window is inclusive/exclusive with exact microseconds, before pages and totals
+ok 50 - creation window is inclusive/exclusive with exact microseconds, before pages and totals
+  ---
+  duration_ms: 70.8461
+  type: 'test'
+  ...
+# Subtest: creation window binds cursor, accepts equivalent bounds and invalidates client generations
+ok 51 - creation window binds cursor, accepts equivalent bounds and invalidates client generations
+  ---
+  duration_ms: 7.1021
+  type: 'test'
+  ...
+# Subtest: HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+ok 52 - HTTP list/totals share public window grammar, refuse duplicates and retain private filter authority
+  ---
+  duration_ms: 82.9707
+  type: 'test'
+  ...
+# Subtest: description mode is explicit, literal, case folded, accent sensitive and authorized
+ok 53 - description mode is explicit, literal, case folded, accent sensitive and authorized
+  ---
+  duration_ms: 9.6132
+  type: 'test'
+  ...
+# Subtest: description search precedes LIMIT, keeps complete totals and binds the cursor to mode
+ok 54 - description search precedes LIMIT, keeps complete totals and binds the cursor to mode
+  ---
+  duration_ms: 75.6311
+  type: 'test'
+  ...
+# Subtest: HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private
+ok 55 - HTTP list and totals accept same mode, reject missing term/unknown/repeated selectors and keep telemetry private
+  ---
+  duration_ms: 89.6573
+  type: 'test'
+  ...
+# Subtest: mode requires valid q in application and UI, and quick views preserve it
+ok 56 - mode requires valid q in application and UI, and quick views preserve it
+  ---
+  duration_ms: 1.2394
+  type: 'test'
+  ...
+# Subtest: private status selects exact states only where caller is an operator and combines public filters
+ok 57 - private status selects exact states only where caller is an operator and combines public filters
+  ---
+  duration_ms: 10.9556
+  type: 'test'
+  ...
+# Subtest: private filter precedes pagination, counts whole authorized corpus and binds cursors
+ok 58 - private filter precedes pagination, counts whole authorized corpus and binds cursors
+  ---
+  duration_ms: 16.4031
+  type: 'test'
+  ...
+# Subtest: HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals
+ok 59 - HTTP refuses unauthorized, invalid/repeated selectors and uses same mode on list and totals
+  ---
+  duration_ms: 45.1577
+  type: 'test'
+  ...
+# Subtest: client query/cursor generations include private status; quick views clear it and mark custom selection
+ok 60 - client query/cursor generations include private status; quick views clear it and mark custom selection
+  ---
+  duration_ms: 2.3993
+  type: 'test'
+  ...
+# Subtest: agregação prepara namespace na mesma transação, parametriza filtros e não usa LIMIT
+ok 61 - agregação prepara namespace na mesma transação, parametriza filtros e não usa LIMIT
+  ---
+  duration_ms: 13.4638
+  type: 'test'
+  ...
+# Subtest: agregação inválida, overflow, campos extras ou soma divergente recusam integralmente e fazem rollback
+ok 62 - agregação inválida, overflow, campos extras ou soma divergente recusam integralmente e fazem rollback
+  ---
+  duration_ms: 5.2079
+  type: 'test'
+  ...
+# Subtest: namespace inválido recusa antes de contar; vazio mantém predicado restritivo
+ok 63 - namespace inválido recusa antes de contar; vazio mantém predicado restritivo
+  ---
+  duration_ms: 1.8468
+  type: 'test'
+  ...
+# Subtest: description summary chooses only developer-owned column and keeps malicious text parameterized
+ok 64 - description summary chooses only developer-owned column and keeps malicious text parameterized
+  ---
+  duration_ms: 1.0181
+  type: 'test'
+  ...
+# Subtest: totais preservam valores completos e vinculam o caminho à consulta aplicada
+ok 65 - totais preservam valores completos e vinculam o caminho à consulta aplicada
+  ---
+  duration_ms: 29.7867
+  type: 'test'
+  ...
+# Subtest: nova consulta e logout eliminam totais e recusam respostas e erros antigos
+ok 66 - nova consulta e logout eliminam totais e recusam respostas e erros antigos
+  ---
+  duration_ms: 1.3792
+  type: 'test'
+  ...
+# Subtest: resumo inválido não vira zero nem preserva totais da consulta anterior; repetição recupera
+ok 67 - resumo inválido não vira zero nem preserva totais da consulta anterior; repetição recupera
+  ---
+  duration_ms: 1.9293
+  type: 'test'
+  ...
+# Subtest: resumo conta todo o conjunto autorizado antes da paginação e do teto visual500
+ok 68 - resumo conta todo o conjunto autorizado antes da paginação e do teto visual500
+  ---
+  duration_ms: 15.679
+  type: 'test'
+  ...
+# Subtest: resumo usa filtros literais, estados públicos e protocolo exato sem pesquisar descrição
+ok 69 - resumo usa filtros literais, estados públicos e protocolo exato sem pesquisar descrição
+  ---
+  duration_ms: 0.8215
+  type: 'test'
+  ...
+# Subtest: resumo mantém exigência de scope, conta e filtros de responsabilidade
+ok 70 - resumo mantém exigência de scope, conta e filtros de responsabilidade
+  ---
+  duration_ms: 0.6401
+  type: 'test'
+  ...
+# Subtest: resumo limita integração ao produto e operador às próprias contas de atendimento
+ok 71 - resumo limita integração ao produto e operador às próprias contas de atendimento
+  ---
+  duration_ms: 0.6603
+  type: 'test'
+  ...
+# Subtest: HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas
+ok 72 - HTTP tem rota própria habilitada explicitamente e recusa paginação/duplicatas
+  ---
+  duration_ms: 31.4966
+  type: 'test'
+  ...
+# Subtest: consultas comuns reutilizam situações públicas e não oferecem responsabilidade a solicitante
+ok 73 - consultas comuns reutilizam situações públicas e não oferecem responsabilidade a solicitante
+  ---
+  duration_ms: 14.0053
+  type: 'test'
+  ...
+# Subtest: consultas da equipe usam os filtros nativos e mantêm busca e prioridade
+ok 74 - consultas da equipe usam os filtros nativos e mantêm busca e prioridade
+  ---
+  duration_ms: 0.5757
+  type: 'test'
+  ...
+# Subtest: estado ativo descreve a consulta aplicada; combinação manual fica personalizada
+ok 75 - estado ativo descreve a consulta aplicada; combinação manual fica personalizada
+  ---
+  duration_ms: 0.3927
+  type: 'test'
+  ...
+# Subtest: ausência de leitura, identidade desconhecida ou integração não libera consultas da equipe
+ok 76 - ausência de leitura, identidade desconhecida ou integração não libera consultas da equipe
+  ---
+  duration_ms: 0.4031
+  type: 'test'
+  ...
+# Subtest: filtros inválidos e IDs arbitrários são recusados; objetos retornados não alteram presets
+ok 77 - filtros inválidos e IDs arbitrários são recusados; objetos retornados não alteram presets
+  ---
+  duration_ms: 0.3455
+  type: 'test'
+  ...
+1..77
+# tests 77
+# suites 0
+# pass 77
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1384.1772

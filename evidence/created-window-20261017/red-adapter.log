@@ -1,0 +1,194 @@
+TAP version 13
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=false
+not ok 1 - window SQL binds after optional namespace/private parameters local=false summary=false private=false
+  ---
+  duration_ms: 3.4098
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=false private=true
+not ok 2 - window SQL binds after optional namespace/private parameters local=false summary=false private=true
+  ---
+  duration_ms: 0.4891
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=false
+not ok 3 - window SQL binds after optional namespace/private parameters local=false summary=true private=false
+  ---
+  duration_ms: 2.0589
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=false summary=true private=true
+not ok 4 - window SQL binds after optional namespace/private parameters local=false summary=true private=true
+  ---
+  duration_ms: 0.3858
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=false
+not ok 5 - window SQL binds after optional namespace/private parameters local=true summary=false private=false
+  ---
+  duration_ms: 0.5057
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=false private=true
+not ok 6 - window SQL binds after optional namespace/private parameters local=true summary=false private=true
+  ---
+  duration_ms: 0.4676
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=false
+not ok 7 - window SQL binds after optional namespace/private parameters local=true summary=true private=false
+  ---
+  duration_ms: 1.8634
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: window SQL binds after optional namespace/private parameters local=true summary=true private=true
+not ok 8 - window SQL binds after optional namespace/private parameters local=true summary=true private=true
+  ---
+  duration_ms: 0.6312
+  type: 'test'
+  location: 'C:\\Users\\thiag\\OneDrive\\Documentos\\ChatGPT\\Help Desk\\helpdesk\\tests\\ticket-created-window-adapter.test.ts:10:107'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - '2026-10-17T03:00:00.000100Z'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2026-10-17T03:00:00.000100Z'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/ticket-created-window-adapter.test.ts:12:69)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 0
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1327.4875
