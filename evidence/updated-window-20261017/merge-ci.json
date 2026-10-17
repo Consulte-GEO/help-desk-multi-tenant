@@ -1,0 +1,66 @@
+{
+  "runId": 39044578648,
+  "sourceHead": "737831ed3c5bf709240d8c016c005221abd24a51",
+  "event": "pull_request",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39044578648",
+  "artifact": "helpdesk-homologation-604a5612e2bc9659280c420e6b881d3e596264cc-39044578648-1",
+  "artifactDigest": "sha256:63c4a7ea6368e778e0fe0c2b584f5927f99bbd5021ea43ae3b0c9953f47c0119",
+  "sourceFingerprint": "77e110f7dbaf4f03dc46e7f638ca4c0a90d19f9c92a4be6fa8d64606308a9376",
+  "reportValidated": true,
+  "logsValidated": true,
+  "checks": [
+    {
+      "id": "lock",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "install",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "audit",
+      "status": "passed",
+      "tests": null
+    },
+    {
+      "id": "application",
+      "status": "passed",
+      "tests": {
+        "tests": 6002,
+        "pass": 6002,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "postgres",
+      "status": "passed",
+      "tests": {
+        "tests": 710,
+        "pass": 710,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "id": "interface",
+      "status": "passed",
+      "tests": {
+        "tests": 699,
+        "pass": 699,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ]
+}

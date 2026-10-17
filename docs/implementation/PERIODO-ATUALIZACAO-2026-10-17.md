@@ -30,3 +30,15 @@ Revisão independente somente leitura da fonte68b09bf: nenhum defeito concreto d
 
 
 Autorrevisão das capturas: a fixture visual inicial devolvia criação fora da janela combinada. A asserção de coerência reproduziu o problema (falha sintética, sem defeito de runtime); corrigida a data do registro fictício, mantendo criação e atualização distintas.8 grupos Chromium finais aprovados e capturas atualizadas; logs anteriores preservados como tentativas, não aceite de dados reais.
+
+## Qualificação integral da fonte do PR75
+
+Fonte **737831ed3c5bf709240d8c016c005221abd24a51**. CI [fonte39044573537](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39044573537) e [merge de teste39044578648](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39044578648) aprovados com mesmo fingerprint **77e110f7dbaf4f03dc46e7f638ca4c0a90d19f9c92a4be6fa8d64606308a9376**: **6002 aplicação + 710 PostgreSQL17 restrito + 699 interface = 7411**, zero falhas/skips/cancelamentos/todo. Instalação limpa, audit, tipos,45 operações de contrato, build e lock integram os gates; varredura de segredos é heurística. Sem migration, dependência, índice ou grant novo.
+
+Artefato original **helpdesk-homologation-737831ed3c5bf709240d8c016c005221abd24a51-39044573537-1**, digest **sha256:edb55b25d1a9db36ea66478e63a9489063fb4c42bc350358ece0759a52af9114**. Relatório/seis logs originais preservados sem normalizar bytes; hashes conferidos contra o código local. O artefato independente do merge também foi baixado, validado e comparado pelo fingerprint/contagens. [Fonte](../../evidence/updated-window-20261017/ci-qualified.json), [merge](../../evidence/updated-window-20261017/merge-ci.json).
+
+O teste PG real cria17 registros próprios antes da janela, atualiza11 por comando autorizado e coloca uma linha de outra conta dentro do intervalo para comprovar sua exclusão. Verifica microsegundos,17→11por filtro,3itens/página, criação/atualização combinadas, cursor, mutação viva que muda o total para10, página seguinte com cursor anterior e revogação atual. Nenhum dado ou grant produtivo foi alterado.
+
+Local37 focais/tipos/build/contratos/lock, revisão independente e8 grupos Chromium finais desktop/mobile390 aprovados. Corrigidas fixtures de ACL e coerência cronológica; todos os diagnósticos/RED e tentativas ultrapassadas permanecem identificados. Capturas finais conferidas: [desktop](../../evidence/updated-window-20261017/browser/desktop-synthetic.png), [mobile](../../evidence/updated-window-20261017/browser/mobile-synthetic.png). Auth/API são sintéticas; não é aceite humano produtivo.
+
+Relatório incorporado para qualificar o preview; esta etapa ainda não é merge/publicação. PR74 permanece candidato independente e não foi incorporado à base73 deste PR75. A contagem pode diferir entre essas branches por cobrirem recortes diferentes. Produção permanece PR73/d8f1fe2/deploy6ad37227af6d1784b1404bad.
