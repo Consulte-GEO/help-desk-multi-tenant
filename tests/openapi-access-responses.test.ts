@@ -71,3 +71,18 @@ test('OpenAPI access gate rejects missing/malformed privacy and correlation head
 test('OpenAPI access gate rejects a51-item catalog that would otherwise satisfy the schema',async()=>{
  const f=fixture(),r=await f.handler(request('/workspaces'));await assert.rejects(()=>(gate.then(check=>check('/workspaces','GET',new Response(JSON.stringify({items:Array.from({length:51},(_,i)=>({id:id(i+10),name:'Workspace '+i}))}),{status:200,headers:r.headers})))),/Response body violates contract/);
 });
+test('OpenAPI access gate rejects incompatible tokens, missing required fields and private extras without echoing payloads',async()=>{
+ const check=await gate,f=fixture(),r=await f.handler(request('/integration-tokens','POST',key)),valid=await r.clone().json();await check('/integration-tokens','POST',r);
+ const {access_token:omitted,...missing}=valid;assert.match(omitted,/^hd_session_/);
+ for(const body of [{...valid,access_token:'PRIVATE_INVALID_TOKEN_SENTINEL'},{...valid,token_type:'Basic'},{...valid,expires_at:'PRIVATE_EXPIRY_SENTINEL'},missing,{...valid,private:'PRIVATE_SQL_SENTINEL'}]){
+  await assert.rejects(()=>check('/integration-tokens','POST',new Response(JSON.stringify(body),{status:201,headers:r.headers})),(e:Error)=>e.message.includes('Response body violates contract')&&!e.message.includes('PRIVATE_'));
+ }
+});
+test('OpenAPI access gate refuses an owned204 response carrier whose clone exposes a body',async()=>{
+ const check=await gate,f=fixture(),r=await f.handler(request('/integration-tokens/current','DELETE',session));await check('/integration-tokens/current','DELETE',r);
+ // Fetch forbids constructing a204 with a body. Simulate an incompatible owned
+ // response wrapper, without claiming a legal HTTP204 can carry this payload.
+ const incompatible=new Response(null,{status:204,headers:r.headers});
+ Object.defineProperty(incompatible,'clone',{value:()=>new Response('PRIVATE_BODY_SENTINEL')});
+ await assert.rejects(()=>check('/integration-tokens/current','DELETE',incompatible),(e:Error)=>e.message.includes('Unexpected response body')&&!e.message.includes('PRIVATE_'));
+});

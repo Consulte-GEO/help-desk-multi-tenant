@@ -25,5 +25,5 @@ Files: criar `tests/openapi-access-responses.test.ts`; modificar `scripts/respon
 - [x] Escrever cenários positivos/negativos da composição e mutantes de cabeçalhos/limite sobre respostas próprias; observar RED por lacuna real no contrato antes de alterá-lo.
 - [x] Declarar cabeçalhos obrigatórios de privacidade/correlação e Retry-After nos status adequados; declarar50 opções no catálogo, preservando serializers e runtime.
 - [x] Executar GREEN e regressões de contratos/sessões/descoberta, tipos, contratos formais, lock, segredos e build.
-- [ ] Revisão independente final; corrigir achados com regressão quando aplicável.
+- [x] Revisão independente final; corrigir achados com regressão quando aplicável.
 - [ ] Commit/PR próprio, CI fonte/merge, relatório e seis logs originais por fingerprint, preview final conferido e handoff atualizado. Não inferir autorização de merge do novo PR a partir da autorização74/75.

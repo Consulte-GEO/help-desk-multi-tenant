@@ -25,3 +25,9 @@ Base produtiva PR75/0651eb6. Doze testes novos: dez cenários da composição/ad
 Tipos pelo compilador direto, contrato formal de45 operações, lock, varredura heurística de segredos e build aprovados. A primeira tentativa de build não concluiu por DNS `ENOTFOUND` no sandbox durante instalação das dependências já fixadas; a repetição com rede permitida passou, sem alterar dependências/timeouts/gates. CI integral e revisão independente ainda pendentes neste checkpoint.
 
 `evidence/access-contract-20261017/contract-scope.json` registra a comparação estrutural com o OpenAPI publicado75: fora dos cabeçalhos das três operações, seus503 explícitos, cinco definições reutilizadas de cabeçalho e `WorkspacePage.items.maxItems`, o contrato permanece igual. Os bytes não relacionados do JSON foram preservados, sem regenerar todo o documento. Runtime e política de acesso não mudaram.
+
+## Revisão e complemento de cobertura
+
+Revisão independente da fonte iniciale243b5b:12/12 testes aprovados e paridade integral do gerador nas três operações, cinco headers e catálogo; sem achados de runtime/privacidade. Um achadoP2: a especificação também pedia mutantes de token/corpo, ausentes dos testes iniciais. Acrescentados dois testes: token inválido, tipo/expiração incompatíveis, campo obrigatório ausente e campo privado extra;204 sintético com `clone()` incompatível que expõe corpo. Ambos exigem erro sanitizado do gate real. Fetch não permite construir204 com corpo, por isso o último caso representa um wrapper sintético incompatível, não tráfegoHTTP válido.
+
+O validador existente já recusava esses corpos; a correção completa a cobertura, sem alterar runtime, schemas além do recorte ou inventar RED. Fonte revisada:14 testes novos e117 focais aprovados. Execuções integrais da fonte inicial ultrapassada são preservadas como diagnóstico/canceladas quando ainda ativas; somente a fonte final poderá ser qualificada.
