@@ -4,6 +4,8 @@ Atualizado em **16/10/2026**. Esta página resume os checkpoints e seus limites;
 
 **17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
+**Continuidade17/10:** PR70 publicado/verificado em941dc57/deploy6ad35567303a7de877d7700c; PR71 integrado a essa base na fontea26ccb2, CI combinado7.346 e80 focais aprovados. Relatório original preservado e tipos verificados pelo compilador local direto; prévia e merge de teste em conferência antes do merge autorizado do PR71.
+
 ## Produção confirmada
 
 | Referência | Estado |

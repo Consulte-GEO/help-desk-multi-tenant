@@ -54,3 +54,10 @@ A produção continua no PR69/merge72a72b5, deploy6ad2c3fd7dd44b857679b79f. PR70
 Conflitos limitados a documentação e ponteiro latest.json, resolvidos preservando os checkpoints do PR71 e importando os arquivos/evidências do PR70. Nenhum conflito de código. O latest anterior permanece histórico e não qualifica a combinação: será substituído somente pelo artefato original do novo CI.
 
 PR70 publicado e conferido conforme recibos acima; os80 focais da combinação com PR71 passaram. Relatório integral combinado ainda requerido antes do merge do PR71.
+
+
+### Qualificação da combinação — 17/10/2026
+
+PR70 publicado/verificado em941dc57/deploy6ad35567303a7de877d7700c; PR71 integrado a essa base na fontea26ccb2, CI combinado7.346 e80 focais aprovados. Relatório original preservado e tipos verificados pelo compilador local direto; prévia e merge de teste em conferência antes do merge autorizado do PR71.
+
+Fonte `a26ccb2fac5405b3f1fa1111223bc9cc6353a501`; fingerprint `9e2f1e984be364f915f49e4d0def7e5b10252775b76205c1927acd0bf978ac2c`; [CI39027299754](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/39027299754),5962 aplicação +706 PostgreSQL17 +678 interface =7346, zero falha/skip/cancelamento/todo. Artefato original `helpdesk-homologation-a26ccb2fac5405b3f1fa1111223bc9cc6353a501-39027299754-1`, digest `sha256:9859be820c297aed35615fb073adf0cfa945595e64eed308e31e07ed9e0da245`; seis logs e relatório originais validados/copiados sem normalizar bytes. Recibo `evidence/integration-70-71-20261017/ci-qualified.json`. HDA e Apoio aprovados na origem e PR. O launcher npm local sem encerramento observado não foi contado como gate; o compilador direto encerrou com0.

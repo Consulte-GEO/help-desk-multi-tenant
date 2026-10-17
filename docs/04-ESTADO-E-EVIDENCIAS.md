@@ -1,3 +1,5 @@
+> **17/10/2026 — estado corrente:** PR70 publicado/verificado em941dc57/deploy6ad35567303a7de877d7700c; PR71 integrado a essa base na fontea26ccb2, CI combinado7.346 e80 focais aprovados. Relatório original preservado e tipos verificados pelo compilador local direto; prévia e merge de teste em conferência antes do merge autorizado do PR71. Os registros abaixo são históricos.
+
 > **17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
 > **Estado corrente — 16/10/2026:** produção PR69 (`72a72b5`/deploy `6ad2c3fd7dd44b857679b79f`) verificada; PR70 permanece separado, sem merge. PR71 acrescenta inventário local somente leitura de arquivos de recuperação, com CI7.332, revisão e prévia aprovados; pronto para revisão, sem merge. [Síntese canônica](ESTADO-ATUAL.md). Os registros abaixo são históricos.
