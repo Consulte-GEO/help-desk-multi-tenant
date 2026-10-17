@@ -1,0 +1,5 @@
+
+> @consulte-geo/helpdesk@0.31.0 check:contracts
+> node --experimental-strip-types scripts/check-contracts.ts
+
+OpenAPI 3.1.1 schema and structural checks passed: 45 API operations, internal references, production/demo separation and migration sentinels. Live response conformance, SQL/RLS and mounted capabilities remain separate gates.

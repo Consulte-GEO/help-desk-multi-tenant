@@ -46,6 +46,26 @@
             "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Sem search_in: assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite prefixo e não concede acesso. Com search_in=description: somente descrição, com dobra de caixa ASCII/Latin-1 e acentos significativos. Não pesquisa notas ou mensagens."
           },
           {
+            "name": "internal_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "new",
+                "triage",
+                "open",
+                "waiting_customer",
+                "waiting_internal",
+                "waiting_third_party",
+                "resolved",
+                "closed",
+                "cancelled"
+              ]
+            },
+            "description": "Estado interno exato; combina por AND e integra o vínculo do cursor. Somente humanos operadores com tickets:read: admin ou agente da conta. Solicitantes, gestores de conta e integrações recebem403. Restringe lista e totais às contas em que o principal é operador, antes do LIMIT, sem ampliar RLS, acesso a obras ou notas. Vazio/desconhecido/repetido é inválido."
+          },
+          {
             "name": "search_in",
             "in": "query",
             "required": false,
@@ -817,6 +837,26 @@
               "maxLength": 120
             },
             "description": "Após trim: 2 a 120 pontos de código Unicode, sem controles ou surrogates. Texto literal; % e _ não são curingas. Sem search_in: assunto, UUID completo ou protocolo CG completo na composição Consulte GEO. Protocolo ignora caixa, não admite prefixo e não concede acesso. Com search_in=description: somente descrição, com dobra de caixa ASCII/Latin-1 e acentos significativos. Não pesquisa notas ou mensagens."
+          },
+          {
+            "name": "internal_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "new",
+                "triage",
+                "open",
+                "waiting_customer",
+                "waiting_internal",
+                "waiting_third_party",
+                "resolved",
+                "closed",
+                "cancelled"
+              ]
+            },
+            "description": "Estado interno exato; combina por AND e integra o vínculo do cursor. Somente humanos operadores com tickets:read: admin ou agente da conta. Solicitantes, gestores de conta e integrações recebem403. Restringe lista e totais às contas em que o principal é operador, antes do LIMIT, sem ampliar RLS, acesso a obras ou notas. Vazio/desconhecido/repetido é inválido."
           },
           {
             "name": "search_in",

@@ -85,7 +85,8 @@ test('requisição com filtro inválido é recusada antes da consulta',async()=>
 });
 test('HTTP recusa filtro duplicado, desconhecido e seletor interno',async()=>{
  const {get}=setup();
- for(const q of ['q=teste&q=outro','priority=high&priority=low','status=closed&status=received','internal_status=waiting_internal','status=waiting_internal','q=%00aa','q='])assert.equal((await get(q)).status,400,q);
+ for(const q of ['q=teste&q=outro','priority=high&priority=low','status=closed&status=received','private_filter=waiting_internal','status=waiting_internal','q=%00aa','q='])assert.equal((await get(q)).status,400,q);
+ assert.equal((await get('internal_status=waiting_internal')).status,403);
 });
 test('string parecida com injeção não expande os resultados',async()=>{
  const {service,p}=setup();assert.equal((await service.list(p,{limit:25,q:"' OR 1=1 --"})).items.length,0);

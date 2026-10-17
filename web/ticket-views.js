@@ -19,7 +19,7 @@ export function applyTicketView(raw,id,person){
  return {...(current.q?{q:current.q}:{}),...(current.search_in?{search_in:current.search_in}:{}),...(current.priority?{priority:current.priority}:{}),...preset.filters};
 }
 export function activeTicketView(raw,person){
- const current=validated(raw);
+ const current=validated(raw);if(current.internal_status)return null;
  return availableTicketViews(person).find(({id})=>{const preset=views.find(v=>v.id===id);return current.status===preset.filters.status&&current.assignment===preset.filters.assignment;})?.id??null;
 }
 export function mountTicketViews(doc,onSelect){
@@ -36,7 +36,7 @@ export function mountTicketViews(doc,onSelect){
   }
   group.hidden=help.hidden=status.hidden=!options.length||!available;
   for(const button of group.children){button.disabled=!available;button.setAttribute('aria-pressed',String(button.dataset.ticketView===active));button.setAttribute('aria-disabled',String(busy||!available));}
-  const text=options.length?(active?'Consulta rápida: '+options.find(v=>v.id===active).label+'.':'Consulta personalizada: situação e responsabilidade combinadas manualmente.'):'';
+  const text=options.length?(active?'Consulta rápida: '+options.find(v=>v.id===active).label+'.':'Consulta personalizada: filtros de situação ou responsabilidade selecionados manualmente.'):'';
   if(status.textContent!==text)status.textContent=text;
  }});
 }

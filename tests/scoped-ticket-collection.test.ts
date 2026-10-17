@@ -26,6 +26,18 @@ function fixture(){
 }
 const request=(query='',method='GET',signal?:AbortSignal)=>new Request('https://helpdesk.example/v1/tickets'+query,{method,signal});
 
+test('mounted private status uses shared namespace, exact parameters and frozen operator audience before LIMIT',async()=>{
+ for(const path of ['?internal_status=waiting_internal','/summary?internal_status=waiting_internal']){
+  const f=fixture(),r=await f.handler(request(path));assert.equal(r.status,200);const q=f.calls.find(x=>x.sql.includes('from helpdesk_core.tickets'))!;
+  assert.match(q.sql,/helpdesk_auth.is_operator/);assert.match(q.sql,/cg_local_ticket_directory/);assert.match(q.sql,/jsonb->'accounts'\) \? account_id::text/);
+  const pos=path.startsWith('/summary')?11:13;assert.equal(q.args?.[pos],'waiting_internal');assert.deepEqual(JSON.parse(q.args?.[pos+1] as string),{admin:true,accounts:[id(3)]});
+  if(!path.startsWith('/summary'))assert.ok(q.sql.indexOf('status=$14::text')<q.sql.indexOf('limit $5'));
+ }
+ for(const path of ['?internal_status=','?internal_status=new&internal_status=open','/summary?internal_status=received']){
+  const f=fixture(),r=await f.handler(request(path));assert.equal(r.status,400);assert.ok(!f.calls.some(x=>x.sql.includes('from helpdesk_core.tickets')));
+ }
+});
+
 test('mounted collection accepts explicit description mode on list and summary with same private namespace',async()=>{
  for(const endpoint of ['?q=needle&search_in=description','/summary?q=needle&search_in=description']){
   const f=fixture(),r=await f.handler(request(endpoint));assert.equal(r.status,200);

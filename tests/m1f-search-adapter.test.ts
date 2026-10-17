@@ -58,3 +58,10 @@ test('description list chooses fixed column, retains literal parameters and appl
  assert.doesNotMatch(statement.sql,/OR TRUE --|id::text=\$6|ticket_messages|internal_notes/);
  assert.ok(statement.sql.indexOf('translate(description')<statement.sql.indexOf('limit $5'));
 });
+
+test('private status parameters narrow mixed frozen roles before LIMIT even when live SQL role is wider',async()=>{
+ const f=capture(),p=principal({grants:[{accountId:'account-a',role:'agent'},{accountId:'account-b',role:'account_manager'}]});
+ await new HelpdeskService(new PostgresUnitOfWork(f.pool)).list(p,{limit:1,internal_status:'waiting_internal'});
+ const q=f.calls.find(c=>c.sql.includes('from helpdesk_core.tickets'))!;assert.equal(q.values[12],'waiting_internal');assert.deepEqual(JSON.parse(q.values[13] as string),{admin:false,accounts:['account-a']});
+ assert.match(q.sql,/status=\$13::text and helpdesk_auth.is_operator/);assert.match(q.sql,/\$14::jsonb->'accounts'\) \? account_id::text/);assert.ok(q.sql.indexOf('status=$13::text')<q.sql.indexOf('limit $5'));assert.doesNotMatch(q.sql,/internal_notes/);
+});
