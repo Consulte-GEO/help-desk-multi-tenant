@@ -2,7 +2,7 @@
 
 Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites; os documentos datados continuam preservados como histórico. Código, teste local, CI, publicação e aceite humano são estados distintos.
 
-**17/10/2026 — integração autorizada:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
+**Checkpoint histórico da integração17/10:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
 **Continuidade17/10:** PR70 e PR71 mesclados/publicados/verificados; os checkpoints de integração abaixo são históricos. Nova janela de criação ainda sem merge/publicação.
 
@@ -23,7 +23,7 @@ Provas desta publicação: `evidence/publication-pr71-20261017/publication.json`
 
 ## Entregas e continuidade
 
-**HD-019 — período de criação:** novo recorte em desenvolvimento na branch codex/periodo-criacao-20261017, sem merge/publicação. Janela UTC inclusiva/exclusiva, mesmas permissões e totais antes da paginação; UI Brasília.77 focais, tipos/45 contratos e7 verificações de navegador sintético aprovados localmente; PG17 e CI integral ainda pendentes. [Desenho e execução](implementation/PERIODO-CRIACAO-2026-10-17.md).
+**HD-019 — período de criação:** [PR72](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/72), fonte95f7f2f, CI integral da fonte e merge de teste aprovados (5.977 aplicação +708 PostgreSQL17 com login restrito +685 interface =7.370), zero falha/skip/cancelamento/todo. Revisão independente sem achados pendentes; preview conferido em10 ativos críticos. Sem merge/publicação. Janela UTC inclusiva/exclusiva aplicada antes da paginação/totais, mesmas permissões, controles em Brasília e consultas rápidas preservando período. [Desenho, evidências e limites](implementation/PERIODO-CRIACAO-2026-10-17.md).
 
 **HD-019 — busca local na conversa pública:** [PR68](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/68), fonte `9ab8b70` revisada e aprovada no CI integral (7.273 verificações), mesclada e publicada no deploy indicado acima. [Preview da implementação conferido](https://deploy-preview-68--helpdesk-consultegeo.netlify.app). Pesquisa apenas o texto das mensagens públicas carregadas do chamado aberto, reaproveitando sua leitura autorizada. Navegação entre resultados, cobertura explícita e limpeza por contexto; não amplia a pesquisa da fila nem inclui notas internas. [Escopo, testes e evolução](implementation/BUSCA-CONVERSA-2026-10-16.md).
 

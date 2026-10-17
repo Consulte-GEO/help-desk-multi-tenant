@@ -1,6 +1,6 @@
 # Período de criação — plano de implementação
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Filtrar fila/totais pelo mesmo intervalo autorizado de criação, com precisão de microssegundos.
 
@@ -26,23 +26,23 @@
 
 **Files:** application/ticket-search, infrastructure/postgres, HTTP handler/scoped, web/ticket-list-state e declarações, views/inbox-view-state, docs/openapi; testes ticket-created-window/ticket-created-window-adapter e supabase/tests/rls.
 
-- [ ] Escrever/executar RED de gramática, microssegundos, ACL/totais/páginas/cursores e estado cliente.
-- [ ] Implementar filtros opcionais normalizados e predicado parametrizado, mantendo posições antigas na ausência.
-- [ ] Qualificar bindings locais/privados e semântica em PG17 real com login restrito; referências OpenAPI em ambas as operações.
+- [x] Escrever/executar RED de gramática, microssegundos, ACL/totais/páginas/cursores e estado cliente.
+- [x] Implementar filtros opcionais normalizados e predicado parametrizado, mantendo posições antigas na ausência.
+- [x] Qualificar bindings locais/privados e semântica em PG17 real com login restrito; referências OpenAPI em ambas as operações.
 
 ## Tarefa2 — relógio e interface
 
 **Files:** web/filter-instant.js +.d.ts, app/index/inbox-workspace, scripts/build e scripts/test-ui-local; testes filter-instant e browser-created-window.py.
 
-- [ ] RED de conversão/gramática/DST e geração de query.
-- [ ] Ligar dois datetime-local opcionais, feedback de validade, filtros aplicados/pendentes e consultas rápidas preservando período.
-- [ ] Chromium com Auth/API sintéticas desktop/mobile390; capturas conferidas; nenhuma escrita de negócio.
+- [x] RED de conversão/gramática/DST e geração de query.
+- [x] Ligar dois datetime-local opcionais, feedback de validade, filtros aplicados/pendentes e consultas rápidas preservando período.
+- [x] Chromium com Auth/API sintéticas desktop/mobile390; capturas conferidas; nenhuma escrita de negócio.
 
 ## Tarefa3 — entrega independente
 
-- [ ] Focais/tipos/45 contratos/build/lock/secrets e revisão independente somente leitura.
-- [ ] PR e CI integral fonte/merge; preservar relatório/logs originais e qualificar prévia.
-- [ ] Atualizar estado/documentação, recibos de produção70/71 e prontidão do novo PR. Não mesclar/publicar esse novo recorte sem autorização própria.
+- [x] Focais/tipos/45 contratos/build/lock/secrets e revisão independente somente leitura.
+- [x] PR e CI integral fonte/merge; preservar relatório/logs originais e qualificar prévia.
+- [x] Atualizar estado/documentação, recibos de produção70/71 e prontidão do novo PR. Não mesclar/publicar esse novo recorte sem autorização própria.
 
 ## Registro
 
