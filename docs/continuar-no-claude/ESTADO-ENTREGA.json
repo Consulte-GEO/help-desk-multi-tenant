@@ -1,6 +1,6 @@
 {
   "data": "2026-10-17",
-  "tipo": "Preparação local, sem merge/publicação",
+  "tipo": "Preparação em PR draft, sem merge ou publicação de produção",
   "repositorio": "Consulte-GEO/help-desk-multi-tenant",
   "branch_padrao": "codex/m1-reproducibilidade",
   "base_publicada": "0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5",
@@ -31,7 +31,7 @@
   ],
   "limites": [
     "Estado remoto deve ser reinspecionado; referências são snapshot.",
-    "Sem nova qualificação do runtime HelpDesk neste lote documental/CI.",
+    "CI Linux da fonte7800084 e merge de teste aprovados em7447 verificações; sem efeitos de negócio ou alteração de produção.",
     "Recibos anteriores não comprovam teste do novo commit."
   ]
 }

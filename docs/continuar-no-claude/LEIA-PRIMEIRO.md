@@ -11,6 +11,8 @@ Este é o ponto de entrada do colega que continuará o sistema. O Help Desk já 
 5. [Aceites pendentes do levantamento](../levantamento-2026-10-16/ACEITES-PENDENTES.md) e checkpoint mais recente do ID escolhido.
 6. [Primeira tarefa](ROTEIRO-PRIMEIRA-TAREFA.md), [ambiente de desenvolvimento](AMBIENTE.md) e [fluxo do mantenedor](FLUXO-MANTENEDOR.md).
 
+A [qualificação do primeiro lote](QUALIFICACAO-LOTE1.md) registra7447 verificações aprovadas na fonte e no merge de teste, mantendo os limites de OAuth/Claude e operação reais.
+
 Os50 itens do produto não são50 novas funcionalidades ausentes. O JSON preserva critérios/dependências originais; atualizações posteriores identificam partes entregues. RF/AUX/melhorias são vistas complementares e não devem ser somadas como tarefas novas. As propostas históricas não entram automaticamente no escopo autorizado.
 
 ## Se usar o Claude no navegador ou Desktop com MCP
