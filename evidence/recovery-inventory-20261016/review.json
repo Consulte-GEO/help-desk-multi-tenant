@@ -1,0 +1,31 @@
+{
+  "base": "72a72b51ea651fa5d377f2632646a352d39e90f1",
+  "source": "740237188ecb46ea1af8243156bd135096e96f64",
+  "reviewer": "review_recovery_inventory",
+  "mode": "independent-read-only-fresh-context",
+  "findings": [],
+  "verification": {
+    "focalTestsPassed": 76,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "diffCheck": "passed",
+    "platform": "Windows",
+    "filesChangedByReviewer": false
+  },
+  "initialSandboxAttempt": {
+    "passed": 66,
+    "failed": 5,
+    "cause": "EPERM creating rename/hardlink/junction fixtures",
+    "repeatOutsideSandbox": "passed without test changes"
+  },
+  "limits": [
+    "Review and focal tests do not replace full CI.",
+    "Linux FIFO test not executed by reviewer on Windows.",
+    "No transactional snapshot against a hostile concurrent writer.",
+    "No certification of export completeness, origin or business semantics.",
+    "No PostgreSQL/Storage restore, RPO/RTO approval or worker restart."
+  ],
+  "productionApproved": false
+}

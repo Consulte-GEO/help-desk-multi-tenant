@@ -11,7 +11,9 @@
 ```powershell
 # Exemplos com caminhos locais da bancada; não apontar para produção.
 # stdout de npm contém seu banner: use node diretamente para salvar JSON puro.
-node --experimental-strip-types scripts/recovery-inventory.ts --root C:/bancada/original > C:/bancada/manifesto.json
+$manifesto = node --experimental-strip-types scripts/recovery-inventory.ts --root C:/bancada/original
+if ($LASTEXITCODE -ne 0) { throw 'Inventário não concluído; não salve um manifesto parcial.' }
+[System.IO.File]::WriteAllText('C:/bancada/manifesto.json', ($manifesto -join "`n"), [System.Text.UTF8Encoding]::new($false))
 node --experimental-strip-types scripts/recovery-inventory.ts --root C:/bancada/copia --expected C:/bancada/manifesto.json
 ```
 

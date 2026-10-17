@@ -28,9 +28,9 @@ Somente leitura local; seis diretórios obrigatórios;10.000 entradas/256MiB/12 
 
 **Interfaces:** `inventoryRecoveryFiles(root:string, options?:{maxEntries?:number,maxBytes?:number,timeoutMs?:number,signal?:AbortSignal}):Promise<RecoveryInventory>`; CLI `main(args?:string[]):Promise<number>` com flags `--root`, `--expected`, `--help`.
 
-- [ ] Testes negativos/positivos com arquivos reais temporários; executar RED antes da implementação.
-- [ ] Implementar leitura em blocos, identidade estável, limites, digest opaco e CLI fechada; executar GREEN.
-- [ ] Documentar preparação/uso/saída/limites e teste de import sem efeito; repetir focais do planejador/composição, tipos/contratos/build/lock/secrets.
+- [x] Testes negativos/positivos com arquivos reais temporários; executar RED antes da implementação.
+- [x] Implementar leitura em blocos, identidade estável, limites, digest opaco e CLI fechada; executar GREEN.
+- [x] Documentar preparação/uso/saída/limites e teste de import sem efeito; repetir focais do planejador/composição, tipos/contratos/build/lock/secrets.
 - [ ] Commit da fonte, draft PR independente de PR70, CI integral e revisão independente somente leitura.
 - [ ] Preservar relatório/logs originais e qualificar preview; atualizar estado/documentação e deixar PR pronto, sem merge/publicação.
 

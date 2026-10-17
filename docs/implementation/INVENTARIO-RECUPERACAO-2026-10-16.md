@@ -21,3 +21,20 @@ Limites totais por execução:10.000 entradas,256MiB de arquivos,12 níveis de s
 - Focais locais, tipos, contratos, build e CI integral vinculados à fonte; revisão independente; documentação de uso e evidências preservadas.
 
 HD-045 continua parcial: ensaio real PostgreSQL/Storage, captura consistente, aplicador durável, política de retenção, RPO/RTO e responsáveis exigem seus critérios próprios. MFA/Novo GEO/modelos técnicos não são ampliados; scanner continua cancelado.
+
+## Verificação da implementação
+
+Fonte `740237188ecb46ea1af8243156bd135096e96f64`, [PR71](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/71), baseada em `72a72b5`, independente do PR70. Fingerprint `559f6cbe69b96d6d3115133acc2b81de39b4d38c56a450ac1a81a59b58f77bca`.
+
+Local Windows/Node24:76 focais aprovados, zero falha/skip/cancelamento/todo; tipos,45 operações de contrato, build completo, lock e scanner heurístico de segredos aprovados. O scanner heurístico não equivale a auditoria de segurança. A primeira tentativa no sandbox teve35/40 e cinco falhas EPERM na preparação de rename/links; sua repetição válida teve74/74, seguida de76/76 após acrescentar casos de prazo e componente que deixou de ser diretório. O primeiro typecheck apontou narrowing de `object`; foi corrigido para `Record<string,unknown>` após conferir o envelope. Logs iniciais e finais são preservados, sem transformar diagnóstico falho em gate aprovado.
+
+Revisor independente somente leitura, contexto novo: nenhum achado confirmado pendente; repetiu76/76 fora do sandbox e conferiu diff. O cenário FIFO foi aprovado no CI Linux; não foi simulado como aprovado no Windows. Recibo: `evidence/recovery-inventory-20261016/review.json`. CI integral da fonte aprovado; merge de teste e prévia ainda em andamento.
+
+
+## Qualificação integral da fonte
+
+[CI de origem38994228615](https://github.com/Consulte-GEO/help-desk-multi-tenant/actions/runs/38994228615): Node22/Linux,5.956 testes de aplicação,703 em PostgreSQL17 com login restrito e673 de interface, total7.332, zero falha/skip/cancelamento/todo. Gates independentes lock/install/audit também aprovados. HDA e Apoio Implantação aprovados nas execuções de origem e PR.
+
+Artefato original `helpdesk-homologation-740237188ecb46ea1af8243156bd135096e96f64-38994228615-1`, digest informado pelo GitHub `sha256:201e61fc3e18b08b39509b86c0ff57185edb06a6064a638648e351de5d55b884`. Relatório e seis logs copiados sem normalizar os bytes para `evidence/homologation/runs/0559aaa2-5c01-4cdb-880f-97c478af2369/`; latest.json corresponde à fonte exata e todos os hashes/fingerprint foram conferidos. Recibo: `evidence/recovery-inventory-20261016/ci-qualified.json`.
+
+Prévia inicial `6ad2da5857bf69a6c0a8de41`, fonte7402371, teve erro de build e não foi aceita; o relatório desta fonte ainda não estava registrado na árvore. O estado do provedor foi preservado, sem inferir prova de publicação. A próxima prévia deve passar pelo gate com o relatório qualificado. Nenhuma dessas execuções é restore produtivo ou aceite humano operacional.
