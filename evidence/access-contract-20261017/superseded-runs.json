@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-10-17T16:39:57.929Z",
+  "runs": [
+    {
+      "id": 39050163322,
+      "name": "Help Desk quality gates",
+      "event": "pull_request",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "in_progress",
+      "conclusion": null,
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": true
+    },
+    {
+      "id": 39050163454,
+      "name": "Apoio Implantacao qualification",
+      "event": "pull_request",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "completed",
+      "conclusion": "success",
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": false
+    },
+    {
+      "id": 39050163455,
+      "name": "HDA candidate and browser qualification",
+      "event": "pull_request",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "completed",
+      "conclusion": "success",
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": false
+    },
+    {
+      "id": 39050158113,
+      "name": "Help Desk quality gates",
+      "event": "push",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "in_progress",
+      "conclusion": null,
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": true
+    },
+    {
+      "id": 39050158116,
+      "name": "Apoio Implantacao qualification",
+      "event": "push",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "completed",
+      "conclusion": "success",
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": false
+    },
+    {
+      "id": 39050158283,
+      "name": "HDA candidate and browser qualification",
+      "event": "push",
+      "head": "e243b5b634c1cd8fd700b47e32986e477b569558",
+      "status": "completed",
+      "conclusion": "success",
+      "qualified": false,
+      "superseded": true,
+      "cancelRequested": false
+    }
+  ]
+}

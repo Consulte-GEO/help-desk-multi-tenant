@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-17T16:37:16.501Z",
+  "candidateContractSource": "e243b5b634c1cd8fd700b47e32986e477b569558",
+  "productionSource": "0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5",
+  "deploy": "6ad3a29338ddf71339a08253",
+  "authenticated": false,
+  "businessWrites": 0,
+  "migrations": 0,
+  "routes": [
+    {
+      "path": "/workspaces",
+      "method": "GET",
+      "status": 401,
+      "candidateContractPassed": true,
+      "privacyHeadersMatched": true,
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/integration-tokens",
+      "method": "POST",
+      "status": 401,
+      "candidateContractPassed": true,
+      "privacyHeadersMatched": true,
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    },
+    {
+      "path": "/integration-tokens/current",
+      "method": "DELETE",
+      "status": 401,
+      "candidateContractPassed": true,
+      "privacyHeadersMatched": true,
+      "correlationMatched": true,
+      "propertyNames": [
+        "code",
+        "detail",
+        "request_id",
+        "status",
+        "title",
+        "type"
+      ]
+    }
+  ],
+  "pass": true,
+  "limitation": "Candidate response gate over existing deployed401 only; no credential exchange, revocation or authenticated catalog was performed."
+}

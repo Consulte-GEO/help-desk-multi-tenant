@@ -1,0 +1,19 @@
+{
+  "base": "0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5",
+  "reviewedHead": "e243b5b634c1cd8fd700b47e32986e477b569558",
+  "readOnly": true,
+  "reviewerTests": 12,
+  "reviewerGeneratorParity": true,
+  "runtimeOrPrivacyFindings": 0,
+  "findings": [
+    {
+      "priority": "P2",
+      "problem": "Token/schema and incompatible204 body mutants required by the spec were absent.",
+      "resolution": "Two additional tests exercise invalid/missing/extra token response fields and synthetic204 clone exposing body; sanitized rejection required. Existing validator already rejected them; no runtime change."
+    }
+  ],
+  "pendingFindings": 0,
+  "parentFocals": 117,
+  "parentTypecheckExit": 0,
+  "productionAcceptance": false
+}

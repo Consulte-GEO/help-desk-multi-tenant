@@ -398,6 +398,20 @@
                   "$ref": "#/components/schemas/WorkspacePage"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "default": {
@@ -408,17 +422,44 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
               "Retry-After": {
+                "required": true,
                 "schema": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 60
                 }
+              },
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             },
             "content": {
@@ -426,6 +467,33 @@
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
                 }
+              }
+            }
+          },
+          "503": {
+            "description": "Serviço temporariamente indisponível; não confirma sessão ou encerramento.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              },
+              "Retry-After": {
+                "$ref": "#/components/headers/AccessUnavailableRetryAfter"
               }
             }
           }
@@ -452,6 +520,20 @@
                   "$ref": "#/components/schemas/IntegrationToken"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "default": {
@@ -462,17 +544,44 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
               "Retry-After": {
+                "required": true,
                 "schema": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 60
                 }
+              },
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             },
             "content": {
@@ -480,6 +589,33 @@
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
                 }
+              }
+            }
+          },
+          "503": {
+            "description": "Serviço temporariamente indisponível; não confirma sessão ou encerramento.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              },
+              "Retry-After": {
+                "$ref": "#/components/headers/AccessUnavailableRetryAfter"
               }
             }
           }
@@ -501,9 +637,16 @@
             "description": "Sessão apresentada encerrada ou já ausente. Corpo vazio.",
             "headers": {
               "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                }
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             }
           },
@@ -515,6 +658,20 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "400": {
@@ -524,6 +681,20 @@
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
                 }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             }
           },
@@ -535,6 +706,20 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              }
             }
           },
           "408": {
@@ -544,6 +729,20 @@
                 "schema": {
                   "$ref": "#/components/schemas/Problem"
                 }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             }
           },
@@ -555,17 +754,47 @@
                   "$ref": "#/components/schemas/Problem"
                 }
               }
+            },
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
+              },
+              "Retry-After": {
+                "$ref": "#/components/headers/AccessUnavailableRetryAfter"
+              }
             }
           },
           "429": {
             "description": "Limite temporário. O intervalo é mínimo para nova tentativa, não garantia de sucesso.",
             "headers": {
               "Retry-After": {
+                "required": true,
                 "schema": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 60
                 }
+              },
+              "Cache-Control": {
+                "$ref": "#/components/headers/AccessNoStore"
+              },
+              "X-Content-Type-Options": {
+                "$ref": "#/components/headers/AccessNoSniff"
+              },
+              "Referrer-Policy": {
+                "$ref": "#/components/headers/AccessNoReferrer"
+              },
+              "X-Request-Id": {
+                "$ref": "#/components/headers/AccessRequestId"
               }
             },
             "content": {
@@ -7861,7 +8090,8 @@
                 "id",
                 "name"
               ]
-            }
+            },
+            "maxItems": 50
           }
         },
         "required": [
@@ -11003,6 +11233,44 @@
             }
           }
         ]
+      }
+    },
+    "headers": {
+      "AccessNoStore": {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "const": "no-store"
+        }
+      },
+      "AccessNoSniff": {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "const": "nosniff"
+        }
+      },
+      "AccessNoReferrer": {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "const": "no-referrer"
+        }
+      },
+      "AccessRequestId": {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        }
+      },
+      "AccessUnavailableRetryAfter": {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "const": "2"
+        }
       }
     }
   }
