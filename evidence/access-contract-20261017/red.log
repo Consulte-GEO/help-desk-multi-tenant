@@ -1,0 +1,49 @@
+✔ OpenAPI access: real discovery projects empty, populated and50-row catalogs without adopting metadata or workspace header (149.4328ms)
+✔ OpenAPI access: invalid/oversized private catalogs fail atomically without a partial listing (4.3864ms)
+✔ OpenAPI access: discovery refuses machine/missing/rejected human identity before private SQL (1.9808ms)
+✔ OpenAPI access: real exchange emits only a canonical short session and hashes both SQL arguments (2.5226ms)
+✔ OpenAPI access: malformed/revoked credentials and invalid private expiry cannot confirm exchange (2.4076ms)
+✔ OpenAPI access: current session revocation remains empty204/idempotent without human or membership lookup (1.1313ms)
+✔ OpenAPI access: revocation selectors, bodies and unsupported bearers cannot dispatch (3.9306ms)
+✔ OpenAPI access: SQL outage/invalid revocation confirmation never becomes logout or leaks provider details (2.4638ms)
+✔ OpenAPI access: distributed ingress rate limit precedes all identity/SQL work (4.2205ms)
+✔ OpenAPI access: missing adapters fail503; unexpected failures use safe500 and preserve correlation (2.8044ms)
+✖ OpenAPI access gate rejects missing/malformed privacy and correlation headers on success and errors without copying raw values (1.6038ms)
+✖ OpenAPI access gate rejects a51-item catalog that would otherwise satisfy the schema (0.576ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 595.4931
+
+✖ failing tests:
+
+test at tests\openapi-access-responses.test.ts:67:1
+✖ OpenAPI access gate rejects missing/malformed privacy and correlation headers on success and errors without copying raw values (1.6038ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/openapi-access-responses.test.ts:69:373)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\openapi-access-responses.test.ts:71:1
+✖ OpenAPI access gate rejects a51-item catalog that would otherwise satisfy the schema (0.576ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/thiag/OneDrive/Documentos/ChatGPT/Help%20Desk/helpdesk/tests/openapi-access-responses.test.ts:72:62)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Response body violates contract/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

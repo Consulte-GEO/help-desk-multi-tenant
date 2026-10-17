@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-17T16:32:29.645Z",
+  "merge": "0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5",
+  "deploy": "6ad3a29338ddf71339a08253",
+  "checks": [
+    {
+      "path": "/tickets",
+      "query": "updated_from=2026-10-17T00:00:00.000001Z",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    },
+    {
+      "path": "/tickets",
+      "query": "updated_before=2026-10-18T00:00:00.000000Z",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    },
+    {
+      "path": "/tickets",
+      "query": "updated_from=2026-10-17T00:00:00.000Z&updated_before=2026-10-18T00:00:00.000Z&created_from=2026-10-01T00:00:00.000Z&created_before=2026-11-01T00:00:00.000Z&sort=oldest",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    },
+    {
+      "path": "/tickets/summary",
+      "query": "updated_from=2026-10-17T00:00:00.000001Z",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    },
+    {
+      "path": "/tickets/summary",
+      "query": "updated_before=2026-10-18T00:00:00.000000Z",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    },
+    {
+      "path": "/tickets/summary",
+      "query": "updated_from=2026-10-17T00:00:00.000Z&updated_before=2026-10-18T00:00:00.000Z&created_from=2026-10-01T00:00:00.000Z&created_before=2026-11-01T00:00:00.000Z&sort=oldest",
+      "status": 401,
+      "noStore": true,
+      "contractPassed": true,
+      "correlationMatched": true
+    }
+  ],
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "authenticated": false,
+  "pass": true
+}

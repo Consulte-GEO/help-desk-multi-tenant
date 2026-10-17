@@ -4,7 +4,7 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 
 **Checkpoint histórico da integração17/10:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
-**Continuidade17/10:** PR74 mesclado em4df5a99496c74b23712f2dfe709663b1b92bdbe1, publicado/verificado no deploy6ad39e6ddee36c05b88fbcc5, sem migração. PR75 integra a base74; combinação qualificada em7447 verificações, preview em conferência antes do merge75.
+**Continuidade17/10:** PR74/75 mesclados e publicados. Produção PR75, combinação qualificada em7.447 verificações; HD-002/contratos de acesso em desenvolvimento separado.
 
 ## Produção confirmada
 
@@ -12,15 +12,16 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 |---|---|
 | Site | `https://helpdesk.consultegeo.org`, atendimento Consulte GEO ativo |
 | Branch de produção | `codex/m1-reproducibilidade` |
-| Último PR publicado | [#74 — relatório local de reconciliação](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/74), incluindo os recortes anteriores |
-| Merge publicado | `4df5a99496c74b23712f2dfe709663b1b92bdbe1` |
-| Deploy Netlify | `6ad39e6ddee36c05b88fbcc5`, READY em17/10/2026 às13h13 Brasília |
-| Verificação desta publicação | 122/122 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas401 conformes. Nenhuma operação de negócio ou migration. |
+| Último PR publicado | [#75 — período de atualização](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/75), incluindo o relatório local74 e os recortes anteriores |
+| Merge publicado | `0651eb6dde8bbe5119e5f12e9c9b455a97f58cc5` |
+| Deploy Netlify | `6ad3a29338ddf71339a08253`, READY em17/10/2026 às13h31 Brasília |
+| Verificação desta publicação | 122/122 entradas do manifesto por HTTPS/hash; controles privados e capacidades; quatro recusas anônimas de escrita401 e seis consultas com períodos401 conformes. Nenhuma operação de negócio ou migration. |
+| Qualificação PR74/75 | Fonte combinada `9d1f24a79c16e0d3ca01c09d8f19a1ea1f0e6b27`, CI6.038/710/699 (7.447), revisão e preview final aprovados. [Recibos e limites](implementation/PERIODO-ATUALIZACAO-2026-10-17.md). |
 | Qualificação PR73 | Fonte `df665c089423ee905c2c85feda58ab7cb1526e9e`, CI7.385, revisão independente, fonte/merge de teste e preview aprovados. [Recibos e limites](implementation/ORDEM-CRIACAO-2026-10-17.md). |
 | Qualificação anterior PR70/71 | Fonte `a26ccb2fac5405b3f1fa1111223bc9cc6353a501`, CI7.346, revisão original dos recortes e merge de teste aprovados. [Recibos e limites](implementation/INVENTARIO-RECUPERACAO-2026-10-16.md). |
 | Contratos atuais | API/interface0.31.0; core/schema0.27,21 migrations. Addons privados Apoio/Wiki não são migrations extras do core. O catálogo de banco não foi reexecutado nesta publicação sem SQL. |
 
-Provas desta publicação: `evidence/publication-pr74-20261017/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
+Provas desta publicação: `evidence/publication-pr75-20261017/publication.json` e `response-contract.json`. Os resultados anônimos não comprovam uso autenticado humano ou sucesso de um comando autorizado.
 
 ## Entregas e continuidade
 
@@ -38,7 +39,9 @@ Provas desta publicação: `evidence/publication-pr74-20261017/publication.json`
 
 **HD-045 — relatório local de reconciliação:** [PR74](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/74), fonte6a1d3de, CI fonte/merge 7.421,107 focais e revisão independente com limite herdado corrigido. Preview qualificado em10 ativos críticos. Agrega somente hashes/contagens dos planejadores C12/C15 existentes; não adapta exports nativos, atesta autoridade, executa restore ou libera workers. Mesclado em4df5a99 e publicado/verificado no deploy acima, sem migração. [Escopo, evidências e etapas restantes](implementation/RECONCILIACAO-RECUPERACAO-2026-10-17.md).
 
-**HD-019 — período de atualização:** [PR75](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/75), fonte737831e, CI fonte/merge **7.411**,37 focais, revisão independente e8 grupos Chromium desktop/mobile390/AuthAPI sintéticas aprovados; preview10ativos críticos conferido. Limites inclusivo/exclusivo antes de páginas/totais, combinação com criação e filtros existentes, ordenação/cursor por criação preservados. Metadado de atualização não é última resposta humana ou SLA; consultas são vivas. Fonte original independente sobre PR73. Agora integrado ao PR74, CI da combinação aprovado em7447 verificações; preview em conferência antes do merge/publicação. [Escopo e evidências](implementation/PERIODO-ATUALIZACAO-2026-10-17.md).
+**HD-019 — período de atualização:** [PR75](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/75), fonte737831e, CI fonte/merge **7.411**,37 focais, revisão independente e8 grupos Chromium desktop/mobile390/AuthAPI sintéticas aprovados; preview10ativos críticos conferido. Limites inclusivo/exclusivo antes de páginas/totais, combinação com criação e filtros existentes, ordenação/cursor por criação preservados. Metadado de atualização não é última resposta humana ou SLA; consultas são vivas. Fonte original independente sobre PR73 preservada. Integração PR74/75 na fonte9d1f24a, CI **6.038 aplicação +710 PostgreSQL17 +699 interface =7.447**, revisão sem achados de runtime e checkpoint documental corrigido. Mesclado/publicado/verificado no deploy acima; seis consultas anônimas com períodos401 conformes. Sem migração. [Escopo e evidências](implementation/PERIODO-ATUALIZACAO-2026-10-17.md).
+
+**HD-002 — contratos de acesso:** em desenvolvimento separado, qualificação de workspaces e troca/revogação de sessões curtas existentes, sem alteração de login/MFA/permissões. [Escopo](implementation/CONTRATOS-ACESSO-2026-10-17.md). Não fecha HD-002.
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 

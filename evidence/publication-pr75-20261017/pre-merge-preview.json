@@ -1,0 +1,90 @@
+{
+  "checkedAt": "2026-10-17T16:29:57.381Z",
+  "pr": 75,
+  "source": "9d1f24a79c16e0d3ca01c09d8f19a1ea1f0e6b27",
+  "head": "b003238f457b0efa07535e097624136d0c904b45",
+  "preview": {
+    "id": "6ad3a20fb56825e4ed7cdf11",
+    "state": "ready",
+    "context": "deploy-preview",
+    "url": "https://deploy-preview-75--helpdesk-consultegeo.netlify.app"
+  },
+  "production": {
+    "deploy": "6ad39e6ddee36c05b88fbcc5",
+    "source": "4df5a99496c74b23712f2dfe709663b1b92bdbe1"
+  },
+  "assets": [
+    {
+      "file": "filter-instant.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "a9bd99f9f9d860daf5b5a0a9277100418bd7f2c88aff44b51a5a9034c3119a52"
+    },
+    {
+      "file": "app.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "f905f5dda83af8682189ba7b27ba5423be8d348742e573fd947ebadb5f7a9061"
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "matchedBytes": false,
+      "providerInsertionOnly": true,
+      "sha256": "51731c9ce7a4466742e2fef66473350e22b6fbb0833a52deb208161b4739d54e"
+    },
+    {
+      "file": "ticket-list-state.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "8c164d39d1827fab423c170124d92368b62bff593c74e8afd188d50d419b2cc5"
+    },
+    {
+      "file": "ticket-views.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "442964757f1be40a088d203a914afcf652bcdcd147c3785e999c1c8956defe72"
+    },
+    {
+      "file": "inbox-view-state.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "b380b84ac2db26a81b073d086a533062813c170cd321c70bb895ecc2d369dc44"
+    },
+    {
+      "file": "inbox-workspace.js",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "f1ce5778c41cae9f081352bbd28c2c2efbc366c93031fca20a4b9014166b17c0"
+    },
+    {
+      "file": "consulte-theme.css",
+      "status": 200,
+      "matchedBytes": true,
+      "providerInsertionOnly": false,
+      "sha256": "d66b5518b8253d004fae50aed2c9b46c2259fed19a20c9805a6f76f2624cf567"
+    },
+    {
+      "file": "/implantacao/chunks/entry-cvey8n1k.js",
+      "status": 200,
+      "matchedManifest": true,
+      "manifestSha1": "ed38c395dd57fe23ba644251144b18e37144fa6a"
+    },
+    {
+      "file": "/implantacao/support-app.js",
+      "status": 200,
+      "matchedManifest": true,
+      "manifestSha1": "14395156abb897cf329c66c12520fb43dc77b9a7"
+    }
+  ],
+  "authenticated": false,
+  "businessWrites": 0,
+  "databaseMigrations": 0,
+  "pass": true
+}

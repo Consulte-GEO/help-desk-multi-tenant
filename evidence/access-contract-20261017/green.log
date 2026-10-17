@@ -1,0 +1,20 @@
+✔ OpenAPI access: real discovery projects empty, populated and50-row catalogs without adopting metadata or workspace header (174.2043ms)
+✔ OpenAPI access: invalid/oversized private catalogs fail atomically without a partial listing (6.6948ms)
+✔ OpenAPI access: discovery refuses machine/missing/rejected human identity before private SQL (4.4192ms)
+✔ OpenAPI access: real exchange emits only a canonical short session and hashes both SQL arguments (2.6292ms)
+✔ OpenAPI access: malformed/revoked credentials and invalid private expiry cannot confirm exchange (4.658ms)
+✔ OpenAPI access: current session revocation remains empty204/idempotent without human or membership lookup (0.9782ms)
+✔ OpenAPI access: revocation selectors, bodies and unsupported bearers cannot dispatch (3.7333ms)
+✔ OpenAPI access: SQL outage/invalid revocation confirmation never becomes logout or leaks provider details (2.32ms)
+✔ OpenAPI access: distributed ingress rate limit precedes all identity/SQL work (3.8196ms)
+✔ OpenAPI access: missing adapters fail503; unexpected failures use safe500 and preserve correlation (2.4205ms)
+✔ OpenAPI access gate rejects missing/malformed privacy and correlation headers on success and errors without copying raw values (17.7821ms)
+✔ OpenAPI access gate rejects a51-item catalog that would otherwise satisfy the schema (0.6164ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1090.0478
