@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-17T15:09:39.865Z",
+  "sources": [
+    "https://supabase.com/changelog.md",
+    "https://supabase.com/docs/guides/database/postgres/row-level-security"
+  ],
+  "breakingTagLines": [
+    "2026-10-12 · Breaking Change · Auth, Data APIs, Storage, Realtime, Edge Functions · [supabase.com/changelog/cbc-tls-ciphers-deprecated](https://supabase.com/changelog/cbc-tls-ciphers-deprecated)",
+    "2026-09-25 · Breaking Change · Database · [supabase.com/changelog/postgres-15-19-17-11-breaking-changes](https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes)",
+    "2026-07-23 · Breaking Change · Platform · [supabase.com/changelog/48235-migration-of-supabase-management-api-logs-all-analytics-endpoint-to-logs-endpoint](https://supabase.com/changelog/48235-migration-of-supabase-management-api-logs-all-analytics-endpoint-to-logs-endpoint)",
+    "2026-07-22 · Breaking Change · Database, Security · [supabase.com/changelog/extension-version-pinning-ignored](https://supabase.com/changelog/extension-version-pinning-ignored)",
+    "## Self-hosted Supabase: Envoy becomes the default API gateway (breaking change)",
+    "2026-07-17 · Breaking Change · Platform · [supabase.com/changelog/48048-self-hosted-supabase-envoy-becomes-the-default-api-gateway-b](https://supabase.com/changelog/48048-self-hosted-supabase-envoy-becomes-the-default-api-gateway-b)",
+    "2026-07-14 · Breaking Change · Realtime · [supabase.com/changelog/realtime-schema-locked-down-against-modification](https://supabase.com/changelog/realtime-schema-locked-down-against-modification)",
+    "2026-06-18 · Breaking Change · Auth · [supabase.com/changelog/47093-self-hosted-supabase-api-external-url-to-include-auth-v1](https://supabase.com/changelog/47093-self-hosted-supabase-api-external-url-to-include-auth-v1)",
+    "2026-06-03 · Breaking Change · Platform · [supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier](https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier)",
+    "## Breaking change in pg_graphql 1.6.0 — GraphQL introspection disabled by default",
+    "2026-05-25 · Breaking Change · Database · [supabase.com/changelog/46320-breaking-change-in-pg-graphql-1-6-0-graphql-introspection-disabled-by-default](https://supabase.com/changelog/46320-breaking-change-in-pg-graphql-1-6-0-graphql-introspection-disabled-by-default)",
+    "2026-05-18 · Breaking Change · Observability · [supabase.com/changelog/46084-self-hosted-supabase-making-analytics-and-vector-opt-in](https://supabase.com/changelog/46084-self-hosted-supabase-making-analytics-and-vector-opt-in)"
+  ],
+  "relevance": "Existing PostgreSQL parameterized SELECT predicates only. No new Supabase API/SDK, auth, grants, RLS, schema, CLI or pool changes.",
+  "databaseVerification": "Restricted PostgreSQL17 CI required; no remote database access."
+}
