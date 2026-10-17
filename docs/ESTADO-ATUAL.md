@@ -4,7 +4,7 @@ Atualizado em **17/10/2026**. Esta página resume os checkpoints e seus limites;
 
 **Checkpoint histórico da integração17/10:** PR70 mesclado em941dc579912e84cb80a70d0c3a37f7a68c3852b2; publicação em conferência. PR71 atualizado com essa base, preservando código e recibos dos dois recortes; a combinação exige novo relatório integral antes de seu merge. Os checkpoints anteriores descrevem suas fontes originais.
 
-**Continuidade17/10:** PR74/75 mesclados e publicados. Produção PR75, combinação qualificada em7.447 verificações; PR76/HD-002 qualificado em7461 verificações e revisão concluída; preview em conferência, sem merge/publicação.
+**Continuidade17/10:** PR74/75 mesclados e publicados. Produção PR75, combinação qualificada em7.447 verificações; PR76/HD-002 qualificado em7461 verificações e revisão concluída; prévia qualificada em10 ativos; pronto para revisão, sem merge/publicação.
 
 ## Produção confirmada
 
@@ -41,7 +41,7 @@ Provas desta publicação: `evidence/publication-pr75-20261017/publication.json`
 
 **HD-019 — período de atualização:** [PR75](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/75), fonte737831e, CI fonte/merge **7.411**,37 focais, revisão independente e8 grupos Chromium desktop/mobile390/AuthAPI sintéticas aprovados; preview10ativos críticos conferido. Limites inclusivo/exclusivo antes de páginas/totais, combinação com criação e filtros existentes, ordenação/cursor por criação preservados. Metadado de atualização não é última resposta humana ou SLA; consultas são vivas. Fonte original independente sobre PR73 preservada. Integração PR74/75 na fonte9d1f24a, CI **6.038 aplicação +710 PostgreSQL17 +699 interface =7.447**, revisão sem achados de runtime e checkpoint documental corrigido. Mesclado/publicado/verificado no deploy acima; seis consultas anônimas com períodos401 conformes. Sem migração. [Escopo e evidências](implementation/PERIODO-ATUALIZACAO-2026-10-17.md).
 
-**HD-002 — contratos de acesso:** [PR76](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/76), fonte34aec05, CI fonte/merge **7461**,14 testes novos/117 focais, revisão e complemento concluídos; prévia em conferência, sem merge/publicação. Qualifica workspaces e troca/revogação de sessões curtas existentes, sem alteração de login/MFA/permissões. [Escopo](implementation/CONTRATOS-ACESSO-2026-10-17.md). Não fecha HD-002.
+**HD-002 — contratos de acesso:** [PR76](https://github.com/Consulte-GEO/help-desk-multi-tenant/pull/76), fonte34aec05, CI fonte/merge **7461**,14 testes novos/117 focais, revisão e complemento concluídos; prévia qualificada em10 ativos; pronto para revisão, sem merge/publicação. Qualifica workspaces e troca/revogação de sessões curtas existentes, sem alteração de login/MFA/permissões. [Escopo](implementation/CONTRATOS-ACESSO-2026-10-17.md). Não fecha HD-002.
 
 **HD-001 — síntese canônica:** README, AGENTS, plano e estado apontam para esta página. Os snapshots antigos não devem ser usados isoladamente como descrição do produto corrente. O levantamento original continua preservado, sem alteração retroativa de suas contagens ou evidências.
 
